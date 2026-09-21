@@ -1,62 +1,51 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8AB4825B6;
-	Sun, 20 Sep 2026 21:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E978B357CE8;
+	Mon, 21 Sep 2026 05:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789939814; cv=none; b=TcTsGoSgPhLZpO2TZtAi7u6F5QTD29MiM1Rm8n9UosFvQW5ou+DFkoDUII1eoMFeRVMk9HSb1oP2mOEBq3ENHfbhkxGMVWJS0GzkLm8NaFbRXhZ5Z/Rf1PbVG+cuZ3Rr8C4JrV+JXc3u6chJLzGaUaBJQblRdJiW2q27ytz/YW4=
+	t=1789969105; cv=none; b=DZvKvYhYPI78cmOVYLNpUFvELidg1FrbYX+3O9tH54Bc4EAli17VpU5bMKuM34K2vC38QAA4Z8mhEFKrTEkPkodldCQsvJaxmDxkLfCX7EOsb11ZsQXygRjsqsJIXpBlPkoty6gK65lO2FmBYBPm8QawHouX4Jahz/iON70kPCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789939814; c=relaxed/simple;
-	bh=R3BsMhC0mgk8LVwQeMdpKSdNGy7KjowhtkEPEVBEHiM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sG8bLfc1T/MdySSvnLEQNiu48sOl5wOPDlTV38Rvyh30P4jhxTPCBmbX/TnQle4gThr6oZZBeCgivQgGvwjXhi7ie8WHzqoW3fPhyXNLGl8i8CLLKalH7pH0iO7ZZ6y4yBUjI3WqhSMji1eruB7nMhSuX6NtS/sGDZ2Lv6SM5VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=JOyUNIHT; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789969105; c=relaxed/simple;
+	bh=g1xec7Xou8CraukzqOtMz123N+2MKPU4sEEZDPNR5YE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lS8lePJ2bVEVOaHLuAXkH/63tTqRAG/vnQZj+xziDeolkjWhYbVBWkuLZSjzrYFn/33JOF4t1R6UX6HnJjFWz+xZ62WI3WdVXXXivgU7ePIgkOBYH8PdJXQZCc1ZsovhPtmpJst7slJS48BIzQiTEby8+eSy7B7/FJS/QvoVvDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WghxrMMT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="JOyUNIHT"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94C6515A1;
-	Sun, 20 Sep 2026 14:30:00 -0700 (PDT)
-Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3F7163F632;
-	Sun, 20 Sep 2026 14:30:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789939804; bh=R3BsMhC0mgk8LVwQeMdpKSdNGy7KjowhtkEPEVBEHiM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOyUNIHT1gB3O2hr0pqpn+WrumLtnXMV6+ifYFVV/YUX5c2H42bZqERR+P3thhsj1
-	 SuRYX91fcUMEvA9UlE0I4p/RgJei3OYifgwcfCq4DqOULT/2lyT2LcszMADDgs8aJ6
-	 fZQE3dGhHzBygx7cmwdREpqRZUujmvRthUD60vqA=
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: maz@kernel.org,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WghxrMMT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2571F000FF;
+	Mon, 21 Sep 2026 05:38:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789969103;
+	bh=9Nc5JZ4WOPhVTvBVhpb8Zoxrt5OYp18RfyPmixIyKmI=;
+	h=From:To:Cc:Subject:Date;
+	b=WghxrMMTByFU9P31aTmH9PTOzzwuZF02dEKLDmC1nqD3ye7oivLzBHrH3OvbNjEef
+	 cdmYezLL4IIxHMFvbJ3fDv4kDjdQZpXPmF1pX08HsKjyyBDWjf6h2HPCou1nLvtrfi
+	 UJPFc7tsebiMabyKvLmLxjS8X2WqRAxGe7vMyQe9YrvXVa4sk+8U4E5inoQ5dVKfff
+	 qPxxx8VbIQO/pnr0agVP78QVHPGlJSN8LAQbbtd+xyymTx+tESiH8n3Rh7PdGoQ2tN
+	 5nxShJp0errxNWbtEoEF77Oh+3Hl7pSttz6OHQbvTZMDL0XDHQb7wJ3bA26ENSZKIP
+	 zkFpxZkiOFRRg==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v19 20/20] KVM: arm64: CCA: Control user register access for Realms
-Date: Sun, 20 Sep 2026 22:28:45 +0100
-Message-ID: <20260920212845.707-21-suzuki.poulose@arm.com>
+	linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: [PATCH v12 0/7] Switch Arm SMCCC firmware services to an SMCCC bus
+Date: Mon, 21 Sep 2026 11:08:00 +0530
+Message-ID: <20260921053807.354802-1-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260920212845.707-1-suzuki.poulose@arm.com>
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -65,268 +54,174 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+As discussed here:
+https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
 
-The RMM restricts the access to the register states that the host can
-read/modify for a given Realm.
+The earlier CCA guest support used an arm-cca-dev platform device as a pure
+software anchor for the TSM class device. That platform device did not
+correspond to a DT/ACPI described device, MMIO range, interrupt, or other
+platform resource; it existed only to make the CCA guest driver bind and to
+place the resulting TSM device in the driver model. The same pattern also
+exists for smccc_trng. Creating separate platform devices for such
+SMCCC-discovered features is misleading, because those features are not
+independent platform devices.
 
-e.g., At VCPU creation, can modify GPRS (x0-x30) and PC.
-      While servicing SMCCC calls via RSI_HOST_CALL or servicing PSCI
-      requests.
-      MMIO emulation in the unprotected space.
+This series adds an Arm SMCCC bus for services discovered through the SMCCC
+firmware interface. The bus provides SMCCC device and driver registration
+helpers, SMCCC function id based matching, uevent modalias generation, and
+a sysfs modalias attribute. SMCCC service drivers can use
+MODULE_DEVICE_TABLE(arm_smccc, ...) to emit arm_smccc:f<functionid>
+aliases, allowing userspace to autoload service drivers when the SMCCC core
+registers matching firmware-service devices.
 
-Additionally we use the sysreg configuration to advertise/configure the
-following Realm parameters, which are required before the Realm Descriptor
-:w
-is created:
- - SVE Vector Length
- - Number of HW Breakpoints/Watchpoints
- - PMU Counters.
+The series then moves SMCCC TRNG and the Arm CCA guest RSI service off the
+platform bus. When the SMCCC core discovers the corresponding firmware
+service, it registers an arm-smccc device for that service. The hwrng
+arm_smccc_trng driver and the Arm CCA guest TSM provider are converted to
+SMCCC drivers that bind to those discovered devices.
 
-Thus KVM also additionally allows access to ID_AA64DFR0_EL1 and SVE_VLS for
-the configuration of Realm creation parameters. We don't support PMUs for
-the Realm VMs yet, so PMCR is not exposed.
+The old arm-cca-dev platform device has also been used by userspace as a Realm
+guest indicator. Removing it without a replacement would leave userspace
+depending on an internal driver-binding device. This series therefore adds
+/sys/firmware/cca/realm_guest as a stable, architecture-provided ABI for
+detecting whether the kernel is running as an Arm CCA Realm guest, and then
+removes the dummy arm-cca-dev platform-device registration.
 
-The RMM makes similar restrictions for reading of the guest's registers
-(this is *confidential* compute after all), however we don't impose the
-restriction here. This allows the VMM to read (stale) values from the
-registers which might be useful to read back the initial values even if
-the RMM doesn't provide the latest version. For migration of a realm VM,
-a new interface will be needed so that the VMM can receive an
-(encrypted) blob of the VM's state.
+Changes from v11:
+https://lore.kernel.org/all/20260914060511.277948-1-aneesh.kumar@kernel.org
+* Collect Reviewed-by tags.
+* Update commit messages based on feedback.
+* Update the sysfs file documentation.
+* Use put_device() consistently for cleanup on error.
 
-Reflect the above in KVM_GET_REG_LIST, KVM_SET_ONE_REG calls.
+Changes from v10:
+https://lore.kernel.org/all/20260904095000.1184861-1-aneesh.kumar@kernel.org
+* Collect Reviewed-by tags.
+* Add the missing linux/types.h include.
+* Update the arm_smccc_1_1_invoke() call to pass 0 as the input value for x1-x7.
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Co-developed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
-Changes since v18:
- - Don't expose PMCR_EL0 to the userspace now, we could do that when we
-   support PMU
- - Fix check patch warnings
-Changes since v17:
-  - Merge related changes into one single patch for the user set/get registers
-    I have retained the Review tags, as the code hasn't changed, just the patches
-    were merged into a single one with the same tags.
-  - Limit KVM_GET_REG_LIST to the allowed CORE registers.
----
- arch/arm64/kvm/guest.c      | 63 +++++++++++++++++++++++++++++++++++++
- arch/arm64/kvm/hypercalls.c |  4 +--
- arch/arm64/kvm/sys_regs.c   | 28 +++++++++++++----
- 3 files changed, 87 insertions(+), 8 deletions(-)
+Changes from v9:
+https://lore.kernel.org/all/20260805063255.1638614-1-aneesh.kumar@kernel.org
+* Rename CONFIG_ARM_RMM to CONFIG_ARM_RMM_RSI to make the Kconfig option RSI-specific.
+* Update the modalias to use the SMCCC function ID.
+* Don't issue SMC64 SMCCC calls on arm32.
+* Drop the IDA usage.
 
-diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index c3ca369882273..ffe3f5ce4b3cf 100644
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -73,6 +73,25 @@ static u64 core_reg_offset_from_id(u64 id)
- 	return id & ~(KVM_REG_ARCH_MASK | KVM_REG_SIZE_MASK | KVM_REG_ARM_CORE);
- }
- 
-+static bool kvm_realm_validate_core_reg(u64 off)
-+{
-+	/*
-+	 * Note that GPRs can only sometimes be controlled by the VMM.
-+	 * For PSCI only X0-X6 are used, higher registers are ignored (restored
-+	 * from the REC).
-+	 * For HOST_CALL all of X0-X30 are copied to the RsiHostCall structure.
-+	 * For emulated MMIO X0 is always used.
-+	 * PC can only be set before the realm is activated.
-+	 */
-+	switch (off) {
-+	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
-+	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
-+	case KVM_REG_ARM_CORE_REG(regs.pc):
-+		return true;
-+	}
-+	return false;
-+}
-+
- static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
- {
- 	int size;
-@@ -553,6 +572,9 @@ static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
- 		u64 reg = KVM_REG_ARM64 | KVM_REG_ARM_CORE | i;
- 		int size = core_reg_size_from_offset(vcpu, i);
- 
-+		if (vcpu_is_rec(vcpu) && !kvm_realm_validate_core_reg(i))
-+			continue;
-+
- 		if (size < 0)
- 			continue;
- 
-@@ -598,6 +620,9 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
- 	if (!vcpu_has_sve(vcpu))
- 		return 0;
- 
-+	if (kvm_vm_is_realm(vcpu->kvm))
-+		return 1; /* KVM_REG_ARM64_SVE_VLS */
-+
- 	if (!kvm_arm_vcpu_sve_finalized(vcpu))
- 		return 1; /* KVM_REG_ARM64_SVE_VLS */
- 
-@@ -625,6 +650,10 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
- 		return -EFAULT;
- 	++num_regs;
- 
-+	/* For Realms only support SVE_VLS */
-+	if (kvm_vm_is_realm(vcpu->kvm))
-+		return num_regs;
-+
- 	if (!kvm_arm_vcpu_sve_finalized(vcpu))
- 		return num_regs;
- 
-@@ -705,6 +734,11 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- 	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
- 		return -EINVAL;
- 
-+	/*
-+	 * We don't filter out the register reads for Realms, like we do for
-+	 * the user writes. We expose junk data for the VMM instead of
-+	 * denying the requests.
-+	 */
- 	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
- 	case KVM_REG_ARM_CORE:	return get_core_reg(vcpu, reg);
- 	case KVM_REG_ARM_FW:
-@@ -716,12 +750,41 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- 	return kvm_arm_sys_reg_get_reg(vcpu, reg);
- }
- 
-+#define KVM_REG_ARM_ID_AA64DFR0_EL1	ARM64_SYS_REG(3, 0, 0, 5, 0)
-+/*
-+ * The RMI ABI only enables setting some GPRs and PC. The selection of GPRs
-+ * that are available depends on the Realm state and the reason for the last
-+ * exit.  All other registers are reset to architectural or otherwise defined
-+ * reset values by the RMM, except for a few configuration fields that
-+ * correspond to Realm parameters.
-+ */
-+static bool validate_realm_set_reg(struct kvm_vcpu *vcpu,
-+				   const struct kvm_one_reg *reg)
-+{
-+	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_CORE) {
-+		u64 off = core_reg_offset_from_id(reg->id);
-+
-+		return kvm_realm_validate_core_reg(off);
-+	}
-+
-+	switch (reg->id) {
-+	case KVM_REG_ARM_ID_AA64DFR0_EL1:
-+	case KVM_REG_ARM64_SVE_VLS:
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- int kvm_arm_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- {
- 	/* We currently use nothing arch-specific in upper 32 bits */
- 	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
- 		return -EINVAL;
- 
-+	if (kvm_vm_is_realm(vcpu->kvm) && !validate_realm_set_reg(vcpu, reg))
-+		return -EINVAL;
-+
- 	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
- 	case KVM_REG_ARM_CORE:	return set_core_reg(vcpu, reg);
- 	case KVM_REG_ARM_FW:
-diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
-index b11b8821c9fbc..2b1e6fdeb4d5c 100644
---- a/arch/arm64/kvm/hypercalls.c
-+++ b/arch/arm64/kvm/hypercalls.c
-@@ -414,14 +414,14 @@ void kvm_arm_teardown_hypercalls(struct kvm *kvm)
- 
- int kvm_arm_get_fw_num_regs(struct kvm_vcpu *vcpu)
- {
--	return ARRAY_SIZE(kvm_arm_fw_reg_ids);
-+	return vcpu_is_rec(vcpu) ? 0 : ARRAY_SIZE(kvm_arm_fw_reg_ids);
- }
- 
- int kvm_arm_copy_fw_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(kvm_arm_fw_reg_ids); i++) {
-+	for (i = 0; i < kvm_arm_get_fw_num_regs(vcpu); i++) {
- 		if (put_user(kvm_arm_fw_reg_ids[i], uindices++))
- 			return -EFAULT;
- 	}
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 44aae52c473d7..47ebde943a09e 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -5638,18 +5638,18 @@ int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
- 
--static unsigned int num_demux_regs(void)
-+static inline unsigned int num_demux_regs(struct kvm_vcpu *vcpu)
- {
--	return CSSELR_MAX;
-+	return vcpu_is_rec(vcpu) ? 0 : CSSELR_MAX;
- }
- 
--static int write_demux_regids(u64 __user *uindices)
-+static int write_demux_regids(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
- 	u64 val = KVM_REG_ARM64 | KVM_REG_SIZE_U32 | KVM_REG_ARM_DEMUX;
- 	unsigned int i;
- 
- 	val |= KVM_REG_ARM_DEMUX_ID_CCSIDR;
--	for (i = 0; i < CSSELR_MAX; i++) {
-+	for (i = 0; i < num_demux_regs(vcpu); i++) {
- 		if (put_user(val | i, uindices))
- 			return -EFAULT;
- 		uindices++;
-@@ -5693,11 +5693,27 @@ static bool copy_reg_to_user(const struct sys_reg_desc *reg, u64 __user **uind)
- 	return true;
- }
- 
-+static inline bool kvm_realm_sys_reg_hidden_user(const struct kvm_vcpu *vcpu,
-+						 u64 reg)
-+{
-+	if (!vcpu_is_rec(vcpu))
-+		return false;
-+
-+	switch (reg) {
-+	case SYS_ID_AA64DFR0_EL1:
-+		return false;
-+	}
-+	return true;
-+}
-+
- static int walk_one_sys_reg(const struct kvm_vcpu *vcpu,
- 			    const struct sys_reg_desc *rd,
- 			    u64 __user **uind,
- 			    unsigned int *total)
- {
-+	if (kvm_realm_sys_reg_hidden_user(vcpu, reg_to_encoding(rd)))
-+		return 0;
-+
- 	/*
- 	 * Ignore registers we trap but don't save,
- 	 * and for which no custom user accessor is provided.
-@@ -5735,7 +5751,7 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
- 
- unsigned long kvm_arm_num_sys_reg_descs(struct kvm_vcpu *vcpu)
- {
--	return num_demux_regs()
-+	return num_demux_regs(vcpu)
- 		+ walk_sys_regs(vcpu, (u64 __user *)NULL);
- }
- 
-@@ -5748,7 +5764,7 @@ int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- 		return err;
- 	uindices += err;
- 
--	return write_demux_regids(uindices);
-+	return write_demux_regids(vcpu, uindices);
- }
- 
- #define KVM_ARM_FEATURE_ID_RANGE_INDEX(r)			\
+Changes from v8:
+https://lore.kernel.org/all/20260707081351.1680209-1-aneesh.kumar@kernel.org
+* Rebase onto the arm64 for-next/core branch.
+* Move the RSI code from arch/arm64 to drivers/firmware/arm_rmm in patch 3.
+* Add a new patch to move the Realm memory-encryption operations to the RSI code.
+* Drop the Reviewed-by tag from patch 3.
+
+Changes from v7:
+https://lore.kernel.org/all/20260611130429.295516-1-aneesh.kumar@kernel.org
+* Rebase to latest kernel
+* Add id_table check in arm_smccc_driver_register
+* Add smccc device name check in arm_smccc_device_register
+* Drop driver_data from struct arm_smccc_device_id
+
+Changes from v6:
+https://lore.kernel.org/all/20260527100233.428018-1-aneesh.kumar@kernel.org
+* Move SMCCC bus-related code to bus.c.
+* Remove CONFIG_ARM64 #ifdefs and switch device creation to use the generic function-ID support framework.
+* Move version-specific checks and other conditionals to the device driver probe routines.
+* Move RSI definitions to include/linux/arm-smccc-rsi.h.
+* Split the file and variable renames into a separate patch.
+
+Changes from v5:
+https://lore.kernel.org/all/20260514094030.42495-1-aneesh.kumar@kernel.org
+* Replace the arm-smccc platform-device plus auxiliary-child model with a
+  dedicated Arm SMCCC bus.
+* Add SMCCC module alias support so SMCCC service drivers can use
+  MODULE_DEVICE_TABLE(arm_smccc, ...) and autoload through arm_smccc:<name>
+  aliases.
+* Convert smccc_trng from a platform driver to an SMCCC driver.
+* Convert the Arm CCA guest TSM provider from the arm-cca-dev platform device
+  to an SMCCC driver bound to the discovered RSI service.
+* Add /sys/firmware/cca/realm_guest before removing the old arm-cca-dev dummy
+  platform device.
+
+Changes from v4:
+https://lore.kernel.org/all/20260427061615.905018-1-aneesh.kumar@kernel.org
+* Add /sys/firmware/cca/realm_guest for detecting realm guest
+* Convert smccc_trng to auxiliary device from platform device
+
+Changes from v3:
+https://lore.kernel.org/all/20260309100507.2303361-1-aneesh.kumar@kernel.org
+* Rebased onto the latest kernel
+* Drop pr_fmt() from drivers/firmware/smccc/rmm.c
+
+Cc: Jason Gunthorpe <jgg@nvidia.com> 
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Andre Przywara <andre.przywara@arm.com>
+
+Aneesh Kumar K.V (Arm) (7):
+  firmware: smccc: Add an Arm SMCCC bus
+  firmware: hwrng: arm_smccc_trng: Register as an SMCCC device
+  firmware: arm_rmm: Move RSI support out of arch/arm64
+  arm64: realm: Move Realm memory encryption ops to RSI code
+  virt: coco: arm-cca-guest: Rename TSM report source file
+  firmware: smccc: arm-cca-guest: Bind the TSM provider to an SMCCC
+    device
+  coco: guest: arm64: Replace dummy CCA device with sysfs ABI
+
+ Documentation/ABI/testing/sysfs-firmware-cca  |   7 +
+ MAINTAINERS                                   |   3 +
+ arch/arm/include/asm/archrandom.h             |   2 +-
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/archrandom.h           |   2 +-
+ arch/arm64/include/asm/io.h                   |   2 +-
+ arch/arm64/include/asm/mem_encrypt.h          |   5 +-
+ arch/arm64/include/asm/pgtable-prot.h         |   2 +-
+ arch/arm64/include/asm/rsi.h                  |  70 --------
+ arch/arm64/kernel/Makefile                    |   2 +-
+ arch/arm64/kernel/setup.c                     |   2 +-
+ arch/arm64/mm/init.c                          |   3 +-
+ arch/arm64/mm/pageattr.c                      |  38 +----
+ drivers/char/hw_random/arm_smccc_trng.c       |  32 ++--
+ drivers/firmware/Kconfig                      |   1 +
+ drivers/firmware/Makefile                     |   1 +
+ drivers/firmware/arm_rmm/Kconfig              |  17 ++
+ drivers/firmware/arm_rmm/Makefile             |   2 +
+ .../kernel => drivers/firmware/arm_rmm}/rsi.c |  79 +++++++--
+ drivers/firmware/smccc/Makefile               |   2 +-
+ drivers/firmware/smccc/bus.c                  | 158 ++++++++++++++++++
+ drivers/firmware/smccc/smccc.c                |  68 +++++++-
+ drivers/virt/coco/arm-cca-guest/Kconfig       |   3 +-
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../arm-cca-guest/{arm-cca-guest.c => main.c} |  52 +++---
+ .../linux/arm-rsi-cmds.h                      |  76 ++++++++-
+ include/linux/arm-smccc-bus.h                 |  48 ++++++
+ .../linux/arm-smccc-rsi.h                     |   6 +-
+ include/linux/device-id/arm_smccc.h           |  19 +++
+ include/linux/mod_devicetable.h               |   1 +
+ scripts/mod/devicetable-offsets.c             |   3 +
+ scripts/mod/file2alias.c                      |   8 +
+ 32 files changed, 528 insertions(+), 189 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+ delete mode 100644 arch/arm64/include/asm/rsi.h
+ create mode 100644 drivers/firmware/arm_rmm/Kconfig
+ create mode 100644 drivers/firmware/arm_rmm/Makefile
+ rename {arch/arm64/kernel => drivers/firmware/arm_rmm}/rsi.c (71%)
+ create mode 100644 drivers/firmware/smccc/bus.c
+ rename drivers/virt/coco/arm-cca-guest/{arm-cca-guest.c => main.c} (82%)
+ rename arch/arm64/include/asm/rsi_cmds.h => include/linux/arm-rsi-cmds.h (69%)
+ create mode 100644 include/linux/arm-smccc-bus.h
+ rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (98%)
+ create mode 100644 include/linux/device-id/arm_smccc.h
+
+
+base-commit: 704340f1cd0dcef829eb62f5b48ae95a2ce17bdf
 -- 
 2.43.0
 
