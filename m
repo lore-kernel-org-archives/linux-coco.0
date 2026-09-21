@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F312838F92D;
-	Mon, 21 Sep 2026 10:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2BE3B2FDF;
+	Mon, 21 Sep 2026 10:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789984983; cv=none; b=Gk4WopUOwProWlMgsfzj+KtO6XdtNUCRSCTaR8OcPUdSClhusKwolIm4CYy6CrjmvNrjrwL40vzZAImxO2MrMZc0gsYgcOPfJ/F2voSozMqVZnsKV7vIyR41YwY/NOJFi/BYuuamtLcAmLmpE15E4nl3YpjneAeat36V0gBCpR0=
+	t=1789985669; cv=none; b=HogbSpxBvkMeTShiT3iyjQ/gizh5KtO5qym1VpP6/2dpf73kQn9KTHayb+/Xr0+1i4o8thtDCe0QbAfYdwah4zJ/qU33EYq0GY1mS3C57irplut/AsW8qP/S9rqzSJdFKQLBEOh6OIBptTtiysP9p/56jMY9xFlGNM0y1JTSrBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789984983; c=relaxed/simple;
-	bh=2Bi9HNrID2cE7gcX784v6dveXii59tEhPSRzCiZgdgs=;
+	s=arc-20240116; t=1789985669; c=relaxed/simple;
+	bh=X21Q+N08xUOyF31kxvte0qv2v56innxWRBgC11u9YPg=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JwRkFyM2VajxeEncIBhk0aRZzTsb3MVL9IQk+ViMe3FF7QvVZOLOoHnRijXLGiGTZw2a+PKCtNcze0GUno5TQJZs3q2JnxiaqKwXK5GTwjmy6S9eHs22TwUL2vvGEQec1O2YvLeUEuEixT26tGLhv7Tmu+p118X1jRCLCYIYOzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=blOJwDP8; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=UsQFLCdzhD1iLmxlMacZM+xCcVYrUyrgfTyqfON+xw0acEFj17uqKFFEF31l2OACnLX20xPe/DzObE/AtPeEcZRC4YYpFPv5SGEpD1ppVpwml32C9rsYfd7TDExOu00rwDf6clcO8R+97cZ/vP7TzKME8WifrV1t8BOehjQHPrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bi8wj6lS; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="blOJwDP8"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bi8wj6lS"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC1CC1CE0;
-	Mon, 21 Sep 2026 03:02:56 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7ED0A1CE0;
+	Mon, 21 Sep 2026 03:14:23 -0700 (PDT)
 Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A6DB3F86F;
-	Mon, 21 Sep 2026 03:02:57 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 173203F86C;
+	Mon, 21 Sep 2026 03:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789984980; bh=2Bi9HNrID2cE7gcX784v6dveXii59tEhPSRzCiZgdgs=;
+	t=1789985667; bh=X21Q+N08xUOyF31kxvte0qv2v56innxWRBgC11u9YPg=;
 	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=blOJwDP8A/onBBJLnCPxUp9mIb8MzS7wS1+7wngcIelq7GcWJvaTjSVFF1Ytq/w3R
-	 x1av8/QUs0lhT01IoJteJ3chVaJ+FHMaSGYVCI5C4ujUt7eSTRkRLr5foUzByLlrWt
-	 EwI7qlCQh+NLED+A0IIYKTIEedohHbTqb02OPxBY=
-Message-ID: <45fb9520-7003-412f-9ab1-14e2a762c816@arm.com>
-Date: Mon, 21 Sep 2026 11:02:56 +0100
+	b=bi8wj6lSXbc+slgPhtQo8H+KMor5M5yzY0r8RQQqFvDPPtgRm0RMutnIRxaToRdTG
+	 YWI+Jnobq16nw+PjJSrqSjkJr7INZTwpehy3S8gXoDGcYoHz2kHClYB+y772yLyN7Z
+	 EPCugkdEQQwCspBynGN7LkS+G00+KuamtoSo/uq0=
+Message-ID: <eb4a30a0-abd2-4334-b5f3-62621ec5a19e@arm.com>
+Date: Mon, 21 Sep 2026 11:14:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -82,151 +82,51 @@ On 21/09/2026 10:27, Suzuki K Poulose wrote:
 >>> index 000000000000..214d6228dfc2
 >>> --- /dev/null
 >>> +++ b/include/linux/arm-smccc-rmi.h
->>> @@ -0,0 +1,497 @@
->>> +/* SPDX-License-Identifier: GPL-2.0 */
->>> +/*
->>> + * Copyright (C) 2023-2026 ARM Ltd.
->>> + *
->>> + * The values and structures in this file are from the Realm 
->>> Management Monitor
->>> + * specification (DEN0137) version 2.0-bet3:
->>> + * https://developer.arm.com/documentation/den0137/2-0bet3/
->>> + */
->>> +
->>> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
->>> +#define __LINUX_ARM_SMCCC_RMI_H_
->>> +
->>> +#include <linux/arm-smccc.h>
->>> +#include <linux/bitfield.h>
->>> +#include <linux/bits.h>
->>> +#include <linux/build_bug.h>
->>> +#include <linux/sizes.h>
->>> +
->>> +#include <asm/page.h>
->>> +
->>> +#define SMC_RMI_CALL(func)                \
->>> +    ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,        \
->>> +               ARM_SMCCC_SMC_64,        \
->>> +               ARM_SMCCC_OWNER_STANDARD,    \
->>> +               (func))
->>
->> Obviously it is v18 so probably a future thing but nothing about this
->> is RMI specific.  Could be used for ARM_SMCCC_TRNG_RND64 for instance.
->> I'm not entirely sure what we'd call such a macro
->>
->> ARM_SMCCC_CALL_VAL64_STD() maybe?
-> 
-> ARM_SMCCC_STD_CALL64_VAL() ?
-> 
-> But, I would leave it as a wider cleanup in the tree as a separate
-> series.
-> 
->>
->> I'm not just not keen on macros whose names to me hint at something
->> special. FWIW this also matches SMC_RSI_FID() and FFA_SMC64().
->> Isn't it nice when we have a predictable naming scheme :)
->>
->> FID (for Function IDentifier) is in the spec, so maybe?
->>
->> Anyhow, I don't really care that much.
->>
->>> +
->>> +#define SMC_RMI_VERSION                SMC_RMI_CALL(0x0150)
->>> +
->>
->>
->>> +#define RMI_ABI_MAJOR_VERSION    2
->>> +#define RMI_ABI_MINOR_VERSION    0
->>> +
->>> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
->>
->> I'd mask it.  Mostly because that would shout that it is only 15 bits.
->>
-> 
-> Ack
-> 
->>> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
->>> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
->>
->> I'd go all in on FIELD_PREP() / FIELD_GET() + GENMASK just for the
->> sake of consistency + not having to be careful that everything is
->> checked for fit to keep the LLM bots happy.
->>
->>> +
->>> +#define RMI_RETURN_STATUS_MASK        GENMASK(7, 0)
->>> +#define RMI_RETURN_INDEX_MASK        GENMASK(15, 8)
->>> +#define RMI_RETURN_MEMREQ_MASK        GENMASK(9, 8)
->>> +#define RMI_RETURN_CAN_CANCEL_MASK    BIT(10)
->>> +
->>> +#define RMI_RETURN_STATUS(ret)        
->>> FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
->>> +#define RMI_RETURN_INDEX(ret)        
->>> FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
->>
->> What's this one?  I can't find anything in the spec that matches it
->> and as far as I can tell you don't use it in this series.
-> 
-> This is coming from RmiResultDataLevel. See RmiResult type.
-> This was renamed after we introduce the RmiResultDataIncomplete.
-> It is used in the KVM code to find the "level" where a command
-> failed/walked.
-> 
-> I could rename it to RMI_RESULT_DATA_LEVEL() ?
-> Similarly RMI_RESULT_STATUS instead of RMI_RETURN_*
-> 
->>
->>> +#define RMI_RETURN_MEMREQ(ret)        
->>> FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
->>> +#define RMI_RETURN_CAN_CANCEL(ret)    
->>> FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
-> 
->> These are obscure enough to find in the spec I'd give a comment just
->> to save the sanity of anyone looking for them.
-> 
-> As above, they are really RMI_RESULT_DATA_INCOMPLETE_*
-> 
->>
->>> +/*
->>> + * Note many of these fields are smaller than u64 but all fields 
->>> have u64
->>> + * alignment, so use u64 to ensure correct alignment.
->>
->> Obviously this is only going to run on arm64 so it's not critical, but
->> more generally u64s aren't always 64 bit aligned.  So if you 'really'
->> care aligned_u64 is there to ensure it.  Meh, arm64 so fine.
-> 
-> Agreed, I am worried about the churn in the consumer code. Also, like
-> you said, this is only for ARM64. So, I would pass it.
-> 
->>
->>> + */
->>> +struct rmm_config {
->>> +    union { /* 0x0 */
->>> +        struct {
->>> +            u64 tracking_region_size;
->>> +            u64 rmi_granule_size;
->>> +        };
->>> +        u8 sizer[SZ_4K];
->>> +    };
->>> +};
->>> +
->>> +static_assert(sizeof(struct rmm_config) == SZ_4K);
->>> +
->>> +#define RMI_REALM_PARAM_FLAG_SVE        BIT(1)
->>> +#define RMI_REALM_PARAM_FLAG_PMU        BIT(2)
->>> +#define RMI_REALM_PARAM_FLAG_DA            BIT(3)
->>> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY        GENMASK(6, 5)
->>> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY        GENMASK(8, 7)
->>
->> Tiny bit inconsistent. When do you decide _MASK is needed and when
->> not?  Seems a little too random for multibit fields.
-> 
-> I will try to clean this up.
 
-Actually, this is used when we don't consume them from RMM. i.e.,
-we never call FIELD_GET() on them. But thats not a reason for
-not being consistent in naming. I can fix it
+..
+
+>>> +
+>>> +struct rec_exit {
+>>> +    union { /* 0x000 */
+>>> +        u8 exit_reason;
+>>> +        u8 padding0[0x100];
+
+...
+
+>>
+>>> +    };
+>>> +    union { /* 0x400 */
+>>> +        struct {
+>>> +            u64 cntp_ctl;
+>>> +            u64 cntp_cval;
+>>> +            u64 cntv_ctl;
+>>> +            u64 cntv_cval;
+>>> +        };
+>>> +        u8 padding4[0x100];
+>>> +    };
+>>> +    union { /* 0x500 */
+>>> +        struct {
+>>> +            u64 ripas_base;
+>>> +            u64 ripas_top;
+>>> +            u8 ripas_value;
+>>> +            u8 padding5[0xf];
+>>
+>> In various other places you just use a u64 for a u8
+>> + padding. Why is this one special? And for that matter
+>> various other fields later in this particular structure?
+> 
+> Please feel free to point out, if you spot any. I am happy
+> to fix them.
+
+I took a look and the padding is for extra "u64" bits in there.
+e.g, ripas_value offset = 0x510 and the s2ap_base is really at 0x520
+not 0x518. Same applies for the pmu_ovf_status and vsmmu.
+
+So, I would leave them as they are. The rest are consistent.
+e.g, num_bps and num_wps. in realm_parameter
 
 Cheers
 Suzuki
 
+
+>
