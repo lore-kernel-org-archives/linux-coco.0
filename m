@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9463546C6
-	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 10:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F312838F92D;
+	Mon, 21 Sep 2026 10:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789984817; cv=none; b=aZg+mVRDlg7wkm8T6st3CmAW6luz0FMYQchESR3UrqoEF7FoETYMmNAocfliv3staYG/wQYKA221X3ZtairbUvYkBmHUirCFkogEygRUwvB3K6C07mml8l1D2rHt8x1tYdvhNqNHYo6iSHsXrRkZcU3dA+8d43me5NXkV+iMvZk=
+	t=1789984983; cv=none; b=Gk4WopUOwProWlMgsfzj+KtO6XdtNUCRSCTaR8OcPUdSClhusKwolIm4CYy6CrjmvNrjrwL40vzZAImxO2MrMZc0gsYgcOPfJ/F2voSozMqVZnsKV7vIyR41YwY/NOJFi/BYuuamtLcAmLmpE15E4nl3YpjneAeat36V0gBCpR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789984817; c=relaxed/simple;
-	bh=KAHxQyCLffudv7kQ3tADcUX1WeHMPGpfPiNr5Zb4Uh8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cPXVr0pOC+o9sLjraNAhyBdDH6tN7N/XW64vBtTeHh6f6OP2kEy4Fn/VSrYCDXU3c63nsP7vJON7tHFPmp6aQaDr3Sn6AZ5b4UjgXi+bs2fIC+S7LE3I1GRakpcsHIswj1YDA9OqhiksMzvxJIv6PWvx0K4di/zBcyn2ged5qsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XIoXtAaM; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1789984983; c=relaxed/simple;
+	bh=2Bi9HNrID2cE7gcX784v6dveXii59tEhPSRzCiZgdgs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=JwRkFyM2VajxeEncIBhk0aRZzTsb3MVL9IQk+ViMe3FF7QvVZOLOoHnRijXLGiGTZw2a+PKCtNcze0GUno5TQJZs3q2JnxiaqKwXK5GTwjmy6S9eHs22TwUL2vvGEQec1O2YvLeUEuEixT26tGLhv7Tmu+p118X1jRCLCYIYOzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=blOJwDP8; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XIoXtAaM"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="blOJwDP8"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD5B6153B;
-	Mon, 21 Sep 2026 03:00:11 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC1CC1CE0;
+	Mon, 21 Sep 2026 03:02:56 -0700 (PDT)
 Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED95B3F86F;
-	Mon, 21 Sep 2026 03:00:12 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A6DB3F86F;
+	Mon, 21 Sep 2026 03:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789984815; bh=KAHxQyCLffudv7kQ3tADcUX1WeHMPGpfPiNr5Zb4Uh8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XIoXtAaMDOmRwnyu8sQf9DbMLWTCBU9V5oWmQUBvvcAE0iV7BleEDJn/HYfi8FPS4
-	 WURSswpMLg10IEqSoRXoWQTAKT605tz3LQp9wSC1XsWgay3+UaMl75Zq22llLh57WA
-	 qG+44nuymFX6VWTfsKEBT31BtsVckOC8JfB6jbVg=
-Message-ID: <f927f542-cf96-4dd3-a4ec-94883ba10ce6@arm.com>
-Date: Mon, 21 Sep 2026 11:00:11 +0100
+	t=1789984980; bh=2Bi9HNrID2cE7gcX784v6dveXii59tEhPSRzCiZgdgs=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=blOJwDP8A/onBBJLnCPxUp9mIb8MzS7wS1+7wngcIelq7GcWJvaTjSVFF1Ytq/w3R
+	 x1av8/QUs0lhT01IoJteJ3chVaJ+FHMaSGYVCI5C4ujUt7eSTRkRLr5foUzByLlrWt
+	 EwI7qlCQh+NLED+A0IIYKTIEedohHbTqb02OPxBY=
+Message-ID: <45fb9520-7003-412f-9ab1-14e2a762c816@arm.com>
+Date: Mon, 21 Sep 2026 11:02:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,57 +35,198 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 4/7] arm64: realm: Move Realm memory encryption ops to
- RSI code
+Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
+ calling the RMM
 Content-Language: en-GB
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
- Greg KH <gregkh@linuxfoundation.org>, Jeremy Linton <jeremy.linton@arm.com>,
- Jonathan Cameron <jic23@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>,
- Andre Przywara <andre.przywara@arm.com>,
- Suzuki K Poulose <suzuki.poulose@ram.com>
-References: <20260921053807.354802-1-aneesh.kumar@kernel.org>
- <20260921053807.354802-5-aneesh.kumar@kernel.org> <arDwTjQiqF6VZOau@arm.com>
- <yq5a5wzz3rfo.fsf@kernel.org>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <yq5a5wzz3rfo.fsf@kernel.org>
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-2-suzuki.poulose@arm.com>
+ <178978126540.2352296.16845657485139032765.b4-review@b4>
+ <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
+In-Reply-To: <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 21/09/2026 10:05, Aneesh Kumar K.V wrote:
-> Catalin Marinas <catalin.marinas@arm.com> writes:
-> 
->> On Mon, Sep 21, 2026 at 11:08:04AM +0530, Aneesh Kumar K.V (Arm) wrote:
->>> Realm memory encryption callbacks are CCA-specific. Keep the Realm callback
->>> registration with the RSI initialization code instead of pageattr.c, which
->>> only needs to provide the low-level page-attribute transition helper.
+On 21/09/2026 10:27, Suzuki K Poulose wrote:
+> On 19/09/2026 02:27, Jonathan Cameron wrote:
+>>> The RMM (Realm Management Monitor) provides functionality that can be
+>>> accessed by SMC calls from the host.
 >>>
->>> Export __set_memory_enc_dec() within arm64 so the RSI code can wrap it with
->>> the Realm-specific encrypt/decrypt callbacks and warning policy.
+>>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
 >>>
->>> No functional changes in this patch.
+>>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
 >>>
->>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@ram.com>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 >>
->> Nit: Suzuki's still at arm ;)
-
-;-)
-
+>> With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
+>> comments inline.  Mostly on subtle inconsistencies that really don't
+>> matter that much.
+>>
+>>>   include/linux/arm-smccc-rmi.h | 497 ++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 497 insertions(+)
+>>>   create mode 100644 include/linux/arm-smccc-rmi.h
+>>>
+>>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc- 
+>>> rmi.h
+>>> new file mode 100644
+>>> index 000000000000..214d6228dfc2
+>>> --- /dev/null
+>>> +++ b/include/linux/arm-smccc-rmi.h
+>>> @@ -0,0 +1,497 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0 */
+>>> +/*
+>>> + * Copyright (C) 2023-2026 ARM Ltd.
+>>> + *
+>>> + * The values and structures in this file are from the Realm 
+>>> Management Monitor
+>>> + * specification (DEN0137) version 2.0-bet3:
+>>> + * https://developer.arm.com/documentation/den0137/2-0bet3/
+>>> + */
+>>> +
+>>> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
+>>> +#define __LINUX_ARM_SMCCC_RMI_H_
+>>> +
+>>> +#include <linux/arm-smccc.h>
+>>> +#include <linux/bitfield.h>
+>>> +#include <linux/bits.h>
+>>> +#include <linux/build_bug.h>
+>>> +#include <linux/sizes.h>
+>>> +
+>>> +#include <asm/page.h>
+>>> +
+>>> +#define SMC_RMI_CALL(func)                \
+>>> +    ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,        \
+>>> +               ARM_SMCCC_SMC_64,        \
+>>> +               ARM_SMCCC_OWNER_STANDARD,    \
+>>> +               (func))
+>>
+>> Obviously it is v18 so probably a future thing but nothing about this
+>> is RMI specific.  Could be used for ARM_SMCCC_TRNG_RND64 for instance.
+>> I'm not entirely sure what we'd call such a macro
+>>
+>> ARM_SMCCC_CALL_VAL64_STD() maybe?
+> 
+> ARM_SMCCC_STD_CALL64_VAL() ?
+> 
+> But, I would leave it as a wider cleanup in the tree as a separate
+> series.
+> 
+>>
+>> I'm not just not keen on macros whose names to me hint at something
+>> special. FWIW this also matches SMC_RSI_FID() and FFA_SMC64().
+>> Isn't it nice when we have a predictable naming scheme :)
+>>
+>> FID (for Function IDentifier) is in the spec, so maybe?
+>>
+>> Anyhow, I don't really care that much.
+>>
+>>> +
+>>> +#define SMC_RMI_VERSION                SMC_RMI_CALL(0x0150)
+>>> +
+>>
+>>
+>>> +#define RMI_ABI_MAJOR_VERSION    2
+>>> +#define RMI_ABI_MINOR_VERSION    0
+>>> +
+>>> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
+>>
+>> I'd mask it.  Mostly because that would shout that it is only 15 bits.
 >>
 > 
+> Ack
 > 
-> Will fix. I copied it from:
+>>> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+>>> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+>>
+>> I'd go all in on FIELD_PREP() / FIELD_GET() + GENMASK just for the
+>> sake of consistency + not having to be careful that everything is
+>> checked for fit to keep the LLM bots happy.
+>>
+>>> +
+>>> +#define RMI_RETURN_STATUS_MASK        GENMASK(7, 0)
+>>> +#define RMI_RETURN_INDEX_MASK        GENMASK(15, 8)
+>>> +#define RMI_RETURN_MEMREQ_MASK        GENMASK(9, 8)
+>>> +#define RMI_RETURN_CAN_CANCEL_MASK    BIT(10)
+>>> +
+>>> +#define RMI_RETURN_STATUS(ret)        
+>>> FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
+>>> +#define RMI_RETURN_INDEX(ret)        
+>>> FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
+>>
+>> What's this one?  I can't find anything in the spec that matches it
+>> and as far as I can tell you don't use it in this series.
 > 
-> https://lore.kernel.org/all/bb59b1e0-2550-4a9d-8738-a54e5f106f45@arm.com
+> This is coming from RmiResultDataLevel. See RmiResult type.
+> This was renamed after we introduce the RmiResultDataIncomplete.
+> It is used in the KVM code to find the "level" where a command
+> failed/walked.
+> 
+> I could rename it to RMI_RESULT_DATA_LEVEL() ?
+> Similarly RMI_RESULT_STATUS instead of RMI_RETURN_*
+> 
+>>
+>>> +#define RMI_RETURN_MEMREQ(ret)        
+>>> FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
+>>> +#define RMI_RETURN_CAN_CANCEL(ret)    
+>>> FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
+> 
+>> These are obscure enough to find in the spec I'd give a comment just
+>> to save the sanity of anyone looking for them.
+> 
+> As above, they are really RMI_RESULT_DATA_INCOMPLETE_*
+> 
+>>
+>>> +/*
+>>> + * Note many of these fields are smaller than u64 but all fields 
+>>> have u64
+>>> + * alignment, so use u64 to ensure correct alignment.
+>>
+>> Obviously this is only going to run on arm64 so it's not critical, but
+>> more generally u64s aren't always 64 bit aligned.  So if you 'really'
+>> care aligned_u64 is there to ensure it.  Meh, arm64 so fine.
+> 
+> Agreed, I am worried about the churn in the consumer code. Also, like
+> you said, this is only for ARM64. So, I would pass it.
+> 
+>>
+>>> + */
+>>> +struct rmm_config {
+>>> +    union { /* 0x0 */
+>>> +        struct {
+>>> +            u64 tracking_region_size;
+>>> +            u64 rmi_granule_size;
+>>> +        };
+>>> +        u8 sizer[SZ_4K];
+>>> +    };
+>>> +};
+>>> +
+>>> +static_assert(sizeof(struct rmm_config) == SZ_4K);
+>>> +
+>>> +#define RMI_REALM_PARAM_FLAG_SVE        BIT(1)
+>>> +#define RMI_REALM_PARAM_FLAG_PMU        BIT(2)
+>>> +#define RMI_REALM_PARAM_FLAG_DA            BIT(3)
+>>> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY        GENMASK(6, 5)
+>>> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY        GENMASK(8, 7)
+>>
+>> Tiny bit inconsistent. When do you decide _MASK is needed and when
+>> not?  Seems a little too random for multibit fields.
+> 
+> I will try to clean this up.
 
-Yikes, my bad.
+Actually, this is used when we don't consume them from RMM. i.e.,
+we never call FIELD_GET() on them. But thats not a reason for
+not being consistent in naming. I can fix it
 
-for FWIW, I really meant :
-
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cheers
+Suzuki
 
