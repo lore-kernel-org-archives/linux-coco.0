@@ -1,84 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B92B38F92D;
-	Mon, 21 Sep 2026 06:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B698451991
+	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 08:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789973865; cv=none; b=ehrafjAan5fywZw4B/sIHUZw0HB9p3dI9M1NDH4AiXzQAwz/pjQlhGxJ1ny44IuNlDxdjkeNW7Bm3VSr+B12xC0g0fc0+ltOL3zhTj00Qg1dBuY/djaI7OaPIa6FYVG/nxDupNQyRpVyS576WZ1vFAuLbXICtGZ+OAAvJMr2Dy4=
+	t=1789979950; cv=none; b=eoMzLkX+qQ5d8CErqBhFOH/XewjIpCk9xkSk5By9mFydHU+sOPoEaXWAqh7a4CSPfuT3aEK2DKEYSYG+pLlbG/+1XSRmzubjMkjjOJ7bDHozhujgC3Dgdj5lVMMgxMl520jCeRAGmABR6yHHvDzN/NvGO9r427qYZBFc/1nBgaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789973865; c=relaxed/simple;
-	bh=3k0P7egRJAwhHGXAhVPjJL8SDOJ7IUNyGn8/gepYaG8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=du33/vvHYAcJoPdETDasA297TC1SLxXsE7aGEyCZOs1rCmCrRpKjuuIbqqYU1qLvZjayT7+P75HmlZLirQpdpAGZR0hmDyesvGGMNnqIevc2DeqtucVF+tO+fwxwwzZ6OXnfEcTt7akKjZogxjuQ2tEluqqTlSRIoEL28Sm3PYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CsdfJbqG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789979950; c=relaxed/simple;
+	bh=GvzSXGOfWBYszOeMAcCGr5j7yP5kLMd+6elkwQKdA0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WvcrR8O0xx+AKGqtfZgYVw73DbRk+6mEJtqG6Bz+g4L64HUqd6Zc6zW347d4ILWIaT3nE3WA/lhBIIasVMb6dBiMVOcKfsjqjM9SZcdy40bGX5vrK0N902Fz1SKA1a/NwrkW+Jbt5q94zBFyVKK1pKpVjnbpxNJetLQk7Ppf3pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=efjYDGOz; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CsdfJbqG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED401F000FF;
-	Mon, 21 Sep 2026 06:57:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789973864;
-	bh=8AbV6ioiEGOWrXlJd0nFCFw/BQn3PCB4bJsD0M3s6ZI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=CsdfJbqGXWpoA8CDYUjjF6BytwF09mEWBrwRs12h1PFAOuUvpL1ulZBI77Odkr6e3
-	 k85k4aDhb3EqzqIyrQITn1tMNskmhogMSS0PWqF5df/fnFQnhjSXEAcLHXdYEgHLgU
-	 Px6YjimUVJ3qyf78tMk5kL4sD2CGJlG871MTZFZFVWC+6df4fApeulWSVhtBZK2qYy
-	 UI04iL/LNqwWfHfGfIJLa5xde5D/6EIVOKhW8xmYdRqG0hSIoXAPaT69WnW40l/Yz0
-	 Vy+anCIK/AnSktEacdFkzptTcGHU5wTjSlNaJrEwEJD9jzO98b0cPJVafPi6VnmUw6
-	 xeVMlskKehpPQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="efjYDGOz"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D833F175A;
+	Mon, 21 Sep 2026 01:39:03 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6E403F86C;
+	Mon, 21 Sep 2026 01:39:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789979947; bh=GvzSXGOfWBYszOeMAcCGr5j7yP5kLMd+6elkwQKdA0w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=efjYDGOzAkbD7o9EOG0YIDSQRNlf0X871uMPY1tnZLNoJCZf/qvsYURtrwJ9TBWTb
+	 teOTny1QW77hZZiN+obpSsQoG81tjC/RnEU/OL12TVF821L6JDQKsDhbPZPlBT6dhX
+	 2G51pdU6TiTyLuH94XzqMuzi5zhs5hjfqCxsFJ/Y=
+Date: Mon, 21 Sep 2026 09:39:01 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
 	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian K?nig <christian.koenig@amd.com>
-Subject: Re: [PATCH v6 7/9] dma-buf: system_heap: Enforce shared-granule
- alignment for cc-shared buffers
-In-Reply-To: <aq1V3oeDdvXobt8J@arm.com>
-References: <aq1V3oeDdvXobt8J@arm.com>
-Date: Mon, 21 Sep 2026 12:27:35 +0530
-Message-ID: <yq5afqz33xcw.fsf@kernel.org>
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>
+Subject: Re: [PATCH v12 1/7] firmware: smccc: Add an Arm SMCCC bus
+Message-ID: <arDtJaSvZMgpnP1t@arm.com>
+References: <20260921053807.354802-1-aneesh.kumar@kernel.org>
+ <20260921053807.354802-2-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921053807.354802-2-aneesh.kumar@kernel.org>
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+On Mon, Sep 21, 2026 at 11:08:01AM +0530, Aneesh Kumar K.V (Arm) wrote:
+>  MAINTAINERS                         |   1 +
+>  drivers/firmware/smccc/Makefile     |   2 +-
+>  drivers/firmware/smccc/bus.c        | 158 ++++++++++++++++++++++++++++
+>  include/linux/arm-smccc-bus.h       |  48 +++++++++
+>  include/linux/device-id/arm_smccc.h |  19 ++++
+>  include/linux/mod_devicetable.h     |   1 +
+>  scripts/mod/devicetable-offsets.c   |   3 +
+>  scripts/mod/file2alias.c            |   8 ++
+>  8 files changed, 239 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/firmware/smccc/bus.c
+>  create mode 100644 include/linux/arm-smccc-bus.h
+>  create mode 100644 include/linux/device-id/arm_smccc.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c2414447892c..42364c540f50 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -24741,6 +24741,7 @@ M:	Sudeep Holla <sudeep.holla@kernel.org>
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+>  F:	drivers/firmware/smccc/
+> +F:	include/linux/arm-smccc-bus.h
+>  F:	include/linux/arm-smccc.h
 
-> First, none of the DMA-BUF maintainers have been cc'ed. It might be fine
-> for an RFC but this series got to version 6. We need their feedback.
->
-> On Fri, Sep 04, 2026 at 04:04:50PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> The system heap can allocate buffers that are decrypted and shared with the
+There's also include/linux/device-id/arm_smccc.h introduced by this
+patch but not covered by MAINTAINERS.
 
- [ ... 107 lines skipped ... ] 
-
->
-> You need to get a proper base so that Sashiko can review this series. I
-> ran it through Claude and the above is wrong to go to free_buffer which
-> walks over the pages list that has not been initialised yet.
->
-
-There is a dependency on the file-movement changes in the arm-smccc bus
-patch series. This was done because we agreed to move the RSI changes
-out of arch/arm64 before considering further CCA-related changes for
-merging.
-
-Do you have any suggestions on how to handle this? I could include the
-dependent patches when posting the new series so that Sashiko has a base
-on which to apply it, and clearly mark those patches as not for merging.
-
--aneesh
+-- 
+Catalin
