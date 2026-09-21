@@ -1,95 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA22C45C704;
-	Mon, 21 Sep 2026 09:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F2F45DF4F;
+	Mon, 21 Sep 2026 09:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789981400; cv=none; b=YFQapn/dEQQ1WiwwJmzVbWAj+m82JkBOE9M4WnKi5UZcOPwu59rQK479SQhBFdQdJ7lXLkiKSOgB85jf9OHphOv6JFPzX+uQ4PletT+BqOgoNQH0fxhyyCSYFJQfOwuAzuPQpXUVIK0XGRoIqjrvRuUj6tmXCDfgqRife4i+K8k=
+	t=1789981500; cv=none; b=m9oeS7pzucYbUKNO0uLyUiXKEaDE/gYt1/YZBjDClMa2iRh734I3zixhLO1sHLXIlBeEfIp8b5tADlxpGLpVru2Kic2QB1BTkAYpvAFLETo8bmyYBJMgXd5p83akwKvt+JSTqi+xXWkr2aRfPwJM1NOh0vCjxzfnpE8sji/ntdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789981400; c=relaxed/simple;
-	bh=L6Ym8ZIu6y5nkeZnnYjPffmE2K/+n+j84VAR43y2xWo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cMa3mW+MqmMNP9iC44VxsqXxItYTH2ZlATqWb8dZraakL+uEhcSvfieaWQv10shVrqEnu/cjs0wNI/0h04JQCjKTF0vYLh4EUTPl9TrPTr3mIl2Lwzkih0xqTkVXfixMCdR7EhGXUtABJEeTBirMzzg57W8VYen0MNmhANUzfdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVj+/jF3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789981500; c=relaxed/simple;
+	bh=UE/X0gcMPeiPPSKCeX1gWcGjezEgz5neWZ7i4wm/qgo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QU8UVjgdPF/VremLzV+U2dtBHx2Zs2JsBoPehva2cQ3Ag+fkm1DQ1ilfBoFDgsNb+dckQWLHpLyhYAqZX1dpDNK7iMQ/XzVB6DbS+11oIR601oB9YHUNt7drFEYVd3Hnz7YYsqjgk+sTs2uWBIXXJB0Wl9ki0IblebETJQVGXxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Qh7mVIMI; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVj+/jF3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BF81F000FF;
-	Mon, 21 Sep 2026 09:03:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789981399;
-	bh=gh9znaemej2ebTYyF4AgCaUdWFG09lPGQkBE3YiACFs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GVj+/jF3q1YjJ5WBqJ4M0vvDiXAZIK8+FRFrOp/5IQN65WVRuVWo1IlGH4pb4fAN3
-	 ih9Hv8pXP31hmbOBzJMUqOPHXGxZg08bV9B6qUIzRJ3/sf3N+VUWkOgX5PvT1cbm6S
-	 haX8D1l1bUPQRTf4hxDZl6OWuAF+ewkwLLot4+RGi0G/iqyXIqCEqKHP+Kn68S2VEd
-	 D872xUL/MsaVq7bRdM+Tjw7SpV9KeVUDqfzsJhieQffGRyXbKTFI3K5jKlitv2xrhR
-	 X9G0MddNq/ynKxBcsL8U5ny6Y0zW28tTlCIEAz28wbLEsT+y0akd4IXEp23NO3fODa
-	 L18ZmeGXsMUoQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>
-Subject: Re: [PATCH v12 1/7] firmware: smccc: Add an Arm SMCCC bus
-In-Reply-To: <arDtJaSvZMgpnP1t@arm.com>
-References: <20260921053807.354802-1-aneesh.kumar@kernel.org>
- <20260921053807.354802-2-aneesh.kumar@kernel.org>
- <arDtJaSvZMgpnP1t@arm.com>
-Date: Mon, 21 Sep 2026 14:33:09 +0530
-Message-ID: <yq5aa4pb3rjm.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Qh7mVIMI"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEA5B1D15;
+	Mon, 21 Sep 2026 02:04:54 -0700 (PDT)
+Received: from [10.0.128.141] (unknown [10.0.128.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 22CA23F86F;
+	Mon, 21 Sep 2026 02:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789981498; bh=UE/X0gcMPeiPPSKCeX1gWcGjezEgz5neWZ7i4wm/qgo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Qh7mVIMImrIyA1UX15dpadr1LMV3Kze+0L28tCkv4dH36w/Hz6pKo+WJZ1W8FVRo+
+	 xeEolfEH3D0mZpSL2zzQiFX012Z6mt4274rlFjgoixZGWkKDIVtYHwWY8sdSZN+L+R
+	 hQDlfTbxahWEb4hVwqB7ZYrSkcL0cL9cxwfbbXoA=
+Message-ID: <5318f467-317b-4d67-a39b-39e5ce1d860c@arm.com>
+Date: Mon, 21 Sep 2026 10:04:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 5/7] firmware: arm_rmm: Activate the RMM
+Content-Language: en-GB
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-6-suzuki.poulose@arm.com>
+ <178978126542.2352296.10527413259157627665.b4-review@b4>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <178978126542.2352296.10527413259157627665.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+On 19/09/2026 02:27, Jonathan Cameron wrote:
+>> Activate the RMM after the basic configuration. This is a memory transferring,
+>> stateful operation.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> With the declaration moved as per standard way of dealing with __free
+> magic (there are docs in cleanup.h on this)
+> 
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> 
+>> ---
+>> Changes since v17:
+>>   * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
+>>   * Use scope-based cleanup to free sro object
+>> Changes since v16:
+>>   * Split into a new patch
+>> ---
+>>   drivers/firmware/arm_rmm/rmi.c | 14 +++++++++++++-
+>>   1 file changed, 13 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>> index 4f9898ece754..ecc89e91d264 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -762,6 +762,7 @@ static int rmi_configure(void)
+>>   static int __init arm64_init_rmi(void)
+>>   {
+>>   	int ret;
+>> +	struct rmi_sro_state *sro __free(kfree) = NULL;
+>>
+> Read the guidance in cleanup.h
+> 
+> This is a path to a potentially grumpy Linus.  He's made the sensible
+> point a number of times that putting the declaration of the destructor
+> anywhere that isn't right next to the contstructor is a recipe for
+> hard to read code and odd bugs (this one isn't buggy,
+> but the principle is more general and the readability thing does hold!)
 
-> On Mon, Sep 21, 2026 at 11:08:01AM +0530, Aneesh Kumar K.V (Arm) wrote:
->>  MAINTAINERS                         |   1 +
->>  drivers/firmware/smccc/Makefile     |   2 +-
->>  drivers/firmware/smccc/bus.c        | 158 ++++++++++++++++++++++++++++
->>  include/linux/arm-smccc-bus.h       |  48 +++++++++
->>  include/linux/device-id/arm_smccc.h |  19 ++++
->>  include/linux/mod_devicetable.h     |   1 +
->>  scripts/mod/devicetable-offsets.c   |   3 +
->>  scripts/mod/file2alias.c            |   8 ++
->>  8 files changed, 239 insertions(+), 1 deletion(-)
->>  create mode 100644 drivers/firmware/smccc/bus.c
->>  create mode 100644 include/linux/arm-smccc-bus.h
->>  create mode 100644 include/linux/device-id/arm_smccc.h
->> 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index c2414447892c..42364c540f50 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -24741,6 +24741,7 @@ M:	Sudeep Holla <sudeep.holla@kernel.org>
->>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
->>  S:	Maintained
->>  F:	drivers/firmware/smccc/
->> +F:	include/linux/arm-smccc-bus.h
->>  F:	include/linux/arm-smccc.h
->
-> There's also include/linux/device-id/arm_smccc.h introduced by this
-> patch but not covered by MAINTAINERS.
->
+Ack
 
-I didn't add it because I couldn't find any other device-id files
-tracked in MAINTAINERS.
+> 
+>>   	/* Continue without realm support if we can't agree on a version */
+>>   	ret = rmi_check_version();
+>> @@ -776,7 +777,18 @@ static int __init arm64_init_rmi(void)
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> -	return 0;
+>> +	/* Activate the RMM */
+>> +	sro = kmalloc_obj(*sro);
+> 
+> struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
 
--aneesh
+Thanks
+
+> 
+>> +	if (!sro)
+>> +		return -ENOMEM;
+>> +
+>> +	ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
+>> +	if (ret) {
+>> +		pr_err("RMM activate failed\n");
+>> +		ret = ret < 0 ? ret : -ENXIO;
+>    		return ret < 0 ? ...
+>> +	}
+> 
+> return 0;
+> Perhaps to make it more obvious that any non 0 return means error?
+
+We want to differentiate between the linux errnos vs RMM errors 
+(positive). I will rework this to address the RMI_BLOCKED comment
+from Sudeep.
+
+Cheers
+Suzuki
+
+
+> 
+> Doesn't really matter
+> 
+
