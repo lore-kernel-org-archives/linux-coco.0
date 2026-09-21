@@ -1,168 +1,357 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011062.outbound.protection.outlook.com [52.101.62.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6980C45D911;
-	Mon, 21 Sep 2026 09:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789981708; cv=fail; b=Nn8pKgqD8LOK1AiYtZ1D7YvDAKLgPKi4eYsDgCljANJDOoE4zM93ohBcKrphogpzrnDgmBJPqlPwHMxXbkaGbzCLH6zqHJqhOilSZgAbNdo2/Xo1o9QR5Fy+CH9Qe+bPkx1aFZiBwNucVrZuXp8DdWbJAp6e/aYKHC5EP49wRsk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789981708; c=relaxed/simple;
-	bh=v0c0RYGPQrimU/LmXUpnH8j9BUzkuYgDc0C6G4/aFtU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UkYTYUgRnEj8EHXrDjoz3u7QoPsL7e9b6VBIkS2q24KlzYUrXYLiX3Q1nSTD2VMh+ghje7ABrMlmUtaBAV8e9i4upqm4l+ibIAdHZdXSbSuZMMSrqPhOpquc1vJCtlV0K6fE4dWs4MU/iZGXGBs02J4VRdmX8hglqEIWEDbS8oU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PYlmBdYr; arc=fail smtp.client-ip=52.101.62.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697B9486431;
+	Mon, 21 Sep 2026 09:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789982879; cv=none; b=Gw8QlcKp0tF2DnL0JbnY1MlUxbqs93wE7atl8tLQwhOLTCUGXsWADla0UU21XqQdUmmlE5g4M2middO5/ON1+AEpkX9Ns7qlEDZbACcqqBVOU7yPZfIY1R6D2q5QQR0GolxF2CSdGTcN0DguZGMpgEIr7xhR7vq9mzqjtsw4t/E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789982879; c=relaxed/simple;
+	bh=ZTBtfMgrW8AVZtlxHjrB7je5cwXndDnFsVDtzCf5SAk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XTgg/QNgEeVZvtTZh6IifWAUQzGpiZMy0OJv5Gewq2Z8xoLTwCmDi9CsC1OoUBWu+N6RzY0+Cb7Axb/X9ORxwLJEwF5nKHX/zjarJ/L5BPlE6/b6p5ETrF1Gy0YWMqplLIJZB7lhbK3MUUN7POqzvsFL0ry859VTjF8TE+29VcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TkC2tykb; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PYlmBdYr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z/WOUZej68ld/Yhu0Rs5KR5kvvtPeobr6H69fGhCUlLDSitRX3W0d6fbxvmTDVS41DfyVtNFP1rXV+GE6XRaaM12RgjU9Ugaot54VR/zkjt5495dPiemm60E0O3d/6sZkkxUSaYOPGsoctZWTcJFDKgfClhQeT+fra/r5BsOnxpFDHmWqXDZAPM4qTh1YbN37+iitpVTrN+OvND9FzHv3RF8evBV+TNLYtwoK+BRzQPeAZvg6LBYWQnToLvHArfjq0E6j2PQbqp6+p4y6VbuGWifznuOMvG0tX4vtKcfRlcVT6yHZDPt1ihS4VNBpRhp79KNVERBY8oJteZ8sJteVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DHkRUTj1UyJT1ixpSUP7kpMipqYLHtWnC9xoGbPOX0M=;
- b=FfBJTDFIa1tm3V35qAUueIveezTQwGShYnY2dCtM4kJbpTm8Utg5eXCxC8FWo5no0SfqCrT5TofYIFMIGlWmSj5VqrGAYhjprRJslV+60rl7JjDidnq0vUhk1gpF5hAAtBjLGaYyy9dwl+89amulOkgvySTjOCq4W96TsNOZO2BPq6BsSM5BpB9uLy8aI1Hgulm0UpeYZi/2UVz5V+s864DgUUDqHZ2L0Hz3Lrlz22Pujw374zSGFkrGbGvSCSmbh0MKiveAlghpdNfmcdkqcgFrAOO1rzxV3c5dP0ekgW1VXbYS1CiphGikkgYQkv3/TKeIK2bfr13E3AWZZaAuPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DHkRUTj1UyJT1ixpSUP7kpMipqYLHtWnC9xoGbPOX0M=;
- b=PYlmBdYroZjMQQIJUHh6j8Fc4EdJrlhFdjt3Xa5/R9W/FH3ItC163Ut0F/NebI8NmQNqmkrJa7x+G9euy41A0+JOyaMtWuTnyTLq5rRveEy7Fkdxlm66lLwy3pz4qe02Ska9stcdSZVDvo/qcvKN0EPZznDGPdYPpGJGm8FBs+w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by LV8PR12MB9617.namprd12.prod.outlook.com (2603:10b6:408:2a0::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 09:07:24 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0428.011; Mon, 21 Sep 2026
- 09:07:24 +0000
-Message-ID: <6115eaf7-21bc-49ce-8a74-08fd37a1e2c9@amd.com>
-Date: Mon, 21 Sep 2026 11:07:17 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 7/9] dma-buf: system_heap: Enforce shared-granule
- alignment for cc-shared buffers
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Thomas Gleixner
- <tglx@kernel.org>, Will Deacon <will@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, "T.J. Mercier" <tjmercier@google.com>
-References: <aq1V3oeDdvXobt8J@arm.com>
- <97c30fce-9bda-4c61-b1b9-10297b89c8d9@amd.com>
- <20260918153642.GD11599@ziepe.ca>
- <d8123f21-d5ce-415b-a05a-392d97b8b57d@amd.com>
- <20260918165315.GF11599@ziepe.ca>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260918165315.GF11599@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0125.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b9::13) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TkC2tykb"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98B4F1476;
+	Mon, 21 Sep 2026 02:27:47 -0700 (PDT)
+Received: from [10.0.128.141] (unknown [10.0.128.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D74603F86F;
+	Mon, 21 Sep 2026 02:27:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789982871; bh=ZTBtfMgrW8AVZtlxHjrB7je5cwXndDnFsVDtzCf5SAk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TkC2tykbS6fuXOOVNsxlJt/ZCdRJVqaSv+ZbV/fy/dp/i/FCK5r7pviztK8PJrsmN
+	 K5OUDt8Ib1Lkz4NnQEx7A4QnQ+0SH/pH/XRwppfJvtueM/pGYpy8q3aUtfoiwsuBNO
+	 kc2IYVS2cwBgcv0sa8gPseAz1rwmBbj4wCSB5zwk=
+Message-ID: <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
+Date: Mon, 21 Sep 2026 10:27:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|LV8PR12MB9617:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f42460d-e4a3-4837-1cae-08df17bfc000
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|6133799003|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	lmq8042duFMjXRoXdDVXX45UDgd28DwjK4pJs63V0YywfPb8dQEPc0KDIOnMAxi0t4FnYiB8VrezTKuoi1UQk0a2NRn+KTA8M+goui+YckBr5FAAKaBDERqat7/k76fvyHJyjhjMFag/DbgZU3Uj6oI+t7hXjhfPYFkFda+tRRvJkxLNdRPFAM25tFndJsEMZxSI5fyHka7SI+WnCso7R0FMfsDlL8VgAVGMOr4rHLk8/88Sw3sb3YZLCyasLWBv2UdSFXSZbYBUnQWaY+u0QXa10njz9UoQxIfwK74IG3Q3lCcEC6vmi63Tqfv/SZ1yZWVLNr1uc40yGHgS/hx3EuDLaoCvC05H+L62tu48/ghlbVi0Vd69kqLSmBr5qcNfV2TolFDUA1aPrGgIhnpxTUCTvfEYwp/PpPfh3FH9+Qxk+5vs0wuSzaf9wP6SpQkFpJX/rv/54H05dphDJ5jWmGVbyP1/UGhAjDIt7RT0hpIwSkbJ9K4pY2jHcO0PvEFUkEckrTdF6Y0xzTS3wKxpKJflvm4BwBpDdk9QLe5d0gwwzzrgrIEtYej1edAwcqRrejLg66dcTB01cqUeVRvMWtUcCC0xRkbFRS9/H5HNphkkcdgL8HWagoWzImjWYy2pRxVz18sFbM5G/WZ8TQnk17FpssHbJnqcRp+sfNsXB4A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(6133799003)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NWl5aUtPQVNuRjM3c21BTFpHd2orMEVLUDBUUTh3TG1qZ250NFdxQzJjcU1K?=
- =?utf-8?B?SmRPWmx0VmhJOGIvZDhQN1Q4SGk1Q3pEbklrK216V1gyMVBjZmxTTU9nRENR?=
- =?utf-8?B?aDliSFhxYmprL1l5Z1FRY2NCN1pVV05mcjFlQUZCRUVObnljN05RbFJ1bDdU?=
- =?utf-8?B?N01pNXk1a3hZOVdpWWk3TDdLZGFud1pRWmhPYjZEY2R0OUZpYXBDc3pBQjRS?=
- =?utf-8?B?dmppMVZ5RE9ZQTROK3pPVlVCeHJVQXhVclllWXBtWFNleVRIMHUxbWpGbE9t?=
- =?utf-8?B?TFFOOUJRY1l6bGc2QStlUDVzQzNuRmpRRUd6a1I2bG9LQmNuanEzNG5NZkNJ?=
- =?utf-8?B?SmZYdjJYUlpreG1icWxUWkx1MVRjNVZ5ZWlER1JSSGtZOFFBR1VCMkVlenRo?=
- =?utf-8?B?THJoQ0hhYUY0aGRDeVc4MG9xalR6OVdpUXdBeUxIandMUFBrdzk4SFJOS2x1?=
- =?utf-8?B?LzlLVitjK1grKzZMZkVoOFkrNmJSWWxJZjMrMmQ3TTZTb0g1OFF6OXZ6SGJO?=
- =?utf-8?B?LzBpVWI2cStnM0FqUE9iNXNhQS9LSWljUWx5SkthcVBVa01jUjhPMlBWTXZj?=
- =?utf-8?B?SGt5blV1VjU1NXgxK2dzenRIN1dCSjlxQVJXR1FVN016QURzWUFPU2EyUlRM?=
- =?utf-8?B?T2haSjcvZURrT3RTUjUyL0ovOTJlWlllUWhDeTVKT3hnK3F3ZkFuT2ZoVnhY?=
- =?utf-8?B?TCtUVG9VaHFSS3lJdWd5aFp2N0JPYnRnbFlzS2FscTk5Q3NhZ3d5TW1sdlNs?=
- =?utf-8?B?SEwzZS80azk0YjZ6bXdNankwN2o2SFB4RWJwOUVjZlE3VG1hMnFDNkpFdkFY?=
- =?utf-8?B?ZVJpdjk4aFFrQ0lxUkorWGVmbElhaUNPVzJBdUJCbDVFbWNlbUxqMXJUWU43?=
- =?utf-8?B?NEordHl0K1ZSYmFiaXNocUYrR1RCdFc1QldrL2JlSjRIOXhSdFd0UXBCdlRY?=
- =?utf-8?B?eDd1dVVVN3lGR3ZMNXBwcm45MlRKZ3lZajJjTnRPMk41WW90Nm1SS0dYZ2Zu?=
- =?utf-8?B?Q1c0bUhNWGY5YWEwUDdTSFgyN1BxTk9IQkUyckdwbUhhYVlCb3lIM2hWalBJ?=
- =?utf-8?B?L2ZtMGM0cVRKT3UvRitMRGlxTklQTHYvWEJCZ2k4cEN0b0RKWEl1TEhiM0FE?=
- =?utf-8?B?blFURWdPY2F1VFVmcWFqdnpaVHRkbXBpQk8ya1JJaG5lQWsvNTd3d1JQdjhG?=
- =?utf-8?B?ekdzb05CZHNMbU5vaENkSzRvRGpldjE1Z3NYS0R5KzU4UVFHZ0tVaGZoT0ox?=
- =?utf-8?B?enhxNVJ0ellrTWZRbEQ2alBiZW54clZDL3NvalJWNkNZbis0VGZqQXhwaVdV?=
- =?utf-8?B?R0t1K1RsZlY1TVFRRGJWUjR5Y0QyeTBXWi9CblFNOWFhR3R2VHFnaU5FaXV3?=
- =?utf-8?B?cC82ZWpZSk43d2N3U1BTZWdvNkZFREdKWkl3Uis3L01acTdWd0YxeXZnOW5H?=
- =?utf-8?B?b3NwT0VsSEpGWmk2QjEyMjEwVXdXWXN2K2JXVk96OXp1QTNSOHZVcy9OejNI?=
- =?utf-8?B?amQ0U0dUMHk3ZGtIQjJjNjJKaHd4cnJPQ09hV3gyd3k1YnYvOHlpZEFBY2hS?=
- =?utf-8?B?ajh6VFBsVFgvZkYwMGZQUVQzbFNjZys2NjdVSVhMSEUwb3FnR0JXN1RiMVhl?=
- =?utf-8?B?KzNkUUJsd2N2YWdUaWNNb2x0cllzRmNoSENIcHdydFY4L0FualNBNmpCRjcr?=
- =?utf-8?B?VDRzbUhpYnp6cml0UlVTK2dDK1VySG82dGFNdUtzdkpkS2l4S0laUU12Vzdt?=
- =?utf-8?B?TGxWV2lNZmZhckVDMTJRZ1lXbFN6N3ZyNU1YSURxaGY2UG0za3dqZm9ta1Mr?=
- =?utf-8?B?RTN3dlNyM2lJSmRnUWYwVDRTMWVlY3FXVVpxK3B0YjZycytyenJzOTdXRm81?=
- =?utf-8?B?V0VNN0pjNEkwbi9lNmxDUTczYzlZbEdIRCt1WlpRS2Q4SzlSZlZQdGJualFt?=
- =?utf-8?B?bmM5ZnI2TEQ1WUs2ZG1IWkk2QjVsMkVzbkg3VWgvdG5LbnRFalBBM0JVSi80?=
- =?utf-8?B?VUJIMkVNNFdLUjVtVjhBdmF4R3IyNlRibXFGOWhJTzRoYjRDVHBxS1krVVhy?=
- =?utf-8?B?TmY0ODRLWFUrbm1Zdkp4Y0pRdjZ3QUN2cnN6bXNHVk1BUGFJUlZ1eDhOSlZ2?=
- =?utf-8?B?MXBVZEZpK2RwNXh6b01xZUJNRm9YMk8yeWZPUEJkRUxBRXVoVTJ6bG9ZMXpq?=
- =?utf-8?B?ZC9OWERzU3diZEVWWE04V3ZWSE1ocU9XTGVWb21WSlo3K2I3RWdZVFErblZi?=
- =?utf-8?B?NTR6MFY5TktmL0JjWTR0TTNsZ0E5SWhOWU04YjlMOEp0d1gwOUV0RlRSdzNP?=
- =?utf-8?Q?7KCLL2e1VULLPA4T83?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f42460d-e4a3-4837-1cae-08df17bfc000
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 09:07:23.9770
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TXIFVS5d0eAHCiOUlbyKNZ/c2J+oflcT5dmMc+frmu0YLwuqaOrMIqRchHi+OHxz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9617
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
+ calling the RMM
+Content-Language: en-GB
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-2-suzuki.poulose@arm.com>
+ <178978126540.2352296.16845657485139032765.b4-review@b4>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <178978126540.2352296.16845657485139032765.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 9/18/26 18:53, Jason Gunthorpe wrote:
-> On Fri, Sep 18, 2026 at 05:39:55PM +0200, Christian König wrote:
-> 
->>> Arch code can figure out how to do it. If some ARM configs only give
->>> order 4 folios or whatever then dmabuf heap doesn't care.
+On 19/09/2026 02:27, Jonathan Cameron wrote:
+>> The RMM (Realm Management Monitor) provides functionality that can be
+>> accessed by SMC calls from the host.
 >>
->> The fundamental problem is that DMA allocations are highly
->> architecture and device specific while Linux memory allocation APIs
->> are generic.
+>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
+>>
+>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> This isn't a dma allocation, this is a memory allocation.
-
-No, I mean this is a DMA-buf heaps allocation. It is a DMA allocation, we just don't know for which device.
-
-So ideally we should use resources which work for most devices in the system. If a device has special allocation requirements (CMA, restricted addressing etc...) we need a specialized DMA-buf heaps for it.
-
-That userspace provides this cc_shared flag is a NO-GO to begin with.
-
-Regards,
-Christian.
-> We made things so the CC shared folios are DMA mappable through the
-> DMA API. From the heap perspective the only difference is passing an
-> additional DMA_ATTR_CC_SHARED when DMA mapping the folio.
+> With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
+> comments inline.  Mostly on subtle inconsistencies that really don't
+> matter that much.
 > 
-> Jason
+>>   include/linux/arm-smccc-rmi.h | 497 ++++++++++++++++++++++++++++++++++
+>>   1 file changed, 497 insertions(+)
+>>   create mode 100644 include/linux/arm-smccc-rmi.h
+>>
+>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
+>> new file mode 100644
+>> index 000000000000..214d6228dfc2
+>> --- /dev/null
+>> +++ b/include/linux/arm-smccc-rmi.h
+>> @@ -0,0 +1,497 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * Copyright (C) 2023-2026 ARM Ltd.
+>> + *
+>> + * The values and structures in this file are from the Realm Management Monitor
+>> + * specification (DEN0137) version 2.0-bet3:
+>> + * https://developer.arm.com/documentation/den0137/2-0bet3/
+>> + */
+>> +
+>> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
+>> +#define __LINUX_ARM_SMCCC_RMI_H_
+>> +
+>> +#include <linux/arm-smccc.h>
+>> +#include <linux/bitfield.h>
+>> +#include <linux/bits.h>
+>> +#include <linux/build_bug.h>
+>> +#include <linux/sizes.h>
+>> +
+>> +#include <asm/page.h>
+>> +
+>> +#define SMC_RMI_CALL(func)				\
+>> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
+>> +			   ARM_SMCCC_SMC_64,		\
+>> +			   ARM_SMCCC_OWNER_STANDARD,	\
+>> +			   (func))
+> 
+> Obviously it is v18 so probably a future thing but nothing about this
+> is RMI specific.  Could be used for ARM_SMCCC_TRNG_RND64 for instance.
+> I'm not entirely sure what we'd call such a macro
+> 
+> ARM_SMCCC_CALL_VAL64_STD() maybe?
+
+ARM_SMCCC_STD_CALL64_VAL() ?
+
+But, I would leave it as a wider cleanup in the tree as a separate
+series.
+
+> 
+> I'm not just not keen on macros whose names to me hint at something
+> special. FWIW this also matches SMC_RSI_FID() and FFA_SMC64().
+> Isn't it nice when we have a predictable naming scheme :)
+> 
+> FID (for Function IDentifier) is in the spec, so maybe?
+> 
+> Anyhow, I don't really care that much.
+> 
+>> +
+>> +#define SMC_RMI_VERSION				SMC_RMI_CALL(0x0150)
+>> +
+> 
+> 
+>> +#define RMI_ABI_MAJOR_VERSION	2
+>> +#define RMI_ABI_MINOR_VERSION	0
+>> +
+>> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
+> 
+> I'd mask it.  Mostly because that would shout that it is only 15 bits.
+> 
+
+Ack
+
+>> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+>> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+> 
+> I'd go all in on FIELD_PREP() / FIELD_GET() + GENMASK just for the
+> sake of consistency + not having to be careful that everything is
+> checked for fit to keep the LLM bots happy.
+> 
+>> +
+>> +#define RMI_RETURN_STATUS_MASK		GENMASK(7, 0)
+>> +#define RMI_RETURN_INDEX_MASK		GENMASK(15, 8)
+>> +#define RMI_RETURN_MEMREQ_MASK		GENMASK(9, 8)
+>> +#define RMI_RETURN_CAN_CANCEL_MASK	BIT(10)
+>> +
+>> +#define RMI_RETURN_STATUS(ret)		FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
+>> +#define RMI_RETURN_INDEX(ret)		FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
+> 
+> What's this one?  I can't find anything in the spec that matches it
+> and as far as I can tell you don't use it in this series.
+
+This is coming from RmiResultDataLevel. See RmiResult type.
+This was renamed after we introduce the RmiResultDataIncomplete.
+It is used in the KVM code to find the "level" where a command
+failed/walked.
+
+I could rename it to RMI_RESULT_DATA_LEVEL() ?
+Similarly RMI_RESULT_STATUS instead of RMI_RETURN_*
+
+> 
+>> +#define RMI_RETURN_MEMREQ(ret)		FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
+>> +#define RMI_RETURN_CAN_CANCEL(ret)	FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
+
+> These are obscure enough to find in the spec I'd give a comment just
+> to save the sanity of anyone looking for them.
+
+As above, they are really RMI_RESULT_DATA_INCOMPLETE_*
+
+> 
+>> +/*
+>> + * Note many of these fields are smaller than u64 but all fields have u64
+>> + * alignment, so use u64 to ensure correct alignment.
+> 
+> Obviously this is only going to run on arm64 so it's not critical, but
+> more generally u64s aren't always 64 bit aligned.  So if you 'really'
+> care aligned_u64 is there to ensure it.  Meh, arm64 so fine.
+
+Agreed, I am worried about the churn in the consumer code. Also, like
+you said, this is only for ARM64. So, I would pass it.
+
+> 
+>> + */
+>> +struct rmm_config {
+>> +	union { /* 0x0 */
+>> +		struct {
+>> +			u64 tracking_region_size;
+>> +			u64 rmi_granule_size;
+>> +		};
+>> +		u8 sizer[SZ_4K];
+>> +	};
+>> +};
+>> +
+>> +static_assert(sizeof(struct rmm_config) == SZ_4K);
+>> +
+>> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
+>> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
+>> +#define RMI_REALM_PARAM_FLAG_DA			BIT(3)
+>> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY		GENMASK(6, 5)
+>> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY		GENMASK(8, 7)
+> 
+> Tiny bit inconsistent. When do you decide _MASK is needed and when
+> not?  Seems a little too random for multibit fields.
+
+I will try to clean this up.
+
+>> +
+>> +struct rec_params {
+>> +	union { /* 0x0 */
+>> +		u64 flags;
+>> +		u8 padding0[0x100];
+>> +	};
+>> +	union { /* 0x100 */
+>> +		u64 mpidr;
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 pc;
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		u64 gprs[REC_CREATE_NR_GPRS];
+>> +		u8 padding3[0xd00];
+>> +	};
+>> +};
+>> +
+>> +static_assert(sizeof(struct rec_params) == SZ_4K);
+> Whilst the assert works and is need to prevent oversized the
+> dos never seem to provide any indication of the final trailing
+> padding other than indirectly and I don't like maths on Fridays ;).
+
+Agree it is a bit obscure, but ...
+
+> Maybe union the inner union set with a u8 [SZ_4K]?
+> 
+
+That doesn't help if the other one runs past SZ_4K ?
+
+>> +
+>> +struct rec_exit {
+>> +	union { /* 0x000 */
+>> +		u8 exit_reason;
+>> +		u8 padding0[0x100];
+>> +	};
+>> +	union { /* 0x100 */
+>> +		struct {
+>> +			u64 esr;
+>> +			u64 far;
+>> +			u64 hpfar;
+>> +			u64 rtt_tree;
+>> +		};
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 gprs[REC_RUN_GPRS];
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		u8 padding3[0x100];
+> 
+> Why does this one exist rather than padding above
+> by 0x200?  Other structures don't seem to keep
+> to a specific stride so I'm not sure what this gives
+> you here.
+
+
+That looks like a field was removed over the RMM spec iterations.
+I will fold this into the padding above.
+
+> 
+>> +	};
+>> +	union { /* 0x400 */
+>> +		struct {
+>> +			u64 cntp_ctl;
+>> +			u64 cntp_cval;
+>> +			u64 cntv_ctl;
+>> +			u64 cntv_cval;
+>> +		};
+>> +		u8 padding4[0x100];
+>> +	};
+>> +	union { /* 0x500 */
+>> +		struct {
+>> +			u64 ripas_base;
+>> +			u64 ripas_top;
+>> +			u8 ripas_value;
+>> +			u8 padding5[0xf];
+> 
+> In various other places you just use a u64 for a u8
+> + padding. Why is this one special? And for that matter
+> various other fields later in this particular structure?
+
+Please feel free to point out, if you spot any. I am happy
+to fix them.
+
+> 
+>> +			u64 s2ap_base;
+>> +			u64 s2ap_top;
+>> +			u64 vdev_id_1;
+>> +			u64 vdev_id_2;
+>> +			u64 dev_mem_base;
+>> +			u64 dev_mem_top;
+>> +			u64 dev_mem_pa;
+>> +		};
+>> +		u8 padding6[0x100];
+>> +	};
+>> +	union { /* 0x600 */
+>> +		struct {
+>> +			u16 imm;
+>> +			u8 padding7[0x6];
+>> +			u64 plane;
+>> +		};
+>> +		u8 padding8[0x100];
+>> +	};
+>> +	union { /* 0x700 */
+>> +		struct {
+>> +			u8 pmu_ovf_status;
+>> +			u8 padding9[0xf];
+>> +			u64 vsmmu;
+>> +		};
+>> +		u8 padding10[0x100];
+>> +	};
+>> +};
+>> +
+>> +static_assert(sizeof(struct rec_exit) == SZ_2K);
+> 
+>> +
+>> +/* RMI_RTT_UNPROT_MAP_FLAGS definitions */
+> 
+> How this counts as a 'flags' field is slightly beyond me, but
+> indeed matches the spec naming even though it's a grab bag
+> of small fields...
+> 
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_OADDR_TYPE	GENMASK(1, 0)
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_LIST_COUNT	GENMASK(15, 2)
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_MEMATTR	GENMASK(18, 16)
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_S2AP		GENMASK(22, 19)
+> 
+> Nothing signficant enough in here to absolutely require changes so
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+
+Thanks
+
+Suzuki
+
+
+> 
 
