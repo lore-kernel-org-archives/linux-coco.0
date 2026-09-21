@@ -1,85 +1,85 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB6D51476A
-	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 21:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9619A47F2C3
+	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 21:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790026152; cv=none; b=lKDKhmnwNAGbvHBVv6APGo98wOjuv5u/WGlj0nMOI1JZOs5ynHmPArKoF45FCN6SxQI8vWWxTu7ATCUwn7yUJiaCWmpQrLM9B/5eZ69TvHh+Th8/HGId0N7p5C5R9e89sPZR84eFlyIMmNQe8qDCYBp/eCc0BMH/XzSMxJ0tGJE=
+	t=1790026449; cv=none; b=OC0A8bRd/OlR5myaLxKuGQmpzKXp7SuHt3JyxC4eKNXNMK2NANG7JNHm07mxZBrWIhN6CEw2/Nw4SjKa6tuMUPXBALheWSO2lwBrLsuxdaNBPJaa1NIrSSG0P/4tTDgztwqudjx9aBGIrLJbpelV5M7jusXpOjb+TVNmi2s0O1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790026152; c=relaxed/simple;
-	bh=gLY6HUm8Fgpr8Ezq0Rtau7ndFBb0bwJOlxu/UESTFNM=;
+	s=arc-20240116; t=1790026449; c=relaxed/simple;
+	bh=R1peGfGCRuDkyOnmHdifYGmM605I2Y0NPAuHhiZzP+w=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QAl8ONtVZCgdi0wQ9/VyKitOsUkS3GoS4GaQh1aS6wQkxxbFT9JV8P85stQQQiofxCvvhdyV8snEwH7c2earqgXQkgXHOeeMgEsLeY9T2g2e0PIFiPV3QVfvW/i9BOd5ke7YtaTOcut6vb7qcY5grmtzzDC7Dut6BoMrWjBvggg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GTU4lB+B; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NxEhr1Hd; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=pJbXP1QyKakQMRe5ZPTc0sMRFGO7c/RLid1hQXVbSVmWj9CxeWxj2VHECHK/Y1N+t7/HUfjAxsLV3LC3TXTP0K0J6nSKljl1T6cOIPKYK1HBxIsnwXxHLqXD6O3W/BQumXoENA9aqKwvyFqRO6LXTeQBn/S2qeNIis9SQbqyfX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bIzBAr5/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fiCT7Bea; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GTU4lB+B";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NxEhr1Hd"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LKexnj2892058
-	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 21:29:08 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bIzBAr5/";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fiCT7Bea"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LKfiaU1751690
+	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 21:34:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	SfLBfPT4P8YTcQ8clLoZdz2Hz7ChZoOgs/WWhX6OuK8=; b=GTU4lB+BBWko+ahD
-	WLILQlwA00dwI4xT3PrluEnAwoU5OMSwBVsgqduNQS8GI01xMCib9CJP2bobH+Oj
-	mP84brkPaguPWG49c+1pPUh3ZQSCIdoutRYl+F8niVxgRgADPGHPmt5VNZQr/hEy
-	igi/fx/Z/D8GV4qjysVMVj51djoxhHz59ku1okilekdfELtwWt7HLZ22TilBTAql
-	xgMq9PlxwPCDJUHXuR1xPe94ZSlF1M0lHk73H2s1PneEI/YH8rgvc11LQ4fr4rN5
-	DdOMqE1F5tes5sfkYOtHrV18t0XHWZjP43oExADCb8gkTHqzjQi1rZ5oNLUIWaF7
-	bgm4SA==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gtysw3euq-1
+	z80fGZcv6BPIL4REfzCrI6RcJShWmT49WjhJXMKxxOU=; b=bIzBAr5/YZDrBmax
+	l1lrKwqt/AXF2k3S8USImZugoEgOGjaM7BeHLt/wgHvoz7eSgHPGcmF/GnQ7hKWw
+	AVXxXIpaoMMm7xQex8VmfUTelZ8DLkpTOYg07K1uuNJziWJ5/B850e9jvzpkX9M2
+	pwTdNHrRtkT9vJ2oGhKQdHlAxZe9b1cEb1kjnGj1JfQ5Yum1e018V7QG3SzMurdZ
+	qYBpZL7EjftEzedXWYubyG0HHB/uHSMgmSZraBPpTFk28q2fzcvYi1lEM+EtWJJu
+	jyBC0lCVWmE6/ZqI2+sGqlJRoDpTc9G/FJJoJO3kliDc8dcpTXxBoBtNX0fRuwuM
+	x0giwg==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gu8xerwku-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 21:29:08 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d02df2bf09so33514265ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 14:29:08 -0700 (PDT)
+	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 21:34:06 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e7ff7b375so3973484a91.1
+        for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 14:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790026147; x=1790630947; darn=lists.linux.dev;
+        d=oss.qualcomm.com; s=google; t=1790026446; x=1790631246; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:mime-version:organization
          :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=SfLBfPT4P8YTcQ8clLoZdz2Hz7ChZoOgs/WWhX6OuK8=;
-        b=NxEhr1Hdzk8LrI8mHC3OUfUPsBJ2fBxY6XDu6kg3PHoiONqu2uCqXKdllE5SLPXujL
-         KG/+NO3NiLmBb3SWovLKw3VLRkE4ksLx0G3F6j03lUZbKTIFkNRAvC0LvCuI+5p7SZWs
-         D9RJNczScMddYTM+SvqYk/aUSMmTALts9EcwemnBcOhmOcaxXfnpjpymxNtYJDIvQV8Z
-         EY5OC21BPoSRbxC0/lGCQEsPtCq9d/OTdcuWAP/lLhb4PZKW4VlnmytP0TnOSAxbluoH
-         q+bxZmGxN4SXXY6B+TD0KMLkAKGR7f3IVbtCdKuM40Aa4yY9lj0ZceQJuT3qpGgSkTna
-         w+8w==
+        bh=z80fGZcv6BPIL4REfzCrI6RcJShWmT49WjhJXMKxxOU=;
+        b=fiCT7BeaDTQrlRZh4DZqvgJoqytmWqiCtUbXpJUWhucUMxnXFK2alUmw1waLYrsg9m
+         KexHtXuqwUcJLuOId6UB21NkAfEuHjZNpcNvnfCyHqMbk0RzfkM7z4DI5/+mRy98UENs
+         p+XLzvoCOgAT0OkN1rv8jyYc/NffHcOlwQeA6B8fQMHWhxo7FZcY8CIwGmJ+JITUropa
+         ZZz3+KzJAlhuXpX2Q1u9/jjyTdIRZyOGEfMjpVYPKtOWneKoPTHIS+mBkzqE95s53GwX
+         CxVix3Z/UdYK5o0GdQx4yHjXWia89VlVvt7DV8i1hqhZ6dDbpotSThGJnRPzw5QJd3zm
+         +xOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790026147; x=1790630947;
+        d=1e100.net; s=20260707; t=1790026446; x=1790631246;
         h=content-transfer-encoding:content-type:mime-version:organization
          :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SfLBfPT4P8YTcQ8clLoZdz2Hz7ChZoOgs/WWhX6OuK8=;
-        b=RxQrhXjzStn7lDXWg+5Lt6EiALeAUqNKK1hwaqoU4MSLGjUSUs/3uE4hWSwiLSUllL
-         8wed2uauHdN8GreIBvOV16KOnLe/LmAF6qSRoZ9UldqGkisogsXwxvWe1skfXATO+aES
-         zmXIK/TVC3iEHtlzU6yoB6mbT7o/pCMSW9fJKsGPq3GMWqNdBS6tamwPT962T1Hg/5/r
-         tgCgjsHzKMOvJTHgd6wi1uqSVGnnLR7T+BOy8R5/EzUfm2gZOvNoS4eBDXJfyiO4hm83
-         rzV9nJYHwcnrL8aHx8cTQiYH6KmXDhvfBKLieLzK3TaBvQIXRPBZBOanB1Hhn/1c8w+g
-         otkw==
-X-Forwarded-Encrypted: i=1; AKwUvBzTTmJIvcMgMTc21J2ZBC44sMjoxOaKXT3rT5MnzbBJLgwzjvxwUfNkYjI2VIORN0bGK7K8s0g0PAB4@lists.linux.dev
-X-Gm-Message-State: AFuF++nmLuZk4p4Jk3spywNNZjPiqRJY9CZAauKd0VwxV00vKnao6L9l
-	A1mAo5D60vyvyKirSRpnc01TLQEKcq3Huv2QXiM20SrsFOFKU/FSzb+upV9wS3kumxQG06tkj7n
-	zVFxXg6+9u6pz+GkOEEjciZbcyoR/OZ9i9zNNjcOrWPILOQX2TKr+oCx7/JTxJeoR
-X-Gm-Gg: AYBFou2bzWcRhb8luYnRfNtdhyTyO8KiresTkqxAUkXU29Q+ERWx+1yh3kYE/DIsglG
-	Aqm1N5jG5pqSSPpv5jLrGWKw0pQ3GQiY+hAZqhstGMkNOawIlRuO+xvjovJ4PxDmvgajq2Q2anj
-	Cd4VtS2r4alfp/2QuiRQW9/tgaBj/eZfSSwotPcuRfG3WIvdPodppZRe5AyV7GCQAAb6fTBROLi
-	joPWLwk0hOUBpEBY4xe0pP8EgzJYF9i0X9ZnxHXpGceXo7Mtyb5YlXDKx0YGbN2Ox5l/cvl2SM0
-	W9G/i7laHIQ1M5RmdnvFc2+fu8h4Vla7v2yOzxVHoLdxPxaLl55MB3lSvuN9BAxyIZ231aWsNFg
-	pr4JrEx4tBtxnkDUZQbNRuFgOiw==
-X-Received: by 2002:a17:902:e745:b0:2dd:ad73:c98d with SMTP id d9443c01a7336-2ddb1bdefcdmr158852195ad.37.1790026147206;
-        Mon, 21 Sep 2026 14:29:07 -0700 (PDT)
-X-Received: by 2002:a17:902:e745:b0:2dd:ad73:c98d with SMTP id d9443c01a7336-2ddb1bdefcdmr158851845ad.37.1790026146755;
-        Mon, 21 Sep 2026 14:29:06 -0700 (PDT)
+        bh=z80fGZcv6BPIL4REfzCrI6RcJShWmT49WjhJXMKxxOU=;
+        b=0hLJiKooIltgWua0uv3ersetCwwWNWd2gISKHrXK7FNzUapK4gsscazcBfg3LYL6Lf
+         S6bSZCuB4Ysx8WdnYGcWKjOYi7vU3L1y3UXkP5N3UKXZnxFySqVlPxRtHyoZpfGlUbdp
+         s0BPU9IiAZ60jQjE3FneENG0xNxeDAatucUyz151FOWKvs5PSocy1MB5QiUXQnNXdrrL
+         HBX5WTSiQmUQCiKzzfrVNldcA+/EpGmYYUrSHttS2k1kuTDbrGX+eVy68FDos6Y+SvTb
+         2wCyYSWCrB5U3e8HOevra8ILQImPJyYj8/MUw2TFBzLUEQVpwFq3sX2ay6sn1rrXeSJr
+         aZ9g==
+X-Forwarded-Encrypted: i=1; AKwUvByourkqnqcOB5b8PCSdlGt5KLqU5Wz1km8EzToHjTh352WvmL3As7PF6awGqElEmSb3K5fh9Jheqw46@lists.linux.dev
+X-Gm-Message-State: AFuF++nyp29DiiBBt0FzQcP6vcGDeZ7uuYDhwoWi4jJ1AD152qcNPHGb
+	HrhYL43+8Xpufjhr4EU/9Fuud7Hu5+SttmPW/MJ4S7ZxjDgj3vrCPEPRogWSw+pY4kChJrqKBPT
+	eCqfO5WJ4/wCS5cXaw4YTm0YDZxPC/izKF3+vERAM7i0M3Lxrza3DPf7em9NnVOjv
+X-Gm-Gg: AYBFou3cvcLUs9w6kG3OxrE9qaehQkTuqFQ9yJBAmMlpkCDggpmBCPSvc5x9FNkagvK
+	BxVWvGsuSsT4aYjBpXccUfx8ex1MwKT3Uxvo6TuZX6D04l5s3E9VoJVjURGK/SOUS6IQTWyznp+
+	XZabfDb07UkzELWsT1V8+fV8ajhgkee5e8EOc6ss+4Bb/D+Mv0Kmc6vv8toUFRiI83R8SG/nXfL
+	7vK179VrZAijXZX2YsgjzUenHGW4GsefdjEm1OKGIdbsDlCwUP+Yp0sJnadjXVn7Tc1cN6f55bv
+	FM54IEhHShnauy9oCYUWmMgdjFQcqGyj3Tu2zG5z36Urq+t69gdgbi0OOwoxlRFwlPfH8i707LD
+	VBHvxRCnDgHTlYvoLD9dNFMY2wg==
+X-Received: by 2002:a17:90b:5187:b0:39e:6c6a:2095 with SMTP id 98e67ed59e1d1-39e6c6a22ecmr10542580a91.54.1790026445926;
+        Mon, 21 Sep 2026 14:34:05 -0700 (PDT)
+X-Received: by 2002:a17:90b:5187:b0:39e:6c6a:2095 with SMTP id 98e67ed59e1d1-39e6c6a22ecmr10542536a91.54.1790026445395;
+        Mon, 21 Sep 2026 14:34:05 -0700 (PDT)
 Received: from localhost ([50.35.44.179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e5eabe1b9sm780432eec.2.2026.09.21.14.29.05
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a02625615dsm5648638a91.2.2026.09.21.14.34.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 14:29:06 -0700 (PDT)
-Date: Mon, 21 Sep 2026 14:29:03 -0700
+        Mon, 21 Sep 2026 14:34:04 -0700 (PDT)
+Date: Mon, 21 Sep 2026 14:33:52 -0700
 From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 To: Suzuki K Poulose <suzuki.poulose@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
@@ -92,13 +92,12 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
         WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
 Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
  calling the RMM
-Message-ID: <20260921142903.000071d7@oss.qualcomm.com>
-In-Reply-To: <eb4a30a0-abd2-4334-b5f3-62621ec5a19e@arm.com>
+Message-ID: <20260921143352.0000014a@oss.qualcomm.com>
+In-Reply-To: <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
 References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
 	<20260912083611.2513845-2-suzuki.poulose@arm.com>
 	<178978126540.2352296.16845657485139032765.b4-review@b4>
 	<d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
-	<eb4a30a0-abd2-4334-b5f3-62621ec5a19e@arm.com>
 Organization: Qualcomm
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 Precedence: bulk
@@ -107,122 +106,191 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDMxNCBTYWx0ZWRfX/KLCYdYr2Ly6
- +quXN3q/BIQEu13hdI2Q6LzhdqnwlQBEOMmGBHROlM6DSwi/oCY7H8yUFU/7axjAXwJdX7AdAJR
- Osoo/ksnagOY88UB8O5bhTeoShdPzXYWw6NngF7c7bvMsS07vqbdU73w6fSD+d5/4wMdEodcooL
- 9SMZ7dInPbOhKjav1spCsANmGl7Sz1cYcsIFjRKc5WrIVhrQoYM7CeIDFNiqza7MG0+PDDOHPOt
- NhnIX5+67T9hgg0iJuxmaXWUInn6Vbq/5NJk0Gk3/LL1Tq267gGr/XNzsZ+DYWk5/V4Xi4Cq8Yl
- m2NsEFLudAZGg8VfckmX4i8G86znubkjNZMb9MMJhtrp0Fk39RB95oBTclGHCs0fJMQ3I5hd7je
- adOcVpOIbA++RIoq3mnxaQ8aLKRO0MlObd3x7Hn7EDkqlYGKLBYrvMBFJeYDhrUsGazO1ugeH4D
- LUEkEK0FgZebKZGZLtw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDMxNCBTYWx0ZWRfX/e+C2nbMSkhl
- 6nZt19P1ThAttCRK28gFGmce8+ZF3nHPOYBEkp+OKX6CumJLvBu+oDGCw5NziLFq4gqWw54U6Y2
- gZEEz+fPO2vbbnCzabzNNV+h2GAgucM=
-X-Proofpoint-ORIG-GUID: ZLQSyA06o1v1TjoCjT0QTEpe7BR9QfHT
-X-Proofpoint-GUID: ZLQSyA06o1v1TjoCjT0QTEpe7BR9QfHT
-X-Authority-Analysis: v=2.4 cv=W7etxhWk c=1 sm=1 tr=0 ts=6ab1a1a4 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=aNnz9XPx1a4JIXSYt2cE/A==:17
- a=8nJEP1OIZ-IA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=7CQSdrXTAAAA:8 a=ZpRu-6ZVBUCh-PS3OmgA:9 a=wPNLvfGTeEIA:10
- a=GvdueXVYPmCkWapjIL-Q:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: un-VHgPoTM4c9E_MClnkuA7F01c3M39d
+X-Authority-Analysis: v=2.4 cv=PZhqFShd c=1 sm=1 tr=0 ts=6ab1a2ce cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=aNnz9XPx1a4JIXSYt2cE/A==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=7CQSdrXTAAAA:8 a=PlCZfVOHbWhc7nwO5CYA:9 a=CjuIK1q_8ugA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-GUID: un-VHgPoTM4c9E_MClnkuA7F01c3M39d
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDMxNSBTYWx0ZWRfX7wCkx20ERpWb
+ jZo9XMbL8puMjAHyqws+l0stN5Rbr7vFciNtrO/yqtL0u35ur+rTxBym7OI80p66vz26ykU+zET
+ upkksYituZSZh6D5fEsNt062TafX+a6QqJiEuhyLzLhB5SQU9R9Y535kqkDcsAzGuj5G+vsPEIM
+ xkzUJWtgggeVUU8v5nLYVe+EVkMoBIh5sSIsAzTvoq0HIIXjgxxhl6LdlMLvGOeZ/P8XnHIsgs7
+ ZGqLcqYDwKjUKsHLUwWKnFj4keGLyDCGVlB5I+gc8kyUbvdK6d+I5TWe7yDJhja/PwPBQuUxM10
+ MEtqEouW79sfJMJ1wgsxTdmP4vbaFGE/82FuBCQ1FBdnyHdQfBo3dy1GOVClKNyOq+iGTIG6lKp
+ GUcYIKS+FDIqI0aPDULrvjB8zCqLE9GnridipC4Q/+cNS8t3bb6HEtfQkeOf6sCJl95cobIhLB+
+ Y/Cfauy6F4zHU9yV+fA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDMxNSBTYWx0ZWRfX7CjV1CESPd8p
+ CwE38YDSW/gAKnRzUguyHkvD81m2NjJSznBFWLLMsDKUhiajDfBxPCE6Dj2RBrVleVaZz7tVLdH
+ WyT68+NRAhuHlMiGh/2qcQg2Lj/z+a4=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-21_06,2026-09-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0
- impostorscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609210314
+ clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210315
 
-On Mon, 21 Sep 2026 11:14:22 +0100
+On Mon, 21 Sep 2026 10:27:46 +0100
 Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
 
-> On 21/09/2026 10:27, Suzuki K Poulose wrote:
-> > On 19/09/2026 02:27, Jonathan Cameron wrote: =20
-> >>> The RMM (Realm Management Monitor) provides functionality that can be
-> >>> accessed by SMC calls from the host.
-> >>>
-> >>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
-> >>>
-> >>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
-> >>>
-> >>> Signed-off-by: Steven Price <steven.price@arm.com>
-> >>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com> =20
+> On 19/09/2026 02:27, Jonathan Cameron wrote:
+> >> The RMM (Realm Management Monitor) provides functionality that can be
+> >> accessed by SMC calls from the host.
 > >>
-> >> With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
-> >> comments inline.=A0 Mostly on subtle inconsistencies that really don't
-> >> matter that much.
-> >> =20
-> >>> =A0 include/linux/arm-smccc-rmi.h | 497 +++++++++++++++++++++++++++++=
-+++++
-> >>> =A0 1 file changed, 497 insertions(+)
-> >>> =A0 create mode 100644 include/linux/arm-smccc-rmi.h
-> >>>
-> >>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-=
-=20
-> >>> rmi.h
-> >>> new file mode 100644
-> >>> index 000000000000..214d6228dfc2
-> >>> --- /dev/null
-> >>> +++ b/include/linux/arm-smccc-rmi.h =20
->=20
-> ..
->=20
-> >>> +
-> >>> +struct rec_exit {
-> >>> +=A0=A0=A0 union { /* 0x000 */
-> >>> +=A0=A0=A0=A0=A0=A0=A0 u8 exit_reason;
-> >>> +=A0=A0=A0=A0=A0=A0=A0 u8 padding0[0x100]; =20
->=20
-> ...
->=20
-> >> =20
-> >>> +=A0=A0=A0 };
-> >>> +=A0=A0=A0 union { /* 0x400 */
-> >>> +=A0=A0=A0=A0=A0=A0=A0 struct {
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 cntp_ctl;
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 cntp_cval;
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 cntv_ctl;
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 cntv_cval;
-> >>> +=A0=A0=A0=A0=A0=A0=A0 };
-> >>> +=A0=A0=A0=A0=A0=A0=A0 u8 padding4[0x100];
-> >>> +=A0=A0=A0 };
-> >>> +=A0=A0=A0 union { /* 0x500 */
-> >>> +=A0=A0=A0=A0=A0=A0=A0 struct {
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 ripas_base;
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 ripas_top;
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u8 ripas_value;
-> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u8 padding5[0xf]; =20
+> >> The SMC definitions are based on DEN0137[1] version 2.0-bet3
 > >>
-> >> In various other places you just use a u64 for a u8
-> >> + padding. Why is this one special? And for that matter
-> >> various other fields later in this particular structure? =20
-> >=20
-> > Please feel free to point out, if you spot any. I am happy
-> > to fix them. =20
->=20
-> I took a look and the padding is for extra "u64" bits in there.
-> e.g, ripas_value offset =3D 0x510 and the s2ap_base is really at 0x520
-> not 0x518. Same applies for the pmu_ovf_status and vsmmu.
->=20
-> So, I would leave them as they are. The rest are consistent.
-> e.g, num_bps and num_wps. in realm_parameter
-Ok. That's logical enough for me.  When no padding happens to follow
-that goes beyond the u64 then use that for simplicity and if there
-is padding anyway use a u8[] that include the rest of the u64 and
-the next bit
+> >> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+> >>
+> >> Signed-off-by: Steven Price <steven.price@arm.com>
+> >> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>  
+> > 
+> > With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
+> > comments inline.  Mostly on subtle inconsistencies that really don't
+> > matter that much.
+> >   
+> >>   include/linux/arm-smccc-rmi.h | 497 ++++++++++++++++++++++++++++++++++
+> >>   1 file changed, 497 insertions(+)
+> >>   create mode 100644 include/linux/arm-smccc-rmi.h
+> >>
+> >> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
+> >> new file mode 100644
+> >> index 000000000000..214d6228dfc2
+> >> --- /dev/null
+> >> +++ b/include/linux/arm-smccc-rmi.h
+> >> @@ -0,0 +1,497 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +/*
+> >> + * Copyright (C) 2023-2026 ARM Ltd.
+> >> + *
+> >> + * The values and structures in this file are from the Realm Management Monitor
+> >> + * specification (DEN0137) version 2.0-bet3:
+> >> + * https://developer.arm.com/documentation/den0137/2-0bet3/
+> >> + */
+> >> +
+> >> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
+> >> +#define __LINUX_ARM_SMCCC_RMI_H_
+> >> +
+> >> +#include <linux/arm-smccc.h>
+> >> +#include <linux/bitfield.h>
+> >> +#include <linux/bits.h>
+> >> +#include <linux/build_bug.h>
+> >> +#include <linux/sizes.h>
+> >> +
+> >> +#include <asm/page.h>
+> >> +
+> >> +#define SMC_RMI_CALL(func)				\
+> >> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
+> >> +			   ARM_SMCCC_SMC_64,		\
+> >> +			   ARM_SMCCC_OWNER_STANDARD,	\
+> >> +			   (func))  
+> > 
+> > Obviously it is v18 so probably a future thing but nothing about this
+> > is RMI specific.  Could be used for ARM_SMCCC_TRNG_RND64 for instance.
+> > I'm not entirely sure what we'd call such a macro
+> > 
+> > ARM_SMCCC_CALL_VAL64_STD() maybe?  
+> 
+> ARM_SMCCC_STD_CALL64_VAL() ?
+> 
+> But, I would leave it as a wider cleanup in the tree as a separate
+> series.
 
-Thanks for talking me through it!
+Ok.  A follow up would be fine I guess.
+
+
+> >> +
+> >> +#define RMI_RETURN_STATUS_MASK		GENMASK(7, 0)
+> >> +#define RMI_RETURN_INDEX_MASK		GENMASK(15, 8)
+> >> +#define RMI_RETURN_MEMREQ_MASK		GENMASK(9, 8)
+> >> +#define RMI_RETURN_CAN_CANCEL_MASK	BIT(10)
+> >> +
+> >> +#define RMI_RETURN_STATUS(ret)		FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
+> >> +#define RMI_RETURN_INDEX(ret)		FIELD_GET(RMI_RETURN_INDEX_MASK, ret)  
+> > 
+> > What's this one?  I can't find anything in the spec that matches it
+> > and as far as I can tell you don't use it in this series.  
+> 
+> This is coming from RmiResultDataLevel. See RmiResult type.
+> This was renamed after we introduce the RmiResultDataIncomplete.
+> It is used in the KVM code to find the "level" where a command
+> failed/walked.
+> 
+> I could rename it to RMI_RESULT_DATA_LEVEL() ?
+> Similarly RMI_RESULT_STATUS instead of RMI_RETURN_*
+
+Yes, that would make tracking it down easier. Thanks.
+
+> 
+> >   
+> >> +#define RMI_RETURN_MEMREQ(ret)		FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
+> >> +#define RMI_RETURN_CAN_CANCEL(ret)	FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)  
+> 
+> > These are obscure enough to find in the spec I'd give a comment just
+> > to save the sanity of anyone looking for them.  
+> 
+> As above, they are really RMI_RESULT_DATA_INCOMPLETE_*
+> 
+> >   
+> >> +/*
+> >> + * Note many of these fields are smaller than u64 but all fields have u64
+> >> + * alignment, so use u64 to ensure correct alignment.  
+> > 
+> > Obviously this is only going to run on arm64 so it's not critical, but
+> > more generally u64s aren't always 64 bit aligned.  So if you 'really'
+> > care aligned_u64 is there to ensure it.  Meh, arm64 so fine.  
+> 
+> Agreed, I am worried about the churn in the consumer code. Also, like
+> you said, this is only for ARM64. So, I would pass it.
+
+Ok. A tiny bit ugly but x86_32 adoption of RMM 2.0 is likely to be minimal :)
+
+
+> >> +
+> >> +struct rec_params {
+> >> +	union { /* 0x0 */
+> >> +		u64 flags;
+> >> +		u8 padding0[0x100];
+> >> +	};
+> >> +	union { /* 0x100 */
+> >> +		u64 mpidr;
+> >> +		u8 padding1[0x100];
+> >> +	};
+> >> +	union { /* 0x200 */
+> >> +		u64 pc;
+> >> +		u8 padding2[0x100];
+> >> +	};
+> >> +	union { /* 0x300 */
+> >> +		u64 gprs[REC_CREATE_NR_GPRS];
+> >> +		u8 padding3[0xd00];
+> >> +	};
+> >> +};
+> >> +
+> >> +static_assert(sizeof(struct rec_params) == SZ_4K);  
+> > Whilst the assert works and is need to prevent oversized the
+> > dos never seem to provide any indication of the final trailing
+> > padding other than indirectly and I don't like maths on Fridays ;).  
+> 
+> Agree it is a bit obscure, but ...
+> 
+> > Maybe union the inner union set with a u8 [SZ_4K]?
+> >   
+> 
+> That doesn't help if the other one runs past SZ_4K ?
+
+You still need the assert so I guess that is already providing
+the documentation indirectly so indeed little purpose in the
+extra union beyond removing need to have magic padding in the
+last element.  Mind you not obvious what that last pad should be
+if it wasn't just 'the rest'. So, I think this is fine as is.
+
+
+Thanks,
 
 Jonathan
->=20
-> Cheers
-> Suzuki
->=20
->=20
-> > =20
 
