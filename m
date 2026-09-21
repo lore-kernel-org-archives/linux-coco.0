@@ -1,132 +1,129 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2BE3B2FDF;
-	Mon, 21 Sep 2026 10:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FD448642A
+	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 11:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789985669; cv=none; b=HogbSpxBvkMeTShiT3iyjQ/gizh5KtO5qym1VpP6/2dpf73kQn9KTHayb+/Xr0+1i4o8thtDCe0QbAfYdwah4zJ/qU33EYq0GY1mS3C57irplut/AsW8qP/S9rqzSJdFKQLBEOh6OIBptTtiysP9p/56jMY9xFlGNM0y1JTSrBQ=
+	t=1789991016; cv=none; b=eRaMuTbN5Z8upBjfNixtlj6shrQCVqbtomXnNon9QelmAXMNRJ+OJzJJTOVW6cD/RM5hdO35TU6RAwKJwLmWd14H/6ED47vivVZ7/2tfdBKQRMCZW+JEASgIvSfuqBqP3k7NopFcDnWN8HQlyxKZtKtTrIH2jNSa0aBNjnVejKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789985669; c=relaxed/simple;
-	bh=X21Q+N08xUOyF31kxvte0qv2v56innxWRBgC11u9YPg=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UsQFLCdzhD1iLmxlMacZM+xCcVYrUyrgfTyqfON+xw0acEFj17uqKFFEF31l2OACnLX20xPe/DzObE/AtPeEcZRC4YYpFPv5SGEpD1ppVpwml32C9rsYfd7TDExOu00rwDf6clcO8R+97cZ/vP7TzKME8WifrV1t8BOehjQHPrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bi8wj6lS; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789991016; c=relaxed/simple;
+	bh=/RT1+5/E52WlGRbRy8r6SoysexFm1DrziEDBiKHjW1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qAi2vMtTMbwI96557CFzPIlJAfuECNBMKmreehfx3KrleEg8aT1EJWI0OkFVJahpBCG2iumXWDMfDfNYgAApGC/z4fUxIoGwqp9ZD7QMiJopgYpC1MCEdRQf/ie6CTqjXPzClyXoCFNBy3lZKAgSQmyHWVcmU+Q+hnhLJWaPNsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EI1Aynum; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bi8wj6lS"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7ED0A1CE0;
-	Mon, 21 Sep 2026 03:14:23 -0700 (PDT)
-Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 173203F86C;
-	Mon, 21 Sep 2026 03:14:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789985667; bh=X21Q+N08xUOyF31kxvte0qv2v56innxWRBgC11u9YPg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=bi8wj6lSXbc+slgPhtQo8H+KMor5M5yzY0r8RQQqFvDPPtgRm0RMutnIRxaToRdTG
-	 YWI+Jnobq16nw+PjJSrqSjkJr7INZTwpehy3S8gXoDGcYoHz2kHClYB+y772yLyN7Z
-	 EPCugkdEQQwCspBynGN7LkS+G00+KuamtoSo/uq0=
-Message-ID: <eb4a30a0-abd2-4334-b5f3-62621ec5a19e@arm.com>
-Date: Mon, 21 Sep 2026 11:14:22 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EI1Aynum"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789991014; x=1821527014;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=/RT1+5/E52WlGRbRy8r6SoysexFm1DrziEDBiKHjW1o=;
+  b=EI1Aynum2Sa9sRXDoiN+JHX/UeNL8VzD+yb/ik9IpmxY4rRPjAgoT4pn
+   EFjb+dwcDW39CGmzlxia4MhGixV55r5VZi+tIl7nx9qV7eNhoAxv1VVtu
+   NTzepe8dEO2EBfVDDPaFmOX0hZwtALA9zOj8jvd6EisejANQVGyu0OaY2
+   Jt1ZR9qzV4VFiWkVAUE+an8u1DqQuJ0Fu8f3HU7Dg3L6coaL4YhpBgaXw
+   ouavf2XDHcSAtFWYLjimYPvvD+sMupHaq+ulA5dWNP98zenXZ9Um0iEh0
+   R0beLVWq0KfQo+YHxljPDD6yk9wFCwIB4baNVXir1qOjC+rJ1xz016BEI
+   A==;
+X-CSE-ConnectionGUID: AagHfUPgSOGnESHkp9K3GQ==
+X-CSE-MsgGUID: eSZ4VwDJSvSt5RbvzzFPBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="107998156"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="107998156"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 04:43:33 -0700
+X-CSE-ConnectionGUID: 3ITumidNRpmkDeKgPcw3lg==
+X-CSE-MsgGUID: 68csLzsyQk+GWI625NrN8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="271774626"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa010.fm.intel.com with ESMTP; 21 Sep 2026 04:43:28 -0700
+Date: Mon, 21 Sep 2026 19:42:40 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <arEYMCfdvmiqE4aR@yilunxu-OptiPlex-7050>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <2f6ac9afef52386fc491145222ea46e54c24a73f.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-2-suzuki.poulose@arm.com>
- <178978126540.2352296.16845657485139032765.b4-review@b4>
- <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
-In-Reply-To: <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2f6ac9afef52386fc491145222ea46e54c24a73f.camel@intel.com>
 
-On 21/09/2026 10:27, Suzuki K Poulose wrote:
-> On 19/09/2026 02:27, Jonathan Cameron wrote:
->>> The RMM (Realm Management Monitor) provides functionality that can be
->>> accessed by SMC calls from the host.
->>>
->>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
->>>
->>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->> With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
->> comments inline.  Mostly on subtle inconsistencies that really don't
->> matter that much.
->>
->>>   include/linux/arm-smccc-rmi.h | 497 ++++++++++++++++++++++++++++++++++
->>>   1 file changed, 497 insertions(+)
->>>   create mode 100644 include/linux/arm-smccc-rmi.h
->>>
->>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc- 
->>> rmi.h
->>> new file mode 100644
->>> index 000000000000..214d6228dfc2
->>> --- /dev/null
->>> +++ b/include/linux/arm-smccc-rmi.h
-
-..
-
->>> +
->>> +struct rec_exit {
->>> +    union { /* 0x000 */
->>> +        u8 exit_reason;
->>> +        u8 padding0[0x100];
-
-...
-
->>
->>> +    };
->>> +    union { /* 0x400 */
->>> +        struct {
->>> +            u64 cntp_ctl;
->>> +            u64 cntp_cval;
->>> +            u64 cntv_ctl;
->>> +            u64 cntv_cval;
->>> +        };
->>> +        u8 padding4[0x100];
->>> +    };
->>> +    union { /* 0x500 */
->>> +        struct {
->>> +            u64 ripas_base;
->>> +            u64 ripas_top;
->>> +            u8 ripas_value;
->>> +            u8 padding5[0xf];
->>
->> In various other places you just use a u64 for a u8
->> + padding. Why is this one special? And for that matter
->> various other fields later in this particular structure?
+On Tue, Sep 15, 2026 at 08:54:01PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-09-15 at 18:26 +0800, Xu Yilun wrote:
+> > @@ -1012,12 +1021,22 @@ struct tdmr_info_pa_array {
+> >  static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
+> >  				 unsigned int nr_tdmr_pa, u64 global_keyid)
+> >  {
+> > +	u64 addon_features0 = get_tdx_addon_features0();
+> >  	struct tdx_module_args args = {
+> >  		.rcx = __pa(tdmr_pa_array),
+> >  		.rdx = nr_tdmr_pa,
+> >  		.r8 = global_keyid,
+> >  	};
 > 
-> Please feel free to point out, if you spot any. I am happy
-> to fix them.
+> It seems inconsistent that global_keyid is passed in even though it is basically
+> global state, while addon_features0 is retrieved from the global state. Passing
+> the result of get_tdx_addon_features0() in from the caller doesn't make a ton of
+> sense. And we already reference tdx_global_keyid globally from another seamcall
+> wrapper. So I'd think dropping the arg when you create the wrapper would be best
+> in the end.
+> 
+> The smallest change to stay consistent would be go add an addon_features0 arg to
+> tdx_sys_config(), but it's hard to justify as good code. I'd maybe go with the
+> global_keyid change and it probably is a separate patch, but we are brushing up
+> against mixing cleanup and feature enabling... thoughts?
 
-I took a look and the padding is for extra "u64" bits in there.
-e.g, ripas_value offset = 0x510 and the s2ap_base is really at 0x520
-not 0x518. Same applies for the pmu_ovf_status and vsmmu.
+I'm not sure. My thought would be removing "u64 global_keyid" argument
+for the new added tdx_sys_config(), to make this patch reasonable.
 
-So, I would leave them as they are. The rest are consistent.
-e.g, num_bps and num_wps. in realm_parameter
+And the cleaning up of its caller - config_tdx_module() - could be in a
+separate cleanup patch out of this series, make sense?
 
-Cheers
-Suzuki
+make W=1 doesn't complain, but maybe shashiko will.
 
-
->
+> 
+> 
+> >  
+> > +	/*
+> > +	 * Use SEAMCALL version 1 that supports add-on features if any are
+> > +	 * requested. Otherwise use version 0 for backward compatibility.
+> > +	 */
+> > +	if (addon_features0) {
+> > +		args.r9 = addon_features0;
+> > +		args.version = 1;
+> > +	}
+> > +
+> >  	return seamcall_prerr(TDH_SYS_CONFIG, &args);
+> >  }
+> 
