@@ -1,172 +1,147 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B72B4FECC8
-	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 18:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363AF3B2D39
+	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 19:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790016781; cv=none; b=FacKkv+c3GzmIWzkTZWbqdHT2Qc8KM+802asjN6BcbmDgQLesXv6eQAFLTYzX0AhkFvAn0CrwgAtEJdO6TKiqtcsf307qnARnxeOvF83tNvk5ijfwaNT400olO15I+BbyAccC5UErWfBrwD4iBTpSiCxh9tm+zn8D5CifaWd+E8=
+	t=1790020383; cv=none; b=OvhiR1jKOVjZ+tUN4KBMHmtXWpPsU17XOFgrfImBOQPP4ViOfhEN7GlzLXy5Q3bKdH+5SDFGJvjBb1oxr72TMmfkiqnXkFgKGWRQ24ICDVt3ULr7J7qlmpJ05Ld7U6qKNqufQA1VFlaoNA/xr5OkYN+DH7Yn2zScH38hbEmiZKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790016781; c=relaxed/simple;
-	bh=JGvsE3qprxPos+efsPkq/3seFxa9aaaj4N7CPfDha88=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=A5CdV+IKyFH/PKo4CihZ+YNV64t9UcfuOIt3vPX+TO1VB1fShvepYQW7whotfJe/XtXCYr7WIU3Lnv9ot0eGwN1pKnKRqkHclapX9k1/BeBGOpNvWR9kl6vSLHi0yPans9Z+J7+glaQrbmpMJJZW4REY2Ng5rbcMNmPXANHZYKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bYD1WQOs; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790020383; c=relaxed/simple;
+	bh=bkhJSl1Cq62EQXSMdVznURMEBI25uS+zoGaB+7oBFpM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=E1a4Vf8fLuAAwsoXFjlBHiKEs30uibTvBLFZXVpdc93Bj6JoPmdahGEVq7xC78gW/0AItlVrlE4Kxn8IKFgdHqQWiKNjD+j+JO350z++oz0lRx7jVyyiot5PuI8cd4nuxmbMHmDeqFoDr+vRQZG3N2QASEroOOyklyVKJoBAbvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VOThC040; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bYD1WQOs"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-854f274dd69so3399556b3a.1
-        for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 11:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790016779; x=1790621579; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/5YTcsXPaj8qnFsGtVLuToOw955UXBQDL4CSdNlovXI=;
-        b=bYD1WQOsDsYuO1qMSHxjCHADcecrTt7zeeh+a0R+EB8ll5YRRHSaX9W/us0bUCQyc3
-         5PgeV2Bl4j8n28sSoh39hW8BA776q5E8EN5DGmbo3CWhSmHGKbYeWu+lbBrUiEWva3fJ
-         Nz+FAm2QxgxpwVXdyJmCnM/uo0Kmh/L2BXggj/w7ctUg3N1SsuhJrAYJFKnnsgiTYbYz
-         UQs+oaWWGzmg6GqctvaysIhKiTSt4zv4t9+wOOIleIHCl/lSELifIS01pQo9N3f9e29p
-         elYnH+lF21BHBUccYbRB8qIEOxb3rKRzZ5yxFnSmC0jMJcYbGDqF+90r9met4L2iyX3k
-         7TxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790016779; x=1790621579;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/5YTcsXPaj8qnFsGtVLuToOw955UXBQDL4CSdNlovXI=;
-        b=yrRsNUJeNG8Jo4HsGSM6RpS/LbtcxiblxGZCSpacX/SIqolTpnQyA/WcOpC1y2Yglz
-         5f14nYF+G7Chrn263n9pt38GD5hh5Yek2PLjXZjq1JPgYAflwZoUFCSLwqkTnHeiMnSm
-         A0Nh5Qi0neC9V2iEvTXik1tnjXR3XWD+ixCI6sT0Pwaq3TFXic81iilUq4yeKMltID9R
-         np9aJBHhM1BSH9sBzGG/mLX8bOw6J5E+mpPuzA3e7nnjDlSpL0y7i3OrhL0PD0sSPcuh
-         xnO6n8OU0QdBaFXxe5G4+IT4OziexWsDKU4YameDGmmfY3JzJunFGXdoREvObewMXufw
-         Rw2g==
-X-Forwarded-Encrypted: i=1; AKwUvBwv8/3c7MOttE3DjvExZ+dDbh7bg2rIJZbg0e94g/JZQ1hSwk6MOFNDXQ9Q1JdK747w3Ys/Lpzegc3I@lists.linux.dev
-X-Gm-Message-State: AFuF++mCpuOy/EhCYzUUBGKr3KRt5desVQwOU0OGScIPo95DG+jz/k7o
-	VgpZndMb2Dr+l/nQ8XMdbWrJWppsUakwifqDFV1Z5WXH5aJdt6SrvUej4EJV7nKPoe+MN7pCLRa
-	fonwUHQ==
-X-Received: from pfcs23.prod.google.com ([2002:a05:6a00:6fd7:b0:87a:f5a1:c5c0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14cd:b0:872:fd1:7c22
- with SMTP id d2e1a72fcca58-874ddd05bf4mr16110399b3a.16.1790016778532; Mon, 21
- Sep 2026 11:52:58 -0700 (PDT)
-Date: Mon, 21 Sep 2026 11:52:57 -0700
-In-Reply-To: <CAJxe5csCb0DHZmJo9a-asXZ-tYdcyK1y0Y4Y9Uoixqn=sa8zRQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VOThC040"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790020381; x=1821556381;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=bkhJSl1Cq62EQXSMdVznURMEBI25uS+zoGaB+7oBFpM=;
+  b=VOThC040Up1iY2rbHbJyph03PgW0KV/Yjmdli/hW9NycC3EvtqLa9OHw
+   kJfdSjnHVRHO5rPlgvOJc1Cpn3dREWRxpNuXzXBLDWHSTpcO4fez4MW8U
+   kAwVpzAsdJWsjRTIWnvd4c70nnrfpi2PEEJqUjfDugvhiZxg62eavhod/
+   cYX7ra2APOFlF9EcRDK0H1fvNB5nN0f7L1jTVWIwPbBFKlJ+INQQp8ZKX
+   JW4VWtUiVTxsdEcVGVMI5dULbrU3PU99rWAJR6472xH/Shc1bg/qNrP1Z
+   g0eQRSLCl+UTdhtibFnXEv1ExoM4a8YeWy+RkDkU41F2VQB3R6or2hlrJ
+   Q==;
+X-CSE-ConnectionGUID: GCV/Mw70RFqXTpcXYRFc+g==
+X-CSE-MsgGUID: nx0dhQyHShGC+wFDxkcQRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90435101"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="90435101"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 12:53:00 -0700
+X-CSE-ConnectionGUID: kVAB7FAIRx6Pa2Mi4sNwAw==
+X-CSE-MsgGUID: wVj6mPwoR+CLcaeEZXTcMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="299041222"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.109.250])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 12:52:59 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH v2 0/2] x86/tdx: Use TDVMCALLs directly for earlyprintk
+Date: Mon, 21 Sep 2026 13:52:36 -0600
+Message-Id: <20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com>
- <0b2d8858-b361-4a64-986a-4c179210fbec@amd.com> <aqlWt4jb4CSPnecN@google.com>
- <d6179d34-a4b0-4548-8298-b790b333d22f@amd.com> <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
- <aqrhFvwFJsQTaEkz@google.com> <CAJxe5csCb0DHZmJo9a-asXZ-tYdcyK1y0Y4Y9Uoixqn=sa8zRQ@mail.gmail.com>
-Message-ID: <arF9CXWC_UDYUMmf@google.com>
-Subject: Re: [PATCH] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
- access failure
-From: Sean Christopherson <seanjc@google.com>
-To: Jacky Li <jackyli@google.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
-	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NwQ6CMBAFf4X0bM22EiOe/A9CSLddpFqBtJVAC
+ P9uQc8eJ+9lZmGBvKXArtnCPI022L5LIA8Z063q7sStScwkyDMUcOKY82immpR38+BtF591NFo
+ 5F3gORqAU6oJKsiQYPDV22uVl9eXwxgfpuBm3R2tD7P2810ex/X4hAf9Co+DAc5QosCkABN7ST
+ O6o+xer1nX9AFd0CWjWAAAA
+X-Change-ID: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
+To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Vishal Verma <vishal.l.verma@intel.com>
+X-Mailer: b4 0.16-dev-62088
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2437;
+ i=vishal.l.verma@intel.com; h=from:subject:message-id;
+ bh=bkhJSl1Cq62EQXSMdVznURMEBI25uS+zoGaB+7oBFpM=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDFkbu6VZjsVWifA3mFZtWLTV93T2D5uC1aFPTf4sun1eV
+ SJhRYhvRykLgxgXg6yYIsvfPR8Zj8ltz+cJTHCEmcPKBDKEgYtTACbCJ8rI8Ntc9rjooUzXA3dO
+ tGtrHzspHmayP52LOf4rM1/yW9u0Rob/GYuPp/F6pYamNNvOXB3xQlE3vr6s2ya+VsjFUtzU4DU
+ PAA==
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
+ fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-On Mon, Sep 21, 2026, Jacky Li wrote:
-> On Wed, Sep 16, 2026 at 11:34=E2=80=AFAM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> >
-> > The problem is, I don't see how the guest can know when it needs to dis=
-card the
-> > VMPCK (post-request failures) versus when the VMPCK is still "fine" (pr=
-e-request
-> > errors).
-> >
-> > FWIW, I'm not terribly concerned about bleeding host issues into the gu=
-est, I'm
-> > more concerned about ending up with deferred fatalities and a mess of a=
-n "ABI"
-> > between the guest and KVM with respect to handling failures.
-> >
-> > What if we "tickle" the resp_gpa before doing the request?  Similar to =
-how CPUs
-> > probe bytes early in XSAVE/XRSTOR to avoid having to unwind later on.  =
-In this
-> > case, the response is restricted to a single page, so we only need to t=
-ickle a
-> > single byte.  E.g.
-> >
->=20
-> Agree. I see your points and why this tickle idea is a great solution.
-> Actually, building on that idea, what do you think about using
-> kvm_vcpu_map() in the exact place that you did
-> kvm_write_guest(kvm, resp_gpa, &tickle, sizeof(tickle)) instead (and
-> unmapping afterwards)? A few reasons:
->=20
-> 1. Like kvm_write_guest(), kvm_vcpu_map() also checks the existence and
->    writability of the memslot via __gfn_to_hva_many(..., write=3Dtrue) an=
-d
->    faults in the host page as writable, plus it pins the page across the
->    firmware command.
->=20
-> 2. kvm_vcpu_map() has cleaner semantics of acquiring and holding the
->    guest response page in KVM until the response is delivered, rather
->    than doing a dummy write to test the waters. This is somewhat
->    consistent with the GHCB page itself, which stays mapped until the
->    response is filled in.
+Background
+==========
 
-No, kvm_vcpu_map() actually has far worse semantics.  GUP pins the *page*, =
-it does
-not pin the userspace mapping.  I.e. kvm_vcpu_map() guarantees that KVM won=
-'t write
-to a freed page, but that's literally it.  E.g. if userspace mprotect()'s t=
-he page
-to make it read-only, KVM will write to what is supposed to be a RO page.  =
-Or if
-userspace completely unmaps the page, KVM will write to soon-to-be-freed me=
-mory.
+TDX guests have early_printk support, but it is through a roundabout way
+using a #VE exception as a functional mechanism. The exception handler
+has to use TDG.VP.VEINFO.GET to find out what faulted, and then issue
+the TDVMCALL. Simplify this by using a TDVMCALL from the guest which can
+directly perform the port I/O.
 
-We're actively trying to remove kvm_vcpu_map() to replace all usage with
-"struct gfn_to_pfn_cache" APIs, as the gpc functionally is tied into mmu_no=
-tifiers,
-i.e. guards against things like mprotect(), munmap(), etc.
+Patch details
+=============
 
-So if we wanted to do something other than a uaccess, a gpc would be the wa=
-y to
-go.  But I'm not convinced that's the right choice here.  There is zero dan=
-ger to
-the host beyond what already exists with private memory in general.  I.e. i=
-f
-guest_memfd leaves a dangling userspace mapping, then the host is hosed reg=
-ardless
-of what this code does.  Using a gpc could guarantee the write goes through=
- or
-fails early, but IMO that's not worth the extra complexity involved with us=
-ing a
-gpc, because I'm not convinced that continuing on is the best outcome if th=
-e
-response GPA mapping is being concurrently modified.
+Patch 1 is a prep patch that moves the port I/O direction constants to
+arch/x86/include/asm/shared/tdx.h.
 
-> 3. Pinning the page prevents a malicious guest from converting resp_gpa
->    to private between the pre-check and kvm_write_guest() after the
->    guest_memfd in-place conversion patch series [1] is merged.=20
+Patch 2: Add a new earlyprintk=tdx option (with sub-options to select
+the serial port - same as earlyprintk=serial - tdx[,ttySN[,baud]]).
+This calls new tdx_inb() / tdx_outb() helpers, which perform the port
+I/O directly using TDVMCALLs.
 
-Who cares?  The guest can only hurt itself by converting resp_gpa to privat=
-e.
+The serial earlyprintk path is left as is - TD guests using this will
+still take a #VE exception, and the exception handler will perform the
+I/O.
 
->    (This assumes a future guest_memfd implementation, so it's less convin=
-cing
->    than the first two points. This was also my original TOCTOU concern.  =
-And
->    once we have either pre-check, on upstream today the guest has no way =
-to
->    change the memslot state before kvm_write_guest(), so I'll also drop t=
-he
->    original TOCTOU commit message.)
->=20
-> [1] https://lore.kernel.org/lkml/20260830-gmem-inplace-conversion-v12-15-=
-85e5fd25252a@google.com/
+Testing
+=======
+
+Added a counter for the number of COM1 port I/O #VEs handled:
+
+  no earlyprintk     -  ~63000
+  earlyprintk=ttyS0  -  ~61000
+  earlyprintk=tdx    -  ~35000
+
+The new tdx option nearly halves the number of #VEs handled.
+
+Additionally, ran the usual suite of CI testing, which covers KVM self
+tests, KVM unit tests, and Avocado KVM tests without any regressions.
+
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+Changes in v2:
+- Rebase to v7.3-rc4
+- Move the TDX hypercall helpers into coco/tdx/tdx.c (Kiryl)
+- Add a new earlyprintk=tdx option that implements the direct TDVMCALL
+  path (Dave Hansen)
+- Link to v1: https://patch.msgid.link/20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com
+
+---
+Vishal Verma (2):
+      x86/tdx: Move port I/O definitions to a shared header
+      x86/early_printk: Add earlyprintk=tdx to drive the UART with TDVMCALLs
+
+ Documentation/admin-guide/kernel-parameters.txt |  9 +++++
+ arch/x86/include/asm/shared/tdx.h               |  6 ++++
+ arch/x86/include/asm/tdx.h                      |  3 ++
+ arch/x86/boot/compressed/tdx.c                  |  4 +--
+ arch/x86/coco/tdx/tdx.c                         | 47 +++++++++++++++++++++----
+ arch/x86/kernel/early_printk.c                  | 37 +++++++++++++++++++
+ 6 files changed, 98 insertions(+), 8 deletions(-)
+---
+base-commit: 93f51579e7df248780214094418f205253383cc5
+change-id: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
+
+Best regards,
+--  
+Vishal Verma <vishal.l.verma@intel.com>
+
