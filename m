@@ -1,89 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C49248820E;
-	Mon, 21 Sep 2026 15:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1644F4DEC2E
+	for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 17:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790004411; cv=none; b=uD2dwOyeiaHtfLqUju87Vv026QPpQynknMp5yDLUPnfHzZtYNDlppVeBlDfMNpwQADLfgL1sPBSUsRXIvNY/nTCQJfaw4+ix/ZuO1m2eGljsev/cRmA6XLBEeHZmY9KvsnubQN/JYymd4wsskv04SiObXhly9JyJlzYmiOzAJt0=
+	t=1790012689; cv=none; b=bgB2LW5qnQSnlklULS0uAebhto0ERHcQa07pg7GLbGKf9sSBTduuVq5Q6iNGv4Cj8WJugsVUNlaqglQP4FJC2jjRjY0R21eY/yeUeJES8hIfU+1QxL3b7VCBULVl4MbXi0R2lTdhmLcqhcnzCqA2DjD25/YLEefLzk+h/qRTPRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790004411; c=relaxed/simple;
-	bh=crAu+rO/8jjpMeszBXQph4x7yIoYqyBep9PV7qmQuK8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hAJWDQK9ezaRTUdod/q3/ZhRt5RHfHJ/yASD+Ic5SuW1aWqw3ouBIPKk0eoduiGyQRZcmNffydfzbdjB85N4OdqdbvKu8jsn0qwXPFXEQpeHami0ZPrLZe851iY5CMIm15ziHAvt+g7AvmjvNa4sUQh7cSlA7NMl6WU5h15KNJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXOCMPeO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790012689; c=relaxed/simple;
+	bh=q6sKknVxjsNpsOX3dGkf1KErMXo5zCoLn9mk28KTqNg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LokyAGQFa9flQkyhZw+/7lPzbM6ud9R+yTwnEj6lMRhxliPNZRzl8gh1jq9UXFB/l7XNwHrVbF6Mnwf6SgOzguepy8EdHlROAjMk20OsEQs3dcz3cOuTErE9V60NgGAn407z/KsfdJJf9EMpqgvTyCnnQhZo7z5TAYBaQoolUXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PQl6FtqD; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXOCMPeO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B931F000FF;
-	Mon, 21 Sep 2026 15:26:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790004409;
-	bh=crAu+rO/8jjpMeszBXQph4x7yIoYqyBep9PV7qmQuK8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=kXOCMPeOABC3WIWc0m2aMa53Wy1vci2Ph1we34tBe20fflS/kwx9hhp/Bh2Uo+id5
-	 e6dy3zdJ14+pNdpep6sBKlIMjn3Khyu9Fehxt5yHD/bXdzQ+/hUEwmutBQ88ho5LXl
-	 9OPClu0cxwjagvWcavMP05o/JjEt3lVfuRCHGM0taw3BZXgz/On7tIzHebY2HeJ9q+
-	 EMbKmUEBXIWCO++8CrCDYqtnvfwS9etcFOBXWgmLW2TFA3sVnOSVHEy/Oxl26bbs9y
-	 A4Jxo92CBcSprJG84NCdVoSDEbokDxtFGJwV4uc7ucTkSfhbPPRtSbgjRca+9MgtQY
-	 qJVNPaTSiDWrw==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	"T.J. Mercier" <tjmercier@google.com>
-Subject: Re: [PATCH v6 7/9] dma-buf: system_heap: Enforce shared-granule
- alignment for cc-shared buffers
-In-Reply-To: <20260921123725.GN11599@ziepe.ca>
-References: <aq1V3oeDdvXobt8J@arm.com>
- <97c30fce-9bda-4c61-b1b9-10297b89c8d9@amd.com>
- <20260918153642.GD11599@ziepe.ca>
- <d8123f21-d5ce-415b-a05a-392d97b8b57d@amd.com>
- <20260918165315.GF11599@ziepe.ca>
- <6115eaf7-21bc-49ce-8a74-08fd37a1e2c9@amd.com>
- <20260921115141.GJ11599@ziepe.ca>
- <45dd7a2f-8474-4388-b383-2dee3ee62206@amd.com>
- <20260921121739.GM11599@ziepe.ca>
- <cd2b32dc-5a80-4ef5-82bc-dd41ea96dc01@amd.com>
- <20260921123725.GN11599@ziepe.ca>
-Date: Mon, 21 Sep 2026 20:56:41 +0530
-Message-ID: <yq5a1pam4ocu.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PQl6FtqD"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8538a72b430so3494955b3a.2
+        for <linux-coco@lists.linux.dev>; Mon, 21 Sep 2026 10:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790012687; x=1790617487; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vpZEGIou0oqWtJedTRzj6hNhUCCuK0pge9AESQcyXk4=;
+        b=PQl6FtqDWuE9vUXKmSxxDIdiQnOsAjju4CH5gPzuZyR4hOP6ahWMMw7Kc+cnJszpGF
+         JlyVQNkq5A6Jbk9RJZ7ZzxRuxWkWcQawSUg+RK73PGFcnMbFrtSFYqcO5axyeHU4cK4G
+         k/sSlVnFJkCPa68a1zbUHD8MwuCw0va9QKwPuKIBRO1etxCh1XcirskcnAO3MvBAr734
+         lc/K09htvTlVvzafmsI6dBQD2wRaJKsS0HO5L6zbAjRAsDU5rNogwYqVAv8wHM7BjG8Q
+         RobkKAVcN5IQGpqaVuClYAMpKj9B/8SodDeSTqFNu2SUWq/osl1iJV8IGql0pXuwHvll
+         2HNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790012687; x=1790617487;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vpZEGIou0oqWtJedTRzj6hNhUCCuK0pge9AESQcyXk4=;
+        b=EWG4uB/93DOAXFIQ7dqlu69QlXaHEPpudRt9vIABHce/pbCjkOEVpAQk+OkO7oQ0Bg
+         cKaBb0BewB9hM/bEwM5fZOjcFN3CQRGVfwuV8mweesaxn3njgvEO/N2JdS+mX6x9DF1P
+         rTNDrXzJgGqdr63TAVTLBfDdkjE7+DuP84m678V/s1sc/NPKIXV5e9RgpH4JqAWbeA0z
+         iQ4G9h6APfh33a44txSSyFdoH/P3Xon57o0Y8dI3F4fVxTyBSEazib6uGzO0a+5znphM
+         arvPtDlCRqNbVXOtvzfN6dvG3sjf1j7ZMwZ9tGUgRMMbqo69pFp8EPkE/MFuU4bd4cQV
+         k1fQ==
+X-Forwarded-Encrypted: i=1; AKwUvByg4ykvMnf3+0BCyVJroqmbFhYErMHzb6/GLeqGbKIrnG9rc9QLyKfEBPM8L/u1d4yRiV9na+2vC2E+@lists.linux.dev
+X-Gm-Message-State: AFuF++klv3vrfYDtAojaO5w5LsTssQMKu1oY0SLgqwSOLcydZdC3ZQvE
+	vHNevmStTrTI2yFISrn6VIDdlHOLE57QTi7Ftgc5ytRhmae7C0mzWmXv7iuxiHwBpDAf/rX2HKz
+	d63pNcg==
+X-Received: from pfbgs18.prod.google.com ([2002:a05:6a00:4d92:b0:87a:49f8:6a76])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9487:b0:878:3507:8d6b
+ with SMTP id d2e1a72fcca58-8783508a7bemr7870003b3a.50.1790012686945; Mon, 21
+ Sep 2026 10:44:46 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Mon, 21 Sep 2026 10:44:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260921174445.911676-1-seanjc@google.com>
+Subject: [PATCH v2 0/7] KVM: Serialize vCPU creation and revert vcpu_ids tracking
+From: Sean Christopherson <seanjc@google.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Atish Patra <atish.patra@linux.dev>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Jean-Christophe Guillain <jean-christophe@guillain.net>, 
+	"=?UTF-8?q?Pawe=C5=82=20S?=" <spawel523@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+Serialize vCPU creation by holding kvm->lock for the entirety of
+kvm_vm_ioctl_create_vcpu(), and then revert the now-redundant tracking adding
+by commit 97d65b544f48 ("KVM: Check for duplicate vcpu_id as early as
+possible").  I botched the math when justifying the vcpu_ids tracking; it's not
+an extra 256 bytes, it's an extra 2048 bytes.  Roughly doubling the size of
+"struct kvm" tripped x86's KVM_SANITY_CHECK_VM_STRUCT_SIZE, and obviously isn't
+something we want to do in general.
 
-> On Mon, Sep 21, 2026 at 02:24:21PM +0200, Christian K=C3=B6nig wrote:
->
->> I also don't see where mem_cc_shared_granule_size is added?
->
-> Patch 1:
->
-> https://lore.kernel.org/all/20260904103452.1197239-2-aneesh.kumar@kernel.=
-org/
->
-> Aneesh, please be sure to use get_maintainers on series like this so
-> everyone gets cc'd.
->
+The TL;DR of why it's a-ok to serialize vCPU creation is that no VMM actually
+does parallel vCPU creation.  As with so many things, KVM's current behavior is
+the result of decades-old cruft, not intentional, deliberate design.
 
-For v7, I included only the maintainer entries because the recipient
-list was getting too long, but I added the mailing lists.
+Patches 1-3 are a tangentially related cleanups and bug fixes; I included them
+here because holding kvm->lock for all of vCPU creation allows WARNing if KVM
+attempts to lock all vCPUs if vCPU creation is in-progress (the caller must
+hold kvm->lock).
 
--aneesh
+v2:
+ - Tweak patch 1's changelog to clarify that that only x86's manual checks are
+   dropped. [Sashiko]
+ - Add patches to convert additional arm64 and RISC-V usage to 
+   kvm_is_vcpu_creation_in_progress(). [Sashiko]
+ - Remove acquisition of kvm->lock from s390 and PPC vCPU creation flows.
+   [Christian, Sashiko]
+ - Add Jean-Christophe's Tested-by to the revert.
+
+v1: https://lore.kernel.org/all/20260914181223.289061-1-seanjc@google.com
+
+Sean Christopherson (7):
+  KVM: Reject attempts to lock all vCPUs if vCPU creation is in-progress
+  KVM: arm64: vgic: Rely on vCPU creation check in "trylock all vCPUs"
+  KVM: RISC-V: Use kvm_is_vcpu_creation_in_progress() instead of
+    open-coded equivalent
+  KVM: Protect all of kvm_vm_ioctl_create_vcpu() with kvm->lock
+  KVM: Move check for existing vCPU ID to the top of vCPU creation
+  Revert "KVM: Check for duplicate vcpu_id as early as possible"
+  KVM: WARN if vCPU creation is in-progress when locking all vCPUs
+
+ arch/arm64/kvm/vgic/vgic-init.c | 12 ++++-------
+ arch/powerpc/kvm/book3s_hv.c    |  2 --
+ arch/riscv/kvm/aia_device.c     |  2 +-
+ arch/s390/kvm/s390/s390.c       |  5 +----
+ arch/x86/kvm/svm/sev.c          | 10 ----------
+ arch/x86/kvm/vmx/tdx.c          |  5 -----
+ include/linux/kvm_host.h        |  1 -
+ virt/kvm/kvm_main.c             | 35 +++++++++++----------------------
+ 8 files changed, 17 insertions(+), 55 deletions(-)
+
+
+base-commit: d599822bdb66aeec5ec76297b0fc6efaaeefe07c
+-- 
+2.55.0.1082.g2b9226bbc0-goog
+
