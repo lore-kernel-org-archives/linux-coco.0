@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC35F3F660E
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 20:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D318B4AC14D
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 20:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790108446; cv=none; b=u526jo25JJDvqW4C46C7ZBxMtSgUDamGixdTtY/Kt266ShUNi2kYzCYg88ZkQqJwbsSRN4QNPxgjFFt3XRYH+t7URENGgXeTq46eRfFoxRqe9OxoSMjFpdhQkDwmCYPrV2AitXxQ5686TyCnhgimr0+XmJwIOpmJsLIeB9BM03I=
+	t=1790108465; cv=none; b=bh94paFKypkio+ZmJpuKDpELADy/31HPDSotCRJB0yVq87BSuC6UwuYl1KT6hyLoL0xNhnqyxVzjzVLS+4fj7KzzYRbi6tF1wTQAbpk9uC09ok+0mtljH3KezU7xZIMQK3IoJu2HMMBDI/p6ftmWgzoJktk0gan4VeP/bWQ8/zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790108446; c=relaxed/simple;
-	bh=LfqTiuToe7fF43mv5efr3OznHeOkkyK34UuQKPN6huo=;
+	s=arc-20240116; t=1790108465; c=relaxed/simple;
+	bh=yYFOxPWxF+ebjxNifaNu6ojjenfBN450qHPMmQOo3ao=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qfyGHmpcduFpqV72mXInJR2d/nusXNhTyC05lxYLx+O9Iil+zd0oJJ3JEoZ7td8CJXhuFUISjGDpgGGby8UVuZCk41xcwWHpD9gRaBr0FEtOeRhjQQkicC8trOSaJ1rXUOz3tIcT7/RwFDjUCjWZN+myEskYpMhnygRxy2mgKJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GoSpigxq; arc=none smtp.client-ip=192.198.163.11
+	 In-Reply-To:To:Cc; b=ZJ1YeD9YGSSRJl2GVvI24cFYRSTEKInYhxMBgyMLpgkKtLcpZtB2vi2tyPTCdNAyy+u+VmpR+YI5dTgwzlBb7f4GoVVjbGgjgt2vl6oR5Aqbf5l0ay0XJ15ZFY2v87qsMVtNT5vr3whu4KGzetbm9lCfdAd92nuA4YRxj8zaYdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=STJfOpaz; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GoSpigxq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="STJfOpaz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790108440; x=1821644440;
+  t=1790108434; x=1821644434;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=LfqTiuToe7fF43mv5efr3OznHeOkkyK34UuQKPN6huo=;
-  b=GoSpigxqzPO1HaENgAXsUYp8JUpyuYBeTQwNYZ/XcK1c8N+IKIY6+g+9
-   S26WRpgsjh2HApoLcUw1vPj3g/1upxOjn7wg5+bsB2PlsUrR4eWybM051
-   qt4TVJn/qjSqnhwASd9rnmqCFUIzr+MHTJzW7VqlfmNwBh75mr69Rl3r/
-   YgluXW3DJ677+RZGAMQxxzrSlU6vNbeCV1/Hrs/zqWMK1ojoF1QdF0aQh
-   8nM/vxWeAVLWqF7kj5foUe3gZ28v12nYz9MJbTRBTnt8I5rkdqk89d0Ko
-   ppj2pngYEt+IfKvqrdy0FzP45jPrxtt5QOGx7uOPVMNXeQJTJLP/I0cWa
-   w==;
-X-CSE-ConnectionGUID: cZZyxohsSamrj+MIJ93tqA==
-X-CSE-MsgGUID: 8dTgB1CSQyOn6AY/cR68og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101340439"
+  bh=yYFOxPWxF+ebjxNifaNu6ojjenfBN450qHPMmQOo3ao=;
+  b=STJfOpazAp05uRVYCKK4es4atc8J4dZfcVjsueKBQWGy4LPZOOgdl7Lq
+   0c4NFjkpYYunFHc/wjUgUE66cMa0G+WYUxh607it2S4dgo1tD0k2R78Z7
+   rGhuWxrnwQvQ00JZggMIFK8DWnALriHgVrjc09uprAVCg8ciPP9mTHjX3
+   8IPYVWb80AXJnAkC0Zjr5AgWzES8TdlMHnzJcCM/p9/UlO/Jab/AWjKAf
+   x93pyryWRCbYy3wy+Ud6W9EMflvZrbsFcdk08vF15lUfes1OzfnwEP8F1
+   uCitkHmq59eFtgph3hMBMGJ5jEmkTm+1MTyTmGUkLzZakxp4nqKo4Q+wc
+   Q==;
+X-CSE-ConnectionGUID: s4OteA5ER22kuUXeUst6bw==
+X-CSE-MsgGUID: CjoLSgGrT7+9qaF8swxlMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101340432"
 X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="101340439"
+   d="scan'208";a="101340432"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:30 -0700
-X-CSE-ConnectionGUID: VbC8ywc4RiGj0HieDxm3ag==
-X-CSE-MsgGUID: Ev1uNTSKTW2KB+Xdpd4QXg==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:29 -0700
+X-CSE-ConnectionGUID: uyRPUhUQSH2oL1g+/2wGAg==
+X-CSE-MsgGUID: moj0U3maQ5GLF5cg/MoDjA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="269799195"
+   d="scan'208";a="269799192"
 Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.110.60])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:30 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:29 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Tue, 22 Sep 2026 14:20:07 -0600
-Subject: [PATCH v3 2/2] x86/early_printk: Add earlyprintk=tdx to drive the
- UART with TDVMCALLs
+Date: Tue, 22 Sep 2026 14:20:06 -0600
+Subject: [PATCH v3 1/2] x86/tdx: Move port I/O definitions to a shared
+ header
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
+Message-Id: <20260922-b4-tdx_earlyprintk_tdcalls-v3-1-6ebaa599df10@intel.com>
 References: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
 In-Reply-To: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
 To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -67,216 +67,105 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
  Vishal Verma <vishal.l.verma@intel.com>
 X-Mailer: b4 0.16-dev-62088
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7218;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3102;
  i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=LfqTiuToe7fF43mv5efr3OznHeOkkyK34UuQKPN6huo=;
- b=owGbwMvMwCXGf25diOft7jLG02pJDFmbHvPsTQyODz5Z/4DfxKDOY6ZK1MuCYPdJBY7/9cMCd
- E+9ML3WUcrCIMbFICumyPJ3z0fGY3Lb83kCExxh5rAygQxh4OIUgImUaDMyXJKaFpgYtae5allX
- /Y2bZmunb3p+28LktPpzsUX/O5yE+RgZFvB7vM7WKHq9Sl26uv/yvyksh+8fNWYOO3X8RGuu1po
- p3AA=
+ bh=yYFOxPWxF+ebjxNifaNu6ojjenfBN450qHPMmQOo3ao=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDFmbHvM4cHfJHMkQW7m7RvGvQPHrre2l7mwpeY2Bq3V2V
+ 01b8KGso5SFQYyLQVZMkeXvno+Mx+S25/MEJjjCzGFlAhnCwMUpABORqGf4X7pyynr3w6J7YjrX
+ hT+dwZthuZ1dwu4J//6M+5PXzt4mHMXwV95QM33aGrVonoSIR7ZHpaQ7Unc5P/e/9cOw7g17Q5I
+ uEwA=
 X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
  fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-A TDX guest cannot execute port I/O instructions directly, but
-earlyprintk's serial console still issues plain inb()/outb() and lets
-each one fault into the #VE handler to be emulated as a TDVMCALL.
+In preparation for adding a 'tdx' option for early_printk which uses
+direct TDVMCALLs for I/O, factor out the PORT_READ and PORT_WRITE
+definitions from arch/x86/coco/tdx/tdx.c into
+arch/x86/include/asm/shared/tdx.h, and namespace them with 'TDVMCALL_'.
 
-While that works, it is a roundabout way to get a character out.
-early_serial_putc() polls the LSR, and then writes a byte, but since the
-TDX guest can't directly do port I/O, a #VE exception is raised. The #VE
-handler must call TDG.VP.VEINFO.GET to find out what faulted, and then
-it can issue the TDVMCALL that does the actual work.
-
-This makes #VE a functional mechanism for doing I/O, which is not
-desirable, is unnecessarily complicated and fragile, and results in
-twice the number of calls into the TDX module.
-
-Instead, add an earlyprintk=tdx option, which can issue the TDVMCALLs
-directly. Add a pair of tdx_serial_in() and tdx_serial_out() accessors
-and set them up in this case.
-
-Note that the output does not appear any earlier - "earlyprintk=" is an
-early_param(), so the console is still registered from
-parse_early_param(). This only changes how the bytes leave the guest
-once it is up.
-
-LLMs were used under supervision to create this patch, to help
-understand the scope and mechanisms, create testing instrumentation
-(throwaway) to count #VEs in the serial vs tdx earlyprintk setups,
-and to drive lab machines to do this testing.
+The decompressor also used 0/1 literals in its tdx_io_{in,out} helpers -
+switch those to use the new definitions.
 
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  9 ++++++
- arch/x86/include/asm/tdx.h                      |  3 ++
- arch/x86/coco/tdx/tdx.c                         | 39 +++++++++++++++++++++++
- arch/x86/kernel/early_printk.c                  | 41 +++++++++++++++++++++++++
- 4 files changed, 92 insertions(+)
+ arch/x86/include/asm/shared/tdx.h | 6 ++++++
+ arch/x86/boot/compressed/tdx.c    | 4 ++--
+ arch/x86/coco/tdx/tdx.c           | 8 ++------
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 33cd30996e47..f8dac4a58327 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1543,6 +1543,7 @@ Kernel parameters
- 			earlyprintk=serial[,ttySn[,baudrate]]
- 			earlyprintk=serial[,0x...[,baudrate]]
- 			earlyprintk=ttySn[,baudrate]
-+			earlyprintk=tdx
- 			earlyprintk=dbgp[debugController#]
- 			earlyprintk=mmio32,membase[,{nocfg|baudrate}]
- 			earlyprintk=pciserial[,force],bus:device.function[,{nocfg|baudrate}]
-@@ -1556,6 +1557,14 @@ Kernel parameters
- 			Use "nocfg" to skip UART configuration, assume
- 			BIOS/firmware has configured UART correctly.
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index f20e91d7ac35..ecaf965f059b 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -84,6 +84,12 @@
+ #define TDVMCALL_STATUS_ALIGN_ERROR	0x8000000000000002ULL
+ #define TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED	0x8000000000000003ULL
  
-+			On x86, "tdx" is a fixed COM1 console, and takes no
-+			options. In a TDX guest the port is driven with
-+			TDVMCALLs rather than port I/O instructions, avoiding
-+			the #VE exception that would otherwise be taken to
-+			emulate every access. Outside a TDX guest it falls back
-+			to port I/O, behaving like "earlyprintk=serial". If
-+			CONFIG_INTEL_TDX_GUEST is not set, it is ignored.
++/*
++ * TDG.VP.VMCALL<Instruction.IO> direction (passed in R13)
++ */
++#define TDVMCALL_PORT_READ		0
++#define TDVMCALL_PORT_WRITE		1
 +
- 			Append ",keep" to not disable it when the real console
- 			takes over.
+ /*
+  * Bitmasks of exposed registers (with VMM).
+  */
+diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+index 8451d6a1030c..ed278bac3c93 100644
+--- a/arch/x86/boot/compressed/tdx.c
++++ b/arch/x86/boot/compressed/tdx.c
+@@ -22,7 +22,7 @@ static inline unsigned int tdx_io_in(int size, u16 port)
+ 		.r10 = TDX_HYPERCALL_STANDARD,
+ 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+ 		.r12 = size,
+-		.r13 = 0,
++		.r13 = TDVMCALL_PORT_READ,
+ 		.r14 = port,
+ 	};
  
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 89e97d5761d8..325dd7c5929f 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -83,6 +83,9 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
- 
- u64 tdx_hcall_get_quote(u8 *buf, size_t size);
- 
-+u8 tdx_inb(u16 port);
-+void tdx_outb(u8 value, u16 port);
-+
- void __init tdx_dump_attributes(u64 td_attr);
- void __init tdx_dump_td_ctls(u64 td_ctls);
- 
+@@ -38,7 +38,7 @@ static inline void tdx_io_out(int size, u16 port, u32 value)
+ 		.r10 = TDX_HYPERCALL_STANDARD,
+ 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+ 		.r12 = size,
+-		.r13 = 1,
++		.r13 = TDVMCALL_PORT_WRITE,
+ 		.r14 = port,
+ 		.r15 = value,
+ 	};
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7d1a93ee2534..d8887a2a524b 100644
+index f904a636d449..7d1a93ee2534 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -194,6 +194,45 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
- }
- EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+@@ -24,10 +24,6 @@
+ #define EPT_READ	0
+ #define EPT_WRITE	1
  
-+/**
-+ * tdx_inb() - Read a byte from an I/O port without a #VE
-+ * @port: I/O port to read from
-+ *
-+ * Ask the VMM to perform the read with TDG.VP.VMCALL<Instruction.IO>, rather
-+ * than executing an IN instruction and having the resulting #VE emulate it.
-+ *
-+ * Return: the byte read, or 0xFF if the hypercall failed.
-+ */
-+u8 tdx_inb(u16 port)
-+{
-+	struct tdx_module_args args = {
-+		.r10 = TDX_HYPERCALL_STANDARD,
-+		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
-+		.r12 = 1,
+-/* Port I/O direction */
+-#define PORT_READ	0
+-#define PORT_WRITE	1
+-
+ /* See Exit Qualification for I/O Instructions in VMX documentation */
+ #define VE_IS_IO_IN(e)		((e) & BIT(3))
+ #define VE_GET_IO_SIZE(e)	(((e) & GENMASK(2, 0)) + 1)
+@@ -691,7 +687,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 		.r10 = TDX_HYPERCALL_STANDARD,
+ 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+ 		.r12 = size,
+-		.r13 = PORT_READ,
 +		.r13 = TDVMCALL_PORT_READ,
-+		.r14 = port,
-+	};
-+
-+	if (__tdx_hypercall(&args))
-+		return 0xFF;
-+
-+	return args.r11;
-+}
-+
-+/**
-+ * tdx_outb() - Write a byte to an I/O port without a #VE
-+ * @value: byte to write
-+ * @port: I/O port to write to
-+ *
-+ * Ask the VMM to perform the write with TDG.VP.VMCALL<Instruction.IO>, rather
-+ * than executing an OUT instruction and having the resulting #VE emulate it.
-+ */
-+void tdx_outb(u8 value, u16 port)
-+{
-+	_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), 1,
-+		       TDVMCALL_PORT_WRITE, port, value);
-+}
-+
- static void __noreturn tdx_panic(const char *msg)
- {
- 	struct tdx_module_args args = {
-diff --git a/arch/x86/kernel/early_printk.c b/arch/x86/kernel/early_printk.c
-index cba75306e5b6..194737a3e9a0 100644
---- a/arch/x86/kernel/early_printk.c
-+++ b/arch/x86/kernel/early_printk.c
-@@ -21,6 +21,7 @@
- #include <linux/usb/xhci-dbgp.h>
- #include <asm/pci_x86.h>
- #include <linux/static_call.h>
-+#include <asm/tdx.h>
- 
- /* Simple VGA output */
- #define VGABASE		(__ISA_IO_base + 0xb8000)
-@@ -111,6 +112,23 @@ ANNOTATE_NOENDBR_SYM(io_serial_out);
- DEFINE_STATIC_CALL(serial_in, io_serial_in);
- DEFINE_STATIC_CALL(serial_out, io_serial_out);
- 
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+/*
-+ * A TDX guest cannot execute port I/O instructions, so ask the VMM to do it.
-+ */
-+static __noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
-+{
-+	return tdx_inb(addr + offset);
-+}
-+ANNOTATE_NOENDBR_SYM(tdx_serial_in);
-+
-+static __noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
-+{
-+	tdx_outb(value, addr + offset);
-+}
-+ANNOTATE_NOENDBR_SYM(tdx_serial_out);
-+#endif /* CONFIG_INTEL_TDX_GUEST */
-+
- static int early_serial_putc(unsigned char ch)
- {
- 	unsigned timeout = 0xffff;
-@@ -196,6 +214,22 @@ static __init void early_serial_init(char *s)
- 	early_serial_hw_init(divisor);
+ 		.r14 = port,
+ 	};
+ 	bool success;
+@@ -720,7 +716,7 @@ static bool handle_out(struct pt_regs *regs, int size, int port)
+ 	 * "TDG.VP.VMCALL<Instruction.IO>".
+ 	 */
+ 	return !_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), size,
+-			       PORT_WRITE, port, regs->ax & mask);
++			       TDVMCALL_PORT_WRITE, port, regs->ax & mask);
  }
  
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+/*
-+ * Use early_serial_base (COM1) and same default baud rate as
-+ * "earlyprintk=serial"
-+ */
-+static __init void early_serial_tdx_init(void)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+		static_call_update(serial_in, tdx_serial_in);
-+		static_call_update(serial_out, tdx_serial_out);
-+	}
-+
-+	early_serial_hw_init(115200 / DEFAULT_BAUD);
-+}
-+#endif /* CONFIG_INTEL_TDX_GUEST */
-+
- static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
- {
- 	u32 __iomem *vaddr = (u32 __iomem *)addr;
-@@ -414,6 +448,13 @@ static int __init setup_early_printk(char *buf)
- 			early_serial_init(buf + 4);
- 			early_console_register(&early_serial_console, keep);
- 		}
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+		if (!strncmp(buf, "tdx", 3)) {
-+			early_serial_tdx_init();
-+			early_console_register(&early_serial_console, keep);
-+			break;
-+		}
-+#endif
- #ifdef CONFIG_PCI
- 		if (!strncmp(buf, "pciserial", 9)) {
- 			buf += 9; /* Keep from match the above "pciserial" */
+ /*
 
 -- 
 2.55.0
