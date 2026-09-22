@@ -1,109 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D1437F8B2
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 02:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2794E4C9E00
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 07:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790042560; cv=none; b=XIgU3+Oi88APZfnn4BHG0r1LuwsPr1Ywo3NHDKxfUofglHrB4ms9XKu9NznKGuRIk/LoSato2DpuKuJgN36YUm5UMKOL335zPMGq8dfAkPIrUfU+11OXxAQ9EEhbYIYkgO6uvSuivhXr9KSRBwyLdGian5ZnlipsrVHAzn2a1Wc=
+	t=1790060970; cv=none; b=W6hnwzNR5QofA50KTATls2DTyX9a4IzJUkP64rp17vzK72MBHrj1P/SDC8XU5jK65O8/cjGtolY/5ZYrnQssc1xxVCwTvKBDfeVWnGK/uYpaI1WHYQpJJCxzRUfldg+s7t2oohDjg3x2gtN/HzuZu93Jym2eOa8Bb3aDs3BuxoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790042560; c=relaxed/simple;
-	bh=FkvSa0r2hQpc8Adrt+6G1en3MkyfPXKYa3vL0SOYLO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hZ8F1n80Fh7J0jENAS56klOC1+Tcde3JCeXfe4rsrg6IYT1Jf/06hpdpKSlJsAPK6pZb6XAOZ+iwxTTwZV1xgo3QFISPyCIsy7ylTHSh3EriMh0sZNcvrJB4q8JPMMJLO9fFkaiNQpD04U7+FzQZ/L0jHuIS43Ac4C7O+rUCbr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oGYRghto; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790060970; c=relaxed/simple;
+	bh=JpYEmE0aMvyKGA4ffids0WBnSVA1EemEfo95puLGQaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=isKM4pnPLsJwzTx6UqfJgohLlzTuugkKQDCzM5/057NI1PBweqLdzhcUB1VQ/QFAFXMbk1aHbqRqqNezEiHMmnl0mUEDbfiD824rvY5q1UjD7gl+vGN/Gn0TefgWUCUkC2DY22PO0V9lebE8RvdrhxVg26HHqLJdUMBHt6ULGZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EO48EpZ+; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oGYRghto"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EO48EpZ+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790042558; x=1821578558;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FkvSa0r2hQpc8Adrt+6G1en3MkyfPXKYa3vL0SOYLO8=;
-  b=oGYRghtoeDt+BSBDgP8aVDVfw81iOLYikY8zhZ+9ZAlKfjamhKFkYEf6
-   +eKkXoZfrYX7LaBa37Eqvb52FNVFZJ6oHVSOULkQDInITlAPPqMoybLMU
-   l4s3tTtDzGh3swGSRR7WfA7ZDmO3f9hBcFcu54/PUFf1lArvMkiTM8R5t
-   ZSzOcAyERtbDCFs/2F6wolGobQY5X3rbfNIh4sIYtg8R2LT4XRwR084pw
-   /lv8XUchFbD2t23lAijWghkHwrDSvX2W+SVBbP+ZhlDO2hyffbjSPvUbc
-   T8g+WTM+kbYtoeNQet9J1bHuq0maXJ+Ynzn5mYD+BzE5ol7TDSyiwAxp8
-   g==;
-X-CSE-ConnectionGUID: 5pnWoS/0QT+NN3LyDKte8Q==
-X-CSE-MsgGUID: hKjwNGpxTFWTNSb9WyBlPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="108105199"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="108105199"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 19:02:37 -0700
-X-CSE-ConnectionGUID: VvDIpI/0TXqAbWyrKf9vVA==
-X-CSE-MsgGUID: M8z5qtwOSZO+Tk9fw+SyKQ==
+  t=1790060968; x=1821596968;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JpYEmE0aMvyKGA4ffids0WBnSVA1EemEfo95puLGQaw=;
+  b=EO48EpZ+vdniUXOd4a/6dW3xptYsVMevB3c889688A7WGA6ephpLflNA
+   46twZ+QNA/BSa0IDjPAWiuX6I7LJc5DjJO8zXVDUThs6JKWSy+sJC70lX
+   qZ42TY+HZS0uHP5mCOnCt+om+9HRZqHuHwTgt+tXvci7HID3VN8cPB8GD
+   b6f5LQ2AcesLGnAPwjstwfW+4Gl4fmSvgvjT/m3KaD5KHs8RBOjJhNm+y
+   b+2qgpmmlS/1Vak4vtnzeQ+J8zw8lIIWu8nwL9NJZU0t6GABkNuI7fArn
+   9IX2lbvkFR1PcB65xFLzrEaEebRZ6wLyrQif7mLm5xF3QXqxIUGCHnNkV
+   A==;
+X-CSE-ConnectionGUID: K48v8HGLQcKExL7b2S0WMA==
+X-CSE-MsgGUID: qiPdUdRkReyp8HlXk92Uaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="116158941"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="116158941"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 00:09:27 -0700
+X-CSE-ConnectionGUID: NlXRbrpDT1e3IPlS8R5VsA==
+X-CSE-MsgGUID: wSic7CzwT8Sz6Pfc2YERDg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="3904516"
-Received: from unknown (HELO [10.238.208.182]) ([10.238.208.182])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 19:02:34 -0700
-Message-ID: <d5a4ba72-3cce-4f16-ad47-f1c82c85d834@intel.com>
-Date: Tue, 22 Sep 2026 10:02:28 +0800
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="4313983"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.202])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 00:09:21 -0700
+Date: Tue, 22 Sep 2026 10:09:17 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, chao.gao@intel.com,
+	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
+	nik.borisov@suse.com
+Subject: Re: [PATCH v2 1/5] x86/virt/tdx: Move TDH.SYS.CONFIG operations into
+ a wrapper
+Message-ID: <arIpnQEx0ULfqvem@tlindgre-MOBL1>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-2-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/9] KVM: TDX: Enable VM-DoS Prevention Features for
- TDX
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- nik.borisov@suse.com
-References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
- <6d9113d7-cfae-480b-908a-5cb52020a6c8@intel.com>
- <arHDAVhFXeQXXrfI@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <arHDAVhFXeQXXrfI@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915102658.713079-2-yilun.xu@linux.intel.com>
 
-On 9/22/2026 7:51 AM, Sean Christopherson wrote:
-> On Mon, Sep 21, 2026, Xiaoyao Li wrote:
->> On 8/19/2026 5:48 PM, Xiaoyao Li wrote:
->>> Hi all,
->>>
->>> This is v4 of the series to enable the Notify VM Exit and Bus Lock VM
->>> exit for TDX, which fixes the KVM CAP issue related with them and allow
->>> userspace to actually enable the features.
->>>
->>> Compared to v3, this v4 adds 5 more patches.  The first 8 patches target
->>> for stable kernels while only the patch 9 doesn't have to.  Patch 1 is a
->>> single patch to enable Notify VM exit for TDX.  Except patch 6, patch
->>> 2-7 are mandatory for enabling Bus Lock VM exit for TDX in patch 8.
->>>
->>> Patch 6 itself is a fix for VMX and is OK for cc stable though maybe not
->>> necessary.  Patch 6 is added to this series since it can help stop Sashiko
->>> repeating its finding of VMX's pre-existing issue, and it's also necessary
->>> for patch 9 to consilidate the exit handler for VMX and TDX.
->>>
->>> There are other issues of existing code found during previous review, like
->>> the EPT MISCONFIG handling.  Given they are not mandatory for enabling the
->>> Notify VM exit and Bus Lock VM exit for TDX, the plan is to address them in
->>> a follow-up series separately.
->>>
->>> Please refer to v1 for a full background.
->>>
->>> v3: https://lore.kernel.org/all/20260812080229.2481439-1-xiaoyao.li@intel.com/
->>> v2: https://lore.kernel.org/all/20260810112200.2326727-1-xiaoyao.li@intel.com/
->>> v1: https://lore.kernel.org/all/20260805031257.1844914-1-xiaoyao.li@intel.com/
->>
->> Hi Sean,
->>
->> What's your plan on this series? Can you queue it if it looks good to you? Or
->> need me to spin a new version to address Binbin and Rick's comments on the
->> commit message?
-> 
-> Get it applied, with some tweaks.  I.e. no v5 necessary.
+On Tue, Sep 15, 2026 at 06:26:54PM +0800, Xu Yilun wrote:
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -998,11 +998,33 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+>  	return ret;
+>  }
+>  
+> +/*
+> + * This is an array of HPAs, each points to a TDMR_INFO data structure (see
+> + * struct tdmr_info).
+> + *
+> + * It is the in-memory ABI that the kernel passes to the TDX module to specify
+> + * the ranges of TD Memory Regions (TDMRs) and their associated PAMT memory.
+> + */
+> +struct tdmr_info_pa_array {
+> +	DECLARE_FLEX_ARRAY(u64, phys);
+> +};
 
-Thanks!
+I think you can simplify the comments above a bit, how about:
+
+TDX module in-memory ABI to specify the TD Memory Regions (TDMRs) and their
+associated PAMT memory. An array of HPAs. Each element points to a TDMR_INFO,
+see struct tdmr_info.
+
+Other than that:
+
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
