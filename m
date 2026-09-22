@@ -1,197 +1,149 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E14A49F132
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 19:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E3C4AA588
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 20:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790107051; cv=none; b=ngQhRJ7Zv9IxvimhaXXTIveuQFG0J2ikIKRctYFqj2nQbhGv+Jf/J1uA/up0ds1AWAtkiTsRZZj9JcRV6piVFlpCpES1sI7PRPRk/+6nGyEPb5PAwQd3y2reABowBslsDTAH/wN4TfIdOEdzE1vg0TP5FNDqGR2actf0AfZptBo=
+	t=1790108439; cv=none; b=phwHA4Uep/PBJ5j4D9+xKZm7J0Y+TepCp2d01e9LqhojPz6iNXTEO8Q9OfXRrjNQ++rtK19Oj2eghubGH3iVaU9zJCRsW7qa2WI7ok3+z5L0wWATDYeWTTN+FAOsS2KykSrDq/WUdZROBy54JD6k7peKhpG8/vg6sKebJmjEs+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790107051; c=relaxed/simple;
-	bh=9JvbDLSyQrfrPc2pw153E2x+FuYYskw3Od9BLkW7on4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZhnUj7qsGrDSbleVR/IU6tKzRGWaWz64MCMaNHOCBMbuJObDBy9RnCSJWur45FeuG8g0q6Qrj11K2pZ0tvA5BeKIyvFZW4vDX9QKyh5JGsKbwmU1v9tGAzHQUuDBzDQBj767y3+U906gQT7KYjg93434Eig2ArsS7+2r1OfmE30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=d0uPXZoH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RpJucbbK; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790108439; c=relaxed/simple;
+	bh=eK2gYyjxU23XzTBH3YL1DD+OSCsdTj6l4nJL5/iHABo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=l3MqfGi/9CC6J0cJHPeDBTnkpGqRrAmoLOc7mAkF+WDFAdDFUoCUtRO0iMDaPKaWq03klGrEQ3ZvRUBcUZ2Q57iHPKIjxAbbfoJD3p477QziyUQlIPeJxrz7dp96/FYBjSnZ6wVmY4G7Ns5wem7S2HcV69ODudFUGQU6ZA2rnPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fx3vqD2n; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="d0uPXZoH";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RpJucbbK"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MI73001348892
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 19:57:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+kCerQCZAd/icfcStrsOSRarPahcPdmJx1Sv0aBlf8A=; b=d0uPXZoHzbyscvk9
-	Fui+SId+pi+/38DYBmJ4SUmJj3TBIOl02UaIYHzThs7bokVlSzJZkfGbSRFsL68/
-	cZ/uP/7WOGeXAlcTU4vmV+HflDvNyN5Z0fnAcM7nU/XcvaTETkXOUSJ2f1ZojAc4
-	0zLDZ8ltivPnVLqpPWKKeqfPg3JacgZQKAOB6RcwGV524NRBSIUWLShhBgtt/L5r
-	7FvnTgzpCnyqgX+bp9PyoWBEh/mB7BrjGXjBo4j1BWeuUZUdClE0HfyiaD9y3FRZ
-	4UMgUMuzREVwjn8607kyf0+UyBgezQRsBNMpLq9Jd/sUhd3kjkArdqLJu7ivd9Kp
-	BNfMeA==
-Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gux860pgy-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 19:57:28 +0000 (GMT)
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1438719cc1eso239324c88.0
-        for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 12:57:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790107047; x=1790711847; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=+kCerQCZAd/icfcStrsOSRarPahcPdmJx1Sv0aBlf8A=;
-        b=RpJucbbKQrL4mBW7azN0aVWWLOpQi6T2wH0odqsedYkYTytINfWCCapLx5AcNRLNxT
-         sOW26axBRhOuA3ZPxVDB3f8WVDbDyai7VlLT9JKGJDxMZ5WRB0fsuCo4ILH/XhkKJ0m8
-         +WVwGxxzGteHRC2SkWIi4BqCiTN6xJrnGCckLivX9vMqcy5rdk+sSKRc4yyX3+jVNVPc
-         3xFQ+fYOFFWxQ+cYF9zO0kjRryXhC+M6fVlmvDh6m24el++JibdNBJCboR1W/uQ5g6/h
-         eXEm7rd+onbrd9+W7jZrXRnm8A8S8/c6JOqFiBVIGafZWv3WUXSV6GUgUyMr6NZYwsip
-         ZxpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790107047; x=1790711847;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+kCerQCZAd/icfcStrsOSRarPahcPdmJx1Sv0aBlf8A=;
-        b=DqTXmrhOWmIbL+2d6eWb8PAP+dkkh3kA0sgYIeK6UQpQfwukMrtbH0bg5wvnZEVyYw
-         WqeI/qbbB3MUQSaaUimwIUuJ+13uXxc52HIfpPG1eABAsLsbYpfhezpZQ/blWD7kEyps
-         Xjzzzz904BioVokM7BbAzPGas//qeE4mcLCKeh9SojxvWIJTapx78UhHPQ0OYWSiKtyL
-         k6I2lNoaLUXBCvYPG7lDQ5B/B7789fLBIcjfcxDqONpNlSWuOI76uqfTT1uUQfXdgxMs
-         AIcN5Dg5sxh0k/OQwAv7ajrtxPHil68kGpZ491XMGfFK2+AZ54ZrXqo2vC2EneiQIXTG
-         SieQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxP3iw1r3jJhkKkaaGO1J6ezevyOgW0hylN2LRiddCCO76VydH3ZtPxpeC+AYf5W7eVwe/6hKv9Vd7y@lists.linux.dev
-X-Gm-Message-State: AFuF++mJ8qAyfJ6XLLgl0huSPlPw1ZJQw6Z6s1zH1AggPdniCoARtHv8
-	ApgCi9lpAVpvdYZafsNvyeAXCiVbsHJErJ+SK2WmkVSLZ7FQMM49kHo3x1XOt5W/N/haOsMpXfr
-	dtcReCoSeCj8HNI67PUS3telEyd1McsADbKKXF8eTo2quk6GOfRBZPxsvRzIg45MV
-X-Gm-Gg: AYBFou268n6h76TkuJeTehbmcfDylHgZ3kwrRnFMvYvgrZJBzPi0GNEDNEFHCjmvDqL
-	UqKPRaUsjZZxGEgZK7/Ysn3swGe7AZgd/l9JZ2Lwyn/VTQTVFJOzPmEMaV3NryhqHmWyiuutEZY
-	F6xcuv6CKIydg9o8tZ7yyilcqZdIXHMBYuOe17eD/z8zrEFmdxvknQgiLUsklF7e3mTvWYucAUZ
-	o+8CprZ5TcHJTQJHzhFyWBxeY4mdVCFu0873YkgN4AIAIYCT/5jceHcwPXZfBDdsm6gcDQT3dlz
-	SjLbHNKsyPxCg9YBBBFbekD8nU35LnWIicd57oLlja4RVxi75qb9gy1Ho+qjoD5uJKFv12K55sd
-	FXfWkjwiB407j1cdHr2gNj47kyrA3URNuLD/X3QhNFEYGCyqXCOCFCQ==
-X-Received: by 2002:a05:7022:1582:b0:144:dfc1:9aa with SMTP id a92af1059eb24-144f91372a3mr551667c88.10.1790107046968;
-        Tue, 22 Sep 2026 12:57:26 -0700 (PDT)
-X-Received: by 2002:a05:7022:1582:b0:144:dfc1:9aa with SMTP id a92af1059eb24-144f91372a3mr551637c88.10.1790107046436;
-        Tue, 22 Sep 2026 12:57:26 -0700 (PDT)
-Received: from localhost (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e96258204sm448771eec.11.2026.09.22.12.57.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 12:57:26 -0700 (PDT)
-Date: Tue, 22 Sep 2026 12:57:22 -0700
-From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Subject: Re: [PATCH v19 06/20] KVM: arm64: Refactor the vcpu_load to allow
- for VM specific callbacks
-Message-ID: <20260922125722.00006b2e@oss.qualcomm.com>
-In-Reply-To: <20260920212845.707-7-suzuki.poulose@arm.com>
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
-	<20260920212845.707-7-suzuki.poulose@arm.com>
-Organization: Qualcomm
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fx3vqD2n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790108434; x=1821644434;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=eK2gYyjxU23XzTBH3YL1DD+OSCsdTj6l4nJL5/iHABo=;
+  b=fx3vqD2nRVSidG7dk3404tkxFRncQBC+qIPf2cvHdNsm6ePUiu+fqXmk
+   o97TSMzRJAnHji8xef13IOdwMJvXA08M6/Vy/clgy4KycBsf5WI6evOoo
+   pRob/Zs52tnSVm0zUvtsgu+LGiwcdz93HS4P1I9gG9sLEYkKEakzS6GY2
+   7dnQBNGsnaFqfJGN+BI/OLfD0zH4NqADtvguVRxnis1HPOvfUK9yJh9dP
+   E/rO2hSEvNzR90+y4nFs9MbG7suWn6KMTRwx1t4Zg6vg2/zXZC9KkKQ10
+   uyEDxlNzlrSHzxOadwsQMVLarc6JoJ74s4N+znaJbpv6OVDigcewp4H+y
+   A==;
+X-CSE-ConnectionGUID: vU1bPBFdTmCbzY3NUug5YQ==
+X-CSE-MsgGUID: uP1Mm5QETvqWqu+HnHV7rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101340425"
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="101340425"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:29 -0700
+X-CSE-ConnectionGUID: ceG/PYNtTSSY/tomv9xkEw==
+X-CSE-MsgGUID: XkHSb4+TRwKwgRfutnN8DQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="269799188"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.110.60])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:28 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH v3 0/2] x86/tdx: Use TDVMCALLs directly for earlyprintk
+Date: Tue, 22 Sep 2026 14:20:05 -0600
+Message-Id: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 2GfEHQBGIcYPxacCtbNMhGuTtHiAEHIr
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDI5MSBTYWx0ZWRfX9CeZvn3S5y90
- QABhvwyUVmtQ4KY0+qbUBdryQyn6/tlOc82xNvyAHvu73pNMOl5/aJalhFByT9Y57SholVFPv6G
- hzke1FeDAPkXYS/4riw8+1NZNkXIMVQ=
-X-Proofpoint-ORIG-GUID: 2GfEHQBGIcYPxacCtbNMhGuTtHiAEHIr
-X-Authority-Analysis: v=2.4 cv=eIOGH3p1 c=1 sm=1 tr=0 ts=6ab2dda8 cx=c_pps
- a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=7CQSdrXTAAAA:8 a=20KFwNOVAAAA:8 a=X9DOVUd_aP98ggfEJksA:9 a=CjuIK1q_8ugA:10
- a=vBUdepa8ALXHeOFLBtFW:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDI5MSBTYWx0ZWRfX4IIcnvZiiV2u
- hAV4tb55Np3+4eUhT+MuWj3KQIDJd4S+9C2QijFIFoFDDQo5eeiedEbKTsIRtermYI75KT9lN7i
- ob3oPCqw9+6rnVfiU2XfGznbIrEzYP59rMvYgi8/+twxrhyh6U2V2W5HltS9fvQWRDrzBZdj/bW
- sDlyiik11OnZ0LgrwzpDaQDIo3I6+06NDyu+HoPwCabDyQ2QfrSW+KsjUgaiZ+ahH4vVR6x9oBZ
- gtH2QcgjAnJwvraL6gw45q6iZvSV3gYmdK1Vr2AzkJtRbzQ8DQPwo8nsHx3KzHlQTSH1Ty+9Jgd
- OrKm2shoOIMSSat75tIhilxuyOs59A7OWx23y9ajky/lh7t76etMsyAoYOVmnF9eBm9dI6Xxrqd
- ZJNdSI31JG6+4kWnYHnizlunebMwDlMCZbHJD+zFZwhSe6FL67JYv724EaOzGQs5X4bE3dAWZIQ
- sS1lL4h+yiqHs2p9qoQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-22_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220291
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NQQ6CMBCF4auYrq3pDGjElfcwhrR0KlUE0lYCI
+ dzdgi5YsXyZyfePzJOz5NllNzJHnfW2qeNI9jtWlLJ+ELc6boYCTyITCVcpD7rPSbpqaJ2twys
+ PupBV5XkqNCgEeVYSWQRaR8b2C367/7b/qCcVYRbnj9L60LhhqXcw//1DILZCHXDBU4UKlMmEA
+ HWNZ6oORfNmc6jDFYWwSWGkpAajKTF4NHpNTdP0BekEllEhAQAA
+X-Change-ID: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
+To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Vishal Verma <vishal.l.verma@intel.com>
+X-Mailer: b4 0.16-dev-62088
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2546;
+ i=vishal.l.verma@intel.com; h=from:subject:message-id;
+ bh=eK2gYyjxU23XzTBH3YL1DD+OSCsdTj6l4nJL5/iHABo=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDFmbHnO/2FpVUrUw6kXpn2OPJp7UW8rMNMFD2vrM96yHh
+ jtLez/Hd5SyMIhxMciKKbL83fOR8Zjc9nyewARHmDmsTCBDGLg4BWAi700YGTpljHzF5ggu8zk9
+ Z238TdYWvZxHvbzpR19P8btr2pO8ai4jw2/Ga6VbPJJEGJb+vbo2y/Lewfv60SpB7x74XNaQDd/
+ 0gRMA
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
+ fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-On Sun, 20 Sep 2026 22:28:31 +0100
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+Background
+==========
 
-> To keep the VCPU load/put handling cleaner with the different kinds of VM
-> types, we are about to introduce VM specific callbacks to do just the right
-> thing. In preparation for that, make some refactoring to add the change
-> easier.
-> 
-> No functional changes intended. Based on a work by Marc Zyngier.
-> 
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+TDX guests have early_printk support, but it is through a roundabout way
+using a #VE exception as a functional mechanism. The exception handler
+has to use TDG.VP.VEINFO.GET to find out what faulted, and then issue
+the TDVMCALL. Simplify this by using a TDVMCALL from the guest which can
+directly perform the port I/O.
 
-Trivial stuff inline + maybe one blob that should be in previous patch?
+Patch details
+=============
 
+Patch 1 is a prep patch that moves the port I/O direction constants to
+arch/x86/include/asm/shared/tdx.h.
 
-> ---
->  arch/arm64/kvm/arm.c | 48 ++++++++++++++++++++++++++------------------
->  1 file changed, 29 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 8c784b266a8e8..c74706ed9a531 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
+Patch 2: Add a new earlyprintk=tdx option, which calls the new tdx_inb()
+/ tdx_outb() helpers to perform the port I/O directly using TDVMCALLs.
 
-> +
-> +static void vcpu_set_wfx_traps(struct kvm_vcpu *vcpu)
-> +{
-> +	if (kvm_vcpu_should_clear_twe(vcpu))
-> +		vcpu->arch.hcr_el2 &= ~HCR_TWE;
-> +	else
-> +		vcpu->arch.hcr_el2 |= HCR_TWE;
-> +
-> +	if (kvm_vcpu_should_clear_twi(vcpu))
-> +		vcpu->arch.hcr_el2 &= ~HCR_TWI;
-> +	else
-> +		vcpu->arch.hcr_el2 |= HCR_TWI;
+The serial earlyprintk path is left as is - TD guests using this will
+still take a #VE exception, and the exception handler will perform the
+I/O.
 
-You could use FIELD_MODIFY() for these but maybe not worth it.
+Testing
+=======
 
-> +}
-> +
-> +static void vcpu_load_pvtime(struct kvm_vcpu *vcpu)
-> +{
-> +	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
-> +		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
-> +}
-> 
-> @@ -772,7 +782,7 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
->  		kvm_call_hyp_nvhe(__pkvm_vcpu_put);
->  
->  		/* __pkvm_vcpu_put implies a sync of the state */
-> -		if (!kvm_vm_is_protected(vcpu->kvm))
-> +		if (kvm_vm_is_unprotected_pkvm(vcpu->kvm))
->  			vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
+Added a counter for the number of COM1 port I/O #VEs handled:
 
-Why in this patch?
+  no earlyprintk     -  ~63000
+  earlyprintk=ttyS0  -  ~61000
+  earlyprintk=tdx    -  ~35000
 
->  	}
->  
+The new tdx option nearly halves the number of #VEs handled.
+
+Additionally, ran the usual suite of CI testing, which covers KVM self
+tests, KVM unit tests, and Avocado KVM tests without any regressions.
+
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+Changes in v3:
+- Drop the ttySN and baudrate option parsing for earlyprintk=tdx (Dave Hansen)
+- Link to v2: https://patch.msgid.link/20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com
+
+Changes in v2:
+- Rebase to v7.3-rc4
+- Move the TDX hypercall helpers into coco/tdx/tdx.c (Kiryl)
+- Add a new earlyprintk=tdx option that implements the direct TDVMCALL
+  path (Dave Hansen)
+- Link to v1: https://patch.msgid.link/20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com
+
+---
+Vishal Verma (2):
+      x86/tdx: Move port I/O definitions to a shared header
+      x86/early_printk: Add earlyprintk=tdx to drive the UART with TDVMCALLs
+
+ Documentation/admin-guide/kernel-parameters.txt |  9 +++++
+ arch/x86/include/asm/shared/tdx.h               |  6 ++++
+ arch/x86/include/asm/tdx.h                      |  3 ++
+ arch/x86/boot/compressed/tdx.c                  |  4 +--
+ arch/x86/coco/tdx/tdx.c                         | 47 +++++++++++++++++++++----
+ arch/x86/kernel/early_printk.c                  | 41 +++++++++++++++++++++
+ 6 files changed, 102 insertions(+), 8 deletions(-)
+---
+base-commit: 93f51579e7df248780214094418f205253383cc5
+change-id: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
+
+Best regards,
+--  
+Vishal Verma <vishal.l.verma@intel.com>
 
