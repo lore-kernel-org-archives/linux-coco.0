@@ -1,197 +1,171 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230B355D898
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 22:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB1152759A
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 22:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790116184; cv=none; b=tUh7mukhKtA58P4lzHeqnWhBjUojXkGUaIyxNbWUR+aXmxPjAcG/nCD0z/MS2BYrOkxOPy3fO0Tok7zwmG+f5qtgBc96Nb3045mzKfUfLbuYC7In1dqg/VqWSGkNdJEy/bQMapzgUvIDTvNR9l6kymmkJECsMTtKT10Pj63qHsE=
+	t=1790116722; cv=none; b=d8o5GKwI9w7Ml0glmHowt0ggKSl14SRv9AVQ1aTJMF3LVb5PhxbAH+qhUmjVajGYMRz+wxqGDzs60ytnEY1/5H9ozjO8oQ2cs++2y0vjs9u7c0EEsz3Tdncv/J6s0jXc+N/lInriwHbCWhuHYMgc/zUQIk0cDPJNZMXg+2B32uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790116184; c=relaxed/simple;
-	bh=RHQNmebjm5fLr1dV9L/YoNA7XquXexIl0yHVtAtTAXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I7TYFOD3orNWq9csJ0f4UIDpIAqjJU5CqxGLvINGTatdU10joChIa00cjHoghWF7U4nu/RwBIlNPYeoj7Pp0CYmhOrlAEe9nGkMU+G/gg2jGPxfq2sk6iwYDMar0UCygzLR5r/unJy5JFoOQ/lvCgb7bLGdK7BmCJtlThtkYUrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=c6FIxJDz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Y5sdxJcR; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790116722; c=relaxed/simple;
+	bh=Xu65AFIawlYizxpmzwr4U/pdnhBGbXmHEBuegSL5sLo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DzFIK21k4r7qPdieWKXDx6tztYHjuWqx0u3IFOkq5s05h+wD8NI7ZKkQzW14VuNTwf5RFDoOtcvbijNdBR6qGZuUhwa98RbKunKXnZArM3W2BVIYzQP99h6yH0pA7iAhA4mv885mclvxmhXTG31PPFGFOBBdrBeEjK+OOHD9bCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DlPYD5vO; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="c6FIxJDz";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Y5sdxJcR"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MI6wKM1348781
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 22:29:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	p+w2R4Sw24z92+mWmBOXbaEBwTszL/ulokoyz0K44OU=; b=c6FIxJDzSdijI5PS
-	sUyB8CJsU1gphs2rxSzit1qmionaLaYBBY1nMGxjoHQcTlAhStLkZQUwtO020Ybq
-	krf3S02fGvuP56aEH8e2XoMnvafNwqF6Dq9Gd00NmkqJcTjYqTE6eh4qF1FrUj/3
-	/u9IGtBP+VWMu5TyYAVp29uPG6suUK6CagJxGf/B0Xys4MowqJH7RVOL+BB7KvS+
-	kVGpTxswAY5KUnV/vzi0hasGUtWm7cJipO4L75Ri1/wGSiuzMu8oCfWOXhqcX0xp
-	f5rLquRaImhc3JAXWWxi1i9cFiX1IgSX0SIDOiJP+hN4GL2uT+kfU/tr6diVMFVp
-	GZ2Zkg==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gux861c98-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 22:29:26 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-32ab0911226so297626eec.0
-        for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 15:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790116165; x=1790720965; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=p+w2R4Sw24z92+mWmBOXbaEBwTszL/ulokoyz0K44OU=;
-        b=Y5sdxJcRKz2LLQzTCLilkvrjvXLcR3r1eWEY4nvVPyJHNZjqndXoHMlNUFYnzIPd3i
-         hdsp0xXHKQcLOSWpOcMFFAKlvtbckneBRyjapHT0Hfs4Rh4Eo62dHKakRTXvTUCzXjR3
-         PgqaStIiKHeXWIhGuCMdMS3BddDBiPBHXjL0yC03U21Vtzl0heiz+lb5VFdSALvD71Tq
-         ZlKAvjEEmUHC1rXXomxwYxDKh12UtQIZ5OmRw2IWBmCk5s4ARe00sq9eCF2kOIpHZmW9
-         FYe1rW7YS6Zpg05ZsVhZHl7ExUWpiKRqk2dO5FU03wZq7e5L4qdsqa1J/0zOxPTxch2R
-         NYEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790116165; x=1790720965;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p+w2R4Sw24z92+mWmBOXbaEBwTszL/ulokoyz0K44OU=;
-        b=D9TIlOdG+UdJxhUpdjQGpO8cUYQDaGOBBEbj7Tf3pQPo8urnc/dvYRriuN5gFX1XFF
-         rSjNOPlXuHj5WPAOgnG8dK3kxzShZgMUujFYU9QZceCz0Xu8l+WrHh3zCar4Ucug1dW6
-         dX7FZ589Xcmd8+0Scrdeo70BJ4X9uGXFCuvjc2W3xTTvSxcYWNqfHuk2XVN6oJlT7bc1
-         aTsqVrboLD+sAUBAEsKdFVmKO1Dr1sBuh61sKFOJ8OTOH2c+Tg5PqmUjLFQk5MySx2OX
-         dcCNwH7tL0P5ngRf8herYpGZdpXgYrQvQyXVxY5Ta2JUVpca9TnpPsydIatqSsJEMDxu
-         hEiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw5HJhZ8wH6xS2HxPiY04ZtG7QLbpGbBuj164EgJMeTOxNUlRHlYRYaL+txcqUEPmI+tOc5dz3cm9yB@lists.linux.dev
-X-Gm-Message-State: AFuF++lhNueuYrqU59mBYR0qR8y+pEHLGieJK2lRPyeDKoTu8Bx1ND1p
-	YeKLcCSkkZfjI8NG1LmRoASt+6z+FE6fpFlu2H0pmJgOy4ZsNvB13EPHl17tJ7wN5fQQmaDERVt
-	hRmhYPIIv+/w2cePIkp6YWzkJScLPW1WyZ0kIz5HAKM5g79kvyZ8E+Z2tsTiOvI4D
-X-Gm-Gg: AYBFou3nbf+rSCkJI6NMV/mSsrg6jArLLPtdySdj3uZBE1Z71sdVYHbmRdUkPNSz4OF
-	6FSNEdCR2RVxw+dszbbmcElPPcBLsHQjNH8u8cn+j4jIU0XAhW3F0zbe2vsdbhCll5Vsgm8zptH
-	geOWu3dWljehEVTjbNsFc5Zj62hAOuQh3FIZpVlCbDeaFybWdQTi+aGl/bK/HKhZeJNIZRMXI32
-	QJwNQjw7GP/tYEnkNmg3Bjtfv2pY9Y7IQRXNRthoNMLXy7NdDD0NF9Nc6u87NofERZuV7LlO14E
-	GE4WqcdH/Qg/Bi5c2mbVHLnmvzMn/Y7qxMKAmpUYtZITuFeK15j8wirUItbap54WJTelFxQrnQQ
-	D26ByD2anSP9Yx2fiAz73yWWBe8II4SRFsFxmIvQ9k2FAPCBOXvGhGg==
-X-Received: by 2002:a05:701b:4248:20b0:144:e259:b1f with SMTP id a92af1059eb24-144f8de7fafmr949957c88.13.1790116164986;
-        Tue, 22 Sep 2026 15:29:24 -0700 (PDT)
-X-Received: by 2002:a05:701b:4248:20b0:144:e259:b1f with SMTP id a92af1059eb24-144f8de7fafmr949922c88.13.1790116164404;
-        Tue, 22 Sep 2026 15:29:24 -0700 (PDT)
-Received: from localhost (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f98542c8sm1351499c88.8.2026.09.22.15.29.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 15:29:24 -0700 (PDT)
-Date: Tue, 22 Sep 2026 15:29:14 -0700
-From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Subject: Re: [PATCH v19 09/20] KVM: arm64: Add VM specific callback for S2
- MMU operations
-Message-ID: <20260922152914.00001221@oss.qualcomm.com>
-In-Reply-To: <20260920212845.707-10-suzuki.poulose@arm.com>
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
-	<20260920212845.707-10-suzuki.poulose@arm.com>
-Organization: Qualcomm
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DlPYD5vO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790116715; x=1821652715;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Xu65AFIawlYizxpmzwr4U/pdnhBGbXmHEBuegSL5sLo=;
+  b=DlPYD5vO3MJttVGQns0/MUkQmU/YUsD+IdRlduL07Ny3vBBcrY+Zlx12
+   utMTOYXIhWpDUS7QrmiTiMCIEeq4NjWEZ9sGqr/oEuedQkkl/+OLTrlFT
+   pe+f6CvtOJV2zk872V8m3NF41jr3JIv0mnbEayZmiDoG7UNBn5y2OomcG
+   pRMdhNPWqKtsbe6YSvutdf6wih72vBQM98cz46h92ayXAsidUYRnRJloM
+   Imx+jvPWStfvFHxwem8+oBuVTbEsK50+Dt3+ktNO3qibGdVoxRB61dCFc
+   G/QqZluI8rFR/ifWsQKSGSapeaxBSuw+q0wmZ71tO4NXJP4JKGARlS64U
+   A==;
+X-CSE-ConnectionGUID: RL/e460aTj2q8+dyUsthBg==
+X-CSE-MsgGUID: OFy0tWz8SMiaWx1Yk32zUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90788362"
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="90788362"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 15:38:30 -0700
+X-CSE-ConnectionGUID: j7CJg5pKQ5iGjT9AU/zfdA==
+X-CSE-MsgGUID: ZnTENF3HQk+lx6QUPeyYGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="272816914"
+Received: from gmitchel-mobl2.amr.corp.intel.com (HELO [10.125.110.75]) ([10.125.110.75])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 15:38:29 -0700
+Message-ID: <199d392a-02da-430b-95ee-b176ed0f43de@intel.com>
+Date: Tue, 22 Sep 2026 15:38:29 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the Quote
+ buffer size
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+ "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "kas@kernel.org"
+ <kas@kernel.org>, "Fang, Peter" <peter.fang@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+Cc: "seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+ "tglx@kernel.org" <tglx@kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Bityutskiy, Artem" <artem.bityutskiy@intel.com>
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+ <20260915092632.2822169-4-peter.fang@intel.com>
+ <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
+ <7ddf42ab-2f78-4edd-be39-ff9e5156d51c@intel.com>
+ <1e6ed0923fe1ac938f3e0fa0f8d05d31eb2d0f31.camel@intel.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <1e6ed0923fe1ac938f3e0fa0f8d05d31eb2d0f31.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: WkrLdB1ufDwjSshHyQhHxGgKvQNXYB0C
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDMwMiBTYWx0ZWRfX4n1SJY4sVYJU
- TrP6cPMxq8luwHqfuA1TZgTzZU9r+dcWRh6DWTXHPCGMPYmhyN1ssJ+c5TWJkmPVl24rzEKK8Tu
- 7hpWy0JKSApEB8XLDxwJ5+rKII09lIs=
-X-Proofpoint-ORIG-GUID: WkrLdB1ufDwjSshHyQhHxGgKvQNXYB0C
-X-Authority-Analysis: v=2.4 cv=eIOGH3p1 c=1 sm=1 tr=0 ts=6ab30146 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8 a=-iJiB5zC6xgh5EJSZLsA:9 a=CjuIK1q_8ugA:10
- a=scEy_gLbYbu1JhEsrz4S:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDMwMiBTYWx0ZWRfX9Nad8DFqAywx
- SSa0ubhJB30tile+HwsPlnr0w+FupVqRu40yXFKvqoFojd8jvYMtpuXEdNYlQeuJCZMtx1N/dC/
- PE32LqVYi+VXWOttRrWkRLfKYYwQXArvHqSYpg08IF3LEqWOjjj1TeG9qrGvbv8t583JvFUsJiG
- 9FvD7G1sDp5l6MbQoDSklUw8MJecZOeJ9TNZ/x5h9oWggHT/Oi0HIo7uzzdoLAHMA76plyS8XOC
- g551QN4lMtyyw+X1QiWJVRSJmhUvTSGLsOy6aDMhISONBq8gFziDPUQes/p6LZ6zMzM0KrO4xty
- s9OrNP7jgul09GP5eTU/abMklwAzMtqjbQEIu7ib1y5dB75lHU5SrJqFWcb4tMDU4hU9ZADb1zw
- Bal/jFa9f7iK5MTY3Wr29MKufCiW7yd3B6k5Sk/PknglIDz6qOYcac6MwAWccyLXrMTgln1sd5R
- XBVsODkFLDXgL/cBTAA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-22_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220302
 
-On Sun, 20 Sep 2026 22:28:34 +0100
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On 9/22/26 12:46, Edgecombe, Rick P wrote:
+> I was suggesting to make the new seamcall wrapper consistent in how it gets this
+> data by referring to the global definition for the global key id instead of a
+> parameter. Seems like it is against this feedback, can you give a quick take on
+> that case too? I just think mixing global references and global values passed as
+> arguments it too weird. Should we switch to passing everything as args even when
+> we need to plumb it through several layers?
 
-> Add VM type specific S2 MMU operation backends which can be initialized per
-> VM flavor, to keep the handling cleaner.
-> 
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+There's no one-size-fits-all solution.
 
-A small suggestion inline that makes it explicit when there isn't
-range operation and a full flush of tlb is needed.
+It's really powerful if you can pack all of the code for a single
+concept into a single small function. This pattern:
 
-I don't mind either way, but thought I'd mention it anyway in case
-you hadn't already dismissed it.
+	int foo(...)
+	{
+		static int __bar;
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+		if (__bar)
+			return __bar;
 
+		__bar = whatever();
 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 03f2017a7404a..d97a4a1bca23f 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -37,6 +37,8 @@ static unsigned long __ro_after_init io_map_base;
->  
->  #define KVM_PGT_FN(fn)		(!is_protected_kvm_enabled() ? fn : p ## fn)
->  
+		return __bar;		
+	}
 
->  /**
->   * kvm_arch_flush_remote_tlbs() - flush all VM TLB entries for v7/8
->   * @kvm:	pointer to kvm structure.
-> @@ -174,26 +188,36 @@ static bool memslot_is_logging(struct kvm_memory_slot *memslot)
->   */
->  int kvm_arch_flush_remote_tlbs(struct kvm *kvm)
->  {
-> -	if (is_protected_kvm_enabled())
-> -		kvm_call_hyp_nvhe(__pkvm_tlb_flush_vmid, kvm->arch.pkvm.handle);
-> -	else
-> -		kvm_call_hyp(__kvm_tlb_flush_vmid, &kvm->arch.mmu);
-> -	return 0;
-> +	if (!kvm->arch.vm_s2_ops->vm_flush_remote_tlbs)
-> +		return 1;
+Because you can, at a single glance, get all of the context for foo()
+that you need. When it gets set, who sets it. But it also only works for
+static, write-once data.
 
-For consistency with other cases and because it looks nicer
-blank line here.
+As for passing things around through several layers, it's OK to do it if
+it adds clarity to the code. If the entire point of a whole chain of
+functions is to get a global variable set, doing:
 
-> +	return kvm->arch.vm_s2_ops->vm_flush_remote_tlbs(kvm);
->  }
->  
-> -int kvm_arch_flush_remote_tlbs_range(struct kvm *kvm,
-> -				      gfn_t gfn, u64 nr_pages)
-> +static int pkvm_flush_remote_tlbs_range(struct kvm *kvm,
-> +					gfn_t gfn, u64 nr_pages)
-> +{
-> +	return pkvm_flush_remote_tlbs(kvm);
+	foo(&global);
 
-For the cases where there isn't a range call, perhaps you should just
-not provide the op and have the wrapper fall back to
-calling the 'flush all' variant if there is no range one available?
+can make things clearer because you know *instantly* that only foo() and
+things that call foo() can modify 'global'. It limits the scope of time
+where 'global' can get modified.
 
-> +}
+Think of if foo() calls 10 other functions and they all randomly
+reference 'global' directly. Figuring out how and when they call each
+other and making sure there are no calls from outside can be really hard
+to understand.
 
-
+Passing 'global' around can make it really easy to understand.
