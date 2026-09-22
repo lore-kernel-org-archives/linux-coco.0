@@ -1,125 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56A8489FC8
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 18:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862B849E12F;
+	Tue, 22 Sep 2026 19:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790101497; cv=none; b=mWe3bA6sPYjWWdf9inZOXcpjfUhdn38Td7Uma65RPR5FcPAxxBIHW9ShOL2BKRZYhWlCswdZY6C1w6q35tLD84veVbDxxeKWRFhwgLBm6ItLtSZB9Vl0MZO1SnKe6ow9C9Zwkxw5yYRweTppwHEiATs/sky9Kv6TldRk7TKXxMc=
+	t=1790104741; cv=none; b=ENrMQjkaCRWdiheMqrWDN3/9idKsFsmODxJaQFXLVrV9GQ9bIol+rJuV3R0el+H4F5OIIiTpUvbouF4WH40lgc9Pgn82dMwxwnZMnCADNPqWxCrx0esF29gzf7+Sl3alE6C+eYWPVaOFx3g51xIhhihSxo13x91YYJwdBbKNy3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790101497; c=relaxed/simple;
-	bh=M1QdGC9/7SmAKgdk0qnUo0g2gyETB9vgWmQbQiI9nBs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rnkinXmAbYc7JL0yRIar+T7YgXNl9USOnE2RgkW+CXKMlU1er+a6PfDtyBEzsvjbbnJULsPOATzK0y5TiDNpJHAUKMpgWBrtkCkjGM1Ih1RhtK4QJadDf13ZcQwhhNHmCckrUWSrAhXGS8XV7rp1ZahlR4dvukpPseT5HMNze7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4f+O9cI; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790104741; c=relaxed/simple;
+	bh=0zgMNLOviZP7C9GOTO7uXthAk1faCaLnopFRpyN+6Qc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MAeqX9IQKUt+l/lwyTggFygYpQB3tiRMuhlYlETgF+Aq8CNQKPDiQACLkk+gKXsSw9eQrDF0kZwviz76kNvVuAtVIblLTcmB1uZxDycSgsAsQCg3jZ9+IsKfoM8n9ZiUB+ZABTtRk7WzC5S2EiIdeRbCJLTIIegLiJB2qgZxlyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVZNMwZy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4f+O9cI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790101496; x=1821637496;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=M1QdGC9/7SmAKgdk0qnUo0g2gyETB9vgWmQbQiI9nBs=;
-  b=X4f+O9cIg3rt7VKaWkJ4yIbAvaibx9kn7O0vcYNSnv530CDlYTQ4ubHP
-   j/RToX7AGu82kZwkgLYWSOGD1y//WsR0uq4N45En4JBpkqlV6DIkC2a/o
-   Bxr6xjwDtPETgMuSGS7fqzheymXEA9QzVDEQ3dzTr7oFOFLdGi9XDfko3
-   Ft7TIrnbvNvm5sMCb84O6ebq9uPcZOGZUHy3c/4She7I0CIZcjBed6/5X
-   YZOvsWnHMPxzQOBv0X8POR8JfGc6wpUJDwcVgDgwhbAexDkTSrKE5A2g4
-   S9ikKH1U1Y/ebOmo/F8DQ5udXTIozOILYtuxH1JBL8aOlR1utcpcFq30d
-   g==;
-X-CSE-ConnectionGUID: iFgeyBFVQNCLW3vFIn213A==
-X-CSE-MsgGUID: oIlngSgCQsW6O1hVWgcaMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90603569"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="90603569"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 11:24:55 -0700
-X-CSE-ConnectionGUID: QonAaH4PR/2EdM8fSde0GQ==
-X-CSE-MsgGUID: T1UC0Ph9RLySShBkyqBvBQ==
-X-ExtLoop1: 1
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.31]) ([10.125.110.31])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 11:24:55 -0700
-Message-ID: <ba472411-aebc-43f7-b0f4-0003b71905c7@intel.com>
-Date: Tue, 22 Sep 2026 11:24:55 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVZNMwZy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB921F00893;
+	Tue, 22 Sep 2026 19:18:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790104733;
+	bh=rG9jdeE1GgpZ721Ylayiu0WJux0e9upMn4hAQNazN1k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nVZNMwZymUoYnWyP9PHedZApvviQf4Cvlsyp/06Z2xBBaXCbkfJh1lO8fG0QPlX5E
+	 9CbIKE3oQ3X5YPwWe1ZvPlL9d+D8/0kHepKHOdR3CyJBFJGMaDljbvuVYus4pjWJKP
+	 qGYOQBGbQDWJSkiTYQCy1L9lvKTdbg5G0OLyjJWqJA/VSlMLlMVLUapYFccALw2jP9
+	 hXmVSigBJMTg0tgCDzSp/ymC8iFI0b80Wa764Lnt6nrXofGRVGZ8AnqYl3ShLMmvR2
+	 vj2DahjSlvc6WSBMpR8dtdWGcJAc7tuOkrmINccYugToUbmJjd1TseNI0Woo4pazI2
+	 GCbNy1MCv7Q/w==
+Date: Wed, 23 Sep 2026 00:45:39 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Jean-Christophe Guillain <jean-christophe@guillain.net>, =?utf-8?B?UGF3ZcWC?= S <spawel523@gmail.com>
+Subject: Re: [PATCH v2 0/7] KVM: Serialize vCPU creation and revert vcpu_ids
+ tracking
+Message-ID: <arLSZuDixbzXrevV@blrnaveerao1>
+References: <20260921174445.911676-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] x86/early_printk: Add earlyprintk=tdx to drive the
- UART with TDVMCALLs
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>,
- "rdunlap@infradead.org" <rdunlap@infradead.org>,
- "corbet@lwn.net" <corbet@lwn.net>, "x86@kernel.org" <x86@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com>
- <20260921-b4-tdx_earlyprintk_tdcalls-v2-2-ad1fde3f25fd@intel.com>
- <12013d91-b945-40b9-a6e0-a025460eab72@intel.com>
- <58df7c2c57f2e00b0322216ec56196781023ce62.camel@intel.com>
- <94ea99fc4ba332a07530ced72284c2193aaedecd.camel@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <94ea99fc4ba332a07530ced72284c2193aaedecd.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921174445.911676-1-seanjc@google.com>
 
-On 9/22/26 11:18, Verma, Vishal L wrote:
-> As a thought exercise, I changed this to just use ttyS0 which is the
-> defined default, and that changes the setup hunks to look like below
-> (not thoroughly tested or anything yet). Would you prefer this instead?
+On Mon, Sep 21, 2026 at 10:44:38AM -0700, Sean Christopherson wrote:
+> Serialize vCPU creation by holding kvm->lock for the entirety of
+> kvm_vm_ioctl_create_vcpu(), and then revert the now-redundant tracking adding
+> by commit 97d65b544f48 ("KVM: Check for duplicate vcpu_id as early as
+> possible").  I botched the math when justifying the vcpu_ids tracking; it's not
+> an extra 256 bytes, it's an extra 2048 bytes.  Roughly doubling the size of
+> "struct kvm" tripped x86's KVM_SANITY_CHECK_VM_STRUCT_SIZE, and obviously isn't
+> something we want to do in general.
+> 
+> The TL;DR of why it's a-ok to serialize vCPU creation is that no VMM actually
+> does parallel vCPU creation.  As with so many things, KVM's current behavior is
+> the result of decades-old cruft, not intentional, deliberate design.
+> 
+> Patches 1-3 are a tangentially related cleanups and bug fixes; I included them
+> here because holding kvm->lock for all of vCPU creation allows WARNing if KVM
+> attempts to lock all vCPUs if vCPU creation is in-progress (the caller must
+> hold kvm->lock).
+> 
+> v2:
+>  - Tweak patch 1's changelog to clarify that that only x86's manual checks are
+>    dropped. [Sashiko]
+>  - Add patches to convert additional arm64 and RISC-V usage to 
+>    kvm_is_vcpu_creation_in_progress(). [Sashiko]
+>  - Remove acquisition of kvm->lock from s390 and PPC vCPU creation flows.
+>    [Christian, Sashiko]
+>  - Add Jean-Christophe's Tested-by to the revert.
+> 
+> v1: https://lore.kernel.org/all/20260914181223.289061-1-seanjc@google.com
+> 
+> Sean Christopherson (7):
+>   KVM: Reject attempts to lock all vCPUs if vCPU creation is in-progress
+>   KVM: arm64: vgic: Rely on vCPU creation check in "trylock all vCPUs"
+>   KVM: RISC-V: Use kvm_is_vcpu_creation_in_progress() instead of
+>     open-coded equivalent
+>   KVM: Protect all of kvm_vm_ioctl_create_vcpu() with kvm->lock
+>   KVM: Move check for existing vCPU ID to the top of vCPU creation
+>   Revert "KVM: Check for duplicate vcpu_id as early as possible"
+>   KVM: WARN if vCPU creation is in-progress when locking all vCPUs
 
-That looks fine to me.
+This addresses the Secure TSC splat I reported previously:
+https://lore.kernel.org/all/apgj5l7DZGsScsNc@blrnaveerao1/
+
+I booted a SNP guest with Secure TSC enabled and didn't see any lockdep 
+reports. For what that's worth:
+Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+
+
+- Naveen
+
