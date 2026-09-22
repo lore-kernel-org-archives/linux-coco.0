@@ -1,52 +1,45 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F729566C69;
-	Tue, 22 Sep 2026 16:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9A7576ED3;
+	Tue, 22 Sep 2026 17:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790095154; cv=none; b=BmpRjTu+AyS49xAJq01GLmjwluEQLJCmeQPWkClFtEqKer+0Yf7+G/OrZhYwb0Oec0RXEasd6Jag0DhxmerMFWg0FIL+D9DOMpbqx2WgAfaQinrBXB5p3NxGYTot7oBpjwsuI1KohofiMz2QTQVHlS1hHryplq4quhhz6scQatw=
+	t=1790097344; cv=none; b=ijNzjTDOWixmwZwWMA6w2YR445aB+j4OJWpBbFf0r0V8vUQBQfDOnNdFzNic+E9dQW3R0kNwTrunBXMCQUAr80r1IdhkddaIa90rjQEm+KNxCvE0Asr5YWTUUlPqq+ImKxcImOd9IfT0hORmvfQ+znKjrRyGiwtIytvZ1I1ybwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790095154; c=relaxed/simple;
-	bh=YQf4ZF9UrIZkju53+FMc2/Zw5dM/iafRxTRYEbJms0o=;
+	s=arc-20240116; t=1790097344; c=relaxed/simple;
+	bh=m8JfzfQ/K7ynxAP+mIg5GPu1v2WwEh4hWVjoye9kaWU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eAQQtT5412Q3j1pmcQKXGwNT91trNbgjHtIbmrCXCQgyRJdCSObPxRZ3514zHXmbQ5BnvimaXCxCDcQs+DSqauPB++FdMl3KE2kKZYChXDpPqqJT1Qy+v7utxDPnL654nDWMVbD0bbRL9uEv+pbor/uqdjLM7pMV9Rroru/Fa9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=AYzw/dZB; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+kaOGbsxq+jozG616ZClrjzKyVjHhY58+f0NiaSPTh23obnHO/8QMm+dzDNuvV62WZxYFvwcxEzPVwc3nWPa5pP9RHsCFwtIee8THrOJ9H3/Rv8VA3/3qRlgWEtmURgxOLkwobEaYAR5EyAQmtmn0GxFglCvgjrPZV6B5Kxg3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGRoPx0g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="AYzw/dZB"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7C0461576;
-	Tue, 22 Sep 2026 09:39:06 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E3D7A3F632;
-	Tue, 22 Sep 2026 09:39:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790095150; bh=YQf4ZF9UrIZkju53+FMc2/Zw5dM/iafRxTRYEbJms0o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AYzw/dZBDBEYe9/IfefTSuDA9ATgbB7Dnmm7bUOXpXYL7xrhaOG6WNWM89zKFywgX
-	 Hca5ai3qk4fYLZscOfPi0Qh5fdm128r5ziOOA5TBgZtWFVOg+iJJUHDyzqYjkftVAr
-	 3sHOOYEiFcjjnuFpaEP+biIIhTBY6lijgPOKAanM=
-Date: Tue, 22 Sep 2026 17:39:04 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	christian.koenig@amd.com, Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 12/13] dma-buf: system_heap: Allocate shared
- buffers using CoCo shared memory allocator
-Message-ID: <arKvKME-_wNeW7ea@arm.com>
-References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-13-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGRoPx0g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904A21F00893;
+	Tue, 22 Sep 2026 17:15:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790097342;
+	bh=KwQN7WVhANwtG21qRW2cXhG1KlqZnmnqp3LyL8PiblQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MGRoPx0gFeoZ620M+h6hVml1cmstZ36RtqWY65JVSsUD5TMarzlFWrri8h+HdC4fV
+	 tb3O2T8Z9k0tiACSeV/L/YdcNDoDkcmo5S6d+2gsXo1v7ZuLSr6xYIWNvegc6TufBK
+	 eg5RUuFKBcIK0G2An7KcyBk/RLadzP4pFEQw7yeQhdN3ofhyFPBi93dJvIyWDpuwMP
+	 BcOeNuR4b1fXl7ZVbsnBNPnyMtaoynBi4uhbqvKUdD5haCJvQJoEPoyLcnb3iFhxCW
+	 iU1VzelR+8iiGNSduR4hDUo+gQfKMHArnhh/H9uEoLVkrxlwAexfAEyPfNAZrT7A4z
+	 VbqQwSaYdEhQQ==
+Date: Tue, 22 Sep 2026 18:15:34 +0100
+From: Will Deacon <will@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Message-ID: <arK3tsTV6EDhI-nt@willie-the-truck>
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,27 +48,49 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260921144847.501151-13-aneesh.kumar@kernel.org>
+In-Reply-To: <20260913070459.2547407-1-suzuki.poulose@arm.com>
 
-On Mon, Sep 21, 2026 at 08:18:46PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> @@ -405,6 +396,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
->  {
->  	struct system_heap_buffer *buffer;
->  	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
-> +	struct cc_shared_layout layout;
->  	unsigned long size_remaining = len;
->  	unsigned long sg_remaining = len;
->  	unsigned int max_order = orders[0];
-> @@ -417,6 +409,14 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
->  	struct page *page, *tmp_page;
->  	int i, ret = -ENOMEM;
->  
-> +	if (cc_shared) {
-> +		ret = cc_shared_calc_layout(len, &layout);
+On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+> From: Steven Price <steven.price@arm.com>
+> 
+> If the host attempts to access granules that have been delegated for use
+> in a realm these accesses will be caught and will trigger a Granule
+> Protection Fault (GPF).
+> 
+> A fault during a page walk signals a bug in the kernel and is handled by
+> oopsing the kernel. A non-page walk fault could be caused by user space
+> having access to a page which has been delegated to the kernel and will
+> trigger a SIGBUS to allow debugging why user space is trying to access a
+> delegated page.
+> 
+> There is work in progress to unmap the guest_memfd backed private pages from the
+> linear map. Until we get that support, we could get spurious GPFs from within
+> the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
+> 
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+> Changes since v17:
+>  * Pass untagged address to die_kernel_fault() - Sashiko
+>  * Explicitly check !user_mode() for fixups - Catalin
+>  * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
+>  * Clarify the commit description about the upcoming work on
+>    unmapping guest_memfd backed pages from linear map
+> Changes since v16:
+>  * Update the commit description to indicate why we try to fixup GPFs
+> Changes since v10:
+>  * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> Changes since v2:
+>  * Include missing "Granule Protection Fault at level -1"
+> ---
+>  arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
+>  1 file changed, 24 insertions(+), 6 deletions(-)
 
-You should not override 'ret' here, it was set to -ENOMEM for a reason.
-cc_shared_calc_layout() succeeds resetting 'ret' and some further down
-allocation failure, goto free will return ERR_PTR(0).
+I still don't think we should do this, given that the plan is to unmap
+the memory from the linear map. If this thing fires, it's a kernel bug
+and it should be fatal.
 
--- 
-Catalin
+Will
