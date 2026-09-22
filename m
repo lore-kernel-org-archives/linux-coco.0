@@ -1,113 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7E04189BA;
-	Tue, 22 Sep 2026 09:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BEF52269C
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 10:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790068987; cv=none; b=PGUZnEiCYQRKfjkIHeKIoDE41dxsXvrcCk54A7JxNzi4NwHrs9+UYsBxZDWcBMV5/nHwY5y/6zwn38LiSBq1jr3cVUvDJX8sXBReqseTdUMbOa4Nyoov8ZrFtyZRnuK4Z8F+qNUoCgVAtoeZxsVrd5LOHWy5ODCVkwEBC7y7vuc=
+	t=1790071542; cv=none; b=AhjAB5GfwDEqCuwrQVVoz7iuNNyila7k1jDpa5gqVbnrkghVS9ewn4p5e9rHSdQWAgRTIg+P+ya1uVTUpdXpZxb1yOnq5yvCY/U6E6rM0Jf2dxQ7RGp1iJaFeISp6XRaEFrEw2I1oBUgNbQYQ6auEdGNGa++qu6pXLWAYER1iU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790068987; c=relaxed/simple;
-	bh=FtBsQVszZToNZFo4FDYyz6W2EQJ6IchG7TUR9qBW2W0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JJy+3FoeHWY3S22Up8DdyF9QJZcwXDhY8AbPSFqWKL2UOo9mEQdkh1rRcqVNfuV622XQb7Tzc6k8Be38LJz0C1A74cquHwbEVTa3plyWwW7YGWZO/JQMKmW6aWJQzim0fmf6loOyZzOTgTSDaRWVIG3/Ef+yhcCQ0oqVA06Ibxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxe2mLJ1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790071542; c=relaxed/simple;
+	bh=azqoBLcIRtkqga/94EgW9QqTc3pQevTwyEKoZ0sulzs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NXwx+9vpR+IVunmV4r+2rsNMRI1hMmCg6UJ9a1iqRS31BWlJkmXWlubB3GUEoDy8vyfRxsx6/3G/am+UBbHVOZhtMI/zyN6mw30Oz3U5xXjf7rh2YQBaY5zHP60mHlmUE4A8TwS+hnr9EavZ8yBOULKBlrA3GTlVDKPgabTFHSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IJ1RR8SQ; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxe2mLJ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A6E1F000FF;
-	Tue, 22 Sep 2026 09:22:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790068986;
-	bh=NutOSYDLx4tH7KuShcZDI2ZCU5oaHMNdqUgaoku7+KE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=dxe2mLJ1DOdNhNV3xzN1UWDf+WAxUJqwBE4m6EJ8NqGqMYw2Un9GqdAuGdl+aORRK
-	 OOuly+6n/2Smj6x6nJ/bOPD3LPqGVwEgru3T9Vb+N85YpEQzsVx7tkk452Eeek4d/v
-	 X2tCmChMlWALczUB/ok3OKDy5Pkriv+suNvrO/+iJyW8AH3cGofJxfWC9J78D8d7Y1
-	 hlBIEb3Pyp1cOg9/cbPJRDn08GOTBEbkvDNtthfYmxt2g83xX9j2cEdBLyAulmkStx
-	 hP52w+r2XFU8Qifn8Fz2BbYPQ8i2S5lOEPECaC6ZD6f2/BSRfM/DG0E3+4HtLwkf4u
-	 9Rucyt3uOjauA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com,
-	tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com,
-	fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Subject: Re: [PATCH v18 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
-In-Reply-To: <aqrsmUTxDVbKJn8k@p14s>
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
- <aqrsmUTxDVbKJn8k@p14s>
-Date: Tue, 22 Sep 2026 14:52:56 +0530
-Message-ID: <yq5aecel3aj3.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IJ1RR8SQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790071539; x=1821607539;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=azqoBLcIRtkqga/94EgW9QqTc3pQevTwyEKoZ0sulzs=;
+  b=IJ1RR8SQh4dxjPoIguBi8rQAvC37YP03QFbHM9oHrUvcejVVLx3uFzqW
+   /6LPhCqQF9IgXYLRiXsXskjG3qE9BX8dO9Lz6CKZcCVjwPztSeyDu1ecV
+   7sVFJbbwtAL+IWMGzvezHBP6siN685N/VbDeWuPGT8kHG9MEy/VQclxd6
+   mZUgCEp2Oh6hdKm2045vDt1jQN/nFVavEo5NKqAcCgMeaNh+yVdI9cj13
+   xFohbDdFHsqkfmYDHB2kzhZqMF9CPiqnfWRm6d2K9SfcADTOGz7XB9nAV
+   AnOM3r30dVVwIWs9VI3lmJyD+mZl3bfTXEotI8Mg/RCoV/4PGIjgDjHEM
+   A==;
+X-CSE-ConnectionGUID: 5UMugn8GQ4O7WNIxGpPfGg==
+X-CSE-MsgGUID: h0j7cCp3RhmUUfKP5WrndQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="102009457"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="102009457"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 03:05:38 -0700
+X-CSE-ConnectionGUID: UgLfJpcqQdC+iRM7cpWMvg==
+X-CSE-MsgGUID: Bc4Gm6yhSjmuIx4yAygBMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="271625176"
+Received: from unknown (HELO [10.238.208.182]) ([10.238.208.182])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 03:05:34 -0700
+Message-ID: <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
+Date: Tue, 22 Sep 2026 18:05:17 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the Quote
+ buffer size
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+ <20260915092632.2822169-4-peter.fang@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260915092632.2822169-4-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Mathieu Poirier <mathieu.poirier@linaro.org> writes:
+On 9/15/2026 5:26 PM, Peter Fang wrote:
+> In preparation for dynamic Quote buffer size, replace the fixed size
+> constant with a variable.
+> 
+> The constant is sprinkled across several places. Read the size from the
+> variable instead.
+> 
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-> Hi Suzuki,
->
-> On Tue, Sep 15, 2026 at 05:01:18PM +0100, Suzuki K Poulose wrote:
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
- [ ... 42 lines skipped ... ] 
+One thing below,
 
->> 
->> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
->> [1] Linux firmware RMI https://lore.kernel.org/all/20260912083611.2513845-1-suzuki.poulose@arm.com
->> [2] Linux GPF Host https://lore.kernel.org/all/20260913070459.2547407-1-suzuki.poulose@arm.com
->> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v18/integration
->> [4] https://support.arm.com/documentation/den0137/2-0bet3/
->
-> When testing on the FVP model with the above baselines, I get the following
-> error messagaes in a loop, preventing the system from reaching the command line:
->
-> [    3.112577] Freeing unused kernel memory: 3520K
-> [    3.115398] Run /sbin/init as init process
-> [    3.142926] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.150111] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.177190] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.197194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.217188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.237194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.257181] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.277189] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.297193] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.317188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    8.157185] swiotlb_tbl_map_single: 241 callbacks suppressed
->
-> I get the same result with v17.  Have you seen this before?  Perhaps a kernel
-> option that needs to be adjusted?
->
+...
+> @@ -417,7 +416,8 @@ static int __init tdx_guest_init(void)
+>  	if (ret)
+>  		goto deinit_mr;
+>  
+> -	quote_data = alloc_quote_buf();
+> +	quote_data_len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
+> +	quote_data = alloc_quote_buf(quote_data_len);
 
-This is due to a change in the swiotlb setup.
+since quote_data_len is a global variable, it looks no need to pass it around.
 
-https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org
+Same for free_quote_buf()
 
-You can increase the swiotlb size using the swiotlb= kernel command-line
-option. I also have a patch series in progress to address this issue:
-
-https://lore.kernel.org/all/20260921063628.362078-1-aneesh.kumar@kernel.org
-
--aneesh
 
