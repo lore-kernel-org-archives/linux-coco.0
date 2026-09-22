@@ -1,96 +1,113 @@
-Received: from smtpout10.mo540.mail-out.ovh.net (smtpout10.mo540.mail-out.ovh.net [51.210.91.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8480D405C2F
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 08:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.210.91.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7E04189BA;
+	Tue, 22 Sep 2026 09:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790065444; cv=none; b=BBA6w6XcQr9G6IfxBDA5ge+3EDCB60jfX3JmsHKJmfhwQb5yaSDP0Iv920LAl7n1S6LJ1Qy3VouhWd4EhVg07XJS3iH5+VcZ5N2XwqvQotQP+i5bX6uKFisriDQOojYHL9MF5obxTJugFrq6LKV8AFDostFlKN4PVHRN6TfpJyg=
+	t=1790068987; cv=none; b=PGUZnEiCYQRKfjkIHeKIoDE41dxsXvrcCk54A7JxNzi4NwHrs9+UYsBxZDWcBMV5/nHwY5y/6zwn38LiSBq1jr3cVUvDJX8sXBReqseTdUMbOa4Nyoov8ZrFtyZRnuK4Z8F+qNUoCgVAtoeZxsVrd5LOHWy5ODCVkwEBC7y7vuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790065444; c=relaxed/simple;
-	bh=5sO9xaC3qdPyU5zJefRGniTGdXKpOQRu0LktrMQP//k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kqByqUf4/RldEn2Vmeb+mWCTan8h/jlw2B1MOGkCOD47/aHOQn8beTAbx2jBygZwVCxC2IqwnBuqIdZ60XY7U7PhbUDElN6pah9kTUeshvmEvWmyMik5gS+qZHy7O6zfSzqT9LaYR0uko8s/om4l/xW0QTPtc4XvzEP46crH/I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=guillain.net; spf=pass smtp.mailfrom=guillain.net; dkim=pass (2048-bit key) header.d=guillain.net header.i=@guillain.net header.b=QI9ARexo; arc=none smtp.client-ip=51.210.91.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=guillain.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=guillain.net
+	s=arc-20240116; t=1790068987; c=relaxed/simple;
+	bh=FtBsQVszZToNZFo4FDYyz6W2EQJ6IchG7TUR9qBW2W0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JJy+3FoeHWY3S22Up8DdyF9QJZcwXDhY8AbPSFqWKL2UOo9mEQdkh1rRcqVNfuV622XQb7Tzc6k8Be38LJz0C1A74cquHwbEVTa3plyWwW7YGWZO/JQMKmW6aWJQzim0fmf6loOyZzOTgTSDaRWVIG3/Ef+yhcCQ0oqVA06Ibxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxe2mLJ1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=guillain.net header.i=@guillain.net header.b="QI9ARexo"
-Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net [79.137.60.223])
-	by mo540.mail-out.ovh.net (Postfix) with ESMTPS id 4hpt3B757rz41y9;
-	Tue, 22 Sep 2026 08:06:30 +0000 (UTC)
-Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net. [127.0.0.1])
-        by director3.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <anup@brainfault.org>; Tue, 22 Sep 2026 08:06:30 +0000 (UTC)
-Received: from mta10.priv.ovhmail-u1.ea.mail.ovh.net (unknown [10.110.164.229])
-	by director3.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4hpt3B5XYDz1xrq;
-	Tue, 22 Sep 2026 08:06:30 +0000 (UTC)
-Received: from guillain.net (unknown [10.1.6.5])
-	(Authenticated sender: jean-christophe@guillain.net)
-	by mta10.priv.ovhmail-u1.ea.mail.ovh.net (Postfix) with ESMTPSA id 9DC82781C5E;
-	Tue, 22 Sep 2026 08:06:27 +0000 (UTC)
-Authentication-Results:garm.ovh; auth=pass (GARM-97G002b68a12e8-2984-420b-a186-13f4c06436ba,
-                    1B11FA1B799B51260FD44711AD952BEFB0E4E6B4) smtp.auth=jean-christophe@guillain.net
-X-OVh-ClientIp:78.242.244.78
-Message-ID: <792d9ce32849122eed7ecbed22e494f8b624dbc8.camel@guillain.net>
-Subject: Re: [PATCH v2 0/7] KVM: Serialize vCPU creation and revert vcpu_ids
- tracking
-From: Jean-Christophe Guillain <jean-christophe@guillain.net>
-To: Sean Christopherson <seanjc@google.com>, Madhavan Srinivasan	
- <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley	
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou	
- <aou@eecs.berkeley.edu>, Paolo Bonzini <pbonzini@redhat.com>, Kiryl
- Shutsemau	 <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Atish Patra
- <atish.patra@linux.dev>,  Alexandre Ghiti	 <alex@ghiti.fr>, Dave Hansen
- <dave.hansen@linux.intel.com>, 	linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, 	kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
- =?UTF-8?Q?Pawe=C5=82?= S	 <spawel523@gmail.com>
-Date: Tue, 22 Sep 2026 10:06:21 +0200
-In-Reply-To: <20260921174445.911676-1-seanjc@google.com>
-References: <20260921174445.911676-1-seanjc@google.com>
-Autocrypt: addr=jean-christophe@guillain.net; prefer-encrypt=mutual;
- keydata=mDMEaEmXaBYJKwYBBAHaRw8BAQdA1qyia8WH1pu6T8sC99WNMyKXooD/SVqJXsJOcnIux
- w20N0plYW4tQ2hyaXN0b3BoZSBHdWlsbGFpbiA8amVhbi1jaHJpc3RvcGhlQGd1aWxsYWluLm5ldD
- 6IlgQTFgoAPhYhBDk2+TsBtH9ETCTubi9QTbKhgBdPBQJoSZdoAhsBBQkSzAMABQsJCAcCBhUKCQg
- LAgQWAgMBAh4BAheAAAoJEC9QTbKhgBdPrq0A/icNhFTYLybFWWq1B42UvJLGs18MNRiT5aLdFv3R
- DfHVAQCvzsLrC/qz4rOyIpDzeb0biOu3fiDTcyvV3kPiu3xTDA==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxe2mLJ1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A6E1F000FF;
+	Tue, 22 Sep 2026 09:22:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790068986;
+	bh=NutOSYDLx4tH7KuShcZDI2ZCU5oaHMNdqUgaoku7+KE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=dxe2mLJ1DOdNhNV3xzN1UWDf+WAxUJqwBE4m6EJ8NqGqMYw2Un9GqdAuGdl+aORRK
+	 OOuly+6n/2Smj6x6nJ/bOPD3LPqGVwEgru3T9Vb+N85YpEQzsVx7tkk452Eeek4d/v
+	 X2tCmChMlWALczUB/ok3OKDy5Pkriv+suNvrO/+iJyW8AH3cGofJxfWC9J78D8d7Y1
+	 hlBIEb3Pyp1cOg9/cbPJRDn08GOTBEbkvDNtthfYmxt2g83xX9j2cEdBLyAulmkStx
+	 hP52w+r2XFU8Qifn8Fz2BbYPQ8i2S5lOEPECaC6ZD6f2/BSRfM/DG0E3+4HtLwkf4u
+	 9Rucyt3uOjauA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com,
+	tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com,
+	fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
+In-Reply-To: <aqrsmUTxDVbKJn8k@p14s>
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+ <aqrsmUTxDVbKJn8k@p14s>
+Date: Tue, 22 Sep 2026 14:52:56 +0530
+Message-ID: <yq5aecel3aj3.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-x-ovh-tracer-id: 3964856524915166012
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTFDZ4aTcT5SDXmkd602DiweEYgHF4FHP6+h+Q5uvPOfv2ER677KLq0yDhnl+3VfAbnsOmXLuyCPgoyZr+w9DwEYKfDYBsM1GvNB9gelyvBoQQQ1jqTc2VOlb2ES0FKHAEw7Bf5L3b/fe3mquzvbn08slBRFk1e188EYwypcj9s9rZhNO1DYk1mNyKLKeRt/DoUs/s5cymBh82F89HDmI2s1tiBxl8Wr1ZXwxX2zpzSb0PWcSHMqCBDjPAX0FkgCGCL/d6Yl2HIHdXWeJZ1JhfYF+PvruQ1WnjYiU5EVPYFW5Zo8XyORZee15An39kaGtjsRNOOgUE821tWe0jwxcnL/tjXKv+5/16hfPHifvImMPOzEUyeotu4hT4k3MO1mBzM9bjPK0Ge53kXOvdvN3eWSkOwh8ZUiMnTCGvDRHsRriBTLNCO3iKxDfvbsDWv/YF3wOKcvuOaIbT6SyxgcR6Zc8bxUiTYj0J9TfGRfEygMeq2gXCwxFm4Y+Aziu2j67KCrej/IWQcCkXBxtUr8uMovq8EE3D1B62LwAyCKG6fisWjh7fTwVWm14s1BJb0nAGvHicc5WLjJ2cdeknhIvYm7noYy8dltGhFf1/cPZrsEYR1vNt6277gHUY5GuF77GUlPZsEjHlCZnrs5fQ2/CpblZ92YETQlFNm62zJweHxLHQ
-DKIM-Signature: a=rsa-sha256; bh=5sO9xaC3qdPyU5zJefRGniTGdXKpOQRu0LktrMQP//k=;
- c=relaxed/relaxed; d=guillain.net; h=From; s=ovhmo31693-selector1;
- t=1790064393; v=1;
- b=QI9ARexol+3F2NhB7XnQCuhvcc5KGGRTJIxVXLliegLGRWPuIPgrRFpRgA9uknVR1Sa4SESl
- T3akrQF/XJwaq5ayxpHCczXK7rf8R+Fd8bNhEQtvvz8sZG2GzLKnoMYc8/tco6QvHsYmJEvMafX
- TtAMbJ/mY7WfJEV981DGq880kXmXrZ/aOpclwoGPTzFqdFq8PEtlxEF7vC12hkkttTJ4mdNv8j9
- 1k/pZtD2YR+61OL9hGVtPm8aNlB9Dew1189gXVMM5E9fLxZeFwmZ9tObsD7JYAlWl/ETK3Snl8f
- bfD4os+o5BNLcSdyv+EzHZiBwWmh286ZdNL1qWQljiwiA==
+Content-Type: text/plain
 
-Hi Sean,
+Mathieu Poirier <mathieu.poirier@linaro.org> writes:
 
-Just like for the first version, I tested the full V2 series with the
-configuration that originally triggered the build failure
-(CONFIG_DEBUG_KERNEL=3Dn, CONFIG_KASAN=3Dn).
+> Hi Suzuki,
+>
+> On Tue, Sep 15, 2026 at 05:01:18PM +0100, Suzuki K Poulose wrote:
 
-The kernel builds successfully on adm64, and I booted the resulting
-kernel and started two QEMU/KVM VMs without any issues.
+ [ ... 42 lines skipped ... ] 
 
-Tested-by: Jean-Christophe Guillain <jean-christophe@guillain.net>
+>> 
+>> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
+>> [1] Linux firmware RMI https://lore.kernel.org/all/20260912083611.2513845-1-suzuki.poulose@arm.com
+>> [2] Linux GPF Host https://lore.kernel.org/all/20260913070459.2547407-1-suzuki.poulose@arm.com
+>> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v18/integration
+>> [4] https://support.arm.com/documentation/den0137/2-0bet3/
+>
+> When testing on the FVP model with the above baselines, I get the following
+> error messagaes in a loop, preventing the system from reaching the command line:
+>
+> [    3.112577] Freeing unused kernel memory: 3520K
+> [    3.115398] Run /sbin/init as init process
+> [    3.142926] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.150111] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.177190] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.197194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.217188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.237194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.257181] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.277189] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.297193] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    3.317188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> total 512 (slots), used 511 (slots)
+> [    8.157185] swiotlb_tbl_map_single: 241 callbacks suppressed
+>
+> I get the same result with v17.  Have you seen this before?  Perhaps a kernel
+> option that needs to be adjusted?
+>
 
-Thanks again !
+This is due to a change in the swiotlb setup.
 
-Cheers,
-Jean-Christophe Guillain
+https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org
+
+You can increase the swiotlb size using the swiotlb= kernel command-line
+option. I also have a patch series in progress to address this issue:
+
+https://lore.kernel.org/all/20260921063628.362078-1-aneesh.kumar@kernel.org
+
+-aneesh
+
