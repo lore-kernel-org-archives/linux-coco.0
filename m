@@ -1,498 +1,218 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732604A3F3F
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 19:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790105000; cv=pass; b=hOUxmrpjdr4h7BWAMNNixjgBOY404gq+DxNNNnjRA/QPiCccW29s9+xSsE1kATAhXxJMz4/i42g95AUIJ01zSKYxUWDvkgHza3sKhtgvDx15/dB99PbfpZ9pdFm+o7PuBnyZ5qeIWNh+94QKkKXS4LfkDx4EfxqeA7fvfM5syn0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790105000; c=relaxed/simple;
-	bh=uIkpINFfCsQjD9jAdwegl+1czawtHcQaNaPZYW4z5aM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K+wPakT5VJAOQW/sg+gvLXdg74WAztkSKxhJ3/Ew3OxIBHeLr4MDu7e55/ciRO+P+AY+sg4CIr6nq8dzqc6VpY7aVD4K1LGSpHxp7ygRVqpmTvSO5KfhG8FbkRAQvkvRu3j6PJ4J2GkltzHmxi9UZK0OWV9lA603Qtpj52pUWpQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HkmNzUmi; arc=pass smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35164A2A61
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 19:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790105153; cv=none; b=s2/3T2CtkNVFVYw3hAMc5ogBthA8meZ0aX9abmAiODvNUtosiLurFU+P7/D95cuFiI9OHIlEX6AHienIMrFn4UH3PgU57hiXwr/MVhCwYJAh1Y1qdcLlQNW1WrFEnIB06Epvi3IeKbl6PGxBis3baSW7h/z4LnlE1JoQOJVQAD4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790105153; c=relaxed/simple;
+	bh=r98Q+kuvWzjCrx/8WWgWEzee71wpL1zD1M5HxGJqpjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fdKDbCNceI6TA9mUPZvbRZxHJ1HciGVOYuO3GMcozHp1aB1CnmW5rI2AMLi+zhPHL6bYS/Mo7BbcDOpt39i0u+J1RC67LSxMKBKfAUA8t6TfYjEgPc48LPqO1PMZudbrLLYTj1JoFWZ9dMgw5AS3EdSfZRAwlxpr2tqvoQTzD4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CbrcBypn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TN8+cisy; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HkmNzUmi"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso45e87.0
-        for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 12:23:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790104995; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LQ+6qWFxjYZPlqGArRUcBg14SbGVNx1lta1IjXfS24QdoJLWZat86jRawD2YN1gvws
-         OPM88Fa6y4AQb7acweEyOMfAQggtg+8j572iJroZTuVrgnbB4r++5uLe/AiuQVBKd6tS
-         fuIPEj+r3W8rfx2ZHvH8NvO0CQ+KJ9g+myLgo8GDrxwGw42n3xwdRyOLHa+Yx+jtCCQp
-         9GwMFDC2vL/mOSVKaIyEJ2LHzBxtmJouWbuhvhogi2Lio00UAQO/hSGBl9LF0aae774a
-         b6te/Ew8cGzyClNOYdbrIjrEc1Q3tWdZQoBq3gTgZgGXGK01cJujbZeMTf8u3ic27Do1
-         e+Fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bWXycRkvEhooYynfgtJMUHspQSrP76XAP+DtRk1GwMY=;
-        fh=AdlGq/uvD5wTvvCg83sGkIEM+PjP/RlDXhEBoGByiZ4=;
-        b=l95i7AiinRfXN3I5WgA/UVPJ/A3wH6nQgBn+uPbQNvMK0njBnNfJtEO01cbIV9kP2Y
-         Mfi0VNmlH1fYxVWAwYc93P/uk05LkSex+o9p3B1cXleciaOQamasTtcCRI/rXmIrCVjQ
-         IAPHN9Aec+iQbwKnMUJ+mz2hUOSmKQNCytUQ7YGfzqc8Im0r1YaJhaTRI07MC86ImTva
-         XjRxLIe65dqiEx7vBtKrXqmqlU2q6RXXB0dI8xNfTD1JGm/bQH13+3A87KwjWlkIqnvd
-         pT5frTlNYX/Qy+S193n2mdmhMp8u66sf+7a+MIRf6tbNONvOXnQ4jwY+uxlKSF9lFcwW
-         +ldQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CbrcBypn";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TN8+cisy"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MI7SIu900491
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 19:25:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	DpoZFkZdgs13xlkwMgnRw9MvGQ+ZQQ9iQmjkSWg2E4Q=; b=CbrcBypnVrO/fN+p
+	CnXEsVZ6d9JTGpgRxJYCZkWWs7XrdTX3I3rFbDICopGo27Y9blozFkSFlYMAI3Rm
+	pt+pa5m8ThJ0Dhp6hqxEJTUfTBbxHyHA/VDlbGsskz9u83yI4UMBBANB4DfZGDwf
+	9CstNdBXE161t5jy06BnGL5uerZpZIHylqNk6EmwftpvsnkT6KIZwZlAgpXPCZ6N
+	t9Tg9HmwaPw5q36tD5dkFbNWFOsOOUClaKAqc6n/DNVgWDpvxiuQSnvJ67n7Xsnf
+	NWlCqM0E+561Lathorab64INAqC3bhnfN19mZq/P2as00f1nTWIYGXOYIEwLFI5T
+	wdz0tw==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gunjyu89b-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 19:25:48 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-32850005b6bso163779eec.0
+        for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 12:25:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790104995; x=1790709795; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bWXycRkvEhooYynfgtJMUHspQSrP76XAP+DtRk1GwMY=;
-        b=HkmNzUmiskGvqLQ4DvH+34JOcUy/J1fZNpvVijCZ0SedM3iU4F+a7Eh/LuoZzE77KR
-         uXWFzvkgnkZ9roDp42UtADIRsnmdyV2wl1Y8ZV5biSngtD5qU4A9QUmLhTFALABgMv05
-         Ap+dLOSHi/egL5BQf4faGw+DRLGKU2JOlUjMfyc1swJapZDWsPjDSl/UOr9/3x/a/oAU
-         ZC1CSg7yjM69kWlQKjjk1TEVueFpKfffUVehWN0hBoeEBCq79I5BA5A0xBeadCEiedGy
-         +hklg+pKi1tejL4tUWQ22Ier14OYgWMqa+I77ZMWcNd5R2NxgojFlaJkNchhrHLgvgAF
-         oNLQ==
+        d=oss.qualcomm.com; s=google; t=1790105147; x=1790709947; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:organization
+         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=DpoZFkZdgs13xlkwMgnRw9MvGQ+ZQQ9iQmjkSWg2E4Q=;
+        b=TN8+cisyMbVeKDqX/scaO/MIqp9UrkTPSCq3LK5kfgYeQaX3h6vJXmftovKRi8o7Uz
+         mUBJWz0dtyDsmuDpvXAV4s16p31cqp43wKgSZI5nTdmHEuZ94SwHybYnhtlehYi0GqWW
+         L61m7aQM0yW9fF+rfoONyDq8YqS+P51dA8V4p4VV6AJ4MTzJj5hQ7nvOytAxPSxiciOS
+         lMSP2plPQEtWbpJpNKRp0d4F3ej1C7tbNtmmI8oHT/HQ2cUjXsNhWhNKkDuiEuZF56/Q
+         ce5eYJum2VQL3w5hwDgUoh0+pUsndaqpS/YGrTm6n4uZDUhrGEypET8lYrX1VZ2Xm1tn
+         LYgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790104995; x=1790709795;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790105147; x=1790709947;
+        h=content-transfer-encoding:content-type:mime-version:organization
+         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bWXycRkvEhooYynfgtJMUHspQSrP76XAP+DtRk1GwMY=;
-        b=Le14xA4nmlcAr+F6GuwnqlPhuF916Rk1TutsnjWMS9mCcQP47/ViONiiu1qsJd7Nt7
-         rCqpaNAd4KKdeoLy2wZqQXlV/ikVhrC+/FyXGkwkGh6fexat4ndFm7JPi/nsXuy/xt1x
-         reTE+le+MOjP3U+sjzGI01qUA4GcbXGPphcHwpAoeTRBHam7cCW+oo3aXVuC3jk1uwNc
-         TnzMxuLZZuRlLduDfyU/dBpgOkKRH0dLpIzthZrI+8XNTT/nebD5kYwXUbt9p/ZjfpMy
-         0I/T89kfbfrWpBubNzVDnAjL+D245BFyAaoL2c4QRavK0GLEyohY0aa+7VrEmgBXe9CK
-         dbwA==
-X-Forwarded-Encrypted: i=1; AKwUvBz6ACSarKrAQf/GWz+r7gjUrmis+YWPsI3Xnc8FAJyJP5aF1TQr/OsYrJb35YK8iIgQJUCsIOG0NcTV@lists.linux.dev
-X-Gm-Message-State: AFuF++mw4eKOKucgnpLRR3j0H8UdJ/+ZAt3Il5wHr9bofnga9TZGfeEm
-	wC8nw/5y8mgKXBLe0FIUruWXM6urpAZBkeOGTa4YLZRcwj72qvqOa2q2DjAF1V/PRSnjs81eeqm
-	gw/jBSQLs6ug+fovziYKFX/NIGg4X1p1RDjZ+lYsQ
-X-Gm-Gg: AYBFou2oOi9JaWXYJ5xngcF8SDVCoBNOE68mu46BQaCrFy0m8N0uRfSuO75a5EmhWai
-	jMfQi/jNqHTcZNToW82m7Qp2zyHqGUoG9H87iw/WPiR8K0YfmoBnrjYpDotMVEfsiu75QVNTRyj
-	Z0HrLzVnRzKHxd4Baz4A8tVHoOe9Vg1BG9uO1O43bSB47UoMLUNCUuibjDTf0Q3t9vM4/z61H12
-	Sm2Zn3f9V8LkBafRedbtbSOYO3A2qC8qcB1BJ8K6wV6YGHClTkR/EqnaSat1lCyZ4EBUgerl/hw
-	jakGoS5jlN5oLq7ldkU4vFAoXVR2hQeIQ5F+nKXnGq0myOtepBGIOKpWOsM92v7TmyyJzF3r1j0
-	VybQ5/XhAWfNcfrr5Mbz2OA04XjWgU4l2sVfl5oid
-X-Received: by 2002:a05:6512:1301:b0:5ae:b726:5f1f with SMTP id
- 2adb3069b0e04-5b8d8848194mr29002e87.8.1790104994064; Tue, 22 Sep 2026
- 12:23:14 -0700 (PDT)
+        bh=DpoZFkZdgs13xlkwMgnRw9MvGQ+ZQQ9iQmjkSWg2E4Q=;
+        b=usDAR+ylFVaXQdvOet7km5o8uplymoImTzeRkTe+DAmok7jFYMXlWTTR+P3jV3zaPM
+         wNuDmZj5MHdEJQfPlYE0JTrcM/mBAMH0KPfg8E4uY+YH6QUjrRaZz5KxsD91rKJuuPpF
+         gBUBdy9n0CPkiB5la/aPOhVvH+SpV9qkY41iIjs6hPzwSOp2MPlECxY8I+1CzGY2SBiu
+         p+fYtrTd07gRROeLbjTefehIakHAFBNIn7wX2IExFiMf2XgB4cXqid5UI9wNd6g8KVoT
+         X7RJczRbWdDf5Gu5BTYPmRo+dMIb/Q2TWTMalsfGP2HJ0PyMQ+/BtyttVFo4T4F4naQd
+         7dpA==
+X-Forwarded-Encrypted: i=1; AKwUvBwcJJBFxoXPihFd0iZnAPq9ICXiuhWS4v9Otq/tIqzp1bk4AJlS1utyDo+R9Uz32A/QbeYP8luSydbT@lists.linux.dev
+X-Gm-Message-State: AFuF++nb1THo97SoXq/HpW2yU/K2M7fN4gN2gQH9WtoH7EIpcSRbdPSZ
+	5R1mUA9y9qcUeeCqYZOW3VKw1itjku6Cpdl5Pm0HQG9vW8ovT9vRnLDJpRkZCGGVX07KQWObUct
+	ka9lNCrs2pFyEbQ2FnqAJAwa8/7c79EMp2lYwAijGlZszk0RXWnx9LqzhXFddmGvR
+X-Gm-Gg: AYBFou3voyWGxh5ZRZBa0DuhR6+RQ79PUfEGXGUtUDDbsZ3P1g7JpOvORDSHpF9CKSj
+	w4zQmxow9Qm0W4ySjMcoPzUmzJ7I2MCzSMBjaE9azCngUFqLiclPdE4j/i0PfvDTJEKKNVNMmzW
+	LJNipyy/ViNECU+BtiIT3WA76Z1VnAas2YrFtgjJC7AW76UTMNbXUvppXxtwGAWgwiIUv5fnFxQ
+	5c6EcPoeA2gHHTs9xdrjnUs9sV31Numrn8UlCw9MW81QD/S/OG7nOzoulo8VP90OyZr8G4afTWA
+	NB7rETe/OZJrBUl1fCxz9JHTD7ybPG2xvCnvFNzxijabxpWPsUCc6BhEnbrgoyHRx14Fejf4cn9
+	kM3ZBnEnoWog9z2VGJ4x8kzI862pK4ZglsQzh5H1JFd0pVYkvBfewXg==
+X-Received: by 2002:a05:7300:fb0a:b0:339:66ff:51b3 with SMTP id 5a478bee46e88-33e8e2b67b8mr229569eec.37.1790105147337;
+        Tue, 22 Sep 2026 12:25:47 -0700 (PDT)
+X-Received: by 2002:a05:7300:fb0a:b0:339:66ff:51b3 with SMTP id 5a478bee46e88-33e8e2b67b8mr229545eec.37.1790105146727;
+        Tue, 22 Sep 2026 12:25:46 -0700 (PDT)
+Received: from localhost (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e96e48e3esm357539eec.26.2026.09.22.12.25.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 12:25:46 -0700 (PDT)
+Date: Tue, 22 Sep 2026 12:25:42 -0700
+From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v19 01/20] KVM: arm64: protected VM: Handle user writes
+ to CNTVCT_EL0/CNTPCT_EL0
+Message-ID: <20260922122542.00006868@oss.qualcomm.com>
+In-Reply-To: <20260920212845.707-2-suzuki.poulose@arm.com>
+References: <20260920212845.707-1-suzuki.poulose@arm.com>
+	<20260920212845.707-2-suzuki.poulose@arm.com>
+Organization: Qualcomm
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260916115159.1938195-1-aik@amd.com> <20260916115159.1938195-18-aik@amd.com>
-In-Reply-To: <20260916115159.1938195-18-aik@amd.com>
-From: Jianxiong Gao <jxgao@google.com>
-Date: Tue, 22 Sep 2026 12:22:45 -0700
-X-Gm-Features: AcwNN1UxkcAsiONLLRx4-Onp4JXfCAvcJEHnQ3RWuM6d-nkITizrfWrwxkArT4o
-Message-ID: <CAMGD6P38zYT8FzkFHoaKNEL0tVErK7G+ZLPMzgazAmVoMcD=yQ@mail.gmail.com>
-Subject: Re: [RFC PATCH kernel 17/17] x86/sev: Flush IOMMU TLB for trusted devices
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Jini Susan George <jinisusan.george@amd.com>, 
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Eric Biggers <ebiggers@kernel.org>, 
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>, 
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>, "Tycho Andersen (AMD)" <tycho@kernel.org>, 
-	Liam Merwick <liam.merwick@oracle.com>, Michael Kerrisk <mtk.manpages@gmail.com>, 
-	Suresh Siddha <suresh.b.siddha@intel.com>, Xiaotian Feng <dfeng@redhat.com>, 
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>, Andi Kleen <ak@linux.intel.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	=?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
-	Jonathan Cameron <jic23@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, Ian Campbell <ian.campbell@citrix.com>, 
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>, Petr Tesarik <ptesarik@suse.com>, 
-	David Howells <dhowells@redhat.com>, Haavard Skinnemoen <hskinnemoen@atmel.com>, 
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Christian Marangi <ansuelsmth@gmail.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Michael Kelley <mhklinux@outlook.com>, Ilias Stamatis <ilstam@amazon.com>, 
-	Sumanth Korikkar <sumanthk@linux.ibm.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Toshi Kani <toshi.kani@hp.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Vinod Koul <vkoul@kernel.org>, Jiang Liu <jiang.liu@linux.intel.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Palmer Dabbelt <palmerdabbelt@google.com>, 
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org, 
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru, 
-	Santosh Shukla <santosh.shukla@amd.com>, "Pratik R . Sampat" <prsampat@amd.com>, 
-	Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Fuad Tabba <tabba@google.com>, Darwin Guo <darwinguo@google.com>, Shruti <shrutiss@google.com>, 
-	Saurabh Singh <saurabhsinghs@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: e1pIvpjgb2PqWXFnA_6tqTdq064bIR_J
+X-Authority-Analysis: v=2.4 cv=KqHYSmWN c=1 sm=1 tr=0 ts=6ab2d63c cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8 a=wrk9ooTvwJDonXvhXhMA:9 a=CjuIK1q_8ugA:10
+ a=PxkB5W3o20Ba91AHUih5:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDI4NSBTYWx0ZWRfX00VpaboQ8CFx
+ jhrkcJ5e8qlAl31wWhfxlSYdj0MINcomnZnevDa7e3BczeTyEHzysAX0sWptLWDIlvUCJCmZWHo
+ a9zcxaIDt5kdLBW82N7Mv3qDcT7Ec5OmOaX4gtc6dBFBR0fUnHXIP7L5iniYAq9XMtBFqju8cVO
+ ulz3zJdMfKXdFkiMYUFHq1siFZ75Tqi3eDO9RZLRSphUgrOVlBpjggc5qkoeiNai+p5Jwqo4GVk
+ izIew+hiVs3m7gSI9gVc2fP2wDSMyrIZIR+njrgG5YCylO6lOi0uXZmu+5ZFUbd+lKMlMk1tosn
+ FTlSG2z+/v7PCypjnOA/F6khl8WPjJ72JoousjmIoe4sa35mAHW/i+CT6tQlhUkHtp2K1GTPaow
+ J0Yi1Cnbl6VfYCfGK9+AIzapv44vrdKOWsk+IC5XKWBEApW/xXjYyJ8BQczIYbgfcQ6kP3cSko+
+ ebifNrIoX/yNVCUtu3Q==
+X-Proofpoint-ORIG-GUID: e1pIvpjgb2PqWXFnA_6tqTdq064bIR_J
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDI4NSBTYWx0ZWRfX7LQ2S8fCsQty
+ 81047FR4a4moKvEIbLTbxhDJ4/1oyZqv+jm+Y2fn+mM7EstSXSt5pCEFhF6Q07H1+eMMfTLxJW/
+ NZJ6tkuTnLdzalTvkbT1wF7Geojx1DE=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-22_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 suspectscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220285
 
-On Wed, Sep 16, 2026 at 5:07 AM Alexey Kardashevskiy <aik@amd.com> wrote:
-> +static int alloc_iommu_tlb_flush_ghcb_pages(void)
-> +{
-> +       unsigned int cpu;
-> +       struct page *pg;
-> +       void *p;
-> +
-> +       /*
-> +        * Allocate per CPU pages while encrypted DMA is not happening ye=
-t
-> +        * and smashing is cheap.
-> +        */
-> +       for_each_possible_cpu(cpu) {
-> +               if (per_cpu(iommu_tlb_flush_ghcb_page, cpu))
-> +                       continue;
-> +
-> +               pg =3D alloc_pages_node(cpu_to_node(cpu), GFP_KERNEL, 0);
-> +               if (!pg)
-> +                       return -ENOMEM;
-> +
-> +               p =3D page_to_virt(pg);
-> +               /* Trigger psmash in the host os now to avoid psmash race=
- later */
-> +               snp_set_memory_shared((unsigned long)p, 1);
-> +               snp_set_memory_private((unsigned long)p, 1);
-> +               per_cpu(iommu_tlb_flush_ghcb_page, cpu) =3D p;
-> +       }
-> +
-> +       return 0;
-> +}
->
->  int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
->  {
-> @@ -111,6 +142,24 @@ int sev_tio_op(u32 guest_rid, unsigned int op, u64 *=
-fw_err, u64 *tdi_id)
->         struct ghcb *ghcb;
->         int ret;
->
-> +       if (!(sev_hv_features & GHCB_HV_FT_SNP_SEV_TIO))
-> +               return -EPERM;
-> +
-> +       if (op =3D=3D SVM_VMGEXIT_SEV_TIO_OP_RUN || op =3D=3D SVM_VMGEXIT=
-_SEV_TIO_OP_STOP) {
-> +               if (!(sev_hv_features & GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH))
-> +                       return -EPERM;
-> +
-> +               if (op =3D=3D SVM_VMGEXIT_SEV_TIO_OP_RUN) {
-> +                       if (atomic_inc_return(&sev_tio_devices_num) =3D=
-=3D 1) {
-> +                               ret =3D alloc_iommu_tlb_flush_ghcb_pages(=
-);
-> +                               if (ret)
-> +                                       return ret;
-> +                       }
-> +               } else if (atomic_dec_return(&sev_tio_devices_num) =3D=3D=
- 0) {
-> +                       /* Do cleanup or leave it like this? */
-> +               }
-> +       }
+On Sun, 20 Sep 2026 22:28:26 +0100
+Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
 
-Hi Alexey,
+Hi Suzuki,
 
-When testing this series and accepting a locked TDI in the guest
-(echo 1 > /sys/bus/pci/devices/.../tsm/accept), the guest immediately
-terminates with 0x1:0xd (SEV_TERM_SET_LINUX, GHCB_TERM_IOMMUTLB_FLUSH).
+> Protected VMs doesn't allow setting offsets for virtual and phyiscal
 
-In sev_tio_op(), sev_tio_devices_num is incremented from 0 to 1 before
-alloc_iommu_tlb_flush_ghcb_pages() allocates and initializes the per-CPU
-iommu_tlb_flush_ghcb_page buffers:
+physical
 
-1. atomic_inc_return(&sev_tio_devices_num) sets sev_tio_devices_num =3D 1
-   while iommu_tlb_flush_ghcb_page is still NULL on all CPUs.
-2. alloc_iommu_tlb_flush_ghcb_pages() allocates p for cpu =3D 0 and calls
-   snp_set_memory_shared((unsigned long)p, 1) to pre-smash the 2M page
-   before per_cpu(iommu_tlb_flush_ghcb_page, cpu) is assigned (and before
-   other CPUs' pages are allocated, in case this task is running on cpu > 0=
-).
-3. snp_set_memory_shared() -> __set_pages_state() sees
-   atomic_read(&sev_tio_devices_num) !=3D 0 and calls ghcb_flush_iommu_tlb(=
-).
-4. ghcb_flush_iommu_tlb() reads this_cpu_read(iommu_tlb_flush_ghcb_page),
-   gets NULL, and returns -ENOMEM.
-5. __set_pages_state() treats the non-zero return as fatal and calls
-   sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_IOMMUTLB_FLUSH).
+> counters, as the offset is always fixed to 0. The VM ioclt is filtered
 
-Calling alloc_iommu_tlb_flush_ghcb_pages() before incrementing
-sev_tio_devices_num avoids triggering ghcb_flush_iommu_tlb() while the
-per-CPU pages are still being pre-smashed and initialized:
+ioctl
 
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -150,13 +150,12 @@ int sev_tio_op(...)
-             return -EPERM;
+> out based on the cap. However we don't prevent the userspace from trying
+> to write to the CNTVCT/CNTPCT registers. This would lead to KVM triggering
+> a WARN() in timer_set_offset() as the vm_offset pointer is set to NULL.
+> 
+> Fix this by always "fixing" the timer offsets to 0 and marking that the
+> timer offset is set in the kvm->arch.flags at KVM init time for protected
+> VMs. A userspace writing to the CNT*CT_EL0 would observe success, without
+> any real effect. This was chosen over preventing the writes to these
+> registers and returning -EPERM.
 
-         if (op =3D=3D SVM_VMGEXIT_SEV_TIO_OP_RUN) {
--            if (atomic_inc_return(&sev_tio_devices_num) =3D=3D 1) {
--                ret =3D alloc_iommu_tlb_flush_ghcb_pages();
--                if (ret)
--                    return ret;
--            }
--        } else if (atomic_dec_return(&sev_tio_devices_num) =3D=3D 0) {
--            /* Do cleanup or leave it like this? */
-+            ret =3D alloc_iommu_tlb_flush_ghcb_pages();
-+            if (ret)
-+                return ret;
-+            atomic_inc(&sev_tio_devices_num);
-+        } else {
-+            atomic_dec_if_positive(&sev_tio_devices_num);
-         }
-     }
+Why?  I don't mind the decision but telling us what was chosen is something
+we can see in the code - patch description should give us the stuff we
+can't see.
 
-On Wed, Sep 16, 2026 at 5:07=E2=80=AFAM Alexey Kardashevskiy <aik@amd.com> =
-wrote:
->
-> IOMMU performs RMP checks when SNP is enabled, the results are
-> cached along with the IOMMU translations. When a VM lowers permission
-> of a mapped page (moves to a lower VMPL level or from read+write to
-> read-only or private to shared), the cached RMP check results require
-> invalidation.
->
-> At the moment the only way to invalidate IOMMU cache is the RMPUPDATE
-> instruction which flushes all IOMMU TLBs. It is a host privileged
-> instruction so a VM needs a way to ensure the host has done it.
-> Note that the guest's RMPADJUST/PVALIDATE do not flush IOMMU TLBs.
->
-> The host implements a new "IOMMU TLB Flush" VMGEXIT code which is
-> advertised via bit#11 in the GHCB Hypervisor capabilities.
->
-> Use RMPUPDATE in the following way:
-> - allocate a page per VCPU (to allow lockless flushing);
-> - When invalidation is needed, copy two patterns (A and B) to the page;
-> - invalidate the page so the host can make it shared;
-> - use new GHCB call to request RMPUPDATE on the host;
-> - the host makes the page shared;
-> - the host clears pattern A;
-> - the host makes the page private again;
-> - the host returns to the guest;
-> - check if pattern A has changed and pattern B has not;
-> - if the above failed, panic().
->
-> The patterns are located far enough to not hit the same cache line to
-> work with the cipher text hiding feature.
->
-> The host can choose to not execute the request, WARN_ON if this
-> is the case. Further patches will attempt to handle this in other way.
->
-> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+One comment on the comment below.  
+> 
+> Reported by Sashiko
+> 
+> Link: https://lore.kernel.org/all/20260908164641.416911F00A3A@smtp.kernel.org
+> Fixes: f7d05ee84a6a ("KVM: arm64: Prevent host from managing timer offsets for protected VMs")
+> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
->  arch/x86/include/asm/sev-common.h |  2 +
->  arch/x86/include/uapi/asm/svm.h   |  3 +
->  arch/x86/coco/sev/core.c          | 92 ++++++++++++++++++++
->  3 files changed, 97 insertions(+)
->
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev=
--common.h
-> index ff763c3c5d63..51abf8d061fa 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -138,6 +138,7 @@ enum psc_op {
->  #define GHCB_HV_FT_SNP_AP_CREATION     BIT_ULL(1)
->  #define GHCB_HV_FT_SNP_MULTI_VMPL      BIT_ULL(5)
->  #define GHCB_HV_FT_SNP_SEV_TIO         BIT_ULL(7)
-> +#define GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH BIT_ULL(11)
->
->  /*
->   * SNP Page State Change NAE event
-> @@ -210,6 +211,7 @@ struct snp_psc_desc {
->  #define GHCB_TERM_SECURE_TSC           10      /* Secure TSC initializat=
-ion failed */
->  #define GHCB_TERM_SVSM_CA_REMAP_FAIL   11      /* SVSM is present but CA=
- could not be remapped */
->  #define GHCB_TERM_SAVIC_FAIL           12      /* Secure AVIC-specific f=
-ailure */
-> +#define GHCB_TERM_IOMMUTLB_FLUSH       13      /* IOMMUTLB flush failed =
-for SEV-TIO device */
->
->  #define GHCB_RESP_CODE(v)              ((v) & GHCB_MSR_INFO_MASK)
->
-> diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/=
-svm.h
-> index 93597ad492bf..269050942c8e 100644
-> --- a/arch/x86/include/uapi/asm/svm.h
-> +++ b/arch/x86/include/uapi/asm/svm.h
-> @@ -160,6 +160,8 @@
->  #define SVM_VMGEXIT_SEV_TIO_OP_UNBIND  1
->  #define SVM_VMGEXIT_SEV_TIO_OP_RUN     2
->  #define SVM_VMGEXIT_SEV_TIO_OP_STOP    3
-> +#define SVM_VMGEXIT_IOMMU_TLB_FLUSH            0x80000022ull
-> +#define SVM_VMGEXIT_IOMMU_TLB_FLUSH_NO_ACTION  1
->  #define SVM_VMGEXIT_HV_FEATURES                        0x8000fffdull
->  #define SVM_VMGEXIT_TERM_REQUEST               0x8000fffeull
->  #define SVM_VMGEXIT_TERM_REASON(reason_set, reason_code)       \
-> @@ -285,6 +287,7 @@
->         { SVM_VMGEXIT_AP_CREATION,      "vmgexit_ap_creation" }, \
->         { SVM_VMGEXIT_SEV_TIO_GR,       "vmgexit_sev_tio_guest_request" }=
-, \
->         { SVM_VMGEXIT_SEV_TIO_OP,       "vmgexit_sev_tio_op" }, \
-> +       { SVM_VMGEXIT_IOMMU_TLB_FLUSH, "vmgexit_sev_tio_iommu_tlb_flush" =
-}, \
->         { SVM_VMGEXIT_HV_FEATURES,      "vmgexit_hypervisor_feature" }, \
->         { SVM_EXIT_ERR,         "invalid_guest_state" }
->
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index ed0e4546d5e5..aa5a3abb4796 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -44,6 +44,7 @@
->  #include <asm/cpuid/api.h>
->  #include <asm/cmdline.h>
->  #include <asm/msr.h>
-> +#include <asm/archrandom.h>
->
->  #include "internal.h"
->
-> @@ -103,6 +104,36 @@ static unsigned long snp_tsc_freq_khz __ro_after_ini=
-t;
->
->  DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
->  DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
-> +DEFINE_PER_CPU(u8 *, iommu_tlb_flush_ghcb_page);
-> +static atomic_t sev_tio_devices_num;
+> Changes since v18:
+>  - Retain NULL vm_offset for protected VMs to avoid host tampering with the
+>    offset.
+>  - Moved the flag setting into kvm_timer_init_vm(), where it should have been
+>    in the first place
+> ---
+>  arch/arm64/kvm/arch_timer.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+> index 6ac3321f4c575..226cd5a495c8b 100644
+> --- a/arch/arm64/kvm/arch_timer.c
+> +++ b/arch/arm64/kvm/arch_timer.c
+> @@ -1110,8 +1110,7 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
+>  		timer_context_init(vcpu, i);
+>  
+>  	/* Synchronize offsets across timers of a VM if not already provided */
+> -	if (!vcpu_is_protected(vcpu) &&
+> -	    !test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm->arch.flags)) {
+> +	if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm->arch.flags)) {
+>  		timer_set_offset(vcpu_vtimer(vcpu), kvm_phys_timer_read());
+>  		timer_set_offset(vcpu_ptimer(vcpu), 0);
+>  	}
+> @@ -1133,6 +1132,15 @@ void kvm_timer_init_vm(struct kvm *kvm)
+>  	 */
+>  	for (int i = 0; i < NR_KVM_TIMERS; i++)
+>  		kvm->arch.timer_data.ppi[i] = get_vgic_ppi(kvm, default_ppi[i]);
 > +
-> +static int alloc_iommu_tlb_flush_ghcb_pages(void)
-> +{
-> +       unsigned int cpu;
-> +       struct page *pg;
-> +       void *p;
-> +
-> +       /*
-> +        * Allocate per CPU pages while encrypted DMA is not happening ye=
-t
-> +        * and smashing is cheap.
-> +        */
-> +       for_each_possible_cpu(cpu) {
-> +               if (per_cpu(iommu_tlb_flush_ghcb_page, cpu))
-> +                       continue;
-> +
-> +               pg =3D alloc_pages_node(cpu_to_node(cpu), GFP_KERNEL, 0);
-> +               if (!pg)
-> +                       return -ENOMEM;
-> +
-> +               p =3D page_to_virt(pg);
-> +               /* Trigger psmash in the host os now to avoid psmash race=
- later */
-> +               snp_set_memory_shared((unsigned long)p, 1);
-> +               snp_set_memory_private((unsigned long)p, 1);
-> +               per_cpu(iommu_tlb_flush_ghcb_page, cpu) =3D p;
-> +       }
-> +
-> +       return 0;
-> +}
->
->  int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
->  {
-> @@ -111,6 +142,24 @@ int sev_tio_op(u32 guest_rid, unsigned int op, u64 *=
-fw_err, u64 *tdi_id)
->         struct ghcb *ghcb;
->         int ret;
->
-> +       if (!(sev_hv_features & GHCB_HV_FT_SNP_SEV_TIO))
-> +               return -EPERM;
-> +
-> +       if (op =3D=3D SVM_VMGEXIT_SEV_TIO_OP_RUN || op =3D=3D SVM_VMGEXIT=
-_SEV_TIO_OP_STOP) {
-> +               if (!(sev_hv_features & GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH))
-> +                       return -EPERM;
-> +
-> +               if (op =3D=3D SVM_VMGEXIT_SEV_TIO_OP_RUN) {
-> +                       if (atomic_inc_return(&sev_tio_devices_num) =3D=
-=3D 1) {
-> +                               ret =3D alloc_iommu_tlb_flush_ghcb_pages(=
-);
-> +                               if (ret)
-> +                                       return ret;
-> +                       }
-> +               } else if (atomic_dec_return(&sev_tio_devices_num) =3D=3D=
- 0) {
-> +                       /* Do cleanup or leave it like this? */
-> +               }
-> +       }
-> +
->         /* __sev_get_ghcb() needs IRQs disabled because it uses per-CPU G=
-HCB. */
->         guard(irqsave)();
->
-> @@ -347,6 +396,42 @@ static int vmgexit_psc(struct ghcb *ghcb, struct snp=
-_psc_desc *desc)
->         return ret;
+> +	/*
+> +	 * Protected VMs don't allow any offset being set from userspace,
+> +	 * either set via writes to the counters or using the dedicated
+This sentence confused me.  Second clause isn't obviously the ways that
+are being blocked. Maybe shorten to:
+
+	Protected VMs don't allow the offset to be set from userspace,
+	whether via writes to the counters or the dedicated ioctl.
+
+> +	 * ioctl. Pretend the offset has already been set and rely on the
+> +	 * default offset being 0.
+> +	 */
+> +	if (kvm_vm_is_protected(kvm))
+> +		set_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &kvm->arch.flags);
 >  }
->
-> +static int ghcb_flush_iommu_tlb(struct ghcb *ghcb)
-> +{
-> +       /* AES encrypts with 16 byte blocks */
-> +       unsigned long s1[BITS_TO_LONGS(128)], s2[BITS_TO_LONGS(128)];
-> +       void *p =3D this_cpu_read(iommu_tlb_flush_ghcb_page), *p2;
-> +       struct es_em_ctxt ctxt;
-> +       int ret;
-> +
-> +       if (!p)
-> +               return -ENOMEM;
-> +
-> +       /* Keep patterns apart far enough to not share the same cache lin=
-e */
-> +       p2 =3D (u8 *) p + 2048;
-> +
-> +       vc_ghcb_invalidate(ghcb);
-> +
-> +       BUILD_BUG_ON(ARRAY_SIZE(s1) !=3D 2);
-> +       if (!rdrand_long(s1) || !rdrand_long(s1 + 1) ||
-> +           !rdrand_long(s2) || !rdrand_long(s2 + 1))
-> +               return -EFAULT;
-> +
-> +       memcpy(p, s1, sizeof(s1));
-> +       memcpy(p2, s2, sizeof(s2));
-> +
-> +       pvalidate((unsigned long) p, RMP_PG_SIZE_4K, false);
-> +       ret =3D sev_es_ghcb_hv_call(ghcb, &ctxt, SVM_VMGEXIT_IOMMU_TLB_FL=
-USH, __pa(p), 0);
-> +       pvalidate((unsigned long) p, RMP_PG_SIZE_4K, true);
-> +
-> +       /* Ensure that the host change is visible */
-> +       smp_mb();
-> +
-> +       if (!memcmp(p, s1, sizeof(s1)) || memcmp(p2, s2, sizeof(s2)))
-> +               return -EFAULT;
-> +
-> +       return 0;
-> +}
->  static unsigned long __set_pages_state(struct snp_psc_desc *data, unsign=
-ed long vaddr,
->                                        unsigned long vaddr_end, int op)
->  {
-> @@ -404,6 +489,13 @@ static unsigned long __set_pages_state(struct snp_ps=
-c_desc *data, unsigned long
->         if (!ghcb || vmgexit_psc(ghcb, data))
->                 sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
->
-> +       if (atomic_read(&sev_tio_devices_num)) {
-> +               int ret =3D ghcb_flush_iommu_tlb(ghcb);
-> +
-> +               if (ret)
-> +                       sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_IO=
-MMUTLB_FLUSH);
-> +       }
-> +
->         __sev_put_ghcb(&state);
->
->         local_irq_restore(flags);
-> --
-> 2.55.0
->
->
+>  
+>  void kvm_timer_cpu_up(void)
 
-
---=20
-Jianxiong Gao
