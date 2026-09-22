@@ -1,106 +1,129 @@
-Received: from mail-oi2-f43.google.com (mail-oi2-f43.google.com [74.125.231.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCD8541E72
-	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 17:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8314E55D898
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 17:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790098008; cv=none; b=h3dZ6hGENDTCebB1p8QBPWIjSHcMC47Z4HMVrZSDJeXzttVpTgEIiUSqL6diCkece/jEyxm/sfk2kJpwdj/1YkKVGJm1NewaRlu4TYTu8BvmvQkBkkZZKhSfLfNq19xq/909VT5Son61SSoTdDQivtkhtXDuRMjhQSBeXQGmwsQ=
+	t=1790098446; cv=none; b=TaIfcAhYwSfJnxgODlUS0IXn6d83vux+VXRlA2oIxN7qkBABhK6lCj26ShrhY0TbvPURBYwLUe2GipXUOtsUWQYyCXOMRF2oFBOuB3qF2Ov9k73PUzuWVFke+t//VULnz0e4FE8cFeuZBhOTqoxrBiFZRUBSZh9WV0RR/whJV8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790098008; c=relaxed/simple;
-	bh=ZsMda0uwAQyf/r755/L9LfI3ibTlAaDp5ifNzI89+Ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RZYYI27691CP4Z8jvW3jHlWoDbX85QObxH7m1s7ZtFc1EKs45TCphNSUkj5j9UalY1gXIjQe0EdwK2xdpVyxVy+hOy75RCDJYiOiY3e6LUOxaUDx3cTiA2oLz8sBoH6n/SPBSNAZRuRrueUZ4WyUsR88StCAf9KLcJf+RCbKL2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=TAA+MgB5; arc=none smtp.client-ip=74.125.231.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1790098446; c=relaxed/simple;
+	bh=+ierMJ5BNyB1B9aHpPh9fRXepBsJBV6naGk/gxDdPAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eAfQK26l1qXBfpalctn2n+zNivfSRAqAekE1U6u6Wq8tPH1IYGvHurt/tXT71ERK3KxKIYomyvdYoAcrLnAAVmB6TKVEtk7FxD/gZ/LJJLnZ58fX/Zveb0MAehc8B1pMFGYat4m/inGLJxxN9+s69bg4oyNqkLAthu7DIbAILVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cuMBiKEF; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="TAA+MgB5"
-Received: by mail-oi2-f43.google.com with SMTP id 46e09a7af769-8137b129131so138455a34.2
-        for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 10:26:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1790098005; x=1790702805; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZsMda0uwAQyf/r755/L9LfI3ibTlAaDp5ifNzI89+Ro=;
-        b=TAA+MgB5i3cj5yTmEWtVqFhtQ64ZDiqeHgy6UZGJ03kUNPjdmLb0ZCE7n/yjJYMM1m
-         phFG0a+ZHJO7whgI3lU5UKeyeYguMaZxJ6+L8V56K1aMGKekK6b94dM2iyGco+r0NRvC
-         1OZCOPVzFU7zeZ+CCE9lDDPooBBSiEMAJlnqKtPA4yDVWFN6Kf/QeNFjESVxVDxVWL2G
-         y2zR9vS7crazIU8I4BnupTjsUVtDkAFP5CTelWMs4y+6vdyh5kNsT0Z/o+V6l280QkJG
-         sNhTBtksjk1GKBAHXLL9e4dRx0s+qHaSfGiI7act45TzAASFOWxDDbtX9BhFADV/dsWL
-         VQwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790098005; x=1790702805;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZsMda0uwAQyf/r755/L9LfI3ibTlAaDp5ifNzI89+Ro=;
-        b=IpAvmMiUSjKJGn8qpEcQQbesvKd7yr51k2s5HriEPMe+ixVqDTdwgtCAGrkCjS7qlk
-         +47JOE8v1CyqVi6DxizSgFNA6PRLeTGawfVIwpA65zPbXZtT96nDTU74dbyG/qT03Wh+
-         YxG29sP/7ag6LB23AzfY0/r+fKAca2SxBOo5GEFP9VctQ7SyAX51D8xqqUHT7dt70Q/W
-         71Es8dQ21uWVTvLw8pStiSj96FPLYO1NkF+lQYVQPIFFZANyZeld1sMSXWr7mxxPF5M4
-         HZg661iZtCxaOkkoMEaINIWEe4vm6vjFW0yIGqPw96wP9CngGFtTYCLLLEMR608kus1l
-         3j0A==
-X-Forwarded-Encrypted: i=1; AKwUvBy2m70grvazBzmU+icNKlWcu/B7rQKsYIVxdyIb2tob6ccelHkh1PGaNQvw+Cb3aClyUDPUkZ9N6MkO@lists.linux.dev
-X-Gm-Message-State: AFuF++mvSH0SIbZ9JqG8cAkpj5BR7Sq6mCDZLyl5sD0hH28fkJfoSDuL
-	Zam4G8mbuZ3lskNgwIPJowtOxL4sC09WqWC1OvbTSaZHQ92dgZj+SL+WxwgskaQSwsM=
-X-Gm-Gg: AYBFou3c1g0wEUAD4YPjKPYhojunGJFlRU2bZRGWHUHtx4Z7KGSq6f3+ge2niY9g7ij
-	WOAVUStg1eNmE5ZPRu6UxHzAE6b15hYZrpkXczdH3BNeC2q7Z5dUr3kbrxHGNedM2lFbSKNy+Yc
-	EDqxtAt96K2fNJV0YfXJQFwDF13jVdREJJETB8jGah0SsQK+Ddv3CUu9oUWSYiuHSXuRq8vAZXN
-	SxnnNT14VfN6+9rq3D1z+LCz9q4AfWU4wAzE9OFRLsdYyV2vZhLMQp7b021++g/4P1gLun1VbZp
-	7XPEjcprB/C0e7csZ1GKvKJpMUgNoGnHOg83YPmzTUUjwjSLArvB0wUu8mRlc0SQ9Fw8XrhsoLK
-	HwTB1DyolPNG1gXBLD21OSLtxau3/7fqPeyudQnkrywGv1zXyp+wKsaHyfVIPjD8jSKbnNvk8J5
-	zvWoe99KqGY0ZAXlmHpWzweZuuS9cw9Hbd8URpL8oiQazp
-X-Received: by 2002:a05:6830:82ee:b0:7e9:e488:3bce with SMTP id 46e09a7af769-815f0071c0bmr324985a34.6.1790098005310;
-        Tue, 22 Sep 2026 10:26:45 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81603fc79dcsm103564a34.14.2026.09.22.10.26.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 10:26:44 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x93id-0000000AWlt-1Oeu;
-	Tue, 22 Sep 2026 13:51:47 -0300
-Date: Tue, 22 Sep 2026 13:51:47 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	christian.koenig@amd.com, Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
-Message-ID: <20260922165147.GD1540250@ziepe.ca>
-References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-3-aneesh.kumar@kernel.org>
- <arKsFofudnTYpXj1@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cuMBiKEF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790098444; x=1821634444;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+ierMJ5BNyB1B9aHpPh9fRXepBsJBV6naGk/gxDdPAM=;
+  b=cuMBiKEF7XQ/0sKyJYjO2LUPSztjpIG5qSmMNw0NrcRTYh8XDPgnyCXb
+   XNsXxcvkTE+BCUhRoonbkUS/NxYSIz5Q4o7el5QTFnNugm5zmV/h9RsDE
+   R1Mx35Nn8WefxzM4xQGAYYadHHO1EO8AQtpt/A7FtbgqvI4vk9roWa8D1
+   XEqhqAmzGmtu9dFl7feurLD0h+PS3hhITLxxTAO4/0sj4Uz9xTZZEitLQ
+   4uVDTMzKKJZJL0N17UVq2nM/bCZrCfTYE5xwRzXbtvW1QmBFOn/gj8Cmn
+   REjQw6bBKwumJi6MIivl9qhqmVzRshEnc+bhDYJP8T/SDQKeqkkl6E/fG
+   w==;
+X-CSE-ConnectionGUID: CFf3BJ1ASi2Zd+XHDOfDZQ==
+X-CSE-MsgGUID: K4xEJSReRCWkrSF/UL1Pew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101314731"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="101314731"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 10:34:03 -0700
+X-CSE-ConnectionGUID: f/F4kJrxSaKtFgFInBOCQQ==
+X-CSE-MsgGUID: SqbVynnPSVODHhdi1+tVjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="272433513"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.31]) ([10.125.110.31])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 10:34:02 -0700
+Message-ID: <1bb206f7-3951-4579-b3b2-dcdbe3ce06a9@intel.com>
+Date: Tue, 22 Sep 2026 10:34:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arKsFofudnTYpXj1@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the Quote
+ buffer size
+To: Peter Fang <peter.fang@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+ <20260915092632.2822169-4-peter.fang@intel.com>
+ <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
+ <7ddf42ab-2f78-4edd-be39-ff9e5156d51c@intel.com> <arKtJxNMYHYSfXuO@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <arKtJxNMYHYSfXuO@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 05:25:58PM +0100, Catalin Marinas wrote:
-> Does the memset() post sharing logic work for pKVM as well? If nothing
-> clears it, we have a small window where guest data is leaked to the
-> host.
+On 9/22/26 09:30, Peter Fang wrote:
+> The pointer to this buffer is "void *quote_data" which probably needs a
+> better name too.
 
-Same question for RMM? Or did they define that the RMM zeros on these
-transitions?
+Yes, please.
 
-Jason
+Also, does it really not have a type?
