@@ -1,102 +1,99 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0C9560AB3;
-	Tue, 22 Sep 2026 15:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADB2541457
+	for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 15:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790091535; cv=none; b=I/5rooG+k+anP9y48gEkvPe7evc6rFaEUAz4proYhEzl89WqAZsEtgEjN6tQ57W27a5hApqFyt+rl/HyoYNlHWRizRCx172TenU/kuJY+YegUcXaNRra27O2gD2STlpTFHnZwLDWbh1oPxTpaw6jRN/fee1mJCdrndqHBC2HyYo=
+	t=1790092786; cv=none; b=Kp5qgUIMs4onUxbuOPcdcGY+p7cOc4+wrD3t2UUJIMxx6n0S1tgyOb1zhqJhtPAiOt4E1cPujQZzDhoilUSOJT5U5kI0wgeOhn+iwUw5fsf5b8l1nESMW/EXh3DX76PsH0ZH5ElVvMG62Oe/BECzvbjr7Ffe3Z+NqRVO9lFbFsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790091535; c=relaxed/simple;
-	bh=HrFOMvILt8mde757UBXQoH0Qn6la3KXBni8ZkY+U82c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nnw50HEHfAjx+LhSePYPt7o2VRAtP5S1AKvfErIqsqgS7zqmtUw+Bsc7lZkYnwP3/Xpo9jk72VMHtmPjGPgwKFCGkoJsh5WNkV8ViRJ8mDHgFaPDDkygW9yt+34IyKQWO33E27RnnvfXC9mkNgGxmpgf8bTfWgeZ+DXv8+mHhRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EZWMOlc5; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790092786; c=relaxed/simple;
+	bh=E8MOFpzbt1QnCvl7PyBeS49aMyS3+spMzp0KDWR4X+E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=fRyemC16TniD03QHIHUqUVeCM95CkQWM6yJqqgMieUxTqLDOYcnHz3tKRdl+ts2fyI/B+OkZRqVV4IWbtvHod+F/2/4pL5eLBhYes81qjiPW0bTEyu9Ypp3h/4lSLC7lFA5wRJKDL+4upI8Iw9DHKAZ3MsTtNWXBzFRWk7sK6hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J9ix/4yQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EZWMOlc5"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4593B1576;
-	Tue, 22 Sep 2026 08:38:49 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF1F93F86F;
-	Tue, 22 Sep 2026 08:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790091532; bh=HrFOMvILt8mde757UBXQoH0Qn6la3KXBni8ZkY+U82c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EZWMOlc5+LWH03p20wnXsaCTXtx5uUx9RUpYepDAs94yOCNGJPmdDx36nIjjwvZs6
-	 iMGwFCxikjdKaJkxfkNuNc3It9gHlRkUGYU1nvAO2Ci6mpHOlooi8wVjjNJxUcHxUn
-	 CkoYeED0HQDySx4myZIdTQKCzbTkNWK2QN1FxjnQ=
-Date: Tue, 22 Sep 2026 16:38:48 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	"T.J. Mercier" <tjmercier@google.com>
-Subject: Re: [PATCH v6 7/9] dma-buf: system_heap: Enforce shared-granule
- alignment for cc-shared buffers
-Message-ID: <arKhCKdlqNQwZn8E@arm.com>
-References: <20260918153642.GD11599@ziepe.ca>
- <d8123f21-d5ce-415b-a05a-392d97b8b57d@amd.com>
- <20260918165315.GF11599@ziepe.ca>
- <6115eaf7-21bc-49ce-8a74-08fd37a1e2c9@amd.com>
- <20260921115141.GJ11599@ziepe.ca>
- <45dd7a2f-8474-4388-b383-2dee3ee62206@amd.com>
- <20260921121739.GM11599@ziepe.ca>
- <cd2b32dc-5a80-4ef5-82bc-dd41ea96dc01@amd.com>
- <20260921123725.GN11599@ziepe.ca>
- <yq5a1pam4ocu.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J9ix/4yQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790092783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vnzxIkFjO/uws6giHzZ1s0Tl8JvX28Ubm/U0YTfgZHA=;
+	b=J9ix/4yQlD6KTVA/wau64kh3+jopjg+lVjMm1Ai5qXn67XZeZibEaFX30mhoPTO5jx9ID1
+	nvDCvy8HlLxFc2QM4/rSFzNlv1e2YGrAeb1qB49xXqRCtt4KXEFIl4dI0EbyvB/7GzQdf2
+	74+P+a3uhmrzKYEtd5N7rVjpKXPVUao=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-7wWOQ-H0PU2TafVAa_gFHg-1; Tue, 22 Sep 2026 11:59:42 -0400
+X-MC-Unique: 7wWOQ-H0PU2TafVAa_gFHg-1
+X-Mimecast-MFC-AGG-ID: 7wWOQ-H0PU2TafVAa_gFHg_1790092781
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc4ac5feaa4so148966a12.1
+        for <linux-coco@lists.linux.dev>; Tue, 22 Sep 2026 08:59:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790092781; x=1790697581;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vnzxIkFjO/uws6giHzZ1s0Tl8JvX28Ubm/U0YTfgZHA=;
+        b=YDh14gbb81B29k3Jnk31hjp/d8dzTr6vPRPF4WICp6u2uh0U9nWXj5dJ+Pp5+mw1JN
+         3waXgVhwQR8k8L1038VGuQyNMzdcl4YYrxtMiyW4etVPK68KiP7mtARBC/gyuKEl9tyT
+         HGbxXCLzdv6/+91xS68VUBpdYE29bSawRgDSaT73aw82dgQoXWFw2NIGBXaQaYf7v6KO
+         UxqOA3/P7JFqcWxfTV/M4XwCJHXtkxifI1Qq86iFbawi8R9hAVjlfW75Hni9CaBt2UHW
+         7iQAszq49jInwuZXCwsrA1SOEscRf+W4gUCEUpUPtDgzckfCjGgWJV2bsW6NKOczBvpt
+         uqIg==
+X-Forwarded-Encrypted: i=1; AKwUvBzyVtyPJSfxIbDhLl8JopI07lLWaiM6eRxCK4KzIClnonpucKrNZdhNz0USDN8Y08KlT+ZEDImlIY+T@lists.linux.dev
+X-Gm-Message-State: AFuF++kUJxdyPAD+S/UIdITlPEf3/sLl0ZFt8whZAvHJdMGXK/Y2YkFo
+	uUwA+kXJiCG3T8k+M7ldoVbLtTNEQ1Ho0BtsOZ0yG80iRLVKh4Z2hI7aJ3Sap4op2SUudoJ76dj
+	nSZnKD4PhfFJr/JlXQre7PfjucymWgKw8GkJNxLH/cgHt5cDp/ac09zX9N6nG0nyydfXrO6x/bS
+	5CgnRQzpAhyVEvLCP/cdwet32yINekKvHoO+rJI6hsiU1h+A==
+X-Gm-Gg: AYBFou2tc3YNf+ryQo5W5rmpnKnmB6e0m3sRNqTf93ew4zJ9e7nYQEJAUr3k1ahtPMG
+	Mxpdxk2nBn/mabM6zO2i06bZJHNz2yLFFHKZkc2XV03gNSXb6u7CuDgZ9aujKCMwERTNVkqLZIc
+	spsRCjnIsNe4E2gwfuVST/8BfOBqOC+QVaFlSRMqW8W9xGe4z0ZNUNKTzD
+X-Received: by 2002:a05:6a20:d526:b0:3dd:85a8:4c66 with SMTP id adf61e73a8af0-3ddec802477mr2206225637.45.1790092781076;
+        Tue, 22 Sep 2026 08:59:41 -0700 (PDT)
+X-Received: by 2002:a05:6a20:d526:b0:3dd:85a8:4c66 with SMTP id
+ adf61e73a8af0-3ddec802477mr2206192637.45.1790092780548; Tue, 22 Sep 2026
+ 08:59:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <yq5a1pam4ocu.fsf@kernel.org>
+References: <aqlXypyTlhuLRVmD@8bytes.org>
+In-Reply-To: <aqlXypyTlhuLRVmD@8bytes.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 22 Sep 2026 17:59:28 +0200
+X-Gm-Features: AcwNN1UzOxzA_QV00w6WlKEqf_x9wUBx7h1CvyARLQDIWsvRBVgvTGxmza6xyLw
+Message-ID: <CAGxU2F4VaSUGe7QkhqCm2=AzcYxzZqgxm+yjk=QTRkUTxq_3Ew@mail.gmail.com>
+Subject: SVSM Development Call September 23rd, 2026
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: TbUGWXp17q8kCEFNf-uvYVDVYKPclLlXZHihX2LgjDk_1790092781
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Sep 21, 2026 at 08:56:41PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
-> 
-> > On Mon, Sep 21, 2026 at 02:24:21PM +0200, Christian König wrote:
-> >
-> >> I also don't see where mem_cc_shared_granule_size is added?
-> >
-> > Patch 1:
-> >
-> > https://lore.kernel.org/all/20260904103452.1197239-2-aneesh.kumar@kernel.org/
-> >
-> > Aneesh, please be sure to use get_maintainers on series like this so
-> > everyone gets cc'd.
-> 
-> For v7, I included only the maintainer entries because the recipient
-> list was getting too long, but I added the mailing lists.
+Hi,
 
-I could not see Christian in the recipients of v7. Sometimes the list cc
-is enough but my inbox for example is already around 4000 new email, so
-easy to miss.
+Here is the call for agenda items for this weeks SVSM development call.  Please
+send any agenda items you have in mind as a reply to this email or raise them
+in the meeting.
 
-Recommendation: add Cc: lines to each patch with the people that must
-ack your changes (the maintainers for those specific patches). You can
-then collate all the cc's from your patches, add them to the cover
-letter and use --cc-cover with git send-email.
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
 
-Of course, the list can get large. You can then make a call with who to
-drop: colleagues you talk to regularly can be skipped for example, maybe
-reviewers if there are too many for a subsystem. I would not drop people
-that gave you feedback already on a previous version and not the
-maintainers you need acks from (you can drop them if they already acked
-your patches).
+        https://github.com/coconut-svsm/governance
 
--- 
-Catalin
+The link to the COCONUT-SVSM calendar is:
+
+        https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+Ciao,
+Stefano
+
