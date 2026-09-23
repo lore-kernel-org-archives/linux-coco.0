@@ -1,375 +1,250 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDE251FCB8;
-	Wed, 23 Sep 2026 13:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDE7535FA7;
+	Wed, 23 Sep 2026 14:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790171674; cv=none; b=QbaqvAEHQLaFJshuvD6tQLLecIZbjbk2BFc7+OA8SE1WObyTGAU8hNab0u67esrhX40qPN6Wgb6/uDT7oqo4vYiyEK3yzbUQY/mQERK8dGxd78nq3bRn4rciwDh/u6Kz8M13vtup4u5ur2vnlkOyEnwLMN2EyTI0T4B18Bj/EVw=
+	t=1790172261; cv=none; b=LX7htAX14dy19v6XVFmeS+rHRm9NKfw/pQb641+NvpP4TET59CkvDnzsxAclK+aNrk+o7d0ClTeZLCk4fggDX1/CbMu7swoRwVDlschYHrG+n9nguaFylz01MeBMPbr8WszREVoHxTYUWnMYELDtGpKzgc03q7o3QApFO6DILfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790171674; c=relaxed/simple;
-	bh=jOd+1cImWDzjYteOVXtCRTCnioc+6oUd0GoFfux4o8E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y354a3uPgahxJjRfKhhVgG/ELB0cHCMuvfhDczklH6QJefKi4Uml1iL1Rc734yBc64Gzr7X+LLdu/mOGDz0tsW+4PmCxQSZRH062gSIfFkr9gOTonkC7iCiQYWjOEJMjbHKiovHH7jE1yc8XMlE4mYkVUZvGmNEaWERD1k2H3c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=PAtLz9Rt; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790172261; c=relaxed/simple;
+	bh=12uLwamnps9OLew3JhxZzPu4Oi4VZc9jYM1CuHwIJ88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JUBpRS6dQkFt10w6u5K5DjDSFJDwTDCAT9KcnByx6FunI6jtf7sVSyDCryhSvQQBMTbow5mUKHj57R2If+2QbMPg57dUDxWa6wf143aewqnL8ruFIcMiL+7wkRNDignL1kois7wz403IznTeNTUuOcrE9H5bMV7/4EGtulPaqxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hz1RDLsi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="PAtLz9Rt"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B5DE1516;
-	Wed, 23 Sep 2026 06:54:26 -0700 (PDT)
-Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C5693F86F;
-	Wed, 23 Sep 2026 06:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790171669; bh=jOd+1cImWDzjYteOVXtCRTCnioc+6oUd0GoFfux4o8E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PAtLz9Rt3aTihOaJ+yv2NdmV0CXW4rYuBZHUaaWh2qWU71pQ/MInuODqx7wJ8sr+d
-	 pPMPlqVdzOPM3cOXepnSeOkpONiXaGlPOfnWFQFkx22lkmKsHPZLi+zCD0/Rd6XO3w
-	 lD79U/1F2kXAVvuSOkJl6GeC9j8yE19X3ezeNvf8=
-Message-ID: <80d9cefc-cbdc-4eca-9cf2-1032acc65855@arm.com>
-Date: Wed, 23 Sep 2026 14:54:24 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hz1RDLsi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133CF1F000FF;
+	Wed, 23 Sep 2026 14:04:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790172259;
+	bh=t+qWydripu7ZbldctMsFQ3i/o2xxPtdloQw+yrLdtfg=;
+	h=From:To:Cc:Subject:Date;
+	b=hz1RDLsiIHbGIWAaUUUJPpBfF36IEzzQVcQ7jA4VrdIJtdbxietUwu7HOTo0t14KP
+	 eKejVW7hmlKcJjbfIv6dbVKGpogbh+JhaJt8xuiyQwpttUYDCcsceiqk/uS3W8i1mS
+	 nFpbPIk+2KdexBUxw9I29KmZX0IT5IpElIg7FNcnyHytkGAp3+7GpSH/U2LvYO8atm
+	 3ZE3NsMo6YQNfzmwwrgAtRlXv8HAHvCKX7T8X0DnYs8Odvzps+SI5z1eZ4HL8ECv99
+	 NzlbCnaY0ojPl3SGi8obwkLGudzE7EINKJh+PY6SkGKM47qJ9NuQ/0VpWlU+hK/6Vq
+	 Em0KxYdEoFxOA==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Olivia Mackall <olivia@selenic.com>,
+	Russell King <linux@armlinux.org.uk>
+Subject: [PATCH v13 0/8] Switch Arm SMCCC firmware services to an SMCCC bus
+Date: Wed, 23 Sep 2026 19:33:57 +0530
+Message-ID: <20260923140405.1111554-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 05/20] KVM: arm64: Track the type of VM in kvm_arch
-Content-Language: en-GB
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
- <20260920212845.707-6-suzuki.poulose@arm.com>
- <69ff265b-a110-46c5-a061-a875b2f86c03@redhat.com>
- <e1bd3155-acb2-4c80-b963-6cd7865c9ce3@redhat.com>
- <672c4905-09c9-4e40-97ea-c87a987bda19@arm.com>
- <0ddf1529-a198-413d-bffb-1dbc7b6ee25f@redhat.com>
- <a9dd79fb-3ba3-4c3c-b4c8-c89d26df6d1a@redhat.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <a9dd79fb-3ba3-4c3c-b4c8-c89d26df6d1a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 23/09/2026 14:29, Gavin Shan wrote:
-> On 9/23/26 11:23 PM, Gavin Shan wrote:
->> On 9/23/26 8:24 PM, Suzuki K Poulose wrote:
->>> On 23/09/2026 07:19, Gavin Shan wrote:
->>>> On 9/23/26 4:05 PM, Gavin Shan wrote:
->>>>> On 9/21/26 7:28 AM, Suzuki K Poulose wrote:
->>>>>> KVM arm64 has different types of VMs with all the different modes 
->>>>>> in which
->>>>>> the hypervisor code can be run. e.g., VHE, nVHE, pKVM etc. Then 
->>>>>> there is
->>>>>> protected VM and normal VMs with pKVM. We might soon add other types,
->>>>>> e.g., Arm CCA Realm. So in an effort to make the handling of these
->>>>>> different types of VMs a bit more friendly to the eyes, add a VM 
->>>>>> flavor to
->>>>>> the kvm_arch and we could then add handlers for different 
->>>>>> operations based
->>>>>> on the VM type.
->>>>>>
->>>>>> Keep the flavor initialisation at the beginning to allow for the 
->>>>>> detection
->>>>>> early enough and fail out on any unsupported requests.
->>>>>>
->>>>>> With that, add wrappers for checking the "type" of a VM and 
->>>>>> replace the
->>>>>> existing users with the new wrappers.
->>>>>>
->>>>>> Given we already have the construct of "kvm_vm_is_protected" in 
->>>>>> the core
->>>>>> KVM code, use that for all confidential compute guests including 
->>>>>> Realms
->>>>>> that we are about to add.
->>>>>>
->>>>>> Adds __VM_PROTECTED marker vm flavor to generalize 
->>>>>> kvm_vm_is_protected()
->>>>>> to predicate all confidential guests running on KVM. In later 
->>>>>> patches, we
->>>>>> would add Realm VMs, which would also be classified as protected.
->>>>>>
->>>>>> Add explicit helper to detect if a given VM is a "protected" VM 
->>>>>> under pKVM.
->>>>>> Change the existing users that precisely want to check the VM 
->>>>>> type. These
->>>>>> include :
->>>>>>    - kvm_arch_prepare_memory_region - For preventing memslot 
->>>>>> changes after
->>>>>>      pVM creation.
->>>>>>
->>>>>> All the others are retained as a wider check for confidential 
->>>>>> guest VMs.
->>>>>> These are:
->>>>>>   - kvm_vm_ioctl_set_counter_offset - For disallowing timer offset
->>>>>>     configuration
->>>>>>   - io_mem_abort for dabt handling without valid syndrome information
->>>>>>
->>>>>> Both of which are true for Realms too.
->>>>>>
->>>>>> Realms support is restricted to VHE host and thus 
->>>>>> "kvm_vm_is_protected()"
->>>>>> checks in the pkvm hyp specific code doesn't need to change, as 
->>>>>> the only
->>>>>> protected guests it deals with is "protected pKVM" guests. To 
->>>>>> tighten this
->>>>>> init_pkvm_hyp_vm() restricts the hyp copy of the vm_flavor to the 
->>>>>> ones it
->>>>>> supports.
->>>>>>
->>>>>> Suggested-by: Marc Zyngier <maz@kernel.org>
->>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>> ---
->>>>>> Changes since v18:
->>>>>>   - Merge the __VM_PROTECTED marker and the widening of 
->>>>>> kvm_vm_is_protected()
->>>>>>     to this patch.
->>>>>>   - Merge the use of kvm_vm_is_unprotected_pkvm() for ! 
->>>>>> kvm_vm_is_protected()
->>>>>>     given the scope changes here.
->>>>>>   - Drop Fuad's review tag, as this patch has multiple merges
->>>>>>   - Restrict the VM flavors to the supported types in 
->>>>>> init_pkvm_hyp_vm().
->>>>>>   - Drop kvm_vm_hyp_is_pkvm() and revert to 
->>>>>> is_protected_kvm_enabled()
->>>>>>   - Use is_protected_kvm_enabled() to make the pKVM guest flavor 
->>>>>> checks.
->>>>>>   - s/PKVM/pKVM for commit descriptions too
->>>>>>
->>>>>> Changes since v17:
->>>>>>   * s/PKVM/pKVM for the comments
->>>>>>   * Drop type argument for pkvm_init_host_vm and also drop 
->>>>>> protected variable.
->>>>>>   * Add helpers for checking if the VM is running on pKVM 
->>>>>> (kvm_vm_hyp_is_pkvm())
->>>>>>   * Use kvm_vm_hyp_is_pkvm() to replace is_protected_kvm_enabled() 
->>>>>> with valid
->>>>>>     kvm instance
->>>>>> ---
->>>>>>   arch/arm64/include/asm/kvm_host.h | 22 +++++++++++++++++++---
->>>>>>   arch/arm64/include/asm/kvm_pkvm.h |  4 ++--
->>>>>>   arch/arm64/kvm/arm.c              | 31 +++++++++++++++++++++++++ 
->>>>>> +-----
->>>>>>   arch/arm64/kvm/handle_exit.c      |  2 +-
->>>>>>   arch/arm64/kvm/hyp/nvhe/pkvm.c    |  6 +++++-
->>>>>>   arch/arm64/kvm/mmu.c              |  2 +-
->>>>>>   arch/arm64/kvm/pkvm.c             |  6 ++----
->>>>>>   7 files changed, 56 insertions(+), 17 deletions(-)
->>>>>>
->>>>>
->>>>> This causes broken nVHE mode. I applied PATCH[01-05] to v7.3.rc4 
->>>>> whose head commit
->>>>> is f0100363d8c3, and kselftests/kvm/guest_print causes host crash 
->>>>> (as below). I don't
->>>>> see the crash if only PATCH[01-04] are applied.
->>>>>
->>>>> host$ cat /proc/cmdline | grep kvm-arm\.mode
->>>>> BOOT_IMAGE=(hd0,gpt2)/vmlinuz-7.3.0-rc4-gavin+ root=/dev/mapper/ 
->>>>> rhel_nvidia--grace--hopper--01-root ro 
->>>>> crashkernel=2G-4G:406M,4G-64G:470M,64G-:726M rd.lvm.lv=rhel_nvidia- 
->>>>> grace-hopper-01/root rd.lvm.lv=rhel_nvidia-grace-hopper-01/swap 
->>>>> video=simplefb:off kvm-arm.mode=nvhe
->>>>>
->>>>> host$ cd linux/tools/testing/selftests/kvm
->>>>> host$ ./guest_print_test
->>>>> Random seed: 0x193a0ed3
->>>>> [  192.754328] kvm [6674]: nVHE hyp panic at: [<ffff8000811da044>] 
->>>>> __kvm_nvhe___timer_enable_traps+0x4/0x160!
->>>>> [  192.754338] kvm [6674]: nVHE call trace:
->>>>> [  192.754339] kvm [6674]:  [<ffff8000811dcf34>] 
->>>>> __kvm_nvhe_hyp_panic+0xb4/0xe0
->>>>> [  192.754342] kvm [6674]:  [<ffff8000811dcba4>] 
->>>>> __kvm_nvhe___kvm_vcpu_run+0x164/0x440
->>>>> [  192.754344] kvm [6674]:  [<ffff8000811dfe90>] 
->>>>> __kvm_nvhe_handle___kvm_vcpu_run+0x40/0x1f0
->>>>> [  192.754346] kvm [6674]:  [<ffff8000811e0238>] 
->>>>> __kvm_nvhe_handle_trap+0x158/0x280
->>>>> [  192.754347] kvm [6674]:  [<ffff8000811dd8fc>] 
->>>>> __kvm_nvhe___skip_pauth_save+0x4/0x4
->>>>> [  192.754348] kvm [6674]: ---[ end nVHE call trace ]---
->>>>> [  192.754350] Code: d2818002 17fffff7 d503201f f9400001 (b94a6821)
->>>>> [  192.754350] kvm [6674]: Hyp Offset: 0xfffeb0d7fe2e0000
->>>>> [  192.754351] Kernel panic - not syncing: HYP panic:
->>>>> [  192.754351] PS:834003c9 PC:0000cf2882efa044 ESR:0000000096000004
->>>>> [  192.754351] FAR:ffff00009b286a68 HPFAR:8000000000000000 
->>>>> PAR:1d00ec7edbadc8de
->>>>> [  192.754351] VCPU:0000cf011848a350
->>>>> [  192.845154] CPU: 12 UID: 0 PID: 6674 Comm: guest_print_tes 
->>>>> Kdump: loaded Not tainted 7.3.0-rc4-gavin+ #7 PREEMPT(full)
->>>>> [  192.856182] Hardware name:  GH200 P5042, BIOS 02.04.01 20250422
->>>>> [  192.862231] Call trace:
->>>>> [  192.864725]  show_stack+0x20/0x38 (C)
->>>>> [  192.868471]  dump_stack_lvl+0x88/0xb8
->>>>> [  192.872215]  dump_stack+0x18/0x30
->>>>> [  192.875598]  vpanic+0x280/0x498
->>>>> [  192.878806]  panic+0x68/0x70
->>>>> [  192.881745]  nvhe_hyp_panic_handler+0x184/0x190
->>>>> [  192.886372]  kvm_arm_vcpu_enter_exit+0x24/0x100
->>>>> [  192.891003]  kvm_arch_vcpu_ioctl_run+0x254/0x7c0
->>>>> [  192.895726]  kvm_vcpu_ioctl+0x174/0xb40
->>>>> [  192.899645]  __arm64_sys_ioctl+0xb0/0x120
->>>>> [  192.903745]  invoke_syscall.constprop.0+0xa8/0x100
->>>>> [  192.908639]  do_el0_svc+0xb8/0xe0
->>>>> [  192.912022]  el0_svc+0x48/0x1f8
->>>>> [  192.915228]  el0t_64_sync_handler+0xa0/0xe8
->>>>> [  192.919500]  el0t_64_sync+0x1ac/0x1b0
->>>>> [  192.923243] SMP: stopping secondary CPUs
->>>>> [  192.927653] Starting crashdump kernel...
->>>>> [  192.931658] Bye!
->>>>>
->>>>
->>>> With the following changes applied after PATCH[01-05] on top of 
->>>> v7.3.rc4, the crash
->>>> is avoided.
->>>>
->>>> In arch/arm64/include/asm/kvm_host.h:
->>>>
->>>> -#define kvm_vm_is_protected(kvm)       ((kvm)->arch.vm_flavor >= 
->>>> __VM_PROTECTED)
->>>> +#define kvm_vm_is_protected(kvm)       \
->>>> +       (is_protected_kvm_enabled() && (kvm)->arch.vm_flavor >= 
->>>> __VM_PROTECTED)
->>>
->>> That only papers over the problem. We can't use the vcpu_is_*
->>> constructs from nvhe hyp, without converting the vcpu->kvm to
->>> the hyp address, before accessing it. The fix is a bit more
->>> involved. One option is to define the vcpu_is_* helpers only
->>> for the !NVHE hyp code in the kvm_host.h (to avoid pulling
->>> in the asm/kvm_mmu.h in to kvm_host.h and then make a mess
->>> with header dependencies) and define the NVHE version in
->>> asm/kvm_hyp.h. Something like :
->>>
->>>
->>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/ 
->>> asm/kvm_host.h
->>> index 46a7f6c1e426c..4016d09ed39c3 100644
->>> --- a/arch/arm64/include/asm/kvm_host.h
->>> +++ b/arch/arm64/include/asm/kvm_host.h
->>> @@ -1545,11 +1545,14 @@ struct kvm *kvm_arch_alloc_vm(void);
->>>   #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
->>>
->>>   #define kvm_vm_is_protected(kvm)       ((kvm)->arch.vm_flavor >= 
->>> __VM_PROTECTED)
->>> +
->>> +#ifndef __KVM_NVHE_HYPERVISOR__
->>>   #define vcpu_is_protected(vcpu) kvm_vm_is_protected((vcpu)->kvm)
->>> +#define vcpu_is_protected_pkvm(vcpu) 
->>> kvm_vm_is_protected_pkvm((vcpu)->kvm)
->>> +#endif
->>>
->>>   #define kvm_vm_is_protected_pkvm(kvm)          \
->>>          (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == 
->>> VM_PROTECTED_PKVM))
->>> -#define vcpu_is_protected_pkvm(vcpu)   
->>> kvm_vm_is_protected_pkvm(vcpu->kvm)
->>>
->>>   #define kvm_vm_is_unprotected_pkvm(kvm)                \
->>>          (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == 
->>> VM_PKVM))
->>> diff --git a/arch/arm64/include/asm/kvm_hyp.h b/arch/arm64/include/ 
->>> asm/kvm_hyp.h
->>> index 4974492744cc8..3bf87e81af430 100644
->>> --- a/arch/arm64/include/asm/kvm_hyp.h
->>> +++ b/arch/arm64/include/asm/kvm_hyp.h
->>> @@ -137,6 +137,19 @@ int __pkvm_init(phys_addr_t phys, unsigned long 
->>> size, unsigned long *per_cpu_bas
->>>   void __noreturn __host_enter(struct kvm_cpu_context *host_ctxt);
->>>   #endif
->>>
->>> +#ifdef __KVM_NVHE_HYPERVISOR__
->>> +#define vcpu_is_protected(vcpu)        \
->>> +       
->>> ({                                                              \
->>> +               struct kvm *__kvm = READ_ONCE((vcpu)- 
->>> >kvm);             \
->>> +               __kvm && 
->>> kvm_vm_is_protected((kern_hyp_va(__kvm)));     \
->>> +       })
->>> +#define 
->>> vcpu_is_protected_pkvm(vcpu)                                   \
->>> +       
->>> ({                                                              \
->>> +               struct kvm *__kvm = READ_ONCE((vcpu)- 
->>> >kvm);             \
->>> +               __kvm && 
->>> kvm_vm_is_protected_pkvm((kern_hyp_va(__kvm)));\
->>> +       })
->>> +#endif
->>> +
->>>
->>>
->>> Or explicitly convert all nvhe accessors to a new 
->>> "nvhe_vcpu_is_protected"
->>>
->>> The second one sounds like a better option to me.
->>>
->>
->> We just need to include "asm/kvm_mmu.h" to "arch/arm64/mmio.c". With it,
->> we can have unified functions (macros) in kvm_host.h to accomodate all
->> cases, like below.
->>
->> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/ 
->> asm/kvm_host.h
->> index 9b1cf9c59e81..b9c9a9f203f9 100644
->> --- a/arch/arm64/include/asm/kvm_host.h
->> +++ b/arch/arm64/include/asm/kvm_host.h
->> @@ -1514,11 +1514,36 @@ struct kvm *kvm_arch_alloc_vm(void);
->>   #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
->>
->>   #define kvm_vm_is_protected(kvm)       ((kvm)->arch.vm_flavor >= 
->> __VM_PROTECTED)
->> -#define vcpu_is_protected(vcpu)                
->> kvm_vm_is_protected((vcpu)->kvm)
->> +#define 
->> vcpu_is_protected(vcpu)                                                \
->> +       ({                                                              \
->> +               struct kvm *__kvm = READ_ONCE((vcpu)->kvm);             \
->> +               bool __protected = false;                               \
->> +                                                                       \
->> +               if (__kvm) {                                            \
->> +                       if (is_nvhe_hyp_code())                         \
->> +                               __kvm = kern_hyp_va(__kvm);             \
->> +                       __protected = kvm_vm_is_protected(__kvm);       \
->> +               }                                                       \
->> +                                                                       \
->> +               __protected;                                            \
->> +        })
->> +
->>
->>   #define kvm_vm_is_protected_pkvm(kvm)          \
->>          (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == 
->> VM_PROTECTED_PKVM))
->> -#define vcpu_is_protected_pkvm(vcpu)   kvm_vm_is_protected_pkvm(vcpu- 
->> >kvm)
->> +#define vcpu_is_protected_pkvm(vcpu)                                   \
->> +       ({                                                              \
->> +               struct kvm *__kvm = READ_ONCE((vcpu)->kvm);             \
->> +               bool __protected = false;                               \
->> +                                                                       \
->> +               if (__kvm) {                                            \
->> +                       if (is_nvhe_hyp_code())                         \
->> +                               __kvm = kern_hyp_va(__kvm);             \
->> +                       __protected = kvm_vm_is_protected_pkvm(__kvm);  \
->> +               }                                                       \
->> +                                                                       \
->> +               __protected;                                            \
->> +        })
->>
-> 
-> Besides, vcpu_is_protected_pkvm() isn't used anywhere in branch "cca/ 
-> cca-host/kvm-v19/integration",
-> so it can be removed :)
+As discussed here:
+https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
 
-This was asked by Fuad, IIRC. And it is for the sake of completion with
-vcpu_is_protected and vcpu_is_rec
+The earlier CCA guest support used an arm-cca-dev platform device as a pure
+software anchor for the TSM class device. That platform device did not
+correspond to a DT/ACPI described device, MMIO range, interrupt, or other
+platform resource; it existed only to make the CCA guest driver bind and to
+place the resulting TSM device in the driver model. The same pattern also
+exists for smccc_trng. Creating separate platform devices for such
+SMCCC-discovered features is misleading, because those features are not
+independent platform devices.
+
+This series adds an Arm SMCCC bus for services discovered through the SMCCC
+firmware interface. The bus provides SMCCC device and driver registration
+helpers, SMCCC function id based matching, uevent modalias generation, and
+a sysfs modalias attribute. SMCCC service drivers can use
+MODULE_DEVICE_TABLE(arm_smccc, ...) to emit arm_smccc:f<functionid>
+aliases, allowing userspace to autoload service drivers when the SMCCC core
+registers matching firmware-service devices.
+
+The series then moves SMCCC TRNG and the Arm CCA guest RSI service off the
+platform bus. When the SMCCC core discovers the corresponding firmware
+service, it registers an arm-smccc device for that service. The hwrng
+arm_smccc_trng driver and the Arm CCA guest TSM provider are converted to
+SMCCC drivers that bind to those discovered devices.
+
+The old arm-cca-dev platform device has also been used by userspace as a Realm
+guest indicator. Removing it without a replacement would leave userspace
+depending on an internal driver-binding device. This series therefore adds
+/sys/firmware/cca/realm_guest as a stable, architecture-provided ABI for
+detecting whether the kernel is running as an Arm CCA Realm guest, and then
+removes the dummy arm-cca-dev platform-device registration.
+
+Changes from v12:
+https://lore.kernel.org/all/20260921053807.354802-1-aneesh.kumar@kernel.org
+* Split patch 7 into two patches:
+   "coco: guest: arm64: Remove dummy CCA platform device"
+   "coco: guest: arm64: Add sysfs ABI for CCA Realm guests"
+* Add the hw_random and kbuild maintainers to the Cc list.
+* Add all newly added files to MAINTAINERS.
+* Make cca_kobj a local variable.
+* Update to_arm_smccc_device to container_of_const 
+
+Changes from v11:
+https://lore.kernel.org/all/20260914060511.277948-1-aneesh.kumar@kernel.org
+* Collect Reviewed-by tags.
+* Update commit messages based on feedback.
+* Update the sysfs file documentation.
+* Use put_device() consistently for cleanup on error.
+
+Changes from v10:
+https://lore.kernel.org/all/20260904095000.1184861-1-aneesh.kumar@kernel.org
+* Collect Reviewed-by tags.
+* Add the missing linux/types.h include.
+* Update the arm_smccc_1_1_invoke() call to pass 0 as the input value for x1-x7.
+
+Changes from v9:
+https://lore.kernel.org/all/20260805063255.1638614-1-aneesh.kumar@kernel.org
+* Rename CONFIG_ARM_RMM to CONFIG_ARM_RMM_RSI to make the Kconfig option RSI-specific.
+* Update the modalias to use the SMCCC function ID.
+* Don't issue SMC64 SMCCC calls on arm32.
+* Drop the IDA usage.
+
+Changes from v8:
+https://lore.kernel.org/all/20260707081351.1680209-1-aneesh.kumar@kernel.org
+* Rebase onto the arm64 for-next/core branch.
+* Move the RSI code from arch/arm64 to drivers/firmware/arm_rmm in patch 3.
+* Add a new patch to move the Realm memory-encryption operations to the RSI code.
+* Drop the Reviewed-by tag from patch 3.
+
+Changes from v7:
+https://lore.kernel.org/all/20260611130429.295516-1-aneesh.kumar@kernel.org
+* Rebase to latest kernel
+* Add id_table check in arm_smccc_driver_register
+* Add smccc device name check in arm_smccc_device_register
+* Drop driver_data from struct arm_smccc_device_id
+
+Changes from v6:
+https://lore.kernel.org/all/20260527100233.428018-1-aneesh.kumar@kernel.org
+* Move SMCCC bus-related code to bus.c.
+* Remove CONFIG_ARM64 #ifdefs and switch device creation to use the generic function-ID support framework.
+* Move version-specific checks and other conditionals to the device driver probe routines.
+* Move RSI definitions to include/linux/arm-smccc-rsi.h.
+* Split the file and variable renames into a separate patch.
+
+Changes from v5:
+https://lore.kernel.org/all/20260514094030.42495-1-aneesh.kumar@kernel.org
+* Replace the arm-smccc platform-device plus auxiliary-child model with a
+  dedicated Arm SMCCC bus.
+* Add SMCCC module alias support so SMCCC service drivers can use
+  MODULE_DEVICE_TABLE(arm_smccc, ...) and autoload through arm_smccc:<name>
+  aliases.
+* Convert smccc_trng from a platform driver to an SMCCC driver.
+* Convert the Arm CCA guest TSM provider from the arm-cca-dev platform device
+  to an SMCCC driver bound to the discovered RSI service.
+* Add /sys/firmware/cca/realm_guest before removing the old arm-cca-dev dummy
+  platform device.
+
+Changes from v4:
+https://lore.kernel.org/all/20260427061615.905018-1-aneesh.kumar@kernel.org
+* Add /sys/firmware/cca/realm_guest for detecting realm guest
+* Convert smccc_trng to auxiliary device from platform device
+
+Changes from v3:
+https://lore.kernel.org/all/20260309100507.2303361-1-aneesh.kumar@kernel.org
+* Rebased onto the latest kernel
+* Drop pr_fmt() from drivers/firmware/smccc/rmm.c
+
+Cc: Jason Gunthorpe <jgg@nvidia.com> 
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Andre Przywara <andre.przywara@arm.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nsc@kernel.org>
+Cc: Olivia Mackall <olivia@selenic.com>
+Cc: Russell King <linux@armlinux.org.uk>
+
+Aneesh Kumar K.V (Arm) (8):
+  firmware: smccc: Add an Arm SMCCC bus
+  firmware: hwrng: arm_smccc_trng: Register as an SMCCC device
+  firmware: arm_rmm: Move RSI support out of arch/arm64
+  arm64: realm: Move Realm memory encryption ops to RSI code
+  virt: coco: arm-cca-guest: Rename TSM report source file
+  firmware: smccc: arm-cca-guest: Bind the TSM provider to an SMCCC
+    device
+  coco: guest: arm64: Add sysfs ABI for CCA Realm guests
+  coco: guest: arm64: Remove dummy CCA platform device
+
+ Documentation/ABI/testing/sysfs-firmware-cca  |   7 +
+ MAINTAINERS                                   |   6 +
+ arch/arm/include/asm/archrandom.h             |   2 +-
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/archrandom.h           |   2 +-
+ arch/arm64/include/asm/io.h                   |   2 +-
+ arch/arm64/include/asm/mem_encrypt.h          |   5 +-
+ arch/arm64/include/asm/pgtable-prot.h         |   2 +-
+ arch/arm64/include/asm/rsi.h                  |  70 --------
+ arch/arm64/kernel/Makefile                    |   2 +-
+ arch/arm64/kernel/setup.c                     |   2 +-
+ arch/arm64/mm/init.c                          |   3 +-
+ arch/arm64/mm/pageattr.c                      |  38 +----
+ drivers/char/hw_random/arm_smccc_trng.c       |  32 ++--
+ drivers/firmware/Kconfig                      |   1 +
+ drivers/firmware/Makefile                     |   1 +
+ drivers/firmware/arm_rmm/Kconfig              |  17 ++
+ drivers/firmware/arm_rmm/Makefile             |   2 +
+ .../kernel => drivers/firmware/arm_rmm}/rsi.c |  77 +++++++--
+ drivers/firmware/smccc/Makefile               |   2 +-
+ drivers/firmware/smccc/bus.c                  | 158 ++++++++++++++++++
+ drivers/firmware/smccc/smccc.c                |  68 +++++++-
+ drivers/virt/coco/arm-cca-guest/Kconfig       |   3 +-
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../arm-cca-guest/{arm-cca-guest.c => main.c} |  52 +++---
+ .../linux/arm-rsi-cmds.h                      |  76 ++++++++-
+ include/linux/arm-smccc-bus.h                 |  48 ++++++
+ .../linux/arm-smccc-rsi.h                     |   6 +-
+ include/linux/device-id/arm_smccc.h           |  19 +++
+ include/linux/mod_devicetable.h               |   1 +
+ scripts/mod/devicetable-offsets.c             |   3 +
+ scripts/mod/file2alias.c                      |   8 +
+ 32 files changed, 529 insertions(+), 189 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+ delete mode 100644 arch/arm64/include/asm/rsi.h
+ create mode 100644 drivers/firmware/arm_rmm/Kconfig
+ create mode 100644 drivers/firmware/arm_rmm/Makefile
+ rename {arch/arm64/kernel => drivers/firmware/arm_rmm}/rsi.c (71%)
+ create mode 100644 drivers/firmware/smccc/bus.c
+ rename drivers/virt/coco/arm-cca-guest/{arm-cca-guest.c => main.c} (82%)
+ rename arch/arm64/include/asm/rsi_cmds.h => include/linux/arm-rsi-cmds.h (69%)
+ create mode 100644 include/linux/arm-smccc-bus.h
+ rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (98%)
+ create mode 100644 include/linux/device-id/arm_smccc.h
 
 
-Cheers
-Suzuki
+base-commit: 704340f1cd0dcef829eb62f5b48ae95a2ce17bdf
+-- 
+2.43.0
 
