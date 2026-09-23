@@ -1,109 +1,200 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6543B6C9
-	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 07:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790150387; cv=none; b=ijzQ9nE2mZrjB0eJlXwV0aMJ2vD83c3p9jBYZ/xgshr/CpIB8wHzPnmdMmrzBaU0ihilhaclipiKwkLYaalJvBCnSuRGkVyNZD6TZTPQMJlc+RCX+w8V36Ck55JbpCnhiDz3X6ffyFG9eoHAOogE1Cx5PUEznYqtbx0+rkf2f88=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790150387; c=relaxed/simple;
-	bh=8rw3+c4kPtR72QWHxMWMRr1gNJlZjyztVlhL0rhpLDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fs+OXcEZ0AUaSSXBWONB7oodvLcp0mvLnnwqZ+2yxRj6nC9cqmH6WjBwnugr2LtRSiQBMgrJmJOsKxZw/b1PKmS/9QJ846I8LpKC6+42o/AqRg9ZxM/1LxH0il9J1S2kCQXyGuMP76AIjRyUqkBi7vQL+2Lf+anmGgVD1jDVYfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jB+jW6Dg; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FA246D56A
+	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 08:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790151568; cv=fail; b=nGHZ78lABqYS0918OY8IecTwm92WEcUW1FitqhEuufqReV6K3qK2WQI4UxKpTQmTqTQDkMWZtYkYzvJkhUiwWLlgGZ1S7MbmiNbiztoelOpLg+3To/+LSdDsz6LczwafGNenX0f06av6KnylkjqqDdgFqOKZOHrJQFjkAHfQnxI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790151568; c=relaxed/simple;
+	bh=8YkWcrcwp32NFrfqkKzboIh7NsqSZZMX7Ym0m/UQsJ0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=o32yx2bLprRQYJiNbaiYICCxS/0Hrj3yN6v+nJ6SQVCPnUuNb23CCzxEaJ7Ok1aAKLUk9TYNvPmtlj07rqG3FL9fAvBAPb6lZvMIst0MRu2499kWVa1P+VZJWK47aPEWimp+ShiOu0126J+J4xKkQplq6zr+AzVruvUtYYKagH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mQAwBOic; arc=fail smtp.client-ip=192.198.163.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jB+jW6Dg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mQAwBOic"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790150383; x=1821686383;
+  t=1790151566; x=1821687566;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8rw3+c4kPtR72QWHxMWMRr1gNJlZjyztVlhL0rhpLDA=;
-  b=jB+jW6DgRaI63nCptDX/V2S/l7tsALnYJHx66DVmKUQtZvVyqvIONF8d
-   49vmPZE+AkPAJFl+DS6/25sDqJKi1/aKrbIE9AFZp/B7gcUlxckz6XGAY
-   f/l3KH7lxwiMWb+tdqBRBi46c+vmEFqfv1yXSOUPR0yGmAIV5t4WK6y7A
-   QN1zvIgO0wW0WSy8YKuxSqyVThr2XODmg7D7/Jh3jzkgt2JNSgXeb4JJ/
-   H/nGtdQ6cVt1Bhllp2UUNTYF/ZvC7/wa8Zgl+cVkIUykTKoy3XpAoUdfK
-   HUQ6mVo6b7b6eXbRLMXp/rlZR5/yc/3pqBH2G8UavOB/iTVdgfRUE37hH
-   A==;
-X-CSE-ConnectionGUID: qIyjCkjeQNay2Me93URXGA==
-X-CSE-MsgGUID: +vPGbletRD6lKRDMGbIwNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="94639991"
+   in-reply-to:mime-version;
+  bh=8YkWcrcwp32NFrfqkKzboIh7NsqSZZMX7Ym0m/UQsJ0=;
+  b=mQAwBOicLw0ZiO5cjznc3U4W6YWnvoayuBnveB9vO7B7sJ7ZPxiSO2E2
+   tEEBLeX3J39LfjLLxLsG+yE+ub3Qs4aPqqmE1pCkRtBJitZWgMg5a2/ug
+   oBMRxxjekvBhHeIG0oi+nWU+kgpVI+TiXxl+CYC5PaaZm/cnx4UXet0fW
+   qMPqqBxeUQTfvr+vHRTGh3mdGLll5jjzcD0VSecJZw+8ieQ0jeBdPpJiW
+   ITPUF0ae2H/gk1oqnV2Y9DP0AUG5QqsmReR3yAsgTT+sx8a2Z7OyLBdRY
+   ZNFUxF0yz+iYtpN5TiPlezzvtPq1DsB19emrW0UTEZG1szbDYL8BlGLf5
+   Q==;
+X-CSE-ConnectionGUID: /TWDh1NHQnKrquRNvB5Big==
+X-CSE-MsgGUID: 4XUK2Z+5RM22yT7DCWp8Qw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="1314432"
 X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="94639991"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:59:31 -0700
-X-CSE-ConnectionGUID: Po7jkFkVSc2JkQTQNtzy6A==
-X-CSE-MsgGUID: Ahay1OAaSNGIRt0bt+dd4A==
+   d="scan'208";a="1314432"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 01:19:26 -0700
+X-CSE-ConnectionGUID: QFx63HSKR7GUsGhXBN8VZw==
+X-CSE-MsgGUID: mlhdzP6UQKaz0VE3HL038g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="270023355"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.235])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:59:25 -0700
-Date: Wed, 23 Sep 2026 10:59:22 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	peter.fang@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, chao.gao@intel.com,
-	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
-	nik.borisov@suse.com
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
- module init
-Message-ID: <arOG2s3VZMQjLWey@tlindgre-MOBL1>
-References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-3-yilun.xu@linux.intel.com>
- <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
- <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
+   d="scan'208";a="4577569"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 01:19:25 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 01:19:25 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 01:19:25 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.65) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 01:19:24 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jeMeX5ItKLRGlZDnY6eg25TVoQf/0ZBPVApRDzWz469Yqpw+HMB9Ah2H/azCEEdCPnZQ2o5sYiCRq6zg6Pco02/lXPqeT6sewqkLDCmp1FWNgAn/45Y6TC6FzinHjH/fc7gWFOyZTvJaUYLE1/6mVZ73vb3emBrsQM7kB7atH4TZd1rLBvZ4TupTtSHBmrut6wiaELGTyinPoDg03m3tL/BslI5gbRLzfwDgXfShHYaM6BRGm0T8luQiBJY2BGxDwX5LuUrkEbPO1kyFCaHV4wE1D3anFtTt2vxz29U0s7aKzIiEpkVHscC1ecXU/qYn8jYTeIHYfNAHwcXN59Nc+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c1U/jN/w5EFlV8CkTofX/V3J9Bs3JzszEYObaSyIQlg=;
+ b=KHgGam9Tt/0aM7C0xalYy9bVGzBCaZk+02VoREqV8scIKiOeG/XJKfz/BgSBoAgCQqNnOvsQvYMU1zzSAKZvfAwP708VS8SZs2shdSrvNrlwLzgrtPv+LHhCXlfhOmO4wM0yqf/y7b1auRq4rJV0QFeV+a9QhdygeQ61H1+AysvBn1USBP+8u2igpHpsV484qUf8a3KO2xJ/caArsL7IzykIL+Ooko9BEk5YJ9Oag99xf/G6NbLeuBU62fP0RZtYPXEqjc/U7xRIDI1K0TZiLZ5JKcDsDUcPzxB0FMj4Fkc8xrp5WIOR/r8ownoqfEfMnaj0wBEjUDAZ2p+aTkPtfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
+ by PH0PR11MB5901.namprd11.prod.outlook.com (2603:10b6:510:143::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
+ 2026 08:19:22 +0000
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d%2]) with mapi id 15.21.0451.012; Wed, 23 Sep 2026
+ 08:19:22 +0000
+Date: Wed, 23 Sep 2026 16:19:12 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Tony Lindgren <tony.lindgren@linux.intel.com>
+CC: <x86@kernel.org>, <linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <yilun.xu@linux.intel.com>, Kiryl Shutsemau
+	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin"
+	<hpa@zytor.com>
+Subject: Re: [RFC PATCH v2 00/10] TDX: Stop auto-generating the global
+ metadata code
+Message-ID: <arOLgHrOf8tlTwfv@intel.com>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+ <arNnJO3aKDlCD2Uz@tlindgre-MOBL1>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <arNnJO3aKDlCD2Uz@tlindgre-MOBL1>
+X-ClientProxiedBy: TY4PR01CA0127.jpnprd01.prod.outlook.com
+ (2603:1096:405:379::14) To IA0PR11MB8380.namprd11.prod.outlook.com
+ (2603:10b6:208:485::21)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|PH0PR11MB5901:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7ecd264-0c8e-4355-1bf7-08df194b5f47
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|4143699003|10067099003|5023799004|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: EcsbYNLCP5Wut2p/M1TFx36FDCDkyAPUDQpFv1xS5Y4Vk0aDALZigZNwdl77aimDKb3xec4ELfnpMjuIcVFYd5vG1FheG4RYJM742Ls4n1SaYMF3BHoD/BWQyQL5kN/NYbk5D9PKlBa2zPfcTwDaz1Q7Mroqvx7JhiNx8uUIIJnyZEMVACls6LY1+r+PGyCdsOzD4Ns8UI1NAmHWvHXr+eWNpI7UHnDU62XiCo0v0GohQK8ufwGggyBbCPeqNtZSlQzfwwbzW8tWgvJNPVpU/Dl4sXq1BhmZOHDQXMItVuWrSzKMHjY8tWXDAZ06d/i4MUcmPJT5IPplz1H4UGk6faomoF7pqltUG8+5zDqBI0geyQCqS0ihjwmFVFBjKke3RcAkOy0RocKu21/H2eHIoL7w9B+VR2WN+i4309xcMXaCAT8jUWMJpPCGJCGPfllVy9bdyi4RapAs7b2yzaqeDY2QAZSajuu8mTOJpR1TmVVWG9DPLj2s6ZZNPluqnxr0wPDq7XAsqFoJVsWy76FExThtOUxUtN8T4wTuV9UJ4KRmpjRKdrQ8PdYtXqj5rgdfy0A9GzLEJyigcZEX9S6wsFWKmYvUUHYLkGxbwrDH+YRZhijHuU45H8tCr4JA5i0HSz1ISofVhnKsU0d4S/dgYws4zqYPWUWnBjUpXw7O0k0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(4143699003)(10067099003)(5023799004)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SYTZXfgSQDoO+jzdVqrsX1OOG8MwmkiKdNQ0iWJxKSbL4/PU4L1uhOviY7AX?=
+ =?us-ascii?Q?amtm988AsY1NaD2NGJ2ccTMpbys3Ktd7hHCU7Wdk83ZGaebFxpIWYlqY/sUI?=
+ =?us-ascii?Q?ifZdf4PSxtaq9tvu112GruiF4Le5g5ECP3j8qpX4RtAZ2T/kMqtWWuWP51Q+?=
+ =?us-ascii?Q?EX6IsLElBvHrPUoiwVo661FQdlqqslRy7fldWbNlqTH0zOrXSZs6oiaTgiGK?=
+ =?us-ascii?Q?b8xhKVGrEIv5oNWEFZrCHbAb3mHvAzauHRR36Anh2HapzvBooJ9nHTP9wvgq?=
+ =?us-ascii?Q?MvM/F99kXs9GzNCXplzclQdh4OPoK3gUDHWsWuQD9tr82xTjFLnz/FPVeoWY?=
+ =?us-ascii?Q?hwchKwidfUcHyxULkPoparNDWFE16tqtA/89c4K1x28qdfgCXItqomgoKPpR?=
+ =?us-ascii?Q?YcxeHDzhroKM51Gxdyo3CX665yNVhCGLozW9Ab3IGLuFH8RgQYGjQ1aSpGho?=
+ =?us-ascii?Q?wwMTsIQy9bTiG1x2smhSGPlPAE7YD/LuZUaTIw0cGVB9cgQLjULscjA0b/qR?=
+ =?us-ascii?Q?oOyYfDouKvjgQXljLIV3cDFe/q5S2znwikZS9jp+ckSNuLa8Vudhz/0Ox8rr?=
+ =?us-ascii?Q?Y0oIngZ6aMZsBmJJ4BxiJblknDblanQk8IZ+UuSptcCdM2dd2iBrIVROttFd?=
+ =?us-ascii?Q?HwNqigqm181IPhU0JwkJjCEXkj+1H+H4JpWVvCm7zfORQMyJMozk1Aou6pPX?=
+ =?us-ascii?Q?QnuUlrAVaIZUzNIYkXdN1ig7WhQ8Syfiy2KqXBME+qzvLxKu9JabqquV0J2b?=
+ =?us-ascii?Q?lRHh29YnqxSUKrIUZ+ZSkSDF/0wIZuL5CKosUXHja4zVJxJUXXtL3Itl1S2N?=
+ =?us-ascii?Q?zEOu703ZZqR1OAyS9zIwbtuVp0jFkAwz1qiu7Bo5+tsUCE/C1Vc24nxh0tjN?=
+ =?us-ascii?Q?MtnztqZK8gt6loNCEHPyx969oJtdTkINhjJbgPGUnXeaI/9ooH6MoqYGwTkb?=
+ =?us-ascii?Q?4QU5Ss/l8RPdOBA2Ck+TqWPrxi82PKBnSDxoyB1HNnzV7BV2CY/sRKM0jywH?=
+ =?us-ascii?Q?BnbeU+pzJX+YepBNImm8cJUk4QuuIPX0hXV0CVT8KKXT44UBRw9EKf/LxIy8?=
+ =?us-ascii?Q?SyliFCujhRl4vAQ6uza/0e6lAuJeCXTSF7WDc49bNlGmCUDoAJmbD1UYJHwN?=
+ =?us-ascii?Q?Tt4iXXroc2Vq/SCdP1223JW7dA3fyotDqVfQ2noZx3vR/BZphJ0gan5ETEp2?=
+ =?us-ascii?Q?5AhpJFf3rFV3Gd++1ZW4/CW8UxkjaNUiuHprre8efmLvGvkL0K6qcaGCWaMK?=
+ =?us-ascii?Q?d7fcBnw5E++8UVyw6KLmzaVbMtEADcHn30WsA+fJCMAHlVVQwW6SSIDWslqW?=
+ =?us-ascii?Q?xszbK/54k+Ust3yEd+N6KAj7bYHcVhDs6ELQT2JzOAll/9AJdRK73JIMwtSH?=
+ =?us-ascii?Q?y1dUBYqLE6bVZSTWjpsGQgU+rY+AjcXxBeAl5v5iOhUcP8NY5JxWSHzQbcL4?=
+ =?us-ascii?Q?/g2VYF++NKkkwocSCdeMH1s8igsAlzFK6J+AuThR7EKGbp4Pz5MItVD/1gYL?=
+ =?us-ascii?Q?h9sZT0tI1D3lxd75GCd7GUE0rPXFl4jde/l/4IPLyICOZxkHaO+hTSUei+75?=
+ =?us-ascii?Q?YRWYfxJS0+Z+1hXoPqDk0WNd8dvSfdEtwf5a0tewhnelhBhQTVYosE1qPKlz?=
+ =?us-ascii?Q?xNP3pY/rP7jW14ccFvzAZsQuGu3QLuYQoKMdtf/a7p7Bm1sjdjtsEIiS481I?=
+ =?us-ascii?Q?kcSZY3gah9Swe+xCgfrgS2qzi7se0p0TwSGKQYB625w4D6qldPvx6EXfJcey?=
+ =?us-ascii?Q?uHhOKm5Zug=3D=3D?=
+X-Exchange-RoutingPolicyChecked: vwMUBgSpDtJyMEWduL36iI2FLA6OiCwMY1ytOeyitzzVayUX3FYwpUwJ9g1r1ftqfu8mvy1dFIj+lYHNdgvoUwXsdD6Q4M0lFDxtIudn2cZGTwtLBP8vhZBNY3bMkYhwH0o8zoit++tFqcVcDgq5L+elo19A5tuNfAQ7omefMMOmNKB3Zka6Dv3Guv3J2x1TanFWjc9JBgDa8iu8SCjjGf17w4Zl/KyEPEJm8Wo/B94X2vdGZaIBo0tnvLlN6XpvgkEUW//qkTCScW4tNELvLfJ4Y58IjsnEnBxLbR/EbFEuM46C4n7E66kkCgPdd2/ZTMLa5NxJ4/XFZelXShgI6w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7ecd264-0c8e-4355-1bf7-08df194b5f47
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 08:19:22.3443
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pd4mFxo/vXGjtThyrnEsfjifeotijp6H3LLE4wZE91tkcXbitNMVVVtitPNR6DZ6/PfDiQeLYO9KOwzIm3EcDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5901
+X-OriginatorOrg: intel.com
 
-On Wed, Sep 23, 2026 at 03:30:55PM +0800, Xu Yilun wrote:
-> On Tue, Sep 22, 2026 at 10:13:56AM +0300, Tony Lindgren wrote:
-> > On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
-> > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > @@ -998,6 +998,15 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
-> > >  	return ret;
-> > >  }
-> > >  
-> > > +/* List all kernel supported add-on features0 bits here */
-> > > +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
-> > > +
-> > > +static __init u64 get_tdx_addon_features0(void)
-> > > +{
-> > > +	return tdx_sysinfo.features.tdx_features0 &
-> > > +		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
-> > > +}
-> > 
-> > How about get_tdx_supported_addon_features() for the above? It makes the
-> 
-> mm.. I think this would make a bit confusion. "tdx_supported" reads like
-> the module supported features, which is just .tdx_features0. But here we
-> want both the module & kernel support. I'm thinking of:
-> 
->  get_tdx_addon_features0(), just as is
-> 
->  or
-> 
->  tdx_get_supported_addon_features0(), maybe this is better?
+On Wed, Sep 23, 2026 at 08:44:04AM +0300, Tony Lindgren wrote:
+>On Fri, Sep 18, 2026 at 06:29:19AM -0700, Chao Gao wrote:
+>> This series cleans up the TDX global metadata code. It has two goals:
+>> 
+>> 1. Replace the generated code with a table-driven metadata reader.
+>> 
+>> 2. Make the existing code easier to read and maintain, and simplify
+>>    adding new metadata fields.
+>> 
+>> During the v1 review, Dave raised concerns about signing off on
+>> AI-generated code. I have since rewritten the affected patches based on
+>> my own understanding of the code.
+>> 
+>> The main goal of this RFC is to agree on whether the table-driven reader is
+>> the right replacement for the generated code. Please raise any concerns or
+>> alternative design ideas.
+>
+>For alternatives, I wonder if grouping the metadata would help in the long
+>run. Some of TDX metadata needs to be cached. Some of the metadata is init
+>time data for how much memory to allocate etc. Some of the metadata needs
+>to be re-read after TDX module update.
 
-Something to describe it's masked with Linux supported features would be
-nicest.
+I agree that TDX metadata should be cached only when there is a reason to.
 
-Maybe something like get_tdx_masked_features0() or just
-get_tdx_usable_features0()?
+And yes, some init-time data is cached even though nothing reads it after
+init: max_tdmrs, max_reserved_per_tdmr and the pamt_*_entry_size fields are
+only needed while building the TDMRs.
+
+Only the version fields are re-read after a module update. Splitting them
+out of struct tdx_sys_info would be a good improvement, so the rest of the
+structure could then be __ro_after_init.
+
+These are cleanups that can be done in a separate series.
+
+>
+>Should we have the table-driven metadata reader use the TDX module
+>metadata directly by default instead of always copying the data? That
+>could be used for the init time data. And data could still be cached for
+>CPUIDs etc.
+
+The table-driven reader doesn't impose caching. It maps field IDs to
+members of whatever structure the caller passes, so the destination can be
+a cached global or a stack local. For init-time data, we can read it into a
+stack local the same way the handoff class is read in tdx_module_shutdown().
