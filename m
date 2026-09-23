@@ -1,115 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F88E2264DB;
-	Wed, 23 Sep 2026 05:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1F323D2A1
+	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 05:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790139965; cv=none; b=RD4HK96SbqSX+v5a8sm8sDpt/iDMpHrqXlvR3pVRf42xPnY+Hw1gAHXGw+9H4V8786ifL/WJ8DKtQlGVtkMkjP5db9vQJvzbZanAF/G1wkxL72POUMeJviBS7x/fVIU05XApHvRdA8J1pcTWmpOWcdk/XHsM4io0UbFqx52PMbU=
+	t=1790142253; cv=none; b=JgE8Nuj03W0Si8nCGX1f6XUBu2Z6TJ9PGtLEnopF7nRsnovFZhHeQ3CR0Iu7yFgwVkdjnQKoDQqs8r8pVTozhLr2b2XkhUlFL3RKlq2bC8uVBqPn3G1Q8gNZktMWZNeao1NjYYE3vWlvrhKcgEfLWVXSILcR2ejeFHIGs+rjc24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790139965; c=relaxed/simple;
-	bh=aQo6QARKM7YACcOwS6dF6e3qFBVcNCrooJjp0JvFmXA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iBMMBH4pgDhnbiuQxJ+p/4mn7ambTrE0ColB+ssDSQJKQTxO5xK/H4ZFMaTdLap4gRtKWZtwjMZWJOsjN5KIk7bCSPHV7NF9/ri/cRWqUqmiF9GxsdF1bNewVL2DdMOnB51ss986Lotiw4nhbf5lk+VtSINqBdMvOW6BRqEXK2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4pTLW9/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790142253; c=relaxed/simple;
+	bh=y74lpcnmUllGAWRFEDCby3KhL59rqalI6nEkRfcayRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tsis4wRAVBlKQ0gmvuaGoQlM44XohYYK5TnqalDmH45ydJa5Hl4EpogOpKfis5NWgsAu2Bxo2CRfrjjaWmiZcFe1rcvxTwlgaE3o2m5h2yPk6Wqd3YA1tu4tirhe9V3kbnl/sqyjGNUBKH/DeMI/3nkVUfWyqQZhEQTPNfNSeXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mFSA0SoU; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4pTLW9/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C081F000FF;
-	Wed, 23 Sep 2026 05:05:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790139952;
-	bh=5Bt5dcvEtscZwbFsTWKayy1TU+NMdGF6W9YAquY9XwI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=m4pTLW9/ipMMEsohyLQEKqXjzHcwkN0abxqiFKnpytgFKVUrqceMZuAAbjlrBMffF
-	 CdO1sqCGy/I+4fa+zUShWoTBNHwKuZyGA0wUgCZuN/1qgzhc19lMpVXwyE3kopIDPh
-	 xsaF5GYCT9jld3YBh7sBjzHUGLsx/yj0S9EyAhn3oG6QwlUWCR4A3ADfsDf0GA8d70
-	 LLyo/WDzrdcRjJT3saEv0417Vyorzdv9KtCxM/YNHdqRTmqIJwT5iDboIP2AvVAhAl
-	 9BI9XEA2qlyxB1A/jRfmI8xO2B26EOiIXB5Dudw7TzaVJ3eh185kcBwpIEV1sD+FUg
-	 BVMT6WrzF0mJg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Christian K?nig <christian.koenig@amd.com>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	"T.J. Mercier" <tjmercier@google.com>
-Subject: Re: [PATCH v6 7/9] dma-buf: system_heap: Enforce shared-granule
- alignment for cc-shared buffers
-In-Reply-To: <arKhCKdlqNQwZn8E@arm.com>
-References: <20260918153642.GD11599@ziepe.ca>
- <d8123f21-d5ce-415b-a05a-392d97b8b57d@amd.com>
- <20260918165315.GF11599@ziepe.ca>
- <6115eaf7-21bc-49ce-8a74-08fd37a1e2c9@amd.com>
- <20260921115141.GJ11599@ziepe.ca>
- <45dd7a2f-8474-4388-b383-2dee3ee62206@amd.com>
- <20260921121739.GM11599@ziepe.ca>
- <cd2b32dc-5a80-4ef5-82bc-dd41ea96dc01@amd.com>
- <20260921123725.GN11599@ziepe.ca> <yq5a1pam4ocu.fsf@kernel.org>
- <arKhCKdlqNQwZn8E@arm.com>
-Date: Wed, 23 Sep 2026 10:35:44 +0530
-Message-ID: <yq5ald8s36c7.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mFSA0SoU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790142252; x=1821678252;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=y74lpcnmUllGAWRFEDCby3KhL59rqalI6nEkRfcayRM=;
+  b=mFSA0SoUALeFHzXZRTJkiCMztyAixUNU5l8N5b6O5bKPIvp5KzVH++x2
+   h9YXJ/1cwZykrRa9BS2gT6hB6F0VGAGOrFXS6FDcuRhmRVN5xWiFq21Pf
+   CHvbqcGwc+ntHIJblT0i2ecUX4soH5e/mScYvZrdTIlODEIoT1uNXH5yA
+   AbCMhDydX9Oa8E1M/xqsSvLxmsHGhbjxoK3RbvRkShl/ARVkeCNjfaSM9
+   Mk9DmqZFp9+YaCfWDP+5N1nrNVXTMkjquSLg8Qm1psTsK9EV8EYN1AkY2
+   wfOscZRzk1RSp/px3xytwbJ58nXyJYfX5P1jOK1CkSQRz/AP9+JqV3xOh
+   Q==;
+X-CSE-ConnectionGUID: Y8d+7rU9RFOt0TPH2E14MQ==
+X-CSE-MsgGUID: oqPPy4FjTfiaDNZaT8j1ig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90918917"
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="90918917"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 22:44:11 -0700
+X-CSE-ConnectionGUID: 8jKRAshlRr2M+xtn/ajagQ==
+X-CSE-MsgGUID: 8LWbQSsYTPKDp9GV32CKbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="278201839"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.235])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 22:44:07 -0700
+Date: Wed, 23 Sep 2026 08:44:04 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yilun.xu@linux.intel.com,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC PATCH v2 00/10] TDX: Stop auto-generating the global
+ metadata code
+Message-ID: <arNnJO3aKDlCD2Uz@tlindgre-MOBL1>
+References: <20260918132946.76533-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918132946.76533-1-chao.gao@intel.com>
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+On Fri, Sep 18, 2026 at 06:29:19AM -0700, Chao Gao wrote:
+> This series cleans up the TDX global metadata code. It has two goals:
+> 
+> 1. Replace the generated code with a table-driven metadata reader.
+> 
+> 2. Make the existing code easier to read and maintain, and simplify
+>    adding new metadata fields.
+> 
+> During the v1 review, Dave raised concerns about signing off on
+> AI-generated code. I have since rewritten the affected patches based on
+> my own understanding of the code.
+> 
+> The main goal of this RFC is to agree on whether the table-driven reader is
+> the right replacement for the generated code. Please raise any concerns or
+> alternative design ideas.
 
-> On Mon, Sep 21, 2026 at 08:56:41PM +0530, Aneesh Kumar K.V wrote:
->> Jason Gunthorpe <jgg@ziepe.ca> writes:
->> 
->> > On Mon, Sep 21, 2026 at 02:24:21PM +0200, Christian Knig wrote:
->> >
->> >> I also don't see where mem_cc_shared_granule_size is added?
->> >
->> > Patch 1:
->> >
->> > https://lore.kernel.org/all/20260904103452.1197239-2-aneesh.kumar@kernel.org/
->> >
->> > Aneesh, please be sure to use get_maintainers on series like this so
->> > everyone gets cc'd.
->> 
->> For v7, I included only the maintainer entries because the recipient
->> list was getting too long, but I added the mailing lists.
->
-> I could not see Christian in the recipients of v7. Sometimes the list cc
-> is enough but my inbox for example is already around 4000 new email, so
-> easy to miss.
->
+For alternatives, I wonder if grouping the metadata would help in the long
+run. Some of TDX metadata needs to be cached. Some of the metadata is init
+time data for how much memory to allocate etc. Some of the metadata needs
+to be re-read after TDX module update.
 
-He is already on the Cc list for v7.
-
->
-> Recommendation: add Cc: lines to each patch with the people that must
-> ack your changes (the maintainers for those specific patches). You can
-> then collate all the cc's from your patches, add them to the cover
-> letter and use --cc-cover with git send-email.
->
-
-I'll do this 
-
->
-> Of course, the list can get large. You can then make a call with who to
-> drop: colleagues you talk to regularly can be skipped for example, maybe
-> reviewers if there are too many for a subsystem. I would not drop people
-> that gave you feedback already on a previous version and not the
-> maintainers you need acks from (you can drop them if they already acked
-> your patches).
->
-
-sure.
-
--aneesh
+Should we have the table-driven metadata reader use the TDX module
+metadata directly by default instead of always copying the data? That
+could be used for the init time data. And data could still be cached for
+CPUIDs etc.
