@@ -1,193 +1,521 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012040.outbound.protection.outlook.com [52.101.53.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF8E314A95
-	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 00:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA48F38E8AC;
+	Wed, 23 Sep 2026 04:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790124443; cv=fail; b=R7jw7GwKMkOuEGPTWFq2mNM2QRrB4yNka1J8b3GolCHCntuEh4Ths4SpTSuYp0vgYJUMkgye/lSHYaRGcOp0zau5eVdujg5iafXeBACYrBmvNo+Z+D2Kp+p77obRhQfpaORFzePXIwK2QoIkrCilnYCfuPu60u/0MwdxeXL0mUo=
+	t=1790138120; cv=fail; b=FV6gQayZysQqihTmMIqgcqHx+9e0ILwMgZqDYWhCIu0Mg7doLJhJ7Jog6qtVF+/EyHGLduV9SZ8ximatvBxwXaStRj8AmlGrv0jJflmDHYduCngjeJuij60t3KWZCMKqCO6fSbgCURI+IS+e9dJNcUHnypF9UtMDwIeQfYYohU4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790124443; c=relaxed/simple;
-	bh=7sItGaeXNX0EN1V0UAtZSQnjY5fhQUzCBsjQAla2uxs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dIrbJcIap24s6vKyc7gkyEmvsjGa86Xo7TmsePSLm8H+W3smBu0YS0TByIgjSOZo+rABAWPyMHv5wFDi9eL5r+n2QMIZk0IigZcbBS8jtJh7Err1tP0sKZhUKWOk8BYBOLE9o/rEb7tkA97hKLF/bbe704u/mx380ccUnjQfjNg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nkzWaLcd; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790138120; c=relaxed/simple;
+	bh=IT7J2YGsuvV58JIxzs8L4yLzEk+mz2hQ+4LQ8R/V5D8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=brQX1TT1j3iZ4vdwiRLoq2Ek1D7r/BjB8Zq+cF5sP2SpWNnqzH10RYa01OakFI/g2SIUAUoJ/zC8ULjfNXb/Z1cvn/ia3JfYJqr/7nHaWNwDhd+zGVfeP1JFDbQ+4dWROQa3+f6gUtxlZ/LY76Ai7sahov6nTtvvpyg2b8oMWwA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4BqnvGAM; arc=fail smtp.client-ip=52.101.53.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nkzWaLcd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790124442; x=1821660442;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=7sItGaeXNX0EN1V0UAtZSQnjY5fhQUzCBsjQAla2uxs=;
-  b=nkzWaLcdJ+jkB2twOXFMDuEL7jdIMvkhzqzNwHuLS9su1YIt9CdkNik/
-   LInYM7Xh/bRgeybhwDv7k0CquMzaxlCvjSH+6XrY5U47dg4tU+twlp1G2
-   pgNM2rmOy4ONZfLna/03kaRLIePpEI2Ma7MezlUU0UVe7ak8TANBOuv4E
-   ZGUXExaVetKqzKqdSouVVLsexEV3Y8AYEKX3a0ZXYHvQjatehh7EJ2FJy
-   gNIq0dKcb8POTZo1+UhvRL4YcF6I+qAwo+blDm/W3edbDJTlJGyq4bYWS
-   IH1kbmLm71hfijN+4rRkl9dyhTC5Xl5Kf9uLbf2+Tal0tq5t5G1FeYxAp
-   Q==;
-X-CSE-ConnectionGUID: GgXDfdhWTLm92xgn/jAk2A==
-X-CSE-MsgGUID: NUUowiClT72PMT//OeAxew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="93277315"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="93277315"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:47:21 -0700
-X-CSE-ConnectionGUID: fx+t5EM6QkGGwP3US3upMA==
-X-CSE-MsgGUID: FAEcB0CESTCbL95dWUIgXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="272568556"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:47:21 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 22 Sep 2026 17:47:20 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Tue, 22 Sep 2026 17:47:20 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.58) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 22 Sep 2026 17:47:20 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4BqnvGAM"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vly381PORoqrGGhiEv2dkvK2KIHn7D4B+2c5QJumQb2rzd7ut0CvqgQB2zDz3Loxp7P8shJFfH12SIwW1UI4ObkYAHGpmbs2nrvzjr5sEPAV5eRmnRUfi3QA9kEMKgrJlF6ZwmruX6gacj42fBcfwvEu7QpsTAQt8MWF5Nc3MuZNGNf/Il4VFClGtDwA8cHuhYfWzajwQlvd4BcgYxBl1z0/fNZhwXjhj6apigC51RDUS9olRJzSGG+hQx+zfeoalKGF//oX9Nz1I2I3Wg4OnpcmH5UYrh7r+ZbHPu317X+z/+S5yQcSKdFauGS40+9uy5efxWgr+XIMo5j5r4bPBQ==
+ b=p6L730XBTm6fBb+8RyilodyYPqmdNmUUqWZ25+2FvG4VzBKWh6y0c0OIszK/mFNJYP8gWpnt4Ix/WXTzIwvGmAZfSzHYxbqv4H+EEn8fpHuVoM2VQrKIHRoN933T5gUgsW6lcVyiY9VTA6YTIT+M1akhzQK1eaODHY1hWrw0WneeqO4/XVkmwBI0k0e7OsRRDsMqcq4mqUOsjBDZ7czDoJIBZF6ST52g/PdEY3NcqlEWxqI8PwkSy5rAlSD5vgSDSMlhpkSD1ZzwyxS6nd9xffkiyqktdLZZtdiRzJ33X2PdtalTtYqEVaC/HRg6fpFk8NWHKh8rXmevh5mdc6wwZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7sItGaeXNX0EN1V0UAtZSQnjY5fhQUzCBsjQAla2uxs=;
- b=M16gFYWiMZUQeo4nCQsQzb4OdKBa8O8wxFmI+DA/TuxvRUJiiuQDJUCDVxOys/ic8Wu0BHHAGPG5RlSpwb/f9ehCb6K+Hva4JG/qJE85aISRM9xVu8OdWskr5yK8e2Tq6bCq2B+W7o9QduvOgkbXvzHxyPXZB30vsLErKukOXoC0KgcDAR7g2ziDmcMjHomAjUWKYLSXlEX346eY5+PRydWnIkG1pqkRTxPOnB0Yq4X6tcyuWjQFodsm4c/oNq+AGxhUb1RdzvV5wWLMIUC9y0Q1bvGq/4oMEghh1iuGCC/W6ca2XiWmludM0o0supIiy2/+JXgw8VOL/8IhOHBT2w==
+ bh=x2d3KccSK+qwgXdBkoUCmUtGaaT6R2qysxXQ1M1RQEg=;
+ b=b37Xj3IBtQbLMw2hqRviggBRCePqg+DOqmn5yilJMyuz+/bq2F9gJdFZZsxGf8WeA4211TBJAQGXpfWXbEJXUatRv3Ll36PNwMf2oLTX1ZDehmYHxyubsajfhNWcu7LZO4bMOzpEQtphW009DEqVgB7+rdSbEhQtStU/vibpjt1+rR+ZraoVdLTvmylXPeX0xIZb+cqJB/qiY/s+qZJaCvSyoFawZtbPApR+8YeDQEs2+M5AyOBGhYuN/ZR5mk59vYQ8C/+IfyQ+kfMp2EnmqfqEWMg6/cPs8hlbjTP89uoQD15CeY7ebvCupr7vjaTkaao77URew/luTNTtG+p6tQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by DS0PR11MB7311.namprd11.prod.outlook.com (2603:10b6:8:11e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 00:47:13 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0451.012; Wed, 23 Sep 2026
- 00:47:13 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-CC: "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
-	"kas@kernel.org" <kas@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "bp@alien8.de"
-	<bp@alien8.de>
-Subject: Re: [RFC PATCH v2 00/10] TDX: Stop auto-generating the global
- metadata code
-Thread-Topic: [RFC PATCH v2 00/10] TDX: Stop auto-generating the global
- metadata code
-Thread-Index: AQHdR3IQ2nw8C1Rg3UiJ54WE1CaRBbbbWz8A
-Date: Wed, 23 Sep 2026 00:47:13 +0000
-Message-ID: <c320ac55c4e0c0e8e8d3c9c399a63f15d949d109.camel@intel.com>
-References: <20260918132946.76533-1-chao.gao@intel.com>
-In-Reply-To: <20260918132946.76533-1-chao.gao@intel.com>
-Accept-Language: en-US
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x2d3KccSK+qwgXdBkoUCmUtGaaT6R2qysxXQ1M1RQEg=;
+ b=4BqnvGAMXrhcsSSujKtI25AOlwa7oPoLWhi+SQZ0KHUME9N6oV/I9gTGkoE1RzoO4LS2jQtGlRuRf4VfU/11luXYJYbhisHtOgXklFiDNdWk7CDSmBlwvN2zfCAUiExI1gEXV0NmghdcBZ2JF69TUghb6nGnIrqX56yKL2j7EuE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by IA1PR12MB6650.namprd12.prod.outlook.com
+ (2603:10b6:208:3a1::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Wed, 23 Sep
+ 2026 04:35:12 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
+ 04:35:12 +0000
+Message-ID: <8ff51404-d752-499c-af65-cd25e0731a2e@amd.com>
+Date: Wed, 23 Sep 2026 14:34:49 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH kernel 17/17] x86/sev: Flush IOMMU TLB for trusted
+ devices
+To: Jianxiong Gao <jxgao@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ashish Kalra <ashish.kalra@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Bjorn Helgaas
+ <bhelgaas@google.com>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Jini Susan George <jinisusan.george@amd.com>, Kees Cook <kees@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nikunj A Dadhania <nikunj@amd.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
+ Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ "Tycho Andersen (AMD)" <tycho@kernel.org>,
+ Liam Merwick <liam.merwick@oracle.com>,
+ Michael Kerrisk <mtk.manpages@gmail.com>,
+ Suresh Siddha <suresh.b.siddha@intel.com>, Xiaotian Feng <dfeng@redhat.com>,
+ Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
+ Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Lu Baolu <baolu.lu@linux.intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+ =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>,
+ Jonathan Cameron <jic23@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ Ian Campbell <ian.campbell@citrix.com>,
+ Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
+ Petr Tesarik <ptesarik@suse.com>, David Howells <dhowells@redhat.com>,
+ Haavard Skinnemoen <hskinnemoen@atmel.com>,
+ Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Christian Marangi <ansuelsmth@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+ Michael Kelley <mhklinux@outlook.com>, Ilias Stamatis <ilstam@amazon.com>,
+ Sumanth Korikkar <sumanthk@linux.ibm.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Toshi Kani <toshi.kani@hp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Vinod Koul <vkoul@kernel.org>, Jiang Liu <jiang.liu@linux.intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual
+ <anshuman.khandual@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Palmer Dabbelt <palmerdabbelt@google.com>, linux-coco@lists.linux.dev,
+ xen-devel@lists.xenproject.org, iommu@lists.linux.dev, linux-mm@kvack.org,
+ aik@ozlabs.ru, Santosh Shukla <santosh.shukla@amd.com>,
+ "Pratik R . Sampat" <prsampat@amd.com>,
+ Scott Soule Cheloha <scott.cheloha@amd.com>,
+ Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>,
+ Darwin Guo <darwinguo@google.com>, Shruti <shrutiss@google.com>,
+ Saurabh Singh <saurabhsinghs@google.com>
+References: <20260916115159.1938195-1-aik@amd.com>
+ <20260916115159.1938195-18-aik@amd.com>
+ <CAMGD6P38zYT8FzkFHoaKNEL0tVErK7G+ZLPMzgazAmVoMcD=yQ@mail.gmail.com>
+From: Alexey Kardashevskiy <aik@amd.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|DS0PR11MB7311:EE_
-x-ms-office365-filtering-correlation-id: 4bbd1bd5-dea5-4233-072d-08df190c352e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|23010399003|376014|11063799006|10067099003|22082099003|18002099003|56012099006|38070700021;
-x-microsoft-antispam-message-info: 8M16MfK9MKL5HxZPpat22uBX4mczTsy1NUokSaftLJteIBx6GkzoSO/cRF6JVhDZJY2pln0AtzITBmXm0WM2GA+8XyFr03DYxKM8jVcEKACDzue91G9J+dN0EPsCaRfDViY1B/qALU2yGQQDDWf4qyioLGpui1DTxAMrlGQG+9hr3uPV/fFmHkFtt5qiULFTzxjRJsPFStNwTMzrqU1TE/LnjIj9WH+2AFcQrUS41niH/PD8qGdnj57ajMc7aCXM0eIaFsG2Uell+MP6Qn8T1i8BJuQwZwCclNQSfjqvjiDmHFy3wQdp8WXvyIZKb5vhNi6VqzuTjIUN68sou3bLxDWqJODum9wljxAdsDgODnJ8MWAV7pyKgR438OtYgnMH4PAF6Jjrk9FjF+3BE9v2g7aG9gJvn129AZz2GS9hbOBTm3VjWYwtmGHjlwTJZa0lCym3yl0v0x4l+yXGNHsY1vAmarETboZeaXOPN8hJCNdInMXWrl9hBZDguw7+FbLnR3e4YHgvN193NMIhAMr41sfZJrgYKTGnSIOuH8pY4qJeh5F1RtMmDfQBbxvGrGyrZzKOhcHKBbhTsnxHCx/YOa2kuUCG9Gf5FjQZtNsvBXV1V45xyBiSwrEEAppXaLBBkR5C4L3apjrqWQcOhrjHlAKL11RNmGspAwDFGuSJjYWRdj2asMNdJipEPrCizyQaDUunccEXbyqdedYgkNZpZnISOzvHvH73U3DEdalboMc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(23010399003)(376014)(11063799006)(10067099003)(22082099003)(18002099003)(56012099006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dDFUT1MyNzJQck83a2tVZG5SREo0bHNBZENrOVREUUZjWGxkb2RTTkJvVXVI?=
- =?utf-8?B?T0dyOUg0MlZZbmJDSHMxZVJNdWkxVTFBSVNpbW41a0VXbFM3K0RPQUluTW5H?=
- =?utf-8?B?OVlLdFN1ejFGSXo3OG1WcURoV0hyb1VucFVrR3VRK3F4TUJsQUx0S2d1Ri9F?=
- =?utf-8?B?c01RakVXUVhhSi9DRkYwRHArUG52TDYzVWZwL2FzeTFxb3h1aUdqbCtUdWdZ?=
- =?utf-8?B?SEo4R2FGOVFkNzd1RnB0UlNoRXNqdFRpN1duY1FsRFFjOFFPQ0IyVVlQdXA4?=
- =?utf-8?B?a3dWRnRJRFJPZjJLdmVMdnRTeUlodEtVTkdMcUdsSnJVTEVWLy9QRXh6TGEx?=
- =?utf-8?B?TXR4YXhsZTV3ZDhENjdVV0wyenRMblJ4WlZidUVYYXVmTEVBcVlhUUlOZXY5?=
- =?utf-8?B?cEQvVW4zRjc5dUtzNHdFWkVTQ25SR3dtbmFWeWxyeUFRWVRERjhsOHJTSHhh?=
- =?utf-8?B?Z2pFWFFjSUVDcDFLekk1ZFVWaHlKQXBpSjdTSUFkRTlyRFhCUTUxQTlYVElM?=
- =?utf-8?B?d1VsVXM3VUorU3ZLSjVlWDYwR2JENTRyVVc0aWhMU1lZYjBxbVpZMmtMcGZQ?=
- =?utf-8?B?T3o3ajlOT3N4MGVVdVFXKzcxcVpFZW01djdWV2FtZ0ZsRHZqdVBYUEJHTzd5?=
- =?utf-8?B?ckE1WkdNK3hBT1pibDhaVCs3eVl1VDdHVU9aTWt1ei93MUZwUjFMbktmVWw4?=
- =?utf-8?B?VWNzV0hnYkVLUURLb3YyZmhTQkZCaVpWR29YWlpkQVhiWmV0Q3p4VU5zcC9l?=
- =?utf-8?B?Y1NvN28zSGgrSHNyYkFoT2ZIVG93K0FweFBJZnhPeWZUS0ZqWmduSFZsSjlH?=
- =?utf-8?B?SStBK0w2U25UVCt0aCtNVTZHOTUvVERIbmZFVjJ3MjlwSDNpMUlPQXRZNUwy?=
- =?utf-8?B?YjVFd0drRGhRTy91S0tLOGUwOVY5ZjhrT3AyLzE5VXhVbVlZVlJZQVBDY2NZ?=
- =?utf-8?B?blhibnVZdFdIQ0IvbFYxVzA2ZXdVVVpsajNndkxQSENjWEZORlo0aFhwMFly?=
- =?utf-8?B?dTZVcllUYXVrck1LOXh0WGF5NVU1M3lSbnM5Y1FRN1pRRmE5bjhUb0RxSjBQ?=
- =?utf-8?B?NUpzRUY5YlR5R216RkxGV3ZHY0U2M2xPNStyTkFxWEpNSHk5K2I5QU9kSDlh?=
- =?utf-8?B?cGF2SlJIK2Ivb0dmRlphank2dWFNKzJwTVgvekl2cUZHdHNwbXMxVTZCR0Z1?=
- =?utf-8?B?VXg5aXdKN2NLN0QyblJPODNkc01wQ0dIVklCSzc0OGlMSzRyY3lzMXg2ak04?=
- =?utf-8?B?SDg3OVZDaC81NGVvYVh5Z3lWSlQwbk1TRHp2RWJFYjZHTUJnY2VBMHdwTmFP?=
- =?utf-8?B?SUhWTzE3Ti9qd0wxdFY2bW1VdHl1YzROaUNUaTFFK0VEYmxQcDVMYjNwZHZk?=
- =?utf-8?B?QUpNVDllSG1HQXB5WWxKRWM5ZHpwZUpleFl3Q3BJT1dwZWk2ZGwxNjk1V3lm?=
- =?utf-8?B?MlJhQ3dLelA5cld4a3NNdVRVMCs4NXVCUFROczBTMTFvUk02WWk5dHZMUDRR?=
- =?utf-8?B?NFcwTWZZcnhiSWRJVDEyQTRGc3R1aVlsdnZhczhSRlV6YUlaL1huZ0hjZHY2?=
- =?utf-8?B?OGZqUGtkWVNzdGFkd1JyUTNqWE9yMHVNNmtDWkhMdFJYN3JScHhBVXJwSW1G?=
- =?utf-8?B?dVN2d0plc1haVlZmclRMbHMzSlVVaytybnluT0JZR2VoczNGQWswSjhNMGNC?=
- =?utf-8?B?bStJYmQzMi9KZjJhOWU1elBkeDFScWdsR3hud0JjdWxDRnVLdEhSenVBMWlj?=
- =?utf-8?B?K2ptSHVheGNUaEdHelJhZDBaM0taUEUvd1IvMit3T0JJeHZIb2xjcWZFR0lN?=
- =?utf-8?B?L3h1NWI5WDNnMWxVekd0b3dPTS94VkNIVlk4a2ZRMEFkOEdNVmFqL25id21k?=
- =?utf-8?B?UUQwbmhpT09RWjBjeXBSSEVqZW9ocko0ZFFLazB1eURWVTI4VXF4ZWs2TlVj?=
- =?utf-8?B?ODVZYy9nVGRYajRIR0xWV3I4KytETzlwSWhDYlI1OHliQWlBekxORHRPSTR2?=
- =?utf-8?B?emdYeG9yVUptNUZPbkY1dXdSakNnRE1ETEhGSno5L2hVU3RNdXpyTG9iZmlz?=
- =?utf-8?B?VVFWUVdSYzJmUm9IT1NuVzNxWWR4K3c4Yzh3NnJvYUlDazNhcjI2WHdmVkVF?=
- =?utf-8?B?ejY4MFhqQXp0M254d2xhK3dlRHh4Ujd3SXk5K21HMHBzb3UwellZZXpTeE5E?=
- =?utf-8?B?Z3h6YlplR0YrT1JZcEw4YVRFQVpicGtCdjJVdjJ2ZHJub2tmWjVHSFdPZGJT?=
- =?utf-8?B?Q3B4ck9HclVoWGZHVFNzVzZGcjR1Z3ZubEc0dVVVdWxHZ2d3Z0RqOHg3T1dL?=
- =?utf-8?B?cHYreEo1aU9RRGtodmJmRVdsVjZzanlQdXo3OWw5ZTNTcEtyQXduUG5lUHFm?=
- =?utf-8?Q?5wocYsCKLUb4uLvU=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <30CE6E266E71314F939888B304BB93C5@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+In-Reply-To: <CAMGD6P38zYT8FzkFHoaKNEL0tVErK7G+ZLPMzgazAmVoMcD=yQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SY6PR01CA0107.ausprd01.prod.outlook.com
+ (2603:10c6:10:111::22) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: EOncEpGKm4W0au5EcFchAsoq7hfqOg71UJgGJv8ZQlVZ0U/vOwVbe/Qbyhoqn38+NDJaz2vBIbJ0w/fms7kbjwkrX8Kl+HiPqYxLDC1dWnEfvlxkwOYYKsbW1eZ9OIVIq5Udd0+bMEDdAaBYJoa/ishR++oNvUIlc4wCu8B3TqC6qnFvBoBwFXJGoOggBxjdUjLG4/fkYTK2QgqDLCailIKdWVwMtbLuq4cuXXalMLR7fNXZNam8TD3Hkrctbbi+PE+6j6OAmtnm+uACFZGxobOnVEeb59ibb8s2T03zydJ6otz+CwtMWaWRyt3LsXPxWHvicGG3b6Kn3UG3UDoAHw==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|IA1PR12MB6650:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8981c364-a945-4747-3f40-08df192c0e65
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|366016|376014|11063799006|56012099006|3023799007|4143699003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	ZaDuQetgahZL0POAHplLHKM987LEJ/IKYS6CK/okFsjPboBL5sRvVMf8LQaMVfpusvykSSJRhs2QkXWUaubCCqxVe1yn/v9AUeYZhMT6fKcT2gaHASLNsmqHLUcxfUHz3nONwDrGrTbOLy/nWbN+t7T0NyjxR8sfdFx5dDAMeyHJrVSfNekpqqGlpi8L9nfCkrGdigRnUhnCkSnYIdBeHRDMSt7NC9/Jvwa/zr4l+Gz+bPOpqG1zd5oxynPg7qLs88uhjnMUiRuDl5If779W/jx+SDEVc++ZUOl+3aM2+/e+LvbV9t/OI2D0P3aS05ALNVG0nNIWiw8X+jOm60j7KO3wEbo29z3C85X7Hx1wt8KoKe1Ybxckjec3duxdjktfy1DGMDFJe0CaNQZHIVboaZN/6bxERmKKU7FSO9NVjcbZ9Y87wW8da7q6kuZmf5pdjnLT06CjSilPTz7NDZtU9Q7Rseh7hRvLN7Xix1lK8m+x59QyEnMFay8x5W3dSPtd5h3o+P0HahtYIhmCIjHhyBeSYYBaki9PyCYMYpyWYTFDNFvmzY9LVG/UgcwJr2DydhS4vqzExQe/Io1YkUN0EYLafefs3wFS0q+e1mAqYnLgumtOY9fzJnIAwALAZB0nZCgzrhV/Gzd+CWZj/WvLcyO4dkCKwpsCQu9ij+8Oka4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(366016)(376014)(11063799006)(56012099006)(3023799007)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?c2dvSUtpRE8rSkNnc3h5d0gyK04vRC9QMmVSVWE4U3I2VCtrbVlwTEFjRlNn?=
+ =?utf-8?B?NnZ1U2V4eUNPdGQ5eDFuMUJNNDZ2R09KMkN4ZzF5bTREdUoxTVAvT29nRTJQ?=
+ =?utf-8?B?R0J3cEsxVVJDM3k0M1hRMUhLejBmR3hrRkg3a01FUjdkK0djY3UvdFM5NFFE?=
+ =?utf-8?B?b3FoUmFCUklHSTJWM3pNODA1WFVGVnNaU2NjV0MzRU9FMlM5Nlp0SllOTmpo?=
+ =?utf-8?B?R0JRRGJlL0xWbG5PT3V6bk0xWjQ0Z01hVWIxa3oxcFJvU0RvYlF3cjhteXBn?=
+ =?utf-8?B?UXRtU25DSjdjRlRQWXVMcFRRK1RmZ2lmaUgrWmdQV2hJR1pLL2QxL1BmelMx?=
+ =?utf-8?B?VXlVekpVWWJkbEVsQnFydm9PZmZEczJIVDRTMCtBV1BDMXlZcmlkbkx2R3hW?=
+ =?utf-8?B?M2xoQ0hQNWlmUm5DTG01RTc3VFhIeEVXSVFXNjIxcThpeVF6VG5oZUNwdUs0?=
+ =?utf-8?B?RTJkY3lOK1FyTnMzenJOT3dudUhqV25aK3RPWjlYdmtLcVZaWGJpcW9HMkE0?=
+ =?utf-8?B?SDVLRWJMSTVFVXBWZXllNWtsL3hia25DNU5vVEUyMXF0Z2NuaG41Um8xYmRU?=
+ =?utf-8?B?QmxsVjNRQXl1bERvaTJQQ3Fpd2RHejV0bVNxbU5XZ3dDR1BCSUMzS3o3R2Rm?=
+ =?utf-8?B?M2hDUDdKcEhkaVg2d2Zya0I4VDVwOUY5R2E5YlZYRGFyNjgzd2lTYzJmRlhD?=
+ =?utf-8?B?dFNsRkt0Y1dybExWT2pvZ3N0WGcyNnkwZngyVXRkMlFOSzlaU2tLb0JON3pT?=
+ =?utf-8?B?UEtJdTc2elRjNGM3NFp5SHpvWmZERWUrS3puYmtOQkM2MFVsdmd1ZFpUWkJz?=
+ =?utf-8?B?aHhDaHBWcmREZE1nb1BOMFhWM3ZCSlBaMGI4bWVzQ3RzUU95RHJKK2ZIcjd5?=
+ =?utf-8?B?K2ZobjlKenE3K1lJb0F2RW9CMVBZZ1lOTzNIRUU0a0toQlRSY2RrSEZaa2J2?=
+ =?utf-8?B?VFZrKzN0VTlraDZpcVNYYmhKVGsweUpBZVorWDJCbnU0Tkk2M2FtdTFaanA0?=
+ =?utf-8?B?ZUx5bXVibWxNOFhmRnVCMHRrYWhJWnZxUyt5OGNRalFhdUZjcGYxZmwyRDl0?=
+ =?utf-8?B?VWtEY2ZmbmFVWHYrVDJaQ0h0b3lHbmNzNHR3bEV5aUVEK0htZ1RQY0VzT0NV?=
+ =?utf-8?B?dzFIa1BSQVdKSmZkaXJMMUhCZWhDNjVpRlZES0NmQ2ZOM2MyM2NCUGtTdUF1?=
+ =?utf-8?B?V3RWT2FiV0NvRTVWUnhmYlJQcjRGT0dhS1lvL1V0S3VxTlBYMXZkNStIWlVl?=
+ =?utf-8?B?ak1laVcyUUhrSnp1MmpIekFRYjRUcXdDcjRHa2ZWVFhGMlhteURpOVBJZmY2?=
+ =?utf-8?B?ckErSXNvYWJMb1N1aXIzZ0w2QUw3bUo1N3hJN3dRVklsdnBxZU4yQ3JJdlhr?=
+ =?utf-8?B?elMwWmxDUVdqNzhqVWdGbDluOW15L2UwM2VkVUp6YTBFOEUzalpVNitONy9B?=
+ =?utf-8?B?NHRmMEsvcHRyZjVMaEtQRk5qWnFZWHNGYnlrTHVBVHJmUmZuTHRvTlhhYlJJ?=
+ =?utf-8?B?RmpnUm84SkJjTlZ3VHpjZDJjcytmTmNGOFNDeGpxdCtKMzlFTkdsdFI2Y3dj?=
+ =?utf-8?B?VWg4RWJXbW5qQzdiY1ZLZmZ4ZUdIWGR0cXE0SFdpWDVrbEFpaHc1RGh6OEJW?=
+ =?utf-8?B?UnN4ZFlVVk8vVHBTb2tpbUFRdWE0c1djZHhjeDRkSTZ4Rjl0OXpsQmMvblhl?=
+ =?utf-8?B?M0p0TjNiOXFpWDlobnFQMTZwdytNZitySUhXcitUMW9PSVNWMWVucXlrN21Z?=
+ =?utf-8?B?a2dJZ0JiRmwwR0k3eUt5SGRiWkZVU2dBOThJTzExWWlkMC9lREZrcnRabnNV?=
+ =?utf-8?B?M3dhZjZPdzczNlZ5ZExNQWVUbGMvN0huM3pITFczNHZTNTQ5T2RjOUxHclV5?=
+ =?utf-8?B?TDM3OXBjSk5xQTVWVHFIYVptRW9RdTN0RzBQdjZvb3dXcGR3MFRoZGlkRjUy?=
+ =?utf-8?B?bkxOVkpiVW11NEVWNk0xQ0JpSUdZQ0F5bW9xb2FpeFlYOVA3ZHFHSy9VK2lH?=
+ =?utf-8?B?UFBOQ2EwTDFqT0NPaW8xZE5OQUt5ZDJJaCtpa1N3RitVRS9rU2JLRHQ1Ui8r?=
+ =?utf-8?B?U2FPMXJxVXU5QUh5QWUxL0tRdGdVaEhwc1h6M3AzUFVIRmVuR2wyRitJRjg1?=
+ =?utf-8?B?aHZudEFXU1U3bDBlUERPZjBLVUZhWFhBaWRrRVA3QmV6Y0RQMDVxRE03Mi9Z?=
+ =?utf-8?B?L1M5WWtYdnlTK1dqdUsreWRwRzRtWXpNaHF4cTBNMlpSYWVIOHRHdS90Und3?=
+ =?utf-8?B?alo5ZzU2LzZpQS9KREtseER2dXFZcnpDZDJlYk5GMFR3NWUwbVVFZHJqK3FK?=
+ =?utf-8?B?L3pIWk83dEFsdC9wTEtEcVBmcS9lM0pRbXpKdHk5bG9OOW5OY3VtQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8981c364-a945-4747-3f40-08df192c0e65
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4bbd1bd5-dea5-4233-072d-08df190c352e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 00:47:13.1868
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 04:35:12.1580
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 61rYhsv2yLmBzKrZWls3d0dQkSPBZTAnqDV3jd5qEjy6XCFf2Poc1AQ0lk9cvS+oMSzOjvf3CA6TFSiMYFYiquqisyGyXss+aYTfALpT3IU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7311
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zZs7rr9HjiBZLbw/+tgcevxZC4wiBrtIsCkocA1rCwwo3zMPw8jTnfk0grI5DrECh7sD98PZlZVY1ra8DYA4bA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6650
 
-T24gRnJpLCAyMDI2LTA5LTE4IGF0IDA2OjI5IC0wNzAwLCBDaGFvIEdhbyB3cm90ZToNCj4gQ2hh
-byBHYW8gKDEwKToNCj4gwqAgeDg2L3ZpcnQvdGR4OiBBZGQgYSBoZWxwZXIgdG8gcmVhZCBhIHRh
-YmxlIG9mIG1ldGFkYXRhIGZpZWxkcw0KPiDCoCB4ODYvdmlydC90ZHg6IENvbnZlcnQgdGhlIHZl
-cnNpb24gbWV0YWRhdGEgcmVhZGVyDQo+IMKgIHg4Ni92aXJ0L3RkeDogQ29udmVydCB0aGUgZmVh
-dHVyZXMgbWV0YWRhdGEgcmVhZGVyDQo+IMKgIHg4Ni92aXJ0L3RkeDogQ29udmVydCB0aGUgdGRt
-ciBtZXRhZGF0YSByZWFkZXINCj4gwqAgeDg2L3ZpcnQvdGR4OiBDb252ZXJ0IHRoZSB0ZF9jdHJs
-IG1ldGFkYXRhIHJlYWRlcg0KPiDCoCB4ODYvdmlydC90ZHg6IENvbnZlcnQgdGhlIGhhbmRvZmYg
-bWV0YWRhdGEgcmVhZGVyDQo+IMKgIHg4Ni92aXJ0L3RkeDogQ29udmVydCB0aGUgdGRfY29uZiBt
-ZXRhZGF0YSByZWFkZXINCj4gwqAgeDg2L3ZpcnQvdGR4OiBSZW1vdmUgdGR4X2dsb2JhbF9tZXRh
-ZGF0YS5jDQo+IMKgIHg4Ni92aXJ0L3RkeDogVXNlIGVhcmx5IHJldHVybnMgaW4gZ2V0X3RkeF9z
-eXNfaW5mbygpDQo+IMKgIHg4Ni92aXJ0L3RkeDogVmVyaWZ5IHN0cnVjdHVyZSBtZW1iZXIgc2l6
-ZXMgYWdhaW5zdCBtZXRhZGF0YSBmaWVsZCBJRHMNCj4gDQo+IMKgYXJjaC94ODYvdmlydC92bXgv
-dGR4L3RkeC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAyMjIgKysrKysrKysr
-KysrKysrKysrKy0NCj4gwqBhcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmjCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNTQgKysrKysNCj4gwqBhcmNoL3g4Ni92aXJ0L3ZteC90
-ZHgvdGR4X2dsb2JhbF9tZXRhZGF0YS5jIHwgMTU0IC0tLS0tLS0tLS0tLS0tDQo+IMKgMyBmaWxl
-cyBjaGFuZ2VkLCAyNzUgaW5zZXJ0aW9ucygrKSwgMTU1IGRlbGV0aW9ucygtKQ0KPiDCoGRlbGV0
-ZSBtb2RlIDEwMDY0NCBhcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4X2dsb2JhbF9tZXRhZGF0YS5j
-DQo+IA0KPiAtLQ0KPiAyLjUyLjANCg0KV2hhdCBpcyB0aGUgYmFzZSBjb21taXQ/DQo=
+
+
+On 23/9/26 05:22, Jianxiong Gao wrote:
+> On Wed, Sep 16, 2026 at 5:07 AM Alexey Kardashevskiy <aik@amd.com> wrote:
+>> +static int alloc_iommu_tlb_flush_ghcb_pages(void)
+>> +{
+>> +       unsigned int cpu;
+>> +       struct page *pg;
+>> +       void *p;
+>> +
+>> +       /*
+>> +        * Allocate per CPU pages while encrypted DMA is not happening yet
+>> +        * and smashing is cheap.
+>> +        */
+>> +       for_each_possible_cpu(cpu) {
+>> +               if (per_cpu(iommu_tlb_flush_ghcb_page, cpu))
+>> +                       continue;
+>> +
+>> +               pg = alloc_pages_node(cpu_to_node(cpu), GFP_KERNEL, 0);
+>> +               if (!pg)
+>> +                       return -ENOMEM;
+>> +
+>> +               p = page_to_virt(pg);
+>> +               /* Trigger psmash in the host os now to avoid psmash race later */
+>> +               snp_set_memory_shared((unsigned long)p, 1);
+>> +               snp_set_memory_private((unsigned long)p, 1);
+>> +               per_cpu(iommu_tlb_flush_ghcb_page, cpu) = p;
+>> +       }
+>> +
+>> +       return 0;
+>> +}
+>>
+>>   int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
+>>   {
+>> @@ -111,6 +142,24 @@ int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
+>>          struct ghcb *ghcb;
+>>          int ret;
+>>
+>> +       if (!(sev_hv_features & GHCB_HV_FT_SNP_SEV_TIO))
+>> +               return -EPERM;
+>> +
+>> +       if (op == SVM_VMGEXIT_SEV_TIO_OP_RUN || op == SVM_VMGEXIT_SEV_TIO_OP_STOP) {
+>> +               if (!(sev_hv_features & GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH))
+>> +                       return -EPERM;
+>> +
+>> +               if (op == SVM_VMGEXIT_SEV_TIO_OP_RUN) {
+>> +                       if (atomic_inc_return(&sev_tio_devices_num) == 1) {
+>> +                               ret = alloc_iommu_tlb_flush_ghcb_pages();
+>> +                               if (ret)
+>> +                                       return ret;
+>> +                       }
+>> +               } else if (atomic_dec_return(&sev_tio_devices_num) == 0) {
+>> +                       /* Do cleanup or leave it like this? */
+>> +               }
+>> +       }
+> 
+> Hi Alexey,
+> 
+> When testing this series and accepting a locked TDI in the guest
+> (echo 1 > /sys/bus/pci/devices/.../tsm/accept), the guest immediately
+> terminates with 0x1:0xd (SEV_TERM_SET_LINUX, GHCB_TERM_IOMMUTLB_FLUSH).
+
+Yup, you are right, I do have it fixed exactly like this in my current working tree, just screwed up my rebase (as a newer CPU will do this invalidate differently) and posted a broken version :-/ Sorry about that. Thanks,
+
+
+> 
+> In sev_tio_op(), sev_tio_devices_num is incremented from 0 to 1 before
+> alloc_iommu_tlb_flush_ghcb_pages() allocates and initializes the per-CPU
+> iommu_tlb_flush_ghcb_page buffers:
+> 
+> 1. atomic_inc_return(&sev_tio_devices_num) sets sev_tio_devices_num = 1
+>     while iommu_tlb_flush_ghcb_page is still NULL on all CPUs.
+> 2. alloc_iommu_tlb_flush_ghcb_pages() allocates p for cpu = 0 and calls
+>     snp_set_memory_shared((unsigned long)p, 1) to pre-smash the 2M page
+>     before per_cpu(iommu_tlb_flush_ghcb_page, cpu) is assigned (and before
+>     other CPUs' pages are allocated, in case this task is running on cpu > 0).
+> 3. snp_set_memory_shared() -> __set_pages_state() sees
+>     atomic_read(&sev_tio_devices_num) != 0 and calls ghcb_flush_iommu_tlb().
+> 4. ghcb_flush_iommu_tlb() reads this_cpu_read(iommu_tlb_flush_ghcb_page),
+>     gets NULL, and returns -ENOMEM.
+> 5. __set_pages_state() treats the non-zero return as fatal and calls
+>     sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_IOMMUTLB_FLUSH).
+> 
+> Calling alloc_iommu_tlb_flush_ghcb_pages() before incrementing
+> sev_tio_devices_num avoids triggering ghcb_flush_iommu_tlb() while the
+> per-CPU pages are still being pre-smashed and initialized:
+> 
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -150,13 +150,12 @@ int sev_tio_op(...)
+>               return -EPERM;
+> 
+>           if (op == SVM_VMGEXIT_SEV_TIO_OP_RUN) {
+> -            if (atomic_inc_return(&sev_tio_devices_num) == 1) {
+> -                ret = alloc_iommu_tlb_flush_ghcb_pages();
+> -                if (ret)
+> -                    return ret;
+> -            }
+> -        } else if (atomic_dec_return(&sev_tio_devices_num) == 0) {
+> -            /* Do cleanup or leave it like this? */
+> +            ret = alloc_iommu_tlb_flush_ghcb_pages();
+> +            if (ret)
+> +                return ret;
+> +            atomic_inc(&sev_tio_devices_num);
+> +        } else {
+> +            atomic_dec_if_positive(&sev_tio_devices_num);
+>           }
+>       }
+> 
+> On Wed, Sep 16, 2026 at 5:07 AM Alexey Kardashevskiy <aik@amd.com> wrote:
+>>
+>> IOMMU performs RMP checks when SNP is enabled, the results are
+>> cached along with the IOMMU translations. When a VM lowers permission
+>> of a mapped page (moves to a lower VMPL level or from read+write to
+>> read-only or private to shared), the cached RMP check results require
+>> invalidation.
+>>
+>> At the moment the only way to invalidate IOMMU cache is the RMPUPDATE
+>> instruction which flushes all IOMMU TLBs. It is a host privileged
+>> instruction so a VM needs a way to ensure the host has done it.
+>> Note that the guest's RMPADJUST/PVALIDATE do not flush IOMMU TLBs.
+>>
+>> The host implements a new "IOMMU TLB Flush" VMGEXIT code which is
+>> advertised via bit#11 in the GHCB Hypervisor capabilities.
+>>
+>> Use RMPUPDATE in the following way:
+>> - allocate a page per VCPU (to allow lockless flushing);
+>> - When invalidation is needed, copy two patterns (A and B) to the page;
+>> - invalidate the page so the host can make it shared;
+>> - use new GHCB call to request RMPUPDATE on the host;
+>> - the host makes the page shared;
+>> - the host clears pattern A;
+>> - the host makes the page private again;
+>> - the host returns to the guest;
+>> - check if pattern A has changed and pattern B has not;
+>> - if the above failed, panic().
+>>
+>> The patterns are located far enough to not hit the same cache line to
+>> work with the cipher text hiding feature.
+>>
+>> The host can choose to not execute the request, WARN_ON if this
+>> is the case. Further patches will attempt to handle this in other way.
+>>
+>> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+>> ---
+>>   arch/x86/include/asm/sev-common.h |  2 +
+>>   arch/x86/include/uapi/asm/svm.h   |  3 +
+>>   arch/x86/coco/sev/core.c          | 92 ++++++++++++++++++++
+>>   3 files changed, 97 insertions(+)
+>>
+>> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+>> index ff763c3c5d63..51abf8d061fa 100644
+>> --- a/arch/x86/include/asm/sev-common.h
+>> +++ b/arch/x86/include/asm/sev-common.h
+>> @@ -138,6 +138,7 @@ enum psc_op {
+>>   #define GHCB_HV_FT_SNP_AP_CREATION     BIT_ULL(1)
+>>   #define GHCB_HV_FT_SNP_MULTI_VMPL      BIT_ULL(5)
+>>   #define GHCB_HV_FT_SNP_SEV_TIO         BIT_ULL(7)
+>> +#define GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH BIT_ULL(11)
+>>
+>>   /*
+>>    * SNP Page State Change NAE event
+>> @@ -210,6 +211,7 @@ struct snp_psc_desc {
+>>   #define GHCB_TERM_SECURE_TSC           10      /* Secure TSC initialization failed */
+>>   #define GHCB_TERM_SVSM_CA_REMAP_FAIL   11      /* SVSM is present but CA could not be remapped */
+>>   #define GHCB_TERM_SAVIC_FAIL           12      /* Secure AVIC-specific failure */
+>> +#define GHCB_TERM_IOMMUTLB_FLUSH       13      /* IOMMUTLB flush failed for SEV-TIO device */
+>>
+>>   #define GHCB_RESP_CODE(v)              ((v) & GHCB_MSR_INFO_MASK)
+>>
+>> diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+>> index 93597ad492bf..269050942c8e 100644
+>> --- a/arch/x86/include/uapi/asm/svm.h
+>> +++ b/arch/x86/include/uapi/asm/svm.h
+>> @@ -160,6 +160,8 @@
+>>   #define SVM_VMGEXIT_SEV_TIO_OP_UNBIND  1
+>>   #define SVM_VMGEXIT_SEV_TIO_OP_RUN     2
+>>   #define SVM_VMGEXIT_SEV_TIO_OP_STOP    3
+>> +#define SVM_VMGEXIT_IOMMU_TLB_FLUSH            0x80000022ull
+>> +#define SVM_VMGEXIT_IOMMU_TLB_FLUSH_NO_ACTION  1
+>>   #define SVM_VMGEXIT_HV_FEATURES                        0x8000fffdull
+>>   #define SVM_VMGEXIT_TERM_REQUEST               0x8000fffeull
+>>   #define SVM_VMGEXIT_TERM_REASON(reason_set, reason_code)       \
+>> @@ -285,6 +287,7 @@
+>>          { SVM_VMGEXIT_AP_CREATION,      "vmgexit_ap_creation" }, \
+>>          { SVM_VMGEXIT_SEV_TIO_GR,       "vmgexit_sev_tio_guest_request" }, \
+>>          { SVM_VMGEXIT_SEV_TIO_OP,       "vmgexit_sev_tio_op" }, \
+>> +       { SVM_VMGEXIT_IOMMU_TLB_FLUSH, "vmgexit_sev_tio_iommu_tlb_flush" }, \
+>>          { SVM_VMGEXIT_HV_FEATURES,      "vmgexit_hypervisor_feature" }, \
+>>          { SVM_EXIT_ERR,         "invalid_guest_state" }
+>>
+>> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+>> index ed0e4546d5e5..aa5a3abb4796 100644
+>> --- a/arch/x86/coco/sev/core.c
+>> +++ b/arch/x86/coco/sev/core.c
+>> @@ -44,6 +44,7 @@
+>>   #include <asm/cpuid/api.h>
+>>   #include <asm/cmdline.h>
+>>   #include <asm/msr.h>
+>> +#include <asm/archrandom.h>
+>>
+>>   #include "internal.h"
+>>
+>> @@ -103,6 +104,36 @@ static unsigned long snp_tsc_freq_khz __ro_after_init;
+>>
+>>   DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+>>   DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+>> +DEFINE_PER_CPU(u8 *, iommu_tlb_flush_ghcb_page);
+>> +static atomic_t sev_tio_devices_num;
+>> +
+>> +static int alloc_iommu_tlb_flush_ghcb_pages(void)
+>> +{
+>> +       unsigned int cpu;
+>> +       struct page *pg;
+>> +       void *p;
+>> +
+>> +       /*
+>> +        * Allocate per CPU pages while encrypted DMA is not happening yet
+>> +        * and smashing is cheap.
+>> +        */
+>> +       for_each_possible_cpu(cpu) {
+>> +               if (per_cpu(iommu_tlb_flush_ghcb_page, cpu))
+>> +                       continue;
+>> +
+>> +               pg = alloc_pages_node(cpu_to_node(cpu), GFP_KERNEL, 0);
+>> +               if (!pg)
+>> +                       return -ENOMEM;
+>> +
+>> +               p = page_to_virt(pg);
+>> +               /* Trigger psmash in the host os now to avoid psmash race later */
+>> +               snp_set_memory_shared((unsigned long)p, 1);
+>> +               snp_set_memory_private((unsigned long)p, 1);
+>> +               per_cpu(iommu_tlb_flush_ghcb_page, cpu) = p;
+>> +       }
+>> +
+>> +       return 0;
+>> +}
+>>
+>>   int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
+>>   {
+>> @@ -111,6 +142,24 @@ int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
+>>          struct ghcb *ghcb;
+>>          int ret;
+>>
+>> +       if (!(sev_hv_features & GHCB_HV_FT_SNP_SEV_TIO))
+>> +               return -EPERM;
+>> +
+>> +       if (op == SVM_VMGEXIT_SEV_TIO_OP_RUN || op == SVM_VMGEXIT_SEV_TIO_OP_STOP) {
+>> +               if (!(sev_hv_features & GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH))
+>> +                       return -EPERM;
+>> +
+>> +               if (op == SVM_VMGEXIT_SEV_TIO_OP_RUN) {
+>> +                       if (atomic_inc_return(&sev_tio_devices_num) == 1) {
+>> +                               ret = alloc_iommu_tlb_flush_ghcb_pages();
+>> +                               if (ret)
+>> +                                       return ret;
+>> +                       }
+>> +               } else if (atomic_dec_return(&sev_tio_devices_num) == 0) {
+>> +                       /* Do cleanup or leave it like this? */
+>> +               }
+>> +       }
+>> +
+>>          /* __sev_get_ghcb() needs IRQs disabled because it uses per-CPU GHCB. */
+>>          guard(irqsave)();
+>>
+>> @@ -347,6 +396,42 @@ static int vmgexit_psc(struct ghcb *ghcb, struct snp_psc_desc *desc)
+>>          return ret;
+>>   }
+>>
+>> +static int ghcb_flush_iommu_tlb(struct ghcb *ghcb)
+>> +{
+>> +       /* AES encrypts with 16 byte blocks */
+>> +       unsigned long s1[BITS_TO_LONGS(128)], s2[BITS_TO_LONGS(128)];
+>> +       void *p = this_cpu_read(iommu_tlb_flush_ghcb_page), *p2;
+>> +       struct es_em_ctxt ctxt;
+>> +       int ret;
+>> +
+>> +       if (!p)
+>> +               return -ENOMEM;
+>> +
+>> +       /* Keep patterns apart far enough to not share the same cache line */
+>> +       p2 = (u8 *) p + 2048;
+>> +
+>> +       vc_ghcb_invalidate(ghcb);
+>> +
+>> +       BUILD_BUG_ON(ARRAY_SIZE(s1) != 2);
+>> +       if (!rdrand_long(s1) || !rdrand_long(s1 + 1) ||
+>> +           !rdrand_long(s2) || !rdrand_long(s2 + 1))
+>> +               return -EFAULT;
+>> +
+>> +       memcpy(p, s1, sizeof(s1));
+>> +       memcpy(p2, s2, sizeof(s2));
+>> +
+>> +       pvalidate((unsigned long) p, RMP_PG_SIZE_4K, false);
+>> +       ret = sev_es_ghcb_hv_call(ghcb, &ctxt, SVM_VMGEXIT_IOMMU_TLB_FLUSH, __pa(p), 0);
+>> +       pvalidate((unsigned long) p, RMP_PG_SIZE_4K, true);
+>> +
+>> +       /* Ensure that the host change is visible */
+>> +       smp_mb();
+>> +
+>> +       if (!memcmp(p, s1, sizeof(s1)) || memcmp(p2, s2, sizeof(s2)))
+>> +               return -EFAULT;
+>> +
+>> +       return 0;
+>> +}
+>>   static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long vaddr,
+>>                                         unsigned long vaddr_end, int op)
+>>   {
+>> @@ -404,6 +489,13 @@ static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long
+>>          if (!ghcb || vmgexit_psc(ghcb, data))
+>>                  sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+>>
+>> +       if (atomic_read(&sev_tio_devices_num)) {
+>> +               int ret = ghcb_flush_iommu_tlb(ghcb);
+>> +
+>> +               if (ret)
+>> +                       sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_IOMMUTLB_FLUSH);
+>> +       }
+>> +
+>>          __sev_put_ghcb(&state);
+>>
+>>          local_irq_restore(flags);
+>> --
+>> 2.55.0
+>>
+>>
+> 
+> 
+
+-- 
+Alexey
+
