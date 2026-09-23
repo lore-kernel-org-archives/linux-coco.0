@@ -1,98 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880D51E44D;
-	Wed, 23 Sep 2026 14:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F956384CDA
+	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 15:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790175553; cv=none; b=LZPqw4GTknIBOQCpPCRiw7TC6kFZ93X5eFkalQg5TuSGPEf5O3k3GkMXadMvQ1nVBQzXM9DdIeSNImAiho9KLxdC8yUzqxNQKAuHtSTs4liR+RRyaPWDn9qfHoRuy+1MxRxP0gO+SrskEDnIpBw4CffOzJ1/p+NQjbZQbsxNvMU=
+	t=1790176019; cv=none; b=hJ2s9L69I86RcXPTT8hoT0pd4XJGsShN6+Hyy8sRfesF2sd9PmWY7IXSyWmVu5f2s16C+sVXLbipcbgnsUHtuniWRbCplNnkFJpFscYK6whYuqK6oOuPPjp5GPPL8z9Rxqf6fAJTy4IvXVYSVqDcTbEt104Smc1PeYhqNVOLTRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790175553; c=relaxed/simple;
-	bh=gswDY1mG66Lwu8tE7+G4+W7L5mN7cWkxPfHU3SkDVKo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OPfMESd0I8G4+upEcPcV3X4s26+5E1zSFUywTf+eDkVB82vnMjw4WvyuWiAlMJVc5E6k7Zu/9ifIOvO2Bn6QZku0GqZAWCaTPAgRhWzocQI3LZRh4ilnLLPKRwBMqv10DyER6nEVeySTvsjK1+A62mBHWW32ggQb2jf5iVFGPHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxODoNb7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790176019; c=relaxed/simple;
+	bh=zusK0QTR+s2AdzuFMy1tZJpLHzZiZCt2XlTeuJedi+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BDSBp44iRu88PRGXyFam1vDyMAKIFljxIYzu/tF48j6YGS1nQmsR0bDv59VXIKKkA4nZwwhMLoYh4956MjZvjAN4Edm6gsDWceTsFg4GJtAcZxerqzynX8KLIP8+2g7YSnLTi65DFMQdmGW16Zx1TYh7TOgaSziVhkQcgwhk9sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ahF3ALT9; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxODoNb7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AFD1F000FF;
-	Wed, 23 Sep 2026 14:59:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790175547;
-	bh=gswDY1mG66Lwu8tE7+G4+W7L5mN7cWkxPfHU3SkDVKo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=gxODoNb72NWn9YPpDe8KLIfANsjCxo5gtqjTs0tVjyVQLSUt7VjxY4odyO7h2T0nC
-	 o4xeysn4SqbjBbrzO/k8BC6P1zv9vl39VCVI9ZQ7IOhYkLNyT6sllXj5fSpyE5qyVe
-	 kAe4GlZ84iDl0ZDLt9081Bf44hBYpqnANogB3sSSAe4bYi6Nt71WpYEqApRXHNHQFV
-	 lsW/OSUjSOhCaTupqB/rAoBRuvGlM5KaAA6S7fHWuC1YeKSSi9S9ZLdoFOi0P4jEFP
-	 SY9nq/2ZAJRRqMiLkoe+vZrhbLNj0eg7oSntaVwEl+MhSA8FXaTng/Ah83KmnM661J
-	 SANvHw/6tOcAA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	christian.koenig@amd.com, Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
-In-Reply-To: <20260923130611.GF1540250@ziepe.ca>
-References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-3-aneesh.kumar@kernel.org>
- <arKsFofudnTYpXj1@arm.com> <yq5aik3w344o.fsf@kernel.org>
- <arOfD6syXOgQhZYA@arm.com> <yq5a5wzw2ree.fsf@kernel.org>
- <arOspFxWZ1DjgcAr@arm.com> <20260923130611.GF1540250@ziepe.ca>
-Date: Wed, 23 Sep 2026 20:28:57 +0530
-Message-ID: <yq5atsng10b2.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ahF3ALT9"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F01401570;
+	Wed, 23 Sep 2026 08:06:53 -0700 (PDT)
+Received: from [192.168.4.158] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E874F3F86F;
+	Wed, 23 Sep 2026 08:06:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790176017; bh=zusK0QTR+s2AdzuFMy1tZJpLHzZiZCt2XlTeuJedi+M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ahF3ALT9UepxEmecNFZ1qVeRrBCb1D1qc5G3t+7KfoQ0JRIJzKe+2cIu9nKbGWLrI
+	 kcCacVQLGsrCJT3d0A198vv9Fi1ox9t1JeXBsEFdxfaSPHEaB4hCoU0UJ/Z5sCo4Fm
+	 HAcjSsIMNZkK22Yxb4+yz3Q1Hlems5gexj9DjhhY=
+Message-ID: <d326a6fc-c2fb-4d1d-bba6-520bf3e67d60@arm.com>
+Date: Wed, 23 Sep 2026 16:06:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 6/8] firmware: smccc: arm-cca-guest: Bind the TSM
+ provider to an SMCCC device
+Content-Language: en-GB
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Sudeep Holla <sudeep.holla@kernel.org>, Will Deacon <will@kernel.org>,
+ Steven Price <steven.price@arm.com>, Andre Przywara
+ <andre.przywara@arm.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Olivia Mackall <olivia@selenic.com>, Russell King <linux@armlinux.org.uk>,
+ Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+References: <20260923140405.1111554-1-aneesh.kumar@kernel.org>
+ <20260923140405.1111554-7-aneesh.kumar@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260923140405.1111554-7-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+On 23/09/2026 15:04, Aneesh Kumar K.V (Arm) wrote:
+> The Arm CCA guest TSM provider currently binds through the arm-cca-dev
+> platform device. Like arm-smccc-trng, this device is not an independent
+> platform resource; it is a software representation of the RSI firmware
+> service discovered through SMCCC.
+> 
+> Move RSI discovery into the SMCCC firmware driver. When the SMCCC
+> conduit is SMC and if RSI ABI version call is supported, create an
+> arm-rsi SMCCC device. Convert the Arm CCA guest TSM provider to an SMCCC
+> driver so it binds to that discovered RSI service and keeps module
+> autoloading through the SMCCC device id table.
+> 
+> Keep the old arm-cca-dev platform-device registration for now. Userspace
+> has used that device as a Realm-guest indicator, so removing it is left to
+> a follow-up patch that adds a replacement sysfs ABI.
+> 
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Sudeep Holla <sudeep.holla@kernel.org>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-> On Wed, Sep 23, 2026 at 11:40:36AM +0100, Catalin Marinas wrote:
->
->> The simplest is probably to always zero in the backend and ignore
->> __GFP_ZERO to the allocator. But it's probably only marginally smaller
->> than passing a CC_SHARED_ZERO flag down. Get codex to try this as well
->> and compare the diffstat.
->
-> For patch ordering I would convert to use the allocator first
->
-> The semantics of the new API should be clear
->
-> If you pass GFP_ZERO then the resulting allocated memory is zero
->
-> Otherwise the allocator does Whatever The Arch Needs to not leak
-> private data out.
->
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-ok
 
->
-> Once places are converted to the allocator lets go see what is left
-> and ask why it is left and what API it actually needs.
->
-
-I'm also considering requiring the address passed to cc_make_shared() to
-be in the linear map. This is currently required by both TDX and CCA,
-while AMD SNP appears to support vmalloc addresses. The only user of
-that vmalloc support is Hyper-V VMBus GPADL setup
-(vmbus_establish_gpadl()). How should the generic CoCo shared-memory
-allocator handle this?
-
--aneesh
