@@ -1,115 +1,152 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3ACF5383E7
-	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 15:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8163B27FB;
+	Wed, 23 Sep 2026 16:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790179119; cv=none; b=dKLi4EN2YYbFYxdIIsC1BczU58tKfEutNCuGphQDV3/DOXPNT3rZgBDaqFMF8va44VfU4cvQG0oLHoPOQPA11ndK/ZbfC3qcTkQFBFz6PzupPsMrrY84jQfUB6GskjP/hGsxcpXlBtXh65fY0+LUoJQxbDYGQF82ItL9M+b8sbc=
+	t=1790179454; cv=none; b=ccacj5d7PAQRxa2aARilQdU74vYzvY6zZSOoAmhhy0mp5+XYeutpPj7ufzAg7w0v40v40mpyYXLS/I6VwppkTjJ3TFxUiPqYJ+9tClLndgUB7AfQD22QE0ESop3pmfChZmsnfbTzpdTnNWHuNC68flKmtjTvJPaLBYOWk2k0858=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790179119; c=relaxed/simple;
-	bh=0PfK8JMSkVzFLf8e2q/WRG4SF7QVJLAT8oXdBZ/vtT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dhnUm6ILKbvD2Vb2yVg3vSkPd6pdHIBpTOLv/73wWHummXJ8VLJl9cfIbT+Z5VwXmQ2HB7PP/dYb55/rqt6SnNxB6kmkA4i6NUTLtDaXUSBJhZkdJ6dgaMHWnro0jpDN0MgdTR/8OzWMwQd9zCflNf1cct33O2dO2arJJs7zH0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=dND7mHFd; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1790179454; c=relaxed/simple;
+	bh=LypSKbP3j1z/OluSZ8QgXPhuhfs8wposHBwrrJn+Pdk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jFjyhW6oa41qEJUPRetMAmnSTGIFV4kiVqe4LrzKfcZPfcAhQWi3HUyUPrYoEf0RxGygqKIhnjG8rjfNp7twv6ckP4eGUiGBs3W2C3turxJbgMbuaJFFA4wSndwWx2NOeA7ZzDD43XJfpEN2W9Z5JeFwhm9t7Mm+k7sgdAIaDJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KOsuIYT7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="dND7mHFd"
-Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-895eaf306cfso13702337b3.1
-        for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 08:58:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1790179116; x=1790783916; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W3dgsIcDJ8p5ZJDPUatobQL/ESNNZ/DHoKBc/ZFp4ms=;
-        b=dND7mHFdq3D8KiP1XoD3DSdH7auqS79uZwBJU2+IqkXbBFPwJ/vLx/9wrMH/RKBh99
-         wF1P8wefXqH8hH9FL/FnCHd1T4X4ZaL6lSHzRpHiS3oc1qm2vwLZrA2rytLeGMg1syzR
-         kUOkj2gJ+Qte+IQiRYObkPtKK+OHQ7EwQUzOX95J7476Mu10Luunu01cUE8Z2sCpuynm
-         nzMOPmhURk95Tj21RnY34ggy1FtpEHnW4+EpEj/IjXttrqHbqK6nwZ8UXqv5AFeZutF8
-         1QxjsljcPgyIkZkY5Z1HQapvO0oAaiMWokOtyJ40MvtIDixiLbJiVsUb+058lRAc528k
-         b2sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790179116; x=1790783916;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W3dgsIcDJ8p5ZJDPUatobQL/ESNNZ/DHoKBc/ZFp4ms=;
-        b=HcRqEKDe2LGkY+pJYuTVYrt5hYvxJSDaxkMy/hkzvgg3m5uQFyPNL75UKfsK0Uvobq
-         H1vF0O1g7f6a/WVmhUTeQ4HUlTRhSOjGNWqTSggQ3Ucmbl4ImasfFkecus4t2VF6EuQU
-         H/K7Ldl45YW1y+nEyELdSyQJ8tE9i5sJAs7RndqzW15UxnLZQpEykVptfEbhywCn2hp+
-         Bsggk87dCW26xhIvmT6ArMrOyZFXRsf+5QUgVMR0Ccx4iX1Pxi3B9B5pxQES2+fgTuOK
-         hR7vKY1I5dy+f0auUxX/Nm8nNf4MCIGiuBVxrGzixrZMx9YH4fwX/nrLV0Z+qxJm6ygH
-         x21w==
-X-Forwarded-Encrypted: i=1; AKwUvBxiJht9nQXp7FxLb2rruq51xpMP/2HwcI7+sTHFziCUTzNZZsvzdR4ZTjAVqNnGUQN4nlDyO0c6hrzK@lists.linux.dev
-X-Gm-Message-State: AFuF++ni4+SZ6X7xekh+f9D795xiv3flyMug6wj+jEqBqxb/gJWV1mcf
-	Svmu8DnZahZTEUfVfVITdZY/n6GexJZH3Xt0Ujd/vamOlCFMB7QDFdgWiCTaSBbXBzc=
-X-Gm-Gg: AYBFou2ODOLxSrP0uEAv2EM/ATVnxetff3/d4GYs/jDyRKYcIKwFQy9gyCbR9qxGHZx
-	f7wnPVx/tmtn5n7Xtt6AkUtR78Oxjywua9LcgX4mPRd+5iKSRGz0hF3zTF2J8bBZgCJT/44IlJ2
-	cfXPwhoSWc/TJec16K9pSQxXgo037oAgn//5vxnpD5cOYYxiK8+fXQYnOGZo0zew+eE5eB3j7wu
-	S1AstMHaniqdAIdZDWO7iZWmn9A1VIkSBOiYtn22Fn6lqLob/GhP/EHl26VV/hqKz365CQy/Xn8
-	QGTJDLzQzsUgSf1QPS0KUnJft8Tvi4kLIb0yeirz6aTB6rnpX3uWEkAyfVyrLbsgQazDORdXJ7r
-	rxgutOk9gI2uIEfsAhWyigw8lcy9lTOWTXO2OYmlQT/7lfPFuVr5fKKV0OKu4S5hAZAGnUDfcFw
-	KqMtlYV502nvsgyc7+KWu9nFwl+xLXmR1httj1vvExN+mt
-X-Received: by 2002:a05:690c:f07:b0:89a:63da:fa90 with SMTP id 00721157ae682-8a45bb7ceb7mr18084857b3.75.1790179116666;
-        Wed, 23 Sep 2026 08:58:36 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a4658c72f3sm11900977b3.17.2026.09.23.08.58.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 08:58:36 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x9PMg-0000000DwaY-36Ny;
-	Wed, 23 Sep 2026 12:58:34 -0300
-Date: Wed, 23 Sep 2026 12:58:34 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-coco@lists.linux.dev,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v6 0/9] coco: guest: Enforce host page-size alignment for
- shared buffers
-Message-ID: <20260923155834.GK1540250@ziepe.ca>
-References: <20260904103452.1197239-1-aneesh.kumar@kernel.org>
- <aq1sT2EDsGaomqST@arm.com>
- <20260918165754.GG11599@ziepe.ca>
- <yq5ao6do36jk.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KOsuIYT7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8CCED1570;
+	Wed, 23 Sep 2026 09:04:07 -0700 (PDT)
+Received: from [10.57.8.94] (unknown [10.57.8.94])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB7A43F86C;
+	Wed, 23 Sep 2026 09:04:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790179451; bh=LypSKbP3j1z/OluSZ8QgXPhuhfs8wposHBwrrJn+Pdk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KOsuIYT7/OTV9MNcwsKRHBPb9lZmEF5HNpqf3oja3i9mkeb6DrOC+3m7Gx/3iPPwI
+	 HvW+L00xnoSRguEbxi+qnFypGWzRg+ETkljCS43h5pYPbWjQYSvYFQTziRa16jhKTq
+	 GvV3m4USV360TJbc+TcbqTVHe+pRo8U8KRVhPexE=
+Message-ID: <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com>
+Date: Wed, 23 Sep 2026 17:04:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5ao6do36jk.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+ yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <arK3tsTV6EDhI-nt@willie-the-truck> <arOyp8WUrYBAjrGH@arm.com>
+ <arP0IF0MjFUv36AP@willie-the-truck>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <arP0IF0MjFUv36AP@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 23, 2026 at 10:31:19AM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
+On 23/09/2026 16:45, Will Deacon wrote:
+> On Wed, Sep 23, 2026 at 12:06:15PM +0100, Catalin Marinas wrote:
+>> On Tue, Sep 22, 2026 at 06:15:34PM +0100, Will Deacon wrote:
+>>> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+>>>> From: Steven Price <steven.price@arm.com>
+>>>>
+>>>> If the host attempts to access granules that have been delegated for use
+>>>> in a realm these accesses will be caught and will trigger a Granule
+>>>> Protection Fault (GPF).
+>>>>
+>>>> A fault during a page walk signals a bug in the kernel and is handled by
+>>>> oopsing the kernel. A non-page walk fault could be caused by user space
+>>>> having access to a page which has been delegated to the kernel and will
+>>>> trigger a SIGBUS to allow debugging why user space is trying to access a
+>>>> delegated page.
+>>>>
+>>>> There is work in progress to unmap the guest_memfd backed private pages from the
+>>>> linear map. Until we get that support, we could get spurious GPFs from within
+>>>> the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
+>>>>
+>>>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>> ---
+>>>> Changes since v17:
+>>>>   * Pass untagged address to die_kernel_fault() - Sashiko
+>>>>   * Explicitly check !user_mode() for fixups - Catalin
+>>>>   * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
+>>>>   * Clarify the commit description about the upcoming work on
+>>>>     unmapping guest_memfd backed pages from linear map
+>>>> Changes since v16:
+>>>>   * Update the commit description to indicate why we try to fixup GPFs
+>>>> Changes since v10:
+>>>>   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+>>>> Changes since v2:
+>>>>   * Include missing "Granule Protection Fault at level -1"
+>>>> ---
+>>>>   arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
+>>>>   1 file changed, 24 insertions(+), 6 deletions(-)
+>>>
+>>> I still don't think we should do this, given that the plan is to unmap
+>>> the memory from the linear map. If this thing fires, it's a kernel bug
+>>> and it should be fatal.
+>>
+>> If the linear unmapping gets merged first, I agree, no need to handle
+>> these faults. I haven't followed that series, so no idea where it is at.
+
+There doesn't seem to be much progress on that series. Brendan
+volunteered to resurrect the series, taking over from Nikita [0].
+But looks like Brendan is not working on this anymore. Will see
+if someone is really planning to look at it.
+
+[0] https://lore.kernel.org/all/DJJ35VLH2PE5.DFD8OYXEOH97@linux.dev
+
+
+>>
+>> However, I'd still keep part of this patch - the reporting and panic but
+>> without the actual exception table recovery. There's some value in
+>> killing user-space and WARN (or pr_ratelimited) without a full panic, it
+>> helps with debugging. That's what do_bad() via arm64_notify_die() gives
+>> us currently anyway.
+>>
+>> So maybe we can keep it to just:
+>>
+>> static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>> {
+>> 	if (user_mode(regs)) {
+>> 		pr_alert_ratelimited("%s[%d]: granule protection fault at 0x%016lx\n",
+>> 				current->comm, task_pid_nr(current),
+>> 				untagged_addr(far));
+>> 		mem_abort_decode(esr);
+>> 	}
+>>
+>> 	return 1;
+>> }
+>>
+>> and we get the SIGBUS or panic via do_mem_abort(). No recovery for
+>> uaccess though, we get the same kernel panic.
 > 
-> > On Fri, Sep 18, 2026 at 05:52:31PM +0100, Catalin Marinas wrote:
-> >
-> >> TBH, I'm tempted not to support this configuration at all, just fail
-> >> gracefully if the realm page size doesn't match the host's. However, if
-> >> that's a real world configuration, 
-> >
-> > realm != host is going to be fairly common.
-> >
-> > host > realm is probably not that common, I would guess.
+> But how can this ever occur in user mode? I'm fine with making that part
+> unconditional.
+
+Agree, if the user mode can hit this, a page is mapped in the EL0 and
+it can as well cause the Kernel to hit a GPF.
+Also if make the handling unconditional, we end up calling
+die_kernel_fault() and that does the mem_abort_decode() causing
+duplicate logs.
+
+Suzuki
+
+
 > 
-> Wouldn't it be more common to run a distro with a 4K page size as the
-> guest on a custom hypervisor with a 4K or larger page size?
+> Will
 
-Maybe someday, but right now I think the 4k hyp is going to be common
-and people who really reach for 16/64k are going to need to run !4k
-guests too.
-
-Jason
