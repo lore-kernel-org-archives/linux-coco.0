@@ -1,198 +1,194 @@
-Received: from mail-wr2-f28.google.com (mail-wr2-f28.google.com [74.125.225.92])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92397582BB5
-	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 20:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.92
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790194532; cv=pass; b=L/ZEDUFCqKqAAU5+hwYpmCJpJ5LFhtvvz253Ll7EmO7H1iWOyMu33v/deL3UepzR3JcUdGPLKPByTX9AemdFxppRnx415zdtaKQPwvagfqUiJAmxxB8TYcCCHqj6LjnPLr774RHOxlxHlqSmfiWiZQHPc356jEKs4EdOW4jsn3k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790194532; c=relaxed/simple;
-	bh=AG+velq+P1x1sJHq2Eyj+yYuHBfJGE1bCcGBCBjr5A4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BA0FfkLBhPH65Ua2WXcbO2LM4vb7vT+/tVNw2lpPpmBfs76L/o5Tvak9KFfBb8H0UfMo65tW9C9DqvcDH5F+pnoitFTaLkEAK+ogksh4UaWgz3oQdiMFVArFrXMfmccSSRoKkmTiEsv4v9lKtyOAHHx3eIPTkR/hXy5yhKpFklU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WR1CJfYG; arc=pass smtp.client-ip=74.125.225.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C81456E056
+	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 20:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790194743; cv=none; b=cBQKn4Z+BcrN/2aTFAod/X2a1NkWPxsWav0gno3aNoDwAWo/rXmSzrQp1F6GliaVise8uCrZ4HuLdm1jBMYnQfx2Hqn9We6MawoAt7e5xrcHOq+a2FBSCAw7wvgY2SrDUW69aBTzheUYY8xAKyNEUnOhtMerKXxOAd0ZytI8D4w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790194743; c=relaxed/simple;
+	bh=QjLlivu2dOKEbDVXMk1o8BAQJhqwrAVntDEBrUiGVek=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ThVMfDzprtwFORoTSJaQ1e6WyAyLOHrLAqgd8Eq1meCg3Mo1r2TwQ2JT/O2ankWc+IV157Zkggh16Nln+JXSOPNl/unRThAvJNc44u8ytcHve6LeXraZ5VCg6Myoxxq95RVvIL3uhq2maOpj+pmNGa2/n8RvKsqrhpnX3lNUsuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z+GZ1P2R; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackyli.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WR1CJfYG"
-Received: by mail-wr2-f28.google.com with SMTP id ffacd0b85a97d-485b1d2874aso1109043f8f.1
-        for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 13:15:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790194526; cv=none;
-        d=google.com; s=arc-20260327;
-        b=c+MNm5uxRMrLamYB273bK6RZXecUG3W7KpsyjuoL4s7h2yJt5qqrhmh4bz2C9dnUr8
-         VcDiuzh/Tbby7WkTskxUiDUhZIGEvjS0bweuj3ggFg1hCS/zPUxiNGcT0qWVQQTWZTHq
-         vIk6vgOsjUmzVBOqPR/vuyv3h6pCVuQl2IUpTQFJewm9A4grIsiZWdHVifMd9+jJtg39
-         ZL2DO/neu2W2X3YjAhMAufCp/l6iXRB8yFQKm2k4Xl+imXDYllE425qiIlIVVNusJcc/
-         PtrQmC+2yyHxGitM2WT8uQQxyF3Fy0ds33iqBFw8CLVy3Bw7dodgXnOkvPeM6+1XKDZ2
-         sSCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kOoYO2x0ceYQoltgnReOSIDMz30qflbKcG3KVK6oiAM=;
-        fh=DrmC1ptPW1mzmrmK+9NbKbCuLWlwsJgwJ14gpHaCyUQ=;
-        b=mkd0D7l/5/xNOq0JddelXBCgiEAkmYV47Fb9kcRwRmVl2tT1cN9wIUi6hFIrAb5eyx
-         GvC9unArr7qAaqINmvonERrrBG+DXpeIpp9WDZF5aYqE8GuKaeUQ4f6FsOSebLHXNWpg
-         ZjVARwQl6J0skhXw+mT0s/KjG5qSDEJaFj84kypqEat7UensFqWxHuuNrtXpaBPalpbs
-         byVEQIp9H/ARhFBqIUjAbwJyVfKYUypreb6CpgMMO2gBlJlfb01uX++bnTE2pEkJYNHs
-         55PU1EQ5RkXYAnOicGV+eh2MWHHtjed2D5KqD4QV43lj1cxim9toYKDvfIORUFLLnBBh
-         Dy6w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z+GZ1P2R"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso1260683a91.2
+        for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 13:18:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790194526; x=1790799326; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kOoYO2x0ceYQoltgnReOSIDMz30qflbKcG3KVK6oiAM=;
-        b=WR1CJfYGluYZ4Ozv2fHOuIYTmIvZUTW1dySz8G735AU4jnDTcY6UPGK5ptsQ11t5Jh
-         19I1Mr3JTlWjkvYmrNgfeCPl8Kyqq48gqtOLr0Lgf2TICzE7DiHfknGfUdMEwKkoOMsK
-         jPTxyEDot/A0seqH878x6CgEhd9ltD5ta1Y0PDelxk1wra6P92LHdAW3MBpyDGv+d9y3
-         E8p1Q+hqM7vMqbsjz+/kK5WqVU7ps4M6UlAm0D/JB3QsHYi1tR1mVU8a2xek15D/BH0S
-         3UGL03aMinEpPUm0QRWt3kQOowrloL+mBXAArKxucNR1G8dKkV+JeCbxx/n26srPjlv/
-         X7+w==
+        d=google.com; s=20251104; t=1790194737; x=1790799537; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jszBNrH3yEDoF7juZMXw4OW+M7ckW2ZEtY9P8ifTaAo=;
+        b=Z+GZ1P2RLY/YVKKfRPo1DDU/wzNe4lUcYq2WpH+/lSCzFwyxl2qYCTP9HTasPSKShe
+         GG2FdU2dDZNP1mX3lrrQbWuBMbE6OR1bsQHQun69TAieSUznMhXsexyB3r9roMVAdRjs
+         ECe/UAhBfAPj0KcZ1v9GaI2vXi9HpZPhuDno/3hWJSQVWwkwRpH1VgtO9+tLonn0k7hG
+         yXnLi2f81OX8Va7lUFbZ4LBDVS2GsL/fjCI4RyLzdBEtFpHVFQB9foaK8LRQoMFRjwNt
+         g9StT6kC0ORXIbL/+N2xwf/CN7iQ8y9gIe9FKRtmNjzPCVHJIVRpcbZ/zAHKaT7uCmEk
+         f5wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790194526; x=1790799326;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790194737; x=1790799537;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kOoYO2x0ceYQoltgnReOSIDMz30qflbKcG3KVK6oiAM=;
-        b=0m73ww+2xumjs/B5NzYEJE2TJ2fOhnnPWNON4zkEovnbQBhjfHvq0NCvE1APSDjcJU
-         tUY9SbieLIxBqgTVZDDI9IzKnkIN7ihCu8xqXywRTWxYMd4VaxwybXRsrTpm7sYs68LS
-         fR9kOOBh/ArttvBqlhz8claVGP5WnAxHpj+Ch5ZkB9KfEUqRiU8HW5MsuuByWD3J0Emw
-         GF0pwyvUmTV4HVQ3pYB4m7i8p9iQuEPOsxdJsQ6pAk0sg7edxBeZCSKrjp9MTSsBoMnk
-         rUpBrzk08fItWOdf5B3oi1YI49dJaT5w5JgznD99NtrH7xjF4mx7rY/KNAQKT9ieGBQi
-         J9oA==
-X-Forwarded-Encrypted: i=1; AKwUvBwhdsgOH93ZwFLMeG54NWgd6WMSBuErHgslXPEzH+nY8wx1PtgPKl/Xf95acmngmnnvxkdClO3AjJZY@lists.linux.dev
-X-Gm-Message-State: AFuF++npUCAjWgo2te78llTqUF01izdujGb21cFZrTHHRS0c1Tnru8iV
-	HWkNAMEMT6/V6sYXRvmGIsAVUXOe/z6QVlapYhFdInAqMe2wuK7rOwtd0GOKLDOePeUtt0CSkfT
-	1MOhZTefg6PL3Us+lRNQero6eiHpwoRS9b1ADdqXp
-X-Gm-Gg: AYBFou3rhyJmUeIOvE8d16BbraPntxwaKhuWiJ6i/wI4Y86YjkrruqZIXbT0QstrpRv
-	vti63FlgEhKPtqzm5yLAEjFO6V89zbXt9lxyCG4C1sMpj4kBASU4DcFGLPweJpIKYa+XD34uTr1
-	YCjwOYy8MmLj3LCv0CFOJ4Tr+MF9eftV/x3WyM2yPl+oODb9lWWq6m9JVrVgNypCcXA7hlzLwVK
-	MMXBMTQF4cZnCzXefaJlk5ZSc2nfCTTydkB77l4MXuzDyS1GynTOMkk6t6Ii5pPn+YFaOuxrxDi
-	BjPeiUSMG9C+koUCBl6XzrCROT8aMlF8hWfq3uQC1SJOqyJiVUuHqKkKopooHcEZ9Y1oKFUqU6c
-	pUi6XBYPPvT9xCFX0WbYU6ITBlVjjMscaVESDU/dNukRYqZBZKUA+78Yu5kCsWdXUTrEO0eG1if
-	gK9w==
-X-Received: by 2002:a05:6000:2383:b0:485:ad55:208d with SMTP id
- ffacd0b85a97d-488716c8d48mr511088f8f.18.1790194525443; Wed, 23 Sep 2026
- 13:15:25 -0700 (PDT)
+        bh=jszBNrH3yEDoF7juZMXw4OW+M7ckW2ZEtY9P8ifTaAo=;
+        b=gRTMA+Hy8/Rd75kqFrFr4ETUZMOmD66fowfd5P+FTvYsj6FRijIieqVzdlBB3Y6cbA
+         4AOKgImGxfl6TvHXBzPQec09I4Q6aP7JSUbtiVnurUvPVRPpcrxrGFAu3L+0ytu2pILi
+         VDghq34fI2hm4LDTOGCxkAa69zXqksdAZg1HQJ/OMEkvnNrqtZQGjwtGxvaQczlajxln
+         nGWg2zu5zYqN3O/NEI1q7PFN4IQ02jOavSxtwKoLGk5Zh4RFSfUQr2PpsATVQKv3waDw
+         WfDnXSfQv9rjzD+lRju9ohaBQkdzamMHNEwax/FXAheMA1OgMzcs7jHQjCCLMyyfR/Mi
+         TJsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz7QtnQwHk2HdrBN0lgUEyCzli8Sfnpc8rhPLhqmFXM6Vn5mhrNIhL+lJ8ELvBkIYmRfYez9OH1WuOE@lists.linux.dev
+X-Gm-Message-State: AFuF++mrlaFhadyppfm1zN9YeYw3Ejj0M1Fwd+PlYgeLTerin1hKkiEm
+	rdLCrsSsALEbjPhWER31OeTZoeobGf8N2u7HFoe6/0AgL/AP8lfdVZPMUJtVITOsMinfvc4LVko
+	DnmAWIvQW
+X-Received: from pgvf21.prod.google.com ([2002:a65:6295:0:b0:cc1:bda2:d09c])
+ (user=jackyli job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:c105:b0:398:e96a:8999
+ with SMTP id 98e67ed59e1d1-3a098b3741amr216478a91.16.1790194737205; Wed, 23
+ Sep 2026 13:18:57 -0700 (PDT)
+Date: Wed, 23 Sep 2026 20:18:12 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260911084211.3149957-1-jgross@suse.com> <20260923193619.1408940-1-shreshth.srivastava@intel.com>
-In-Reply-To: <20260923193619.1408940-1-shreshth.srivastava@intel.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 23 Sep 2026 13:15:14 -0700
-X-Gm-Features: AclHuK-BmScte-vitIZ7FKAidjIiegIYr2tRDSSJKsz3-ZO8Fal-vgtzUYiiixY
-Message-ID: <CAKwvOdnKS+E9R3QaFk98dPNNh7uW=8yuJpYWGPHbY7k40Fk=rw@mail.gmail.com>
-Subject: Re: [PATCH v5 00/17] x86/msr: Inline rdmsr/wrmsr instructions
-To: Shreshth Srivastava <shreshth.srivastava@intel.com>, Juergen Gross <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, llvm@lists.linux.dev, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	xin@zytor.com, nathan@kernel.org, jpoimboe@kernel.org, peterz@infradead.org, 
-	boris.ostrovsky@oracle.com, xen-devel@lists.xenproject.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAAM0tGoC/32NQQ7CIBREr9L8tRjAitqV9zBdQPmlP6lAoBJN0
+ 7uLPYCryZtk3qyQMRFm6JoVEhbKFHwFeWhgmLR3yMhWBsml4jfBWfaRkS96JlszvhZ2tsYo3fI
+ rXkaou5hwpPfufPSVJ8pLSJ/9oohf+89WBBNsNBL5yWolWnN3IbgZj0N4Qr9t2xeoKAILswAAA A==
+X-Change-Id: 20260910-snp-invalid-input-5dbb6a408e7f
+X-Mailer: b4 0.14.3
+Message-ID: <20260923-snp-invalid-input-v2-1-c00e0dd077ca@google.com>
+Subject: [PATCH v2] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
+ access failure
+From: Jacky Li <jackyli@google.com>
+To: kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
+	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Jacky Li <jackyli@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Sep 23, 2026 at 12:36=E2=80=AFPM Shreshth Srivastava
-<shreshth.srivastava@intel.com> wrote:
->
-> On 11.09.26 10:41, Juergen Gross wrote:
-> > When building a kernel with CONFIG_PARAVIRT_XXL the paravirt
-> > infrastructure will always use functions for reading or writing MSRs,
-> > even when running on bare metal.
->
-> Hi Juergen,
->
-> This doesn't build with CONFIG_PARAVIRT_XXL=3Dy. 16/17 and 17/17 are wher=
-e
-> it breaks, but the cause is the .byte fallbacks: ASM_WRMSRNS_IMM from
-> 08/17 and ASM_RDMSR_IMM from 10/17 don't end in a separator, unlike the
-> .insn variants above them.
->
->   #define ASM_RDMSR_IMM                         \
->         " .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]"
->
-> That worked while they were only ever the last argument of an
-> ALTERNATIVE(), which appends its own newline. 16/17 concatenates them
-> with ASM_CLRERR:
->
->         ASM_RDMSR_IMM ASM_CLRERR, X86_FEATURE_MSR_IMM,  \
->
-> so the .long operand runs into the xor. From
-> make arch/x86/kernel/cpu/common.s:
->
->         .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long 266xor %rdx,%rdx
->
->   paravirt-msr.h:165: Error: junk at end of line, first unrecognized char=
-acter is `x'
->
-> clang reports "error: unexpected token" in the same place. 71 objects
-> fail, the same 71 either way, no vmlinux.
->
-> msr.h chooses between the .insn form and the .byte fallback with:
->
->         #if defined(CONFIG_AS_IS_GNU) && CONFIG_AS_VERSION >=3D 24100
->
-> Two kinds of toolchain end up on the .byte side of that test:
->
->   - GNU as older than 2.41. RHEL 9 and CentOS Stream 9 ship 2.35, and
->     Documentation/process/changes.rst sets the minimum at 2.30, so this
->     is a supported configuration rather than an old outlier.
->   - clang, any version. CONFIG_AS_IS_GNU is never set for clang, so the
->     && short-circuits and the version comparison is never reached. Your
->     08/17 comment already notes that clang has no .insn support.
+Currently, snp_handle_(ext_)guest_req() returns -EIO when
+kvm_{read/clear}_guest() fails while accessing guest-provided buffers.
+Returning -EIO causes KVM_RUN to exit to userspace, likely killing the VM.
 
-Indeed, looks like we're missing support for .insn for x86.
-Filed https://github.com/llvm/llvm-project/issues/225916.
-(Please do file bugs against the toolchain when you encounter issues
-like this, and cc someone from kernel development).
+Fix this by returning GHCB_HV_RESP_MALFORMED_INPUT with sub-error code
+GHCB_ERR_INVALID_INPUT to the guest and resuming the vCPU.
 
->
-> gcc with binutils 2.41 or newer takes the .insn path, where both macros
-> do end in a separator, and is unaffected.
->
-> Reproduced on v7.3-rc2 with your v3 00/13, v2 0/5 and v5 00/17 applied in
-> that order, x86_64 defconfig plus HYPERVISOR_GUEST, PARAVIRT, XEN and
-> XEN_PV. gcc 11.5.0 with GNU as 2.35.2, and clang 21.1.7.
->
-> Terminating both fallbacks fixes it, and both toolchains then build
-> vmlinux with no errors or warnings:
->
-> diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
-> index eba325ecfe4c..529c13553c63 100644
-> --- a/arch/x86/include/asm/msr.h
-> +++ b/arch/x86/include/asm/msr.h
-> @@ -78,9 +78,9 @@ static inline void do_trace_rdpmc(u32 msr, u64 val, int=
- failed) {}
->   * form MSR access instructions reference %rax as the register operand.
->   */
->  #define ASM_RDMSR_IMM                          \
-> -       " .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]"
-> +       " .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]\n\t"
->  #define ASM_WRMSRNS_IMM                                \
-> -       " .byte 0xc4,0xe7,0x7a,0xf6,0xc0; .long %c[msr]"
-> +       " .byte 0xc4,0xe7,0x7a,0xf6,0xc0; .long %c[msr]\n\t"
->  #endif
->
->  #define RDMSR_AND_SAVE_RESULT                  \
->
-> ASM_WRMSRNS needs no change, _ASM_BYTES() already emits a semicolon.
->
-> The WRMSRNS line belongs in 08/17 and the RDMSR line in 10/17.
->
-> Thanks,
-> Shreshth
+Per the GHCB specification, guest-provided GPA buffers that cannot
+be accessed by the hypervisor (e.g. private pages) should be treated
+as guest input errors. Because kvm_{read/write/clear}_guest() only
+returns -EFAULT on failure, treating this failure as an invalid input
+aligns with the definition of -EFAULT ("Bad address").
 
+Returning GHCB_ERR_INVALID_INPUT also matches existing SNP handling
+in KVM, which already returns this error code for unaligned or
+overlapping buffers. It also aligns with other hypercall implementations
+in KVM (e.g. Hyper-V returning INVALID_HYPERCALL_INPUT on
+kvm_read_guest() failures in kvm_hv_flush_tlb()).
 
+Additionally, tickle the response buffer before issuing the PSP command
+so that an invalid resp_gpa fails upfront with GHCB_ERR_INVALID_INPUT.
+Do not return an error to the guest if the post-firmware write fails, as
+the firmware has already incremented the VMPCK sequence number. Exiting
+to userspace avoids creating an ambiguous failure where the guest has no
+way to know whether to advance its VMPCK sequence number.
 
---=20
-Thanks,
-~Nick Desaulniers
+Fixes: 88caf544c930 ("KVM: SEV: Provide support for SNP_GUEST_REQUEST NAE event")
+Fixes: 74458e4859d8 ("KVM: SEV: Provide support for SNP_EXTENDED_GUEST_REQUEST NAE event")
+Signed-off-by: Jacky Li <jackyli@google.com>
+---
+v2:
+ - "Tickle" resp_gpa before issuing the PSP command. [Sean]
+ - Keep post-command write failure as -EIO; returning INVALID_INPUT
+   creates an ambiguous ABI on whether VMPCK was consumed. [Tom, Sean]
+
+v1: https://lore.kernel.org/all/20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com
+---
+ arch/x86/kvm/svm/sev.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 5705723f1f41..37a2a2677d3a 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4221,6 +4221,7 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+ 	struct kvm *kvm = svm->vcpu.kvm;
+ 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+ 	sev_ret_code fw_err = 0;
++	u8 tickle = 0;
+ 	int ret;
+ 
+ 	if (!is_sev_snp_guest(&svm->vcpu))
+@@ -4228,8 +4229,15 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+ 
+ 	guard(mutex)(&sev->guest_req_mutex);
+ 
+-	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE))
+-		return -EIO;
++	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE)) {
++		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++		return 1;
++	}
++
++	if (kvm_write_guest(kvm, resp_gpa, &tickle, sizeof(tickle))) {
++		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++		return 1;
++	}
+ 
+ 	data.gctx_paddr = __psp_pa(sev->snp_context);
+ 	data.req_paddr = __psp_pa(sev->guest_req_buf);
+@@ -4244,6 +4252,14 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+ 	if (ret && !fw_err)
+ 		return ret;
+ 
++	/*
++	 * Exit to userspace if writing the response fails. The buffer was already
++	 * tickled, so failure here indicates the mapping changed in flight.
++	 *
++	 * Do not return an error to the guest because firmware already incremented
++	 * the VMPCK sequence number. Exiting to userspace avoids creating an
++	 * ambiguous failure ABI for the guest.
++	 */
+ 	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE))
+ 		return -EIO;
+ 
+@@ -4295,8 +4311,10 @@ static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t r
+ 		return -EINVAL;
+ 
+ 	if (kvm_read_guest(kvm, req_gpa + offsetof(struct snp_guest_msg_hdr, msg_type),
+-			   &msg_type, 1))
+-		return -EIO;
++			   &msg_type, 1)) {
++		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++		return 1;
++	}
+ 
+ 	/*
+ 	 * As per GHCB spec, requests of type MSG_REPORT_REQ also allow for
+@@ -4335,8 +4353,10 @@ static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t r
+ 		 * As per GHCB spec (see "SNP Extended Guest Request"), the
+ 		 * certificate table is terminated by 24-bytes of zeroes.
+ 		 */
+-		if (data_npages && kvm_clear_guest(kvm, data_gpa, 24))
+-			return -EIO;
++		if (data_npages && kvm_clear_guest(kvm, data_gpa, 24)) {
++			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++			return 1;
++		}
+ 	}
+ 
+ 	return snp_handle_guest_req(svm, req_gpa, resp_gpa);
+
+---
+base-commit: 50d05c7c76c96b90462f24debacca971d2e86713
+change-id: 20260910-snp-invalid-input-5dbb6a408e7f
+
+Best regards,
+-- 
+Jacky Li <jackyli@google.com>
+
