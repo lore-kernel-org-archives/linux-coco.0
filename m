@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40C15372E0;
-	Tue, 22 Sep 2026 23:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D27C2236EB;
+	Wed, 23 Sep 2026 00:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790121365; cv=none; b=cCwZrEwl+zb+qAHTQRYprcCsAKjW6j45V3wKh0ZXN4o6HJ9sYI60MesxD8MKyZjXVQ54P1LDH0qY8qeJvJlDgkY8nHDTq/mhLEQ4AhYSnKl8x94m2WuTyxLaaXNw0e+EO6qodhZhdJNCqRMoLBWq2r9EAI0Yvj+dpdGEsdyd/L8=
+	t=1790123604; cv=none; b=Lpif08e1IRAW/hpIr/wnPlLifiOct+JlScNRtYlJy3PYNWqLlZ/TjXMUS2lSAIrNBzON+gf9pnonyTnwxc5ecGmV4DjPzobSFuDUwH8oALJLjY8MksHqcNkYa/GZOzpIKvcXOlrYBx5wFuFMqRRuxJ6VkVJGwRkCbpk0xs7iNPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790121365; c=relaxed/simple;
-	bh=G8e6M2uF5epg0mdfJRhXU7Czxsd8V/rsRUnhd2e/rrY=;
+	s=arc-20240116; t=1790123604; c=relaxed/simple;
+	bh=77i3zYEPqhl4Ykq7WhP+J7mIM1DnI3AO6zla9d0ZiPw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eE1Hgs63N/n04Pc60L6lrPB5Lk34bFCdJYKO6djxLfSXqcQhCPwkcXy0K8QFjnb3vtTb52ay8k1+eeoN2AzrjuYRcQwrLVq7zuVfG9XOqHGvX01WYdALqByrOmxA33G1Qi5OhX1j4896Fx+p6G+cvB1p074h47OlMBpbVuSQRyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lXkRV98I; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=AGaYWi+u7SkHT86jO6y/GlAawXZdGdEipj0MpJumkAw68IGQI9AET3jfT1GBCBBwV8R8L5cyJ2pOZPbVThNrRT0GRdzFZpJgEYREjNt53AlykjEcHQ5t+7CX3p5b67ppf3llvqXR7R4CLodirJeWLaMIDIzYde51m4s1zrhvqjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=oRgWkLcQ; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lXkRV98I"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="oRgWkLcQ"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A988D1576;
-	Tue, 22 Sep 2026 16:55:58 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 223E51576;
+	Tue, 22 Sep 2026 17:33:18 -0700 (PDT)
 Received: from [10.57.9.113] (unknown [10.57.9.113])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF8233F86C;
-	Tue, 22 Sep 2026 16:55:58 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A2AE63F86C;
+	Tue, 22 Sep 2026 17:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790121362; bh=G8e6M2uF5epg0mdfJRhXU7Czxsd8V/rsRUnhd2e/rrY=;
+	t=1790123601; bh=77i3zYEPqhl4Ykq7WhP+J7mIM1DnI3AO6zla9d0ZiPw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lXkRV98IlCqEa2C1khLd5C/DO/ZTEFQkQu/n//GoWxoIScMUHPHfA23likhQx/JAJ
-	 Co84JB7vhjPa8oK53a/9h+ii2RGG0r3oaFh9exwYqC+1a6NWsH+GwXXyAilBEt6a2V
-	 kyJYdkk0MkYF/W59YXBGyRub4EhwgWIEmkA+3bz4=
-Message-ID: <84e8bbc0-30de-4741-933c-c24337507edb@arm.com>
-Date: Wed, 23 Sep 2026 00:55:53 +0100
+	b=oRgWkLcQ31WqXE0HZzy2oda8oXCF5KyAJJ1hOCVglmH0esN1QobUgRqjxsKQ0rnUF
+	 HcEHi0aN57b3J02f+zBZVVZvI20ki3Y3HdxMh4KN/vl1I33mR4KWfrvwABIFz7re3G
+	 vAjp9bLwL/VO4cIRYlc8jfWw+ejPv0v1LHN4Olh4=
+Message-ID: <19c4acf0-bc5a-4856-96c7-bf19c2d989e7@arm.com>
+Date: Wed, 23 Sep 2026 01:33:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,88 +35,45 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 10/20] KVM: arm64: Abstract out memory abort handling
+Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
 Content-Language: en-GB
-To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
- <20260920212845.707-11-suzuki.poulose@arm.com>
- <20260922153826.000044fb@oss.qualcomm.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Catalin Marinas <catalin.marinas@arm.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ christian.koenig@amd.com, Joerg Roedel <joro@8bytes.org>,
+ Marc Zyngier <maz@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Steven Price <steven.price@arm.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
+ Will Deacon <will@kernel.org>, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
+ <20260921144847.501151-3-aneesh.kumar@kernel.org> <arKsFofudnTYpXj1@arm.com>
+ <20260922165147.GD1540250@ziepe.ca>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260922153826.000044fb@oss.qualcomm.com>
+In-Reply-To: <20260922165147.GD1540250@ziepe.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 22/09/2026 23:38, Jonathan Cameron wrote:
-> On Sun, 20 Sep 2026 22:28:35 +0100
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On 22/09/2026 17:51, Jason Gunthorpe wrote:
+> On Tue, Sep 22, 2026 at 05:25:58PM +0100, Catalin Marinas wrote:
+>> Does the memset() post sharing logic work for pKVM as well? If nothing
+>> clears it, we have a small window where guest data is leaked to the
+>> host.
 > 
->> Move the memory abort handling under VM specific s2 operation.
->>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> 
-> Trivial comment + request to follow through on adding the local
-> variable for kvm. I think the other places that can be used
-> survive the other changes in this patch set.
-> 
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index d97a4a1bca23f..cf293d09e940a 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
-> 
-> 
->> +static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->> +{
->> +	int ret;
->> +	struct kvm_vcpu *vcpu = s2fd->vcpu;
->> +
->> +	VM_WARN_ON_ONCE(kvm_vcpu_trap_is_permission_fault(vcpu) &&
->> +			!kvm_is_write_fault(vcpu) &&
->> +			!kvm_vcpu_trap_is_exec_fault(vcpu));
->> +
->> +	if (kvm_slot_has_gmem(s2fd->memslot))
->> +		ret = gmem_abort(s2fd);
->> +	else
->> +		ret = user_mem_abort(s2fd);
->> +	return ret;
-> 
-> Personal preference but I'd just do
-> 		return gmem_abort(s2fd);
-> 	else
-> 		return user_mem_abort(s2fd);
+> Same question for RMM? Or did they define that the RMM zeros on these
+> transitions?
 
-Ack
+RMM doesn't "define" what exactly is written when a granule is 
+transitioned to "DELEGATED" or "UNDELEGATED". But does guarantee that 
+the contents are wiped after the transition. This may be:
+  * RMM writing random bytes or 0s
+  * Changing the MEC of the location.
 
-> 
-> and save a couple of lines. I'd keep the else to make it clear it is
-> an either / or choice rather than an if something true one.
-> 
->> +}
->> +
->>   /* Resolve the access fault by making the page young again. */
->>   static void handle_access_fault(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa)
->>   {
->> @@ -2287,6 +2303,7 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
->>   int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>   {
->>   	struct kvm_s2_trans nested_trans, *nested = NULL;
->> +	struct kvm *kvm = vcpu->kvm;
-> 
-> If introducing this, also use it for the other places vcpu->kvm is used
-> in this function.  Separate patch though to keep down noise.
-> Looks like that's mostly to shorten the chain of dereferences in the
-> locks.
-
-Added a preparatory patch to convert the other users to a local "kvm"
-variable.
+See section A2.3.8 Granule wiping DEN0137 2.0-bet3
 
 Cheers
-Suzuki
 
+Suzuki
