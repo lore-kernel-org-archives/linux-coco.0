@@ -1,252 +1,245 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAA8581241;
-	Wed, 23 Sep 2026 22:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790202896; cv=none; b=uFJTK4Cymbj3w5aq9uk7+k6WfIn6i9PUA+3Y0XPe9ERlBA3k7EauGEI//45alz731aBJgwraQIK/H8f0OT9EDfeeTEpbqpIvS66RG57/zVv0SJXuKtMPHr2ES3mmdakT8xDWPDc2TJzqOoauh0San0GsTFp/p1xVIrT5rmnmmXs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790202896; c=relaxed/simple;
-	bh=e+cOxOOR7KeNTZdDG5EoT2YT7Z8uj3tv81dEWnLqxQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M1oy0DWnqPGU4Tab/2CMxb7OZXgolyObN9/2mru6v/35y9mqJRb55apXiFKMuw4O5gtoOdYsTWKeCfD00SkwgDBGdJDDepzi+y66em0BsVCwWbOkWKJOm0eB2PPzGy1r127H+QKG2K+h8oMzhfzmZJSluHt8AGA6pi4RR2ay3eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KvsswqJT; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E5C418362
+	for <linux-coco@lists.linux.dev>; Wed, 23 Sep 2026 22:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790203653; cv=fail; b=Ic2GF0abJT4i1JCtxnbJr3RuoxbxZrJ5+JZ24ueQex+Fths7RuI+89rN0nFoRkTwdDaBHFIrWMdIkFFcH+bfRZJH4LxSdjTfovupWGmCNThZLK7wQ7cDiqolr2a+emEpQ20R4Tiq9ZjKeRz5TMt/H+D00R909M5ftuHnvgKrGMA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790203653; c=relaxed/simple;
+	bh=aFTJku1wISi1z31GCW1Li431DbJlT6juoZCvBIvHHRk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mYV3eyGmVij32itX85b80wcUHlT4eIMjxtmGlYNUfk8h0wLcoMMWgofZgrZQTiWP/1vHPoFotsYMQdCoD7LpQNcIJAsW1h3dfSWe88bqkBd0T7tv6HBXDpqbUzcH9IvQ4c+OpWm8TTbZd4N0C6jS0ns+etdkzns5medN9GQ1B1M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kbjriCwk; arc=fail smtp.client-ip=192.198.163.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KvsswqJT"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4783C152B;
-	Wed, 23 Sep 2026 15:34:48 -0700 (PDT)
-Received: from [10.57.8.94] (unknown [10.57.8.94])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCDA23F632;
-	Wed, 23 Sep 2026 15:34:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790202891; bh=e+cOxOOR7KeNTZdDG5EoT2YT7Z8uj3tv81dEWnLqxQY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KvsswqJTKoAouUyBTgte07ttJiGhLx7UEhKgBCQUl8AKuWIqgaS50y5r+1wZsvLfL
-	 PXiIgVDcVatXU14yZqH0uMrkLNul/b3Q0PXLMFXeb+rp99Enz2WFzuun0j2T37BLpI
-	 QoIRq58cDg5rRujzsuaS+8eMLq1WWgth4j4SEfEI=
-Message-ID: <eabbb060-9e99-432d-ac51-7470a7e8e7e9@arm.com>
-Date: Wed, 23 Sep 2026 23:34:43 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kbjriCwk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790203652; x=1821739652;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=aFTJku1wISi1z31GCW1Li431DbJlT6juoZCvBIvHHRk=;
+  b=kbjriCwkPJK+FmaY5UCUCL4IaWKQMEKhTPjshPMdQ6e9DCEGiTWcLEOD
+   xDuQ+FLyiavoYYfcXzDMV80Czf6OZRTWl/D1dvKusYY5JxeQVUxBtoFBr
+   fhAv6yZZipKb2SrlJMyCGsb45CCxjf8X/5rXJEgQwPISilBPxTLTqf0WT
+   JZT3GfCgPhZhI8E8bmqNS/92N0XDSx1zgNLfolKG8DRlqP5u66FBTF41t
+   YaLQ6qKRmDxVmF8QaOyU9tOM41PkR5jWdkf8Wy1EGXfNZdna8gRs42D5u
+   WRUhchYhrRv9dS18sFJLoMH3uKxaWtRrZPvB0L89MtZeKlX0Lt/NTIgcI
+   w==;
+X-CSE-ConnectionGUID: FuCzwfG3TWaFOggLyFuJJw==
+X-CSE-MsgGUID: RsKogZIOTc2MeXS+FLW3nA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="1452365"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="1452365"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 15:47:31 -0700
+X-CSE-ConnectionGUID: D+rw+VWaTlObD3Za+EXwog==
+X-CSE-MsgGUID: 0y3sRoI4TX2UCk3A/eKIBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="273007435"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 15:47:30 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 15:47:30 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 15:47:30 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.31) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 15:47:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UckK/VP57njnBKZjKXy9vcFZ+Hsr1Tz47bK3hw26OULmJmY7WQ1/NBErp/+VHnRvwL8ALfs8S3cZDku1dzU1oS5dSdbQVoKsaBXg1oxGitCq4m/0+KrRVpBiEMmscCHjY4gK5ztaQE45PL7WgLP2xsUFCNnxoRS9ZP1vq1FrlpbpgKIL7ry8sxsx8szFDaB0TpdB8Sz7k/ro3OVDdYXhIDExvQn07EqlNj8FwSUMKZ/hA6H/HgLrZ0PwlRpBgUGuziSW7rUjHoide5/LKGt5UE8qxGIbDnUckGs1ERTBSvLGsXd6Uj1WfgV/QdWTPJ6K4iAvau8n4kytYyKJfMCIFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aFTJku1wISi1z31GCW1Li431DbJlT6juoZCvBIvHHRk=;
+ b=CzGuVSxN4bh6LTg2MXdJsD+H1QZaVtuXtEmTTZtA3O2SkoFno4BYzCoZ+mVcBhESsxJd8OwMX0k1c4bdPopnrw7ErRUoybtWWDnrEXdiLE2FG521xWWyj/G3aJkD2jRIdyHTALTdQDThOoQw/qierOYGztj/146BQqN3Fqal5jY8AQ14blJ7XYmic5abkeVfYPqR6AvqZnG8s5ZZ+3HAOLSi9/5aWxKREcE1y2N3izw1I50qD29LhLwjl8T+Iv2rgeYlSi2GICN1XbrC5f6zARCQcWUHhAlH6hDDFuNyUn2NAOl3bn2Zi5Ih5l2OgtRYgh9vgwhcn404V715742eBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SN7PR11MB6776.namprd11.prod.outlook.com (2603:10b6:806:263::21)
+ by LV8PR11MB8608.namprd11.prod.outlook.com (2603:10b6:408:1f0::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
+ 2026 22:47:20 +0000
+Received: from SN7PR11MB6776.namprd11.prod.outlook.com
+ ([fe80::9c32:5b6b:3a48:dfa1]) by SN7PR11MB6776.namprd11.prod.outlook.com
+ ([fe80::9c32:5b6b:3a48:dfa1%4]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
+ 22:47:19 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Gao, Chao" <chao.gao@intel.com>
+CC: "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+	"kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>
+Subject: Re: [RFC PATCH v2 10/10] x86/virt/tdx: Verify structure member sizes
+ against metadata field IDs
+Thread-Topic: [RFC PATCH v2 10/10] x86/virt/tdx: Verify structure member sizes
+ against metadata field IDs
+Thread-Index: AQHdR3ITvlciXn0uPEaqmaPTteFgurbczBQA
+Date: Wed, 23 Sep 2026 22:47:19 +0000
+Message-ID: <afe70eaadc0906ec17e6b5522881ae09e9f45579.camel@intel.com>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+	 <20260918132946.76533-11-chao.gao@intel.com>
+In-Reply-To: <20260918132946.76533-11-chao.gao@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN7PR11MB6776:EE_|LV8PR11MB8608:EE_
+x-ms-office365-filtering-correlation-id: 3d68d37a-1c67-48b4-d9cc-08df19c49fda
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|38070700021|4143699003|5023799004|11063799006|56012099006|10067099003|18002099003|22082099003|6133799003|3023799007;
+x-microsoft-antispam-message-info: vWc3J8h8V8UbMmEJ/hewyPuzlyG0H6MeIAX3s0UkBQpWmhY4DWSljKTP1G2fXRALMilSdko48Cxtj+hIEcLRxBAkCTTeaGF5/RHXiqyqCFlw99hQpLao+mQgr5hUkKiMk/5o8iNpMMEz15UqaRqmvY0mZcEtQ/g5+NN48h6NgN3oEwtNcG0Gs+DWE4HSigYrhpicuZz/6VNz7M9PF1e9Jbd0M3dooS3imfuVdup/AyBcFwCKBJc94UPxKKlvd4TcS+Jbw93RKBkTrP9Uh9KoorzqwDYOwwYbSqZEtVqjz84+1sOPSoow75QOfV1TR2wAGjATB4CIf6rAMOXGUElxzXR3WmPOPhPM6hdM0OUtojQuKzN/pkNCf9YxQWWZIoHF8kfelPv82kZM1TGH0bsTa8bNF9XmMOQqhCmdZEzXdEXR4jyyozRPaLIyCCqXy6iQcTiUsQU0VlXilI+X/ejdCndJEokbc2aQ1NPE7E+ytX6JG2kW1ycb3TAnhrijskJZzpaGbKYuUC9ric6WtTe+I9t/yFvQFzpS6gichniSGFc3rz20T69YBklgTEX1cfvApz80/A/3ZiH1mgFmqqN8p9vj0pZuAjWQ7pLlyI/vsmsM+sS5u/w+ONPvZWZRbFJNN6h6JYVmag726w5r+OT5A4WmLky3SSXKQ+/Pf4SWWsYs+L5g+7xEcYzRIeNXDF20xLg1LY42kYTbOlwnwM90TBBibjnwRP6iIqEEH1mHxBk=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB6776.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(38070700021)(4143699003)(5023799004)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NENzb0NOS1pPUWM3TWZaczczRlB0UWlvS0E5Z2NvTHpTT3U1bnI0MjJhVFVQ?=
+ =?utf-8?B?ZG5nenlxaisrVXBPTkZaTjNiTElKTHB2Nlgyc01xY01GUDRmSlZ0S3I0NFVz?=
+ =?utf-8?B?UnVGOXJnK3lvRGJka3FoMUZjaVYxd2kzcjU4c2E0MzBUeXhBZmpNRklDUTFF?=
+ =?utf-8?B?MGMzSjd2OTdyS29wL0FkYUlrem05bkN1THVJNUIza3dMUmhpOURyY2YzTldm?=
+ =?utf-8?B?Y1orYXhQOFpSaDZPaXpwaUJBNkhzb0hzNW1nUy9pUXpqb0FPQ05ZQXdRb1J6?=
+ =?utf-8?B?MnpycDhZcGw2aWVBQ3BueW1pUkVxbzBlT3JKc0tPTVdORTVZbHViMUI2SStt?=
+ =?utf-8?B?cmxwcDVEeUZONEZKU0ZacFNKNXdzSzYvblAwZy9VQ1dHekM1V25QMWlvUG9R?=
+ =?utf-8?B?S1B3N2pzZEswMzdjNGxhS2k4Wi9GTkVIV1hlTnM5ZGxVVjEzNmtYcHl1SmRZ?=
+ =?utf-8?B?TEEvdUw4enZpS1gzY1JtU1ZLU1lNR1NJZE90TzQ3ck9rMG5iQURkNjN5VHpi?=
+ =?utf-8?B?NXJvUUlkd213K1dnOVhINHMrQWVSa3gwZGxKVjdpYnZ5RUxteFNDSXlHb1oy?=
+ =?utf-8?B?VXZIa2tucXVNQUpNSzJaeVhWQXlSeFhZMG1malExbWlSRFhFcnhnYjRpQm1a?=
+ =?utf-8?B?R1dpUUw2QnRTN25Wb2VyTlVxWXJ5czBQK2V0Vm9FcFFrYVV3RzFWaDlJNGg0?=
+ =?utf-8?B?dStMNTQrN3FIeTR6N0lIZXhwL3ZqaFp0QW90TVEvNHdFbkxBMEVhWFpETXMv?=
+ =?utf-8?B?bnFVNWlwY2x4ZW9VaWVkZ1kzVzQwOENwV0tBUWlOdXFqbmxjTTFaN0dhMDlp?=
+ =?utf-8?B?Z1FPVnRTM0JBSllNVW00R0dxb200S2hBeWFpcGQzNmR6bklKU0p5SWM2dS80?=
+ =?utf-8?B?VE1zd3dMZStvYWNrc1JDbEFRamhIV3NDVGxLa0hiUkxpQTNjL2l5ODRhWStS?=
+ =?utf-8?B?ZnRvM0UrdWpBZDRFbzNzTkpHRTRWVEpWUEptSm9OS212bmMyY1p3MzhrbjRp?=
+ =?utf-8?B?cmMvUmV1eUlMVmRNOGZKdTNneGE0dXZkdmlQeVYxOWhhc2tRa09GRnZqbkFq?=
+ =?utf-8?B?WnlCQktpcXNvUldvNkI1dGZUSUR0YkZsTlc3Z2U0eGhlcVlER25KODlkZUJp?=
+ =?utf-8?B?bXpwcVlMaEY4by9MWU5vdUo2bFFtWlQwTVRHb2FzTE44UFJSb2hKMHpJWEI1?=
+ =?utf-8?B?Tys4d3lyOVpjbGR0clVZc0gwNjUrZTMrb0xaWEUyVzdEbXVpTTh3VmdlY3Bp?=
+ =?utf-8?B?WTA0VFU5Y3Y3Q29IUjlCSmRySmU3KzBjMzB5eW1RMk9WOHdFYlFtU1VBdWcw?=
+ =?utf-8?B?c2Vpd1ljdDFucWkxR3M3dFkxMmcycVByaWpYZDFyVGYvN2NqSU9qd1ZqcWJ5?=
+ =?utf-8?B?b1RVa3RzL2ViT0FheXJOVldyeDVEQ3FLV2JqTlIrUm9FTldLUWpCQWtod2sw?=
+ =?utf-8?B?b1A3ZVMxVFZreGxYNjRwT1ZJZFdIMWt1dmFXQldXSnlTS2dEY1JRUUVtdm4r?=
+ =?utf-8?B?cVBVMlg2Q0dHNEU0dHVLT1R4dDZJUk5rVldyMEJQUFFxM0svV1pqd0NVdlZH?=
+ =?utf-8?B?Wkl3a0wrUnBubHYvdlFQL1VocEJnTC95enA1NmdDUUxrclBKMUk0cFRXMlI5?=
+ =?utf-8?B?Tm00UTA4bjZsU0V3U1dyS0tKWnE1MEdhQ0RzNVk5QXZVeDNpRVZZTGFnZ3N6?=
+ =?utf-8?B?d3FvRU90WjZhdVBVQkZrWnpIb1NOelI3RkVMVTJldWNkQUl1MjB3Qm9UaFRV?=
+ =?utf-8?B?M1VoWUdBdFZNbXdGNXgybkxLU016d2M3Z1NFam4vbnVxeFl6OER6M1hET0xM?=
+ =?utf-8?B?Q1AzblRiY21mTW1DaFBsN2FLNEtad3lFYVBYK25hS0lMTXpMYzUxU1pnU3lF?=
+ =?utf-8?B?OU9HTzQwVGh1OHk5UStsendWVHpzNWR3d3IxSkJtUkNFYmM5OHRQZmg0OU41?=
+ =?utf-8?B?ZmZtcldpRDkwdmw1THEwd3hTY3h0UVNUN2lwQVg1c3ZoSjhuYjBqMmZkQ3Vq?=
+ =?utf-8?B?SG5xUWd2UG1VOFNYRlNaQytEZjF2K3FjREY5ZGlJcXl3TnRDOUJhaXlrSUlY?=
+ =?utf-8?B?OUw5bnhFWEVuazkvTEF6UGpoRU9ONlpsODZBS3I0V0lobmxVbTFHL29SY2d0?=
+ =?utf-8?B?cDNJTzhxNTA5R2lhMUluZEZMdkZHZGU4eWJVeWV5d1JHbjBldy9YQ0M3RXpM?=
+ =?utf-8?B?NnFOSm5xcVJSOEw2UGllSk90aVE4dHhXQjBPaTNncGV2VnRZRGdDN0MxaXYr?=
+ =?utf-8?B?VmMybzVwcEQwQ3hDYXRiQXNFZHI5QmVnQWF2YkVGblVxbkpSZ0h3Zll5eWNN?=
+ =?utf-8?B?SXE0bkgyK0hQem9LZStaZ2V3RG5WMXdxY1k4WlRQWTY0UXIrNkswbCtkR0V0?=
+ =?utf-8?Q?uL2sjPtjmrpvZO3c=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <CCAFC2A7555E3844B554248C29EB2FAC@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
-Content-Language: en-GB
-To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-2-suzuki.poulose@arm.com>
- <178978126540.2352296.16845657485139032765.b4-review@b4>
- <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
- <45fb9520-7003-412f-9ab1-14e2a762c816@arm.com>
- <20260921142716.000073f8@oss.qualcomm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260921142716.000073f8@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: LHKIOFeuF/eqqM5bhg5YMUMsqTQ6pevc0C2pbX26EhDoWiu1DHhjr9BjddVw8KZIazsMpROwb9OJTVjF/G+nYfeaajIH5VSjy1I35V0szrL6129gINMf4FIxUmSKc2A+j7XzAjSpTFkxld12PzveZHgKQeLUHFeD27X4z1SSCQ5H4nMg1Fg2qZ54aZbL3UqFCrtK2OXlp/1ip9FTxO5PO7mXGPw8bbTg/7Vh3Mj7AmdoffQe11XwcwpnanLyH9KAV7OrmIjGwkUdB1iwIkzAwgtNwXZ+Yheq5XJeBfJjtMBsjn4lORohcMKnYDL0q4tR/tDuyNKFPQCrS/caapFCLw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6776.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d68d37a-1c67-48b4-d9cc-08df19c49fda
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 22:47:19.5913
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Zl4g/KyBTVnpN5J6YVhhhswOKk20GBN0neGr9I8vbKTsYVLg11JYehKVm1GiY1R+fq/xLcXLpvN34G73AwiLR0u276tM+B5Oyzoi+nA3IVI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8608
+X-OriginatorOrg: intel.com
 
-On 21/09/2026 22:27, Jonathan Cameron wrote:
-> On Mon, 21 Sep 2026 11:02:56 +0100
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> 
->> On 21/09/2026 10:27, Suzuki K Poulose wrote:
->>> On 19/09/2026 02:27, Jonathan Cameron wrote:
->>>>> The RMM (Realm Management Monitor) provides functionality that can be
->>>>> accessed by SMC calls from the host.
->>>>>
->>>>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
->>>>>
->>>>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
->>>>>
->>>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>
->>>> With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
->>>> comments inline.  Mostly on subtle inconsistencies that really don't
->>>> matter that much.
->>>>   
->>>>>    include/linux/arm-smccc-rmi.h | 497 ++++++++++++++++++++++++++++++++++
->>>>>    1 file changed, 497 insertions(+)
->>>>>    create mode 100644 include/linux/arm-smccc-rmi.h
->>>>>
->>>>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-
->>>>> rmi.h
->>>>> new file mode 100644
->>>>> index 000000000000..214d6228dfc2
->>>>> --- /dev/null
->>>>> +++ b/include/linux/arm-smccc-rmi.h
->>>>> @@ -0,0 +1,497 @@
->>>>> +/* SPDX-License-Identifier: GPL-2.0 */
->>>>> +/*
->>>>> + * Copyright (C) 2023-2026 ARM Ltd.
->>>>> + *
->>>>> + * The values and structures in this file are from the Realm
->>>>> Management Monitor
->>>>> + * specification (DEN0137) version 2.0-bet3:
->>>>> + * https://developer.arm.com/documentation/den0137/2-0bet3/
->>>>> + */
->>>>> +
->>>>> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
->>>>> +#define __LINUX_ARM_SMCCC_RMI_H_
->>>>> +
->>>>> +#include <linux/arm-smccc.h>
->>>>> +#include <linux/bitfield.h>
->>>>> +#include <linux/bits.h>
->>>>> +#include <linux/build_bug.h>
->>>>> +#include <linux/sizes.h>
->>>>> +
->>>>> +#include <asm/page.h>
->>>>> +
->>>>> +#define SMC_RMI_CALL(func)                \
->>>>> +    ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,        \
->>>>> +               ARM_SMCCC_SMC_64,        \
->>>>> +               ARM_SMCCC_OWNER_STANDARD,    \
->>>>> +               (func))
->>>>
->>>> Obviously it is v18 so probably a future thing but nothing about this
->>>> is RMI specific.  Could be used for ARM_SMCCC_TRNG_RND64 for instance.
->>>> I'm not entirely sure what we'd call such a macro
->>>>
->>>> ARM_SMCCC_CALL_VAL64_STD() maybe?
->>>
->>> ARM_SMCCC_STD_CALL64_VAL() ?
->>>
->>> But, I would leave it as a wider cleanup in the tree as a separate
->>> series.
->>>    
->>>>
->>>> I'm not just not keen on macros whose names to me hint at something
->>>> special. FWIW this also matches SMC_RSI_FID() and FFA_SMC64().
->>>> Isn't it nice when we have a predictable naming scheme :)
->>>>
->>>> FID (for Function IDentifier) is in the spec, so maybe?
->>>>
->>>> Anyhow, I don't really care that much.
->>>>   
->>>>> +
->>>>> +#define SMC_RMI_VERSION                SMC_RMI_CALL(0x0150)
->>>>> +
->>>>
->>>>   
->>>>> +#define RMI_ABI_MAJOR_VERSION    2
->>>>> +#define RMI_ABI_MINOR_VERSION    0
->>>>> +
->>>>> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
->>>>
->>>> I'd mask it.  Mostly because that would shout that it is only 15 bits.
->>>>   
->>>
->>> Ack
->>>    
->>>>> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
->>>>> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
->>>>
->>>> I'd go all in on FIELD_PREP() / FIELD_GET() + GENMASK just for the
->>>> sake of consistency + not having to be careful that everything is
->>>> checked for fit to keep the LLM bots happy.
->>>>   
->>>>> +
->>>>> +#define RMI_RETURN_STATUS_MASK        GENMASK(7, 0)
->>>>> +#define RMI_RETURN_INDEX_MASK        GENMASK(15, 8)
->>>>> +#define RMI_RETURN_MEMREQ_MASK        GENMASK(9, 8)
->>>>> +#define RMI_RETURN_CAN_CANCEL_MASK    BIT(10)
->>>>> +
->>>>> +#define RMI_RETURN_STATUS(ret)
->>>>> FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
->>>>> +#define RMI_RETURN_INDEX(ret)
->>>>> FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
->>>>
->>>> What's this one?  I can't find anything in the spec that matches it
->>>> and as far as I can tell you don't use it in this series.
->>>
->>> This is coming from RmiResultDataLevel. See RmiResult type.
->>> This was renamed after we introduce the RmiResultDataIncomplete.
->>> It is used in the KVM code to find the "level" where a command
->>> failed/walked.
->>>
->>> I could rename it to RMI_RESULT_DATA_LEVEL() ?
->>> Similarly RMI_RESULT_STATUS instead of RMI_RETURN_*
->>>    
->>>>   
->>>>> +#define RMI_RETURN_MEMREQ(ret)
->>>>> FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
->>>>> +#define RMI_RETURN_CAN_CANCEL(ret)
->>>>> FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
->>>    
->>>> These are obscure enough to find in the spec I'd give a comment just
->>>> to save the sanity of anyone looking for them.
->>>
->>> As above, they are really RMI_RESULT_DATA_INCOMPLETE_*
->>>    
->>>>   
->>>>> +/*
->>>>> + * Note many of these fields are smaller than u64 but all fields
->>>>> have u64
->>>>> + * alignment, so use u64 to ensure correct alignment.
->>>>
->>>> Obviously this is only going to run on arm64 so it's not critical, but
->>>> more generally u64s aren't always 64 bit aligned.  So if you 'really'
->>>> care aligned_u64 is there to ensure it.  Meh, arm64 so fine.
->>>
->>> Agreed, I am worried about the churn in the consumer code. Also, like
->>> you said, this is only for ARM64. So, I would pass it.
->>>    
->>>>   
->>>>> + */
->>>>> +struct rmm_config {
->>>>> +    union { /* 0x0 */
->>>>> +        struct {
->>>>> +            u64 tracking_region_size;
->>>>> +            u64 rmi_granule_size;
->>>>> +        };
->>>>> +        u8 sizer[SZ_4K];
->>>>> +    };
->>>>> +};
->>>>> +
->>>>> +static_assert(sizeof(struct rmm_config) == SZ_4K);
->>>>> +
->>>>> +#define RMI_REALM_PARAM_FLAG_SVE        BIT(1)
->>>>> +#define RMI_REALM_PARAM_FLAG_PMU        BIT(2)
->>>>> +#define RMI_REALM_PARAM_FLAG_DA            BIT(3)
->>>>> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY        GENMASK(6, 5)
->>>>> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY        GENMASK(8, 7)
->>>>
->>>> Tiny bit inconsistent. When do you decide _MASK is needed and when
->>>> not?  Seems a little too random for multibit fields.
->>>
->>> I will try to clean this up.
->>
->> Actually, this is used when we don't consume them from RMM. i.e.,
->> we never call FIELD_GET() on them. But thats not a reason for
->> not being consistent in naming. I can fix it
-> 
-> Too obscure for me!  So if not too painful cleaner to just fix it.
-
-Sorry, forgot to add that, I fixed them to _MASK
-
-Cheers
-Suzuki
-
-> 
-> Jonathan
-> 
->>
->> Cheers
->> Suzuki
->>
->>
-> 
-
+T24gRnJpLCAyMDI2LTA5LTE4IGF0IDA2OjI5IC0wNzAwLCBDaGFvIEdhbyB3cm90ZToNCj4gQSBt
+ZXRhZGF0YSBmaWVsZCBJRCBlbmNvZGVzIHRoZSBzaXplIG9mIGEgc2luZ2xlIGVsZW1lbnQuIFRE
+WF9TWVNJTkZPX01BUCgpDQo+IGluc3RlYWQgZGVyaXZlcyB0aGUgY29weSBzaXplIGZyb20gdGhl
+IGRlc3RpbmF0aW9uIG1lbWJlciwgYW5kIG5vdGhpbmcNCj4gdmVyaWZpZXMgdGhhdCB0aGUgdHdv
+IHNpemVzIGFncmVlLg0KPiANCj4gQSB3cm9uZ2x5IHR5cGVkIG1lbWJlciBpcyBhIGtlcm5lbCBi
+dWc6IGRlY2xhcmluZyBhIHUzMiBmb3IgYW4gOC1ieXRlDQo+IG1ldGFkYXRhIGZpZWxkIHdvdWxk
+IHNpbGVudGx5IHN0b3JlIG9ubHkgaXRzIGxvdyA0IGJ5dGVzLg0KPiANCj4gQWRkIG1hY3JvcyB0
+byBleHRyYWN0IHRoZSBlbGVtZW50IHNpemUgZW5jb2RlZCBpbiBhIGZpZWxkIElEIGFuZCB2ZXJp
+ZnkgaXQNCj4gYWdhaW5zdCB0aGUgZGVzdGluYXRpb24gbWVtYmVyIHNpemUgYXQgYnVpbGQgdGlt
+ZS4NCg0KVGhlIHR3byB0aGluZ3Mgd2UgY291bGQgZG8gYXJlIGV4dHJhY3QgdGhlIGZpZWxkIGNv
+ZGUgYW5kIGNoZWNrIGl0LCBvciBhZGQgaXQNCmludG8gdGhlIGZpZWxkIGF1dG9tYXRpY2FsbHkg
+ZnJvbSB0aGUgc3RydWN0IHNpemUuIEluIHRoZSBsYXRlciBjYXNlIHRoZSBmaWVsZA0KaWQncyB3
+b3VsZCBiZSBzcGVjaWZpZWQgd2l0aG91dCB0aGUgc2l6ZSBiaXRzIGFscmVhZHkgZmlsbGVkIGlu
+LiBCdXQgc2luY2UgdGhlDQptZXRhZGF0YSBkb2NzIGhhdmUgdGhlIGZpZWxkIGNvZGUgYWxyZWFk
+eSBlbWJlZGRlZCB3aGVuIHRoZXkgYXJlIGxpc3RlZCBpbiB0aGUNCmRvY3MsIHRoYXQgaXMgdGhl
+IG1vc3QgbmF0dXJhbCBhbmQgZWFzeSB0aGluZyB0byBhZGQgdG8gdGhlIGZpZWxkIGlkIGNvZGUu
+IEl0DQptYWtlcyBpdCBlYXN5IHRvIHNlYXJjaCB0aGUgZG9jcyB0b28uIFNvIHRoZSBjaGVja2lu
+ZyBkZXNpZ24gZ2l2ZXMgdXMgc29tZSBleHRyYQ0Kc2FmZXR5LCBtYWtlIGl0IGVhc2llciB0byBh
+ZGQgdGhlIGNvZGUgYW5kIHNlYXJjaCB0aGUgZG9jcy4NCg0KSSB0aGluayBwcm9iYWJseSB5b3Ug
+bmVlZCB0byBleHBsYWluIGEgYml0IG1vcmUgYWJvdXQgd2hhdCBhbmQgd2h5IHRoZSBmaWVsZGlk
+DQpzaXplIGJpdHMgZXhpc3QsIGJ1dCBJIGFncmVlIHdpdGggdGhlIGRlc2lnbi4NCg0KPiANCj4g
+QlVJTERfQlVHX09OKCkgY2Fubm90IGJlIHVzZWQgaW4gYSBzdHJ1Y3R1cmUgaW5pdGlhbGl6ZXIs
+IHNvIHVzZQ0KPiBCVUlMRF9CVUdfT05fWkVSTygpIGFuZCBhZGQgaXRzIHplcm8gcmVzdWx0IHRv
+IHRoZSAuc2l6ZSBpbml0aWFsaXplci4gVGhpcw0KPiBwZXJmb3JtcyB0aGUgYnVpbGQtdGltZSBj
+aGVjayB3aXRob3V0IGNoYW5naW5nIHRoZSBzdG9yZWQgc2l6ZS4NCg0KTmVhdC4gTWlnaHQgYmUg
+Y29udHJvdmVyc2lhbC4gSSBsaWtlIGl0Lg0KDQo+IA0KPiBBSSB3YXMgdXNlZCB1bmRlciBzdXBl
+cnZpc2lvbiB0byByZXZpZXcgY29kZSBhbmQgd29ya3Nob3AgbG9ncy4gSXQNCj4gc3VnZ2VzdGVk
+IGV4dHJhY3RpbmcgVERYX01EX0ZJRUxEX1NJWkVfQ0hFQ0soKSBpbnN0ZWFkIG9mIG9wZW4gY29k
+aW5nIHRoZQ0KPiBjaGVjayBpbiBURFhfU1lTSU5GT19NQVAoKSwgdG8ga2VlcCB0aGUgLnNpemUg
+bGluZSBmcm9tIGJlaW5nIHRvbyBsb25nLg0KDQpPaCB5ZWEgdGhhdCBpcyBhbHNvIGEgbG90IG9m
+IGJpdCBtYXRoIHRvIGNyYW0gaW4gYSBzdHJ1Y3QgbWVtYmVyIGxpbmUgdG9vLg0KDQo+IA0KPiBT
+aWduZWQtb2ZmLWJ5OiBDaGFvIEdhbyA8Y2hhby5nYW9AaW50ZWwuY29tPg0KPiAtLS0NCj4gIGFy
+Y2gveDg2L3ZpcnQvdm14L3RkeC90ZHguYyB8IDEyICsrKysrKysrKysrLQ0KPiAgYXJjaC94ODYv
+dmlydC92bXgvdGR4L3RkeC5oIHwgMTUgKysrKysrKysrKysrKysrDQo+ICAyIGZpbGVzIGNoYW5n
+ZWQsIDI2IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9h
+cmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmMgYi9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmMN
+Cj4gaW5kZXggOWQ1YTMyOTZkM2MwLi42ZGMzMjg1NjEwMDkgMTAwNjQ0DQo+IC0tLSBhL2FyY2gv
+eDg2L3ZpcnQvdm14L3RkeC90ZHguYw0KPiArKysgYi9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4
+LmMNCj4gQEAgLTQyNCwxMSArNDI0LDIxIEBAIHN0YXRpYyBpbnQgX19yZWFkX3N5c19tZXRhZGF0
+YV90YWJsZShjb25zdCBzdHJ1Y3QgZmllbGRfbWFwcGluZyAqbWFwcGluZ3MsDQo+ICAJcmV0dXJu
+IDA7DQo+ICB9DQo+ICANCj4gKy8qDQo+ICsgKiBUaGUgc2l6ZSBlbmNvZGVkIGluIHRoZSBmaWVs
+ZCBJRCBhbmQgdGhlIHNpemUgb2YgdGhlIGRlc3RpbmF0aW9uIEMNCj4gKyAqIG1lbWJlciBtdXN0
+IGFncmVlLg0KPiArICovDQo+ICsjZGVmaW5lIFREWF9NRF9GSUVMRF9TSVpFX0NIRUNLKF9maWVs
+ZCwgX3R5cGUsIF9tZW1iZXIpCVwNCj4gKwlCVUlMRF9CVUdfT05fWkVSTyhzaXplb2ZfZmllbGQo
+X3R5cGUsIF9tZW1iZXIpICE9CVwNCj4gKwkJCSAgVERYX01EX0ZJRUxEX0VMRV9TSVpFKFREWF9N
+RF9GSUVMRF9JRF8jI19maWVsZCkpDQo+ICsNCj4gICNkZWZpbmUgVERYX1NZU0lORk9fTUFQKF9m
+aWVsZCwgX3R5cGUsIF9tZW1iZXIpCQkJXA0KPiAgewkJCQkJCQkJXA0KPiAgCS5maWVsZF9pZAk9
+IFREWF9NRF9GSUVMRF9JRF8jI19maWVsZCwJCVwNCj4gIAkub2Zmc2V0CQk9IG9mZnNldG9mKF90
+eXBlLCBfbWVtYmVyKSwJCVwNCj4gLQkuc2l6ZQkJPSBzaXplb2ZfZmllbGQoX3R5cGUsIF9tZW1i
+ZXIpLAkJXA0KPiArCS5zaXplCQk9IHNpemVvZl9maWVsZChfdHlwZSwgX21lbWJlcikgKwlcDQo+
+ICsJCQkgIFREWF9NRF9GSUVMRF9TSVpFX0NIRUNLKAkJXA0KPiArCQkJCV9maWVsZCwgX3R5cGUs
+IF9tZW1iZXIpLAlcDQo+ICB9DQo+ICANCj4gICNkZWZpbmUgVERYX1NZU0lORk9fTUFQX1ZFUlNJ
+T04oX2ZpZWxkX2lkLCBfbWVtYmVyKSBcDQo+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni92aXJ0L3Zt
+eC90ZHgvdGR4LmggYi9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmgNCj4gaW5kZXggNDA3YWRl
+ZDMxMzdhLi4xN2ZkYjY4MjQxMGUgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L3ZpcnQvdm14L3Rk
+eC90ZHguaA0KPiArKysgYi9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmgNCj4gQEAgLTk5LDYg
+Kzk5LDIxIEBADQo+ICAvKiBDbGFzcyAiVERYIE1vZHVsZSBIYW5kb2ZmIiAqLw0KPiAgI2RlZmlu
+ZSBURFhfTURfRklFTERfSURfTU9EVUxFX0hWCQkJMHg4OTAwMDAwMTAwMDAwMDAwVUxMDQo+ICAN
+Cj4gKy8qDQo+ICsgKiBTdWItZmllbGQgZGVmaW5pdGlvbnMgb2YgVERYIGdsb2JhbCBtZXRhZGF0
+YSBmaWVsZCBJRHMuDQo+ICsgKg0KPiArICogU2VlICJNZXRhZGF0YSBGaWVsZCBJZGVudGlmaWVy
+IiBpbiB0aGUgSW50ZWwgVERYIE1vZHVsZSBBQkkNCj4gKyAqIFNwZWNpZmljYXRpb24uDQo+ICsg
+Kg0KPiArICogIC0gQml0IDMzOjMyOiBFTEVNRU5UX1NJWkVfQ09ERSAtLSBsb2cyIG9mIGEgc2lu
+Z2xlIG1ldGFkYXRhDQo+ICsgKiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVs
+ZW1lbnQncyBzaXplIGluIGJ5dGVzDQo+ICsgKi8NCj4gKyNkZWZpbmUgVERYX01EX0ZJRUxEX0VM
+RV9TSVpFX0NPREUoZmllbGRfaWQpCVwNCj4gKwkoKChmaWVsZF9pZCkgJiBHRU5NQVNLX1VMTCgz
+MywgMzIpKSA+PiAzMikNCj4gKw0KPiArI2RlZmluZSBURFhfTURfRklFTERfRUxFX1NJWkUoZmll
+bGRfaWQpCVwNCj4gKwkoMSA8PCBURFhfTURfRklFTERfRUxFX1NJWkVfQ09ERShmaWVsZF9pZCkp
+DQo+ICsNCg0KSSdkIHRoaW5rIHRoZXNlIGNvdWxkIGJlIHNxdWFzaGVkIHRvZ2V0aGVyIHNpbmNl
+IG9ubHkgVERYX01EX0ZJRUxEX0VMRV9TSVpFIGdldHMNCnVzZWQgYW55d2hlcmUgZWxzZS4NCg0K
+PiAgLyogVERYIHBhZ2UgdHlwZXMgKi8NCj4gICNkZWZpbmUJUFRfTkRBCQkweDANCj4gICNkZWZp
+bmUJUFRfUlNWRAkJMHgxDQoNCg==
