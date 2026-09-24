@@ -1,316 +1,203 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18F54A0138
-	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 21:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B884DDB41
+	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 21:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790285911; cv=none; b=mxlTqR0r29xo9IgqY3Lbvczr+ShhN5kja7g8SERKdPbcnqeL0J0LJ8+q/Oby3yKlen9/vH7Ur/Qpt//cD8EGon3j9MPBNqw/1aCSAtROt2YRYh2j73OJhVSXtwpZj2Ulf336syHRJHapdJyoQIVQylx+1TEgK5PSQ5T9gsPafJ4=
+	t=1790286789; cv=none; b=t1vWVhj4wod8JFxJHHQAs9xnV8uzDTPYVZvZ/M/9oeR36BJseavm2MKGZcQvsTUfAm+n4YfHpCj1Mx8bm1/pkPV+7KIpWOo/9syK5NEJshnSVSi5ctkpFqF5OxqG0L0Ah0LPkSRHqd8uPMPOu9y1Oo0AWSJc/SJTfXfrZLoW8xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790285911; c=relaxed/simple;
-	bh=wWkj0DV/RGxV8HhwtwWyQ7dXRw1tyCgB07k8nLpBO6o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sSccHt6mYnJrb9K7olIxb6tVoYRufyvP/uJxZShR44RGwxsi1W1QONQemvYdi+BnnpRY2GGQ0Mzx5nEavz5LFdVWgjwD74AtJ43X3ujBw9RJ7Q/9lbmBC1sdbqt2lRbAwiX1cb8odV8eHixAt/BIJQ8dlQBtOjc6RsMd72kF73M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PNrEf8JF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fQRxZzjT; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790286789; c=relaxed/simple;
+	bh=d9PT2GdoWFZBMlVJHZrFv1etxubcAqj+sYkXP3zDxNc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ANtZfVSBCQNYQuD1cWfcAXwTOy6tZyXQBEeuqPSNfzaGdp9OE3v6zJ9Z/GcOq5bVcS9OoxVR7clfG3v5G3xFRexVJPHAczmG188kpj7C7iYJEltUglikAuHHM1tLApem+wBtsQclAj9kG9s7IeddsgWGSIz9dFkL3mvUS1Rj3+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JqYvomQt; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PNrEf8JF";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fQRxZzjT"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68OIdYts3247767
-	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 21:38:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	FPuI30IW6HSkIQ0WfYplqjAWQJEIGM7YwNUkDQocFtY=; b=PNrEf8JFzkwn7FZr
-	UsqWaAdE1hg1luh+Xq1u26Yaac6StZiDKKxCzlUZfFeRBLkft36AJqiJpwQjlmva
-	+TxLaCkUKfQFKtIiotRuLu+RuUouNU/0ut2Gd7+TIx0sj++94mT4AKaA+psLINM2
-	qYd4wzqywaltdpxqlYX1qGIWOdtz1Yx1WJkgsvvqK2hP/NyeJvOz/QjSwlO03dlA
-	Zd5PyoJApHtNT7En2tEmm7sJjLC/zLd1EfyNrtVRZ6pkDLhtPDzQrw25UfFCv4fn
-	qoSNt5bAI01OvfB9c6GqAqaZcuS97obyt7VzDZfQmLr3C9XoFekVnXkDcz1zhrpv
-	6cwN0A==
-Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gw881rx55-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 21:38:28 +0000 (GMT)
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-139b62317d0so1039659c88.0
-        for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 14:38:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JqYvomQt"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-855f662439aso390687b3a.1
+        for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 14:53:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790285907; x=1790890707; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=FPuI30IW6HSkIQ0WfYplqjAWQJEIGM7YwNUkDQocFtY=;
-        b=fQRxZzjTVF9RJtXn3cUpNe2zl/oPem287uuw+AsZObNdM4jedq8POmRDjAbxFt0j8p
-         utIfZqDG05gO+mEwYMYBCaVTvSfBhmU2YuM3OAJbw5/ORSfsDEuGBbBn+7E1WSELe1gX
-         NADBe1p89FPDSZ5jb2qpLseyZKYBFqmYBk8eIlN6MyVxKBDfNpPikG+2+43c5cICrv30
-         1HJlYGEoA4pEUnmOk4R/Duliy/lVQwBZbmdEJi3Hc+AcqGVAEv/9VQzNf6YW0r3+hDip
-         DE4LxxQhYOi5SucNVKXYl5WxheyNttv8/Yl3nQe32i+h+3cqo8eJizUBtmAEo0B93H55
-         Knww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790285907; x=1790890707;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790286786; x=1790891586; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FPuI30IW6HSkIQ0WfYplqjAWQJEIGM7YwNUkDQocFtY=;
-        b=xw+SxM9dBMIkbfEz5Xblv0h49KYO0Yvml31exoHDlB2kvRLPujdg89hyoAkE4aPLjF
-         5rdqOWgeGoWsz9Cd5XI6ESazz60/MTNp8fPBM7Mh8jsSUD4ZDp30KURX/y7FXynmp6/c
-         NsatR7DJCfnnrVKy42Fvx6F6Y+j692fngu48qBnJdGH0zso/an5rGpf3FqKxK1MWjZEY
-         WDanlTerzf8w9Wow1F6rwHLn5kfz3CFQzlVOPrGo4qy5gsYbUtiwQWKiOOEvOEHIW5Dz
-         5kwkZHPv3qd0+yrtG/wr6+ldp7kUTXsB7hEzg0pSfxudDmpgyOGIX+2AkxvN/+7fVydk
-         I66g==
-X-Forwarded-Encrypted: i=1; AKwUvBw6LeU84JnqsIqDomdUwf9jFKqk+g78kVrZv/vjoKhPduXZtDNq7rJ5flimNUkJlLTxrb5Q+7mLPjfE@lists.linux.dev
-X-Gm-Message-State: AFuF++mmb5XMN+B5OY0v7FjofUUlAe80OWhLoSW0F/gkow4ZykSbTViv
-	fLZQYguR8QyJfd6jEOBii9lCINSTp7ToUM7Ohe+/v7+v+iDj92XOosS3G5dApDWr+LIdDFE1xPo
-	CsW2Ju7llwAxASUlh4CIyb7Ta2LlJHfJO7Q7Fz1tluGDLAzZn/U4WsnzzFnEoUGFE
-X-Gm-Gg: AYBFou2GtHBpzAT+ajJoYjBSi5dyTCegj43iR3RrwgQpICRvb514WgJ3qmMb82rufRa
-	DBqBb9IhqF+7Q/iZPZC7Kd8eQ9x9tuX2ukeK9wkNOdcV7bXJv+5lB9i3iZT1viNhc9ANtri2kbC
-	ObG01/WZ0WdzOeEaRdvsF4speWIHNh+aECrnQoQ29XDhtrRI/9eiBxlTFJyP9UzZKHy8HUd5n+d
-	5HDIliSPTBkNLbOrXQEguUOVrCrB6ZAHR39tmmwWviSEYAsnr/VzECVctFj35YyJ/AJRumWULUP
-	rZpL499C/xsZGxVdVKxgDGQKKm1CaB9mHNQRqoXw+jv7Qp3LfGyl9/I5R2x5Q1X2bHhNoF/lz3c
-	9whyWGsooqInKXEIATxEuP/j+4wkBEoyYd7ccxkaed0zj9DmXmm8OIg==
-X-Received: by 2002:a05:701b:4306:20b0:144:ed03:7c6a with SMTP id a92af1059eb24-14503fa40c4mr2958597c88.15.1790285907198;
-        Thu, 24 Sep 2026 14:38:27 -0700 (PDT)
-X-Received: by 2002:a05:701b:4306:20b0:144:ed03:7c6a with SMTP id a92af1059eb24-14503fa40c4mr2958529c88.15.1790285905117;
-        Thu, 24 Sep 2026 14:38:25 -0700 (PDT)
-Received: from localhost (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145ad9e097fsm1289075c88.13.2026.09.24.14.38.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 14:38:24 -0700 (PDT)
-Date: Thu, 24 Sep 2026 14:38:21 -0700
-From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-        sudeep.holla@arm.com
-Subject: Re: [PATCH v19 6/7] firmware: arm_rmm: Ensure the RMM has GPT
- entries for memory
-Message-ID: <20260924143821.00003491@oss.qualcomm.com>
-In-Reply-To: <20260924135201.850038-7-suzuki.poulose@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
-	<20260924135201.850038-7-suzuki.poulose@arm.com>
-Organization: Qualcomm
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
+        bh=96howwJpIzasaCW/3Q0EcsFpl6itohsELojaGu9d8N0=;
+        b=JqYvomQt+7LQiTk5gxb6KDxaWKaUFOsreYeLY+jfyu/Vi+fy5mGde71utugquvvCLf
+         R5XJB2gAPoyWQZfzN7PT6FFDfA/5T4v3X7UvK0i/ise5b2bJ23aLQZqTnETJ2ERy3XAl
+         e98LA8QjMBeDFfQSMraZ0i+0VrGJtLlSabP6yxs0keZDGN45zmDpmp8jw6AP8fv1Tr/g
+         uuDljAep/5oIoMfyY+JLrWCrYRoPugcV7/NDMt3fCHKuzm1BrjpHnJlymGXBEuVksUGn
+         Ys0M4wrkR2DhoUQFsbwDKzcHe6kgZfxZbu+ye/shr9vz6ipEgJszO3KCYhktbs9OwF7t
+         rGWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790286786; x=1790891586;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=96howwJpIzasaCW/3Q0EcsFpl6itohsELojaGu9d8N0=;
+        b=Gk16IKV6cNior2/mxG3MvNl1sOlgEwD4ZWigA9dQZ9+cnzCKXijjcGTea9gInWt+Rf
+         HUex3E9ba+Z6gX3bsHL/uTAg4flHwdjNjUAVeAUFhdezYDH/n6tc0iZv4ygLk8u2VpHm
+         JQtxOCoiSsxj36LoBBWOch5v8WPtC6RSeusw1g96dDnbijT+BBww+yeMKEz9XjwfiMMU
+         jmFULrAin5Y/YahQO/WWaWsa3PJVs217Qi5hEAOiajWuFM7cqNINVuYe8El8wcIIjP2A
+         gn3+cHl6X3I87Sz2Ffy9MSGwZEqFJZKYTgDzenL0Lm77mkNoAM16FZRKUVjv0nSlawfJ
+         ADnw==
+X-Forwarded-Encrypted: i=1; AKwUvBxt4ir1M+6mbtPvk1dzGOg9FSl4xFVckeI2BR3xb5WREnLJ5bhU6Ta943Q8BaBrQH9MLA8n6NM01YWn@lists.linux.dev
+X-Gm-Message-State: AFuF++m5r/kKCU7qgAMil5H3h0HgewPN4ExqgtGfj4mu0T6x37Y6eZzd
+	9dAdoklnqwXIcgQJeSVbeKE3tDJctD+Snj2zUpBBor9pZX7kLrB5DXKj89Rx9wHGrDjL0kc9sEy
+	7Zk4aNA==
+X-Received: from pgbcw5.prod.google.com ([2002:a05:6a02:4285:b0:cc7:513b:37d9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:439e:b0:3d3:ae50:97ce
+ with SMTP id adf61e73a8af0-3de0e755869mr3534504637.27.1790286786082; Thu, 24
+ Sep 2026 14:53:06 -0700 (PDT)
+Date: Thu, 24 Sep 2026 14:51:49 -0700
+In-Reply-To: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=TptzFzXh c=1 sm=1 tr=0 ts=6ab59854 cx=c_pps
- a=kVLUcbK0zfr7ocalXnG1qA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8 a=8d2wJ0fT7bLMqeC6Z9UA:9 a=CjuIK1q_8ugA:10
- a=vr4QvYf-bLy2KjpDp97w:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA4OCBTYWx0ZWRfX31LWO+NeXC/J
- 8QKmfTe8SInJZfFI5KPqO+RXn7AcuHRG2CEYj69PD15CrRxIQ2gSXY3dwYdTrmlj+BJX0H+9nsR
- sTOeqJuq8hYPgw7Xd54mxugZPKYTCnR7i/p3u0m7mjbtRJE0EkukTOUxhgFqdcjE2jCEemL87Kw
- GvQ1F62bvnT52kzpyT8vrNgkOPYFTH0xfupYgQhrtH05XJYThl/FBZtvzOIwzN3jbla11D4N7rk
- HY2/RcD85U8/qoM1/pOWpLfGjS+hI4L1Wtw/AvAmsbyBAapjGJcm54lvUtCl1NHvazf0daK3Yho
- GO7xG7iM6jqZN0AKv4tCyEHutl5qDZXgouBJnGd6hq8HVkTd+Z2gMCSMK2Eq/VFMq8MaHhrdwaI
- U19U+mnSNvB/jotdU06tMYwsfPgInEjV+zWa7JvYd7ObrxKe4LECTstILyWuBP5SMnOg7sSzxjP
- 3rWK0N0nuZf12LhqtnQ==
-X-Proofpoint-ORIG-GUID: YSp7-i7qw1fZmqoNI2X_-k521DDVOZrG
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA4OCBTYWx0ZWRfX/yJxF07pxPhG
- +hDgrRjOv2aZnhx6/seCWRou36jZgvrnCqaTysS6UpDIS9O06RS07pN5YTGFUzEWAD6vzl31bmq
- 1C7z3HxIFxjT9x//JkYW92JWMJKWnYs=
-X-Proofpoint-GUID: YSp7-i7qw1fZmqoNI2X_-k521DDVOZrG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-24_05,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- malwarescore=0 suspectscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240088
+Mime-Version: 1.0
+References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <179028368162.2007072.12117327378679658047.b4-ty@b4>
+Subject: Re: [PATCH v13 00/44] guest_memfd: In-place conversion support
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	Ackerley Tng <ackerleytng@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, 24 Sep 2026 14:52:00 +0100
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-
-> From: Steven Price <steven.price@arm.com>
+On Thu, 10 Sep 2026 16:55:26 -0700, Ackerley Tng wrote:
+> Here's v13. Thanks everyone for the comments and fast responses!
+> We're now at ~3 weeks to soft-close at 7.3-rc5.
 > 
-> The RMM maintains the state of all the granules in the system to make
-> sure that the host is abiding by the rules. This state can be maintained
-> at different granularity, per page (TRACKING_FINE) or per region
-> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
-> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
-> all pages in the region must be of the same state, this implies we need to
-> have "fine" tracking for DRAM, so that we can delegate individual pages.
+> v13 is based on 7.3-rc2 and:
 > 
-> For now we only support a statically carved out memory for tracking
-> granules for the "fine" regions. This can be extended in the future to
-> allow modifying the tracking granularity and remove the need for a
-> static allocation by the firmware.
+> + Hugh's patch to export lru_cache_drain_for_folio()
+> + Another series [1], which makes kvm_gmem_get_pfn() NOT return a
+>   refcounted page to KVM.
 > 
-> Similarly, the firmware may create L0 GPT entries describing the total
-> address space. But if we change the "PAS" (Physical Address Space) of a
-> granule, then the firmware may need to create L1 tables to track the PAS
-> at a finer granularity. Linux therefore checks if the platform firmware
-> manages the PAR region. i.e., the firmware is in charge of managing the
-> L1 GPTs (creation and the required memory for the GPT tables - via static
-> carveouts) without host intervention. Support for dynamic GPT creation by
-> the host will be added later.
-> 
-> If the firmware requires us to manage the tracking or GPT memory,
-> deactivate the RMM and reclaim any memory donated at RMM activation.
-> 
-> Apply the same checks when hotplugged memory is brought online.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> [ Switch to RMI_GPT_L1_INFO for checking GPTs and deactivate RMM ]
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> [...]
 
-A few trivial comments. Either way on those
-Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Applied to kvm-x86 coco.  A *huge* thanks to everyone who helped with this!
 
-> ---
->  drivers/firmware/arm_rmm/rmi.c | 218 ++++++++++++++++++++++++++++++++-
->  include/linux/arm-rmi-cmds.h   |   2 +
->  2 files changed, 219 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> index 0859f256e192b..1a8f3debd844a 100644
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
+[01/44] KVM: guest_memfd: Optimize away conversion overheads via dead-code elimination
+        https://github.com/kvm-x86/linux/commit/54623a16bbdc
+[02/44] KVM: guest_memfd: Use kvm_mem_is_private() when populating guest_memfd memory
+        https://github.com/kvm-x86/linux/commit/fa7b8b1bb5d0
+[03/44] KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+        https://github.com/kvm-x86/linux/commit/1ae5be958ff7
+[04/44] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+        https://github.com/kvm-x86/linux/commit/44e17d0a3663
+[05/44] KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+        https://github.com/kvm-x86/linux/commit/c2ae2bc1a311
+[06/44] KVM: Rename memory attribute APIs to prepare for in-place gmem conversion
+        https://github.com/kvm-x86/linux/commit/a84ef89cbf91
+[07/44] KVM: Rename kvm_mem_is_private() to kvm_is_private_gfn()
+        https://github.com/kvm-x86/linux/commit/98fd6e30bd14
+[08/44] KVM: Provide generic interface for checking memory private/shared status
+        https://github.com/kvm-x86/linux/commit/8ab5719fbcdc
+[09/44] KVM: guest_memfd: Stub in ability to enable in-place shared<=>private conversion
+        https://github.com/kvm-x86/linux/commit/ee1168fb7313
+[10/44] KVM: Consolidate private memory and guest_memfd ifdeffery in kvm_host.h
+        https://github.com/kvm-x86/linux/commit/bcc640eabbb2
+[11/44] KVM: guest_memfd: Invalidate both SHARED and PRIVATE mappings for in-place conversions
+        https://github.com/kvm-x86/linux/commit/e088c7f86bef
+[12/44] KVM: guest_memfd: Always fault from guest_memfd if in-place conversion is enabled
+        https://github.com/kvm-x86/linux/commit/2e646bcfcf90
+[13/44] KVM: guest_memfd: Pass mapping type filter to invalidation helper
+        https://github.com/kvm-x86/linux/commit/2f7f4e102880
+[14/44] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+        https://github.com/kvm-x86/linux/commit/799c9fadc639
+[15/44] KVM: guest_memfd: Ensure pages are not in use before conversion
+        https://github.com/kvm-x86/linux/commit/dcde2f853ff4
+[16/44] KVM: guest_memfd: Call arch make_shared callback for to-shared conversion
+        https://github.com/kvm-x86/linux/commit/6fa1dab756fd
+[17/44] KVM: guest_memfd: Return early if range already has requested attributes
+        https://github.com/kvm-x86/linux/commit/856852ef2108
+[18/44] KVM: guest_memfd: Zero page while getting pfn
+        https://github.com/kvm-x86/linux/commit/cb0544296a33
+[19/44] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+        https://github.com/kvm-x86/linux/commit/edcc3f42981e
+[20/44] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+        https://github.com/kvm-x86/linux/commit/af602a96f401
+[21/44] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+        https://github.com/kvm-x86/linux/commit/31670c382efc
+[22/44] KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+        https://github.com/kvm-x86/linux/commit/537ec2b15fdd
+[23/44] KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+        https://github.com/kvm-x86/linux/commit/b5ed1ee2a7a0
+[24/44] KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+        https://github.com/kvm-x86/linux/commit/b312cab4e48c
+[25/44] KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+        https://github.com/kvm-x86/linux/commit/8d5f49000f8b
+[26/44] KVM: selftests: Add support for mmap() on guest_memfd in core library
+        https://github.com/kvm-x86/linux/commit/ee455183c92b
+[27/44] KVM: selftests: Add selftests global for guest memory attributes capability
+        https://github.com/kvm-x86/linux/commit/c3e48c166e35
+[28/44] KVM: selftests: Add helpers for calling ioctls on guest_memfd
+        https://github.com/kvm-x86/linux/commit/0bbbd2b02bf0
+[29/44] KVM: selftests: Test basic single-page conversion flow
+        https://github.com/kvm-x86/linux/commit/eaef4ed5fabc
+[30/44] KVM: selftests: Test conversion flow when INIT_SHARED
+        https://github.com/kvm-x86/linux/commit/e5fa04dc920e
+[31/44] KVM: selftests: Test conversion precision in guest_memfd
+        https://github.com/kvm-x86/linux/commit/492080a3d4e5
+[32/44] KVM: selftests: Test conversion before allocation
+        https://github.com/kvm-x86/linux/commit/97137c140360
+[33/44] KVM: selftests: Convert with allocated folios in different layouts
+        https://github.com/kvm-x86/linux/commit/5362c5fb88f6
+[34/44] KVM: selftests: Test that truncation does not change shared/private status
+        https://github.com/kvm-x86/linux/commit/bfb9b5a286ea
+[35/44] KVM: selftests: Test that shared/private status is consistent across processes
+        https://github.com/kvm-x86/linux/commit/8b72eaa766b6
+[36/44] KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+        https://github.com/kvm-x86/linux/commit/e8a40b9a604e
+[37/44] KVM: selftests: Test conversion with elevated page refcount
+        https://github.com/kvm-x86/linux/commit/0db3f14f40c4
+[38/44] KVM: selftests: Reset shared memory after hole-punching
+        https://github.com/kvm-x86/linux/commit/c235250e8bc1
+[39/44] KVM: selftests: Provide function to look up guest_memfd details from gpa
+        https://github.com/kvm-x86/linux/commit/ee6f4c381903
+[40/44] KVM: selftests: Provide common function to set memory attributes
+        https://github.com/kvm-x86/linux/commit/f49dd8ba330e
+[41/44] KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+        https://github.com/kvm-x86/linux/commit/ef72e71da099
+[42/44] KVM: selftests: Set up page size and alignment independently for guest_memfd
+        https://github.com/kvm-x86/linux/commit/710169986d9b
+[43/44] KVM: selftests: Update private_mem_conversions_test for in-place conversions
+        https://github.com/kvm-x86/linux/commit/e24e534ff850
+[44/44] KVM: selftests: Update private memory exits test to work with per-gmem attributes
+        https://github.com/kvm-x86/linux/commit/37e0791600e5
 
-
-> +
-> +/*
-> + * rmi_gpt_info - Query the GPT info for the given PAR.
-> + * @start: Base of the physical address region
-> + * @end: Top of the physical address region
-> + * @out_top: Top of the physical address region for which
-> + *		the GPT @out_gpt_par_state is valid
-
-wrap to 80.
-
-> + * @out_gpt_par_state: State of the GPT covered by [start, out_top)
-> + */
-> +static long rmi_gpt_info(unsigned long start, unsigned long end,
-> +			 unsigned long *out_top,
-> +			 unsigned long *out_gpt_par_state)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_GPT_INFO, start, end,
-> +	};
-> +
-> +	rmi_smccc_invoke(&regs);
-> +	if (regs.a0 != RMI_SUCCESS)
-> +		return regs.a0;
-> +
-> +	if (out_top)
-> +		*out_top = regs.a1;
-> +	if (out_gpt_par_state)
-> +		*out_gpt_par_state = regs.a2;
-> +
-> +	return RMI_SUCCESS;
-> +}
-> +
-> +/*
-> + * We do not support creating L1 GPTs yet. So, make sure that
-> + * all the regions are managed by the firmware.
-Wrap to 80 chars.
-
-Not relevant to this patch, but when are you thinking we will support that?
-
-> + */
-> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, phys_addr_t end)
-> +{
-> +	unsigned long l0gpt_sz;
-> +	unsigned long next, par_state;
-> +
-> +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
-> +					  rmi_feat_reg(1)));
-> +	start = ALIGN_DOWN(start, l0gpt_sz);
-> +	end = ALIGN(end, l0gpt_sz);
-> +
-> +	while (start < end) {
-> +		long ret = rmi_gpt_info(start, end, &next, &par_state);
-> +
-> +		if (ret != RMI_SUCCESS)
-> +			return -ENOMEM;
-> +
-> +		if (WARN_ON(next <= start))
-> +			return -ENXIO;
-> +
-> +		if (par_state != RMI_GPT_PAR_PLAT) {
-> +			pr_err("GPT for the region is not managed by firmware %llx-%lx\n",
-> +				start, next);
-> +			return -ENOMEM;
-> +		}
-> +		start = next;
-> +	}
-> +
-> +	return 0;
-> +}
-
-> +
-> +static int rmi_init_metadata(void)
-> +{
-> +	phys_addr_t start, end;
-> +	struct memblock_region *r;
-> +
-> +	for_each_mem_region(r) {
-> +		int ret;
-> +
-> +		/* Firmware-reserved NOMAP regions are not usable system RAM */
-> +		if (memblock_is_nomap(r))
-> +			continue;
-> +
-> +		start = PAGE_ALIGN(r->base);
-> +		end = PAGE_ALIGN_DOWN(r->base + r->size);
-
-Add a comment on why rounding down.  Doe we expect that to ever be relevant?
-
-> +		/* Too small ? */
-> +		if (start >= end)
-> +			continue;
-> +
-> +		ret = rmi_prepare_memory(start, end);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-
-
-> +
->  static int __init arm64_init_rmi(void)
->  {
->  	int ret;
-> @@ -843,9 +1049,19 @@ static int __init arm64_init_rmi(void)
->  	if (ret) {
->  		pr_err("RMM activate failed (%d)\n", ret);
->  		ret = ret < 0 ? ret : -ENXIO;
-> +		return ret;
->  	}
->  
-> -	return ret;
-> +	ret = rmi_init_memory();
-> +	if (ret) {
-> +		/* Deactivate the RMM */
-> +		WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_DEACTIVATE));
-> +		return ret;
-> +	}
-> +
-> +	arm64_rmi_is_available = true;
-> +	pr_info("RMI configured\n");
-
-Blank line nice for the eye to spot the return.
-
-> +	return 0;
->  }
-
+--
+https://github.com/kvm-x86/linux/tree/next
