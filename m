@@ -1,85 +1,238 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2873E47668C;
-	Thu, 24 Sep 2026 12:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA5A237707;
+	Thu, 24 Sep 2026 13:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790252677; cv=none; b=GIIevhhLNSdM5bDqLABUBJF8DnSKiQLcRntus4qiOqtTkb1X8oyx8z5OSNME+BMwqpEsedGjOcK/ATyS3qndxk2DKuvOgQ28ndSPbk01D0u69FYWHn7rYFCflJX3k5ohyGxdln9Ydb0KFcCCQnqLlRnycYAWYt2DQJ2+IUVcXJI=
+	t=1790257941; cv=none; b=YYZNjTcwVuhWCIrRqPxOpYPBPJcV6pPr5ZKE6zClwe9rUNSjkSwETVCNQPjlH+pOMX29bpntdNkb+nzykt3gIelNKF7KMLfu2YhSvkpBxhcNuzqhhMgcbG61AseodKhzwMGmgXDRe2H4Ols7vKFqwI0ur6B6DLRmpF+ZlKoyDhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790252677; c=relaxed/simple;
-	bh=u8L/wHYZdV1ODL+B/1Yw8lqj41fWrbXaEpaQ6Ne731w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IIazPvfl3o0sOuz93fB1QCtdD13SjSUTzAG3b+15daj4ju7lhu9+AU4STNAqrtfKK+A7oQZqTRZwQuTMuvqzTHSCpphYUBNKrntFxKJYZRtbbWe4m3YhYwYXt9kgeAVTpnuLzLoWLW0J4dBN5U9qQZLqWneU7NQ7GlAoK93RcTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8Tw7qvK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790257941; c=relaxed/simple;
+	bh=uJinfSKhjBhTbQZkzVsB00hQiK0IF1cSRioYhd1P8XE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iasvOtwdtQ3fDfrigOPvpgjB/sMkBvjNsZJKZzqdCx59VP0y2VFkbiVjxkM6SAGMLBMruou+PjIDwzLXQ3KKqkgcGTtnZQS2c2/WSG9aWqO2lOCyf+QH1IomnS2F9jlR0/9n0dVkBHnr8eNS3S8wETxKDTerPIJrSBPV49/2hI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YAEriwf6; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8Tw7qvK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C2D1F000FF;
-	Thu, 24 Sep 2026 12:24:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790252675;
-	bh=BHmbp6LuwAwTPjNUtGfqxu+9wvUItFCwUEQ7i+tbARU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=I8Tw7qvKc3yKWkGEDuFrd0+CwiKanTeJPq0VvAsi8ZIrm/3/QqMwvhQzYoU2rMBnJ
-	 kQcdT22h0tmLmcW9493F1QEwJWTZ6rMwfQvuSITjJ2W7GSu+Z4QyGlNNP8P3Hfhjvk
-	 nsgusBQqUQaNKNV+PqQNbRSSC0KzmbBczR/J60etFZunQ4IY+jbBwz5CRil0l3EbLA
-	 m+kkO3kmDwjO5GerIezK9/RjppbaNivGcns1D0dTWGmb+Zm2GTO9fCrdVaA9tYo8y6
-	 2C7TPIeMterKjpQMWrIaKwJGFyKyA8b1IByUQLc6BwRXQyjjpIh6/Gae0emTAuccBQ
-	 KLBlJXQA6KxQg==
-Date: Thu, 24 Sep 2026 13:24:31 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH v11 6/7] firmware: smccc: arm-cca-guest: Bind the TSM
- provider to an SMCCC device
-Message-ID: <20260924-bustard-of-stimulating-promotion-2e6d7c@sudeepholla>
-References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
- <20260914060511.277948-7-aneesh.kumar@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YAEriwf6"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9CFBF1476;
+	Thu, 24 Sep 2026 06:52:14 -0700 (PDT)
+Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BFCEE3F86F;
+	Thu, 24 Sep 2026 06:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790257938; bh=uJinfSKhjBhTbQZkzVsB00hQiK0IF1cSRioYhd1P8XE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YAEriwf6NBxWTskNi1o28aWpwUOi+CxVstUPJj4OXmyAHoWhUl1tusZywsdNISASq
+	 P5xeJB0cvASHHF/Z4wrLyDfQMTLVNMG5nxZEaKOkoBk7vRv7TETzPk5LH7mXptQDXW
+	 31r8cnIUQn+0dyppVqWixiaD225pU3D3+CGVkSTY=
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: maz@kernel.org,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	tabba@google.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com,
+	jonathan.cameron@oss.qualcomm.com,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH v19 0/7] firmware: arm_rmm: Add RMM v2.0 base RMI support
+Date: Thu, 24 Sep 2026 14:51:54 +0100
+Message-ID: <20260924135201.850038-1-suzuki.poulose@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914060511.277948-7-aneesh.kumar@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 14, 2026 at 11:35:10AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> The Arm CCA guest TSM provider currently binds through the arm-cca-dev
-> platform device. Like arm-smccc-trng, this device is not an independent
-> platform resource; it is a software representation of the RSI firmware
-> service discovered through SMCCC.
-> 
-> Move RSI discovery into the SMCCC firmware driver. When the SMCCC conduit
-> is SMC and if RSI ABI version call is supported, create an arm-rsi-dev
-> SMCCC device. Convert the Arm CCA guest TSM provider to an SMCCC driver so
-> it binds to that discovered RSI service and keeps module autoloading
-> through the SMCCC device id table.
-> 
-> Keep the old arm-cca-dev platform-device registration for now. Userspace
-> has used that device as a Realm-guest indicator, so removing it is left to
-> a follow-up patch that adds a replacement sysfs ABI.
-> 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
+This series adds the generic firmware layer for talking to the Realm
+Management Monitor (RMM), as specified by the RMM v2.0-bet3
+specification[1]. It is the first part of the Arm CCA host support that
+was previously posted as part of the larger KVM series.
 
-[...]
+The split allows this RMM support to be used as a base for other work,
+including Aneesh's PCI IDE support with Arm CCA RMM as the TSM,
+ without depending on the KVM Realm support that will follow as separate
+ series. (See more on that below)
 
->  drivers/firmware/smccc/smccc.c          |  6 ++++
+The series adds:
 
-Reviewed-by: Sudeep Holla <sudeep.holla@kernel.org>
+ * The RMI SMC definitions and direct-call wrappers.
+
+ * RMM discovery and version checks during firmware init.
+
+ * RMM host configuration, including the host page size.
+
+ * Stateful RMI Operation (SRO) infrastructure for commands which the RMM
+   can complete across multiple SMC calls while requesting or returning
+   memory to the host.
+
+ * Verification that granule tracking is available at fine granularity.
+   Fine-grained tracking allows each granule in the system to be tracked
+   independently, which is required before individual granules can be
+   delegated. A future series will add support for dynamically supplying
+   memory to the RMM for this tracking.
+
+ * Support for fully firmware-managed systems, where the Granule Protection
+   Tables for memory regions are allocated and managed by firmware. RMM v2.0
+   also allows dynamic GPT creation on demand; support for that will be added
+   in a later series.
+
+ * Wrappers for the RMI commands that are used for managing the "Realm VM"
+   lifecycle. This is added in to make it easier for the on-going KVM support
+   to evolve in parallel pieces.
+
+If the platform firmware cannot manage the granule tracking or the GPTs, we
+bail out and deactivate the RMM, reclaiming any memory that we have donated.
+
+The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
+the RMM to complete an operation over several SMC calls while requesting
+or returning memory to the host. This allows interrupts to be handled in
+the middle of an operation and lets the RMM dynamically allocate memory
+for internal tracking purposes. For example, RMI_REC_CREATE no longer
+needs auxiliary granules to be provided up front, and can instead
+request memory during the operation.
+
+This series applies on v7.3-rc2 and a branch is available at [2]. The KVM
+CCA support that builds on this series is available at [3] as an integration
+branch. The KVM support depends on guest-memfd-in-place conversion support v13
+from Ackerley [4], we plan to split that into parts, which apply cleanly on
+v7.3-rcx without any dependency and is in progress. This will be made available
+as soon as it is ready. Until then [3] shows how this base series enables KVM
+CCA support. You may find the tf-RMM [5] and kvmtool support [6] below.
+
+[1] RMM spec : https://support.arm.com/documentation/den0137/2-0bet3/
+[2] This series: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca-host/fw_rmm/v19
+[3] KVM CCA v17 integration branch: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca/cca-host/kvm-v20/integration
+[4] Gmem inplace conversion https://github.com/googleprodkernel/linux-cc/tree/guest_memfd-inplace-conversion-v13
+[5] TF-RMM https://git.trustedfirmware.org/TF-RMM/tf-rmm.git main (commit: 134266ae)
+[6] kvmtool https://gitlab.arm.com/linux-arm/kvmtool-cca.git tag:cca-kvm-v20 (Also cca/kvm-v18)
+
+Known issues: RMMv2.0 spec.
+ * RmiOpMemDonateReq:count (Uint14) is incompatible with RmiAddrRangeDesc4KB
+  (Uint10) and RmiAddrRangeDesc16KB (Uint12). i.e., a larger contiguous request
+  may not be satisfiable by the host. This is resolved in the RMM spec, by clamping
+  the upper limit on the number to match the RmiAddrRangeDesc* and will be published
+  in the next release.
+ * RMM to clarify the scenarios that triggers the RMI_BLOCKED and the
+   recommendations to limit the cases.
+
+Changes since v18:
+ - Use _ULL version for masks spanning beyond 32bits
+ - Add GENMASK, FIELD_* friends for RMI_ABI_VERSION_*
+ - Consistent naming for masks and order the fields by MSB to LSB (missed out
+   ones.
+ - Rename RMI_RETURN_ => RMI_RESULT, RMI_RETURN_INDEX => RMI_RESULT_DATA_LEVEL
+   and add relevant Rmi types for clear indication on what they represent.
+ - Read and cache all implemented RmiFeatureRegisters (5), use ARRAY_SIZE()
+   droping the macro for the number of registers.
+ - Fold sinlge caller rmi calls to the caller (rmi_features)
+ - Drop "default y" from Kconfig
+ - Don't loop forever with RMI_BLOCKED, instead retry once and return to the
+   caller.
+ - Move rmi_config_set closer to rmi_configure.
+ - Use __free() cleanup for rmm_config object
+ - SRO: Clamp the mem donate request count to RMI_MAX_ADDR_LIST (the max we can
+   hold in the struct sro, to prevent overflows in handling non_contig requests
+ - Donate gathered memory when sro list runs out of space for non_contig case
+   and donate the rest in the next iteration
+ - Fix handling of buggy RMM for rmi_delegate_range()
+ - Add comments for the exported interfaces rmi_delegate_range(), rmi_undelegate_range()
+ - Move rmi_granule_{,un}delegate_range() closer to their callers
+ - Clarify the requirements for rmi_granule_delegate_range()
+ - Fix return result to -ENXIO if the MEM_OP is unknown
+ - Handle unsupported RMI_OP_MEM_CONDITIONAL, bail out early
+ - Rename "out" lable to mem_donate, where the actual donation happens
+ - Switch to use readable loop construct in donate_noncontig, add comments
+   to explain what we do.
+ - Add comment, make the code reader friendly for caching the entries not
+   consumed by RMM.
+ - Add documentatoin for rmi_sro_execute()
+ - Avoid mixing gotos with __free cleanups for arm64_init_rmi()
+ - Convert the remaining nested if for results to early return based.
+ - Pass out_top for RMI_ERROR_RTT in rmi_rtt_destroy() [ This boosts the
+   Realm tear down ]
+
+Changes since v17:
+ - All RMIs are now issued using smccc-v1.2 helpers as mandated by the RMM
+ - Add a helper function to reclaim an RmiAddrRange entry, which may be partially
+   consumed. Used by rmi_sro_free and by rmi_sro_donate_*contig to reclaim
+   partially consumed granules.
+ - Move all RMI wrappers that are used only by rmi.c out of the arm-rmi-cmds.h
+ - Rename macros, varibles to match RMM spec
+ - Handle buggy RMM cases and sanitise the output values
+ - Change sro_state.addr_count to int, giving us better handling of overflows
+   and RMM bugs.
+ - Avoid splling literal pools on stack for sro initialisation.
+ - Print error messages for critical failures during RMM init
+ - Use scope based cleanup for SRO object
+ - Prevent overflow for donated_granules output from buggy RMM
+ - Handle corrupted addr_count in the sro
+ - Handle buggy RMM when the out_top is not changed with RMI_SUCCESS
+   for delegate/undelegate range calls
+ - Rename free_delegated_page => rmi_free_delegated_page
+ - Rename donate_req_to_unit_size => donate_req_to_block_size
+ - Introduce rmi_addr_block_size_to_bytes() helper to convert a RmiAddrBlockSize
+   encoding used in RMI_DONATE_REQ and RMI_ADDR_RANGE Descriptors, replaces
+   donate_req_to_unit_size(). Matches the RMM spec.
+ - Rename unit_size => block_size_fld, unit_size_bytes => block_size etc.
+ - Explicitly check for MEM_CONTIG/CAN_CANCEL fields to match the RMM spec values.
+ - Rename free_delegated_page => rmi_free_delegated_page()
+ - Drop RMI_BUSY, RMI_BLOCKED checks from rmi_*delegate_range as they are already
+   handled by the rmi_smccc_invoke() used by the SRO.
+ - Ensure RMI_OP_RECLAIM output is valid before consumption
+ - Use GENMASK()/BIT() for masks consistently for RMI SMCCC defintions
+ - Rename RMI_{ADDR_RANGE, DONATE}_SIZE => RMI_{*}_BLOCK_SIZE
+ - Reorder the definitions for MSB to LSB
+ - Add definions for RMI_OP_MEM_*CONTIG and RMI_OP_CAN*_CANCEL
+
+
+
+Steven Price (6):
+  firmware: arm_rmm: Add SMC definitions for calling the RMM
+  firmware: arm_rmm: Check for RMI support at init
+  firmware: arm_rmm: Add support for SRO
+  firmware: arm_rmm: Activate the RMM
+  firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+  firmware: arm_rmm: Add wrappers for Realm related RMI commands
+
+Suzuki K Poulose (1):
+  firmware: arm_rmm: Configure the RMM with the host's page size
+
+ arch/arm64/Kconfig                |    1 +
+ arch/arm64/kernel/cpufeature.c    |    1 +
+ drivers/firmware/Kconfig          |    1 +
+ drivers/firmware/Makefile         |    1 +
+ drivers/firmware/arm_rmm/Kconfig  |   25 +
+ drivers/firmware/arm_rmm/Makefile |    2 +
+ drivers/firmware/arm_rmm/rmi.c    | 1072 +++++++++++++++++++++++++++++
+ include/linux/arm-rmi-cmds.h      |  558 +++++++++++++++
+ include/linux/arm-smccc-rmi.h     |  505 ++++++++++++++
+ 9 files changed, 2166 insertions(+)
+ create mode 100644 drivers/firmware/arm_rmm/Kconfig
+ create mode 100644 drivers/firmware/arm_rmm/Makefile
+ create mode 100644 drivers/firmware/arm_rmm/rmi.c
+ create mode 100644 include/linux/arm-rmi-cmds.h
+ create mode 100644 include/linux/arm-smccc-rmi.h
 
 -- 
-Regards,
-Sudeep
+2.43.0
+
