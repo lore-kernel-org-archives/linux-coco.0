@@ -1,193 +1,143 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013019.outbound.protection.outlook.com [40.93.201.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC164B8DE2
-	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 17:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3104AD7FE
+	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 18:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790269509; cv=pass; b=DiVVO/Zt8PulLvyu21zNibrGLiphHVplUkpbzZZ3sdHIXqJCJwV9RqD0k9JqlHYgH0WFn/o5rPEjmQwpKz6EEkRCHNcnti7QMrXEGZJa29kOcjxHtexTTk0hy87EhYeVOU9qMF4IP4brbAtMOZKeq/qPuUcGBVotqFuPCJAIC1Y=
+	t=1790275579; cv=fail; b=VUh/P8Q7uJrbJ/Et1jo9sGBew+5kJ+hQCmPvUW6VNc3R0uCKKApx+erKXTQKD6zLralMV9CKiaquM+xZlYbbIzeyzihiIQbJbgScJZJgAjGc2Qfrm1vRIi5wh4UqpCwThCfn9j+4Q+KXzev4Pe/YkLF+orZLlU+YpaT0HvOxgUw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790269509; c=relaxed/simple;
-	bh=1F8/rz3ypcsoCgDUnUPkG7WkBCl4kCGuN1jCJU9T35k=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UfdxAd7NdHAKTvimgFU3WASYBPl9JmtYPditECzJ+Clf5JTHclTdfk6jD423iEBElQMqpxc+UTmEJA4xDfHMIrlwCT1vXcYM7wDIflaYcTJXD0+xLanwzkAJFR/zjNKg8NHmrhjUECt9Moh8xqOuS2sCBDRVnWaHmPGGkeiK2VI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tBdWuHyL; arc=pass smtp.client-ip=74.125.230.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790275579; c=relaxed/simple;
+	bh=8gV05qMyjfjrajbnW3RuyPA5l6nE7BL0xD4qYmAZTrc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LexV6/dNRy31N4yV4G83HxaeDo9smxlq9fXFlJFWQp3yu0LULrMRxJGb4xTyCuxeXVUv9lYOTia9HT3f8HG2pPtR7uH2AijgtLwX+QVcMrSlVopE3GlmhdheqxYXAEbM24poSz/o+Ns/qGEfTOtFuw0v4cUhlIGXgJCL2JBDTFI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Sq+1zJUf; arc=fail smtp.client-ip=40.93.201.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tBdWuHyL"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfbd148aso733766d6.2
-        for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 10:05:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790269506; cv=none;
-        d=google.com; s=arc-20260327;
-        b=N+BJMBssOci1ySSIp9hWMbhrGGugLpB3Gc+FnqZ/X7rWINrhKJ5dPjUiToOK5P8M//
-         S1Bwpa0rOX+6hd6KJRT7NS/g+gA9R+TDf0jihGdd7Px+M9ftZSLvvV1nu98PjY4Ry+ep
-         cDKJFj8TIPJndXSIlcnzTeqAhPyFRcDW8606H5fvBqXu6fi8LG5qArnKqw0NR/0yw34/
-         InluTxNE0uYMv5NBwcLwsCJJ1ZZHurYU/3Fghb9CwCY4fDtQ5qac83mM2UVaYBZrj++X
-         ko/7ujppcMrR2G7UDCxxh1qaMKFfBgBmOUjnPMNITnl6UVDc4Tc5GdeN/VFqV49eqJ1K
-         R2Zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=OHcWMQ1Z3aW3bHAxm3qzvYkMiIOMbOZVWxnCDEHnj30=;
-        fh=2R44XFSh2MdiUMyCgeOOOfiDgMLTRy4sj84zfMjXjpI=;
-        b=cSLuNthsSRENxFx6yIU8AitUqlisCINTvIxih7qLjFNb6oCRZXSVTURxlMBDWzDYfc
-         65D3DwSZT4jniBuWflpnna3vaYTmSpOkG0IGb3aIqktuCr9wQnIN36HI2kpGjapUOMBA
-         i9DSswKGcf1WfoE1v+cNNJoLeq2s3gNvOzIms7oDELM2imSgjlAxylMhrYQISaOYxAnI
-         kaIFb00LYAVKXF8E/sZuxlAjh4kLACxJII8M9VT+tVtveDnIb0HxLb/a6PEg3/JEwc4P
-         MolwUjySW/O00X5VSSkGs+CCOLZqZnm8CEHniPG2GdzLrs04z7K5kE88jI0ojeFCLbW2
-         fDzw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790269506; x=1790874306; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OHcWMQ1Z3aW3bHAxm3qzvYkMiIOMbOZVWxnCDEHnj30=;
-        b=tBdWuHyLJvA8/LxCcBoAWpCa/MF9+TfiyGey5aQL5Cdao3qhhyXUXlHe+d3Dx+hmOa
-         3Uh6KMNjyWSCexLztjoisWu8H/W6/eLiht6NjiXOqGtwUkbLN9d/EBY+QQV9724NCckP
-         r4GRFnsNMcdk9bVlvgPmd9GtMfAbz0Hb3e6N7TAyLSZxubfgYGl5fxvvuRfKcM5P8NME
-         ivrs0vCuGxmIk45YlujdFkGFZCxmqjLh5F22B+5kvL+8L89zXXEroyVAdpbjg5NRB30J
-         /sufYlzjm+BU7TCN67wlhW0OwDW36/n15D57u8+pER096ncrHRxSdTyoL+jNFjP2CPyE
-         V2jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790269506; x=1790874306;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OHcWMQ1Z3aW3bHAxm3qzvYkMiIOMbOZVWxnCDEHnj30=;
-        b=m/86kBg4wWNcHQjUbVba7v1blhzb5HgWHed+4qb6eSh6Iz46oXBt/Tt2C3FVWH5mLK
-         i241VayjioRHSeJxSikd09Gi3A23O8cjgaU2hLf7A6MJ5c02cpkqQ+ZTbcA7BLSFKx3A
-         CGjdLwD0R5z1+Mfshhj1kUifmiE7iVjoaa1fDaniJdD8vtWFP1AAiVrpTj41CSYWgcjp
-         PD83rftieyKnONhM1oOa3TxjyiAOmC8K1/9e1csWgJdob9OX82rldltAJO6M501C1HTW
-         bWnas5Hml8GJHoSYjoN17agX+y/cZlKOA8sQBxD/tS5hz8xdwU4BbCG7LlyNisaEfz0W
-         zzQg==
-X-Forwarded-Encrypted: i=1; AKwUvBzsUXv2lbdBNV3pjf1YV1bv4zYoBS/MGiAPC2EIt+JSp9BQ9C72yNQ77p1BRFQ5CmDeYOqzCOCXCcxg@lists.linux.dev
-X-Gm-Message-State: AFuF++nH75ygPDr7h4rOYY3T48F0ICZkdaGI5MggFReLlzDSCzNonKkq
-	64xVi4iEcSKJjU/i20RSHm+xvPZaft3Byoj+t+X2geeWk3jVJ8SkjDmDO2UV9iC2sybOZvctkaj
-	FWiPtvmlf/fA+HbKf9xhq9GuGt3EgtYnXnBK/RiKG
-X-Gm-Gg: AYBFou0KY11GMYwEuLOYwmArAXyJAr+uh+dV0ovQ5IfQdpIcYgndcZVvgxDtL7DUglT
-	N9w8Bt8dvDeCxE+XlvU7tX8rfmBasAaVhoQo2hN6VlbcgzHINdM6ayeGzkfHYK3tsyGE8a3WMQE
-	hevStJIDSEzZC84SjdxbRLhXSddqoU79a7psotAztX9ZmzMYP25aUdDcxyvm96HibsqCccIDSKw
-	WiEwmw6vUWsJzHhWEB/NxKpRY2Si5skskQLPb4CZqd0FADCtkNquz+T1yTUcy3O/zbLvgzYPf/7
-	LHCV/Op1ZR9iQon+H40BQwMi1dl6tAVyrfLlApPUCNzZs64eGUan2y0rB6DOYen1Ij3lvRSRDt4
-	svHJKhQDsUZPLfJgrLxVZjPSUPNidb3J0Z5IEOxohkg==
-X-Received: by 2002:a05:6214:4a83:b0:912:cec:7450 with SMTP id
- 6a1803df08f44-91421b1851amr31284116d6.0.1790269505101; Thu, 24 Sep 2026
- 10:05:05 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 24 Sep 2026 10:05:04 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 24 Sep 2026 10:05:04 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260924135201.850038-2-suzuki.poulose@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com> <20260924135201.850038-2-suzuki.poulose@arm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Sq+1zJUf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RafGZu2SLtdhoib0wFsPi+m+KljG899OWhqgRcvXGk+tNY7lNzrATSbbieJ+imoX0t9GfUjQjppI6Gt450KWIYva1pX5MJLiw4gFBNShxe9zwGM1yrf0QBhzKivvKdLCqeLBpDufZURspJ9btR+b9ffQ+al9x+KYFnM16aLNvt1NK6ad+RnXuN8uk+GjRW1vE89pjuvkr7XZoADcKhnpSiN9Hy+4Qsdww6o1Cdb1j8fnOOHg+f8IEqT4YfmZ5lo86epSw/R4vQpjtSaJLV1QpqEyuAJ7UsNHXrKzqIPwHiL50wVLyjXyuWxfwPZDQltRG1o9lpXJIFhpKR3w9TP5zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BIKOiK9iX5yGwcQZGLTB/RCKAfdrHWGIRHMcC53fGe8=;
+ b=Hg7BuhbJzgxHHVWCI0q/BZRDYetIkcVGSW/R6XZu5yoyeFK1BeILEMNbckI2qzrHxENv6bfJlmnPTFs9hT1U8FJBCYEjcHMFmD2Wh3ht652cqEr0oqaNQtq91GoRIJqj/IrdCD1QdND4B4lXjW0R2+/aKyERhP7CSiKqmprQpJcKoh5HV5lq04BP7f2pDFQZLZNVb8hr33QIf5Gf64ysGmki+qKW+UCD7kT66BwdqfYQLwangdPtBfn9EoPugMRJE0mByoHt136jgJnsXTw7y3Y4TCp5ZCEjm6BBnib+fXPMjpCnpWZDRi87xR7+YfdSSy5bv5lBKsWcgBHEnZ7G+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BIKOiK9iX5yGwcQZGLTB/RCKAfdrHWGIRHMcC53fGe8=;
+ b=Sq+1zJUfMjfagPqswAejdVKafjYGEYC/XxvIqCNhbym4vNGUXUMYVUp90bVaNZNIn6CprZx8oOnxYqZv9CEtFPrVhqqpAvEM/jQKWDDHCEokPlRjRreRNxr6FJjqQZp4asxXnw1Q5aL16TEmHMdRjHVga0UXgleS8SzlJRVo9eE=
+Received: from PH8P221CA0021.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:2d8::22)
+ by SA1PR12MB6798.namprd12.prod.outlook.com (2603:10b6:806:25a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
+ 2026 18:45:56 +0000
+Received: from SJ1PEPF00002316.namprd03.prod.outlook.com
+ (2603:10b6:510:2d8:cafe::68) by PH8P221CA0021.outlook.office365.com
+ (2603:10b6:510:2d8::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.18 via Frontend Transport; Thu,
+ 24 Sep 2026 18:45:56 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002316.mail.protection.outlook.com (10.167.242.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Thu, 24 Sep 2026 18:45:56 +0000
+Received: from [10.236.30.85] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
+ 2026 13:45:53 -0500
+Message-ID: <67fb182c-4baa-4b3e-b59c-64cec20839c2@amd.com>
+Date: Thu, 24 Sep 2026 13:45:52 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 24 Sep 2026 10:05:04 -0700
-X-Gm-Features: AclHuK_DlezgNpJkyQ6-N0Dq0ZFyu15Ut5n5SPUx6_YH9nitYJ5xMl_wRWW9wVM
-Message-ID: <CAEvNRgH8Hwt6_VaFxJVvytZ4La1R7bUN2emc37_fWecF9j2-YA@mail.gmail.com>
-Subject: Re: [PATCH v19 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, 
-	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, 
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, 
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/8] x86/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+To: Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Naveen Rao
+	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, Pawan Gupta
+	<pawan.kumar.gupta@linux.intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Nathan Fontenot <nathan.fontenot@amd.com>
+References: <20260826223510.3669875-1-kim.phillips@amd.com>
+ <20260826223510.3669875-2-kim.phillips@amd.com>
+ <20260903040330.GNapjxkgMd2Ey38egR@fat_crate.local>
+ <01b57e61-df45-44a6-848b-c19eae226ad0@amd.com>
+ <20260924014517.GEarSArVM12m_ZshhA@fat_crate.local>
+Content-Language: en-US
+From: Kim Phillips <kim.phillips@amd.com>
+In-Reply-To: <20260924014517.GEarSArVM12m_ZshhA@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002316:EE_|SA1PR12MB6798:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a3f8b25-a6dd-4081-d801-08df1a6c117b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|376014|82310400026|1800799024|4143699003|56012099006|5023799004|11063799006|10067099003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	WzRpBP1IXXHt6+RNL1dyJaUb5LBZAbGcJuCwfrnhq9RboabCMG6ENGgZeDpVYm/n87FTfCq+M1dbBO3VxdTlyCN0fTuYooicb7jOtHjO5dEiTXA/xteLyoEZXcC10BCGW3I8llRf0XutrN+zVp3trAsSOBKDxeLlLsfiRf8jfY81g9//xwFWpU4wLizARAWoIRtiAuIvGuqCDFfO5GSZ8ijSmIvzZG4hb3KcbG4I4sSgLN6HQYFw7Jji0XCiUV+6OSFO/gM3A/9KJLvqigUw5gP+J85s0Ft6syzKaHc7VXWEeMntHqHsBvsmmMLltw7Gx8izkzlEiMV0d8cOc/C0G1ns0Z1pMAV57QtIg83x9dKaHAurizMLdo+v2+yvRjMTLkk0Nrjec2JPEaL8da5UZ+eosY45GVhpi/T6EwVB2mVUfti+OeZd6FV6U6hKbwKRe+7Txbis+BKFk4SWXRZSkccFGdHqFJ5rnPAojZP2Yv6PgrL/XFUo468b2fsnIYmv8N1i1PjX7xgR/onn7b/oprI07ZYLxdO/CXBuQBvBGg+/yl2fGqHi1tqo4D/JIq3Uxx/FHsIDjJJWoT0Ne2mK8dcyQfvP2LDmQTC9yrPggpuDNOs89anbZBo80eVKyUW0g3H0nJ4gdL5pjZ8fit+ThWouzg6wPnQllIOisfTkhVeTCOUH9BCGiBxhM9PaXePsXt5xZ4lna54CCbG1fwVISA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(82310400026)(1800799024)(4143699003)(56012099006)(5023799004)(11063799006)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	bzE5xzBoAK0Zv9C1OeZorTXfjDyPIU1At/1baXsVkXIdp6V8EBbIY+mFPoyX3vV1o02jEhD6IIyb+WKk6DMsjz1Lch6h4VJlM59uoVlMGgTX1fCwBGxdTci28v5JM9lJROkSR6b/u4zloUyrJmOB/k4418ZGH+hqr8UdRk4Qcunsrx3lk9Cgi3nTyHQ40STOP/IeeeODRSVXg9zK/juf/+YaZjzMLTV+72b7x4yeVCqz6MKsvw+b2HfWZO159gl6TdwqDF5PfCer3VmMNZ69NuVg/P3pGGRKiEiIgXpjl2jrQ/BHaGI96xXDlxPXeo/a9/MS7cYkqhbXlaRmD5DnuZESBkLFVvsSpwc+6FmjoOoYnMBpV3Out8pXwZPeukXUYUZBh978Lh+7R+cTysDaShwY1f4Bm08rjm26f0yNTyPRibMFH0pjGpf5cD6MLqhk
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 18:45:56.0724
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a3f8b25-a6dd-4081-d801-08df1a6c117b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002316.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6798
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+On 9/23/26 8:45 PM, Borislav Petkov wrote:
+> On Fri, Sep 18, 2026 at 06:00:21PM -0500, Kim Phillips wrote:
+>> That fallback cannot be overridden.  An admin running an SNP host whose
+>> workload is dominated by guest activity rather than host userspace may
+>> well prefer AutoIBRS
+> Why would she/he prefer to do that? Any persuasive arguments to make her/him
+> do that?
+On the same silicon with SNP off, the kernel's own default is AutoIBRS, not
+retpoline. Enabling SNP doesn't make retpoline the better mitigation; it 
+just
+adds a host-userspace cost to AutoIBRS. So the admin is being pushed off the
+recommended hardware mitigation onto a software one, with no say in
+it.
 
->
-> [...snip...]
->
-> +
-> +/*
-> + * Note many of these fields are smaller than u64 but all fields have u64
-> + * alignment, so use u64 to ensure correct alignment.
-> + */
-> +struct rmm_config {
-> +	union { /* 0x0 */
-> +		struct {
-> +			u64 tracking_region_size;
-> +			u64 rmi_granule_size;
-> +		};
-> +		u8 sizer[SZ_4K];
-> +	};
-> +};
-> +
-> +static_assert(sizeof(struct rmm_config) == SZ_4K);
-> +
-> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY_MASK	GENMASK(8, 7)
-> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY_MASK	GENMASK(6, 5)
-> +#define RMI_REALM_PARAM_FLAG_DA			BIT(3)
-> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
-> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
-> +
-> +#define RMI_HASH_SHA_256			0
-> +#define RMI_HASH_SHA_512			1
-> +#define RMI_HASH_SHA_384			2
-> +
-> +struct realm_params {
-> +	union { /* 0x0 */
-> +		struct {
-> +			u64 flags0;
-> +			u64 s2sz;
-> +			u64 sve_vl;
-> +			u64 num_bps;
-> +			u64 num_wps;
-> +			u64 pmu_num_ctrs;
-> +			u64 hash_algo;
-> +			u64 num_aux_planes;
-> +		};
-> +		u8 padding0[0x400];
+What each side actually costs: retpoline taxes every indirect call in the
+kernel, and a virtualization host lives in the kernel - VM exit handling,
+networking, storage. AutoIBRS costs nothing on entry/exit and additionally
+covers indirect branches the kernel never compiled (EFI runtime services,
+prebuilt out-of-tree modules). Its penalty falls on host userspace, 
+which on a
+dedicated SNP host is thin and mostly parked in KVM_RUN.
 
-The union + sizer concept is cool. Technically this one isn't a padding,
-it's also a sizer? (same for the other structs below.
+For a guest-dominated host that trade plausibly goes the other way, and 
+only
+the admin knows their deployment.
 
-> +	};
-> +	union { /* 0x400 */
-> +		struct {
-> +			u8 rpv[64];
-> +			u64 ats_plane;
-> +		};
-> +		u8 padding1[0x400];
-> +	};
-> +	union { /* 0x800 */
-> +		struct {
-> +			u64 padding2;
-> +			u64 rtt_base;
-> +			s64 rtt_level_start;
-> +			u64 rtt_num_start;
-> +			u64 flags1;
-> +			u64 max_num_vdevs;
-> +		};
-> +		u8 padding3[0x700];
-> +	};
-> +	union { /* 0xf00 */
-> +		struct {
-> +			u8 padding4[0x80];
-> +			u64 aux_rtt_base[3];
-> +		};
-> +		u8 padding5[0x100];
-> +	};
-> +};
-> +
-> +static_assert(sizeof(struct realm_params) == SZ_4K);
-> +
-
-Does declaring this struct as packed matter? I guess the static_assert()
-has the same effect.
-
->
-> [...snip...]
->
+Kim
