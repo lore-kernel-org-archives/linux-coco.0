@@ -1,96 +1,124 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997B239EB59
-	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 01:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B73937F315
+	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 01:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790214353; cv=none; b=KSRDQj3MU5TpZCP5E4FJXCsGiObi2J8Nt46bJ6S5/u07blGji467KfIj79QqYb+qkr1kUJP96RmoA8eFl0xysoQqvy9cixaoaAWhzhkdsuPD4TIin+jbg9Z3OkL1yqKnpHcTO9jzS7RKSY9dkLJXyo99ujFX7WeKG0OhRAJwfsE=
+	t=1790214764; cv=none; b=ls1nG5wDV3HlY/ks2eoiLSC7sJ2fM6xSs+aWU5A1mVZvFDpt2+0qPuHfNon2hQZEu85zopRxpEqvRaTrW4Dpvyv/uuIARygl1RxBXa8KPZCahGo4VzJPvV67jbollXZ4apJ5r66CJ/4/I03hqSdgYIgrF3b38DU3nNnvgmAgOY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790214353; c=relaxed/simple;
-	bh=aRRi6RHOjTOyCJ/5HtsiLAqhCPs9CduVQPKUndFydks=;
+	s=arc-20240116; t=1790214764; c=relaxed/simple;
+	bh=5wjKolRkOj1eM6tQhXMmGAq+yZ6O5IWDpFid/YcLe5Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M1wRhJEEUQ2RoEEYTdoFGSVyrcFpL5OMTICGI9rpj6l4teCQ+rXQUN3tiG0OZstwMpcFLH6a66lyMybth+AEFg0lKDP9jPFgI0KNvIqA6Su9/5+nOb/aoG8rtE5uOSElblmlPFp2efR1HA8MRwhz1TjcNlGYflmG9j+91CafcAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=dLh1rHhN reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=hr+JjeEkctUMrq3T4EdhV+YSBCQ+Omi8QgkIGsf4lfRau9qf1zsPR+VJZsMteAiFOGgLGNPoVNpn0i9/G038BI+OyOIoPPqQFjQdBJx/FAM2ETm53YCQ9qtnzCamE5ircIR8XvitakEifCYo7WDc9QZMeA+5/48XEpWoOUM4wtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H40OSsWn; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="dLh1rHhN"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 06C9340E015D;
-	Thu, 24 Sep 2026 01:45:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id TvbiNa2KeqAs; Thu, 24 Sep 2026 01:45:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1790214337; bh=K4Rjc0zg3eS2N5HthlBowVt5KP/fUl4gPGDlXBupBBw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dLh1rHhN3tOa99B2mh2ge76ptxzketW9gjSmLr8l4gv4G7u3hfzhmwMEK/7qkYe+D
-	 yu3rUcu0HlmHG77mGrKWBMkhL6weYHntcHxtDbubnh7tGy/dKxh5qHeSzcCQo84Whh
-	 Woj8NuO+PEQCztKPWVtV6gjy5Dy0nOK0KNEmCdkDQpqDvCcOTXJVPg+/hr/8C5CKRR
-	 hcstMLw9/3BbWys5JTg55jVQnd2BcNhMgThsKXInjGprHCOTxBzLIOMJ8aFJ1LgRp3
-	 REQZ6FCSo8hqKy6ZbJF7xnUKp2vprPm23KCE8uo915nI4GNhCMXk7Liy1W6Hloni/D
-	 kSLWxEcTP6zyKg9KzbM9Ra/8dv/dmUsDKB+z4eowVONp8ATdVuP4vsMkjDlwDGmieW
-	 XkYc//1wAKjfMfdr42s+rRCme6T8/qI56Knz/+iy2s7y5B212R52IPYjviEjVK+LeO
-	 Hjru5IfRfhPXrx0VMTT06X0kIXNqAamSCKyhyZzWb+YZ8KMmJltuQf+d84rIM1MUwq
-	 ARqkW6uXnxiYyl9EWpIyfSy2qMxkbaB0dHFpVswcZlCRKiZKAcuJEOYuqoLda7NBfI
-	 wucrymXTfFqXfvE2clGg5agfBWVeTRre8xW9f5YQF+KhlSJLBhk1MyVfGyX2ZEfJCr
-	 QCwzwfsHbb5e6dOG3OHtvnoM=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3BB7540E00B8;
-	Thu, 24 Sep 2026 01:45:21 +0000 (UTC)
-Date: Wed, 23 Sep 2026 18:45:17 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Nathan Fontenot <nathan.fontenot@amd.com>
-Subject: Re: [PATCH v5 1/8] x86/bugs: Allow forcing Automatic IBRS with SNP
- active using spectre_v2=eibrs
-Message-ID: <20260924014517.GEarSArVM12m_ZshhA@fat_crate.local>
-References: <20260826223510.3669875-1-kim.phillips@amd.com>
- <20260826223510.3669875-2-kim.phillips@amd.com>
- <20260903040330.GNapjxkgMd2Ey38egR@fat_crate.local>
- <01b57e61-df45-44a6-848b-c19eae226ad0@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H40OSsWn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790214762; x=1821750762;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5wjKolRkOj1eM6tQhXMmGAq+yZ6O5IWDpFid/YcLe5Y=;
+  b=H40OSsWnx7584Ll8USzJeWn0s7dpiWyXrVThuZRIpydWlubcGMXQPjFH
+   bo/Qx7EfpGf06NGb8WjEssxeCMmt6Z2scxDvs8xHGYnYUwrKwfXwtzMh0
+   7dyP+MLXgRnVqQXNCIcY9TgF11WYe0iiFEKKceDho+bRl3orxcNuKN//F
+   kO9SFDKI69/eII7fsbJCo33pnzB+Ap4u4DUHMYil6PkjaPO5f1kmk8svt
+   SOJexc1Q5SKpXorUdCwwHaKX2pKabNrLLR5bFqpTw/S7jc4NTVvhVaDpX
+   lzqKrqaRmd2ZCa0dYFGQbzym25NgvKOER9/4afzbcHdTQWhVssDtTeX4R
+   g==;
+X-CSE-ConnectionGUID: 92PyOucoRcaNTCKUhLVJ0g==
+X-CSE-MsgGUID: 4ZGPG0NqTgWlFfspzyqXgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93469021"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="93469021"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 18:52:41 -0700
+X-CSE-ConnectionGUID: evZScJL4Sqm+7L+p/NbmgA==
+X-CSE-MsgGUID: UscXWhvFTpS1/iSTbCkr/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="273051153"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa010.fm.intel.com with ESMTP; 23 Sep 2026 18:52:36 -0700
+Date: Thu, 24 Sep 2026 09:51:26 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <arSCHompqC1OTWbA@yilunxu-OptiPlex-7050>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <2f6ac9afef52386fc491145222ea46e54c24a73f.camel@intel.com>
+ <arEYMCfdvmiqE4aR@yilunxu-OptiPlex-7050>
+ <9cbc8edd0a2f21e69521a7f2dd9f1a1114f2362d.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <01b57e61-df45-44a6-848b-c19eae226ad0@amd.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <9cbc8edd0a2f21e69521a7f2dd9f1a1114f2362d.camel@intel.com>
 
-On Fri, Sep 18, 2026 at 06:00:21PM -0500, Kim Phillips wrote:
-> That fallback cannot be overridden.=C2=A0 An admin running an SNP host =
-whose
-> workload is dominated by guest activity rather than host userspace may
-> well prefer AutoIBRS
+On Tue, Sep 22, 2026 at 02:48:58PM +0000, Edgecombe, Rick P wrote:
+> On Mon, 2026-09-21 at 19:42 +0800, Xu Yilun wrote:
+> > > It seems inconsistent that global_keyid is passed in even though it is
+> > > basically global state, while addon_features0 is retrieved from the global
+> > > state. Passing the result of get_tdx_addon_features0() in from the caller
+> > > doesn't make a ton of sense. And we already reference tdx_global_keyid
+> > > globally from another seamcall wrapper. So I'd think dropping the arg when
+> > > you create the wrapper would be best in the end.
+> > > 
+> > > The smallest change to stay consistent would be go add an addon_features0
+> > > arg to tdx_sys_config(), but it's hard to justify as good code. I'd maybe go
+> > > with the global_keyid change and it probably is a separate patch, but we are
+> > > brushing up against mixing cleanup and feature enabling... thoughts?
+> > 
+> > I'm not sure. My thought would be removing "u64 global_keyid" argument
+> > for the new added tdx_sys_config(), to make this patch reasonable.
+> 
+> Ok.
+> 
+> > 
+> > And the cleaning up of its caller - config_tdx_module() - could be in a
+> > separate cleanup patch out of this series, make sense?
+> 
+> Hmm, I'm not sure about that. I'd think you would need one patch to remove
+> global_keyid arg and use the global reference. That stands on its own.
+> 
+> Another patch to extract the helper. BTW, since the goal of this series is to
+> get acked, I'd think the cleanup patches could still go ahead.
 
-Why would she/he prefer to do that? Any persuasive arguments to make her/=
-him
-do that?
+Per the discussion [1], I'll leave the global_keyid unchanged. It's good
+to pass the value of a global var around, to show we are not modifying it.
 
---=20
-Regards/Gruss,
-    Boris.
+Thanks for connecting the 2 discussions.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+[1]: https://lore.kernel.org/lkml/199d392a-02da-430b-95ee-b176ed0f43de@intel.com/
+
+> 
+> > 
+> > make W=1 doesn't complain, but maybe shashiko will.
+> 
+> 
