@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF0739A7F4
-	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 14:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBC0488226;
+	Thu, 24 Sep 2026 15:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790260858; cv=none; b=XpwoaOK9GzmHN6BscP8xI+vmrSv/LcIuZxuPKNbMdeA7kek1nBkiO0H2HV7DU3tVwpmKb+mu2BteBxrXwc8Fl49fzGstysNbGzsTv7dRDuqyUhBnETSPgIVLTwPggrcY/QorLcIsClT8YGiwrzqlcI4yoLFRGLJ9P7q2+VFcQWw=
+	t=1790262701; cv=none; b=Zjo2u5hNcnVtV5cOemqQVQQyEM9gHx/JQCD6zspLS2v00YGW7l5sZwjFwoCq84vBomqe+mALGyz1DJQRRnTc0hcew7LWhip75MhRUSe4Rk/HL+f+38P5IMwvZY2LiTnRbtMUa2tELybkfy1KYCqaMufICnJNFMAlY2CNMG0okoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790260858; c=relaxed/simple;
-	bh=9nkdWvz9hhC1cz7bsXYe8wD1jlHlZ9/tNVri0cwsTMs=;
+	s=arc-20240116; t=1790262701; c=relaxed/simple;
+	bh=q4dWjwb38KokSVbUsb7YtW3icmXBs3RfGPuSgIZBYkk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DvenGQPuk+QPZNZX2JNiIsuEb8XwoqiM/EyQjlfx9oYqOv5zwi5E9xmLo9A4T0O7uaySeRo0a4c56n5POhwRpsQXh6LVc5di3gPIf8cdHd6lQsG3WnapX4K4ySKVPt1mjHhGDypVYlXZeVsXKNIh4zZO1eofYTQu7haU6x9vndw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dQjyXOVs; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=kTyP8Ets/hy3np+q5V8FJmo299Vq6yVd0Uuaf1tts8Aj2ibZLt5naFbPAOPN2J2babW4bkS/juxpfgBuIuG2r/Vr3FCsQDL9kD0jEJETNYngl8UbQ3ChY6qUqi5pAcf5nsHDvl3NkoOWUJ4FhJOst+40paFEW72Ghv7gKmXzQOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tHEAz0nD; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dQjyXOVs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790260857; x=1821796857;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9nkdWvz9hhC1cz7bsXYe8wD1jlHlZ9/tNVri0cwsTMs=;
-  b=dQjyXOVs7WcEAzdQ1wHL+QY2iByVOV3s+D73yhZP7vC5EuP6O4L0YQ3V
-   nj6SUap2PewzkADE3+t5a2xoPRkWZpA+h6KcBlZWKO1NjpDyNTp2Nb6tH
-   g45QWw0SNjDC3dxDb7X5ceBG4za1q2ZuVGRspERv1RLf+0R17tR+Cd5g9
-   7VSlDcsbPEJ1gLgkKwnr9/B0Le0FjOc990wFesCxJQv8m3fkqiB3CZPeB
-   Sg+xmgKx9LbHvNAdYeyQbn7//d5tbZ3HoSMG74M5yV3SZJDrSFnS+c2wc
-   9adR2GfD759g8v6c9dVpALjT+4lddE1OU0ZcHrLBNS2NYV6AYD4o8SysL
-   Q==;
-X-CSE-ConnectionGUID: uPv4axzfT6G7FCTX09AR1Q==
-X-CSE-MsgGUID: cFSbRCwTTn6ZxurfM9NECQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="101206789"
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="101206789"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 07:40:56 -0700
-X-CSE-ConnectionGUID: fDqRe0w6RyeZ6OoGEPAW2A==
-X-CSE-MsgGUID: jB/V1XkhQdK1qmUcwPt4GQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="273616688"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 07:40:53 -0700
-Message-ID: <5949c545-2104-4824-b007-5345fe0e5d7f@intel.com>
-Date: Thu, 24 Sep 2026 22:40:50 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tHEAz0nD"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 75C14143D;
+	Thu, 24 Sep 2026 08:11:34 -0700 (PDT)
+Received: from [10.57.10.88] (unknown [10.57.10.88])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5DE283F86F;
+	Thu, 24 Sep 2026 08:11:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790262697; bh=q4dWjwb38KokSVbUsb7YtW3icmXBs3RfGPuSgIZBYkk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tHEAz0nDfxc56wS5hf0Vt2Q2mTH8C6sHybp9ZwdNQm4rqxk1mvxEl6g+DFjIf6FHu
+	 uUfK/9S1p0ML8R4x55nfK0h6h4u7OaVDDRBuLOIrl2EaIzIQWS0FK47KJ5Scs1PVI9
+	 uSTJeFmVO99K2qa7/0cwwlDghVVDqOyJ9p/h4ShE=
+Message-ID: <5f7dfa2a-b4f4-49ce-828d-60d799769bf9@arm.com>
+Date: Thu, 24 Sep 2026 16:11:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,65 +35,125 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Synthesize SHUTDOWN instead of returning -EIO
- on unhandled EPT violation
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- James Houghton <jthoughton@google.com>, Yan Zhao <yan.y.zhao@intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Ackerley Tng
- <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>
-References: <20260923163315.1580860-1-seanjc@google.com>
- <50ccc54c-6cbb-4ae2-a84a-4dcbc958f91c@intel.com>
- <arUv_KydBD2kWkIo@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <arUv_KydBD2kWkIo@google.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v19 09/20] KVM: arm64: Add VM specific callback for S2 MMU
+ operations
+Content-Language: en-GB
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260920212845.707-1-suzuki.poulose@arm.com>
+ <20260920212845.707-10-suzuki.poulose@arm.com>
+ <20260922152914.00001221@oss.qualcomm.com>
+ <0d5201f0-359e-4748-92da-946dedf51bcf@arm.com>
+ <20260923095443.0000378c@oss.qualcomm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260923095443.0000378c@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/24/2026 10:13 PM, Sean Christopherson wrote:
-> On Thu, Sep 24, 2026, Xiaoyao Li wrote:
->> On 9/24/2026 12:33 AM, Sean Christopherson wrote:
->>> Synthesize a triple fault, i.e. exit to userspace with KVM_EXIT_SHUTDOWN,
->>> instead of returning -EIO from KVM_RUN if KVM encounters an EPT Violation
->>> due to a guest access to a pending page.  Returning -EIO implies KVM is
->>> buggy, and most VMMs will respond by completely terminating the VM, versus
->>> rebooting the VM in response to KVM_EXIT_SHUTDOWN.  I.e. give the VMM the
->>> option of trying to keep the VM (from the end user's perspective) alive.
+On 23/09/2026 17:54, Jonathan Cameron wrote:
+> On Wed, 23 Sep 2026 00:21:58 +0100
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+> 
+>> On 22/09/2026 23:29, Jonathan Cameron wrote:
+>>> On Sun, 20 Sep 2026 22:28:34 +0100
+>>> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>>    
+>>>> Add VM type specific S2 MMU operation backends which can be initialized per
+>>>> VM flavor, to keep the handling cleaner.
+>>>>
+>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>
+>>> A small suggestion inline that makes it explicit when there isn't
+>>> range operation and a full flush of tlb is needed.
+>>>
+>>> I don't mind either way, but thought I'd mention it anyway in case
+>>> you hadn't already dismissed it.
+>>>
+>>> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+>>>
+>>>    
+>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>>> index 03f2017a7404a..d97a4a1bca23f 100644
+>>>> --- a/arch/arm64/kvm/mmu.c
+>>>> +++ b/arch/arm64/kvm/mmu.c
+>>>> @@ -37,6 +37,8 @@ static unsigned long __ro_after_init io_map_base;
+>>>>    
+>>>>    #define KVM_PGT_FN(fn)		(!is_protected_kvm_enabled() ? fn : p ## fn)
+>>>>      
+>>>    
+>>>>    /**
+>>>>     * kvm_arch_flush_remote_tlbs() - flush all VM TLB entries for v7/8
+>>>>     * @kvm:	pointer to kvm structure.
+>>>> @@ -174,26 +188,36 @@ static bool memslot_is_logging(struct kvm_memory_slot *memslot)
+>>>>     */
+>>>>    int kvm_arch_flush_remote_tlbs(struct kvm *kvm)
+>>>>    {
+>>>> -	if (is_protected_kvm_enabled())
+>>>> -		kvm_call_hyp_nvhe(__pkvm_tlb_flush_vmid, kvm->arch.pkvm.handle);
+>>>> -	else
+>>>> -		kvm_call_hyp(__kvm_tlb_flush_vmid, &kvm->arch.mmu);
+>>>> -	return 0;
+>>>> +	if (!kvm->arch.vm_s2_ops->vm_flush_remote_tlbs)
+>>>> +		return 1;
+>>>
+>>> For consistency with other cases and because it looks nicer
+>>> blank line here.
 >>
->> But reboot isn't good, neither.
+>> Ack
 >>
->> I still think a new specific exit reason[1] would be better, as I suggested before.
+>>>    
+>>>> +	return kvm->arch.vm_s2_ops->vm_flush_remote_tlbs(kvm);
+>>>>    }
+>>>>    
+>>>> -int kvm_arch_flush_remote_tlbs_range(struct kvm *kvm,
+>>>> -				      gfn_t gfn, u64 nr_pages)
+>>>> +static int pkvm_flush_remote_tlbs_range(struct kvm *kvm,
+>>>> +					gfn_t gfn, u64 nr_pages)
+>>>> +{
+>>>> +	return pkvm_flush_remote_tlbs(kvm);
+>>>
+>>> For the cases where there isn't a range call, perhaps you should just
+>>> not provide the op and have the wrapper fall back to
+>>> calling the 'flush all' variant if there is no range one available?
 >>
->> [1] https://lore.kernel.org/kvm/1b0ea352-c645-461b-9e19-5202791f8e2d@intel.com
+>> The core KVM falls back to flushing all TLBs if the range one
+>> returns true anyways. So, I would leave it as it is.
 > 
-> Doh, I completely forgot about that patch.  *sigh*
-> 
-> I actually thought KVM_EXIT_MEMORY_FAULT this time around, but I was worried that
-> it would confuse a VMM.  And practically speaking, the VMM can't do anything other
-> than print some diagnostic details and try to reboot the VM, because the guest has
-> very deliberately opted out of #VEs.
-> 
-> An alternative to KVM_EXIT_SHUTDOWN would be
-> 
->   vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
->   vcpu->run->system_event.type = KVM_SYSTEM_EVENT_TDX_FATAL;
->   vcpu->run->system_event.ndata = 1;
->   vcpu->run->system_event.data[0] = gpa;
-> 
-> So that the VMM could log the guilty GPA.  Though I'm not sure I like overloading
-> an explicit guest event.
-> 
-> As for KVM_EXIT_GUEST_ERROR, I don't see the point.  As above, the VMM can't do
-> anything other than reboot the VM.  I doubt Linux-as-a-guest will ever support an
-> interface that allows recovering from this situation, because again, the entire
-> point is treat unaccepted accesses as fatal conditions.
-> 
-> All in all, I think my vote is still for SHUTDOWN.
+> That sounds like a reason to stub them to return true always rather
+> than call the flush all so we don't have fallbacks added at two
+> layers of the stack?
 
-My concern is that userspace cannot differentiate between triple fault and
-accessing a pending page if we return KVM_EXIT_SHUTDOWN. It's not friendly for
-debugging.
+But that doesn't help, as the only one that matters is pKVM, which
+handles this anyway. If tlbs_range is not available, then the
+all tlbs call back also return the same value. So, the core is
+anyway going to call the full version anyways.
+
+So I have left it as it is. A sensible backend could do
+something like the pKVM does.
+
+Cheers
+Suzuki
+
+
+
+> 
+>>
+>> Cheers
+>> Suzuki
+>>
+>>
+>>>    
+>>>> +}
+>>>
+>>>    
+>>
+> 
+> 
+
