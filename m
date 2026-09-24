@@ -1,120 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5125940BCAD
-	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 06:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D53DDDB0
+	for <linux-coco@lists.linux.dev>; Thu, 24 Sep 2026 06:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790230974; cv=none; b=TLx3Os7fzGg2FtzS/NQr1ZwX52VICJ8RaOhTZ2CuanGeXD2C3VOelxKraGhxAj1X3zLq74rBtR3jsec6D6LegFuknjLnreKRWePxFVy8UaJr+f+LoYZlblEIeutNNMFVW3MiyQy8ieToqjcGYP2DAnDhGmChZvPRvN/KhodxolU=
+	t=1790232022; cv=none; b=MESCkHBl3BuIpjg2dawf6zwhUfRt6JbUQkMKnJQe7VqtKJV5om02EnM9D4nu6NG0lAcdRiMxlnWEjuTfZxDlpDAWOtz501UPpe17lLRNupR5LWtv+CjBUm0ONSLtjMDYDXBZlaujc/IP2nsrbZPdxnl3mNjQc6Z9woxm+okoKxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790230974; c=relaxed/simple;
-	bh=7gKXLqvPGhCYH5CgY5BJYuBxMlou+PHvMii1eSmIJhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sTXQnhm/dtO9zV8Eu3fvmVdJR+NXaMKGef/n1uDq2YFMUve43sAzJk0FnYddHwtO+rLZP2/+8/1VGZ9UCUldINU+GyNrEVEEsaMju8jy2TKfnY0/H7oDgiiw/xLeBu60SbmTvlJy2+nbqPnqrxwydvv8BSof2+qjny1FwNRAzSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKepHUh+; arc=none smtp.client-ip=198.175.65.12
+	s=arc-20240116; t=1790232022; c=relaxed/simple;
+	bh=63+CQUCm77nx9iN/CF6fhnFnAJq/okFK65QrDdmNqho=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kNly2oo4rHsNhtjR2muXwTdZ+KWMx/ZuInPC9OgUa2WBA/ZK4OJhjknvnroPuC11s+yLUQl8WXG95cE7eJi3/KGcPa2dwhb+y1e7CJNgZtYvanVKjy1Huk/4q66cQE1i6n+w9rYPosdi7sJm0gzMcyNMqGVX94sFRTq1qVh1d9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nu0YggUR; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKepHUh+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nu0YggUR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790230973; x=1821766973;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7gKXLqvPGhCYH5CgY5BJYuBxMlou+PHvMii1eSmIJhM=;
-  b=PKepHUh+bAPX4uNCLO3qQWt1PYY41AiAxoqX2V5w/wx4EpHKAiY5OIGm
-   vlkCwKouPwjdkob4UrfffuNzpsLMtn2ht3TkU/7ImAwJ0DtKSy/WIyMXo
-   EVW+qJ/JEtYnh33wbri5dMP3BupO03K0J/LB/Y8deIo38h3AmFHCahIGL
-   mRPA1ZBj8KbliALIzBqqA7ywq7SfgzR2HjKEZw7BxM6TBHL9Rzg4DWRTz
-   fOmARoSgJmsfe0uw2ZQxSaz8vscdv86X4m3eY4Xcr5jzy5QY2GheOw76B
-   DPVoQVGEVoDykIBs8Wd4Y3lTuaQYtsIlGe+iNFUe32IkiY2beBq8D1U8L
-   A==;
-X-CSE-ConnectionGUID: Revga4N1ThW6Ek60/Y4nQQ==
-X-CSE-MsgGUID: GpFC5jt4TNGRAhfXckB0bQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="101524926"
+  t=1790232020; x=1821768020;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=63+CQUCm77nx9iN/CF6fhnFnAJq/okFK65QrDdmNqho=;
+  b=Nu0YggUR2x/5VAwdyXg6cPpDfAeHUxAq6M/LxTpzTpPKGHCbSWH2AxZu
+   P2njzXUuPhAc9RqbBFTQoUqLInsHq7xz7j4Rsb97p1o+FAfRCThPv8BwI
+   AFzTvcFHF+1QvuQNljOUZPZulOiMIrkxr5m5XUzlYDsQe5CZ+gO4QntIA
+   csjqS8XkAh/3oh8Xh2A+VUm7/E4b0Mr/tMXF17pkJPl1MC6SPlUFPeUXf
+   SRR0v6+oAAhvVWQz/MwkO2+pxsYIbspADE7UUgR9hG5/uOqgVZjjdOOIQ
+   Kw2zg9EJqxYT1KfK8qBk9Tme3sCHNojrYTSWs7W1vE/LCohJg/61vz4VM
+   w==;
+X-CSE-ConnectionGUID: xT1YjgcVSt69Ylf17DQ7eQ==
+X-CSE-MsgGUID: vZZ4i39hQLyRd9S9x7FdLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="89949681"
 X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="101524926"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:22:52 -0700
-X-CSE-ConnectionGUID: pT2swsmOQDuwLrqOgn46JA==
-X-CSE-MsgGUID: 5EywObruTVCWO+2OonedHQ==
+   d="scan'208";a="89949681"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:40:20 -0700
+X-CSE-ConnectionGUID: vgWziXq4R/OOZ5ZYsSty7A==
+X-CSE-MsgGUID: bsQP7ZzMQD6w95PTwkqo5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="5051226"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.13])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:22:45 -0700
-Date: Thu, 24 Sep 2026 09:22:42 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	peter.fang@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, chao.gao@intel.com,
-	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
-	nik.borisov@suse.com
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
- module init
-Message-ID: <arTBssCBAody54ZF@tlindgre-MOBL1>
-References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-3-yilun.xu@linux.intel.com>
- <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
- <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
- <arOG2s3VZMQjLWey@tlindgre-MOBL1>
- <arR96/Tpz4cQpfYZ@yilunxu-OptiPlex-7050>
+   d="scan'208";a="273429824"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:40:17 -0700
+Message-ID: <4e4ff512-7aa1-4d91-8ed6-1755a6c67162@linux.intel.com>
+Date: Thu, 24 Sep 2026 14:40:14 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arR96/Tpz4cQpfYZ@yilunxu-OptiPlex-7050>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 02/10] x86/virt/tdx: Convert the version metadata
+ reader
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, yilun.xu@linux.intel.com,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+ <20260918132946.76533-3-chao.gao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260918132946.76533-3-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 24, 2026 at 09:33:31AM +0800, Xu Yilun wrote:
-> On Wed, Sep 23, 2026 at 10:59:22AM +0300, Tony Lindgren wrote:
-> > On Wed, Sep 23, 2026 at 03:30:55PM +0800, Xu Yilun wrote:
-> > > On Tue, Sep 22, 2026 at 10:13:56AM +0300, Tony Lindgren wrote:
-> > > > On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
-> > > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > @@ -998,6 +998,15 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
-> > > > >  	return ret;
-> > > > >  }
-> > > > >  
-> > > > > +/* List all kernel supported add-on features0 bits here */
-> > > > > +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
-> > > > > +
-> > > > > +static __init u64 get_tdx_addon_features0(void)
-> > > > > +{
-> > > > > +	return tdx_sysinfo.features.tdx_features0 &
-> > > > > +		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
-> > > > > +}
-> > > > 
-> > > > How about get_tdx_supported_addon_features() for the above? It makes the
-> > > 
-> > > mm.. I think this would make a bit confusion. "tdx_supported" reads like
-> > > the module supported features, which is just .tdx_features0. But here we
-> > > want both the module & kernel support. I'm thinking of:
-> > > 
-> > >  get_tdx_addon_features0(), just as is
-> > > 
-> > >  or
-> > > 
-> > >  tdx_get_supported_addon_features0(), maybe this is better?
-> > 
-> > Something to describe it's masked with Linux supported features would be
-> > nicest.
-> > 
-> > Maybe something like get_tdx_masked_features0() or just
-> > get_tdx_usable_features0()?
+On 9/18/2026 9:29 PM, Chao Gao wrote:
+> With the helper to read a table of metadata fields in place, the
+> existing metadata readers can be standardized on it.
 > 
-> I like "usable", and I want to keep "addon", not all usable features are
-> listed here:
+> Convert the version metadata reader: add a table that pairs each field ID
+> with the 'struct tdx_sys_info_version' member that holds its value, and
+> read all version fields by walking that table.
 > 
->   get_tdx_usable_addon_features0()
+> Name the field IDs for readability, so the table entries don't carry raw
+> hex literals.
+> 
+> Also add read_sys_metadata_table() macro to derive the number of entries
+> with ARRAY_SIZE() so that callers don't need to pass it separately.
+> 
+> AI was used under supervision to review code and workshop logs. It suggests
+                                                                        ^
+Nit:                                                                suggested
 
-Sounds good to me.
+> adding read_sys_metadata_table() macro.
+
+
