@@ -1,111 +1,47 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BEA443E56;
-	Fri, 25 Sep 2026 12:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC80147424A;
+	Fri, 25 Sep 2026 12:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790338148; cv=none; b=BtR5Oc7YrO4JxjO7O2NddsuvVowvbZbmR9MIkcIxlumgD4egE1thDdINHg4aHRg8UFMBacK3ZYCZLUI7+26LyJCQF1RGXqKLB516vZC3gAkyejbPvJNXmaUOd6nUhqse9D3ZiuPjcBW/xtk7AbPgqUyf9b+DB9OGGlnS+vZoX7M=
+	t=1790338660; cv=none; b=nRHL+M+FqNKbNtM6gTIX37yDkc9SQ2EPpiBHjohwXlJiArAMLPVi/rKLW2cKlZP+Z66xQXcN55Rb3ox+YBJPwlJMfi9IoCvBFB9DJ1Hc/nPQ0HdiP5ZInTg5hpdCTj0rOCvrD6pdM/PUywl5Ki4lnkXi2vOt8ba2BlWSly41Mlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790338148; c=relaxed/simple;
-	bh=+CGvG9QrriSVRenQP3QQ5RXJ4XOMxjJ5sDhmV4iIAl8=;
+	s=arc-20240116; t=1790338660; c=relaxed/simple;
+	bh=gVBLm+VP8ROLJ0gR1xOSUhXwVrsMbmupCmmXzTJRqks=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iH6DpbaRgs5L0PVAajaQ2lGtNL491zGCEciCg6rMeLgBkgz/GNaOahRHOmEfyeI80cRFfr6d0YUIFid5AVV+rhD7LEi0j5iCrlolRhN+ql8wCXgvwcbVVou5/4je7X9VtOTL4mft+LJAz9tVHbIOn/JXaqHUGgFgRSjoPU2deqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFLxfz7t; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=DWvX8Mh38f8qWEMmQ0oJOUTu/CNJsYcwx4B9UKWr0nKOrnSd8aMw0Qk6Mfj3QalO1FdlbdIj3XrLiSJsNJ+eYuyU0hKIH059mwL2pKVBysYXX1TeEDrL4H2AM7n6pPzMKqiNrwmOFRabzn/4fQMAPcDy/had786/NKCx2rrbDew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lQA5EJRE; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFLxfz7t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65371F00898;
-	Fri, 25 Sep 2026 12:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790338147;
-	bh=bpOatN8c0vzQ5XGVXFfSv8DKVf4rivauZnBt896FgHg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hFLxfz7t37uk7pH5vMDI/1xpq3m/TfoPjgAEzzyFhXiVwGX5wTVE3zad2a2pHObWM
-	 6I6Q6lr2K3mRbRNX28Efh3GAXHHmIY3YYpn2B6Z2wR2wyNpFzBZ1Ix1J/+1vDdJlxQ
-	 2isQkE+59O8Xlw00i8bK83i3Bheo3FtYcBO7OstX6ieuCPEksA4fWNkzCHIY2nH/X7
-	 PGoKz2s9mawB5vpJ9wNo45/KqKTc/o1pzKByjAQNaB8vCP5zcdMfxTkUHqXQn/mhns
-	 Wh9cEGNbH3lYlFSL2xTPz6nB1tY6rs2EeveZXxprkJu70kcro8FdK2VAa7oMTfWpMp
-	 eoynUk0yJj7aQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id F0D01198003A;
-	Fri, 25 Sep 2026 08:08:52 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 25 Sep 2026 08:09:02 -0400
-X-ME-Sender: <xms:VGS2apVl0oCJHXSAF-WnG03V0OTkE3GA3JKk6_2wku0RZ0iOk6I8VA>
-    <xme:VGS2aiNFpi9BnkhFuuvFuFD70z2eBlFObIvPb29IzL5mI2ZX4ynwOvzRE_LNUXFwx
-    MxB6eWOboCuVpa1CHShE3eBEdlpVGjuVpHowmad4m6Ezn7y_bAq>
-X-ME-Received: <xmr:VGS2aqOosTEEs-ZdT05pxKviNpAWr3_xzRLG8_wFMp7Vw5A6xBNjESi0LMg>
-X-ME-Proxy-Cause: dmFkZTEA00vB4wCEuGFPU26dSeuaRUC5A4v8eR3RjG3bBqa5h9xJ9DkJKF4RfcLFM9n52q
-    3k8DUPXRt4S1MUQEQlgs/wFXZV95oQo4U601e3eSYJKZG4Nhmud24uk7molK+3EfFBEyfp
-    uDB+bzuPtnSdm3cfhWN7C/cKeLr/l2x069NPMBtTxphXRLuvs4rl/Oop2SUxPOEiACBaC0
-    gVKF5BVz0FD5pmDrDLCObajhGOWXVLPB4W5+pGabl+YCuxbxl1db9bA3z/zmlyf/1Y3+2L
-    bVts6vygIEw+WpL0zBkMy806BQB0UOjN5unt97CMkqUmRwIhB3ZHFNBhyJmHTKmaY59xgy
-    PaoQcuDGforIp2yh/OBDcAuLeHTf4NVgu/Q3MiIOv2TZopVH0lk4R8KuKyPCu2sh571uG9
-    sQPWLWpLg+PoxuyoKvDnj3hE9HeDAhnW3hojgqd3K3wL+y5rD/qo4gklbsa8cpwL188kU/
-    PkrFg7Z10iDPdvydF0UxXu1cXW3SDAD7DkoSjDdZk52r6lJ4VuFRP8XOiCC01t/9khS7+8
-    80d3XVP2yWba/CGFqlEv9Y9vYYaHPUtop786W0VSRxh4hYXHm6ZkBsk1pUW3rlfEVHeLs+
-    E+BuIgoOa3tDknUGmMSn2+zWK6DrKkUYj1McN22x/IP5Ssc3bWGg5eEzG1dQ
-X-ME-Proxy: <xmx:VGS2aoYZ7nFUadQ6kpGq7uDV0Tu20PSpPBisEuB6MM_0W2vrpxJVUQ>
-    <xmx:VGS2atoj4JRTVSnU8vzq8ZHzfJromoy1OYGmojnz8W7_me2t_SvIuA>
-    <xmx:VGS2ak9LMv9u5n_IwlQGG91twmRAsL4cPlt48wRftdAIxr4bG3jPgA>
-    <xmx:VGS2alVS_NfEyFQwF6El4FGRt3qemk-R8MfkGXNZNCHv-aPFOPXyxw>
-    <xmx:VGS2at8o0pQeT8R73VmmXOBI_CqD_RbB5258qJ3tDaj-yJiuehlpH8fX>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Sep 2026 08:08:51 -0400 (EDT)
-Date: Fri, 25 Sep 2026 13:08:50 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
- 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, 	Andrew Morton <akpm@linux-foundation.org>,
- Baoquan He <baoquan.he@linux.dev>, 	Mike Rapoport <rppt@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- 	Pratyush Yadav <pratyush@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- 	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
- 	Marc Zyngier <maz@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- 	Robin Murphy <robin.murphy@arm.com>,
- Steven Price <steven.price@arm.com>,
- 	Sumit Semwal <sumit.semwal@linaro.org>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- 	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
- 	Russell King <linux@armlinux.org.uk>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- 	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- 	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
- 	"T.J. Mercier" <tjmercier@google.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- 	Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- 	Christophe Leroy <chleroy@kernel.org>,
- Ritesh Harjani <ritesh.list@gmail.com>,
- 	Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- 	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, 	Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- 	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>,
- 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- 	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, 	Long Li <longli@microsoft.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- 	Vitaly Kuznetsov <vkuznets@redhat.com>,
- Andy Lutomirski <luto@kernel.org>,
- 	Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, 	linux-media@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [RFC PATCH v8 02/14] mm: Zero memory during shared memory
- transitions
-Message-ID: <arZkEugXwCtKHH64@thinkstation>
-References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
- <20260924100529.1398790-3-aneesh.kumar@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lQA5EJRE"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D206E169C;
+	Fri, 25 Sep 2026 05:17:34 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03D733F86C;
+	Fri, 25 Sep 2026 05:17:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790338658; bh=gVBLm+VP8ROLJ0gR1xOSUhXwVrsMbmupCmmXzTJRqks=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lQA5EJREBfekr73a3Y7Tyo36mm8gHlHbPrgP6zTS1tdofwAOLh6QSATc2nWz04hBw
+	 Fl6KFtOge5c3tL+1563ecWu9eTlRTpev11oUFN/x47kKgQHfxdfCbzuX3edtQtvKql
+	 WepaXKC5dHpWOTCvmdbp5E8fbPV/jfpDLzuqTq0A=
+Date: Fri, 25 Sep 2026 13:17:32 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
+Message-ID: <arZmXFw5Jw2IbAmA@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-6-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -114,30 +50,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260924100529.1398790-3-aneesh.kumar@kernel.org>
+In-Reply-To: <20260924135201.850038-6-suzuki.poulose@arm.com>
 
-On Thu, Sep 24, 2026 at 03:35:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index f904a636d449..1f1f39082391 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -978,6 +978,9 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
->  static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
->  					 bool enc)
->  {
-> +	if (!enc)
-> +		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
+On Thu, Sep 24, 2026 at 02:51:59PM +0100, Suzuki K Poulose wrote:
+> From: Steven Price <steven.price@arm.com>
+> 
+> Activate the RMM after the basic configuration. This is a memory
+> transferring stateful operation.
+> 
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+> Changes since v17:
+>  * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
+>  * Use scope-based cleanup to free sro object
+> Changes since v16:
+>  * Split into a new patch
+> ---
+>  drivers/firmware/arm_rmm/rmi.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index 035f21d3f26b6..0859f256e192b 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+> @@ -834,7 +834,18 @@ static int __init arm64_init_rmi(void)
+>  	if (ret)
+>  		return ret;
+>  
+> -	return 0;
+> +	/* Activate the RMM */
+> +	struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
+> +	if (!sro)
+> +		return -ENOMEM;
 > +
->  	/*
->  	 * Only handle shared->private conversion here.
->  	 * See the comment in tdx_early_init().
+> +	ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
+> +	if (ret) {
+> +		pr_err("RMM activate failed (%d)\n", ret);
+> +		ret = ret < 0 ? ret : -ENXIO;
+> +	}
+> +
+> +	return ret;
 
-This doesn't make sense to me.
+It was raised earlier this year [1] but I'm not sure it concluded. How
+do we handle kexec and kdump? I think RMI_RMM_DEACTIVATE only succeeds
+if nothing is delegated, so it would need all realms torn down first. If
+that's not feasible, we could at least block (non-crash) kexec like pKVM
+does.
 
-On TDX the memset zeroes a page that is about to be dropped.
-MapGPA(shared) makes the VMM back the GPA with different memory, and
-what the guest reads afterwards through the shared mapping is whatever
-the host has there.
+Kdump gets even more interesting if it starts accessing delegated pages
+and getting GPF.
+
+[1] https://lore.kernel.org/r/CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Catalin
