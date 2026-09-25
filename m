@@ -1,148 +1,89 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526F02F8E88
-	for <linux-coco@lists.linux.dev>; Fri, 25 Sep 2026 13:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32493890E4
+	for <linux-coco@lists.linux.dev>; Fri, 25 Sep 2026 13:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790342307; cv=none; b=OR1j0BUEtCVx5Msc6vxjVUR7Bwsx0IJ34lKssh26Ed1pu0jmjoxr+R9lZkYtZNcO5PzWtU7V22lHzIZQOl3WTzI2azOz6o8E/STJvkFjL+8U8Jj3p/4VgnlqYxeNxFA3T0hZlkVFel0csKZ8GNdRdRBB5JAuWjuS7UL2KLgnz34=
+	t=1790343252; cv=none; b=ZX6d2pjbu1jlCA/JidOScpNnmiAX1dbsVaHjLOHhxTp34ztD8uAVJtC8hdF3o0bPOJVRxgpq/wQF5yUzIVh5CQneUUTOyHclLmU/Vt5i0CF2RrkBIR2Ud18hTpADM4efmuYXclVdfN5xMZTFHMGncSkOyPJ6ROzrknK94MDAT2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790342307; c=relaxed/simple;
-	bh=/tkLfLJjP7wUlNrWF/jq4DXqsVsVbD9Cznn3h6SFJOw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=STS4sL/nCF3FJ0o7XNzZ38AsH6bliorPecBjuQgR0OAVC8PWZxKJ6WovStgGQb9laCbRvZTBFNNdf5/uPjVu93EI8c5MbpKFq2fV8wo0Z/Sj8IxSRAzSYwwuuXVhjc/TziB23+rsZdgaMtxC9E8W8rssdEYUrOodbQ+4sOdRi8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=piPyOS1H; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=M19sCDyw; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1790343252; c=relaxed/simple;
+	bh=Xkbzp+59lZb6QS5UiE9K5gmadx2N1RgDmtC8Kx8n1f4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W+6D20FWDikXMYJsOU+Vt+97nbbc8Jf6Z7swwk2mO1p1x1AcjkxjTCBqQRePQFgAhTl4lb1yNgbAvpFskCOf1SN9nVQnMsPr57FaJMhbxBSgd1M1SV4Cwf4pPlcOTnREoO/sABp9mEUtknbLsR3W0iSeDBJOXPnMCVtu5JdjAow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9c5Qxcg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="piPyOS1H";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="M19sCDyw"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2E81421F38;
-	Fri, 25 Sep 2026 13:18:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1790342296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WS/VifjS/Gld0vWHeJypN5sOQNnzQlGmGM6q8xYeuNk=;
-	b=piPyOS1H3F4cP6D4APtNkmRolEZX3njgO/KIrTpldrK/chzwNtJ/mB8NVMT5fhzTK+aV/X
-	ERdovp5BA1My841QY85ujU/1wyPJ+9qSdl4FmotfX0Yb9tiY2lwQfLt9ZTDbSIeqnY0vkU
-	pkeuMjTqGDY/EI9gtS9Y9zUprgGKfek=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=M19sCDyw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1790342292; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WS/VifjS/Gld0vWHeJypN5sOQNnzQlGmGM6q8xYeuNk=;
-	b=M19sCDywRWn8eEua1IUQvTNB6KfNtMTjFVFM+t2AeQRYL2DeDNYN9KOhgmIO1N6npRL3sZ
-	VqjEe0382Y3Q/nNaBs2Tx+cwvCs5OiE5nShhZqEb1x7U8XdIX5pS/TdClq9KBrYZNoSB6o
-	ZlyPLdGtIADm2rfp28a1VXsAqD1FGSg=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 99E6713297;
-	Fri, 25 Sep 2026 13:18:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6cwyGZN0tmqPIwAAD6G6ig
-	(envelope-from <nik.borisov@suse.com>); Fri, 25 Sep 2026 13:18:11 +0000
-From: Nikolay Borisov <nik.borisov@suse.com>
-To: kas@kernel.org,
-	rick.p.edgecombe@intel.com
-Cc: dave.hansen@linux.intel.com,
-	xiaoyao.li@intel.com,
-	linux-coco@lists.linux.dev,
-	x86@kernel.org,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: [PATCH v3] x86/tdx: Restrict attestation exports to the tdx-guest driver
-Date: Fri, 25 Sep 2026 16:18:08 +0300
-Message-ID: <20260925131808.2415177-1-nik.borisov@suse.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9c5Qxcg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB78A1F0089A;
+	Fri, 25 Sep 2026 13:34:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790343250;
+	bh=J7BTVv9M2t6UycuRtQW9aKZFQTkmt/RfJKSQfMD+kSc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=J9c5QxcgBQsysK4mhSWACXG3h7qDWwkF+PgyDo2RQWay0ti0hPEjDJUQfFCoixqMG
+	 v4lQ/rsWA7h8ZEZ4nZgcDR6kVo/PKUY5XDM0GsRGpIU8PlF6soMyRhvkRzQdO0e1/1
+	 p3rezIA6kYjAMYF+gDJAekTWThPs/dltZO0ix9Pgv00qO4Y+VmyL24WhXLFfyJsz7G
+	 yQkzFSC+CyAIoNLacMDoAeAs7J/IMl6X6OEbjfXz4oTHYQReY3e9h9O4in1oJyENzJ
+	 nzT8T7vaiOKSvw4Jq5OO576kFhYHjlMnHl1eCGDP4WahbgCfprZAGgx0TpVbDeFDfw
+	 VMEV//kIL+nQw==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 6F553198005E;
+	Fri, 25 Sep 2026 09:34:07 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Fri, 25 Sep 2026 09:34:08 -0400
+X-ME-Sender: <xms:Tni2at5GhomL4Xd07djlBzZoZTMX_WzGwXYu7SJ5APSbZGnvC71VHg>
+    <xme:Tni2anQgYEsRF45oy8dP_53gr-DuvrPcWMzJUsJKmlA4M2WGJfpGfjEb4RgTIxAr3
+    iXGWFQRep6bDZcbVPTofedPkbHsHfJDo04gp6hsXp4Dol5JPak6gCUm>
+X-ME-Received: <xmr:Tni2ao6awTp7_mlaOR1xIBV6D8MYhB5Lv_f-4YToiUdQJe5jDinpnl96RNc>
+X-ME-Proxy-Cause: dmFkZTF9/S3DM4Gd0u3MhRtzAbighuockRcwnSZG0fQCVEPJOOrFZ1EkaEE9XzElQDnvbX
+    om7OmlAaL25u612xvrifXFLzBJCrGkirI0A18OXo+AT2mUT9wDvhqvh8vREtNgpX2Q/eOP
+    sP+/noYxD+h9vGO9uAHO4j5Yuy55I5aURtHWNli/AwFGXqik8xlN+i20HtxxyH+8KgoEUW
+    +RYN9d5+6a055X6IpMQEZ8Vfd9m2C2EfuSdotqAiy5tmhSPffRlJ1ZNAUecqFyfaxjfVBY
+    wo8wiE71ZWh0PxrqliK5tvvbnbUmqEeS8CvQZ+WXNSmUucDo8xC2ONexcPyK3S99OPRFnf
+    5CWyRo0cGz1zOesk8u6DWLfbtVErN7vt1qyqwFD1L3I3RWanpaLED+8S+yYWaH7u9hZy36
+    p5tIf0fj/K2EDtG7sIOQ/2lqi88gTQD9L92xuIP46XSDEFx7bF8bTY0aa1ygW28defjs4H
+    +3lUHsweCFZnwsxFTZZhvRLfNDRDpXYpjt3QTfu0aEbjeq4dOdp5tlxfk/pkiqwSEQIfyB
+    mYcBajaJGDxzdCE0rgZtct4+csk/ZbcnGhAnAc4vnvUCXadmg3KcJWkkDNWcnwDRP9H3iW
+    +f5CKuVtJeChWFH7sqMDzuimERhq/j9tg3UZcpJEZhayAlUuQQuEKCc7dmcA
+X-ME-Proxy: <xmx:Tni2akR3Zxv1y-GJFXMYOA8ZTTiv-BbNn1Izq0b-TU0h7hRQ6MEA2w>
+    <xmx:Tni2atl_qzeXcAB9Bf51j2M4vGSgPEZttfUR5H79XHZiO8oaakRUpA>
+    <xmx:Tni2aoSJVe5fJU1N7XhQrnTi5NY6GcRJfZgtdEhDu7KOsZskBciAcg>
+    <xmx:Tni2aksq0yXXDGOlKo7S4Pq-NyHRFbGWQ7oP6iigi3japCXXp4547w>
+    <xmx:T3i2ah7Xtg2N-TeWm4fwtsqeiRjf0PRQWNLawbeVoLcie7SddkystfJP>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 25 Sep 2026 09:34:06 -0400 (EDT)
+Date: Fri, 25 Sep 2026 14:34:05 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, 
+	xiaoyao.li@intel.com, linux-coco@lists.linux.dev, x86@kernel.org, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+Subject: Re: [PATCH v3] x86/tdx: Restrict attestation exports to the
+ tdx-guest driver
+Message-ID: <arZ4MXTfCuPw9dMh@thinkstation>
+References: <20260925131808.2415177-1-nik.borisov@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.51
-X-Rspamd-Queue-Id: 2E81421F38
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_TLS_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,suse.com:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DKIM_TRACE(0.00)[suse.com:+]
-X-Spam-Flag: NO
+In-Reply-To: <20260925131808.2415177-1-nik.borisov@suse.com>
 
-There are few remaining attestation related functions which are exported
-via EXPORT_SYMBOL_GPL, yet they are solely used by the 'tdx-guest'
-driver. Let's just limit their visibility by using the namespaced
-EXPORT_SYMBOL_FOR_MODULES.
+On Fri, Sep 25, 2026 at 04:18:08PM +0300, Nikolay Borisov wrote:
+> There are few remaining attestation related functions which are exported
+> via EXPORT_SYMBOL_GPL, yet they are solely used by the 'tdx-guest'
+> driver. Let's just limit their visibility by using the namespaced
+> EXPORT_SYMBOL_FOR_MODULES.
+> 
+> Suggested-by: Michal Koutný <mkoutny@suse.com>
+> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
 
-Suggested-by: Michal KoutnÃ½ <mkoutny@suse.com>
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
----
- arch/x86/coco/tdx/tdx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index f904a636d449..a38e44401840 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -139,7 +139,7 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
- 
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
-+EXPORT_SYMBOL_FOR_MODULES(tdx_mcall_get_report0, "tdx-guest");
- 
- /**
-  * tdx_mcall_extend_rtmr() - Wrapper to extend RTMR registers using
-@@ -175,7 +175,7 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data)
- 
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(tdx_mcall_extend_rtmr);
-+EXPORT_SYMBOL_FOR_MODULES(tdx_mcall_extend_rtmr, "tdx-guest");
- 
- /**
-  * tdx_hcall_get_quote() - Wrapper to request TD Quote using GetQuote
-@@ -196,7 +196,7 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
- 	/* Since buf is a shared memory, set the shared (decrypted) bits */
- 	return _tdx_hypercall(TDVMCALL_GET_QUOTE, cc_mkdec(virt_to_phys(buf)), size, 0, 0);
- }
--EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
-+EXPORT_SYMBOL_FOR_MODULES(tdx_hcall_get_quote, "tdx-guest");
- 
- static void __noreturn tdx_panic(const char *msg)
- {
 -- 
-2.55.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
