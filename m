@@ -1,71 +1,47 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CED53911B5
-	for <linux-coco@lists.linux.dev>; Fri, 25 Sep 2026 11:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCBF2E7394;
+	Fri, 25 Sep 2026 11:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790335852; cv=none; b=M9+3ql446+dTYJ0jQhrclTDmxfGXW3BjjfYXnC/P1RAFbFZKoyRmi6ftCzkiob06JnwIsrcgGCB3+rfNmZpc44T1NUzQZMGVFmu5B79cXwtxnd5mfY6qymEJHOIDOcRmPP61oMg7qqK7KcaaRWuI7h0Tpr1KoMl9S5y6anm9cfM=
+	t=1790337047; cv=none; b=jPFrxL281MaKtcQgiFdjPN+MeltaF/RcKW7Uh7/XyrvU1fxkQJ/nCqC3MxWYIfgCI3DAdVwq4oTXd7BTUAwiPPEdvdXjXIRKd8HW9leVWprK5X2rosjQc8Pm2Hc6T1TtfCabHQEMX0BlSO/gywphs5MJtgWmxfZoUMF3xBAG7LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790335852; c=relaxed/simple;
-	bh=U5jzh/wrq5mofA952aJ0mIvvu9S4cjBPBZinv7n9nmo=;
+	s=arc-20240116; t=1790337047; c=relaxed/simple;
+	bh=QVCeiKaLLsWqFAAQeL9n0+h8tt+vp+tZtOpFNlQ3uRw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sHZnjmDeiE3dRzuuuMPjCgPcJykGjO5KcNxh+vYCUsnV4q2JMM53W+MfRB8KQDXOfVypljVLe9CQ6smnAFTgUL4z3AutaSSPoWIQvNlDdKP+hAS1jDJ7dalXHsNTkFSklozdhRnfL3wjTflQBrRgiPr0IZ9EMP9mEdxzh0H7oXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+DieUdD; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hh/VJN4CvXkfy+LpbBGajNnm1Rhz8Z8LI/bgkTvCx4JZE5jbkpVyw9M4OGssFvW4l1nH6ITOcVZEY0ml5gV6M82m0bZuG+IuiNkNxT5EDOc9yYfyKB7ygv6CAMQwjlnDMJhjMUiv+Isup2egQXQXi7S8TZqOrsWqlzcT/svCuZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SvrqnLBu; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+DieUdD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AD31F000FF;
-	Fri, 25 Sep 2026 11:30:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790335851;
-	bh=PfKUWWPdibuZbpDvMSuWg21M+osPtSxvRUv3Zz8XAbs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K+DieUdDJaQJ3vhMc/+aNjb2JCyKLh3KSGijRAQptqKjnoVZrI7MT66wEVvlrqR6m
-	 vOgZjec0TFiJQSTBkC0rhQBT7Yayy701HgSnPLCjTiZmZ8L1++Sik0eYEgFuzGi4gG
-	 WwWuW0y5ckhXEdhIRshUeCzog47TAOHgA1zJk+PrkmO+/C+DRDS6tpMsW3rQdypDkZ
-	 UiRoJLU759uHMqJACeaGDjFbUtSpRXfBly9R46krrvDhNzne10c9HcE6jzjjf8GQRm
-	 mZu7dXKx1gKzd43QQRRQBI75rUzEr26V1z3hMfC8ED7wRox3ypBXxISukzL7Nq2p9p
-	 ECyKMIdG4rn8w==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 933EF198005A;
-	Fri, 25 Sep 2026 07:30:47 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 25 Sep 2026 07:30:49 -0400
-X-ME-Sender: <xms:Z1u2apWjZllxcj6kK4bVg0P5jl8VllepPzWD9fm2nyl_exwNWa32zQ>
-    <xme:Z1u2atjLMRlQXRdwVw6X6V9pHfwUGE6j9HVEkT-nw9AmXTjDek7I2YvfSLpAtUoCH
-    NjGVGNmQOKWapgM9IqE8Spimx15R8KAMkGGP3eRmt_8bFn7LFYfbb9Gnw>
-X-ME-Received: <xmr:Z1u2at4aNfujvh_mA6DpP4jN_jCKqCLeleZbPWrEsn2gdc6KdwMvVFlelnI>
-X-ME-Proxy-Cause: dmFkZTE8J5BbVZeb+640mllbYW7069CIPU8sTayV1dW0ccjnVUHaZmhv7bVQePrG7CDBvl
-    JGmq9rRiegi1EaWX2c5A6tgH3GTS3+iAEsrO6HT2SvGPAxpy+8GZCbAHjYUrtaEOUgTWgR
-    ShEdiElsRKBIlvFVQhElHtBq3poKvlNgT65xtg+qsDapXeostnjxPG0YW7uyKEADovgRt1
-    gWj9lT9SeM949b+99O6Q1rTHGHhhbFQP6gRsd289+Qng067FXCWRyzXqYTu0VWJw+q8ikJ
-    eoQhQgcP9ssyGGYoBdOn3J5nA2iym/ys5UPhkv+KYq4LkbEGy6ZghHZcqTLL+DNSCFAUq9
-    beIykgW/Yg/RG5At6oq2aXHFQQ7D9g7FiD/0upGjbC8SDxo1aLWvmTQtI7NrjTwnAega4+
-    GLph1/wDjudg3rVkegKME9VBwI6/4EZW7iJ10eQqyC0E/HUyAzWsMnKJD4AZsLyjQHJaLO
-    ixu/oMQTJ2GcOd7DRHM+o7PIxACA6d0IseizbBuXP6rNLpAGjxJHqS3YyYkMUpZ7eSwxZN
-    voHz42S6mDzt4tNC4O/dr1cV8mZkaSi6K2M/mC5si2oRAMYoHRU3RSvP9HaUZdrnV/IiZ4
-    NJZzfOJTKkqs/w0qqfFiXjQnuHO/Fev22aZ2dkR91mO9BVYjdaE6w0m/Jc3w
-X-ME-Proxy: <xmx:Z1u2al71Q2aP0qO8DflnE2s5yDNAHJnsGoVgdP68j73FPgwYBJvTSw>
-    <xmx:Z1u2arE_0h4Ou9Po-tlACd4XZxWzZa5adTZPqlPJNuj4sWr2xp6eXw>
-    <xmx:Z1u2ajw2MzlTWeBxFJSpxCEzUwK8VWpB7heTMCwTDUMvda_FaK2XoA>
-    <xmx:Z1u2ar0lybSr2AgK4Kn2gnTHVJ5jvqCq-sMkyP3a_KgvLBuy6TpEAw>
-    <xmx:Z1u2amMOa7qBHTwGtR0adYkOCnpEUz_1u_9CTwMyNHBi2WSvbZ7tChlK>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Sep 2026 07:30:46 -0400 (EDT)
-Date: Fri, 25 Sep 2026 12:30:45 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] x86/early_printk: Add earlyprintk=tdx to drive
- the UART with TDVMCALLs
-Message-ID: <arZbBqArD9NqWPry@thinkstation>
-References: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
- <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SvrqnLBu"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF234169C;
+	Fri, 25 Sep 2026 04:50:40 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E1F353F86F;
+	Fri, 25 Sep 2026 04:50:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790337044; bh=QVCeiKaLLsWqFAAQeL9n0+h8tt+vp+tZtOpFNlQ3uRw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SvrqnLBui3M+PrATNF/BP/rA6CJ5DGdYxCAJft3/xiR14cPQcEvRfcJIPsSQxAGoz
+	 xIKuAjGm0HQCK6kPgoni6UCZ1QNEdGsGP+fTEzNiH6+GqVN89AsMVcJTvbkoe2PWbl
+	 r0s5D58XQ2hSGXwtCFtmPqkU+U66vuwoEOVWS70Q=
+Date: Fri, 25 Sep 2026 12:50:38 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
+Message-ID: <arZgDmHV8uK1kv8R@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-5-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,75 +50,134 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
+In-Reply-To: <20260924135201.850038-5-suzuki.poulose@arm.com>
 
-On Tue, Sep 22, 2026 at 02:20:07PM -0600, Vishal Verma wrote:
-> @@ -111,6 +112,23 @@ ANNOTATE_NOENDBR_SYM(io_serial_out);
->  DEFINE_STATIC_CALL(serial_in, io_serial_in);
->  DEFINE_STATIC_CALL(serial_out, io_serial_out);
->  
-> +#ifdef CONFIG_INTEL_TDX_GUEST
-> +/*
-> + * A TDX guest cannot execute port I/O instructions, so ask the VMM to do it.
-> + */
-> +static __noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
+On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
+> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+> +				 unsigned long sro_handle,
+> +				 unsigned long donatereq,
+> +				 struct arm_smccc_1_2_regs *out_regs,
+> +				 gfp_t gfp)
 > +{
-> +	return tdx_inb(addr + offset);
-> +}
-> +ANNOTATE_NOENDBR_SYM(tdx_serial_in);
+> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long size = block_size * count;
+> +	unsigned long addr_range;
+> +	unsigned long donated_granules;
+> +	unsigned long donated_size;
+> +	int ret;
+> +	void *virt;
+> +	phys_addr_t phys;
 > +
-> +static __noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
-> +{
-> +	tdx_outb(value, addr + offset);
-> +}
-> +ANNOTATE_NOENDBR_SYM(tdx_serial_out);
-> +#endif /* CONFIG_INTEL_TDX_GUEST */
+> +	/*
+> +	 * The RMM specification requires contiguous allocations are always a
+> +	 * power of 2
+> +	 */
+> +	if (WARN_ON_ONCE(!is_power_of_2(size)))
+> +		return -EINVAL;
 > +
->  static int early_serial_putc(unsigned char ch)
->  {
->  	unsigned timeout = 0xffff;
-> @@ -196,6 +214,22 @@ static __init void early_serial_init(char *s)
->  	early_serial_hw_init(divisor);
->  }
->  
-> +#ifdef CONFIG_INTEL_TDX_GUEST
-> +/*
-> + * Use early_serial_base (COM1) and same default baud rate as
-> + * "earlyprintk=serial"
-> + */
-> +static __init void early_serial_tdx_init(void)
-> +{
-> +	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-> +		static_call_update(serial_in, tdx_serial_in);
-> +		static_call_update(serial_out, tdx_serial_out);
+> +	/* Reuse the cached address range if we have one */
+> +	for (int i = 0; i < sro->addr_count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == count &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state &&
+> +		    IS_ALIGNED(RMI_ADDR_RANGE_ADDR(entry), size)) {
+> +			sro->addr_count--;
+> +			swap(sro->addr_list[sro->addr_count],
+> +			     sro->addr_list[i]);
+> +
+> +			goto mem_donate;
+> +		}
 > +	}
 > +
-> +	early_serial_hw_init(115200 / DEFAULT_BAUD);
-> +}
-> +#endif /* CONFIG_INTEL_TDX_GUEST */
+> +	ret = rmi_sro_ensure_capacity(sro, 1);
+> +	if (ret)
+> +		return ret;
 > +
->  static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
->  {
->  	u32 __iomem *vaddr = (u32 __iomem *)addr;
-> @@ -414,6 +448,13 @@ static int __init setup_early_printk(char *buf)
->  			early_serial_init(buf + 4);
->  			early_console_register(&early_serial_console, keep);
->  		}
-> +#ifdef CONFIG_INTEL_TDX_GUEST
-> +		if (!strncmp(buf, "tdx", 3)) {
-> +			early_serial_tdx_init();
-> +			early_console_register(&early_serial_console, keep);
-> +			break;
+> +	virt = alloc_pages_exact(size, gfp);
+> +	if (!virt)
+> +		return -ENOMEM;
+> +	phys = virt_to_phys(virt);
+> +
+> +	if (state == RMI_OP_MEM_DELEGATED) {
+> +		phys_addr_t delegated_phys;
+> +
+> +		if (rmi_delegate_range(phys, size, &delegated_phys)) {
+> +			if (!rmi_undelegate_range(phys, delegated_phys - phys))
+> +				free_pages_exact(virt, size);
+> +			return -ENXIO;
 > +		}
-> +#endif
+> +	}
+> +
+> +	addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, &addr_range, block_size_fld);
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, count);
 
-All these #ifdefs in early_printk.c can go. X86_FEATURE_TDX_GUEST is a
-disabled feature without CONFIG_INTEL_TDX_GUEST, so
-cpu_feature_enabled() folds to zero and the compiler drops the
-static_call_update() calls and the wrappers with them.
+Courtesy of an LLM - if we get a contiguous/4K pages request for 4MB
+(1024 pages), the above 10-bit field becomes 0. Should we reject the
+request or the updated spec will guarantee this won't happen?
 
-Add stubs for tdx_inb() and tdx_outb() to the #else branch in
-<asm/tdx.h> and make the "tdx" case unconditional.
+Somewhat related, with RMI_BLOCK_L2 or higher and appropriate count we
+can easily go over the MAX_PAGE_ORDER allocation and fail alloc_pages()
+(the contig case). IIUC, the kernel can reject the donation but current
+TF-RMM does not report RMI_OP_CAN_CANCEL (R_SZVNK says it can be
+cancelled). It gets complicated if we want to support large contiguous
+allocations here (e.g. alloc_contig_pages() can sleep). I'd rather just
+cancel the request, not support such large sizes.
+
+[...]
+
+> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+> +				    unsigned long sro_handle,
+> +				    unsigned long donatereq,
+> +				    struct arm_smccc_1_2_regs *out_regs,
+> +				    gfp_t gfp)
+> +{
+> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long found = 0;
+> +	unsigned long donated_granules;
+> +	unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+> +	unsigned long consumed_blocks;
+> +	int addr_list_start = sro->addr_count;
+> +	int ret, i;
+
+[...]
+
+> +	for (int i = 0, src = addr_list_start + consumed_blocks;
+
+Nit: we have 'int ret, i' earlier already, so you can drop the 'int'
+here.
+
+[...]
+
+> +/*
+> + * rmi_sro_execute: Execute an RMI command that is Stateful but not memory
+> + * tranfserring. Takes regs, filled with the FIDs and the arguments in place.
+> + *
+> + * Returns :
+> + *  -ECANCELLED - If the operation had to be aborted and SRO was cancellable.
+
+Nit: -ECANCELED.
+
+> + *  Otherwise, returns the result of the RMI command.
+> + */
+> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
+> +{
+> +	bool cancelled = false;
+> +	unsigned long sro_handle = regs->a1;
+> +
+> +	rmi_smccc_invoke(regs);
+> +
+> +	sro_handle = regs->a1;
+
+Nit: drop the first initialisation maybe?
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Catalin
