@@ -1,68 +1,33 @@
-Received: from mail-wr2-f41.google.com (mail-wr2-f41.google.com [74.125.225.105])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B8E3B52F8
-	for <linux-coco@lists.linux.dev>; Fri, 25 Sep 2026 14:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.105
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A4E4BA9FD;
+	Fri, 25 Sep 2026 14:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790345578; cv=none; b=ETSwhz6IpGHSqThbSFqkEgOyE3Z23RKyFCwPkfV1EcsGZVgsUF6KWaTBqsBX0n9y1rvKw9CmSlwplKm5PyHqW4FdRphN0xjKqM0zV/oIaQU7gEwoBdbFotBmxD6w/lPzBnutkLkLPo72/dxhM51fpzyHpaMYVnXeGysdwPtn/QU=
+	t=1790348238; cv=none; b=UMArdRGh7qljeFNByGoLcukNlSU4bmhkwQwux5Ua4QOOhGowG5VbB27J6OugeD9+kFvV4CbfN0lvuxhNsJh2T8ZBUBY7KdcuxtInBmDXlx/cxRLN6Gu82atwdYKy1doOhEYOVFfSQur3rgCzoM7zjF99MJA789vN8kjkmdT443k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790345578; c=relaxed/simple;
-	bh=/MGhRXXTFshB26dKobSTU+rDExOvlc2JZ8aJb3VEbyc=;
+	s=arc-20240116; t=1790348238; c=relaxed/simple;
+	bh=RZHBsgyig+278+Pk9MVvJjizLmN6flpWBBaUvmoly5M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cNFLARSeDE4VUCH6bCRXY2ADuJhpmU+b7AfDusnNPduMo5pkgumIHm2VR7REyaI1szEudx/jLx8sNrqye1eNWLCHtpNp2ww8AW8j9XUx5Z3l7WyGYpCGpuV7UF2hX5NeyaQVxoA/ZzXc6ZNtAs3zvEBiqIiDV/3bRywiz3g8BuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GuAJbfyO; arc=none smtp.client-ip=74.125.225.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=RtiIQv9mnpF0kEMx4zZBvurD2L8KkSxyvvFLOek/Enu5p3MkwYtivvWq/qcprz7qiuI+qOeyIoBvC21QPtdo0qOgVhzA3looJ9y/W/1cyAgL0iumCsGquSc11Lp1rFtFhXiBw+gjDmW7ihzuwj0+b396h7492M//ebwpv7v1PFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=brYYPVQz; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GuAJbfyO"
-Received: by mail-wr2-f41.google.com with SMTP id ffacd0b85a97d-4834977ae75so558802f8f.3
-        for <linux-coco@lists.linux.dev>; Fri, 25 Sep 2026 07:12:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1790345574; x=1790950374; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=AkecftIWxcu7UUmU6dDFxqik/csT/7Zco/v8or1wVWw=;
-        b=GuAJbfyOhnBnFvIqyZuaOMUOMaLfI18t18ZFaN4t7yPAu8wX6pdwsCIi+EjoJxhI5y
-         t/eLRC56tzaPivDYlC2zSDj1dxNfWe8WqumHYY39jYd0L0vABHxPCGMjiaMX8+JRPvvQ
-         XfMJhPcV6xBoF9wa2dGp2xHSbB4HSeYgmk1Ucn4jvbWIf3XkiciDIXspHyvtoTts89Xt
-         VHD6QTdADxrtqukEMBwa4RNs9tQt3GNM0Olx8LSTE2BK9HsDeT47Khj/DFsnstOnmSqC
-         xZ+uo/4dLXTcL5ZXOddMuE/4Ko9Go7xdLYGwG2x+8dRgoZTeFm0I23kZlmHuvT4jFbMV
-         pKRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790345574; x=1790950374;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=AkecftIWxcu7UUmU6dDFxqik/csT/7Zco/v8or1wVWw=;
-        b=ho5e12obMIlv/T3hSUJWoz9XF+EFfEHppFzEveqYypMeNqkSclCSwZE0UoYk+vB2IM
-         tWtvBe1qc+/VZkZe9XfnGiBHDPhipVdoMfjTOMccxALDzKlRjvlCxUh5uJQoQUhS7der
-         1vtfTX77mzaB9ALis8XoKMsOP3+j4qvG5dmvlJJO+POqJr3PIs1lZRJxhp5JMcHP9aPB
-         tKYcusqqUPTBTiMF1DQBYRdTEuTYWVQvDZTmiWA7COqF8384McU6SVUu1y/bf67CoZZ4
-         j8DggYipFCDoVde3iTIZI0ZEQJnzGdSosvkThCgR+g8YTLN3+9sFm++0HumrOy3Lwutt
-         7Pww==
-X-Forwarded-Encrypted: i=1; AKwUvByoEKVsMqisym4oGnJZwPNI9ge6iTwnz9Y3NHlGPIRz2Q3pR6hkgp11dB1zyR4ny8WK/P7HdVAAHBhI@lists.linux.dev
-X-Gm-Message-State: AFuF++n0UM+/9ZtcgPF5MsrolilyduhYjnxsZBAFTq8HEGzyaFsz/Vut
-	EZyj/B4PN6g4Y5/y6yExRkvADsuyRRTx52ES+SBhM6xpWXqrfGCM1cCs5XMhxs6gZaE=
-X-Gm-Gg: AYBFou29uqW3WMn1JJRu9vb/eSTvv1R7EgpweWgPNabdGnPonD194N9AE/KfRZOcNDc
-	LQvE2LxAGWvBdDlHk72EZaUulu89kf4q6yjSnVbCzRHwEM6vYrkByZZMtQfeXODlOR+dDBbKcF5
-	JtkvtWTIe7/IPMx8gFmEXfhHYKvMrG+Zk4munfEpBbf98pcYxOCoi/QQjBoRBNe495gaS6s3r3Q
-	Gof0QeKiuXKEMBE8WLau2UFjgOdlE8/SIJbSBIGnAtP0CYgsZ6Un2iUitIFN//tXZ0rupAQFGmI
-	0716uS5h/VgqGA5QrguMS4OyqwPcdJAUHiO+V+qsWQh0LDaiIgiiSwAcrZVOMBlKvilrEMS89+2
-	D8LOsKlbXeIZA4B20+n9wny4W+S13+aPzmZFFGnnr/uIDA3CvcXqNbWjfmO8KGttiTeOKBNN891
-	fcbcGdYwBMcfZwtaW+KolllPSOmzKSGurNzAGehbU0u4kb3FhgjBBgN0jd+odB6/PKG5Pit869c
-	Ud0V9UqiyNCVX/GXieMnkA=
-X-Received: by 2002:a05:6000:41f7:b0:487:27f6:a4d6 with SMTP id ffacd0b85a97d-488716b00eemr11164595f8f.38.1790345574584;
-        Fri, 25 Sep 2026 07:12:54 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a30b9aesm6779397f8f.5.2026.09.25.07.12.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Sep 2026 07:12:54 -0700 (PDT)
-Message-ID: <64bfe205-19b7-453b-85f1-0306fbd193d8@suse.com>
-Date: Fri, 25 Sep 2026 17:12:52 +0300
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="brYYPVQz"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B4F71688;
+	Fri, 25 Sep 2026 07:56:56 -0700 (PDT)
+Received: from [10.57.10.17] (unknown [10.57.10.17])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E8C133F85F;
+	Fri, 25 Sep 2026 07:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790348219; bh=RZHBsgyig+278+Pk9MVvJjizLmN6flpWBBaUvmoly5M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=brYYPVQzJiNqSbLCXvb+WIW2JFJOqyWjRA/7kKfpsPdcZYLdSjMpdW5GHK3KWBmu9
+	 zjMbEt3eF5s6OZuBfCkDDun6Moq3PRvKUKiS6jTOSFWrIVdTOjKW1kp0Cca83G44oY
+	 IUmJK9GDdDXHpfPhIWW40zZRav/PzcdzRodv8Nm0=
+Message-ID: <bb4a6fa1-721c-44f8-a8d2-54e80b5449c6@arm.com>
+Date: Fri, 25 Sep 2026 15:56:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,97 +35,159 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
- module init
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com,
- xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
- kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
- peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
-References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-3-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260915102658.713079-3-yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v19 3/7] firmware: arm_rmm: Configure the RMM with the
+ host's page size
+Content-Language: en-GB
+To: Venkata Rao Kakani <venkata.kakani@oss.qualcomm.com>,
+ Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, trilok.soni@oss.qualcomm.com
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-4-suzuki.poulose@arm.com>
+ <20260924100313.00003be7@oss.qualcomm.com>
+ <d4b768e5-c942-43cf-aea2-c266a8bab353@oss.qualcomm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <d4b768e5-c942-43cf-aea2-c266a8bab353@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 25/09/2026 14:23, Venkata Rao Kakani wrote:
+> Hi Suzuki,
+> 
+
+Hi Venkat,
+
+> Now, with this patch Host can set RMM Granule size equal to PAGE_SIZE. 
+> Does RMM send the request to root to set GPT physical granule size = 
+> PAGE_SIZE?
+
+I don't think FIRME lets you do that and it would be too complex. Please
+remember that the GPT is not just for the Non-secure/Realm world, but
+also for the Secure world.
+So, the Physical Granule size would be statically configured to 4KB on a
+platform unless it supports the 4KB granule size, to support all
+possible Sofware components.
 
 
-On 15.09.26 г. 13:26 ч., Xu Yilun wrote:
-> The TDX architecture identifies some features that are off by default
-> but can be enabled by the host during TDX module initialization. They
-> are classified as add-on features because enabling them affects existing
-> TDX systems: they may change existing feature behavior, or reserve more
-> memory.
 > 
-> The TDX module extends TDH.SYS.CONFIG with a new register argument to
-> specify which add-on features to enable. This new argument is a bitmap
-> that uses the same feature bits as TDX_FEATURES0. Note that Dynamic PAMT
-> is an exception: although it is an add-on feature, it is controlled via
-> a legacy, dedicated register argument [1].
-> 
-> The kernel needs to enable these add-on features when it supports them.
-> Add a get_tdx_addon_features0() helper to return the bitmap of the add-on
-> features that the module & kernel both support. Initially, this helper
-> returns 0. It will be updated to return specific feature bits as full
-> kernel support lands. Pass this extra bitmap to TDH.SYS.CONFIG wrapper.
-> 
-> The TDX module requires SEAMCALL leaf version 1 for TDH.SYS.CONFIG when
-> passing the new bitmap argument. A previous change [2] supports the
-> versioned SEAMCALL leafs by adding a "version" field in
-> struct tdx_module_args. Set the version field to 1 if the new bitmap
-> argument is used to enable any add-on feature, otherwise keep the
-> version as 0. This retains backward compatibility with older modules
-> that don't recognize version 1.
-> 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Link: https://lore.kernel.org/all/20260904215841.303070-10-rick.p.edgecombe@intel.com/ # [1]
-> Link: https://lore.kernel.org/all/20260722084634.131020-1-yilun.xu@linux.intel.com/ # [2]
+> In a scenario where, GPT granule size (|GPCCR_EL3|) set to 64K and Host 
+> PAGE_SIZE set to 4K, how does root handle GPT granule mappings, when 
+> Host send RMI_GRANULE_DELEGATE(PAGE_SIZE)?
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+If GPCCR_EL3 is set to 64K, RMM must not report it supports 4K GRANULE
+size.
+
+nit: Please avoid top posting your comments and use plain text for
+discussions on the list.
+
+Suzuki
+
+
+
+
+> 
+> 
+> -- Venkat
+> 
+> On 24-09-2026 10:33 pm, Jonathan Cameron wrote:
+>> On Thu, 24 Sep 2026 14:51:57 +0100
+>> Suzuki K Poulose<suzuki.poulose@arm.com> wrote:
+>>
+>>> RMM v2.0 brings the ability to set the RMM's granule size. Check the
+>>> feature registers and configure the RMM so that it matches the host's
+>>> page size. This means that operations can be done with a granularity
+>>> equal to PAGE_SIZE.
+>>>
+>>> Signed-off-by: Steven Price<steven.price@arm.com>
+>>> Signed-off-by: Suzuki K Poulose<suzuki.poulose@arm.com>
+>> Hi Suzuki,
+>>
+>> Some trivial stuff inline.  Assuming that is addressed.
+>>
+>> Reviewed-by: Jonathan Cameron<jonathan.cameron@oss.qualcomm.com>
+>>
+>>> ---
+>>>   drivers/firmware/arm_rmm/rmi.c | 70 ++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 70 insertions(+)
+>>>
+>>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>>> index 3baba931f92e4..c9ea964fd9081 100644
+>>> --- a/drivers/firmware/arm_rmm/rmi.c
+>>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>>> +
+>>> +static int rmi_configure(void)
+>>> +{
+>>> +	unsigned long granule_feature;
+>>> +	unsigned long granule_size;
+>>> +	int ret = 0;
+>> Value not used.  Fine if it is future churn reduction, but I didn't spot
+>> where if so. I'm guessing left over from refactoring
+>>
+>>> +
+>>> +	switch (PAGE_SIZE) {
+>>> +	case SZ_4K:
+>>> +		granule_size = RMI_GRANULE_SIZE_4KB;
+>>> +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB;
+>>> +		break;
+>>> +	case SZ_16K:
+>>> +		granule_size = RMI_GRANULE_SIZE_16KB;
+>>> +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB;
+>>> +		break;
+>>> +	case SZ_64K:
+>>> +		granule_size = RMI_GRANULE_SIZE_64KB;
+>>> +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB;
+>>> +		break;
+>>> +	default:
+>>> +		BUILD_BUG();
+>>> +	}
+>>> +
+>>> +	if (!(rmi_feat_reg(1) & granule_feature)) {
+>>> +		pr_err("RMM does not support %luKB granules\n",
+>>> +		       PAGE_SIZE >> 10);
+>>> +		return -ENXIO;
+>>> +	}
+>>> +
+>>> +	struct rmm_config *config __free(free_page) =
+>>> +		(struct rmm_config *)get_zeroed_page(GFP_KERNEL);
+>>> +
+>>> +	if (!config) {
+>>> +		pr_err("Unable to allocate memory for RMM config\n");
+>>> +		return -ENOMEM;
+>>> +	}
+>>> +
+>>> +	config->rmi_granule_size = granule_size;
+>>> +
+>>> +	/*
+>>> +	 * For now we set the tracking_region_size to 0 which is the only option
+>>> +	 * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
+>>> +	 * TODO: Support other tracking sizes via Kconfig option for other
+>>> +	 * PAGE_SIZES
+>>> +	 */
+>>> +	config->tracking_region_size = 0;
+>>> +
+>>> +	ret = rmi_rmm_config_set(virt_to_phys(config));
+>>> +	if (ret) {
+>>> +		pr_err("RMM config set failed (%d)\n", ret);
+>>> +		ret = -EINVAL;
+>> 		return -EINVAL;
+>>
+>>> +	}
+>>> +
+>>> +	return ret;
+>> 	return 0;
+>>
+>> So obvious this is the good path without anyone having to think about it!
+>>
+>> I did quick check on whether this was to reduce churn due to later changes
+>> but couldn't immediately spot anything
+>>
+>>
+>>> +}
+
