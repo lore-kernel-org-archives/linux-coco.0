@@ -1,106 +1,137 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABCE3AE6FC
-	for <linux-coco@lists.linux.dev>; Fri, 25 Sep 2026 16:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628FF3D9549;
+	Fri, 25 Sep 2026 17:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790354910; cv=none; b=A1E1YltgFQtZCTWa+WuOrXdKJuQzkeOeUbNAvxnJ+Y0yU7N8PVae34hiCgCCd+qb8IU2tbn7z7UKljaNdLblzUSMTp/DrFWABs9+P0PJGHsKoYmBfwQVmpblNRVD1E2n8O/iAyGO8N5egqLiiPdjCcqUsAPBXfvyfsJ5+r5QnXo=
+	t=1790356040; cv=none; b=ghEmQ7gpZ5ZXvWp86rfb9MQtiq6AH3H5ANuq8OLxxafpKNesSoeehWFRFn7xc98rpmfbfVeAVps8HZ6D2rc90qH7wnVunOr+CUuG4ye62uAfHxaQJ/uNHrIaUKyF0jU2XEoHLg/ZqiEePuglMI9SOtsG5w4uvucC2y6NfVwzdE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790354910; c=relaxed/simple;
-	bh=e4bNro2X21tF+YZ1/Bwbzw8T1iQC6aqrOuNMIg8HB/s=;
+	s=arc-20240116; t=1790356040; c=relaxed/simple;
+	bh=ixzfrU8lMEsDTomOcbMGSENbu/A9XPEY12QX9G9g3I0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kVcsR9Rk0ZhjMSKmAltg7MwzliyMv9i+CbVM1k/6HC/A0F7VsYKIESvVtnwaiUaChffR0JooohAb6xJ6+wvLdH1PNpva2Aa+BkkWpgQ2BSOInu/q399be0OYnOqjiS/SvMNvjiRCaUXI52POA9xXtcH1zspBlEV9zHJ0VE7YGRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=X7vs4Ffl; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=bSUEjpcZ5SGlYp13ID5+wj0M9iJNwIrMWvIQw7rckN1Tx2aGZJyFZprS/Dgl2srf/w7HeTlRj7C5M/fgDGNtZJnoCVtjcwThE+4lVteX2tq8NpI9gnhQoUK297QJIRx1qMJAnjfpJzZE+8cekK7Xqhxh2d9dbRHA2HrvrEx9xus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EHpt1dnk; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="X7vs4Ffl"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1BDD840E015D;
-	Fri, 25 Sep 2026 16:48:18 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id pTpcwLsaCmSk; Fri, 25 Sep 2026 16:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1790354888; bh=yV5eIZXRVx/VnMpigs9MBnv0ybrd5AqZPTL7Q5MFX2U=;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EHpt1dnk"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B9EF169C;
+	Fri, 25 Sep 2026 10:07:11 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6F93D3F86F;
+	Fri, 25 Sep 2026 10:07:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790356034; bh=ixzfrU8lMEsDTomOcbMGSENbu/A9XPEY12QX9G9g3I0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X7vs4FflKGPKZRodhKoU7LLoOQvO+6/Ou4pCRmKVK3dv85bhLQe03Fajt1qX2GjFA
-	 ZjvsKllDT73HGncSmZEcT1aDol7fkeLUgvmmR54V5+J5ExzdraIPJl2QTLkX8xSpNC
-	 YtZanZXV4q0UXfW2WnWH8srD0h3YOduqCq1RKarcSmqBkruPSHLawHphi+h2J8pCpw
-	 EXFXFBEvWnjiuMaGEBeRXiuo0cembBzmpKltZk3ykoGteDZLOnxBGEMKSlNdX5387o
-	 WfGKEbNGIkgjfeog8Ztm37eu6NFLLsVObNP8QpSZuO+fguQA+DnyWjG6lGL5yvwFYH
-	 +CB1UPkO+LC8/kNcUFBgT+TpUDB4DPdj0afh7NCIfozvJkMtfkEGT8czRSeeFSpK9G
-	 R5MvrubhCUUC4pArOe7iSVuGoqrLAn+BVSuSIra89ez3yXtryiMIESuEsoNYSJlM62
-	 jRAUKA4OhG59pUMA2Ch5GJx2xC0swKzattiQjkYdUFX28yvDeAkuxcCiCiVAdswYmO
-	 5/mH15VVCcGKKsL29VvKbhW8t0eZVcq20Pweu7y8BQWPeSTCTxcA2R+OzsGtEMDwdq
-	 wAwAKGXgnGAYjBmCwmz5JwboV3P+ovEAk27XvXeyehkRs3dPzVmRmbgvm+id2kQJTg
-	 tHxMCcneEdZdaOn4iGbZQjTU=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 78B2240E00E7;
-	Fri, 25 Sep 2026 16:47:51 +0000 (UTC)
-Date: Fri, 25 Sep 2026 09:47:48 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Nathan Fontenot <nathan.fontenot@amd.com>
-Subject: Re: [PATCH v5 1/8] x86/bugs: Allow forcing Automatic IBRS with SNP
- active using spectre_v2=eibrs
-Message-ID: <20260925164748.GAaraltFwtJs59WAsj@fat_crate.local>
-References: <20260826223510.3669875-1-kim.phillips@amd.com>
- <20260826223510.3669875-2-kim.phillips@amd.com>
- <20260903040330.GNapjxkgMd2Ey38egR@fat_crate.local>
- <01b57e61-df45-44a6-848b-c19eae226ad0@amd.com>
- <20260924014517.GEarSArVM12m_ZshhA@fat_crate.local>
- <67fb182c-4baa-4b3e-b59c-64cec20839c2@amd.com>
+	b=EHpt1dnkgmEtCXRicfI03eywssdpZdbGJitm2LyU3/txbYynDGJW9GXrNQawbZEyw
+	 3QDLIL1w9E0vjFWl3xfYaRKn3caSX1J1hyvAayOZ7OCj9NKUhHV57vPR+0QirXYeeJ
+	 MOzJAeppFl24SLREnFIB5jWlehs2ggbnYJhv2Z8s=
+Date: Fri, 25 Sep 2026 18:07:08 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, maz@kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+	yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Message-ID: <araqPCdcSnqZqPWz@arm.com>
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <arK3tsTV6EDhI-nt@willie-the-truck>
+ <arOyp8WUrYBAjrGH@arm.com>
+ <arP0IF0MjFUv36AP@willie-the-truck>
+ <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67fb182c-4baa-4b3e-b59c-64cec20839c2@amd.com>
+In-Reply-To: <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com>
 
-On Thu, Sep 24, 2026 at 01:45:52PM -0500, Kim Phillips wrote:
-> For a guest-dominated host that trade plausibly goes the other way, and only
-> the admin knows their deployment.
+On Wed, Sep 23, 2026 at 05:04:06PM +0100, Suzuki K Poulose wrote:
+> On 23/09/2026 16:45, Will Deacon wrote:
+> > On Wed, Sep 23, 2026 at 12:06:15PM +0100, Catalin Marinas wrote:
+> > > On Tue, Sep 22, 2026 at 06:15:34PM +0100, Will Deacon wrote:
+> > > > On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+> > > > > From: Steven Price <steven.price@arm.com>
+> > > > > 
+> > > > > If the host attempts to access granules that have been delegated for use
+> > > > > in a realm these accesses will be caught and will trigger a Granule
+> > > > > Protection Fault (GPF).
+> > > > > 
+> > > > > A fault during a page walk signals a bug in the kernel and is handled by
+> > > > > oopsing the kernel. A non-page walk fault could be caused by user space
+> > > > > having access to a page which has been delegated to the kernel and will
+> > > > > trigger a SIGBUS to allow debugging why user space is trying to access a
+> > > > > delegated page.
+> > > > > 
+> > > > > There is work in progress to unmap the guest_memfd backed private pages from the
+> > > > > linear map. Until we get that support, we could get spurious GPFs from within
+> > > > > the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
+> > > > > 
+> > > > > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > > > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > > ---
+> > > > > Changes since v17:
+> > > > >   * Pass untagged address to die_kernel_fault() - Sashiko
+> > > > >   * Explicitly check !user_mode() for fixups - Catalin
+> > > > >   * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
+> > > > >   * Clarify the commit description about the upcoming work on
+> > > > >     unmapping guest_memfd backed pages from linear map
+> > > > > Changes since v16:
+> > > > >   * Update the commit description to indicate why we try to fixup GPFs
+> > > > > Changes since v10:
+> > > > >   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> > > > > Changes since v2:
+> > > > >   * Include missing "Granule Protection Fault at level -1"
+> > > > > ---
+> > > > >   arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
+> > > > >   1 file changed, 24 insertions(+), 6 deletions(-)
+> > > > 
+> > > > I still don't think we should do this, given that the plan is to unmap
+> > > > the memory from the linear map. If this thing fires, it's a kernel bug
+> > > > and it should be fatal.
+> > > 
+> > > If the linear unmapping gets merged first, I agree, no need to handle
+> > > these faults. I haven't followed that series, so no idea where it is at.
+> 
+> There doesn't seem to be much progress on that series. Brendan
+> volunteered to resurrect the series, taking over from Nikita [0].
+> But looks like Brendan is not working on this anymore. Will see
+> if someone is really planning to look at it.
+> 
+> [0] https://lore.kernel.org/all/DJJ35VLH2PE5.DFD8OYXEOH97@linux.dev
 
-Just holding down the current arguments here *without* AI:
+I just realised that this only solves part of the problem. Normal kernel
+allocations are delegated RMM metadata and they'll also trigger GPF
+faults. Kdump is another point raised here:
 
-We have had an internal discussion in the past about this already. It can
-potentially cause performance disadvantages in certain scenarios.
+https://lore.kernel.org/all/a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com/
 
-If this is ever going to go anywhere, I would like to see:
+I think rmi_delegate_range() covers the non-kdump cases, both for
+metadata and realm memory, we could unmap the linear map there (map it
+back in rmi_undelegate_range()).
 
-- a proper use case which people are *actually* asking for
+For kdump, we have /proc/vmcore that may be mmap'ed or read() syscalls.
+I think Alper proposed an idea to use copy_from_kernel_nofault() (with
+exception recovery in do_gpf()) but we'd still need to block
+mmap_vmcore() or somehow handle SIGBUS in makedumpfile unless it does
+this already.
 
-- have it properly documented in Documentation/admin-guide/hw-vuln/ along with
-  the potential impact so that people can make an *informed* decision whether
-  they really want it
-
-Thx.
+So, I think we should revisit the GPF handling. If we manage to unmap
+all delegated pages, we could limit the exception handling to
+is_kdump_kernel(). Otherwise we keep the exception handling as proposed
+earlier, maybe with some warnings like EL0 access.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Catalin
