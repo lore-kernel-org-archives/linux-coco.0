@@ -1,150 +1,286 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013042.outbound.protection.outlook.com [40.93.201.42])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80C4423E98;
-	Sat, 26 Sep 2026 11:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790422397; cv=fail; b=VCue1wUDMCb1BCZYXf6JT+LGrv/NNRJRoZfSJuSXbG72tw+N/vYgC2ujuXplhNCHlCXV1Te3x8BG6rnn7dPtCczRviRNM0Qd+GQ6XAYubpdJq0QzHzkKRFUC2jZlY5Mf6PMKJn8xOJ+GvlG6JPzGFvHYRRvb+SV4zb4GWvSlH2s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790422397; c=relaxed/simple;
-	bh=aDsUTFHpgYSoGE4GMgTY2p54I1ZK7Jy6oQelWXVm60g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bkcAvcelj2yHWuSQboda0CLD68sfVLb7P0EYhiJCx3Unbz+xlWg3zyrIMWn0KRSKbncaG393iqTiI6iJiXVbhz1HiweqIojjthYAjpj1lPvhNfUcuJNtXNYY6wWyGM9L4GhykuZryUzYKe4YSq3jK8w5BWXvwx/3sbkyQ9wm/48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EpKOip7Q; arc=fail smtp.client-ip=40.93.201.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDFE40F736
+	for <linux-coco@lists.linux.dev>; Sat, 26 Sep 2026 13:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790429950; cv=none; b=EBuwk/LSKIMZy0C4sHFkz1p+/3U+Fcguf3M/FnezO7MhymSM3wa9hG4S1IB54STuDasySautPrtEJwqYUs93f2CnZAW3LDrfGAtnXhh6/IbYLGkISvLDZpOD4XDibpsB3tWdN5Bw3Iyqr69ErCQmjv42hAxnX4zyBJK0BlBXIqQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790429950; c=relaxed/simple;
+	bh=kxpM4woXbVN3C61iCkKOMRV76lDdpJXI6TiGREDFTAA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D5stludT/GaYMkf1OBjnhETrF/Tc2prkSbb7X+aapBh8uzABiEPeGlBmrElIoybawD2xozIdxa3sVC9ud61Pdy0N2OZ7Mk4LqBXq8CgZBj/J+rm9TjDb81giG5jR5Sc1WUqdjk5UXYLhyhY2a4AHyeqnzMiEwrGp/tx3ZFjRKvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=U3LxcIkF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kCY/x/x0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EpKOip7Q"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YV0rUbIEUKw/qSZyQi9eTkBFZDL5CI17ZFgAipwDr+2WklFWJZrB4vs4KCd9sWKybJyraZ17MO+fOcNdLkRbO8SEbhfK0Plu3Xxv9LWCfEC8GJUTghRi3MKbrzzfE0xK6o6Gg3Jdh8ABSxMRKuRStsljXCaxbVccIrFRmKluUGf4h2KVR2jgA1Tup+fFHWrcWkZ7oQuW5oXX37BpzSACflxc25tedEMbRhmMf4oa942zLhQvKUG4YPAfpBojZRSSYJPUK0y40KYHzXoNMLKvnUUsUJbXijGj9lJ0BcFh1sv8US+W1P+cCI6dH044Nw4QaQLkkc/7GGj6MnNMW0Nt/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aDsUTFHpgYSoGE4GMgTY2p54I1ZK7Jy6oQelWXVm60g=;
- b=JDv8wXpNVNIF1wq+MuI1jZqmihIVypXlrtbZ0fJR4qw79dLfoD/m7KxRM0wp0fmeYiDFF8lQh+StbfnorF8Q4eL0uZLX27y3FhxEnaCDgrdvIuZ7v9NglVTdk6d6dhifXBfg9dnSIiZwfQK4sRUBVpEvCJTd5As9Pfxg4ytAVuiKSrBEFdcLWf4khQJF9KaT7pd6BSsPkwdDmVR5+Vtf++8oR5tvRa82L1V6slCm25q+9OvDlJ/mfIjUMCi8Yjp0j0ZiO7AhncnHibvqxsHh3C5Cg6lPCo0oCqJBEt7EtPF+iDjU3N0twO0mR7pe7nVZoVm6G414X/GRcM4wOSZadw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aDsUTFHpgYSoGE4GMgTY2p54I1ZK7Jy6oQelWXVm60g=;
- b=EpKOip7QJ4ZUkYIdgernN6bbJDi7eFSgRDWfMOnHGv8DiZN8CDnS4kVfIdSHLlyRuNZs5MJRhb+4urWoxySOmVX5BF7LU8uuJM022ftwgP5Z9dGxqR38NNVjkolkgboGdv/hODsprS09k3qdjK+cckmqMJtslHlzfscx5IVyuy2hPtLdSDFxeZ/PDT/AnUMk2Kvd595HBMN5bgmfNEo44zdSIbD8gWIy8tX4qn4c/9D1tAfNO1Ri6oIh6AHgQEdTeVlksycGewrajAR4prdasafTRXM5uq4wAwg4Ishb/4fXQLRRv/ffcrwxAMZwfPSjDMfWY2sfQN0ipCD4rCKl7Q==
-Received: from SAWPR12MB999267.namprd12.prod.outlook.com
- (2603:10b6:806:55f::17) by SA3PR12MB7902.namprd12.prod.outlook.com
- (2603:10b6:806:305::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Sat, 26 Sep
- 2026 11:33:09 +0000
-Received: from SAWPR12MB999267.namprd12.prod.outlook.com
- ([fe80::fe35:8a00:d9eb:40f9]) by SAWPR12MB999267.namprd12.prod.outlook.com
- ([fe80::fe35:8a00:d9eb:40f9%4]) with mapi id 15.21.0451.014; Sat, 26 Sep 2026
- 11:33:09 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: Alexey Kardashevskiy <aik@amd.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Dan Williams <dan.j.williams@intel.com>, Jason
- Gunthorpe <jgg@ziepe.ca>, Jonathan Cameron <jic23@kernel.org>, Marc Zyngier
-	<maz@kernel.org>, Samuel Ortiz <sameo@rivosinc.com>, Steven Price
-	<steven.price@arm.com>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will
- Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v5 11/15] coco: host: arm64: Connect RMM pdev streams for
- IDE devices
-Thread-Topic: [PATCH v5 11/15] coco: host: arm64: Connect RMM pdev streams for
- IDE devices
-Thread-Index: AQHdQTBNZsWT6J6bdkaQWvWFEK2da7bg0YGq
-Date: Sat, 26 Sep 2026 11:33:09 +0000
-Message-ID:
- <SAWPR12MB99926745B6BD6A876FC837D32DB08F2@SAWPR12MB999267.namprd12.prod.outlook.com>
-References: <20260910140509.868402-1-aneesh.kumar@kernel.org>
- <20260910140509.868402-12-aneesh.kumar@kernel.org>
-In-Reply-To: <20260910140509.868402-12-aneesh.kumar@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SAWPR12MB999267:EE_|SA3PR12MB7902:EE_
-x-ms-office365-filtering-correlation-id: 06b24f39-4015-4edc-9b5b-08df1bc1f112
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|18002099003|22082099003|10067099003|38070700021|56012099006|11063799006|4143699003;
-x-microsoft-antispam-message-info:
- kRVYnv7029FVcXToD9BOXBL6dC7tbVVVibNsLU+SyNTKTkaY4haJubtaF9cXSVzRL5V08E3mEvWtmuZOuN6B+NkLDoe9YpZ+xxSRz8nsJjB5F1ml6z91FGHRTkc24nnFh0qF64oAfDmdfg7fEVyj/KL3fk7m40MI6adsEh64uWZgVF0Oq6+XEZ4F2k6awSdWH27ZoWngH137XjQql9lZD+6rHIsQ26vq3/jTE3dyUwWGQ8x5pHXxk+iZVraRKY706oWecBKRA0YEGjWnBdqnJLLSGxOxD1/1For2fbGGRpvC+MFmEj0V+XVsYWMSQrwAldmor7FgqUurcU9dH/IJCP/BD0YZE3UzwxiBUOOfRqZSyd85fVQ/mFLtZc/bz6jsO4kFfxC1UL+2+2HarMiH3PZQxQbyu4+gMZrCiNw5o/+RR5a2lp7LhCto5RzSi5LR9E6okMmmyDSdnweE5eF8a6gqXyjgzDuiKNvu+sRrJcvgjulkN77SzsIznrr3XjW+MNqNCFyRFqNF0rckyorB5S4qjZ/m9x4D5nVyp6k1+RVjkhTTs/oc1mHb1gC1LzZXFBHgsXTUg75bFJFDct1VKiyt1GpZasYmS3ZtUnma5KssCsjpslveX594sbFYZZ3YKZlWjx4k/cIQB7U15EOyMVV75YcOMEZ08w57OQRpi2IM96m/P87xBfRzIHMa2INNwDSvB1AmRy+5JIHvqn/8nCCsOsAq/hPnkrheBebCUUA=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SAWPR12MB999267.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(18002099003)(22082099003)(10067099003)(38070700021)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?MHIPlg9+A29+LmfJYO5zQkgXGSDGdsg1nleRSAg+OVP656JsUzNockOE8E?=
- =?iso-8859-1?Q?HbXZ0ujP8oEPssdUl/9HTCSVo29ibbe2xsjnY/+BxHfAcL38AdIsG2PhB3?=
- =?iso-8859-1?Q?Z17758E1cV70padzmH/e4+/v4XD+SwgZacBuKqvV5B19FFjuLtKfqhESrw?=
- =?iso-8859-1?Q?7PvQ7gmZOSDLG4SeVNMPCy7X2lRU2Q5xEMw+szIPLan3jjpLPsDspB6RVR?=
- =?iso-8859-1?Q?k1fmGGJVZ6BbyV2Suxc+9h732mZoyvPLg0gw3Ge2DrvMx5Baf7IdTO/deT?=
- =?iso-8859-1?Q?MHXWLF/GDqq2Ba7tCQ4+MyPnOZyB6LcNX7ZfFGglbd9gBMQVtJ6mykpG/t?=
- =?iso-8859-1?Q?o5cR4lamlfLLAvYX9M2q73CWiuWsZilSVbosRkBA6y0oSYYIRQ/jid4kr9?=
- =?iso-8859-1?Q?GvVpAg+yxE1zP8O7P7yhWvitLcXfVUkTnX5/yoyHxkRn72o1owawQyPxU0?=
- =?iso-8859-1?Q?yHJl72al9+Xe3suVLLxsIcHl6tjpFxmqM69idr6PjsSG+Y1XtZKRjpd13u?=
- =?iso-8859-1?Q?6IUqEdvF423XkCSc8HAfxaoG4xOhTmOvIZPNyV1EdDQRufyEceTpeNZCWJ?=
- =?iso-8859-1?Q?oRx5bKLSTy+Fk/jVSvtKZ9aTTb5Sxrm2Gj8OZLcSNLHta+TR/D8QX9b+pO?=
- =?iso-8859-1?Q?Q9KSC7+nvvFumGinPQN5VrJ7qOxxnUQLOM56AjGwS8wpKnR92GzdmAcd0w?=
- =?iso-8859-1?Q?spi2rdSA3g2qxSpm2n81E+qghiqKzy++EQiexWUHUjWEWEJjPMkQlhuTjU?=
- =?iso-8859-1?Q?XeP9UukpcFaq1AnTDqFDbbwlLjrRMBLgfa7CdT1Ft2pVcZIqP2BvFvkaNN?=
- =?iso-8859-1?Q?f5twJ+hWWIgPEBgspyTKH5I4Xrzxkzt11ZCTLdD6qTcej1XnOTW0LbWOKq?=
- =?iso-8859-1?Q?UIRm1Q0NcJ5MRPE69pvviIey/QX42FHiEj1ovF5zmX5vUPKx2xEImXFtwP?=
- =?iso-8859-1?Q?hUuLB01TMC7D+8z655q0X7eXNWX9fiFltWzg68RnCY7p3I9zLcsByszf/3?=
- =?iso-8859-1?Q?A/60Cz5tJgdRstJZI8e8n5dska8Aj+f7pEly4mFZ7GdH7eSZUZ51MW0t19?=
- =?iso-8859-1?Q?I1qWE35fj+U5kLhlgSs7xDUXGYvfnIP0Qm9Jnjcai0VUbTvkiL7is1iJkC?=
- =?iso-8859-1?Q?xRR6p0EsPl2Ec18mlAG+U9Zf+1t0gJ8Zpmgu29K9L0dxYmZ0HLd7GN6G4a?=
- =?iso-8859-1?Q?hdMwhmkjp+zx67FpjZw0ZIc9a6N6yF45DWYqwJQp6PFP3ejWFJsxQ0Bbky?=
- =?iso-8859-1?Q?6Hw4lTHTScPBh/GY8/nBV+gONfpAXB386I4MUQWkBxZgMzjjX01HHjEPze?=
- =?iso-8859-1?Q?C7FLedFXvPxHGOLzljGvNOz1sd5V6IauOpX+TqfZ1eF0P9qtvkzm9zURFs?=
- =?iso-8859-1?Q?jAKFiYiNRNXPlFEzsksJdHbVke+yOUI/ioLpR5DUsea2DxYgMtW7nmwt3D?=
- =?iso-8859-1?Q?hJY2aAzAgAomXgjrqd+40P426HLsNUqpxO162Y4mxQ+OY6wzCNHXdz5En+?=
- =?iso-8859-1?Q?pMM/5vhTISgSfF9OESjiMzZQWGO7Nt94lOftcvIsTN9F6e1KQAHgU6HLPb?=
- =?iso-8859-1?Q?z4fP3eDLw67RGWA7e+D7rUUAGd68pPu+BczLC/Z7lkoV75kNwb81APqvHh?=
- =?iso-8859-1?Q?JKkfF6tGLBseHO6kOOexEaADsZJPQlwHd6l7B7X3rX16IW9Vfhi/m6CVok?=
- =?iso-8859-1?Q?IerjPBQAdfNg3/m9fX/KN43/SluQW6R6xrd8o79PugXjrFglT2laC6308n?=
- =?iso-8859-1?Q?8fDkE2Bwx4gOnKW3Vsir2RJhravMKvCZLGh9X0v+fxTjAo?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="U3LxcIkF";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kCY/x/x0"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68QAo81D3955503
+	for <linux-coco@lists.linux.dev>; Sat, 26 Sep 2026 13:39:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ryy0TaceLombIiL4TAr0+o046iePkO13SoMlmGHBezM=; b=U3LxcIkFYFlytTfx
+	jKLMqAGBDdHcRGSfy0eyL488h3TuiAXRHbKaj7yFfM6RsQi2DGKYQR1l4GU8vTBH
+	FVsE9fjpyCIH3hhsfyWB+2RtyVBl3cHaimRcA5bJUME2qFn3NxV9PW6qvlRrnXje
+	EZ3Yoxe81pVs0c+0h7OdHZyjv/eXPVRL+0tpz+AtiYFTdUjz3FwVVLMvt6p9J4aG
+	+9uAgrGKAbdbrQLIfqt+o6hQvMaF5Wm0jGf6WunNnLuB4j6x6IDi9/4r5dyzDMjm
+	HMl/oSGx736WTdqJY+JoJM8PGofxMkuJj6k/k/fcnWf+rYABFktjTvUsdb3aTKio
+	ojh1iw==
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gx6938y06-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-coco@lists.linux.dev>; Sat, 26 Sep 2026 13:39:08 +0000 (GMT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-3437d0cc8c7so1166386eec.0
+        for <linux-coco@lists.linux.dev>; Sat, 26 Sep 2026 06:39:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790429948; x=1791034748; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ryy0TaceLombIiL4TAr0+o046iePkO13SoMlmGHBezM=;
+        b=kCY/x/x0QY7N+VOO8LPiYWEo+pqfQz2AXsZz0fZrlYt5UsmYtV7byxDe9theAwuN9G
+         KEV3VPyxFuEYTQfWltsC1sIhCYFGa5rf1UmTROX346tSnqQNM8yZZFmsHwpMYEhYJ/bC
+         W7y6uWJz4/xvo/vpBqqBUHhgu8qOuT5XYoIX8M0OtolzwH+7jSGQUDGL9OMRhWUx0kKt
+         9lp1NISOZ8AOWR0XO/bW8dbc1QPbo7SKs7jbBRV1bHXMAQXyrcURq7vDzO4Fe4GGhyU9
+         FsUAeu3v0eFWpHQiEJe7bMJgANRpbi4x9OdKBv/3zG6aimjOmUwPFeRwLPXVFDjkpL79
+         GIyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790429948; x=1791034748;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ryy0TaceLombIiL4TAr0+o046iePkO13SoMlmGHBezM=;
+        b=eQE6hxUNEbCnBTuwSSo8d62dG3mRpSwZOG1AGvi5mvr7Xtn6mBEwq+0txbk4CdWK4V
+         UiHsZ6f1U069l0wUHmnnOO5QOYqjnNp0V4shc86ROHZmD7MCF/nXNAASCZQYzI8goeZL
+         2kn/kkSIoMpw/WugLaks5NYveu+qdyqgPZaMgsm3uRGN3Tup3+E3ZkdhBb4jybYB59vJ
+         6xu/18CufPdDGmKgbmRd/Ds76caov/arc/2LpuwUiFUw01JEX6B3No+lM6RoOzFcSm4+
+         sYbpPxJWFURp+VU7lIIxpNinvM5pTPqHEHBAv5vf3xOlJ/lUqbSl65jOHagn8mYUoBcL
+         4hfw==
+X-Forwarded-Encrypted: i=1; AKwUvBy+zXZMqinAqyiwYrwXbmZVZgc3IDPxJL+FLgVjN5e/vaR6vh4t541ztWarfjUPWpU4s+KUVhvU1SRx@lists.linux.dev
+X-Gm-Message-State: AFq9FYJDvY/mXiiKQ/t6s6WQt7NX4bgC8DBPFRLur5YDnd3YhnkQof4s
+	qVczjFK4RvaUDTVJFrTcPZ9YnnkJxFtHWfnnY38Ath/rm1x5rAjKebJHpnqQEHggiTuM0feNxyf
+	LJnjd1ZlT8TkfWzpI/3Mpx7g9j1pARibLKyKnU2p7wZqQhR5VlGnE6HQz6sJ8xdCE
+X-Gm-Gg: AYBFou2Xx7fuRpz1t2PwaWC/lsIeBdwzM6aAKHrvvtxYS3P2u37+Z+5TT/SPFs19Iv+
+	womJyKj6TQE414ByZt0sCY1FgeeS8IZBHWH+u81LJOnzIRl7qVOs6/NDmT8RuSbTJ0JMS4mKTAJ
+	m/jnrJfpl2SaPEQrj03MeVGd+8RuyP3g8BT+ARE0ydpIx+1ozb5sejrC8HMoP9TmnIREGT08XJF
+	jw3qooTQnI8jFKIcQM/20tvdZTdOHnDPCEhtBOl6g1kjGUq7Ohjw8OxLi+uJYGRhTwUQ+hIHX/1
+	UAxH1DG9aB1V+qJIvY1QjTW9eDpXWqkpSa6OlBLLdRe+7bWcpZuj0Jgc7P1C6zOtzWPDGVvLBiF
+	uhfBnr/WAj0w7dFpm5UKzBlR9fFASFqLMBuc=
+X-Received: by 2002:a05:7300:3b28:b0:328:2ea5:bd39 with SMTP id 5a478bee46e88-342705b94bcmr4840008eec.4.1790429947084;
+        Sat, 26 Sep 2026 06:39:07 -0700 (PDT)
+X-Received: by 2002:a05:7300:3b28:b0:328:2ea5:bd39 with SMTP id 5a478bee46e88-342705b94bcmr4839926eec.4.1790429945792;
+        Sat, 26 Sep 2026 06:39:05 -0700 (PDT)
+Received: from [192.168.68.104] ([49.207.195.115])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34141a4a00dsm15522844eec.1.2026.09.26.06.38.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Sep 2026 06:39:05 -0700 (PDT)
+Message-ID: <23f281ef-d724-4fdb-aa1d-408c368d941c@oss.qualcomm.com>
+Date: Sat, 26 Sep 2026 19:08:38 +0530
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SAWPR12MB999267.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 06b24f39-4015-4edc-9b5b-08df1bc1f112
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2026 11:33:09.6132
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uTpbvobMeWzkpWpP9D7XhQCuorqVI2gfukXCj8WJ531Rrslws/59kwYRbVp/NE12heL3q382Q/F0Q09J8yUs4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7902
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 3/7] firmware: arm_rmm: Configure the RMM with the
+ host's page size
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+        sudeep.holla@arm.com, trilok.soni@oss.qualcomm.com
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-4-suzuki.poulose@arm.com>
+ <20260924100313.00003be7@oss.qualcomm.com>
+ <d4b768e5-c942-43cf-aea2-c266a8bab353@oss.qualcomm.com>
+ <bb4a6fa1-721c-44f8-a8d2-54e80b5449c6@arm.com>
+Content-Language: en-US
+From: Venkata Rao Kakani <venkata.kakani@oss.qualcomm.com>
+In-Reply-To: <bb4a6fa1-721c-44f8-a8d2-54e80b5449c6@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI2MDA1NCBTYWx0ZWRfX0kPKSwDVxiNq
+ wG4iLm0bMxyW635hBroaT7GGSky4pU7Nzfab6wwZSbRT9cSKlqi93PgHT+6et3p6gi5Bow5NrX0
+ 571UA39q0I0hI6aYwRiy+PtEbCX85VA=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI2MDA1NCBTYWx0ZWRfX/xXymuK2XnCD
+ EiAnofWTKDWpAHhTRfXr0pJEqCJ2ln1h1RuD9NTFNOoTW0aIDLJMOg4Lwj835fRFi6TqlkgtDsg
+ fnhyMtdwf3DPTHfwhR3PjHPI/WZQJgSIMMLTwJjUSchzSHRIewsN3H/BhQhLWlmHboC9t/N53FZ
+ JdTWaQnd+hDtgYrvpx6SDS8umB+ze7NUGxeflEZvqUrWHhiKrqexAaLIcOnkdsTEWdtTTV0Y5Ww
+ GA2S+jez9pV357VkPiHiNP8uLr2j2FMKkLmdKES7r2IKbq9OrumLBlKE48PL1xjF8JPrrW+8Y0N
+ D79ck83cQcCov+pMp59kReInxRbgDv9gpQL9nC1FDyndwnHKwJFk5II7rU+q/malWThFHBJOppf
+ Xv4eSatl9RmbJizPRhW+lrK/2dO6I5+UqQyhuzC3OFwU0k+MNcOwnVEnQHHocVlLfpOc6Wzc1mN
+ f3jqjShhrYY2jhz0Yng==
+X-Proofpoint-GUID: M9JXK9Nz1GRAF7v8lcEjEFAwBAs52Kd0
+X-Authority-Analysis: v=2.4 cv=f6Pdl+yM c=1 sm=1 tr=0 ts=6ab7cafc cx=c_pps
+ a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=lfboiZ0IWGQn+/ls2+s3/g==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8 a=VEZfdOmQvSGR4K_WtDcA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=bBxd6f-gb0O0v-kibOvt:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-ORIG-GUID: M9JXK9Nz1GRAF7v8lcEjEFAwBAs52Kd0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-26_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ clxscore=1015 bulkscore=0 spamscore=0 suspectscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609260054
 
-Hi Aneesh=0A=
-=0A=
-It isn't clear to me why does pci_dev_addr_range() derive addr_range=0A=
-from the upstream bridge PCI_BRIDGE_MEM_WINDOW /=0A=
-PCI_BRIDGE_PREF_MEM_WINDOW rather than from pdev's own=0A=
-regions? Should it be filled up with device regions instead?=0A=
-=0A=
-IIUC, there may be a couple of issues with the current approach:=0A=
-1. The bridge's window can be wider than what pdev actually owns due=0A=
-to alignment padding.=0A=
-2. If the bridge has multiple downstream devices (are there any?),=0A=
-the window spans address space belonging to sibling devices too=0A=
-and not just this pdev. So RMM would get a range that isn't=0A=
-exclusive to the pdev/stream being connected.=0A=
+
+On 25-09-2026 08:26 pm, Suzuki K Poulose wrote:
+> On 25/09/2026 14:23, Venkata Rao Kakani wrote:
+>> Hi Suzuki,
+>>
+>
+> Hi Venkat,
+>
+>> Now, with this patch Host can set RMM Granule size equal to 
+>> PAGE_SIZE. Does RMM send the request to root to set GPT physical 
+>> granule size = PAGE_SIZE?
+>
+> I don't think FIRME lets you do that and it would be too complex. Please
+> remember that the GPT is not just for the Non-secure/Realm world, but
+> also for the Secure world.
+> So, the Physical Granule size would be statically configured to 4KB on a
+> platform unless it supports the 4KB granule size, to support all
+> possible Sofware components.
+>
+>
+>>
+>> In a scenario where, GPT granule size (|GPCCR_EL3|) set to 64K and 
+>> Host PAGE_SIZE set to 4K, how does root handle GPT granule mappings, 
+>> when Host send RMI_GRANULE_DELEGATE(PAGE_SIZE)?
+>
+> If GPCCR_EL3 is set to 64K, RMM must not report it supports 4K GRANULE
+> size.
+>
+> nit: Please avoid top posting your comments and use plain text for
+> discussions on the list.
+>
+> Suzuki
+>
+>
+>
+>
+>>
+>>
+>> -- Venkat
+>>
+>> On 24-09-2026 10:33 pm, Jonathan Cameron wrote:
+>>> On Thu, 24 Sep 2026 14:51:57 +0100
+>>> Suzuki K Poulose<suzuki.poulose@arm.com> wrote:
+>>>
+>>>> RMM v2.0 brings the ability to set the RMM's granule size. Check the
+>>>> feature registers and configure the RMM so that it matches the host's
+>>>> page size. This means that operations can be done with a granularity
+>>>> equal to PAGE_SIZE.
+>>>>
+>>>> Signed-off-by: Steven Price<steven.price@arm.com>
+>>>> Signed-off-by: Suzuki K Poulose<suzuki.poulose@arm.com>
+>>> Hi Suzuki,
+>>>
+>>> Some trivial stuff inline.  Assuming that is addressed.
+>>>
+>>> Reviewed-by: Jonathan Cameron<jonathan.cameron@oss.qualcomm.com>
+>>>
+>>>> ---
+>>>>   drivers/firmware/arm_rmm/rmi.c | 70 
+>>>> ++++++++++++++++++++++++++++++++++
+>>>>   1 file changed, 70 insertions(+)
+>>>>
+>>>> diff --git a/drivers/firmware/arm_rmm/rmi.c 
+>>>> b/drivers/firmware/arm_rmm/rmi.c
+>>>> index 3baba931f92e4..c9ea964fd9081 100644
+>>>> --- a/drivers/firmware/arm_rmm/rmi.c
+>>>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>>>> +
+>>>> +static int rmi_configure(void)
+>>>> +{
+>>>> +    unsigned long granule_feature;
+>>>> +    unsigned long granule_size;
+>>>> +    int ret = 0;
+>>> Value not used.  Fine if it is future churn reduction, but I didn't 
+>>> spot
+>>> where if so. I'm guessing left over from refactoring
+>>>
+>>>> +
+>>>> +    switch (PAGE_SIZE) {
+>>>> +    case SZ_4K:
+>>>> +        granule_size = RMI_GRANULE_SIZE_4KB;
+>>>> +        granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB;
+>>>> +        break;
+>>>> +    case SZ_16K:
+>>>> +        granule_size = RMI_GRANULE_SIZE_16KB;
+>>>> +        granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB;
+>>>> +        break;
+>>>> +    case SZ_64K:
+>>>> +        granule_size = RMI_GRANULE_SIZE_64KB;
+>>>> +        granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB;
+>>>> +        break;
+>>>> +    default:
+>>>> +        BUILD_BUG();
+>>>> +    }
+>>>> +
+>>>> +    if (!(rmi_feat_reg(1) & granule_feature)) {
+>>>> +        pr_err("RMM does not support %luKB granules\n",
+>>>> +               PAGE_SIZE >> 10);
+>>>> +        return -ENXIO;
+>>>> +    }
+>>>> +
+>>>> +    struct rmm_config *config __free(free_page) =
+>>>> +        (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
+>>>> +
+>>>> +    if (!config) {
+>>>> +        pr_err("Unable to allocate memory for RMM config\n");
+>>>> +        return -ENOMEM;
+>>>> +    }
+>>>> +
+>>>> +    config->rmi_granule_size = granule_size;
+>>>> +
+>>>> +    /*
+>>>> +     * For now we set the tracking_region_size to 0 which is the 
+>>>> only option
+>>>> +     * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 
+>>>> 16KB/64KB).
+>>>> +     * TODO: Support other tracking sizes via Kconfig option for 
+>>>> other
+>>>> +     * PAGE_SIZES
+>>>> +     */
+>>>> +    config->tracking_region_size = 0;
+>>>> +
+>>>> +    ret = rmi_rmm_config_set(virt_to_phys(config));
+>>>> +    if (ret) {
+>>>> +        pr_err("RMM config set failed (%d)\n", ret);
+>>>> +        ret = -EINVAL;
+>>>         return -EINVAL;
+>>>
+>>>> +    }
+>>>> +
+>>>> +    return ret;
+>>>     return 0;
+>>>
+>>> So obvious this is the good path without anyone having to think 
+>>> about it!
+>>>
+>>> I did quick check on whether this was to reduce churn due to later 
+>>> changes
+>>> but couldn't immediately spot anything
+>>>
+>>>
+>>>> +}
+>
+Understood. Thanks Suzuki.
