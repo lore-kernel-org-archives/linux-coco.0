@@ -1,157 +1,156 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6F049BD7C;
-	Mon, 28 Sep 2026 10:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39343D75D3;
+	Mon, 28 Sep 2026 10:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790591888; cv=none; b=LjAgkvEimrRi+glrrkprCmqMyGeykVkwC2jvSOYf6XDITg2IlBFv6S4sYR++FOPK3ECdezeie5gOcX+jWgDk1CPYnTn4yxJyTVntiGtwLtsdravhEY7IG/XN9capBM/wCISMzaQR6nstIQaU4UxtbjZCcz4cbjZQ8Elzfj1P+NQ=
+	t=1790592718; cv=none; b=CQWX0cRDlZeis185c12IpXT/ZtOxSp2Rrop4cLnc+Yfm1CiISgiEJsAFqD0mrzxBq8qgI7GUaxXHAzAsydcjzi4rxMbsEHwJYw/R2N5Fy6RPMUXDUZy4P/fPFEE7aaUimZ+SAAeuxN3uHroXBQMsTnFMtQuczkwBEmeGwAHa6V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790591888; c=relaxed/simple;
-	bh=WyhGkEh/Tg98781MkrRtXVLM7OrY9RABxic2LWuUJO0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YUpCUiVYRm95ZYJXitu+4Y+0+VBqe8eiP4oBLsNelqhKKY8BLvHO50grrn37PpDpNut4yxI4VCOWSlD395HIoYdx5RJ6nlOuwIsJj0icnlt1dEhVuNemYIPftZYnN/m9uCRvWyp1if757fGQkauBmy2dCcZnkA5S64nsluya3FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=b6e/9zz0; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790592718; c=relaxed/simple;
+	bh=i9iWZp76BWiqX76RjNQSQWSTOTQ6yXB6zMkbMGgnohc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ufqI3p3CxI2QjViJF5iUvxiGqkuRaqbudxDoEf0UOzipDgLCKTgIuo5erEll+DcuSCHoc2uUh9b1Z8c6EifYnCyc1aRtZbcu5zygIxUg3EWdsFi+JVVcXrKwOwFoovrpTHvcYytiiM14mnFfrALItEGHlJo8depjDxhWpLVDAFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Txs5Ny69; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="b6e/9zz0"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F45B1595;
-	Mon, 28 Sep 2026 03:38:02 -0700 (PDT)
-Received: from [10.57.12.79] (unknown [10.57.12.79])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B3BF63F86F;
-	Mon, 28 Sep 2026 03:38:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790591885; bh=WyhGkEh/Tg98781MkrRtXVLM7OrY9RABxic2LWuUJO0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=b6e/9zz0pkhgc+qaHVauwUb4u5rmxdp7i1PHyPSXEKggwpo+VB31jvoLg5zQzb/0h
-	 iYZ2vFcYs8WFv8M1rrY3QbDiNBuzgTBgfDKeybi4RgMK7SqwG6zIb3YB44LK0PhEqB
-	 4caPUYWw3Z88gErdYPNWuklLnK9KYYIs0cpyhB4c=
-Message-ID: <3934b4c9-6b1f-44fa-847e-4fb1e67a58e7@arm.com>
-Date: Mon, 28 Sep 2026 11:38:01 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Txs5Ny69"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBEC1F000FF;
+	Mon, 28 Sep 2026 10:51:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790592716;
+	bh=NN3wx/RsUxdRsvMjmcHQPLlgjDCWCOIl0dO7zW0TJIY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Txs5Ny69Ac9Ri4OQsx9iNJZleKBTZjRKoSp3ReMWT5euTFnxnDZ5vQGpmlP3sF3Al
+	 lKKnhvvUN2DFBydjsg3XPlbzJyY1F7Dcgmh+GRBk8RMU3sKn2jFQvaGW4CV2lSblPD
+	 mkg/mmNzKCn1APoK5P+l73nlg1dOg6bj3i5dgQVwlJ2J4tWquDPBe5bHqoBdSmxdrW
+	 KuieIsdCW7MuISXxhWSL+2iUYnF9cQB2/g4akmKV42ff/yEQuDDI5Hm9psembfanoB
+	 A0H7cEVzxCXb1klAA4GzGK1/dp3Ibg/tvtVSY2VKETj8uMY8M4HRg4EEK/7u09rb4V
+	 ZBFRYSi7hX8IA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
+In-Reply-To: <20260925123918.GI9354@nvidia.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-9-aneesh.kumar@kernel.org>
+ <179027891417.104879.5995584402952067518.b4-review@b4>
+ <yq5acxu1kgmo.fsf@kernel.org> <20260925123918.GI9354@nvidia.com>
+Date: Mon, 28 Sep 2026 16:21:47 +0530
+Message-ID: <yq5a33utr6m4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, maz@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
- <arK3tsTV6EDhI-nt@willie-the-truck> <arOyp8WUrYBAjrGH@arm.com>
- <arP0IF0MjFUv36AP@willie-the-truck>
- <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com> <araqPCdcSnqZqPWz@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <araqPCdcSnqZqPWz@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 25/09/2026 18:07, Catalin Marinas wrote:
-> On Wed, Sep 23, 2026 at 05:04:06PM +0100, Suzuki K Poulose wrote:
->> On 23/09/2026 16:45, Will Deacon wrote:
->>> On Wed, Sep 23, 2026 at 12:06:15PM +0100, Catalin Marinas wrote:
->>>> On Tue, Sep 22, 2026 at 06:15:34PM +0100, Will Deacon wrote:
->>>>> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
->>>>>> From: Steven Price <steven.price@arm.com>
->>>>>>
->>>>>> If the host attempts to access granules that have been delegated for use
->>>>>> in a realm these accesses will be caught and will trigger a Granule
->>>>>> Protection Fault (GPF).
->>>>>>
->>>>>> A fault during a page walk signals a bug in the kernel and is handled by
->>>>>> oopsing the kernel. A non-page walk fault could be caused by user space
->>>>>> having access to a page which has been delegated to the kernel and will
->>>>>> trigger a SIGBUS to allow debugging why user space is trying to access a
->>>>>> delegated page.
->>>>>>
->>>>>> There is work in progress to unmap the guest_memfd backed private pages from the
->>>>>> linear map. Until we get that support, we could get spurious GPFs from within
->>>>>> the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
->>>>>>
->>>>>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
->>>>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->>>>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>> ---
->>>>>> Changes since v17:
->>>>>>    * Pass untagged address to die_kernel_fault() - Sashiko
->>>>>>    * Explicitly check !user_mode() for fixups - Catalin
->>>>>>    * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
->>>>>>    * Clarify the commit description about the upcoming work on
->>>>>>      unmapping guest_memfd backed pages from linear map
->>>>>> Changes since v16:
->>>>>>    * Update the commit description to indicate why we try to fixup GPFs
->>>>>> Changes since v10:
->>>>>>    * Don't call arm64_notify_die() in do_gpf() but simply return 1.
->>>>>> Changes since v2:
->>>>>>    * Include missing "Granule Protection Fault at level -1"
->>>>>> ---
->>>>>>    arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
->>>>>>    1 file changed, 24 insertions(+), 6 deletions(-)
->>>>>
->>>>> I still don't think we should do this, given that the plan is to unmap
->>>>> the memory from the linear map. If this thing fires, it's a kernel bug
->>>>> and it should be fatal.
->>>>
->>>> If the linear unmapping gets merged first, I agree, no need to handle
->>>> these faults. I haven't followed that series, so no idea where it is at.
->>
->> There doesn't seem to be much progress on that series. Brendan
->> volunteered to resurrect the series, taking over from Nikita [0].
->> But looks like Brendan is not working on this anymore. Will see
->> if someone is really planning to look at it.
->>
->> [0] https://lore.kernel.org/all/DJJ35VLH2PE5.DFD8OYXEOH97@linux.dev
-> 
-> I just realised that this only solves part of the problem. Normal kernel
-> allocations are delegated RMM metadata and they'll also trigger GPF
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-Other than Kdump, kernel shouldn't try to touch these metadata pages
-unless there is a kernel bug ?
+> On Fri, Sep 25, 2026 at 11:38:15AM +0530, Aneesh Kumar K.V wrote:
+>> Jason Gunthorpe <jgg@nvidia.com> writes:
+>> 
+>> >> vIOMMU creation currently dispatches directly through the physical IOMMU
+>> >> driver. Some vIOMMU types need an implementation supplied by another
+>> >> subsystem, together with private data whose lifetime extends across all
+>> >> vIOMMUs using that implementation.
+>> >> 
+>> >> Introduce a vIOMMU provider that associates implementation operations,
+>> >> their module owner and private data. Allow one external provider to
+>> >> register for each non-default vIOMMU type.
+>> >
+>> > This seems much more extensive than I imagined when I proposed this.
+>> >
+>> > I imagined you'd just have iommufd see there is a TSM attached the pci
+>> > device with a function call, and check if that TSM handled the
+>> > requested iommu ID.
+>> >
+>> > No need for a registration system because we already know the only
+>> > possible TSM driver that can handle it,
+>> >
+>> 
+>> Agreed, there will be only one vIOMMU provider. But, without a
+>> registration mechanism, what would the module dependency look like?
+>> 
+>> I currently have the TSM driver depending on IOMMUFD. Therefore, the TSM
+>> driver needs to tell iommufd which vIOMMU type it provides and register
+>> the corresponding provider. IOMMUFD does not call into TSM directly.
+>
+> Just put the two new ops in:
+>
+> struct pci_tsm_ops {
+> 	size_t (*viommu_get_size)(struct device *dev, enum iommu_viommu_type type);
+> 	int (*viommu_init)(struct iommufd_viommu *viommu, struct device *dev,
+> 		    struct iommu_domain *parent,
+> 		    const struct iommu_user_data *user_data);
+> }
+>
+> And bounce them with a static inline
+>
+> static inline
+> ssize_t pci_tsm_viommu_get_size(struct device *dev, enum iommu_viommu_type type)
+> {
+> 	const struct pci_tsm_ops *ops;
+> 	struct pci_dev *pdev;
+>
+> 	if (!dev_is_pci(dev))
+> 		return -EINVAL;
+>
+> 	pdev = to_pci_dev(dev);
+> 	if (!pdev->tsm)
+> 		return -ENODEV;
+>
+> 	ops = to_pci_tsm_ops(pdev->tsm);
+> 	if (!ops->viommu_get_size)
+> 		return 0;
+> 	return ops->viommu_get_size(dev, type);
+> }
+>
+> No module dependency.
+>
+> The iommufd side is simple, it just calls this before calling the
+> iommu driver. First one to return a size wins and creates the viommu.
+>
+> We'd want to have a reasonable lifetime model where the the pdev->tsm
+> is guarenteed stable while a driver is bound.
+>
 
-And the userspace wouldn't have a mapping for them anyways ?
+And the init side will be as below.
 
-> faults. Kdump is another point raised here:
+bool use_tsm = false;
 
-True.
-
-> 
-> https://lore.kernel.org/all/a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com/
-> 
-> I think rmi_delegate_range() covers the non-kdump cases, both for
-> metadata and realm memory, we could unmap the linear map there (map it
-> back in rmi_undelegate_range()).
-
-We could explore that option for the kernel allocations too.
-
-> 
-> For kdump, we have /proc/vmcore that may be mmap'ed or read() syscalls.
-> I think Alper proposed an idea to use copy_from_kernel_nofault() (with
-> exception recovery in do_gpf()) but we'd still need to block
-> mmap_vmcore() or somehow handle SIGBUS in makedumpfile unless it does
-> this already.
-
-There is a --no-mmap option for makedumpfile in the worst case.
-
-> 
-> So, I think we should revisit the GPF handling. If we manage to unmap
-> all delegated pages, we could limit the exception handling to
-> is_kdump_kernel(). Otherwise we keep the exception handling as proposed
-> earlier, maybe with some warnings like EL0 access.
-
-Agree. We definitely need this for kdump handling.
-
-Suzuki
+viommu_size = tsm_viommu_get_size(dev, type);
+if (viommu_size) {
+	use_tsm = true;
+} else {
+	viommu_size = iommu_ops->get_viommu_size(dev, type);
+	if (!viommu_size)
+		return -EOPNOTSUPP;
+}
 
 
+Initialization becomes:
 
+
+if (use_tsm)
+	ret = tsm_viommu_init(viommu, dev, parent, user_data);
+else
+	ret = iommu_ops->viommu_init(viommu, parent, user_data);
+
+
+-aneesh
