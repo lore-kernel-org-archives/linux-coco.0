@@ -1,50 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59464E5359
-	for <linux-coco@lists.linux.dev>; Mon, 28 Sep 2026 15:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF064E5321
+	for <linux-coco@lists.linux.dev>; Mon, 28 Sep 2026 16:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790610613; cv=none; b=Xc5lLZ+s2j//ABiY/NqC/e+Vq5Gj39pHxjzqtYdhj5SUf8JdPycC1MXczhUZIFEtXKj4Qo8wzGLW8+IehVNrHtQRNvbTE0osEqAmmhbmDVkNm02G/hV2tyvgiV7OaB1MUA//ZMpebnxriTfBAqQ6oQOJNM6aIETKJsvgAAXB8uU=
+	t=1790611995; cv=none; b=Rk8QHxcFDkoVF54hkTp8DW0jOi+BGGYUxYINLa+dCBm0K4iYox38CwUw6iE0nM9ySPE0fa//ebPww0jcM40YBzIGCtGEQCYLzxgJypJ4WpKI4/+R8Rwxg8+6dh335MRGkOBFPb4uRlDefZvGgVNdJQqnJQYX+URO3EhdeQukno4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790610613; c=relaxed/simple;
-	bh=gd/VTPQ0nejnutKX+4KFU05hh8mfBLirUFjfVowP2fE=;
+	s=arc-20240116; t=1790611995; c=relaxed/simple;
+	bh=bO3NlpvnGMms6PuAGnWTHrCYVNQDOGvdF/FYyUuckQ4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g3fW19885pPwtAQTo5yRKISo1/SWbQb875HbU4R/CvDPd4pgWW47obWxNOJF9iOAb3vTT7AAPB7M/s5uO7SroV1g/e8jXCM+nj2oj7OtIOgXe4awHUDmXnjLh0PutfF1mABOUppex06MxMJV5BGnSVmn1fkzQDUMyyiN95AYEh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X+avLvat; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=IcpmrM+c4RSalIBVVl6+akUCPXHKfVEt4nqYPPJcF7bmqcRkB79uRJQfyG/X/KDYi0eoGHezR54GruJ9vS9euq0WeyO0SlBEDMn2I5+5vK10vOm7DOAjp7tAy+ykLILx8VdLG9griTRIjsY9Tk/8sWfCR4j/qVXdNZvdv313aNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k1pilRm0; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X+avLvat"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k1pilRm0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790610612; x=1822146612;
+  t=1790611993; x=1822147993;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=gd/VTPQ0nejnutKX+4KFU05hh8mfBLirUFjfVowP2fE=;
-  b=X+avLvatX82ca+1o4/ksxz5r5AV22wBHOjIi9LKae/CsYLJRcHtEl9RG
-   C0LXT1QHGFib7DwmWBn7bCKQ73N31NB1MDCviGbAY8NiX/KDie2POoB4S
-   wXUfSUJT2bnpWo2DRT8gVPqnoFu/iWQtb4mXG6YuO9Qf2azm1qyeecYLH
-   VW7hHQZz7C8n3xe2Dqc9yVQaf8Bf7ObPjUxlpA+J2qjIZVoKa5KnooKZM
-   mYvnTnQ2cSqNB5rgzaTLrLRJjiyHBw7bQUpN2h6aHKaSOxpb5oRxSSshe
-   FuqbomOEHYzCm/bHWOb+FhBxl+zH9ojdEtYKAAtK2xqK0wNYc3+Wbwq/9
-   A==;
-X-CSE-ConnectionGUID: 5GxI0F0JRxGemZIGsKWSHA==
-X-CSE-MsgGUID: 8QvG8ijmQn2GVlNGbqFaMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90180053"
+  bh=bO3NlpvnGMms6PuAGnWTHrCYVNQDOGvdF/FYyUuckQ4=;
+  b=k1pilRm0S98j8GvWgDPyC5dByaL9VfvyuTaNnn0d4mQl48F0lQEclf7M
+   atIJoQHfo6nR1TakDZ5xnl45dJOq46MwgMyJdRwT5cbABn9DTWX3yBgoP
+   BLuVcrRA57exZK5kecT9U+gAo27mTVkkLpfEh9O9sSF+LOLNkVDUvaXIl
+   k/S0JWiST6MZmhrSegNNBbB3fNtXkZZOeyi8un+rjD6dKZ5qWn9p0MzV9
+   QIyZSmlKKhNVnQkNdYTkBxv6eE6vv2Ys4BMZI4Gu0qHfeaXr8AUu79aVi
+   aiD27L/2bzxNRSvuKDg/tONCMYdlkF53XRSPDoGpxYL3YGJS9HCqSd7va
+   g==;
+X-CSE-ConnectionGUID: L92PQbUtTku1f0kTEF4J/w==
+X-CSE-MsgGUID: XgPnjXTqQniI555AnUl4fw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="95130373"
 X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="90180053"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 08:50:11 -0700
-X-CSE-ConnectionGUID: mRhTPVP8SRKZHlTe9jYnMQ==
-X-CSE-MsgGUID: gk+zszcbREuF+YSpRYV6vA==
+   d="scan'208";a="95130373"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 09:13:13 -0700
+X-CSE-ConnectionGUID: DzkB8jJpSTqVfTfoL/4FBA==
+X-CSE-MsgGUID: sho+dZ3MQVa42FQxqGY3JA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="275119705"
 Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.111.75]) ([10.125.111.75])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 08:50:11 -0700
-Message-ID: <1753d73f-7464-4476-9fb7-c0a12157a6ab@intel.com>
-Date: Mon, 28 Sep 2026 08:50:10 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 09:13:12 -0700
+Message-ID: <0c6bc71f-53fb-4240-83a3-c52d090044d3@intel.com>
+Date: Mon, 28 Sep 2026 09:13:11 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +50,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/6] virt: tdx-guest: Calculate the Quote buffer size
- safely
+Subject: Re: [PATCH v5 4/6] virt: tdx-guest: Add a helper for the Quote buffer
+ size
 To: Peter Fang <peter.fang@intel.com>,
  Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
@@ -67,7 +65,7 @@ Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
  Artem Bityutskiy <artem.bityutskiy@intel.com>
 References: <20260928100913.2265687-1-peter.fang@intel.com>
- <20260928100913.2265687-4-peter.fang@intel.com>
+ <20260928100913.2265687-5-peter.fang@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -113,37 +111,38 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260928100913.2265687-4-peter.fang@intel.com>
+In-Reply-To: <20260928100913.2265687-5-peter.fang@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/28/26 03:08, Peter Fang wrote:
-> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
-> +#define TDX_QUOTE_TOTAL_SIZE(n)		struct_size_t(struct tdx_quote_buf, data, n)
->  
->  /* struct tdx_quote_buf: Format of Quote request buffer.
->   * @version: Quote format version, filled by TD.
-> @@ -314,7 +314,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  
->  	out_len = READ_ONCE(quote_buf->out_len);
->  
-> -	if (out_len > TDX_QUOTE_MAX_LEN)
-> +	if (TDX_QUOTE_TOTAL_SIZE(out_len) > GET_QUOTE_BUF_SIZE)
->  		return -EFBIG;
+> +static size_t get_quote_buf_size(void)
+> +{
+> +	static size_t quote_buf_size;
+> +
+> +	if (quote_buf_size)
+> +		return quote_buf_size;
+> +
+> +	quote_buf_size = PAGE_ALIGN(TDX_DEFAULT_QUOTE_SIZE);
+> +
+> +	return quote_buf_size;
+> +}
 
-Gah, this is awful. There are two different literal "data" things:
+<sarcasm>
+This is gloriously unencumbered by unwieldy comments!
+</sarcasm>
 
-	1. The function argument: void *data
-	2. The flexible array member: tdx_quote_buf->data[]
+Please explain the goal of this function. Why is it doing what it is
+doing? This should also explain why it is page-aligning and caching things.
 
-Worse, I think the function argument isn't even used, despite being
-passed through at least one level of static, file-local TDX calls.
+Which also reminds me, it really isn't calculating the size of the quote
+"buf". It's calculating the size of the allocation required to transport
+it around, no?
 
-It becomes a *total* liability since there are so many "data" names
-being tossed around.
+Because, there are three sizes here:
 
-I just committed this:
+ 1. The actual data of the quote
+ 2. The size of #1 with the metadata added in
+ 3. The size of #2 with page padding
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?h=x86/tdx&id=d48b2d347105436365280a3697a265aa4d37e96c
-
-Any reason not to keep it?
+Which one of those three is "buf_size", eh?
