@@ -1,119 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC831F12F8;
-	Mon, 28 Sep 2026 15:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59464E5359
+	for <linux-coco@lists.linux.dev>; Mon, 28 Sep 2026 15:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790609957; cv=none; b=p4gzKxgMDo0Eli43/PfXPuEt4W3IHAVSd1vCnJ1664AWxRK8UDiakEsYP0sUhifuXUsoqQ0vZFkGM8VLj7zYhH5PY+m/9Fx8StzIpCOlQiM9tRGmgtcgSbT7HSGvJSOJ/NotCXcFsLNA9ukzVb4uVqqmZmf6goJZuAulYG+rlAE=
+	t=1790610613; cv=none; b=Xc5lLZ+s2j//ABiY/NqC/e+Vq5Gj39pHxjzqtYdhj5SUf8JdPycC1MXczhUZIFEtXKj4Qo8wzGLW8+IehVNrHtQRNvbTE0osEqAmmhbmDVkNm02G/hV2tyvgiV7OaB1MUA//ZMpebnxriTfBAqQ6oQOJNM6aIETKJsvgAAXB8uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790609957; c=relaxed/simple;
-	bh=T4rEflIDWfaQfbsHhUu9H9wpN6bQ0eGXh0mkZKTX8zc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KmWUeb3kmne0KRoiCxXnXkXFF9f2qupHAyrWpbkCNPgGrsvORM72/Q2Z0suX3K8daEe6X2skJbMH0wQLbAtcXEORr+3a6sWyv52THV8Bqoqeqw7xSRvp58qEqPzaZFjUsmYmrzer2j5a5fR7hbsxbaDdGVjaAEJQBNwv6c46Lts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LfyQHDVx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790610613; c=relaxed/simple;
+	bh=gd/VTPQ0nejnutKX+4KFU05hh8mfBLirUFjfVowP2fE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g3fW19885pPwtAQTo5yRKISo1/SWbQb875HbU4R/CvDPd4pgWW47obWxNOJF9iOAb3vTT7AAPB7M/s5uO7SroV1g/e8jXCM+nj2oj7OtIOgXe4awHUDmXnjLh0PutfF1mABOUppex06MxMJV5BGnSVmn1fkzQDUMyyiN95AYEh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X+avLvat; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LfyQHDVx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391841F00893;
-	Mon, 28 Sep 2026 15:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790609956;
-	bh=NzWh6TDC+XXJKSXvMFMQHGa1MigG1SoSGoWh2Px4kr8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=LfyQHDVxeVyncOPX2JC6edrNJEYMurzdqfkRFC7TlDigy2B3j7c6UTmmiv89B3FS8
-	 tgrSitsHXL4kkPdDxOcHolHey9C7g60+RL5dTlDSdqMT8qhljCys9SXX1i2O5HscoT
-	 yQtJLbBOyFPSdXLQmkolaIPkNUSl+OUrs4XQdjCIai0iEZK9AOTJMC5F25E8Tddzv6
-	 2t9eSHabcTLuPYvUndrIZiudyI+/cVuIdHh6l/1T2agpydr0iq7U9hvKlNoBU47D+I
-	 S+CANggpDQCr6BL+zXiSWzd5X0Ro7ZPWuYEM+nXP4tG5TSwyUZsorGs+YiMMq0FEf5
-	 cAwQjfOFkv2YA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
- parent
-In-Reply-To: <20260928121147.GP9354@nvidia.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-6-aneesh.kumar@kernel.org>
- <179027891416.104879.10365675178574704349.b4-review@b4>
- <yq5ald8pkhj7.fsf@kernel.org> <20260925122305.GG9354@nvidia.com>
- <yq5a5wzpr7b9.fsf@kernel.org> <20260928121147.GP9354@nvidia.com>
-Date: Mon, 28 Sep 2026 21:09:06 +0530
-Message-ID: <yq5azex1peqt.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X+avLvat"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790610612; x=1822146612;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gd/VTPQ0nejnutKX+4KFU05hh8mfBLirUFjfVowP2fE=;
+  b=X+avLvatX82ca+1o4/ksxz5r5AV22wBHOjIi9LKae/CsYLJRcHtEl9RG
+   C0LXT1QHGFib7DwmWBn7bCKQ73N31NB1MDCviGbAY8NiX/KDie2POoB4S
+   wXUfSUJT2bnpWo2DRT8gVPqnoFu/iWQtb4mXG6YuO9Qf2azm1qyeecYLH
+   VW7hHQZz7C8n3xe2Dqc9yVQaf8Bf7ObPjUxlpA+J2qjIZVoKa5KnooKZM
+   mYvnTnQ2cSqNB5rgzaTLrLRJjiyHBw7bQUpN2h6aHKaSOxpb5oRxSSshe
+   FuqbomOEHYzCm/bHWOb+FhBxl+zH9ojdEtYKAAtK2xqK0wNYc3+Wbwq/9
+   A==;
+X-CSE-ConnectionGUID: 5GxI0F0JRxGemZIGsKWSHA==
+X-CSE-MsgGUID: 8QvG8ijmQn2GVlNGbqFaMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90180053"
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="90180053"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 08:50:11 -0700
+X-CSE-ConnectionGUID: mRhTPVP8SRKZHlTe9jYnMQ==
+X-CSE-MsgGUID: gk+zszcbREuF+YSpRYV6vA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="275119705"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.111.75]) ([10.125.111.75])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 08:50:11 -0700
+Message-ID: <1753d73f-7464-4476-9fb7-c0a12157a6ab@intel.com>
+Date: Mon, 28 Sep 2026 08:50:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/6] virt: tdx-guest: Calculate the Quote buffer size
+ safely
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260928100913.2265687-1-peter.fang@intel.com>
+ <20260928100913.2265687-4-peter.fang@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260928100913.2265687-4-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On 9/28/26 03:08, Peter Fang wrote:
+> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
+> +#define TDX_QUOTE_TOTAL_SIZE(n)		struct_size_t(struct tdx_quote_buf, data, n)
+>  
+>  /* struct tdx_quote_buf: Format of Quote request buffer.
+>   * @version: Quote format version, filled by TD.
+> @@ -314,7 +314,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>  
+>  	out_len = READ_ONCE(quote_buf->out_len);
+>  
+> -	if (out_len > TDX_QUOTE_MAX_LEN)
+> +	if (TDX_QUOTE_TOTAL_SIZE(out_len) > GET_QUOTE_BUF_SIZE)
+>  		return -EFBIG;
 
-> On Mon, Sep 28, 2026 at 04:06:42PM +0530, Aneesh Kumar K.V wrote:
->> Jason Gunthorpe <jgg@nvidia.com> writes:
->> 
->> > On Fri, Sep 25, 2026 at 11:18:44AM +0530, Aneesh Kumar K.V wrote:
->> >> > The TSM viommu should use a NULL parent domain, it doesn't have an
->> >> > iommufd managed S2.
->> >> 
->> >> How would we assign an untrusted device? I currently follow these steps:
->> >
->> >> 1. Create an HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT.
->> >> 2. Allocate a vIOMMU with viommu.hwpt_id set to that hwpt_id.
->> >> 3. Allocate a vdevice with alloc_vdev.viommu_id set to that viommu_id.
->> >> 4. Use VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id.
->> >
->> > The vmiommu.hwpt_id should be 0.
->> >
->> > 1. Create a a HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT
->> > 2. VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id to establish the T=0
->> >    identity S2, no T=0 vSMMU
->> > 3. Create a VIOMMU with no hwpt_id and the RMM's type. This triggers
->> >    RMM to create the the T=1 vSMMU inside the realm
->> > 4. Allocate a vdevice on the viommu_id. This triggers RMM to create
->> >    the VDEV inside the realm
->> > 5. Setup guest ACPI tables/etc to point at the RMM's T=1 vsmmu.
->> >
->> > Now both the T=1 VSUMM and T=0 fixed translation are setup.
->> >
->> 
->> ok so iommufd_viommu_alloc_ioctl() will do this based on type.
->> 
->> +	if (iommufd_viommu_type_requires_hwpt(cmd->type)) {
->> +		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
->> +		if (IS_ERR(hwpt_paging)) {
->
-> The core code should not decode type, that's always a hack..
->
-> The ideal thing is to order things so we get a viommu_ops before
-> trying to get the hwpt, then use a flag in the ops
->
+Gah, this is awful. There are two different literal "data" things:
 
-Does that mean the SMMU driver will return viommu_ops before
-iommu_ops->viommu_init() is called? If so, should viommu_init() be moved
-into viommu_ops?
+	1. The function argument: void *data
+	2. The flexible array member: tdx_quote_buf->data[]
 
-Would the core then only need to do something like:
+Worse, I think the function argument isn't even used, despite being
+passed through at least one level of static, file-local TDX calls.
 
-	rc = tsm_viommu_get_info(idev->dev, cmd->type, &info);
-	if (not_using_tsm) // All smmu driver will now support get_viommu_info.
-		rc = iommu_ops->get_viommu_info(idev->dev, cmd->type, &info);
+It becomes a *total* liability since there are so many "data" names
+being tossed around.
 
-and then call info->ops->viommu_init()?
+I just committed this:
 
--aneesh
+> https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?h=x86/tdx&id=d48b2d347105436365280a3697a265aa4d37e96c
+
+Any reason not to keep it?
