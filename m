@@ -1,136 +1,98 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D074963C1;
-	Mon, 28 Sep 2026 10:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC23F44E65F;
+	Mon, 28 Sep 2026 10:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790590431; cv=none; b=mlo9zmOhYIyLOsaA+cz9GLPeGhXpgeFqtozpwyWUDU+I8MbCQzfKoFjFHEUYV7Daoq+y1K5Lj7xAr2LXBKBXe6DCzh4vmkRBU61eTon213i0KzeIGOHL4L5Whi57ZwE+j24/j51oKA+uRZSAaHk+TPE/IHfP0uXsTb7o2EHK/s0=
+	t=1790591812; cv=none; b=srq13U7SR/p0li9/e+tM876m8Ig/lMdeG0De5+Xa3CQgmR5BS9YjUqDX73Aoa2WV74j4TIO+5Uq6OAd3LlVmvgGzmgczbpRkJbLArIXpv+yTwvwwcqC0cMdNO2YQyogLYyAMLj3Ck1dM0wJZGAElg8Vy/J74mFPMKeUyPAEaTs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790590431; c=relaxed/simple;
-	bh=L4rj5sebU0MgVvbIqYSRSR7LTOTUxoD15WXyP2ljPok=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ckaujv0NF8Du1ThoddQ3PWA2z+PWpX5nGv9LcSu785L1o5lolhyhaiHYIOWUGZU5kxCFHLCzzv/47QIpw+2EVMbx21XfaQe/ay2zytBoT9otsRIMNQqQn75OSurTChKL4ivoOO3UkMrB0VoMXyoz/8MAlZrBGCkPku23bpfSlow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FtXcuGe5; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790591812; c=relaxed/simple;
+	bh=+eiU14WtffpsablTSQZkeXYAVRjbhnndgQrMqpPYHgA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=duU2wTlnzkI0QM2aW/fBO6Oy7mBSxSy8BZtlEPpTVoPXez28YWrUBjs6eArgjXzkP6HCvx7SrAJCY7CwCgoPhmGVm6oXvGZm1vK8U0eVnfy6Qz/JcTbr9faIS/so0Kmwp2wT+SNHR34xsgSoq4iRdJ6bD7VL8+kkUCM4pbUepHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ex9E14LS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FtXcuGe5"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83A0D1595;
-	Mon, 28 Sep 2026 03:13:40 -0700 (PDT)
-Received: from [10.57.12.79] (unknown [10.57.12.79])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F3253F86F;
-	Mon, 28 Sep 2026 03:13:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790590424; bh=L4rj5sebU0MgVvbIqYSRSR7LTOTUxoD15WXyP2ljPok=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FtXcuGe5Bf9/0/FkzKwLKEy+JoJg8ovzaYSX2D2/AliXaV5Mu/9pP37XIhE5v6fV3
-	 zwG/SPm1X9FHl8h9u4+rG242LQ2Y7sNXNJEj09s0mPMYE1rl1NvyZRqzOeDT+hBKCE
-	 BAvBPp1hyT7DyFZ0607j5nyKtRA6XXRnoD1oNYF4=
-Message-ID: <4fabad44-280f-40e6-95bb-49011cd2f185@arm.com>
-Date: Mon, 28 Sep 2026 11:13:39 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ex9E14LS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EFE1F000FF;
+	Mon, 28 Sep 2026 10:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790591810;
+	bh=3P2mxhk6Zs1a78JTFJDfkPQ7ymLagWRZKHkU7l2oUs0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Ex9E14LSPc2TpBUWFF4DLuttqWcWR3I5aUQkGCvGQo9fb9wZJcYjuwPo+aWKDdFBO
+	 mcB34+UNJlXcXuLBR/pWeuBR/2QN6O9xpdvhycb+A6lziTjuLJMTE6ADvc6lWQztDe
+	 YKBRfhVDM/h87MFKcJw6UR1s0s9m1fgJPbuh+ZaRfA9pVACqz41c1UUxRybOkTGMqB
+	 3SJ0Z61CJj8vxV6UBX19iRM6PaUtgiIXn6pb9EfSLOMcZQxjVL+13WluC1DQs6u76c
+	 1yOWjAIThgTYnJ8+t4vQL3BGvHVc27eiJxrrBLiDCYG1PKc1pJnSIo9AsEDBqaZyab
+	 UtCxiGoYp+dow==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
+ parent
+In-Reply-To: <20260925122305.GG9354@nvidia.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-6-aneesh.kumar@kernel.org>
+ <179027891416.104879.10365675178574704349.b4-review@b4>
+ <yq5ald8pkhj7.fsf@kernel.org> <20260925122305.GG9354@nvidia.com>
+Date: Mon, 28 Sep 2026 16:06:42 +0530
+Message-ID: <yq5a5wzpr7b9.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
- Gareth Stockwell <Gareth.Stockwell@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-5-suzuki.poulose@arm.com> <arozNIQ-fQ0XQViI@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <arozNIQ-fQ0XQViI@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 28/09/2026 10:28, Catalin Marinas wrote:
-> On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
->> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
->> +{
->> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
->> +	bool cancelled = false;
->> +	unsigned long sro_handle;
->> +
->> +	rmi_smccc_invoke(regs);
->> +
->> +	sro_handle = regs->a1;
->> +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
->> +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
->> +		int ret = 0;
->> +
->> +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
->> +		case RMI_OP_MEM_REQ_NONE:
->> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
->> +					regs);
->> +			break;
->> +		case RMI_OP_MEM_REQ_DONATE:
->> +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
->> +					     gfp);
->> +			break;
->> +		case RMI_OP_MEM_REQ_RECLAIM:
->> +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
->> +			break;
->> +		default:
->> +			WARN_ON_ONCE(1);
->> +			ret = -ENXIO;
->> +			break;
->> +		}
-> 
-> Another thing I came across while looking whether we can defer the
-> activation. It seems that the spec (I_JVYCH) lists some SROs as
-> PE-bound. Nothing here or in rmi_sro_execute() disables migration and
-> the memory allocation paths can even sleep with GFP_KERNEL.
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-No, this is not required. I agree this is confusing. I will get it
-clarified.
+> On Fri, Sep 25, 2026 at 11:18:44AM +0530, Aneesh Kumar K.V wrote:
+>> > The TSM viommu should use a NULL parent domain, it doesn't have an
+>> > iommufd managed S2.
+>> 
+>> How would we assign an untrusted device? I currently follow these steps:
+>
+>> 1. Create an HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT.
+>> 2. Allocate a vIOMMU with viommu.hwpt_id set to that hwpt_id.
+>> 3. Allocate a vdevice with alloc_vdev.viommu_id set to that viommu_id.
+>> 4. Use VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id.
+>
+> The vmiommu.hwpt_id should be 0.
+>
+> 1. Create a a HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT
+> 2. VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id to establish the T=0
+>    identity S2, no T=0 vSMMU
+> 3. Create a VIOMMU with no hwpt_id and the RMM's type. This triggers
+>    RMM to create the the T=1 vSMMU inside the realm
+> 4. Allocate a vdevice on the viommu_id. This triggers RMM to create
+>    the VDEV inside the realm
+> 5. Setup guest ACPI tables/etc to point at the RMM's T=1 vsmmu.
+>
+> Now both the T=1 VSUMM and T=0 fixed translation are setup.
+>
 
-So, there are two different sources for the SRO contexts. One is a 
-global pool and the other an Object.
+ok so iommufd_viommu_alloc_ioctl() will do this based on type.
 
-e.g., For an RMI operation on an Object, SRO context can be the object
-itself (e.g., REC_CREATE, REALM_ACTIVATE etc.)
-
-However, when there is no reliable object for the command (e.g., 
-RMI_GRANULE_RANGE_DELEGATE), the RMM must allocate a context from
-the global pool. Now, the "PE" in there comes from a recommendation
-to the RMM implementations, that the global pool size must depend on
-the number of PEs on the system. This doesn't mean that the SRO
-handles are only bound to those PEs. I will get this clarified
-in the RMM spec.
-
-Cheers
-Suzuki
++	if (iommufd_viommu_type_requires_hwpt(cmd->type)) {
++		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
++		if (IS_ERR(hwpt_paging)) {
 
 
-
-> 
-> Do we need to disable preemption (only for rmi_sro_execute()) or at
-> least migration (the memxfer path)? We did something similar for the RSI
-> attestation token loop, commit 24f55f511b9e ("virt: arm-cca-guest: use
-> migrate_disable() for attestation token requests").
-> 
-> With only migration disabled, another thread on the same CPU
-> issuing a PE-bound SRO would get RMI_BLOCKED (R_NDXSG). In theory, we
-> can get a priority inversion case (maybe this doesn't happen with the
-> current implementation, just looking at the API design). The RMI_BLOCKED
-> fix not to loop forever probably saves us but the caller would have to
-> actively sleep or give up before retrying (i.e. don't move the busy loop
-> higher app the call stack).
-> 
-> Another option is to have a per-CPU mutex here and serialise the SROs
-> which are PE-bound (there are some precedents for per-CPU mutexes in the
-> kernel).
-> 
-
+-aneesh
