@@ -1,33 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477994D17B9;
-	Mon, 28 Sep 2026 13:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3E305665
+	for <linux-coco@lists.linux.dev>; Mon, 28 Sep 2026 14:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790603720; cv=none; b=Ly8mwPWeuDszBItOYbOn8r9+8YOVgt2odAKWpJx+W57STFf79CQ2i4GaZRyedaGW/+aR4QKmx2gd5rVCNm+CVWfd5xzmAk2awH9vmjJWtSjBrSaYtwfmsKNciJL83tvVajMW8t1Qn0Vcwh1+mP9abHusLV98sT+O9QDn7kMfFSk=
+	t=1790605556; cv=none; b=gsAuTYSSfowwVrtu/IJbH5Pm4epnbC0TmnCkHidM6LIySYmJBbGNvTErvYBwBY0s/7YcGGUXw6kaXVxpxodDTREXjN93iVeX16ay8A4gtkjOepqI4dbA++QTDSR1vEpATRCjq8rJEdNT73jcF3RR8z1LlipANXCKqhfrEDSFoY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790603720; c=relaxed/simple;
-	bh=lgeeKqhHEm895kCw60vcS0c0qbxLWa1KXH5dC+xZ8o8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Z5gJzC7dJPWGLIeSXZVjJ84TMlYGPSEmLQ7gjKqzaRzuaK6cgKPfXc/XfVqPjJGuwMluvbii6fo7wvQLCP6ZbbSVWeoYMgNCrl+dYl2XTNnwnLaHTXonZ+B/ILFQuZBfIjDYgbsmAzTew6kvoHE9x+k+pwtyP1ygrz8FW6onN+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RG9oNy0L; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790605556; c=relaxed/simple;
+	bh=E4OtNlRF+OEgy1s/cU8oXVilO2mjtnvoa9OcBCOQmcQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kKPNXipMJw7NIOS9PtqgTLSCcrEtzijmyYjJY3B2YcfssQC34oS4V49h18lo0ME35ObPplfQYxwVAsXgtXOQQY7Mewv+6o1PJ+auKYt5eJ86glmN3uimJ+FL1X5rLmn8P9ir1Q1rE5F0wVxHLGVlQBVU3Gz/jmgFJfOr3L5ciUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P07mXZIx; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RG9oNy0L"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3268B1C00;
-	Mon, 28 Sep 2026 06:55:13 -0700 (PDT)
-Received: from [10.57.12.116] (unknown [10.57.12.116])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 615A83F763;
-	Mon, 28 Sep 2026 06:55:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790603716; bh=lgeeKqhHEm895kCw60vcS0c0qbxLWa1KXH5dC+xZ8o8=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=RG9oNy0LPgTYLRgj8BSKPfl3R2ijszuaO5nA36mQiS+YKA5nXtyqzqZI2lPorQ4+9
-	 1vp9yUr/Qn39ZN9AzUo9KCPbSvxgyi5OAIXa7MmF/pM0iIoUG4EfnZS6hnKZLBEIzP
-	 nwsRygXMdeTncPucYonHNNnFZBQqZL2gWkIDK/aY=
-Message-ID: <195cdfe4-a55a-453f-9c34-620738eca244@arm.com>
-Date: Mon, 28 Sep 2026 14:55:11 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P07mXZIx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790605554; x=1822141554;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=E4OtNlRF+OEgy1s/cU8oXVilO2mjtnvoa9OcBCOQmcQ=;
+  b=P07mXZIxbAIkzlfxQaeK5yLytZUndHQxPGLisg6ks6VLFJEk3A8/BSTW
+   EY8lAcwY+CQ5VZtLtE2fM1TR7/mBpvQduVgzY4xuB25CMu9UfqXJAH4Ct
+   x4iAYf14E1ZG8bjoQOTp4rix/2r9X/bB3KqUkL+6RPZeRvtRYLHG6tDEl
+   mOfUpqdbgp9RWZm2qsJIAxZkSxQaLNMp4SbNlGgM3BTmRNJeU1rPE64qC
+   ffCqU0wtojRbNwdyhtTVc7kRZtTysghUnLOx33ociMWtgw8+7s7l7tPN1
+   Nyrly0qWoxt0KGueGGTdv4Wygpd1i4ubCLjeZAj6sM9KeW/Ro8qlYUTXj
+   A==;
+X-CSE-ConnectionGUID: +p+tdRdkSQ28GconZCCvBA==
+X-CSE-MsgGUID: YEfqlE3fTeCXa1xDFO8TZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="107685003"
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="107685003"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 07:25:54 -0700
+X-CSE-ConnectionGUID: zi23QJQET7+/OdM4ZQ0f4Q==
+X-CSE-MsgGUID: loOYMG02Qpa0tArkYDyiJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="275101488"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.49]) ([10.125.111.49])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 07:25:54 -0700
+Message-ID: <14006b3b-4782-4331-a4eb-e89bfaad58c3@intel.com>
+Date: Mon, 28 Sep 2026 07:25:52 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,296 +52,101 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-6-suzuki.poulose@arm.com> <arZmXFw5Jw2IbAmA@arm.com>
- <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com> <araketG70TIKeNuf@arm.com>
- <12e83d88-de4c-4230-aac2-1796123320ad@arm.com>
- <70d47475-e26e-40e1-b409-b0c16aecb8c0@arm.com>
-In-Reply-To: <70d47475-e26e-40e1-b409-b0c16aecb8c0@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [RFC PATCH v2 02/10] x86/virt/tdx: Convert the version metadata
+ reader
+To: Chao Gao <chao.gao@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+ "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "tglx@kernel.org" <tglx@kernel.org>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+ <20260918132946.76533-3-chao.gao@intel.com>
+ <390fc4d56769f87d91949e900262640b52b505b7.camel@intel.com>
+ <arS6D6KoPbqVBtPl@intel.com> <2042fa92-0b33-4ce2-a288-8eebda2b7305@intel.com>
+ <arpQReaF8q8ENnhv@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <arpQReaF8q8ENnhv@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 28/09/2026 10:08, Suzuki K Poulose wrote:
-> On 25/09/2026 18:50, Suzuki K Poulose wrote:
->> Hi Catalin
->>
->> On 25/09/2026 17:42, Catalin Marinas wrote:
->>> On Fri, Sep 25, 2026 at 04:02:24PM +0100, Suzuki K Poulose wrote:
->>>> On 25/09/2026 13:17, Catalin Marinas wrote:
->>>>> On Thu, Sep 24, 2026 at 02:51:59PM +0100, Suzuki K Poulose wrote:
->>>>>> From: Steven Price <steven.price@arm.com>
->>>>>>
->>>>>> Activate the RMM after the basic configuration. This is a memory
->>>>>> transferring stateful operation.
->>>>>>
->>
->> ...
->>
->>>>>> +
->>>>>> +    ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, 
->>>>>> SMC_RMI_RMM_ACTIVATE);
->>>>>> +    if (ret) {
->>>>>> +        pr_err("RMM activate failed (%d)\n", ret);
->>>>>> +        ret = ret < 0 ? ret : -ENXIO;
->>>>>> +    }
->>>>>> +
->>>>>> +    return ret;
->>>>>
->>>>> It was raised earlier this year [1] but I'm not sure it concluded. How
->>>>> do we handle kexec and kdump? I think RMI_RMM_DEACTIVATE only succeeds
->>>>> if nothing is delegated, so it would need all realms torn down 
->>>>> first. If
->>>>> that's not feasible, we could at least block (non-crash) kexec like 
->>>>> pKVM
->>>>> does.
->>>>
->>>> You are right, we can't DEACTIVATE until all granules have been
->>>> "undelegated" back. Not just the Realms, but also the GPTs/Tracking
->>>> Metadata etc would need to be reclaimed (when we get to support
->>>> dynamic GPT/Tracking metadata). For now, we should block the kexec.
->>>
->>> Looking more into this (and the memory hotplug story), I find it strange
->>> that simply having RME and a valid RMM imposes all these restrictions
->>> even if we never run or intend to run a realm. How common will
->>> RME-capable systems with RMM firmware be that are not used for CoCo? Or
->>> do we expect only CoCo systems to have capable/configured firmware (RME
->>> may be present in silicon anyway)?
->>
->> There is another angle to this :
->>
->> RMM may act as a TSM (as in the Trusted Security Manager in PCI TDISP)
->> context and provide setting up IDE connection between the RootPort/
->> EndPoint. So, the trigger point for the RMM activation would become 
->> the "First Delegate" request.
->>
->> Running an RMM just for the "TSM" functionality is not ideal.
->> In the absence of RMM, Linux can act as the baremetal TSM. But when the
->> RMM is present, we must use the RMM as the TSM, especially if the
->> Device will be assigned to a Realm.
->>
->> FEAT_RME capable systems don't need to enable RMM unless they want to
->> run CoCo guests.
->>
->>>
->>> Ideally we'd defer the RMM configuration and activation (and the
->>> tracking/GPT checks) until we first attempt to start a realm, keeping
->>> only the RMI_VERSION/FEATURES probing at boot. Not sure how feasible
->>> this is (memory is more fragmented by then for any contiguous donation).
->>> If we manage it, kexec and memory hotplug just work on hosts that never
->>> start a realm.
->>>
->>> The next best thing for kexec is to tear down the realms, undelegate
->>> the granules and deactivate the RMM before invoking kexec (with kdump
->>> that's harder as we likely no longer have a controlled shutdown).
->>
->> This is quite complicated, when we get the dynamic metadata support,
->> especially with the self-describing L1GPT and Tracking metadata.
->> But not impossible.
+On 9/28/26 04:32, Chao Gao wrote:
+> Then I would go one step further and move the mapping table into
+> get_tdx_sys_info() too, so it sits next to its only use. Using the
+> "features" metadata class as an example:
 > 
-> Looking at this again we could :
+> static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+> {
+> 	static const struct field_mapping feature_mappings[] __initconst = {
+> 		TDX_SYSINFO_MAP_FEATURES(TDX_FIELD_TDX_FEATURES0, tdx_features0),
+> 	};
+> 	int ret = 0;
 > 
-> a. If the user triggers a graceful kexec reboot, i.e, without forced,
->     we should be able to deactivate the RMM. Since all processes are
->     killed, Realm VMs must be off and all granules reclaimed.
->     When we get to dynamic GPT/Tracking, we should additionally
->     reclaim them back.
-> b. For forced reboot kexec, I don't think there is a safe way.
+> 	ret = ret ?: read_sys_metadata_table(version_mappings, &sysinfo->version);
+> 	...
+> 	ret = ret ?: read_sys_metadata_table(feature_mappings, &sysinfo->features);
 > 
-> We have two options here :
 > 
-> 1. Disable kexec reboot (allowing kexec kdump) when the RMM is active
->     at kexec_load. I prefer this for now, and we could goto 2 eventually.
+> version_mappings[] will be the exception and stay at file scope because
+> tdx_module_run_update() reads it as well.
 > 
-> 2. Back out from machine_kexec() if the RMM was still active.
->     This allows (a) above.
+> Let me know if you disagree.
 
+Two concerns: One, the structures are wide and the extra indentation
+might makes them too wide. Two, this separates the code from the
+function header. That might hurt function readability.
 
-I have the following patch (tested , but tf-RMM doesn't support 
-DEACTIVATE yet), which correctly deactivates the RMM (well
-at least tries).
+The value of making a static variable is also lower for something that's
+const because you don't have writers.
 
----8>---
-
-
-firmware: rmm: Deactivate RMM at reboot
-
-Deactivate the RMM at system shutdown. This would allow a normal kexec 
-to cleanup the state and boot into a new kernel gracefully.
-
-Kdump kernels need not worry about an active RMM, as long as it can
-handle the GPF on access to the Delegated granules.
-
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
-  arch/arm64/kernel/machine_kexec.c |  2 +
-  drivers/firmware/arm_rmm/rmi.c    | 63 ++++++++++++++++++++++++++++++-
-  include/linux/arm-rmi-cmds.h      | 10 +++++
-  3 files changed, 73 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/kernel/machine_kexec.c 
-b/arch/arm64/kernel/machine_kexec.c
-index 8f9bc2327dc85..8f16f92a5d389 100644
---- a/arch/arm64/kernel/machine_kexec.c
-+++ b/arch/arm64/kernel/machine_kexec.c
-@@ -6,6 +6,7 @@
-   * Copyright (C) Huawei Futurewei Technologies.
-   */
-
-+#include <linux/arm-rmi-cmds.h>
-  #include <linux/interrupt.h>
-  #include <linux/irq.h>
-  #include <linux/kernel.h>
-@@ -171,6 +172,7 @@ void machine_kexec(struct kimage *kimage)
-  	BUG_ON(!in_kexec_crash && (stuck_cpus || (num_online_cpus() > 1)));
-  	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
-  		"Some CPUs may be stale, kdump will be unreliable.\n");
-+	WARN(!in_kexec_crash && is_rmm_active(), "RMM is active, kexec will be 
-unreliable.\n");
-
-  	pr_info("Bye!\n");
-
-diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-index 51343e9d5c2a9..5b695f3155b1c 100644
---- a/drivers/firmware/arm_rmm/rmi.c
-+++ b/drivers/firmware/arm_rmm/rmi.c
-@@ -7,6 +7,7 @@
-  #include <linux/memblock.h>
-  #include <linux/memory.h>
-  #include <linux/arm-rmi-cmds.h>
-+#include <linux/reboot.h>
-  #include <linux/slab.h>
-
-  #include <asm/memory.h>
-@@ -15,6 +16,13 @@
-  /* RMM v2.0 defines RmiFeatureRegister0 to RmiFeatureRegister4. */
-  static unsigned long rmi_feat_reg_cache[5] __ro_after_init;
-  static bool arm64_rmi_is_available;
-+static bool arm64_rmm_active;
-+
-+bool is_rmm_active(void)
-+{
-+	return arm64_rmm_active;
-+}
-+EXPORT_SYMBOL_GPL(is_rmm_active);
-
-  /**
-   * rmi_granule_range_undelegate() - Undelegate a range of granules
-@@ -1017,6 +1025,53 @@ bool is_rmi_available(void)
-  }
-  EXPORT_SYMBOL_GPL(is_rmi_available);
-
-+static int rmi_rmm_deactivate(struct rmi_sro_state *sro)
-+{
-+	int ret;
-+
-+	if (!READ_ONCE(arm64_rmm_active))
-+		return 0;
-+
-+	ret = WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, 
-SMC_RMI_RMM_DEACTIVATE));
-+	if (ret)
-+		return ret;
-+
-+	WRITE_ONCE(arm64_rmm_active, false);
-+	WRITE_ONCE(arm64_rmi_is_available, false);
-+
-+	return ret;
-+}
-+
-+static int rmi_reboot_notifier(struct notifier_block *nb,
-+			       unsigned long action, void *data)
-+{
-+	int ret;
-+
-+	switch (action) {
-+	case SYS_RESTART:
-+	case SYS_HALT:
-+	case SYS_POWER_OFF:
-+		break;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+
-+	struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
-+
-+	if (!sro)
-+		return -ENOMEM;
-+
-+	ret = rmi_rmm_deactivate(sro);
-+	if (ret)
-+		pr_emerg("RMM Deactivation failed: %d\n", ret);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block rmi_reboot_nb = {
-+	.notifier_call = rmi_reboot_notifier,
-+};
-+
-  static int rmi_init_memory(void)
-  {
-  	int ret;
-@@ -1025,7 +1080,10 @@ static int rmi_init_memory(void)
-  	if (ret)
-  		return ret;
-
--	return register_memory_notifier(&rmi_memory_nb);
-+	ret = register_memory_notifier(&rmi_memory_nb);
-+	if (ret)
-+		return ret;
-+	return register_reboot_notifier(&rmi_reboot_nb);
-  }
-
-  static int __init arm64_init_rmi(void)
-@@ -1057,10 +1115,11 @@ static int __init arm64_init_rmi(void)
-  		return ret;
-  	}
-
-+	WRITE_ONCE(arm64_rmm_active, true);
-  	ret = rmi_init_memory();
-  	if (ret) {
-  		/* Deactivate the RMM */
--		WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_DEACTIVATE));
-+		(void)rmi_rmm_deactivate(sro);
-  		return ret;
-  	}
-
-diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-index 8fd90914c161a..5d31a4104ce72 100644
---- a/include/linux/arm-rmi-cmds.h
-+++ b/include/linux/arm-rmi-cmds.h
-@@ -88,6 +88,16 @@ long rmi_sro_execute(struct arm_smccc_1_2_regs *regs);
-  	__ret;								\
-  })
-
-+
-+#ifdef CONFIG_ARM_RMM_RMI
-+bool is_rmm_active(void);
-+#else
-+static inline bool is_rmm_active(void)
-+{
-+	return false;
-+}
-+#endif	/* CONFIG_ARM_RMM_RMI */
-+
-  /**
-   * rmi_rtt_data_map_init() - Create a mapping at protected IPA, 
-copying contents
-   *			     from a given non-secure source granule.
--- 
-2.43.0
-
-
+So I don't hate it especially for 3 lines, but I do think it generally
+looks more natural to have these at global scope.
