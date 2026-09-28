@@ -1,156 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39343D75D3;
-	Mon, 28 Sep 2026 10:51:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AC849D5AB;
+	Mon, 28 Sep 2026 11:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790592718; cv=none; b=CQWX0cRDlZeis185c12IpXT/ZtOxSp2Rrop4cLnc+Yfm1CiISgiEJsAFqD0mrzxBq8qgI7GUaxXHAzAsydcjzi4rxMbsEHwJYw/R2N5Fy6RPMUXDUZy4P/fPFEE7aaUimZ+SAAeuxN3uHroXBQMsTnFMtQuczkwBEmeGwAHa6V0=
+	t=1790593290; cv=none; b=KGxUL4orwr3RkAsoj2Aj21QlidLH+y1BZh0r7Jjp8oibWrsSvknuUl0MdTp92nWBK22hfPyv+hLuMC2R6RMHz8uoYO5tNE7l30JcxIbPGs9SM1bNgHQU94iH1y7FMDaoe0qySb49xqkCfeGRHb+kh9V6tFftCCuBhnqyAAS+plU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790592718; c=relaxed/simple;
-	bh=i9iWZp76BWiqX76RjNQSQWSTOTQ6yXB6zMkbMGgnohc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ufqI3p3CxI2QjViJF5iUvxiGqkuRaqbudxDoEf0UOzipDgLCKTgIuo5erEll+DcuSCHoc2uUh9b1Z8c6EifYnCyc1aRtZbcu5zygIxUg3EWdsFi+JVVcXrKwOwFoovrpTHvcYytiiM14mnFfrALItEGHlJo8depjDxhWpLVDAFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Txs5Ny69; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790593290; c=relaxed/simple;
+	bh=OPgOww627zD19BL+U//itmZv8dXx28KLUtom1uWHtxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gAeYbr6EaqMtT5346y1Idnmn0CoyZS/eVshgzoC1xkapGfbwYkufOwa+vgRRybeXhUcXejief0+k3jv3g4sHnLapzC/R05AFHEXFovznWSGNfOkSz7zow1ozThtYUgAiJrpP6HR7JeX8PqrmccuMqiu0jACS9D3Cq+h4hf45BSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tKg2YA0R; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Txs5Ny69"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBEC1F000FF;
-	Mon, 28 Sep 2026 10:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790592716;
-	bh=NN3wx/RsUxdRsvMjmcHQPLlgjDCWCOIl0dO7zW0TJIY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Txs5Ny69Ac9Ri4OQsx9iNJZleKBTZjRKoSp3ReMWT5euTFnxnDZ5vQGpmlP3sF3Al
-	 lKKnhvvUN2DFBydjsg3XPlbzJyY1F7Dcgmh+GRBk8RMU3sKn2jFQvaGW4CV2lSblPD
-	 mkg/mmNzKCn1APoK5P+l73nlg1dOg6bj3i5dgQVwlJ2J4tWquDPBe5bHqoBdSmxdrW
-	 KuieIsdCW7MuISXxhWSL+2iUYnF9cQB2/g4akmKV42ff/yEQuDDI5Hm9psembfanoB
-	 A0H7cEVzxCXb1klAA4GzGK1/dp3Ibg/tvtVSY2VKETj8uMY8M4HRg4EEK/7u09rb4V
-	 ZBFRYSi7hX8IA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
-In-Reply-To: <20260925123918.GI9354@nvidia.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-9-aneesh.kumar@kernel.org>
- <179027891417.104879.5995584402952067518.b4-review@b4>
- <yq5acxu1kgmo.fsf@kernel.org> <20260925123918.GI9354@nvidia.com>
-Date: Mon, 28 Sep 2026 16:21:47 +0530
-Message-ID: <yq5a33utr6m4.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tKg2YA0R"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3ED81595;
+	Mon, 28 Sep 2026 04:01:19 -0700 (PDT)
+Received: from [10.57.12.79] (unknown [10.57.12.79])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B95943F86F;
+	Mon, 28 Sep 2026 04:01:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790593283; bh=OPgOww627zD19BL+U//itmZv8dXx28KLUtom1uWHtxo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tKg2YA0RHPuzdmRwV0lPGoDlgCUybqftje3GGS1BYH9CKtDCPS2NkvtEfCoAcTdbL
+	 ggVP7QGb7VEoJkplTGJTVfZVKoE56b1IVaD/Hu4bXFFzuEw+HScrzYRvw5CHvILr8y
+	 oMAmklYeDEboPJMEJeAx1kRbKYe4TFF0mFie7dms=
+Message-ID: <4e315360-5b7a-4a0e-99c0-679a0271e625@arm.com>
+Date: Mon, 28 Sep 2026 12:01:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <aqrGPK0lFBFXL2qY@arm.com> <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
+ <aqvCwM_73qMpqzvV@arm.com> <749ab0c9-810d-4989-8fa5-1706124f05bc@arm.com>
+ <arKVcjCOJf8p9rWL@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <arKVcjCOJf8p9rWL@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+Hi Catalin
 
-> On Fri, Sep 25, 2026 at 11:38:15AM +0530, Aneesh Kumar K.V wrote:
->> Jason Gunthorpe <jgg@nvidia.com> writes:
->> 
->> >> vIOMMU creation currently dispatches directly through the physical IOMMU
->> >> driver. Some vIOMMU types need an implementation supplied by another
->> >> subsystem, together with private data whose lifetime extends across all
->> >> vIOMMUs using that implementation.
->> >> 
->> >> Introduce a vIOMMU provider that associates implementation operations,
->> >> their module owner and private data. Allow one external provider to
->> >> register for each non-default vIOMMU type.
->> >
->> > This seems much more extensive than I imagined when I proposed this.
->> >
->> > I imagined you'd just have iommufd see there is a TSM attached the pci
->> > device with a function call, and check if that TSM handled the
->> > requested iommu ID.
->> >
->> > No need for a registration system because we already know the only
->> > possible TSM driver that can handle it,
->> >
->> 
->> Agreed, there will be only one vIOMMU provider. But, without a
->> registration mechanism, what would the module dependency look like?
->> 
->> I currently have the TSM driver depending on IOMMUFD. Therefore, the TSM
->> driver needs to tell iommufd which vIOMMU type it provides and register
->> the corresponding provider. IOMMUFD does not call into TSM directly.
->
-> Just put the two new ops in:
->
-> struct pci_tsm_ops {
-> 	size_t (*viommu_get_size)(struct device *dev, enum iommu_viommu_type type);
-> 	int (*viommu_init)(struct iommufd_viommu *viommu, struct device *dev,
-> 		    struct iommu_domain *parent,
-> 		    const struct iommu_user_data *user_data);
-> }
->
-> And bounce them with a static inline
->
-> static inline
-> ssize_t pci_tsm_viommu_get_size(struct device *dev, enum iommu_viommu_type type)
-> {
-> 	const struct pci_tsm_ops *ops;
-> 	struct pci_dev *pdev;
->
-> 	if (!dev_is_pci(dev))
-> 		return -EINVAL;
->
-> 	pdev = to_pci_dev(dev);
-> 	if (!pdev->tsm)
-> 		return -ENODEV;
->
-> 	ops = to_pci_tsm_ops(pdev->tsm);
-> 	if (!ops->viommu_get_size)
-> 		return 0;
-> 	return ops->viommu_get_size(dev, type);
-> }
->
-> No module dependency.
->
-> The iommufd side is simple, it just calls this before calling the
-> iommu driver. First one to return a size wins and creates the viommu.
->
-> We'd want to have a reasonable lifetime model where the the pdev->tsm
-> is guarenteed stable while a driver is bound.
->
+On 22/09/2026 15:49, Catalin Marinas wrote:
+> On Tue, Sep 22, 2026 at 02:21:13PM +0100, Suzuki K Poulose wrote:
+>> I had another look and we could handle this via kvm_fault_is_gmem_abort()
+>> see in arch/arm64/kvm/mmu.c:
+>>
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 87e49251e0447..af5a4bf961aae 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1731,6 +1731,9 @@ static int gmem_abort(const struct kvm_s2_fault_desc
+>> *s2fd)
+>>          gfn_t gfn;
+>>          int ret;
+>>
+>> +       if (!kvm_slot_has_gmem(s2fd->memslot))
+>> +               return -EINVAL;
+> 
+> I wonder whether we should add a KVM_BUG_ON() here. With the rest of the
+> changes, we should never get in this situation. Well, to be revisited
+> for private devices.
+> 
+> Also maybe move it to the caller, kvm_vm_mem_abort(), and not change
+> kvm_fault_is_gmem_abort(). Something like:
+> 
+> 	if (private_ipa_fault(kvm, s2fd->fault_ipa) &&
+> 	    KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
+> 		return -EIO;
+> 
+> To me it makes more sense for gmem_abort() to be called only *if* it's a
+> gmem slot. So any inconsistency, avoiding user_mem_abort() for private
+> memory, should be done in the caller. I assume the caller will also have
+> to route the private device path as well rather than rely on
+> gmem_abort().
+> 
+>> +
+>>          if (!perm_fault) {
+>>                  memcache = get_mmu_memcache(vcpu);
+>>                  ret = topup_mmu_memcache(vcpu, memcache);
+>> @@ -2277,10 +2280,12 @@ static bool private_ipa_fault(struct kvm *kvm,
+>> phys_addr_t fault_ipa);
+>>   static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
+>>                                      const struct kvm_s2_fault_desc *s2fd)
+>>   {
+>> -       if (!kvm_slot_has_gmem(s2fd->memslot))
+>> -               return false;
+>>          if (kvm_memslot_is_gmem_only(s2fd->memslot))
+>>                  return true;
+>> +       /*
+>> +        * For Realms, all private faults must be backed by GMEM.
+>> +        * TODO: Handle Trusted device private memory mappings.
+>> +        */
+>>          if (private_ipa_fault(kvm, s2fd->fault_ipa))
+>>                  return true;
+>>          return false;
+>>
+>>
+>> Also, I have the following hunk for preventing memslot modifications.
+>> I will add this to v20 integration branch, which is almost ready ;-)
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 582b48e34486b..87e49251e0447 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -2783,6 +2783,18 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+>>          }
+>>   }
+>>
+>> +static bool kvm_prevents_memslot_change(struct kvm *kvm, enum kvm_mr_change change)
+>> +{
+>> +       /* Cannot modify memslots once a pVM has run or Realm created */
+>> +       if (change != KVM_MR_DELETE && change != KVM_MR_MOVE)
+>> +               return false;
+>> +
+>> +       if ((kvm_vm_is_protected_pkvm(kvm) && pkvm_hyp_vm_is_created(kvm)) ||
+>> +            kvm_realm_is_created(kvm))
+>> +               return true;
+>> +       return false;
+>> +}
+>> +
 
-And the init side will be as below.
+This needs to be tweaked for Realm to support non-secure device 
+assignment. Aneesh reports that the Device assignment fails now,
+because the Device BAR reset deletes the memory slot and re-registers
+it, which the above change prevents.
 
-bool use_tsm = false;
+I will modify that to
+1. Prevent "Guest-memfd" backed memory slot deletion. Makes sure that
+    nothing can replace a private memory slot.
+2. Allow non-Guest-memfd backed memory slots to be created
+   after the Realm is created. We anyways prevent "private" memory
+   to be mapped from a non-Guest-memfd memslot.
 
-viommu_size = tsm_viommu_get_size(dev, type);
-if (viommu_size) {
-	use_tsm = true;
-} else {
-	viommu_size = iommu_ops->get_viommu_size(dev, type);
-	if (!viommu_size)
-		return -EOPNOTSUPP;
-}
+Suzuki
 
-
-Initialization becomes:
-
-
-if (use_tsm)
-	ret = tsm_viommu_init(viommu, dev, parent, user_data);
-else
-	ret = iommu_ops->viommu_init(viommu, parent, user_data);
-
-
--aneesh
