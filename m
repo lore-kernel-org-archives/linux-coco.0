@@ -1,152 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3E305665
-	for <linux-coco@lists.linux.dev>; Mon, 28 Sep 2026 14:25:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC831F12F8;
+	Mon, 28 Sep 2026 15:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790605556; cv=none; b=gsAuTYSSfowwVrtu/IJbH5Pm4epnbC0TmnCkHidM6LIySYmJBbGNvTErvYBwBY0s/7YcGGUXw6kaXVxpxodDTREXjN93iVeX16ay8A4gtkjOepqI4dbA++QTDSR1vEpATRCjq8rJEdNT73jcF3RR8z1LlipANXCKqhfrEDSFoY4=
+	t=1790609957; cv=none; b=p4gzKxgMDo0Eli43/PfXPuEt4W3IHAVSd1vCnJ1664AWxRK8UDiakEsYP0sUhifuXUsoqQ0vZFkGM8VLj7zYhH5PY+m/9Fx8StzIpCOlQiM9tRGmgtcgSbT7HSGvJSOJ/NotCXcFsLNA9ukzVb4uVqqmZmf6goJZuAulYG+rlAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790605556; c=relaxed/simple;
-	bh=E4OtNlRF+OEgy1s/cU8oXVilO2mjtnvoa9OcBCOQmcQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kKPNXipMJw7NIOS9PtqgTLSCcrEtzijmyYjJY3B2YcfssQC34oS4V49h18lo0ME35ObPplfQYxwVAsXgtXOQQY7Mewv+6o1PJ+auKYt5eJ86glmN3uimJ+FL1X5rLmn8P9ir1Q1rE5F0wVxHLGVlQBVU3Gz/jmgFJfOr3L5ciUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P07mXZIx; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790609957; c=relaxed/simple;
+	bh=T4rEflIDWfaQfbsHhUu9H9wpN6bQ0eGXh0mkZKTX8zc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KmWUeb3kmne0KRoiCxXnXkXFF9f2qupHAyrWpbkCNPgGrsvORM72/Q2Z0suX3K8daEe6X2skJbMH0wQLbAtcXEORr+3a6sWyv52THV8Bqoqeqw7xSRvp58qEqPzaZFjUsmYmrzer2j5a5fR7hbsxbaDdGVjaAEJQBNwv6c46Lts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LfyQHDVx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P07mXZIx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790605554; x=1822141554;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=E4OtNlRF+OEgy1s/cU8oXVilO2mjtnvoa9OcBCOQmcQ=;
-  b=P07mXZIxbAIkzlfxQaeK5yLytZUndHQxPGLisg6ks6VLFJEk3A8/BSTW
-   EY8lAcwY+CQ5VZtLtE2fM1TR7/mBpvQduVgzY4xuB25CMu9UfqXJAH4Ct
-   x4iAYf14E1ZG8bjoQOTp4rix/2r9X/bB3KqUkL+6RPZeRvtRYLHG6tDEl
-   mOfUpqdbgp9RWZm2qsJIAxZkSxQaLNMp4SbNlGgM3BTmRNJeU1rPE64qC
-   ffCqU0wtojRbNwdyhtTVc7kRZtTysghUnLOx33ociMWtgw8+7s7l7tPN1
-   Nyrly0qWoxt0KGueGGTdv4Wygpd1i4ubCLjeZAj6sM9KeW/Ro8qlYUTXj
-   A==;
-X-CSE-ConnectionGUID: +p+tdRdkSQ28GconZCCvBA==
-X-CSE-MsgGUID: YEfqlE3fTeCXa1xDFO8TZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="107685003"
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="107685003"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 07:25:54 -0700
-X-CSE-ConnectionGUID: zi23QJQET7+/OdM4ZQ0f4Q==
-X-CSE-MsgGUID: loOYMG02Qpa0tArkYDyiJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="275101488"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.49]) ([10.125.111.49])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 07:25:54 -0700
-Message-ID: <14006b3b-4782-4331-a4eb-e89bfaad58c3@intel.com>
-Date: Mon, 28 Sep 2026 07:25:52 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LfyQHDVx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391841F00893;
+	Mon, 28 Sep 2026 15:39:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790609956;
+	bh=NzWh6TDC+XXJKSXvMFMQHGa1MigG1SoSGoWh2Px4kr8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=LfyQHDVxeVyncOPX2JC6edrNJEYMurzdqfkRFC7TlDigy2B3j7c6UTmmiv89B3FS8
+	 tgrSitsHXL4kkPdDxOcHolHey9C7g60+RL5dTlDSdqMT8qhljCys9SXX1i2O5HscoT
+	 yQtJLbBOyFPSdXLQmkolaIPkNUSl+OUrs4XQdjCIai0iEZK9AOTJMC5F25E8Tddzv6
+	 2t9eSHabcTLuPYvUndrIZiudyI+/cVuIdHh6l/1T2agpydr0iq7U9hvKlNoBU47D+I
+	 S+CANggpDQCr6BL+zXiSWzd5X0Ro7ZPWuYEM+nXP4tG5TSwyUZsorGs+YiMMq0FEf5
+	 cAwQjfOFkv2YA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
+ parent
+In-Reply-To: <20260928121147.GP9354@nvidia.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-6-aneesh.kumar@kernel.org>
+ <179027891416.104879.10365675178574704349.b4-review@b4>
+ <yq5ald8pkhj7.fsf@kernel.org> <20260925122305.GG9354@nvidia.com>
+ <yq5a5wzpr7b9.fsf@kernel.org> <20260928121147.GP9354@nvidia.com>
+Date: Mon, 28 Sep 2026 21:09:06 +0530
+Message-ID: <yq5azex1peqt.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 02/10] x86/virt/tdx: Convert the version metadata
- reader
-To: Chao Gao <chao.gao@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "tglx@kernel.org" <tglx@kernel.org>
-References: <20260918132946.76533-1-chao.gao@intel.com>
- <20260918132946.76533-3-chao.gao@intel.com>
- <390fc4d56769f87d91949e900262640b52b505b7.camel@intel.com>
- <arS6D6KoPbqVBtPl@intel.com> <2042fa92-0b33-4ce2-a288-8eebda2b7305@intel.com>
- <arpQReaF8q8ENnhv@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <arpQReaF8q8ENnhv@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 9/28/26 04:32, Chao Gao wrote:
-> Then I would go one step further and move the mapping table into
-> get_tdx_sys_info() too, so it sits next to its only use. Using the
-> "features" metadata class as an example:
-> 
-> static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
-> {
-> 	static const struct field_mapping feature_mappings[] __initconst = {
-> 		TDX_SYSINFO_MAP_FEATURES(TDX_FIELD_TDX_FEATURES0, tdx_features0),
-> 	};
-> 	int ret = 0;
-> 
-> 	ret = ret ?: read_sys_metadata_table(version_mappings, &sysinfo->version);
-> 	...
-> 	ret = ret ?: read_sys_metadata_table(feature_mappings, &sysinfo->features);
-> 
-> 
-> version_mappings[] will be the exception and stay at file scope because
-> tdx_module_run_update() reads it as well.
-> 
-> Let me know if you disagree.
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-Two concerns: One, the structures are wide and the extra indentation
-might makes them too wide. Two, this separates the code from the
-function header. That might hurt function readability.
+> On Mon, Sep 28, 2026 at 04:06:42PM +0530, Aneesh Kumar K.V wrote:
+>> Jason Gunthorpe <jgg@nvidia.com> writes:
+>> 
+>> > On Fri, Sep 25, 2026 at 11:18:44AM +0530, Aneesh Kumar K.V wrote:
+>> >> > The TSM viommu should use a NULL parent domain, it doesn't have an
+>> >> > iommufd managed S2.
+>> >> 
+>> >> How would we assign an untrusted device? I currently follow these steps:
+>> >
+>> >> 1. Create an HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT.
+>> >> 2. Allocate a vIOMMU with viommu.hwpt_id set to that hwpt_id.
+>> >> 3. Allocate a vdevice with alloc_vdev.viommu_id set to that viommu_id.
+>> >> 4. Use VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id.
+>> >
+>> > The vmiommu.hwpt_id should be 0.
+>> >
+>> > 1. Create a a HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT
+>> > 2. VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id to establish the T=0
+>> >    identity S2, no T=0 vSMMU
+>> > 3. Create a VIOMMU with no hwpt_id and the RMM's type. This triggers
+>> >    RMM to create the the T=1 vSMMU inside the realm
+>> > 4. Allocate a vdevice on the viommu_id. This triggers RMM to create
+>> >    the VDEV inside the realm
+>> > 5. Setup guest ACPI tables/etc to point at the RMM's T=1 vsmmu.
+>> >
+>> > Now both the T=1 VSUMM and T=0 fixed translation are setup.
+>> >
+>> 
+>> ok so iommufd_viommu_alloc_ioctl() will do this based on type.
+>> 
+>> +	if (iommufd_viommu_type_requires_hwpt(cmd->type)) {
+>> +		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+>> +		if (IS_ERR(hwpt_paging)) {
+>
+> The core code should not decode type, that's always a hack..
+>
+> The ideal thing is to order things so we get a viommu_ops before
+> trying to get the hwpt, then use a flag in the ops
+>
 
-The value of making a static variable is also lower for something that's
-const because you don't have writers.
+Does that mean the SMMU driver will return viommu_ops before
+iommu_ops->viommu_init() is called? If so, should viommu_init() be moved
+into viommu_ops?
 
-So I don't hate it especially for 3 lines, but I do think it generally
-looks more natural to have these at global scope.
+Would the core then only need to do something like:
+
+	rc = tsm_viommu_get_info(idev->dev, cmd->type, &info);
+	if (not_using_tsm) // All smmu driver will now support get_viommu_info.
+		rc = iommu_ops->get_viommu_info(idev->dev, cmd->type, &info);
+
+and then call info->ops->viommu_init()?
+
+-aneesh
