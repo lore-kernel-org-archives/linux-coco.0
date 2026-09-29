@@ -1,74 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F1836B067
-	for <linux-coco@lists.linux.dev>; Tue, 29 Sep 2026 09:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590674FDA4D;
+	Tue, 29 Sep 2026 09:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790674242; cv=none; b=vB0pZkRUswptPW6afa3+X7oe9XXkmc/VRcEZ8/ElcXVrjCHrv0u+jf5ll+UyD7R4fAbdVqX44Bu46DuslYLw/KD0OSdC5DqacFS9fhWq99Gif/tihuHs+C2POFmskrZgGGNYWu3WbSu7N396FaXBg5L44GWVtfgwXM3NEsXecBk=
+	t=1790675386; cv=none; b=OvRpfIWbkIMHZ6dbJwRoAzHrBl9V5g1oy5a77CVFGzw+DeRk79dWwbTORfmBAtvG1ZSlecF1WmJioP2g7BQ0IQrc04J+Ljo/1xQWYViTMmIZTd2ALxaUFmXtON38/pyt59lTUbXuPj5bmv+zagYJjZEYYPz+BMZSlInVDZYJtZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790674242; c=relaxed/simple;
-	bh=W8s/m3ygooCr9S8KabVKCTkIucPyR0xcfpexRhfLgHg=;
+	s=arc-20240116; t=1790675386; c=relaxed/simple;
+	bh=xyQiEg8J5C6AndKTyPKA1JFthTC47DtNPxckDejzBkI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pCSV+rASyZDPnpiykN8GsSQ2VXlEUIVu6ToNcE5qsV/l8R9A9bj5Xdb+ghtItZ+VDUCa4ZozjH9Pk03apUDUDOKwxfrzz9dS6I4z8VFnLbsiXluqOZO/OFiLwOERIk1lkp6HcrtitRY+DlIXMi93A3m4Zs77sdB4ao2KMMDtJW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VDb81T+V; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=utJlgSFsEDQ3zuDwyyVJjg467ogQ/C2zk0J8zlINDrFmUgrEt0xE+J7Zaaiah1L4sGOjhRzs3gPwcNyToetjQCYew4axjvpoKLceXjsP6D33Hz2QEKnHNW+QPaQXzO8wkFRuPLP/P2adBeYudg+RlVeVGb109IuNVNcHXw3KPOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJEDp5k6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VDb81T+V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790674241; x=1822210241;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=W8s/m3ygooCr9S8KabVKCTkIucPyR0xcfpexRhfLgHg=;
-  b=VDb81T+Vk9SeZ34Mg7WW98bhDVrx5kwH59clkG5QMspIySRYPBH4lOyU
-   py7sYbY/y1ILgSTjB4BWHsLLfWd9lAUuUAJMApL1Y+bAlBE5ubD/Y+kB6
-   U0+kG2Lb2hE/T1JEA1Y0GywVMj3x5uxD0FC+zNWyV8N39ltaKCTH8kbAF
-   h6zRLrC4ZvVTboFMiWtTUzo6Z1u9xa4UHFrEepprT4Ma4HJo5Tt+UleJC
-   /WICsKXYmJEQg9CzUmSUovzSDbSXT7JB4mcdR4Qvid9UTXdJP6kToDJi1
-   gCgfW/lNFBckSuzHMwEcu4BGVlKetpl5WKtsWAKE+vxWNOWTIEZYz7PbB
-   Q==;
-X-CSE-ConnectionGUID: nU7dMQ/ET5KsszIVN+z9Zg==
-X-CSE-MsgGUID: yaxJUg+XScySDbyXB8FY3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="91486117"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="91486117"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 02:30:40 -0700
-X-CSE-ConnectionGUID: QkzcnDOBQdGTV2lVCJIHBA==
-X-CSE-MsgGUID: m8PeIb4nTfO+yAAXWhW0VA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="301601142"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa002.fm.intel.com with ESMTP; 29 Sep 2026 02:30:36 -0700
-Date: Tue, 29 Sep 2026 17:28:40 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
-Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Detect if the extensions
- initialization is required
-Message-ID: <aruEyEetjbruotXB@yilunxu-OptiPlex-7050>
-References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-4-yilun.xu@linux.intel.com>
- <8c7a630c25f04dcf5b19e29d3b271c611bf90378.camel@intel.com>
- <13ff769fb55f37a9e7a68bdd40815775ddc4ddb1.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJEDp5k6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDD31F000FF;
+	Tue, 29 Sep 2026 09:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790675383;
+	bh=4EGzsamnE7S9zSPfntnKu9/cfo1q7r+TWTQ73npLdn0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MJEDp5k6Ucc8s3Ifyqwotl+EOWiB4VH4kDYItmut6mgr4p1E/fmdMvwOHJTXukLeB
+	 lShwNXpwS3GAq/BhUEwLMKlSNEdSOMbXvC5r4cSpQP4Nok6AvIHRvKixxlTMTjyjiF
+	 luhwn9msVSLEZnDoSn/SY/pi2BvbgXSp7DyFh8mXZr5MoN+Vjd+aeUjDzmRpDqR0Bw
+	 v/UfiISJWwrUkNbctv0c4I4elnCaOY2RS1qLupTGasgl7rPeeTH2FOZOnOC4xe9Sfq
+	 mCx6OtB50a0+nCo0u9eENpuVd9OFkoY+mf655PeiHb5T0eykMekeRKD1wnk4BKG39T
+	 T2TaAKHdE6XNA==
+Date: Tue, 29 Sep 2026 15:10:41 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+Message-ID: <art6ARechyK0iytK@blrnaveerao1>
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
+ <ao9CKMXAX-hScRSa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -77,86 +67,81 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <13ff769fb55f37a9e7a68bdd40815775ddc4ddb1.camel@intel.com>
+In-Reply-To: <ao9CKMXAX-hScRSa@google.com>
 
-On Mon, Sep 28, 2026 at 09:06:15PM +0000, Edgecombe, Rick P wrote:
-> On Tue, 2026-09-15 at 14:14 -0700, Rick Edgecombe wrote:
-> > now that we don't need to do this on update
+On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
+> On Wed, Aug 26, 2026, Ackerley Tng wrote:
+> > +
+> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >  				     size_t nr_pages, uint64_t attrs,
+> >  				     pgoff_t *err_index)
+> > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >  
+> >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> > +
+> > +	if (!to_private && kvm_arch_has_gmem_convert())
+> > +		kvm_gmem_make_shared(inode, start, end);
+> > +
+> >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> > +
+> >  	kvm_gmem_invalidate_end(inode, start, end);
 > 
-> Per an off-list discussion, we agreed to not have TDH.SYS.UPDATE do the
-> TDH.EXT.INIT work internally so  that another VMM can have more flexibility. So
-> we now need to go back to something like we had in v1 where it is called after
-> update. But given the change in error codes for TDH.EXT.INIT, I think we still
-> don't need to save the ext_required metadata field? We can just call it
-> unconditionally, right?
+> The real reason I responded...
+> 
+> Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
+> strictly necessary in this path.  The PFN isn't changing, just the attributes, and
+> that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
+> fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
+> AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
+> continue to access the shared data (assuming we stick with lazy conversions), but
+> that should be fine?  E.g. it's not really any different than implicit conversions.
 
-right.
+Brilliant idea!
 
-> So it should still be a bit simpler than v1.
+> 
+> In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
+> I can think of is that it could delay reconstituion of a hugepage, especially if
+> we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
+> hugepage promotion).
+> 
+> diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
+> index 62f751952ad8..61f3e270ab61 100644
+> --- arch/x86/kvm/mmu/mmu.c
+> +++ arch/x86/kvm/mmu/mmu.c
+> @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
+>  
+>  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>  {
+> +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+>         bool flush = false;
+>  
+>         /*
+> @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+>                             lockdep_is_held(&kvm->slots_lock));
+>  
+> +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
+> +           ((range->attr_filter & shared_private) != shared_private))
+> +               return false;
+> +
+>         if (kvm_memslots_have_rmaps(kvm))
+>                 flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
+>                                                  range->start, range->end,
 
-Another thing is about the addon_features0 argument for TDH.SYS.UPDATE.
-In v1 -> v2, in order to meet the goal of "just restore everything that
-was configured during boot", this bitmap argument is removed. I think
-this argument removal is orthogonal to the TDH.EXT.INIT discussion and
-still has merit.
+Can this be a problem with gmem hugepages? Not sure how that is going to 
+look like, so this may be covered in other ways.
 
-  TDH.SYS.UPDATE(v0): TDX module reconfigures same features as specified by
-		      TDH.SYS.CONFIG, Linux would use this SEAMCALL version.
+But, as it exists today, if the guest converts part of a 2M page to 
+shared, then this skips zapping the SPTEs from the call in 
+kvm_gmem_invalidate_start(). sev_gmem_make_shared() then issues PSMASH 
+to convert RMP entry to 4k entries and we end up with 2M NPT+4K RMP. If 
+the guest then writes to any private page in that range, 
+page_fault_can_be_fast() returns true, fast_page_fault() only checks 
+permissions with spte_permission_fault() and does not do anything.  
+sev_handle_rmp_fault() also does not issue a zap since it finds that the 
+RMP entry is already 4k, and we end up in a loop.
 
-  TDH.SYS.UPDATE(v1, addon_featues0): VMM can configure new features specified
-				      by addon_features0 argument. For other VMM.
 
-Then we can just add one patch based on v2 series:
-
-----8<----
-
-    x86/virt/tdx: Re-initialize the extensions on runtime TDX module update
-
-    xxxxx
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index c28e65f56532..8d737b86a1d6 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1309,7 +1309,7 @@ static __init int tdx_ext_mem_setup(void)
-        return ret;
- }
-
--static __init int tdx_ext_init(void)
-+static int tdx_ext_init(void)
- {
-        struct tdx_module_args args = {};
-        u64 ret;
-@@ -1340,6 +1340,19 @@ static __init int init_tdx_module_extensions(void)
-        return tdx_ext_init();
- }
-
-+/*
-+ * Don't update the memory requirement or try memory allocation in
-+ * stop_machine(). If an incompatible update requires more memory, let the
-+ * extensions re-initialization fail.
-+ */
-+static int reinit_tdx_module_extensions(void)
-+{
-+       if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-+               return 0;
-+
-+       return tdx_ext_init();
-+}
-+
- static __init int init_tdx_module(void)
- {
-        int ret;
-@@ -1517,6 +1530,10 @@ int tdx_module_run_update(void)
-        if (ret)
-                return ret;
-
-+       ret = reinit_tdx_module_extensions();
-+       if (ret)
-+               return ret;
-+
-        ret = get_tdx_sys_info_version(&tdx_sysinfo.version);
-        /*
-         * Only fails if there is something unexpected
-
+- Naveen
 
