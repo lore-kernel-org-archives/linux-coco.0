@@ -1,142 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD683A5E91
-	for <linux-coco@lists.linux.dev>; Tue, 29 Sep 2026 07:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D843AAF69;
+	Tue, 29 Sep 2026 07:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790667807; cv=none; b=nWU5u33/otNo6NPOCBFLeeNvrZtjz5m+lcisYTmXu22akTGGAz6tynpBkvwnt7A/SzHOl3LYo3O9OrTX7fjG9gVsYGBtJTF4/VQ1L78PyCIyeuWP/zBW0k6WWPTjxP/bW4EwM6ff6UD8tevMEcUSuP+nQTPGJe6vJ6jxVejBKXM=
+	t=1790668496; cv=none; b=HSaB7+PJqagDA8McZubPZhdl3TW4tPF/vDSw3u00lnfO2TrtGTVBnp6twts4wJJqhEdjeFlQQpsNlbtal9OT4QwBRMIXgTcBZ9R2gi1b6vaCNlFwaBQEjFhCSBdp5FKi3+qM6f9mXx3GcioMNM8uVUnNjRn6aNZR2pr+WCq23I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790667807; c=relaxed/simple;
-	bh=ZS3Uwb8xM0JRyf4ECojhTiKdryKdMbYSqg1pPBs1pAo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lm4iIXX+cVVTLTWuJP4IXIVcO1v2MnxztpA/rQ/w5kE4PsKWo/8DXdJttCfvfJgjKWsZchI2g27PbKMvRncNGZzJYut7xus6ZnzZMS15vJgQnIueClNdKO7wxP5bYzlfx8s/q3BkTnd6zadhv7y2xrUvxuXn1ZuZ2rX6XvDPhNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jkwf+Tr2; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790668496; c=relaxed/simple;
+	bh=BMIu3XzRkJm+A1W6ZZm3DtEJrTbu/WBqZDXJAhuao4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LJiUFPAuE8GxvaIZZkdNr5NORA5t/yfa6ZGMnRBw9gweKEUCLTpCkLNhNSbIjYp4GK9Wl+S25KwdF48wxh75QnjTsBfQyFy9THU9RKgbMDORT2qmkQr7tUAxNBUH6eP21NrEyotA6WLjnAtabxrp5f6QPE+zvmj9E7mGGG6i6Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bmQLzw4r; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jkwf+Tr2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790667806; x=1822203806;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZS3Uwb8xM0JRyf4ECojhTiKdryKdMbYSqg1pPBs1pAo=;
-  b=jkwf+Tr2EpsxEstSRJvqksUAbzGQ7My7FBCm/ZwrrGh82K5GRkDL5jLf
-   Jh082Q2dTdfkjCry3LIcrZARlOndGaOxqJHRoqFvvXsmbrNkE4UDbRf+x
-   uIT1mCAB07qO3O3qGpJcWcGybISX8lVgIkm4J9mAZeSsJHkDSiU0QjRnu
-   7kCcLXfOew+fLjx0u2VXkvD044UkEGPtfrqLLOocRvrmM1DdcAETgxqWE
-   rWRBkgs7InFiEQeTlYUh5KJ0H7N8g573riwLdIFmGaXQedfFblvqqkObx
-   E58uMG8LaHDONkOJhdQb5b8Nt8/NsE3ai1hDafFVyEGrKf+lW3vYZsSGb
-   w==;
-X-CSE-ConnectionGUID: JBrrtEVTTfOWvJrwc1eJDw==
-X-CSE-MsgGUID: 6H9h7TsMTKiOGGbzzRqOLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90431650"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="90431650"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 00:43:24 -0700
-X-CSE-ConnectionGUID: q5CLkmCiQ6WWyZgTlePKGA==
-X-CSE-MsgGUID: Bx4OISMOSya+fzByzBmhhA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="274403098"
-Received: from unknown (HELO [10.238.1.46]) ([10.238.1.46])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 00:43:19 -0700
-Message-ID: <6df0a7cf-e88f-409b-8601-1e98367e4930@linux.intel.com>
-Date: Tue, 29 Sep 2026 15:43:17 +0800
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bmQLzw4r"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zT6GlfQft/QJeAy0pckXvrIl9KIiBoLg2QYNryNymLU=; b=bmQLzw4rqkY4fV8qO1gp2+zRk4
+	nhnwFpj7IgIbEV0UNBL0AOnauwbzBlCrL0ajhvhUVi+pNnh8SIZRzeefsOeh2Kr+NSn2B/sAIj7Vh
+	Cx4AjbKvt+mRby1KlKqiNENB9NvJZhwvbf7gm1HC3bSiE/zr2kOf2x6WRKTNv+D2/KJS9G+aCQfJy
+	toxyW81SwYmF7/bHp3ab0R0jpaRE1WptNnL1lIFsaUvgJvNpq1mWDNvoRc/z4pdNqCh2Tcmi+TgDy
+	hVZUhCFgMIoSgF2tN4jnyl9609fBdFBT+W9F9gzKS5Fe2LmAP+mdiNLql6o3NqdHV3RMF1f+4q+yR
+	ZPnsshtw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1xBSfV-00000002Jcc-0zm7;
+	Tue, 29 Sep 2026 07:54:30 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id F1E06300446; Tue, 29 Sep 2026 09:54:26 +0200 (CEST)
+Date: Tue, 29 Sep 2026 09:54:26 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v2 2/6] percpu: Bound decrypted storage for all x86
+ encrypted guests
+Message-ID: <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
+ <20260929040256.543767-3-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/6] virt: tdx-guest: Give the Quote buffer an explicit
- type
-To: Peter Fang <peter.fang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Xiaoyao Li <xiaoyao.li@intel.com>,
- Tony Lindgren <tony.lindgren@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>,
- Artem Bityutskiy <artem.bityutskiy@intel.com>
-References: <20260928100913.2265687-1-peter.fang@intel.com>
- <20260928100913.2265687-3-peter.fang@intel.com>
- <bd46aaba-2c07-4b4d-b76a-30a1dff21b0f@linux.intel.com>
- <artrprfgz7Q5CEz7@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <artrprfgz7Q5CEz7@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260929040256.543767-3-zack.rusin@broadcom.com>
 
-
-
-On 9/29/2026 3:41 PM, Peter Fang wrote:
-> On Tue, Sep 29, 2026 at 10:13:32AM +0800, Binbin Wu wrote:
->> On 9/28/2026 6:08 PM, Peter Fang wrote:
->>> The Quote buffer is always a "struct tdx_quote_buf", but its global
->>> pointer is a "void *". A function would have to convert it back to make
->>> sense of it.
->>>
->>> Declare the global with its actual type, and give it a better name.
->>>
->>> This creates variable shadowing in wait_for_quote_completion(), so
->>> rename its parameter for clarity.
->>>
->>> AI was used under supervision to collect/apply feedback, review code and
->>> workshop logs.
->>>
->>> Signed-off-by: Peter Fang <peter.fang@intel.com>
->>
->> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+On Tue, Sep 29, 2026 at 12:02:51AM -0400, Zack Rusin wrote:
+> TDX also needs shared per-CPU buffers. Use X86_MEM_ENCRYPT for their
+> definition and placement, and provide page-aligned boundaries so the
+> architecture can convert each CPU's whole section before registration.
 > 
-> Thanks Binbin!
+> Define the boundaries in the SMP template or UP data as appropriate.
+> Drop the unused DECLARE_PER_CPU_DECRYPTED() macro.
 > 
->>
->> One nit below.
->>
->>> ---
->>> v5:
->>>  - New patch. [Dave]
->>> ---
->>>  drivers/virt/coco/tdx-guest/tdx-guest.c | 35 ++++++++++++-------------
->>>  1 file changed, 17 insertions(+), 18 deletions(-)
->>>
->>> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> index d0303e31e816..896eb0a09c4a 100644
->>> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> @@ -192,7 +192,7 @@ struct tdx_quote_buf {
->>>  };
->>>  
->>>  /* Quote data buffer */
->>
->> The comment should be updated as well.
->>
->> "Quote buffer" or "Quote request buffer"?
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Link: https://lore.kernel.org/r/aqqGUAX65s4LdJkr@thinkstation
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> ---
+>  include/asm-generic/vmlinux.lds.h | 12 ++++++++----
+>  include/linux/percpu-defs.h       |  7 ++-----
+>  2 files changed, 10 insertions(+), 9 deletions(-)
 > 
-> Hmm... I think with this refactoring, either one becomes kind of
-> redundant. I was thinking of adding something like "GHCI Quote buffer",
-> but that's pretty much documented by struct tdx_quote_buf itself.
+> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+> index 64bc2bfdd2ec..145fcdbbe9db 100644
+> --- a/include/asm-generic/vmlinux.lds.h
+> +++ b/include/asm-generic/vmlinux.lds.h
 
-Agree.
+> @@ -1022,11 +1024,13 @@
+>   * Note: We use a separate section so that only this section gets
+>   * decrypted to avoid exposing more than we wish.
+>   */
+> -#ifdef CONFIG_AMD_MEM_ENCRYPT
+> +#if defined(CONFIG_X86_MEM_ENCRYPT) && defined(CONFIG_SMP)
+>  #define PERCPU_DECRYPTED_SECTION					\
+>  	. = ALIGN(PAGE_SIZE);						\
+> +	__start_percpu_decrypted = .;					\
+>  	*(.data..percpu..decrypted)					\
+> -	. = ALIGN(PAGE_SIZE);
+> +	. = ALIGN(PAGE_SIZE);						\
+> +	__end_percpu_decrypted = .;
+>  #else
+>  #define PERCPU_DECRYPTED_SECTION
+>  #endif
 
-> 
-> How about I just drop the comment?
+So you're page aligning something that will get different protection and
+will thus shatter large pages?
 
-It's OK for me.
-
-> 
->>
->>> -static void *quote_data;
->>> +static struct tdx_quote_buf *quote_buf;
->>>  
-
+That is somewhat uncool. We like large pages, large pages are good.
