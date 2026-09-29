@@ -1,281 +1,178 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012062.outbound.protection.outlook.com [52.101.48.62])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4551F50E5B0;
-	Tue, 29 Sep 2026 13:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790687216; cv=fail; b=Wt0KYKOc/NzrzG8a/Lra3nzK90Yth6cftCbU8AZnS9mGvYb7sgwLJCNmkQQYMlw/bk97slqP1QnCXLJp6U6tdp5cw0+ceuxtiA2gpkG8Opi1jngOt0CfwjImyr7Y+LTIbYw0YLqVgMiOYXxv1GMUFlH2fS/KMpYNEJXUCcF1OU0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790687216; c=relaxed/simple;
-	bh=TXeDympNQjTZNHnJ7h3UVTJKmSMikAnqdwOavCuGDe8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=W+6ScdGNgyO+0UGczesWyDIC45PDKcyNUZD/APHD0ToTy7XQ0o9d/GI0Xzb4+SFc+a3Km4BNytabj8V69lvMbVmdux4cn+9qYNN17Mqek6OEccGJj4vBaO1fkDKLcAQ6ben1WnPaEtypEhjmUE8flXXopETbguUCOSL0mD3fQlc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=h2FPLH8/; arc=fail smtp.client-ip=52.101.48.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A3F2F7EE9
+	for <linux-coco@lists.linux.dev>; Tue, 29 Sep 2026 14:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790691518; cv=none; b=lzzFoekV44j4VIqAvYtoAP5/03C2Thb0Xf0AXIEVuYTq1WYi+9PnT+ZLtg4o37Uoi6yCcW32jUaVhz5QO/2dy4yAAECKCNGChN+zCOtBahikMWii1jPIWEnUz8kOUmGS3NPGiNBTdLrcHLcBWD5RkTGoQCEZKCEMUMX+4vQfDWA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790691518; c=relaxed/simple;
+	bh=LqkNb6abpVDJXMXtvFunz9ROyI+WRLfictPOxtgcly0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Oie6RbxQJEZIP0mWpdw9zecdClSYDJ8PpnnMNcosWY/Fn5sc94ERo1RtvX6tMxD1AKUi79ogzlyOTdPr2dnkD5cw8wtDUaaDuS7FCjgyb3i5/rq2WNfVj2sAU9QBQu1bDrRtJzwjo+AXyU2DNDYGGMdSt7V1X/LeStDHPUNvG64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wi8prc5l; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="h2FPLH8/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aixYaLV6mcGkT5ztVBF0/lOINZxV+UIDoCRZesPjVED7EFyuqAjGXxdpT82v1bTrbnRC3DD0SwmXQiOuSfHB9kiz1xOxb+s8MqukBNztkvOIW1YcPH7r0v64M7kXf9479NVzvtmIJC4+PH+nOONyFfdLoICECeQq3+Sz8BsboIDFkkcG3qZwM4bahR1iIa7eIqR7kk2BD0CSUMpeuOZtGqm8c1Y9YzRNK4rprH+I8jS6Zp3rpWFnH3MJL9lBRpQJj/ArYMpDuS7Fa1SuZeDF+i2FPw4kZQNjH4L0Wn1rc5bWlqLuT8ujdcWb9s07/2+1/wl0NIm0dbJKxQSM2EPPJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G04UasHxc0ROenVMtmy5sD4YuDN7AdK9YKNkcdL81ko=;
- b=KKAZ37k0OyFYX0SM3ky5QYZuXGxd0MBs14f1PRka510OCVGVaUEa1Xigl55UH30AZ60mIk963qjfklomWZjQJWml+gSCtC8nJUYaJcqDAwxfR8WpswP92GCrKiFZMzYqgavtUkKS7EUzInAWj05LNjPXECXeuknAAG9Zz+xpRDTahl/1Qn0eiNTGvMO6nLp3r2Uv+BDhK3RVAG9wTqvv6ATsz0wjdU7DE36LIBs0AufdUwK/xDJcgwdLeQJtYi1HNBP3yYMXFvEz621QitYwHZ4ELwX4vxkgtFLuaqM4iC7mnMu2d9kMxcSAYi1IA0vxMO1ONHaRWsQOLIxMrMJQEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G04UasHxc0ROenVMtmy5sD4YuDN7AdK9YKNkcdL81ko=;
- b=h2FPLH8/C1Da3OYJfS3+S4G8JZOn42O08dED6PJ9VHyYF0GWePZAPrQqXZx3pCE4CPniTe+XM+ciPNRIZaoU1ktxB0E5iz1xf1FXsyXcVZe6PeV5jf3bebiRuZR0NyelV44hY8XthCM1BdLL+D9gIpEkvdDC6zOmaH/0luX2n0vPWUDDJuZY6/mrNacsmBtx9wvQHcd1Gz9zCi3XqKCjACE73C1+Z52EDThluyeqh9TZZl64C0YT95z08zPH0opuUSZglAgGyrAQ6qlOiurMRyj0QeogK1cDGPOL7uBgHmReFIpuCwOXxwVKZZCC3B5fBdXMwYTopfV4HnOGeBzsSw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by SA1PR12MB6847.namprd12.prod.outlook.com
- (2603:10b6:806:25e::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 13:06:46 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
- 13:06:44 +0000
-Date: Tue, 29 Sep 2026 10:06:43 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
-Message-ID: <20260929130643.GL1616761@nvidia.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-9-aneesh.kumar@kernel.org>
- <179027891417.104879.5995584402952067518.b4-review@b4>
- <yq5acxu1kgmo.fsf@kernel.org>
- <20260925123918.GI9354@nvidia.com>
- <CO1PR11MB483580AB119687B7EC2DD8518C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
- <yq5atsn8posb.fsf@kernel.org>
- <20260929121723.GI1616761@nvidia.com>
- <yq5aqzicp6oc.fsf@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aqzicp6oc.fsf@kernel.org>
-X-ClientProxiedBy: SA1P222CA0101.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:35e::9) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wi8prc5l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790691517; x=1822227517;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=LqkNb6abpVDJXMXtvFunz9ROyI+WRLfictPOxtgcly0=;
+  b=Wi8prc5ll2lQufwyFFpSfUNR/lcPizKyUzXCmvRlbbwwLjaIWbSUfTuD
+   18LZgBJ0ku2zTn/7TGkkUC0t3SvdXSh/qQBM15fNWw2VuQYpSw81jMCFL
+   uBIdQHTVKGEMx4l+wqzoeTXRAd8M3PqY0HcvieyEKnyan9wTYIZyMl+W9
+   CYCLizYq0gSd3wt3mO6tnM5fm5iAqSSm7SUKqHToj4rBkWTvt4JKai/7a
+   dko7jq7spVGVxJvBW4K26/1MWSQdVZSS8BwxeI3Ue/FjBlr1oEAEoBKO/
+   vD5HEUHePg9T+PmAZcjRgnhNslJ4tAHJVDZ1uw4PJfQUsY1Shqg4/kK3q
+   g==;
+X-CSE-ConnectionGUID: buTiFHe0SoqBw9/8DCzrug==
+X-CSE-MsgGUID: S/4O4RE0RASohc9CCrWCvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="94123536"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="94123536"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 07:18:37 -0700
+X-CSE-ConnectionGUID: QEj2zho0R0aScPJ8qcrnvw==
+X-CSE-MsgGUID: 3S5G5ID3SqGUYGjpu4sFLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="301659883"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.111.116]) ([10.125.111.116])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 07:18:34 -0700
+Message-ID: <d71b319c-5a72-4e2a-b46d-c22a5817a854@intel.com>
+Date: Tue, 29 Sep 2026 07:18:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SA1PR12MB6847:EE_
-X-MS-Office365-Filtering-Correlation-Id: ccd92db2-bbfa-4c2e-2c7e-08df1e2a831e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|23010399003|376014|1800799024|6133799003|18002099003|22082099003|10067099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	Nzv/MLC3RisVjtX+EPRfNqAfUnlZqERTPzvKHFaqkMS+dv7yQatb1m0zFRYV/svwvfDir3aTbgny22rq8u2pwAzkoDPsT0ppMs+RiLlGty7W+pKcAnMj+/sUsLoYElr+oWGQTfkHyIjR46Umh/c132nZ/Wuact9dGGJMWX61Ms5LloLQRZmrc/LM05AJnIJaKxHfr9Cu5YqIVNqkNzwdJk1y0S245YjXa/D94cbeVNWNxGKZZOreurX//foNoonsAxv2bF5y268FNv2EJUqopmQ/nuXzpbx3JQXB/2/ET3k4pFLV3TLwrfVHmouC/ukdfl7BKME6AswGxiXn6l3xIcW3oCBM+9fCKBXBwiNj6XrxA32fGOzggJS8MrbaFt1kPG3ZqGzQ3HFLWZWjDhgDrTNxyuNjKkSr1wJ09WWX0C8qeBtmLooCDvwNHhf15w382wKAoD5b1Msd22/TE4syCDWOsUbsf0Inn3TJ+wRWAMY+gm4eU9JMNHYQxInMRFZYZupc2hOH0JxZmhZSeSoBLdijIG8CpoRyd9peU7BdRm1NcePNl8jbIlR9mdPUTjB5tI0DfxZ2n8Of9k0U8Aim8xF5VmusxiIkWtMppmN9XWix14LTTnm9nAYx1Vby9ecsnqmA4b6xsRI+j0gDuvQdb6sohKlYAXYFQ9eYrEMySSs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(376014)(1800799024)(6133799003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vjE1SNvTShosyyq+3ipHb5raMOH5oZ34gVNlr7TC+QGsxlyJUO1crrO9R8n1?=
- =?us-ascii?Q?bQ2/5fCqj7hQDyzT/rcTtmeTRlSpc/FwdjF7e5qXeWnjlADNrGNjyVv3uKN6?=
- =?us-ascii?Q?tE62iLJ3q5JtFVKc2LAl3lElV0PuKxkEiIiKoFjGKZU7hR/bZ3pvBUfOHNec?=
- =?us-ascii?Q?v38QTQgsLlqXKmU/PQ/k1FGuaPN1Nfh5I5E2Wta/CFNmx7Lfy+U8fa55UrKL?=
- =?us-ascii?Q?OoRcANvCp5REINaYpwq8vsg9x79fXwR49qKsr/HNmyI2QtS6xloSc35Gjlk9?=
- =?us-ascii?Q?8+snNaJ6prI6HgSvzOdCyuIfXzdTuzTwtCgxeARYCB0J8SSmRl+P6nezWvmq?=
- =?us-ascii?Q?Fdn6DDkKaLzqXhwYeWz2Pp0stGmL5dCCxN/m2vMiYDlmGqfzvf2dHEwUPwGw?=
- =?us-ascii?Q?GBx5GTSN5wtIJ4lCgCoLciAlb4QVH1dXcZd0R07SZfkDYNaSBfCSzXF4QKlJ?=
- =?us-ascii?Q?fcPCoh3bH28X/glC38qhGGj2OXyTHtqd1zGF10vCkOfm5ujpNee+8xK5uHN7?=
- =?us-ascii?Q?Elh++M1r+z1R4SdOjfMJQu9V+zQP2qtxjsF1qGFmCpYWDZiQf99tXE2i29o2?=
- =?us-ascii?Q?VemsaaCWeswePjp2wDxK7SZqEvIIklHIsHaVAUHGTmfdwvS/Q61G008rqBY3?=
- =?us-ascii?Q?j93eU3eNGWtlOU3B9nGHyECPpkoloq5DZwm5EaJzoSWLGAPk4rK/Sjh7P23G?=
- =?us-ascii?Q?8qAEMj63G6QJkyFShTqMUFpRZjQmpUtFmvVLRck0AuhLROrrlQGSgsBaHqrW?=
- =?us-ascii?Q?1qh8kIvK9tVqha5JZtmGDSdwx7debLzhaC9oK/djw9Nby21s0pCT+6BMGiUE?=
- =?us-ascii?Q?keOuHxToa5KA5vAHAqRisgAaUiiksdFNlDd0ZxaCfTRhyx/JdGSVKyDqfBWV?=
- =?us-ascii?Q?wUQxvnMsYMliSOT+miMFwnZ8ec9ff6nvJsNBWIBlsKqfmnFsL/cG5jPY58ae?=
- =?us-ascii?Q?zJuxicIQMqj+FL//prCjRsSgqZ5/qZlBIokEx0w7gBNRLRbkHpPagYT1QB9+?=
- =?us-ascii?Q?3Y9jjWxcxdPWg31hew4imYznNd2pbdu5DhY02K0YYaS1gpU1tfhIWpC3QkSY?=
- =?us-ascii?Q?TmvrY7gvi3xFYAJMOV6+wU20T67exZZ6QtrhD47ROpWWFB+bDljKjZFYyyq+?=
- =?us-ascii?Q?6LjInbMvM7OLVDiBSSQSi3dDhtEwtC0xXx5vRl12jCss4gEipPI240KVbm7U?=
- =?us-ascii?Q?5RDPZTAR84P2Iv3kIgXWY+W/iLnWU1twa9gxGyGOAzsMM3l03oOQw3UK5xEA?=
- =?us-ascii?Q?JY/+oOjBoZ6QlT8XWm+stJGNxzM43S2fY+S0FmtuFxAHeq7HimYuuCIwy2g4?=
- =?us-ascii?Q?P9eIBIvUVTwWvTaiEg89Zm4ROknfHPTjzxzDLMykaE13JAEQkD+wIkozqPAw?=
- =?us-ascii?Q?askJhck/HzXHcuxjgDN/Yi1EJ0lqk0VMF3soqkKLc9bRy48grm/co0GMuXlJ?=
- =?us-ascii?Q?gijmYQlbE9zESUcegXxflrZJsUaCRG/+bDb2xY+Otj+IdDJtiB0bcOno+jX3?=
- =?us-ascii?Q?8e2vQceISAcf93fyYGjziteDjFvm1Qtn9E8AgG1vjtAsGeyKmWKUfINRVnE3?=
- =?us-ascii?Q?uEORhZD1C+f4AJeZqdz5qgN5J0vtt5jTpiPYmtHD4u9tcDxW+kk20ionRDsl?=
- =?us-ascii?Q?thRttd7fSxVZNizMFGPd+C9MgSlVeR3/grpUXTLHa5VK9cZd0irSuILdHY/B?=
- =?us-ascii?Q?Rmtl4dcg2d1Qf4zqC4DLbCd/dTYJFaQBhpJoeB9gL9CVPUzl?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccd92db2-bbfa-4c2e-2c7e-08df1e2a831e
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 13:06:44.8061
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2qRooxJD2GgSWfphmAEkdLVKULA3tHxrJwaIqu3upEDGVV6IDnwrMLukN2GUMZQn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6847
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/6] x86/tdx: Add a helper to query maximum Quote size
+To: Peter Fang <peter.fang@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260928100913.2265687-1-peter.fang@intel.com>
+ <20260928100913.2265687-6-peter.fang@intel.com>
+ <61a63fcb-c40c-4259-b314-9ec63b0bc847@linux.intel.com>
+ <aruCUJObHUV-xt6q@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aruCUJObHUV-xt6q@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 29, 2026 at 06:15:39PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@nvidia.com> writes:
+On 9/29/26 02:18, Peter Fang wrote:
+> On Mon, Sep 28, 2026 at 01:32:06PM -0700, Kuppuswamy Sathyanarayanan wrote:
+>> On 9/28/2026 3:08 AM, Peter Fang wrote:
+>>> TDX attestation report ("Quote") sizes can grow with newer crypto
+>>> algorithms, so guests can no longer rely on a fixed-size buffer for the
+>>> Quote.
+>>>
+>>> The TDX module added a new ABI that reports the largest possible Quote
+>>> size via a metadata field [1]. Add a helper to query the size instead of
+>>> exposing tdg_vm_rd() directly, as it can read arbitrary metadata fields.
+>>>
+>>> The reported size covers every Quote type the platform can produce,
+>>> including SGX-based Quotes.
+>>>
+>>> Thanks to Xu Yilun for suggesting this in an off-list discussion.
+>>
+>> If the patch is suggested by Xu Uilun you can use Suggested-by:
 > 
-> > On Tue, Sep 29, 2026 at 11:44:28AM +0530, Aneesh Kumar K.V wrote:
-> >
-> >> tsm_viommu_get_ops() runs with pci_tsm_rwsem held for read and takes a
-> >> temporary reference on the backend module (the CCA module). This keeps
-> >> the selected ops callable until vIOMMU initialization completes. iommufd
-> >> then drops the reference. This does not pin a particular TSM
-> >> registration or prevent tsm_unregister().
-> >
-> > That seems over complicated. Maybe we can't get to the sane locking I
-> > suggested earlier where TSM module is stable while a driver is bound,
-> > but we absolutely must have sane locking where we can "pin" the tsm
-> > for a pdev and it cannot be unregistered for long periods of time,
-> > such as while a viommu/vdev exists.
-> >
-> > That period should start right before getting the ops and continue to
-> > until the viommu is destroyed.
-> >
-> > No hot unplug of tsm modules while things are active.
-> >
+> I think tip's preference is to use some prose rather than a tag for
+> these things [1]. So I'll probably keep the prose unless you have
+> objections?
 > 
+> [1] https://lore.kernel.org/all/c1c9bddf-1c00-4625-a915-d545acd67fd0@intel.com/
+
+Actually, I'm not a huge fan of the prose in this case either.
+"Suggesting this" is not specific. What's the point of even mentioning it?
+
+Responding to a minor review comment does not need to get documented,
+either in prose or in a tag. What part of the suggestion was so
+important that it needs to be remembered for all time as coming from Xu
+Yilun in the commit log?
+
+It doesn't seem that important because I don't even see Xu Yilun on cc. ;)
+
+>>> +/*
+>>> + * Ask the TDX module what the largest possible Quote might be.
+>>> + */
+>>> +int tdx_get_max_quote_size(u64 *max_quote_size)
+>>> +{
+>>> +	u64 err;
+>>> +
+>>> +	err = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, max_quote_size);
+>>> +
+>>> +	/* Old modules do not support this. Tell the caller. */
+>>> +	if (err)
+>>> +		return -EINVAL;
+>>
+>> I think -ENODEV or -EOPNOTSUPP is more appropriate return value
+>> for unsupported case.
 > 
-> That is essentially how it works. I decided to take the module reference
-> here and the tsm_dev reference in viommu_init() to keep the rest of
-> viommu_alloc() cleaner. That is, we have:
-> 
-> 	struct module *owner = NULL;
-> 
-> 	ops = tsm_viommu_get_ops(idev->dev, cmd->type, &owner);
-> 
-> 	if (!ops) {
-> 		ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
->                 
-> 	rc = ops->viommu_init(viommu, idev->dev,
-> 	if (rc)
-> 		goto out_put_hwpt;
-> 
-> out_put_idev:
-> 	module_put(owner);
+> Hmm, I don't see either one being a common pattern for guest-side TDX
+> code. -ENODEV is usually used for some basic operation failure.
+> -EOPNOTSUPP is not used in the guest. But between the two I think
+> -EOPNOTSUPP probably fits better. Thanks.
 
-if we have a get_ops we need a put_ops()..
-
-> The tsm_dev and module details are needed only by tsm_viommu, not by a
-> generic SMMU driver. For viommu_init() to take ownership of the resources
-> acquired by get_ops(), I would either need to add a viommu_info argument
-> to viommu_init(), affecting all IOMMU driver implementations, or make the
-> error handling conditional and awkward.
-
-Just don't, iommufd can hold the tsm ops if it knows it created the
-viommu through tsm.
-
-
-> >> CCA vIOMMU initialization takes a tsm_dev reference, keeping the TSM
-> >> object and its PCI/TSM resources alive until the vIOMMU is
-> >> destroyed.
-> >
-> > iommufd should do this, so long as the viommu object exists the tsm
-> > for it exists. It should not be inside tsm drivers.
-> >
-> 
-> That would expose more TSM details to iommufd. The reference must also
-> be acquired under pci_tsm_rwsem.
-
-That seems like overkill.
-
-> /* Pin the current TSM and revalidate the selected vIOMMU operations. */
-> struct tsm_dev * pci_tsm_viommu_get_tsm_dev(struct pci_dev *pdev,
-> 		enum iommu_viommu_type type,
-> 		const struct iommufd_viommu_ops *expected_ops)
-> {
-> 	const struct pci_tsm_ops *ops;
-> 	const struct iommufd_viommu_ops *viommu_ops;
-> 	struct tsm_dev *tsm_dev;
-> 	int ret = -ENODEV;
-> 
-> 	{
-> 		guard(rwsem_read)(&pci_tsm_rwsem);
-> 		if (!pdev->tsm)
-> 			return ERR_PTR(-ENODEV);
-> 		if (pdev->tsm->tsm_dev->unregistering)
-> 			return ERR_PTR(-ENODEV);
-> 		ops = to_pci_tsm_ops(pdev->tsm);
-> 		if (!ops->viommu_get_ops)
-> 			return ERR_PTR(-ENODEV);
-> 		tsm_dev = pdev->tsm->tsm_dev;
-> 		/* Unlike get_device(), this also keeps PCI/TSM resources active. */
-> 		if (!tsm_try_get(tsm_dev))
-> 			return ERR_PTR(-ENODEV);
-
-This is way too complicated for what should be a very simple scheme :(
-
-rcu_read_lock()
-tsm = rcu_derference(pdev->tsm);
-if (!tsm)
-   return NULL;
-/* Prevent the module from unloading which must be the only way to
-   trigger unregister */
-if (!try_module_get(tsm->ops->module))
-   return NULL;
-rcu_read_unlock()
-
-And this should be exposed to iommufd..
-
-viommu_create:
- tsm = tsm_get_device(pdev)
- tsm_get_viommu_ops(tsm,...)
- [..]
-
-viommu_destroy:
-  tsm_put_device(tsm)
-
-No lock, no registering FSM, just RCU free the pdev->tsm memory and do
-that module unload rcu synchronize during module unload. No hand of of
-the lifecylce to other layers.
-
-Hold the module get in iommufd inside the iommufd viommu object.
-
-It is simple and easy to understand.
-
-> 		viommu_ops = ops->viommu_get_ops(&pdev->dev, type);
-> 		if (viommu_ops == expected_ops)
-> 			return tsm_dev;
-> 		if (IS_ERR(viommu_ops))
-> 			ret = PTR_ERR(viommu_ops);
-> 	}
-
-
-This should just be try_module_get and a touch of RCU.
-
-> > ideally the module refcount handles this and the only way to trigger a
-> > tsm remove is through module unload, with no sysfs path?
-> 
-> I agree. The existing code takes extra care to allow tsm_unregister().
-> However, if unloading arm-cca-host.ko is the only way to trigger
-> unregistration, as it currently is, we can avoid this complexity.
-
-I've been badly traumitized by hot unplug races, bugs and deadlock,
-let's not introduce anything like this here, there is no need.
-
-Jason
+Just leave it alone. All that matters is that it is non-zero. If it were
+going out to userspace, we could argue all day about it, but it's not.
