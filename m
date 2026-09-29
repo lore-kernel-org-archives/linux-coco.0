@@ -1,233 +1,266 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010018.outbound.protection.outlook.com [52.101.193.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E8245D90D;
-	Tue, 29 Sep 2026 19:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790709047; cv=fail; b=IHnMjJuxCpk98ckybF4q8NgNuT5b+DbapmqKn4TOwE07dKa2SNZVesWJ77Wvt2I84HsZxhrjXzKijWEVAlUW91cJG73jb/Cpv3dOpKo/qtJQMt42hVhMkmEleJF3r6q+mWl3IhPLQu99flEwiUmm/MqDVRwU0Z7BhG2+n5hLpXk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790709047; c=relaxed/simple;
-	bh=t36GaFK473LCDnekCC3CYqVgvCYlnlWgeYpWvTj2qrU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tauOQD+AuJ9Kez/MUXeh3dngdmDhTW+Kbt2QPSxAGnbG159QhgkITJoPW9B6obekY+6Mfo9tUUYBziCIlKyFsOu3K9Yt2yG0oNIe5H8ApLuqtHeGApXwucoQRJnRSXgIDknhwnO8SKOoQVyxElAgvg0zktRUb6zgbMsZ+9fAoTA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LXqEmSgj; arc=fail smtp.client-ip=52.101.193.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A633713FEE;
+	Tue, 29 Sep 2026 22:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790720201; cv=none; b=kf4NUA5b9JfECjMIWeMWq3/BXq2UKVFlS7KWEsJ5KS8aBnUMPPv6PnFr2a7lGEo0H/6kbY4YScDgfl4PlKwV4ncFupHQBwSUDcNIKJ5gIZJvFdpMGMIiFiT+r97tr+c6HTXIRuMRDH4+sQskgJYi+J2s6I2L5YFy3VRVugYjaYo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790720201; c=relaxed/simple;
+	bh=1NT+wfwfNpVcFzjc6PeZ85Jz2K91YU1fR6/05gtWZGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bXH7QtQEYZo2XemiyZktoWVfUVZOXJTI32BaLXNTI1+EiZXJiU7z7dHptL8Q9kWPdNl3sWZJB+INlteWpOP5+NxkjjJ2PJqe4bZOz25IXZyB8yDGM6xrPVkjU4eml7e+yyIRRILz6Tp+E/oOS99COPdqRi/GuOFryDwW6JqZ144=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OGIHiMQi; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LXqEmSgj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tJTUdxTeOOUb4AQuxQztIy5tJu1MsvYJ6FfoFsudSj4I03mBlO2ckchLyQkCT0ECS+HEnnkiOcVJz6uMn0iQ7sW3D1Ig+AmfKfh3RYgx9cvdB9zC8HQBAdqF8c7leK+k/IrI4yUOPBiJGu6P8QLhRtXkpfXqCerpL7gv76hnnKCiXXLJbUNd5PkaD6VY6EGOEUBxuGe3U9+A8jyXBqiX5Fv6ZKpcmh42xku2V2CuLsTCpraxdClpNTbKZn7pT2SyqGqdzgbaVgu7O6ZNYOnQnibD6s4AWKzWKh3Z7ohOzAnGEErKdfE6K2q6bR+Oi9fBw/KKw6JdDXXJoL1ezfwXgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zI8Lv26UzNIVqgveJdbNAIcXue0En+gsq2cV4G46D54=;
- b=GDNs6Akcmqh65qaSzfDMDuBotGdDrAjpiG2/32mWHLUPuOjigiGPTUDSBJy0yQfQ1j5vfLoQNL9DK9TGkGwRoxu8dCjjH+5qE+T28JMVbU9Hh2bJV8fhWBknoPqITGzEG6lp+b9UEZgCVZ/I+8ROlUGpUx/zRIW8gY4eVm4R/UDUpoppA88VMumtuiGMb8xIv6ekOuo138SnWTBzI0hXIB6OcZkZJekKeAkYY0hamfB4ZT4yyMlPd4tkac6pd7kycNfuRpvMZY5RAHQZ0+wrjVuTV2FbFqmuZ+BPo6hYesa+yjPcR01nuqODCWD/+AGGQR0kD1B63/IOYmGm3dfUcQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zI8Lv26UzNIVqgveJdbNAIcXue0En+gsq2cV4G46D54=;
- b=LXqEmSgjRNxszZFpFnyUu+jsWZYiCGvrC5zwr5J3CpGUsDiHdBH2t1YeemuAEVdao+WHQDcxIQ73E7XE778g+MkzPDH0ib5Wfnq7mwqGkFMbVdUz3epAXJ+EbPh7qPw3soFMBlFMcx3neIkEteZl9EG54P9f4XJ/Xy1DlD2ENZBiQDJws20hikyxDiluiCezEmnHzhBs112fHTEhoKTkj6rtdyCjv9pCrjl4GM/9lQNk/XaZNouea1NXYnleiR3QQcZ/M17e4yXQto1UygBfUFcXMZuzf2V+rlpjrHhIGOPKIBu/3FhWuMoIHlLHeh6JY2JlfYlw3zolvSPbyPKBOA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by DM6PR12MB4202.namprd12.prod.outlook.com
- (2603:10b6:5:219::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 19:10:40 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
- 19:10:40 +0000
-Date: Tue, 29 Sep 2026 16:10:38 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
-Message-ID: <20260929191038.GO1616761@nvidia.com>
-References: <20260917140159.1163281-9-aneesh.kumar@kernel.org>
- <179027891417.104879.5995584402952067518.b4-review@b4>
- <yq5acxu1kgmo.fsf@kernel.org>
- <20260925123918.GI9354@nvidia.com>
- <CO1PR11MB483580AB119687B7EC2DD8518C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
- <yq5atsn8posb.fsf@kernel.org>
- <20260929121723.GI1616761@nvidia.com>
- <yq5aqzicp6oc.fsf@kernel.org>
- <20260929130643.GL1616761@nvidia.com>
- <yq5ald8koxqa.fsf@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5ald8koxqa.fsf@kernel.org>
-X-ClientProxiedBy: SJ0PR05CA0199.namprd05.prod.outlook.com
- (2603:10b6:a03:330::24) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OGIHiMQi"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 61C831477;
+	Tue, 29 Sep 2026 15:16:34 -0700 (PDT)
+Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3C1C73F85F;
+	Tue, 29 Sep 2026 15:16:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790720197; bh=1NT+wfwfNpVcFzjc6PeZ85Jz2K91YU1fR6/05gtWZGE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OGIHiMQisZDZhWt1prJPC3NgAe/eKDAcWfRt35iNiYlrAin18Z8p8K1LJ+SeJ3qDJ
+	 JqIhrGRO3ZbivEhd4G6zzhesGjOqbsK2amXJ5lko2N6gifeVRv8zxda2GkeR3abtkb
+	 gzmlP4Evd0gNCpJqPPQ3x9Ne7RTcYxjE+MjIXN3U=
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: maz@kernel.org,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	tabba@google.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com,
+	jonathan.cameron@oss.qualcomm.com,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH v20 0/9] firmware: arm_rmm: Add RMM v2.0 base RMI support
+Date: Tue, 29 Sep 2026 23:16:14 +0100
+Message-ID: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DM6PR12MB4202:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1f8b82c-36b7-4716-8767-08df1e5d5a2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	DhI6fTvSC8XorMw45+rnZQYJGihbp6hQOJZ5Zrkgx4dtM4j2VcmPHK8So52kbaWpD0YR0hpTy7aDX/2HRwpVczphUGIB0rhit2J+RP5NZ55nyYB2sfkhLYNe829UshIgM5ThN88Sgr0UhXL4olkfTaNnjTrJIJ8979l5FECRqM7eWsAUHW+U8t+60dg0Qguspn2nicZctkCI7MiYePArogo30YZilu99f+UISoqC1/BYblCyXmlnyZokL9FjOQ3XbmH/8Tk+3ynZev8OWC2fdDvTEW4nYmp0rNb2zlrVlW87s/G+OCFK5idKOO4WMKUcTwWPNX22088W3UcNJBjJtl1LMByGJkSSiZiMk+siyfPW4XekQD//VzYBfDbmxtgadYLK8ABsXBMsvzVrgBUC1vpzSfxIvXWYFsZ/zFyqzgbErtf/BpHfYS8kH5Z8YSW9adXOwpdOPKvx5c5Jrei+uMie4x4JmHva/HNZRyuY2pqJv4UWZ3NjxdxwvIO10kH3T8/QXHbzskl+9ZjLP/mMR93uCUtyCCI44T6zzdDiG9ec8NZGjVUrkBDJU7ZYS8K1eRIsoX9DSYEWTucGAcKnjZYS6D6JLDbKrM2j68ciN4Cb1cLX6Ql7o/tmXbKeuIeV5bWzOuZTYv2yQTPxP9PD0zewBz4/3z+t6VmIUBnjNkM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?I5X2zLxtScITxw7vRjg3Aunp8R5liIjpob2yj1CIVww/C28VLN90sczmEQ0z?=
- =?us-ascii?Q?wi3u4CPUJdNQSuPn8uOBmZqjHKC83QhfC2oMb5oQl9SLsFP1QJtcIbPKl1ht?=
- =?us-ascii?Q?N8KHv7iqx/doleqfEGzuZrzpwxQ9apwO0Ni/ywNdwvWVo7BCG6/U4ib8HGQM?=
- =?us-ascii?Q?rWIFvtrulZvqJ/Sk1coI0t/Y9m1RESo0zxdj17qH6inlUOVlxsbVcySM4hWl?=
- =?us-ascii?Q?e7+Njybr1XXXcWNtJjMHtteIkbF1B+bwH0ebLcmUMEFJyBY6chdF7Hez1cRo?=
- =?us-ascii?Q?th2x3Eswnni8+yNvfq/o54RVb+fg/YfX+KkSQzBEYoBXk5fWbek48WSDHDIG?=
- =?us-ascii?Q?xd8VcK56nagWqORGUkt87u/KMXVygoN2mI5qg56B1wP3aQLnrzv3KQduCCU6?=
- =?us-ascii?Q?hNj7l+aAJB1jq/uWpRyu9Yml5oYxIvQFGLKEqxT6tcjE90TgkY9dlDt2hPQF?=
- =?us-ascii?Q?ResQDfWw9VGhslKOALbXP2F6LrUobYihsk1M183akISwCn3qw7Q9N9KEwTUL?=
- =?us-ascii?Q?lMUfOhunotCd0OY4tqXm+8vKB48U0Latsqq4augvSuQfs+d9ccHLrun2791a?=
- =?us-ascii?Q?zHiZ8FVOpjoY9YxsOJZULu8SCbWGSGy9gSL7HhMUul8Z40uXfJNrSlhn9tQJ?=
- =?us-ascii?Q?ks1MeBHeH0nRGi93sM1+cUZnWUSW2gEwOCQxJwST3iKgAR/y+g/O4yhtu1z5?=
- =?us-ascii?Q?mdz+x3cYWe6Dybr7js7S/SiHf2OQW7eoRhnZyPSq4rUbIcOGB5oisksveJHk?=
- =?us-ascii?Q?h7G/R7kPl7IcKzsLWi6NjW9lvE/Jo+1KGeu4xzL1Mc8gpciS4NWCtr/Xk7dA?=
- =?us-ascii?Q?o3lH0AGr313/YYYm/CjqC0IdJkRtKuo/UohntaAxULrogb+V3YYzc9OEwubD?=
- =?us-ascii?Q?FeLHsrHWVF7FDXN1aE/D9YudKREKAo2Qec6CZ6FtfOsZyVBM+niJn/k7uYZH?=
- =?us-ascii?Q?1lQikcXVh0sImW5rKLKaYm87juOT2w+5Zf4ou0E4ysNQJWQfqc0/v3sz0IhL?=
- =?us-ascii?Q?FuBbOqOSswWV3/mSnltDRPzF7oQLH9agDPIaXj+4zHBV9PXPK7FE65rFHyei?=
- =?us-ascii?Q?kwrC47oybhwuWH+gI8d60r/2DUJw9Ye4bmB94/ncedcdWtCmFIdUU9eRdsH5?=
- =?us-ascii?Q?kVZW5jAF7D4heyHLWzCVo65IWy2Q7z1VvD8T8+8C/sDfJFip/tv4tCszJyt1?=
- =?us-ascii?Q?gGQUjf1QaQfA2+LECCl1na4wyAzeceLaIip2CSh+bcJn+m3FAPlAHUiOS54H?=
- =?us-ascii?Q?YlQlaIsG6IPto3g9iOK5jT2bdOYWjr7QyM0wBnWAqUdRZzy1qEffj0ozF7xb?=
- =?us-ascii?Q?1gTsWPrROYoxibRM9lbmVC84LnMfdH2TR7a1tIvG5UPMvpbwyCl33WNjiziU?=
- =?us-ascii?Q?fzIOfUREaEUY7nKt2yoc4POzoM+wAeyO3ddDNpuhWoBp1RnUloFycqrMJ19X?=
- =?us-ascii?Q?ynDg+HxaueWTvrJMy23NhWHdFEBQNsoBbC1Ek/BExYFh/9mtsmSqEzKA4LH+?=
- =?us-ascii?Q?Tv5QotAa+ifnFo6itIxRgVu42Fiuf2o1gz7OEBSK9c7kPLJRMahHL6rDdnE2?=
- =?us-ascii?Q?OG4NJFlsVBMtOvgemrjlqyliACQF8z/uM+Jm1943Qc9u1gNUjrKVdPxIJ6rd?=
- =?us-ascii?Q?AeYn5QO6vodcmZ3EEeqYLwpqEExgmon9iikwNp9ZyBLBE6XyzkRdhmznudAE?=
- =?us-ascii?Q?FTTAm3pD7vfGR9mgMPmC+dOco3xl7obAFEU0mZjxGNJOYrZd?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1f8b82c-36b7-4716-8767-08df1e5d5a2c
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 19:10:40.4622
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lh2inqU4sBzH9o02N6xh4NYIewPflQLRKTSJp/2uaE4/YSUkAWopUdqfOSC7SKlC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4202
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 29, 2026 at 09:28:53PM +0530, Aneesh Kumar K.V wrote:
-> Switching pdev->tsm to an RCU-protected pointer requires broader changes
-> to the existing TSM code. To move this series forward, I will continue
-> protecting it with pci_tsm_rwsem in the next revision, as that requires
-> fewer changes. We can revisit an RCU conversion later if needed?
+This series adds the generic firmware layer for talking to the Realm
+Management Monitor (RMM), as specified by the RMM v2.0-bet3
+specification[1]. It is the first part of the Arm CCA host support that
+was previously posted as part of the larger KVM series.
 
-Sure, as long as we get the general big picture properties of no hot
-unplug and a very simple lifecycle model
+The split allows this RMM support to be used as a base for other work,
+including Aneesh's PCI IDE support with Arm CCA RMM as the TSM,
+ without depending on the KVM Realm support that will follow as separate
+ series. (See more on that below)
 
-> With this approach, viommu_alloc() will do:
-> 	struct tsm_dev *tsm_dev = NULL;
-> 
-> 
-> 	tsm_dev = tsm_get_device(idev->dev);
-> 	ops = tsm_dev ? tsm_viommu_get_ops(tsm_dev, idev->dev, cmd->type) : NULL;
-> 	if (!ops) {
->                 tsm_dev = NULL;
-> 		ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
->         }
-> 
-> 	viommu = (struct iommufd_viommu *)_iommufd_object_alloc_ucmd(
-> 	viommu->tsm_dev = tsm_dev;
-> 	tsm_dev = NULL;
-> 
-> 	rc = ops->viommu_init(viommu, idev->dev,....)
-> 
-> ....
-> 	if (tsm_dev)
-> 		tsm_put_device(tsm_dev);
+The series adds:
 
-This probably shouldn't be here? The way iommufd usually works is
-these undos are alway here:
+ * The RMI SMC definitions and direct-call wrappers.
 
-> void iommufd_viommu_destroy(struct iommufd_object *obj)
-> {
-> ..
-> 	if (viommu->tsm_dev)
-> 		tsm_put_device(viommu->tsm_dev);
-> ...
-> }
+ * RMM discovery and version checks during firmware init.
+
+ * RMM host configuration, including the host page size.
+
+ * Stateful RMI Operation (SRO) infrastructure for commands which the RMM
+   can complete across multiple SMC calls while requesting or returning
+   memory to the host.
+
+ * Verification that granule tracking is available at fine granularity.
+   Fine-grained tracking allows each granule in the system to be tracked
+   independently, which is required before individual granules can be
+   delegated. A future series will add support for dynamically supplying
+   memory to the RMM for this tracking.
+
+ * Support for fully firmware-managed systems, where the Granule Protection
+   Tables for memory regions are allocated and managed by firmware. RMM v2.0
+   also allows dynamic GPT creation on demand; support for that will be added
+   in a later series.
+
+ * Wrappers for the RMI commands that are used for managing the "Realm VM"
+   lifecycle. This is added in to make it easier for the on-going KVM support
+   to evolve in parallel pieces.
+
+If the platform firmware cannot manage the granule tracking or the GPTs, we
+bail out and deactivate the RMM, reclaiming any memory that we have donated.
+
+The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
+the RMM to complete an operation over several SMC calls while requesting
+or returning memory to the host. This allows interrupts to be handled in
+the middle of an operation and lets the RMM dynamically allocate memory
+for internal tracking purposes. For example, RMI_REC_CREATE no longer
+needs auxiliary granules to be provided up front, and can instead
+request memory during the operation.
+
+This series applies on v7.3-rc2 and a branch is available at [2]. The KVM
+CCA support that builds on this series is available at [3] as an integration
+branch. The KVM support depends on guest-memfd-in-place conversion support v13
+from Ackerley [4], we plan to split that into parts, which apply cleanly on
+v7.3-rcx without any dependency and is in progress. This will be made available
+as soon as it is ready. Until then [3] shows how this base series enables KVM
+CCA support. You may find the tf-RMM [5] and kvmtool support [6] below.
+The kvm integration branch has been tested with kvm-unit-tests [7] and Linux
+kernel booting with PCI device assigned as an untrusted device.
+
+[1] RMM spec : https://support.arm.com/documentation/den0137/2-0bet3/
+[2] This series: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca-host/fw_rmm/v20
+[3] KVM CCA v21 integration branch: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca/cca-host/kvm-v21/integration
+[4] Gmem inplace conversion https://github.com/googleprodkernel/linux-cc/tree/guest_memfd-inplace-conversion-v13
+[5] TF-RMM https://git.trustedfirmware.org/TF-RMM/tf-rmm.git main (commit: 134266ae)
+[6] kvmtool https://gitlab.arm.com/linux-arm/kvmtool-cca.git tag:cca-kvm-v20 (Also cca/kvm-v18)
+[7] kvm-unit-tests https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca.git tag: cca-rmm-v2.0
+
+Known issues: RMMv2.0 spec.
+==========================
+Here are some of the known issues affecting the code here. I have included the
+ticket number associated with the issues, which will be available in the RMM
+spec, when a public release is available. (So that it is easier to see if the
+issues has been fixed in the spec and easily spot them)
+
+ * RmiOpMemDonateReq:count (Uint14) is incompatible with RmiAddrRangeDesc4KB
+  (Uint10) and RmiAddrRangeDesc16KB (Uint12). i.e., a larger contiguous request
+  may not be satisfiable by the host. This is resolved in the RMM spec, by clamping
+  the upper limit on the number to match the RmiAddrRangeDesc* and will be published
+  in the next release. (FENIMORE-1744)
+ * RMM to clarify the scenarios that triggers the RMI_BLOCKED and the
+   recommendations to limit the cases. (FENIMORE-1783)
+ * RMM to clarify the "PE bound" SRO context pool to really mean global pool
+   (FENIMORE-1802)
+ * Clarify RMI_RTT_DATA_UNMAP, output_count, output_range are only valid when
+   result is RMI_SUCCESS (FENIMORE-1746)
+
+Changes since v19:
+ https://lore.kernel.org/all/0260924135201.850038-1-suzuki.poulose@arm.com
+
+ ** Patch 1 - RMI SMCCC definitions
+  - Fold 'padding' only union in rec_exit to the previous group of fields
+  - Add static_assert to make sure the struct field offsets match the spec
+  - Rename 'padding' fields to 'sizer' which they really are
+  - Add MAINTAINERS entry for the new header file under ARM64
+ ** Patch 2 - firmware: arm_rmm: Check for RMI support at init
+  - Fix comment : s/RmiFeatureRegister5/RmiFeatureRegister4/
+  - rmi_feat_reg() s/unsigned long/unsigned int for index
+  - linux/arm-rmi-cmds.h -> Mark the "#endif"
+  - Use += rmi.o in Makefile
+  - Mask the ID_AA64PFR0_EL1_RME field for KVM guests
+  - Add MAINTAINERS entry for header file and arm_rmm directory
+ ** Patch 3 - firmware: arm_rmm: Configure the RMM with the host's page size
+  - Don't initialize 'ret' in rmi_configure, add explicit return 0/-EINVAL
+ ** Patch 4 - firmware: arm_rmm: Add support for SRO
+  - Fix typos s/-ECANCELLED/ECANCELED/ rmi_sro_execute()
+  - Drop duplicate, incorrect assignment of sro_handle in rmi_sro_execute()
+  - Drop int i, redeclartion in for() for rmi_sro_donate_noncontig()
+  - Drop donated_granules for rmi_sro_donate_contig()
+  - Drop "inline" and be consistent with the rest of the code
+  - Avoid nesting if..else in rmi_*delegate_range by breaking out on error
+  - Consistent styling in comments, wrap to 80space, spelling corrections
+  - s/\*\*/\*/ for comment above functions
+  - Reorder the functions to appear as rmi_*_delegate* followed by rmi_*_undelegate*
+  - WARN_ON if the RMM MemDonateReq:count exceeds the RmiAddrRangeDesc:count
+  - Reject requests larger than MAX_PAGE_ORDER
+  - Reject "donate" requests with states other than DELEGATED or UNDELEGATED
+ ** Patch 6 - firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+  - Wrap comments to 80spaces.
+  - Add a comment on ALIGN_DOWN the end of memory range.
+  - Add is_rmm_active() to report if the RMM is in ACTIVE state
+  - Switch errors to -ENODEV from -ENOMEM when RMM doesn't manage the region
+  - Print error messages when RMI_GPT_INFO/RMI_GRANULE_TRACKIN_GET fails
+ ** Patch 7 : arm64: Block hibernate and kexec while RMM is active
+  - New patch in v20.
+ ** Patch 8 : firmware: arm_rmm: Add wrappers for Realm related RMI commands
+  - Use rmi_sro_memxfr_command() for rec_create - Catalin
+ ** Patch 9 : firmware: arm_rmm: hotplug: Skip memory added to ZONE_MOVABLE
+  - New patch in v20, relax the memory hotplug checking
+
+Changes since v18:
+ - Use _ULL version for masks spanning beyond 32bits
+ - Add GENMASK, FIELD_* friends for RMI_ABI_VERSION_*
+ - Consistent naming for masks and order the fields by MSB to LSB (missed out
+   ones.
+ - Rename RMI_RETURN_ => RMI_RESULT, RMI_RETURN_INDEX => RMI_RESULT_DATA_LEVEL
+   and add relevant Rmi types for clear indication on what they represent.
+ - Read and cache all implemented RmiFeatureRegisters (5), use ARRAY_SIZE()
+   droping the macro for the number of registers.
+ - Fold sinlge caller rmi calls to the caller (rmi_features)
+ - Drop "default y" from Kconfig
+ - Don't loop forever with RMI_BLOCKED, instead retry once and return to the
+   caller.
+ - Move rmi_config_set closer to rmi_configure.
+ - Use __free() cleanup for rmm_config object
+ - SRO: Clamp the mem donate request count to RMI_MAX_ADDR_LIST (the max we can
+   hold in the struct sro, to prevent overflows in handling non_contig requests
+ - Donate gathered memory when sro list runs out of space for non_contig case
+   and donate the rest in the next iteration
+ - Fix handling of buggy RMM for rmi_delegate_range()
+ - Add comments for the exported interfaces rmi_delegate_range(), rmi_undelegate_range()
+ - Move rmi_granule_{,un}delegate_range() closer to their callers
+ - Clarify the requirements for rmi_granule_delegate_range()
+ - Fix return result to -ENXIO if the MEM_OP is unknown
+ - Handle unsupported RMI_OP_MEM_CONDITIONAL, bail out early
+ - Rename "out" lable to mem_donate, where the actual donation happens
+ - Switch to use readable loop construct in donate_noncontig, add comments
+   to explain what we do.
+ - Add comment, make the code reader friendly for caching the entries not
+   consumed by RMM.
+ - Add documentatoin for rmi_sro_execute()
+ - Avoid mixing gotos with __free cleanups for arm64_init_rmi()
+ - Convert the remaining nested if for results to early return based.
+ - Pass out_top for RMI_ERROR_RTT in rmi_rtt_destroy() [ This boosts the
+   Realm tear down ]
 
 
-> struct tsm_dev *pci_tsm_get_device(struct pci_dev *pdev)
-> {
-> 	const struct pci_tsm_ops *ops;
-> 	struct tsm_dev *tsm_dev;
-> 
-> 	guard(rwsem_read)(&pci_tsm_rwsem);
-> 	if (!pdev->tsm)
-> 		return NULL;
-> 
-> 	tsm_dev = pdev->tsm->tsm_dev;
-> 
-> 	ops = tsm_dev->pci_ops;
-> 	if (!try_module_get(ops->owner)) // arm-cca-host
-> 		return ERR_PTR(-ENODEV);
-> 	if (!tsm_try_get(tsm_dev)) {
+Steven Price (7):
+  firmware: arm_rmm: Add SMC definitions for calling the RMM
+  firmware: arm_rmm: Check for RMI support at init
+  firmware: arm_rmm: Configure the RMM with the host's page size
+  firmware: arm_rmm: Add support for SRO
+  firmware: arm_rmm: Activate the RMM
+  firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+  firmware: arm_rmm: Add wrappers for Realm related RMI commands
 
-What/why is this tsm_try_get()? I wouldn't expect to see both
-try_module_get() and tsm_try_get()?
+Suzuki K Poulose (2):
+  arm64: Block hibernate and kexec while RMM is active
+  firmware: arm_rmm: hotplug: Skip memory added to ZONE_MOVABLE
 
-> Are you suggesting setting suppress_bind_attrs = true for the
-> arm-cca-host driver?
+ MAINTAINERS                       |    3 +
+ arch/arm64/Kconfig                |    1 +
+ arch/arm64/kernel/cpufeature.c    |    1 +
+ arch/arm64/kernel/hibernate.c     |    6 +
+ arch/arm64/kernel/machine_kexec.c |   11 +
+ arch/arm64/kvm/sys_regs.c         |    2 +
+ drivers/firmware/Kconfig          |    1 +
+ drivers/firmware/Makefile         |    1 +
+ drivers/firmware/arm_rmm/Kconfig  |   25 +
+ drivers/firmware/arm_rmm/Makefile |    1 +
+ drivers/firmware/arm_rmm/rmi.c    | 1129 +++++++++++++++++++++++++++++
+ include/linux/arm-rmi-cmds.h      |  567 +++++++++++++++
+ include/linux/arm-smccc-rmi.h     |  516 +++++++++++++
+ 13 files changed, 2264 insertions(+)
+ create mode 100644 drivers/firmware/arm_rmm/Kconfig
+ create mode 100644 drivers/firmware/arm_rmm/Makefile
+ create mode 100644 drivers/firmware/arm_rmm/rmi.c
+ create mode 100644 include/linux/arm-rmi-cmds.h
+ create mode 100644 include/linux/arm-smccc-rmi.h
 
-That or it blocks waiting on unbind.
+-- 
+2.43.0
 
-No hot unplug of TSMs under active use. This is very hard to implement
-correctly, and there is no use case.
-
-> The driver model otherwise allows the driver to be unbound. 
-
-Isn't this is a side effect of introducing smcc bus? We didn't used to
-have actual drivers for this stuff that isn't physically hot
-pluggable.
-
-> We need to support tsm_unregister() in that
-> case. I am also not sure whether there are other paths that can call
-> tsm_unregister().  Currently, we register the cleanup callback via
->
-> 	tsm_dev = tsm_register(&sdev->dev, &cca_link_pci_ops);
-> 
-> 	ret = devm_add_action_or_reset(&sdev->dev, cca_link_tsm_remove, tsm_dev);
-> 	if (ret)
-
-Yeah, since you have a driver it has to be structured like that, but
-that doesn't mean we have to be forced into implementing full general
-hot unplug across all of tsm.
-
-Either block sysfs and use the module refcount, or hang in removal
-until all the users naturally close (like vfio). Everything else is
-too complicated to be justified..
-
-Jason
