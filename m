@@ -1,109 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D0C3AFAE2
-	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 05:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47662340A57
+	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 05:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790744501; cv=none; b=HdZuuC8soiXA5Vf2725SaOI6SfemJ4vsssrTfghBUIAZSn006rYoudUXZQfMA5tD8R+d0ck2XcL/70UdNgSM9CAsOKckvFTSwjF28YkjVPql2JcbsTx+CtcA2+xaTyYOPkL8VgwW02+71ylJ4TjRzKKmoUzPRxxqUZJ1PYncviU=
+	t=1790744680; cv=none; b=EhKuHJ5zWN3HjOEfa3/X+s+jckYD7pPSmK2lThPZ6RMuwGpau/eI/WonhpYzI8Rf/IqJlcihH40fepkTqAsB2LFJy/OERxKXqrw7usTcnFjwCBceUZ7FIsdFUejVakrk22x+lQO5o6uwmKS9PGXG0ghcZnhwPEL2fU7rjqzju7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790744501; c=relaxed/simple;
-	bh=aUKwU2DWc7V5Su7nqtW4pZQu87wWCIMqHJeLprSBsvM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dBXwSlazI8tNFSZT1NNT5cOvn8hrTayap7FmverEgIvf8ZJu8KBZV+wZSe4lRLFQtEwSc4VAlJ2UKs+uzcgFdHTujQLSM97TK6LicO1Ob7V4wwhFBiWecIEC7kbKS+Ro5NLduS0Vp153stJPs5s0ISMle6A0Ei7kUo3Zfo0fQpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OB5kutkh; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790744680; c=relaxed/simple;
+	bh=SIvOi4CmqCt39oc7l4v4V8MtZVsnvl0Lf3KpaY2dXZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hqxyAaihgIztz7B2AKoqpOsmsrXeiTAWY5qN5zFpuN/F7QVXmUVjR3XAcWLOjHdpReWv38qN4xKJwv4uCaOHmdkGep0YCwGcfTfGQimERa09+u+SpoXjXEze6LW35KqSEKEurT+Y4k4fNY0/MiMJLWlJBEHN37ikE4Vs4kjIRYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=E9xxlNrW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OB5kutkh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790744497; x=1822280497;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=aUKwU2DWc7V5Su7nqtW4pZQu87wWCIMqHJeLprSBsvM=;
-  b=OB5kutkhknorjSM2CbSAeVVpBeL5lgG994lEFb4PKZDyZ0qjELTzFbwo
-   rGH/90GX/Ls34P9KpEL7lkXgtt+nMvwvXWHa2MJT1QUM1G/mC/9qLYB+s
-   s17Ui39B7pHAZcES9PyJGeQ7b1N5MQ6fD/bJ81BxrttYC3rd65pRx1JIR
-   qFmgOHqjQntM5APyYQrJLdWYTW5X664J9HPpMcX2T/ZRhVn/UkVSAzc7w
-   2kX9ByYFWk+5Hna5uRpyT2aBkCX/VlWANZYkJ3T9+aZpin8ljnLAWWc/F
-   0ueMqwJ8bN18IdBXoUCXAY78tdIQAfXeW186aH+QZ3I9CbodkkzjvxQ78
-   A==;
-X-CSE-ConnectionGUID: qrkAaOWhRuOqRur+4BnfHQ==
-X-CSE-MsgGUID: o+3p4lEIRSqBugdZrFulZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91572139"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="91572139"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:01:35 -0700
-X-CSE-ConnectionGUID: JFZwRH4+S+a5LPH6hoF1qg==
-X-CSE-MsgGUID: QS/qow+DQM+CCI41419sUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="274186761"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:01:32 -0700
-Message-ID: <2e6e9a97-e3f2-4978-93f4-bf6224b7a06d@linux.intel.com>
-Date: Wed, 30 Sep 2026 13:01:29 +0800
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="E9xxlNrW"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E83D940E01F9;
+	Wed, 30 Sep 2026 05:04:35 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3PS63uR3uPnK; Wed, 30 Sep 2026 05:04:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1790744665; bh=sngfBGXrDmp27Rz20KJdhQCRui381Q9eIqXo0Htz5/Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E9xxlNrW+WVuO+r64N2E/di74SdtE/dexl+DtnUE1F3LOM91B80oigMZVY17IV3q7
+	 H7d6JcUiS7QDkqxIH/VhNjazeYcaoS2TkmJp85T17I7PQ8E/v7PrwbMIQCPSfKazWC
+	 7BpJKyymHDhG3atV2id/HkFxH34UGncNln89BSCZj/RS1aKb+rfqxJ6IzbJ5fU70OH
+	 2+7S/U6QI7nCx8jw3QjHzN0cGBNSAIoUd0W2opqE+wAieE5rU21ewIv7q2Idl0x3Ry
+	 0q4xNtf0k+CSeYoVMEOTm8pd/lWSwDjTvSQ0TS4ak4Ccj5BvucM0JSIYTinwzSxOD/
+	 n91xk3k27auMrphXalnsfhqKwKnLg9HCSR0Ybc19jPi06k2uHszDFXdLGgFadSlGfv
+	 0SvoTpiEnT6Ry/jmaNbv2jo7BF5yJLOmwyfrQU6DBG8WfEljuhKHZovhyNBc4RuTKX
+	 6sqoB1SbHeTFaylgJuv60ToaZS6Nk6gGSkNP0W8+KkJ7i8RV0pkKbNOvDR3n6rrhsI
+	 ADS5+0mK45TUYtqdFL8Qz0dj+hv9GOawDHI0yBhAzLT2jt78XNo0lpvvPsHDmm1tWb
+	 lJJcfoeSFkczsA1yJSHvEGtwnv+NqdPTPQO7wwVE1XKmqlIKNRiA/uWsAfhmmwcg0H
+	 1/Vb2wzgDmtiipZPxUauBXK4=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 07CD040E01ED;
+	Wed, 30 Sep 2026 05:04:08 +0000 (UTC)
+Date: Tue, 29 Sep 2026 22:04:06 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: shrutiss@google.com
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Kishon Vijay Abraham I <kvijayab@amd.com>,
+	Tianyu Lan <tiala@microsoft.com>, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, jxgao@google.com,
+	Melody Wang <huibo.wang@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH] x86/apic/savic: Forward APIC_SPIV writes to the
+ hypervisor
+Message-ID: <20260930050406.GGaryYRlonuAoQ6G3o@fat_crate.local>
+References: <20260929055255.1380202-1-shrutiss@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] KVM: TDX: Ratelimit the "EPT Violation on pending
- acceptance page" warning
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- James Houghton <jthoughton@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>,
- Vishal Annapurve <vannapurve@google.com>,
- Sashiko Bot <sashiko-bot@kernel.org>
-References: <20260930001127.3170009-1-seanjc@google.com>
- <20260930001127.3170009-4-seanjc@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260930001127.3170009-4-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260929055255.1380202-1-shrutiss@google.com>
 
-On 9/30/2026 8:11 AM, Sean Christopherson wrote:
-> Ratelimit TDX's kernel logging when a guest accesses an unaccepted page and
-> has opted to disable EPT Violation #VEs for unaccepted accesses, as the
-> pr_warn() is trivial for a misbehaving userspace to trigger.
++ some more AMD people and drop stable@
+
+On Tue, Sep 29, 2026 at 05:52:55AM +0000, shrutiss@google.com wrote:
+> From: Shruti <shrutiss@google.com>
+
+You should use your legal name when you sign off on patches.
+
+Leaving in the rest for the newly CCed.
+
+> For Secure AVIC (SAVIC) guests, the hypervisor (KVM) emulates the LAPIC
+> timer and LVT registers, while the guest's APIC backing page is kept in
+> encrypted guest-private memory that the hypervisor cannot read.
 > 
-> Fixes: e6a85781f783 ("KVM: TDX: Detect unexpected SEPT violations due to pending SPTEs")
+> Currently, savic_write() updates APIC_SPIV (Spurious Interrupt Vector
+> Register) only in the guest's private APIC backing page without
+> notifying the hypervisor. Because the hypervisor never sees the guest
+> set the APIC Software Enable bit (APIC_SPIV_APIC_ENABLED) in APIC_SPIV,
+> it continues to treat the vCPU's Local APIC as software-disabled.
+> 
+> When the hypervisor sees a vCPU's APIC as software-disabled, it forcibly
+> masks all LVT writes (including APIC_LVTT for the local timer) and drops
+> timer and fixed interrupts for that vCPU. On SMP guests, where secondary
+> CPUs (APs) start with their emulated APIC reset to software-disabled,
+> this prevents APs from receiving local timer interrupts and leaves them
+> hung in idle (HLT) during boot.
+> 
+> Forward APIC_SPIV writes to the hypervisor via savic_ghcb_msr_write() in
+> addition to updating the guest's APIC backing page so the hypervisor's
+> APIC state stays in sync with the guest.
+> 
+> Fixes: c822f58a4fab ("x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver")
 > Cc: stable@vger.kernel.org
-> Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260923164348.2DB2D1F000FF@smtp.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Nit: should this patch be put before patch 2, to avoid a bisect window?
-
-Otherwise,
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
+> Signed-off-by: Shruti <shrutiss@google.com>
 > ---
->  arch/x86/kvm/vmx/tdx.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  arch/x86/kernel/apic/x2apic_savic.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index e3723f1222fc..4cac43299851 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -1937,8 +1937,8 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
->  
->  	if (vt_is_tdx_private_gpa(vcpu->kvm, gpa)) {
->  		if (tdx_is_sept_violation_unexpected_pending(vcpu)) {
-> -			pr_warn("Guest access before accepting 0x%llx on vCPU %d\n",
-> -				gpa, vcpu->vcpu_id);
-> +			pr_warn_ratelimited("Guest access before accepting 0x%llx on vCPU %d\n",
-> +					    gpa, vcpu->vcpu_id);
->  			kvm_prepare_shutdown_exit(vcpu);
->  			return 0;
->  		}
+> diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2apic_savic.c
+> index dbc5678bc3b6..1ef4c5b6c494 100644
+> --- a/arch/x86/kernel/apic/x2apic_savic.c
+> +++ b/arch/x86/kernel/apic/x2apic_savic.c
+> @@ -214,7 +214,6 @@ static void savic_write(u32 reg, u32 data)
+>  		break;
+>  	case APIC_TASKPRI:
+>  	case APIC_EOI:
+> -	case APIC_SPIV:
+>  	case SAVIC_NMI_REQ:
+>  	case APIC_ESR:
+>  	case APIC_ECTRL:
+> @@ -223,6 +222,10 @@ static void savic_write(u32 reg, u32 data)
+>  	case APIC_EILVTn(0) ... APIC_EILVTn(3):
+>  		apic_set_reg(ap, reg, data);
+>  		break;
+> +	case APIC_SPIV:
+> +		savic_ghcb_msr_write(reg, data);
+> +		apic_set_reg(ap, reg, data);
+> +		break;
+>  	case APIC_ICR:
+>  		savic_icr_write(data, 0);
+>  		break;
+> -- 
+> 2.55.0.1082.g2b9226bbc0-goog
+> 
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
