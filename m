@@ -1,99 +1,82 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+Received: from mail-lr2-f40.google.com (mail-lr2-f40.google.com [74.125.230.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5394DD3A2
-	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 14:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29A851123D
+	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 14:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790779595; cv=none; b=PaZ3NtK5vlPdg6N8twt9dFJg7QpBQyltmh8pb/Wxt8Ix5XisenJS6DQnST0R+2s+42n+0NShALAlgi01QYiIfj/CzdAmdqJ8smNsiz0juzafeSkwNwiNoon7Oz33wmeRmCXcF3lYm2OM6JQ0RFGy08LpRLPJzYc+taorch5edO8=
+	t=1790779663; cv=none; b=OA9x5nVopOvS2/lPgY+n7sfP5cjsiQ0v6URx+/afYjeBeVZOrtlQroCLLzY336xSfhzGMCnCA98g0k2o2s4paZRiGMUSl3WNszQ/lwLgwmVTypzimfKonRS6JeYEuLH/0NUhi2zooSAIDKbHLJNBPm1NKiojwLGEML3t4tXpgYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790779595; c=relaxed/simple;
-	bh=/tPonSezqD0pF109OBVVQK1etAIG40RxHqGagp/vXC4=;
+	s=arc-20240116; t=1790779663; c=relaxed/simple;
+	bh=2bJatBzAYcCk1VuDyjZ7beVPB8aZyCvTIcDIZIN7xlk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QlwoUKKdP2FQCP1dTfSIInD0Lm3pxH1anwjvV8MKbnAKr7cKG6ceNcP/GMgo2dnaSe/nmq1xsna0i4q29fwGeLw3N6mfIJ435uxo3xqdAOisrNKZsff/TQIW3dNCo1gpn/zE1XyDsisn7XNWIly5vVJB1HQTGohgxBTHfn5dKUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ebXKJeNR; arc=none smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=oNEVsqI1mGHQ1da7jrMkW2Xw4408tuWBe4JBlSJ+rL3a9LpMBQRr7ieH19gGQByCuzklVqXSf6kSdtifNnnt9TaEKFf/3kEcua89ZI+PRqW5tvDEKZqHpZfpDSQgAMwFtnBhmWFEma46ghax2k9Y0m8l8Ha2K6KmwOpKFf/IQgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=uhofek1a; arc=none smtp.client-ip=74.125.230.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ebXKJeNR"
-Received: by mail-pz2-f43.google.com with SMTP id 41be03b00d2f7-cc4c3304833so2129827a12.3
-        for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 07:46:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="uhofek1a"
+Received: by mail-lr2-f40.google.com with SMTP id 38308e7fff4ca-3a5da7416f9so46427091fa.2
+        for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 07:47:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1790779578; x=1791384378; darn=lists.linux.dev;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1790779648; x=1791384448; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=XtrQ0tj7FzMG4yS/5Pbmybyv3bn+aU+u1tYBCpeACnk=;
-        b=ebXKJeNROqRr2rHxYljpc/UMGPfFO2Wx22hiNlHUIJ5cRnkBnnTiXEEqIaL/OazfsH
-         LSpI5Dab7Oqhk1HPc2oqYnvi0CoQEA59SIZ+oP0sBgjfShsz28Tk/2feeDSDj7Jk/uiA
-         FALzJxzuFVqzPBebrcqNEL7g8qdKXpxonz/pcbMEVdwK76qQdSa0uHuFQvts9NzA/Uoe
-         9vl1GDuJxsGh9FVLafLYGK/aqD8+0n+2zdz4I4EaI2UM2cY+AMigbJtgpAq+voH07LMk
-         Hzeknc2EZW5H9QPRd5NuQQsblXrxjMSuPdCARDNWybHqzxM1E2y4oFsITgrEKcMZoQtp
-         9XPw==
+        bh=aY70AEYx6MIgqGoDnlt8OAOLQ4i8odTt91o9/5DhGSA=;
+        b=uhofek1a17aBDOA8MLgOnLMNeGiXCNia/3RqZBSeVSqTytTqOlNqZJDF6TGCm82Vc+
+         mmeqcrWpdKHugyBT5E6XFSzW0WQZN7SQejMqFlM1Rl7gSryLHRVwC4NFS7rkeDY1CG5T
+         uIaM16z2FRRaDK8i7pf6n10k0rNG2YPJy8K1rS5lkMAmOTCdySWqKPVBFxGTrtEzq4Cw
+         VqenhIyyFHOchOJixERfb/OYTMxhREkkKiJVt0xaMpBdOsHpq/Y1CwjCdFdyclzRcblw
+         ajxtCa+I7z+WEVonqWKep6noFB6OttIX3pOtCZeQcFUFefDPC9lIkz1DR95ZQSoDUxC0
+         /LNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790779578; x=1791384378;
+        d=1e100.net; s=20260707; t=1790779648; x=1791384448;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XtrQ0tj7FzMG4yS/5Pbmybyv3bn+aU+u1tYBCpeACnk=;
-        b=IYCerqiOTCPiccFMWye/a0EioBr08hsMX+RNVZPMIvxABKSRDyDH4sFKnQtSLVCr2W
-         uiEvru8XxBRyOGCdosrNQRS8ukOuFFNc9zbNgkSrjqHGazvgs6hWeX0nPJHRaivmjASR
-         EmV1QaTJWAAVzXpRMH6pajzVju3EI8WEiHA5Wx92uYpif2iIeUOMyke09TBRU6MJ6v/E
-         K3RLsFhSILIdQAuuuWki6XvJyQkCcKD6bI4Kt8JIGrDWlRpvtsO2jAyKnwxUkfvvHcM9
-         nJ29JeMoEMbxZ517hlbFXLnGM9oMEBjHwizMv8Dta9id6q/j0xRQ0nWNxkTORUx9bHFQ
-         QAJg==
-X-Forwarded-Encrypted: i=1; AKwUvBwrTR5/TbgxyqJOCR8NEy+Z5ATNMwHvwbew51WJxMOb/GbP+lVe00iBLLfHNfx+30wJOEnrOukhXEGx@lists.linux.dev
-X-Gm-Message-State: AFuF++mJUbhMTXFImeFEyAf2fYTy/DOH/xC7zi1eJrQPGC6PrRSxOpZ+
-	PwYLb7x++b73IJC9HS82qgIoVaisb0DZvkOdRzezimW7Ti6eY2QBsXppokH7pCNK46o=
-X-Gm-Gg: AYBFou36C8hE8ov5qTe/3ha3H6U3woUJ+7gU/42cvaUqcYCn6kxeJjWUcUUBuVsUv/a
-	Scbk72zj3T67wcKw8wmjfXyMj5CCgUuR2lBZ8oG04SuMqRo6lY7DOJkbs4EzUsQJmcfRa7qaIS2
-	dt1HIDhZ8hlK3YpVhfw/qvDu58Gpvq3cYWLVA6u+eKJnen6onwQ+Zhmd9iht1nBhR6ij+mw5TmA
-	6WlUvhfxJOp8dR7Qn3XcdZUWgEeaQXVkxl1X5COFMuqkWjlwwcE8Q+ekFwlhTGA5bJTIFqW3mAt
-	AuuRj2JubrRI0zyld76Yc9oaoheyO7WWLX2CVT3HAzycT9bAMBJVcgDIoPq3s9yiz+rLt8kAspK
-	K+Jq0ZFRtmN22O/LDU0iMPbdsUCAN4z9wnJnPCuVQX2HrxSk9zg9esfcc1jvX3APwzPiJfM2xy0
-	RRcCUCg1uQ13P24blTPjHSJeGTEjKBW8o7yFvp8cAgoXjEF+c5Y5reZtO++PdLvSd/2t7yrVZd
-X-Received: by 2002:a05:6a20:2d2c:b0:3de:73aa:2f34 with SMTP id adf61e73a8af0-3de9e885dbemr1692719637.65.1790779573183;
-        Wed, 30 Sep 2026 07:46:13 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:f5b4:4d0e:70d:9fba])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7daafecb3sm1108997a12.23.2026.09.30.07.46.10
+        bh=aY70AEYx6MIgqGoDnlt8OAOLQ4i8odTt91o9/5DhGSA=;
+        b=rPBiFU0IBQ5WCHuOjazNSiAO8QZ0zBLD+UOILqhmlHmyPbuiF2ADwByty3bh1oiyTJ
+         DUL3Q3s5LGmtD6ZOaygdbPgaDTct3RBHGkgwFXNS7eF6llEVj2IUcrJ+Gffy6BDYCBbs
+         8F29UBQmcwhWZqyxY8QW4uo0dv6q9EWWn4y4g7J7h64Me9ezb8px+PuEvgh4ERi6hyFM
+         RytodoS7a2vRd1IbyqQfpeM0ml3r8lkvdNhVdA7feI7WDKQSIE3fF07ZynR5sJRVW2Nu
+         hQzN8faS732ADGtlwb6gFWl2ThOgf3i14mxsgs/rg/Ell6J74WpcCtxuQ1ztkPA3sJL3
+         N+nA==
+X-Gm-Message-State: AFq9FYKEKcDBcILnLoa7+q0cZBbQ/EtA5BR9qhzhiaJFkx05fbiKIXfC
+	8xx1JDm5z42K3PoNRj14lt3k3ACMlYHTGnCCjAg1P9qrmRoS/fkygbFfV1AgWKbznGA=
+X-Gm-Gg: AYBFou2egfI4RIGbPA0va7GgquDWBCk9VGo+VXUEL3mtKzQc0h0hIcmKfRZRA5sDxn+
+	zaHYZhb5vwhaOAr37BXJUSv5AQj89sIGfmwjYpHp3J6k7ucCP/hmw8zWob7s31/IeCJ4xQPOK06
+	abL7i0ZW4vdjFj7VdKoOdbNOw3v/bt+seZpHCfYsUlePqYmHnWuYALuFfXkAEZgmMWf51tp+L5T
+	H6uFK1qPwHqvwtmt7Wq+vS9WM2HzmPqDtnu/Yej3TSZhgVrD5k2z9QyJUUvwJF98Imbw9wzf6yM
+	E+j2fpenSlVXFeanAU+1gEaufgvPLtiwJgglLfvqdE1YJrUdFXu89EiOjhtY0xrWEcjjyCZ+0Ik
+	HYvoBewZmnBjuYSmAD9W8Z1/HjJRSe3Tc6GA+IHEgtYt41k6Y3UhEHwu5cw+5psaBrimfYzFODk
+	9NdCbOWvJ8BhlnHX1q3rFlFmKDoVlbpm40wKGED+vGy4mUsnKBM3bztwPZ4YU/7ShVJdf0TpHRr
+	4lfrl4ow/o=
+X-Received: by 2002:a05:651c:a10e:10b0:3a6:4c3d:978c with SMTP id 38308e7fff4ca-3a7791afe63mr4436211fa.16.1790779647918;
+        Wed, 30 Sep 2026 07:47:27 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a77192c19csm8140371fa.29.2026.09.30.07.47.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 07:46:12 -0700 (PDT)
-Date: Wed, 30 Sep 2026 08:46:09 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	ankita@nvidia.com, Arnd Bergmann <arnd@arndb.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Cedric Xing <cedric.xing@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Jonathan Cameron <jic23@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
-	Kai Huang <kai.huang@intel.com>, Kees Cook <kees@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Lukas Wunner <lukas@wunner.de>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
-	Fang Peter <peter.fang@intel.com>, Petr Pavlu <petr.pavlu@suse.com>,
-	rick.p.edgecombe@intel.com, Samuel Ortiz <sameo@rivosinc.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Will Deacon <will@kernel.org>, yilun.xu@intel.com,
-	Kevin Tian <kevin.tian@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH] coco/tsm: Update maintainership
-Message-ID: <ar0gsWpZH3izCCvw@p14s>
-References: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
+        Wed, 30 Sep 2026 07:47:27 -0700 (PDT)
+Date: Wed, 30 Sep 2026 16:47:21 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: "Quigley, David" <david.quigley@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, 
+	driver-core@lists.linux.dev
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
+ Protocol (TDISP)
+Message-ID: <ar0gagYLbCbxT2Ay@FV6GYCPJ69>
+References: <amk7Xzm5jmz+6SPJ@ziepe.ca>
+ <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
+ <20260805005533.GB28508@ziepe.ca>
+ <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
+ <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
+ <20260902150125.GD2890729@ziepe.ca>
+ <apl39vOiMPP7VloW@wunner.de>
+ <apqSAQykEK3MF9AO@FV6GYCPJ69>
+ <arzr32ZDComnfmny@FV6GYCPJ69>
+ <b32438d2-4470-44b6-aa62-b691f93a2b9c@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -102,62 +85,91 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
+In-Reply-To: <b32438d2-4470-44b6-aa62-b691f93a2b9c@intel.com>
 
-On Tue, Sep 29, 2026 at 08:26:41PM -0300, Jason Gunthorpe wrote:
-> With Dan's passing Aneesh and Jason have volunteered to take this on, with
-> the support of their employers.
-> 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  CREDITS     | 9 +++++++++
->  MAINTAINERS | 3 ++-
->  2 files changed, 11 insertions(+), 1 deletion(-)
+Wed, Sep 30, 2026 at 04:14:00PM +0200, david.quigley@intel.com wrote:
+>Is there a way for this to be posted as its own patch set so we can provide
+>feedback inline? Also do we have any other potential uses for your proposed
+>ctlv mechanism or is attestation the only user at the moment?
+
+Will do that, still need to do some work on it before though.
+So far I focus on attestation with ctlv, as that is my immediate target.
+But the mechanism is quite generic, easy to be used by anyone.
+
+
 >
-
-Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
- 
-> I've now spoken to all the main companies contributing here and asked for
-> volunteers. This is what I could confirm at this point. I'll be at LPC also
-> for any further discussion. Regards
-> 
-> diff --git a/CREDITS b/CREDITS
-> index a0bd941ca5dd26..7749f1e477ab43 100644
-> --- a/CREDITS
-> +++ b/CREDITS
-> @@ -4414,6 +4414,15 @@ W: ftp://ftp.uk.linux.org/pub/linux/people/willy/
->  D: Linux/PARISC hacker.  Filesystem hacker.  Random other hacking.  Custom
->  D: PPC port hacking.
->  
-> +N: Dan Williams
-> +D: Technical Advisory Board member
-> +D: Asynchronous Transfers/Transforms (IOAT) API, Compute Express Link (CXL),
-> +D: Device Direct Access (DAX), Filesystem Direct Access (DAX),
-> +D: Intel I/OAT DMA driver, libnvdimm BTT: block translation table,
-> +D: libnvdimm PMEM: persistent memory driver,
-> +D: libnvdimm: non-volatile memory device subsystem,
-> +D: Trusted Execution Environment Security Manager (TSM)
-> +
->  N: G\"unter Windau
->  E: gunter@mbfys.kun.nl
->  D: Some bug fixes in the polling printer driver (lp.c)
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 72294ddfa5b757..729ab465af96a8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -27788,7 +27788,8 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/trigger-source/*
->  
->  TRUSTED EXECUTION ENVIRONMENT SECURITY MANAGER (TSM)
-> -M:	Dan Williams <djbw@kernel.org>
-> +M:	Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> +M:	Jason Gunthorpe <jgg@nvidia.com>
->  L:	linux-coco@lists.linux.dev
->  S:	Maintained
->  F:	Documentation/ABI/testing/configfs-tsm-report
-> 
-> base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
-> -- 
-> 2.43.0
-> 
-> 
+>On 9/30/2026 5:22 AM, Jiri Pirko wrote:
+>> Fri, Sep 04, 2026 at 11:52:12AM +0200, jiri@resnulli.us wrote:
+>> > Thu, Sep 03, 2026 at 03:36:54PM +0200, lukas@wunner.de wrote:
+>> > > [+cc Jonathan, start of thread is here:
+>> > > https://lore.kernel.org/all/20260902150125.GD2890729@ziepe.ca/
+>> > > ]
+>> > > 
+>> > > On Wed, Sep 02, 2026 at 12:01:25PM -0300, Jason Gunthorpe wrote:
+>> > 
+>> > [..]
+>> > 
+>> > 
+>> > > > I've asked Jiri Pirko to work on
+>> > > > the PCI evidence uAPI based on his deep netlink experience
+>> > > netlink isn't well suited to transport large blobs because the nlattr
+>> > > len is u16.  (The len of the enclosing nlmsg is u32, which is sufficient.)
+>> > > 
+>> > > Previous approaches, including the one proposed by Dan in this series,
+>> > > work around the problem by splitting the blob into a sequence of nlattrs.
+>> > > I think we should instead extend the netlink protocol with 32-bit "jumbo"
+>> > > attributes.
+>> > > 
+>> > > I suggest we reserve bit 13 of nla_type as NLA_F_JUMBO and use the
+>> > > the first 4 bytes after the struct nlattr header as length (if the
+>> > > jumbo flag is set).
+>> > > 
+>> > > 
+>> > > A second problem is that the size of a socket buffer's linear data
+>> > > is limited.  Also, copying the blob into the nlmsg is a bit wasteful
+>> > > and we'd want zero copy instead.  The solution I've come up with is
+>> > > to attach the pages backing the blob as fragments to the skb.
+>> > > It's very simple, overcomes the skb size limitation and allows for
+>> > > zero-copy:
+>> > > 
+>> > > https://github.com/l1k/linux/commit/6e73bb999128
+>> > > 
+>> > > That commit is from January and the time I've been able to devote
+>> > > to this has since been limited as my employer prioritized various
+>> > > AER feature gaps and fixes.
+>> > > 
+>> > > I worked on this for native PCI device authentication, which faces
+>> > > the same netlink blob issue as TSM-mediated authentication.
+>> > > Both should use the same uABI for evidence exposure.  Additionally,
+>> > > native device authentication may be used by non-PCI buses such as
+>> > > ATA or SCSI.  The uABI should work for those use cases as well.
+>> > Not sure if netlink as actually the best fit for this purpose,
+>> > for large blob transfers ioctl-based iface is probably much more
+>> > convenient. I'm working on a uapi framework that make the best of
+>> > netlink and takes it over to a fd-based ioctl. I call it CTLV, here's
+>> > a link to an early pre-RFC draft:
+>> > 
+>> > https://github.com/jpirko/linux_mlxsw/commits/wip_ctlv_pre_rfc_draft1/
+>> > 
+>> [..]
+>> 
+>> Following up on this, I have a very early draft of an attestation
+>> framework here:
+>> 
+>> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_pre_rfc_draft1/
+>> 
+>> It introduces a provider-neutral, fd-based interface for evidence
+>> retrieval, userspace verdicts tied to exact device/evidence generations,
+>> measurement registers and their journal, events, and device-security
+>> state transitions. Large evidence is written directly to referenced
+>> buffers instead of being split across Netlink messages.
+>> 
+>> For this series, the intent is to replace the device-evidence
+>> Generic Netlink UAPI and the draft PCI/TSM evidence-accept UAPI.
+>> It does not replace PCI/TSM connect/disconnect or lock/unlock,
+>> nor the underlying device-trust, SPDM/IDE/TDISP, MMIO, or
+>> DMA machinery.
+>> 
+>> The branch currently contains the core, a simulation provider with
+>> tests, and a TDX provider demonstrating the provider boundary.
+>> The PCI/TSM provider is not implemented yet.
