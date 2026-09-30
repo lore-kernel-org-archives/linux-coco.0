@@ -1,136 +1,152 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E43C36B907;
-	Wed, 30 Sep 2026 08:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFBF3B47E1;
+	Wed, 30 Sep 2026 08:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790756231; cv=none; b=DzObGLpvUJyhiH/g5pFS0Ppj8CcVCmAzIwURPJWySVN4eC5q6xar2nlKxcpcAftdF2WpsbRxmw+1Psez91dTUKAzqQBbbpRe6M6Ghot5EmVnu+MdJKJ6rcLpUUMPi2pu56Crr8WPuxCqk98l1+Us8cPdU5Y0Yebbl3QIeXr++o0=
+	t=1790758468; cv=none; b=mnEgI5YW+Klq7I2iK+jJruQM65Z25U8OM8xACXk6vNTR43HPW6jrJtZwAnsclWZzJPDq+aS7ssbp47UZwmgJlZ7tJTZej9CiLb/cqgUiLWn2+DeJak/tGZF0ThAFHn613L/+h7OQSf0A/0IiYPmCvVdWFJBnPTUx9W5jGfGlYqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790756231; c=relaxed/simple;
-	bh=GNXZa7j1/VTmq7tnRy/t6ruvY0i6WuGqOi1nPlTRzL8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eGWBAfqNY18OE5pB51vdAxCHozarbQgqGd4AVI5/Ftdtozrp2hCwvCMAijxOnQqBJg9fxXNieLw+cAv5cnc/7gjcc/tFDOEheADnV0teprgCfChXlPyg71iTCS5zEUX5Xtl5LeR1/usCXkgNmjuv8VFm6Zv9MDOMZnMFtv8ng4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BKFn+Xi7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790758468; c=relaxed/simple;
+	bh=/bg6wWvn3UxxefOMsl8JIomiL9mMcf6RS3vUGzzxCZM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LsbuHRseMrk9O3C6HL/bKNM5qdpL+C7j9HHIq22WaMu8FEztCP1wZOtyhNdyiVB/Rf703m/DuzCVKj/6MvAXWxTEGwA/jmtDxQAQ4LYdC9BTaStEFCFycOV1ZQK/d+Pv0TB099yHVFbCp7thgXd2O5iS2q8Xu6avBjP+wxbiqYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aJzc5jIL; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BKFn+Xi7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1AFC61477;
-	Wed, 30 Sep 2026 01:17:01 -0700 (PDT)
-Received: from [192.168.1.148] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CAA463F85F;
-	Wed, 30 Sep 2026 01:17:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790756224; bh=GNXZa7j1/VTmq7tnRy/t6ruvY0i6WuGqOi1nPlTRzL8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BKFn+Xi71PDm13PN8c8mgumEtRVu6FdNVGMRI1NxBTY3+SXllrtsQ3wOiOa9C9yGH
-	 50qcRfxA51AqF4pH++UxpnBh8vGYwXCVwWTAkE001/+beCOgzfLMxE2tz0ga5977lw
-	 wFuOCDVKLSU2T89a1BcDCSroJtJc5QdZ9Gr6OJe0=
-Message-ID: <af49e948-3120-401f-a00d-74c853ee17b9@arm.com>
-Date: Wed, 30 Sep 2026 09:17:00 +0100
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aJzc5jIL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=0UFYYKBUewXLJbGJZ9BEDna7/dDF99emZQefLuG6AWg=; b=aJzc5jIL6ZEo+riFOwoxR1oSNm
+	C2hf1HPOb9+KTK8px2ooi5YPLIeRFxTZoinR6pVkeYDaZKn09QeR00yhVqRRjAPKdAPRJkoIrT7S/
+	hRxVygx6bLPrPlKZSnQKreIhSWLLbwZnFvcJlIoRpu0zHhaZDBm7i980rS/vK3fK3nujDtN/6z8l8
+	fLgOlnTOkOldZJL6u6dcGPuFYD8IOAfYYLYx7hVPjXkwkJJiUSDbMGWUxsizvsvnVwzDCw78nf0AV
+	IzzNDXK6Hdr8Iec9g2P2seZ7jfrgAs9zrZtJEFt/4RzEbuMhSVTPiYHQJ3yrkx4qqkpIjr6CULMaD
+	pmozWVDw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xBq4s-0000000B7se-1SQm;
+	Wed, 30 Sep 2026 08:54:14 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D9DFA300673; Wed, 30 Sep 2026 10:54:13 +0200 (CEST)
+Date: Wed, 30 Sep 2026 10:54:13 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v2 2/6] percpu: Bound decrypted storage for all x86
+ encrypted guests
+Message-ID: <20260930085413.GH88198@noisy.programming.kicks-ass.net>
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
+ <20260929040256.543767-3-zack.rusin@broadcom.com>
+ <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
+ <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
- for memory
-Content-Language: en-GB
-To: Shanker Donthineni <sdonthineni@nvidia.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
- yuzenghui@huawei.com, linux-coco@lists.linux.dev,
- gankulkarni@os.amperecomputing.com, alpergun@google.com,
- fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org,
- enju.kohei@fujitsu.com, sudeep.holla@arm.com,
- jonathan.cameron@oss.qualcomm.com
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-7-suzuki.poulose@arm.com>
- <a27970c6-a7d2-4abc-84c3-7e50225f0a1a@nvidia.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <a27970c6-a7d2-4abc-84c3-7e50225f0a1a@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
 
-On 29/09/2026 23:29, Shanker Donthineni wrote:
-> Hi Suzuki,
-> 
-> On 9/24/2026 8:52 AM, Suzuki K Poulose wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> From: Steven Price <steven.price@arm.com>
->>
->> The RMM maintains the state of all the granules in the system to make
->> sure that the host is abiding by the rules. This state can be maintained
->> at different granularity, per page (TRACKING_FINE) or per region
->> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on 
->> the
->> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
->> all pages in the region must be of the same state, this implies we 
->> need to
->> have "fine" tracking for DRAM, so that we can delegate individual pages.
->>
->> For now we only support a statically carved out memory for tracking
->> granules for the "fine" regions. This can be extended in the future to
->> allow modifying the tracking granularity and remove the need for a
->> static allocation by the firmware.
+On Tue, Sep 29, 2026 at 01:12:45PM -0400, Zack Rusin wrote:
+> On Tue, Sep 29, 2026 at 3:54=E2=80=AFAM Peter Zijlstra <peterz@infradead.=
+org> wrote:
+> > On Tue, Sep 29, 2026 at 12:02:51AM -0400, Zack Rusin wrote:
+> > > @@ -1022,11 +1024,13 @@
+> > >   * Note: We use a separate section so that only this section gets
+> > >   * decrypted to avoid exposing more than we wish.
+> > >   */
+> > > -#ifdef CONFIG_AMD_MEM_ENCRYPT
+> > > +#if defined(CONFIG_X86_MEM_ENCRYPT) && defined(CONFIG_SMP)
+> > >  #define PERCPU_DECRYPTED_SECTION                                    =
+ \
+> > >       . =3D ALIGN(PAGE_SIZE);                                        =
+   \
+> > > +     __start_percpu_decrypted =3D .;                                =
+   \
+> > >       *(.data..percpu..decrypted)                                    =
+ \
+> > > -     . =3D ALIGN(PAGE_SIZE);
+> > > +     . =3D ALIGN(PAGE_SIZE);                                        =
+   \
+> > > +     __end_percpu_decrypted =3D .;
+> > >  #else
+> > >  #define PERCPU_DECRYPTED_SECTION
+> > >  #endif
+> >
+> > So you're page aligning something that will get different protection and
+> > will thus shatter large pages?
+> >
+> > That is somewhat uncool. We like large pages, large pages are good.
+>=20
+> I'm a huge large pages fan too. I have a poster in my office and
+> everything... And I never do things that are uncool. I have a wwcdd
+> (what would cool dude do) bracelet and I look at it every time I make
+> a decision, which given that I'm old gets on my wife's nerves a lot.
+> That is to say I'm handsome and innocent.
 
-...
+:-)
 
->> +
->> +/*
->> + * We do not support creating L1 GPTs yet. So, make sure that
->> + * all the regions are managed by the firmware.
->> + */
->> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, 
->> phys_addr_t end)
->> +{
->> +       unsigned long l0gpt_sz;
->> +       unsigned long next, par_state;
->> +
->> +       l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
->> +                                         rmi_feat_reg(1)));
->> +       start = ALIGN_DOWN(start, l0gpt_sz);
->> +       end = ALIGN(end, l0gpt_sz);
->> +
->> +       while (start < end) {
->> +               long ret = rmi_gpt_info(start, end, &next, &par_state);
->> +
->> +               if (ret != RMI_SUCCESS)
->> +                       return -ENOMEM;
->> +
->> +               if (WARN_ON(next <= start))
->> +                       return -ENXIO;
->> +
->> +               if (par_state != RMI_GPT_PAR_PLAT) {
->> +                       pr_err("GPT for the region is not managed by 
->> firmware %llx-%lx\n",
->> +                               start, next);
->> +                       return -ENOMEM;
-> 
-> Accepting only RMI_GPT_PAR_PLAT rules out the host ever creating its own
-> L1 GPTs. On NVIDIA platforms the PARs backing system RAM come up as
-> RMI_GPT_PAR_HOST_NOT_CREATED, so this returns -ENOMEM and CCA cannot be
-> enabled at all.
+> The alignment isn't new. It has been there since ac26963a1175
+> ("percpu: Introduce DEFINE_PER_CPU_DECRYPTED") under AMD_MEM_ENCRYPT,
+> which common distro kernels enable. This patch extends it to TDX-only
+> builds and adds the boundary symbols. On bare metal and in ordinary
+> guests nothing changes protection, so no large pages are split.
 
-Like I mentioned in the previous response, this is staged upstreaming.
-The dynamic GPT/Tracking will follow after. This also calls for 
-on-demand activation which Catalin requested and can be combined together,
-as we dedicate quite a lot of memory for the metadata and L1GPTs.
+Right, I saw it is pre-existing, but you made me notice ;-)
+
+Anyway, the thing that wasn't immediately obvious was that we only
+really change the protection for (sekjoer) guests. This means I mostly
+don't care.
+
+> In confidential guests, yes, converting each CPU's page splits the
+> direct map around it. The alignment doesn't cause that: a large
+
+Nit you could 2M align, so alignment is somewhat related.
+
+> mapping can't be part private and part shared, so a converted page
+> can't stay inside one. The alignment only keeps unrelated per-CPU data
+> out of the shared page. Because that page sits in every CPU's per-CPU
+> unit, each 2M mapping that holds one of them becomes 4K mappings,
+> including the ordinary per-CPU data around it. In the layouts we've
+> tested that's most of the first per-CPU chunk.
+
+So perhaps a little more invasive would be poking at the per-cpu
+allocator and having a whole 'decrypted' pcpu_chunk which is 2M aligned
+or something.
 
 
-> 
-> With local changes to promote granule tracking via RMI_GRANULE_TRACKING_SET
-> and to create the host L1 GPTs, I was able to boot a Realm with multiple
-> vCPUs and exercise basic boot functionality on NVIDIA silicon.
-
-Thanks for the testing !
-
-Cheers
-Suzuki
+Anyway, as long as this is sekjoer guests only, I really could not be
+bothered much. Proceed, but perhaps put on a comment in the
+vmlinux.lds.h to clarify this, for those of us who do not live in
+coconut land?
