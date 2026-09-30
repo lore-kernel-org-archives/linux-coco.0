@@ -1,71 +1,125 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE78450412;
-	Wed, 30 Sep 2026 11:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D204CC63A
+	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 11:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790766667; cv=none; b=eSU42VtJfQDb4SDtTkm7+6CEPUJQzBigY9a3Dc79akOBFXjfoRFRZegqq53Jie5QKaZclRU2EGESsPgaSeFboM/DMyGmdpVdgq8IVoCKMubtKspZwrNgbXTffw+uUe2ZB8baQMJm3lZDjDcLw93aCzSgfF7LI36LBymfrWm+mgU=
+	t=1790766971; cv=none; b=MTacVkXd+UH+8TUXFo/1wQ0tQe9qr5K323q5nHLwdyq6gPt9TV1mG3f+jIw7Xj6E7NHLNtlDhmygX2+fWHOivzO7EUgFxEIN9hrbJPHeQhTDhz3uZSN+8AhaPsEGeb+/C49iy4RoeljcbJp3Pr9LI9z1eIs3ebP6F+1t8O0m6fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790766667; c=relaxed/simple;
-	bh=09jEaArNS417em6ToBSG7qdKHqccds8/fy4zdxtvQ3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QZeDhWVMF0QxLh+CO3AcPOfKxrdGQNDBzIOLwJW88ooBakmzNSQxSg0nsH6Pxq4A+m388fAYlXpxAxG1QHS/f05wjbO9x1A8yIDAa+NSkx6p8pr5VG4nz1JTHnRBPpb26JtcVNY1rkaX6HYCab3M0ULHG0tQcMn3dBIS0kJBq0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hMLeo9c8; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1790766971; c=relaxed/simple;
+	bh=ZsjyXoTLEOggldzf9Iy0psOGxgbnbPtVAlO5pYMWG9s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FpZMCHIpfZG6bloJ3iKFqBWNZbAvtXTru5IiK1sFXSKAD8xZRsKOtt1caOMAdjl48fLZ6jQtWVaTj98OWsA7/SmvwxgghbFZ54MlUy9xzfFtwtVli0Mc93VSKQljLLTbRiyK3XNyvYb0oabhp0o1Ti7citpXrYFe1W1OlWmvGc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GOPKu7Rt; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hMLeo9c8"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GOPKu7Rt"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D00E8497;
-	Wed, 30 Sep 2026 04:11:01 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 758023F86F;
-	Wed, 30 Sep 2026 04:11:02 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BD41497;
+	Wed, 30 Sep 2026 04:16:05 -0700 (PDT)
+Received: from [10.57.9.178] (unknown [10.57.9.178])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 01B253F86F;
+	Wed, 30 Sep 2026 04:16:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790766665; bh=09jEaArNS417em6ToBSG7qdKHqccds8/fy4zdxtvQ3c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hMLeo9c82Gy/Wy2abm9knjbpZVruD+1wc6Ju/TC06SrUV3zQ98jhitLXZDTDvGcac
-	 EE7y27oqCNqxVVzA+ROY4AN/V1t2c2Loi/j9tft1p/a1u1uN7sSenO1pHVWXx9svge
-	 PndYOaEjhnAao/piuhts7nsxFTeV7QEAR4LEVfW0=
-Date: Wed, 30 Sep 2026 12:10:51 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v20 3/9] firmware: arm_rmm: Configure the RMM with the
- host's page size
-Message-ID: <arzuKMam8IJkjB7T@arm.com>
-References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
- <20260929221623.1342076-4-suzuki.poulose@arm.com>
+	t=1790766968; bh=ZsjyXoTLEOggldzf9Iy0psOGxgbnbPtVAlO5pYMWG9s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GOPKu7RtkypA4/arJKEc/r9+1xM/rmVS9g53WT5+98MrGTptyuZqA676/gx5xA/bo
+	 DD9ApatuAcrdcH4F95uMO35UI/6VFKp8znRMOpdnhsQ8FinfHzg755WSirl5vyh1yY
+	 +dZpeF9b4a4hE6FUcJrGaxyGVy8v1ht8oG5KxjYg=
+Message-ID: <9c9402e6-ac2f-49fa-a4b5-88122b7e618e@arm.com>
+Date: Wed, 30 Sep 2026 12:16:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929221623.1342076-4-suzuki.poulose@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] coco/tsm: Update maintainership
+Content-Language: en-GB
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, ankita@nvidia.com,
+ Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Cedric Xing <cedric.xing@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, Eric Biggers <ebiggers@kernel.org>,
+ Jani Nikula <jani.nikula@intel.com>, Jonathan Cameron <jic23@kernel.org>,
+ Jiri Pirko <jiri@resnulli.us>, Kai Huang <kai.huang@intel.com>,
+ Kees Cook <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ Lukas Wunner <lukas@wunner.de>, Luis Chamberlain <mcgrof@kernel.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
+ Fang Peter <peter.fang@intel.com>, Petr Pavlu <petr.pavlu@suse.com>,
+ rick.p.edgecombe@intel.com, Samuel Ortiz <sameo@rivosinc.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Saravana Kannan <saravanak@google.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Steven Price <steven.price@arm.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Will Deacon <will@kernel.org>, yilun.xu@intel.com,
+ Kevin Tian <kevin.tian@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>
+References: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 29, 2026 at 11:16:17PM +0100, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
+On 30/09/2026 00:26, Jason Gunthorpe wrote:
+> With Dan's passing Aneesh and Jason have volunteered to take this on, with
+> the support of their employers.
 > 
-> RMM v2.0 brings the ability to set the RMM's granule size. Check the
-> feature registers and configure the RMM so that it matches the host's
-> page size. This means that operations can be done with a granularity
-> equal to PAGE_SIZE.
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>   CREDITS     | 9 +++++++++
+>   MAINTAINERS | 3 ++-
+>   2 files changed, 11 insertions(+), 1 deletion(-)
 > 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> I've now spoken to all the main companies contributing here and asked for
+> volunteers. This is what I could confirm at this point. I'll be at LPC also
+> for any further discussion. Regards
+> 
+> diff --git a/CREDITS b/CREDITS
+> index a0bd941ca5dd26..7749f1e477ab43 100644
+> --- a/CREDITS
+> +++ b/CREDITS
+> @@ -4414,6 +4414,15 @@ W: ftp://ftp.uk.linux.org/pub/linux/people/willy/
+>   D: Linux/PARISC hacker.  Filesystem hacker.  Random other hacking.  Custom
+>   D: PPC port hacking.
+>   
+> +N: Dan Williams
+> +D: Technical Advisory Board member
+> +D: Asynchronous Transfers/Transforms (IOAT) API, Compute Express Link (CXL),
+> +D: Device Direct Access (DAX), Filesystem Direct Access (DAX),
+> +D: Intel I/OAT DMA driver, libnvdimm BTT: block translation table,
+> +D: libnvdimm PMEM: persistent memory driver,
+> +D: libnvdimm: non-volatile memory device subsystem,
+> +D: Trusted Execution Environment Security Manager (TSM)
+> +
+>   N: G\"unter Windau
+>   E: gunter@mbfys.kun.nl
+>   D: Some bug fixes in the polling printer driver (lp.c)
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 72294ddfa5b757..729ab465af96a8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -27788,7 +27788,8 @@ S:	Maintained
+>   F:	Documentation/devicetree/bindings/trigger-source/*
+>   
+>   TRUSTED EXECUTION ENVIRONMENT SECURITY MANAGER (TSM)
+> -M:	Dan Williams <djbw@kernel.org>
+> +M:	Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+> +M:	Jason Gunthorpe <jgg@nvidia.com>
+>   L:	linux-coco@lists.linux.dev
+>   S:	Maintained
+>   F:	Documentation/ABI/testing/configfs-tsm-report
+> 
+> base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+FWIW:
+
+Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
+Thank you for stepping in !
+
+Suzuki
