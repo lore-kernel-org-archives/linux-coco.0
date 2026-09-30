@@ -1,168 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E493B6378
-	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 05:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD06B3FE37A;
+	Wed, 30 Sep 2026 06:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790746886; cv=none; b=SsMwsXq2lmmDBBg7prCyT/mBmtrlVBpmuHY7BuQLJLE91Eo7yhsFSnsGENQXgMFApMNMBOL1pFLsf7jh4JIC3lXol/JeibeIvzj/DZ8ZGuwKDORJaOpel/VCQ65h0aH3zTsNa0aTAaoSu0omwirONfuQbwwlPICesYQA6gCBHY8=
+	t=1790751494; cv=none; b=oajvG9jDWO+3lcB9jWE16XuoxehqTPQ4igaFOj17MUK9wUr3Tts67T5AvudgX/YtSvG3OERVH94JHPDPd9GH77PVz7n6i7C//GW93MK7+KNUim+2EpoFzX7Z2SdCzOujRI4bNpvZaCkI+Nyn6qMNKQRGVfVglWRIZAiuWlNozJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790746886; c=relaxed/simple;
-	bh=RNrQaJ9ZisYgkrcaPbEnmywd57d4FwQtZ1SfF+5GZi0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXZC+dc1OMMSXBDhAUVWi1V5GP8XBniWmxAVQ3PrCALsobTrbkoz+hyKvl+UWfCLJLuABnMNRlhAMrGNKsknA0tWE269eW06N7fECXLogB/JOT0kTsPi6oJflarkfZrn/th5iF9KoL4lOAZeXUjml4+u/fefc3qB4IWxZhxZS7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HstUaZ7N; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790751494; c=relaxed/simple;
+	bh=Xk8DEFs2cNrWuMHZ6GQ2EZCL/oamNlBzVYplJVyzKL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RJl9tlQWbXyaP9hZaYnz4nADkgX9MoqUjfMTygTMXf2a8YJIx6ZoVVbHtfA6UcI61LexHelqD78tt2udMn5yUMhmKT2zzIPDYBchgPQToW3mzZwHuhoYlAJps7YE+2ppUeI2D7uOelcqce6wRY+bdbr1e50LRSlJ0GzTLRJ5+ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oUByI61m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HstUaZ7N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790746885; x=1822282885;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RNrQaJ9ZisYgkrcaPbEnmywd57d4FwQtZ1SfF+5GZi0=;
-  b=HstUaZ7NvCf29GfLmTYfSO/vreDrpTW4KecAXjbbzun0A706usGporxA
-   AMsyU5XkhWom54Yh30149PjNfFuqG4eIadmD/0F2oZ/wD3U5KG0N+dHqs
-   Bn3P8kTSnGRDoDovYQVctYXPdl1CClTr2Mmgoy1DgYYotNHIGP0cWRCvR
-   WE4Z88Jjw/yUdtFEkBnBLqxvWyoRYC0cmg8xYdj6+AUliN3MY7AN9QwbS
-   DOGGPuielXPtOb4WJczoGDp3E4Gnn+rVAMiyXhvFBjP3UCmDCvePyUffN
-   xgG55rilXccp9S07/0IgIU0CIeXD4YRAO630/rZV4CJx5J5WHW92WpyXx
-   w==;
-X-CSE-ConnectionGUID: 90P+2YnbQo6Bh97nuCD5hg==
-X-CSE-MsgGUID: 4KWfC9METs25g25RljcWxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="102149143"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="102149143"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:41:05 -0700
-X-CSE-ConnectionGUID: ihpuifHZTAygPoFdymmAsA==
-X-CSE-MsgGUID: PhQFSmDFRe2rDBtUNiKZTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="278936442"
-Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:41:04 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: yilun.xu@linux.intel.com,
-	chao.gao@intel.com,
-	binbin.wu@linux.intel.com,
-	tony.lindgren@linux.intel.com,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v3 10/10] x86/virt/tdx: Verify structure member sizes against metadata field IDs
-Date: Tue, 29 Sep 2026 22:38:44 -0700
-Message-ID: <20260930053901.22528-11-chao.gao@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260930053901.22528-1-chao.gao@intel.com>
-References: <20260930053901.22528-1-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oUByI61m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE611F00893;
+	Wed, 30 Sep 2026 06:58:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790751482;
+	bh=uZm2ZzTH7mgc/9bG+QGHa6xuFuylQoUoBuZROPJvY8w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oUByI61mNruELsoKeGwKZnm8DL/70O0iGT8UK3oy3q9WkZXBsVOqY5LEhkviVDmF5
+	 Y8W1LrBPAjsaiWu+Hrg9COy/MeGlZoeXa0utgrzZ13RffbyV9eWx+6LCTmweLs0Fkz
+	 SotiMx+c8Kq+Tee0ETIU6uXKmeuP/i+lxDIjYHlmskalCJVTLsiWQ2phPmBN6t4eXy
+	 FK2weDfw7mQz2kOgL07T0NhnDihScc6M6S6HqFLtOSxYi4fpLu3aYadJK60DbGT4iv
+	 qXa9d0fuVkGyQ7BsV0sywOjiFtIjb/VA9uP5SqUo7yBnaNBqH0b6vSzxtEEOEV3zSs
+	 9XxHNV498TOaA==
+Date: Wed, 30 Sep 2026 09:57:56 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	ankita@nvidia.com, Arnd Bergmann <arnd@arndb.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Cedric Xing <cedric.xing@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Jonathan Cameron <jic23@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+	Kai Huang <kai.huang@intel.com>, Kees Cook <kees@kernel.org>,
+	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Lukas Wunner <lukas@wunner.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
+	Fang Peter <peter.fang@intel.com>, Petr Pavlu <petr.pavlu@suse.com>,
+	rick.p.edgecombe@intel.com, Samuel Ortiz <sameo@rivosinc.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Will Deacon <will@kernel.org>, yilun.xu@intel.com,
+	Kevin Tian <kevin.tian@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH] coco/tsm: Update maintainership
+Message-ID: <20260930065756.GN563127@unreal>
+References: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
 
-The TDX module reports its capabilities and limits as a set of metadata
-fields, each identified by a field ID, and TDH.SYS.RD reads one field by
-its ID. TDH.SYS.RD returns the value as a u64, but metadata fields are not
-all 64 bits wide. A field ID therefore encodes the field's size into
-bits 33:32.
+On Tue, Sep 29, 2026 at 08:26:41PM -0300, Jason Gunthorpe wrote:
+> With Dan's passing Aneesh and Jason have volunteered to take this on, with
+> the support of their employers.
+> 
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  CREDITS     | 9 +++++++++
+>  MAINTAINERS | 3 ++-
+>  2 files changed, 11 insertions(+), 1 deletion(-)
+> 
+> I've now spoken to all the main companies contributing here and asked for
+> volunteers. This is what I could confirm at this point. I'll be at LPC also
+> for any further discussion. Regards
+> 
+> diff --git a/CREDITS b/CREDITS
+> index a0bd941ca5dd26..7749f1e477ab43 100644
+> --- a/CREDITS
+> +++ b/CREDITS
+> @@ -4414,6 +4414,15 @@ W: ftp://ftp.uk.linux.org/pub/linux/people/willy/
+>  D: Linux/PARISC hacker.  Filesystem hacker.  Random other hacking.  Custom
+>  D: PPC port hacking.
+>  
+> +N: Dan Williams
+> +D: Technical Advisory Board member
+> +D: Asynchronous Transfers/Transforms (IOAT) API, Compute Express Link (CXL),
+> +D: Device Direct Access (DAX), Filesystem Direct Access (DAX),
+> +D: Intel I/OAT DMA driver, libnvdimm BTT: block translation table,
+> +D: libnvdimm PMEM: persistent memory driver,
+> +D: libnvdimm: non-volatile memory device subsystem,
+> +D: Trusted Execution Environment Security Manager (TSM)
+> +
+>  N: G\"unter Windau
+>  E: gunter@mbfys.kun.nl
+>  D: Some bug fixes in the polling printer driver (lp.c)
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 72294ddfa5b757..729ab465af96a8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -27788,7 +27788,8 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/trigger-source/*
+>  
+>  TRUSTED EXECUTION ENVIRONMENT SECURITY MANAGER (TSM)
+> -M:	Dan Williams <djbw@kernel.org>
+> +M:	Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+> +M:	Jason Gunthorpe <jgg@nvidia.com>
+>  L:	linux-coco@lists.linux.dev
+>  S:	Maintained
+>  F:	Documentation/ABI/testing/configfs-tsm-report
+>
 
-The kernel mirrors these fields in C structures, and each member's size
-must match the size encoded in the field ID. TDX_SYSINFO_MAP() stores the
-member size and uses it to decide how many bytes to copy from the value
-returned by TDH.SYS.RD. The size in the field ID is never consulted, so any
-mismatch goes unnoticed. Declaring a u32 member for a 64-bit field, for
-example, would silently store only its low 4 bytes.
+For some reason, your patch is missing a `To:` field.
+https://lore.kernel.org/all/0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com/
 
-Add macros to extract the size encoded in a field ID and check it against
-the member size. The check happens at build time, so it catches a wrongly
-typed member with no runtime cost.
-
-BUILD_BUG_ON() cannot be used in a structure initializer, so use
-BUILD_BUG_ON_ZERO() and add its zero result to the .size initializer. This
-performs the build-time check without changing the stored size.
-
-An alternative would be to leave the size bits out of the field ID
-definitions and construct the IDs from the member sizes, which makes a
-mismatch impossible. But the TDX module ABI definitions list the full field
-IDs, and definitions with the size bits stripped would match nothing in the
-docs, making them harder to verify. Keep the IDs exactly as documented and
-check the size they encode against the C type instead.
-
-AI was used under supervision to review code and workshop logs. It
-suggested extracting TDX_FIELD_SIZE_CHECK() instead of open coding the
-check in TDX_SYSINFO_MAP(), to keep the .size line from being too long.
-
-Signed-off-by: Chao Gao <chao.gao@intel.com>
----
-v3:
- - Add background on the size bits encoded in a field ID. [Rick]
- - Add rationale for checking the size in the field ID instead of
-   building the ID from the member size. [Rick]
- - Squash TDX_MD_FIELD_ELE_SIZE_CODE() and TDX_MD_FIELD_ELE_SIZE() into a
-   single TDX_FIELD_SIZE(). [Rick]
----
- arch/x86/virt/vmx/tdx/tdx.c | 12 +++++++++++-
- arch/x86/virt/vmx/tdx/tdx.h |  7 +++++++
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index e7d4fc3f350f..360875efb263 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -427,11 +427,21 @@ static int __read_sys_metadata_table(const struct field_mapping *mappings,
- #define read_sys_metadata_table(_mappings, _data) \
- 	__read_sys_metadata_table(_mappings, ARRAY_SIZE(_mappings), _data)
- 
-+/*
-+ * The size encoded in the field ID and the size of the destination C
-+ * member must agree.
-+ */
-+#define TDX_FIELD_SIZE_CHECK(_field, _type, _member)		\
-+	BUILD_BUG_ON_ZERO(sizeof_field(_type, _member) !=	\
-+			  TDX_FIELD_SIZE(_field))
-+
- #define TDX_SYSINFO_MAP(_field, _type, _member)			\
- {								\
- 	.field_id	= _field,				\
- 	.offset		= offsetof(_type, _member),		\
--	.size		= sizeof_field(_type, _member),		\
-+	.size		= sizeof_field(_type, _member) +	\
-+			  TDX_FIELD_SIZE_CHECK(			\
-+				_field, _type, _member),	\
- }
- 
- #define TDX_SYSINFO_MAP_VERSION(_field_id, _member) \
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index e41fc5e4925e..b3694a80a0c8 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -91,6 +91,13 @@
- /* Class "TDX Module Handoff" */
- #define TDX_FIELD_MODULE_HV			0x8900000100000000ULL
- 
-+/*
-+ * Bits 33:32 of a field ID hold the log2 of the metadata field size in
-+ * bytes. See "Metadata Field Identifier" in the Intel TDX Module ABI
-+ * Specification.
-+ */
-+#define TDX_FIELD_SIZE(field_id)	(1 << (((field_id) >> 32) & 0x3))
-+
- /* TDX page types */
- #define	PT_NDA		0x0
- #define	PT_RSVD		0x1
--- 
-2.52.0
-
+Thanks,
+Reviewed-by: Leon Romanovsky <leon@kernel.org>
