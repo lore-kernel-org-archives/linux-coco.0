@@ -1,435 +1,104 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53724DEC38
-	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 13:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71934E0B7C;
+	Wed, 30 Sep 2026 13:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790775884; cv=none; b=AUBq98HqIWTSnPBxcr26kbWao0Qu6uSkkMFBk3uoZVBLYGYUbeuAc33iQkii1JKSGDMjy26IQPfDgB4K5Ae8O4CtPI3JVv0CaHL9jElxyZ9HJUPxErbY+WaJGahhmzNg91r9BXht03dOdJ1q1bW6EtUJm+D582VIA8qu0tIDnho=
+	t=1790776111; cv=none; b=M5ZwYWh/dMagQfXQpbSyi+p61ZJ1sN2J84KIWGyxqHS0dNRAaQeOBKuIrj/Wpr0ffqlq2ZReSvqhy3BH/Ny/dTjBE9KOSYBBX/QrPbrZLRgWryz9MIwWXYtdEOcdT73Y0/Bo2kIZmLj0ri51+Dd7f+9Tu5jS0cpgPF14kGtm/ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790775884; c=relaxed/simple;
-	bh=d6nZ0CYHV1j5DDfKelAp5NeZoMJ0Ig7FSoRuiZJx2Ko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Yb7LW9t2fEl7U7tHg+y6QQr2jXqUNEP9pifNIvJWZ7miLUj75qjonBDT5UGEwoLwyML+MElyjqBV6eI6SnQpXFHh8KCK2k8mZtCipgQo0RuiaLZNur9skXvDA51T7tjUguN7+CzX3KP9puC27yoJgvCrCgyLGsn7+06HivW2Q38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Bd7o93Qa; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1790776111; c=relaxed/simple;
+	bh=Dar8iWrwueb30Qw0DVgkCFG8Xw/Wi7e1xUK/b2vhgNY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lc5lIOZjKLYcql6hSHP66y7C2S8XQfglxvvF/gp3H+NtMqdqKSf7vhVC5hHIy1gVDeVSbrx0L0S3WP3H39HJqrMCIyE/qVzyqvdPqmmZxnwr4hY4RptLiVCzlO7VZylK/y3ep4Hw+tb5BmVA9+3JEHnIkloPM9fGtjh2C8kSpaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=P/rjOi7t; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Bd7o93Qa"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="P/rjOi7t"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 727E6168F;
-	Wed, 30 Sep 2026 06:44:24 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F02EC3F86F;
-	Wed, 30 Sep 2026 06:44:24 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 322B4497;
+	Wed, 30 Sep 2026 06:48:10 -0700 (PDT)
+Received: from [10.57.9.178] (unknown [10.57.9.178])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5536E3F86F;
+	Wed, 30 Sep 2026 06:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790775867; bh=d6nZ0CYHV1j5DDfKelAp5NeZoMJ0Ig7FSoRuiZJx2Ko=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Bd7o93Qa4PFjgVXK07gWvwXZrDcfEFGQIs/QAkCVds9/yksQ8KmpaTwp+ibtmen4s
-	 L5sXkl6iJ/NBAzd3gKZNrOuHAV9O0MhB7/oDYEuE5+BXCuJ1EV+KWOpbXPsSA5afbx
-	 OKmQYx0RaWyYXk1k31UnALGaqId4G3C0jLf1Tnhw=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Wed, 30 Sep 2026 14:44:01 +0100
-Subject: [PATCH RFC 3/3] security: IMA: use TSM measurement registers
+	t=1790776093; bh=Dar8iWrwueb30Qw0DVgkCFG8Xw/Wi7e1xUK/b2vhgNY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=P/rjOi7t+k/Vlmjdkbj8VZh103tFHBdnH29u8r/ktKUZE6HldY7ZSHosJFFxFw0R/
+	 KZrYI8/RjFSujvEr/HTCwn+onttP+dtwZ7e2dy5Ia5zfZ0lZpzd+0zmGCkZx1URcHi
+	 rcQaIElaifsQfE8cqNnmtnE1MhR9TJJyH+FS5QT8=
+Message-ID: <10412ef0-94f1-4be8-8fd8-d1e5daaf421d@arm.com>
+Date: Wed, 30 Sep 2026 14:48:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v20 4/9] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+ <20260929221623.1342076-5-suzuki.poulose@arm.com> <ar0LQwXM5MEvFUWa@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <ar0LQwXM5MEvFUWa@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260930-ima_tgx_integration_v2-v1-3-722c35370548@arm.com>
-References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
-In-Reply-To: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
-To: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Eric Snowberg <eric.snowberg@oracle.com>, linux-integrity@vger.kernel.org, 
- linux-security-module@vger.kernel.org
-Cc: Dan Williams <djbw@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, 
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Suzuki Poulose <suzuki.poulose@arm.com>, 
- Steven Price <steven.price@arm.com>, Sami Mujawar <sami.mujawar@arm.com>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Jiri Pirko <jiri@resnulli.us>, 
- Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10095; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=d6nZ0CYHV1j5DDfKelAp5NeZoMJ0Ig7FSoRuiZJx2Ko=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqvRIuDp0ses8uekRGMZSlJEtTE++PzOEzQHBGj
- J1jf6ABkYSJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCar0SLgAKCRBt1cPRWsUx
- M3VGDACbmjMwaE1TpUBn0d2fNZbF815kR7BpsXO/j/OxUlJ4cnrthT3T9Ly1HKCEtGT5+RHbiiV
- of2LubVbNpcs42/U9M4oS8fj1swjbbjV0svdny+5QKYsHKBELl4RzlcHEMH7or2iha7a9E/rhRu
- cOgmsPBLCKli0bCn3nE0IXCyWJSu/IaroIE6su2u2Zg4cPhvLJiQNP2Yyp86AzkkYn19d1vHIcz
- 6AZm/wz1J6icZe6L48Rj9Ynacif9cKpt1xi12pcViilXMnvPx7vFnwmRa+P0F7+i0XBM8mqSfld
- 7ppHaQDx7dMdMhe/Q53YN37fQdsoH+Yud6qbSLEaKDoA/HQjxpjlIRdsy1cxF6DN0XJkU6A9CUc
- Ljrb/EZBLULov+/VWiLHGzOjvp4JGLyHdQ7XNYPiQiD9B7tbyMklcc64OlzsImvdNSwsUqqtEtt
- uJ+Keg0hGSpFU9WtMf3VGeNPyx8aOh5DWkLOoB31Zlsy+YISvCvErSbGyPCWGVjtYum6Q=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
 
-IMA uses TPM PCRs to record measurement digests. When no TPM device is
-available, TSM measurement registers can serve as an alternative for guest.
+On 30/09/2026 14:15, Catalin Marinas wrote:
+> On Tue, Sep 29, 2026 at 11:16:18PM +0100, Suzuki K Poulose wrote:
+>> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+>> +				 unsigned long sro_handle,
+>> +				 unsigned long donatereq,
+>> +				 struct arm_smccc_1_2_regs *out_regs,
+>> +				 gfp_t gfp)
+>> +{
+>> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+>> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+>> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +	unsigned long size = block_size * count;
+>> +	unsigned long addr_range;
+>> +	unsigned long donated_size;
+>> +	int ret;
+>> +	void *virt;
+>> +	phys_addr_t phys;
+>> +
+>> +	/*
+>> +	 * The RMM specification requires contiguous allocations are always a
+>> +	 * power of 2
+>> +	 */
+>> +	if (WARN_ON_ONCE(!is_power_of_2(size)))
+>> +		return -EINVAL;
+>> +	/*
+>> +	 * RMM clamps the Maximum value of RmiOpMemDonateReq:count to prevent
+>> +	 * overflow in the RMI_ADDR_RANGE_COUNT field.
+>> +	 */
+>> +	if (WARN_ON_ONCE(count > (BIT(PAGE_SHIFT - 2) - 1)))
+>> +		return -EINVAL;
+> 
+> Nit: it might be easier to read as FIELD_MAX(RMI_ADDR_RANGE_COUNT_MASK)
+> as that's what we want to limit it to.
 
-The following mappings are defined for Intel TDX [0] and proposed for
-Arm CCA [1]:
+Thanks, that is neat. I will update this.
 
-  TPM PCR index | Intel TDX register | Arm CCA register
-  --------------+--------------------+-----------------
-  0             | MRTD               | RIM
-  1, 7          | RTMR[0]            | REM[0]
-  2-6           | RTMR[1]            | REM[1]
-  8-15          | RTMR[2]            | REM[2]
+> 
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> (Sashiko seems to have more findings but the rest looks alright to me)
 
-Add support for extending IMA measurement digests into the corresponding
-TSM measurement register when no TPM device is available.
+I have updated the code to address the issues.
 
-Link: [0] https://uefi.org/specs/UEFI/2.11/38_Confidential_Computing.html#intel-trust-domain-extension
-Link: [1] https://github.com/tianocore/edk2/issues/11383
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- security/integrity/ima/Makefile     |   3 +-
- security/integrity/ima/ima_mr.c     |   1 +
- security/integrity/ima/ima_mr.h     |   1 +
- security/integrity/ima/ima_mr_tsm.c | 290 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 294 insertions(+), 1 deletion(-)
+Thanks Catalin.
 
-diff --git a/security/integrity/ima/Makefile b/security/integrity/ima/Makefile
-index f2c46b405a00..f0a22e3a5320 100644
---- a/security/integrity/ima/Makefile
-+++ b/security/integrity/ima/Makefile
-@@ -7,7 +7,8 @@
- obj-$(CONFIG_IMA) += ima.o ima_iint.o
- 
- ima-y := ima_fs.o ima_queue.o ima_init.o ima_main.o ima_crypto.o ima_api.o \
--	 ima_policy.o ima_template.o ima_template_lib.o ima_mr.o ima_mr_tpm.o
-+	 ima_policy.o ima_template.o ima_template_lib.o ima_mr.o ima_mr_tpm.o \
-+	 ima_mr_tsm.o
- ima-$(CONFIG_IMA_APPRAISE) += ima_appraise.o
- ima-$(CONFIG_IMA_APPRAISE_MODSIG) += ima_modsig.o
- ima-$(CONFIG_HAVE_IMA_KEXEC) += ima_kexec.o
-diff --git a/security/integrity/ima/ima_mr.c b/security/integrity/ima/ima_mr.c
-index fe58eb968954..85a66e616f64 100644
---- a/security/integrity/ima/ima_mr.c
-+++ b/security/integrity/ima/ima_mr.c
-@@ -15,6 +15,7 @@ struct ima_mr *ima_mr;
- 
- static struct ima_mr_operations *ima_mr_ops[] = {
- 	&ima_mr_tpm_operations,
-+	&ima_mr_tsm_operations,
- };
- 
- void __init ima_init_mr(void)
-diff --git a/security/integrity/ima/ima_mr.h b/security/integrity/ima/ima_mr.h
-index 23b85522da34..bc7b06c3adcd 100644
---- a/security/integrity/ima/ima_mr.h
-+++ b/security/integrity/ima/ima_mr.h
-@@ -51,6 +51,7 @@ struct ima_mr_operations {
- 
- extern struct ima_mr *ima_mr;
- extern struct ima_mr_operations ima_mr_tpm_operations;
-+extern struct ima_mr_operations ima_mr_tsm_operations;
- 
- void __init ima_init_mr(void);
- 
-diff --git a/security/integrity/ima/ima_mr_tsm.c b/security/integrity/ima/ima_mr_tsm.c
-new file mode 100644
-index 000000000000..3f88edfb8511
---- /dev/null
-+++ b/security/integrity/ima/ima_mr_tsm.c
-@@ -0,0 +1,290 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2026 Arm Ltd
-+ *
-+ * Author:
-+ * Yeoreum Yun <yeoreum.yun@arm.com>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/tsm-mr.h>
-+
-+#include "ima.h"
-+
-+#define INVALID_MR_IDX		(-1)
-+
-+struct tsm_context {
-+	const struct tsm_measurements *tm;
-+	int pcr_map[TPM2_PLATFORM_PCR];
-+};
-+
-+static struct tsm_context tsm_ctx;
-+
-+static int tsm_mr_idx_by_name(const struct tsm_measurements *tm,
-+			      const char *mr_name)
-+{
-+	int i;
-+	const struct tsm_measurement_register *mr;
-+
-+	for (i = 0; i < tm->nr_mrs; i++) {
-+		mr = &tm->mrs[i];
-+		if (!strcmp(mr->mr_name, mr_name))
-+			return i;
-+	}
-+
-+	return INVALID_MR_IDX;
-+}
-+
-+static __always_inline
-+int tsm_mr_idx(const struct tsm_measurements *tm,
-+	       const struct tsm_measurement_register *tmr)
-+{
-+	return tmr - tm->mrs;
-+}
-+
-+static __always_inline
-+void __create_tsm_pcr_map(struct tsm_context *ctx,
-+			  int mr0, int mr1, int mr2, int mr3)
-+{
-+	int i;
-+
-+	ctx->pcr_map[TPM_PCR0] = mr0;
-+	ctx->pcr_map[TPM_PCR1] = ctx->pcr_map[TPM_PCR7] = mr1;
-+
-+	for (i = TPM_PCR2; i < TPM_PCR7; i++) {
-+		ctx->pcr_map[i] = mr2;
-+	}
-+
-+	for (i = TPM_PCR8; i < TPM_PCR16; i++) {
-+		ctx->pcr_map[i] = mr3;
-+	}
-+
-+	for (i = TPM_PCR16; i < TPM2_PLATFORM_PCR; i++) {
-+		ctx->pcr_map[i] = INVALID_MR_IDX;
-+	}
-+}
-+
-+static int create_tsm_arm_cca_pcr_map(struct tsm_context *ctx)
-+{
-+	int rim_idx, rem0_idx, rem1_idx, rem2_idx;
-+
-+	rim_idx = tsm_mr_idx_by_name(ctx->tm, "rim");
-+	rem0_idx = tsm_mr_idx_by_name(ctx->tm, "rem0");
-+	rem1_idx = tsm_mr_idx_by_name(ctx->tm, "rem1");
-+	rem2_idx = tsm_mr_idx_by_name(ctx->tm, "rem2");
-+
-+	if ((rim_idx == INVALID_MR_IDX) || (rem0_idx == INVALID_MR_IDX) ||
-+	    (rem1_idx == INVALID_MR_IDX) || (rem2_idx == INVALID_MR_IDX))
-+		return -ENODEV;
-+
-+	__create_tsm_pcr_map(ctx, rim_idx, rem0_idx, rem1_idx, rem2_idx);
-+
-+	return 0;
-+}
-+
-+static int create_tsm_tgx_pcr_map(struct tsm_context *ctx)
-+{
-+	int mrtd_idx, rtmr0_idx, rtmr1_idx, rtmr2_idx;
-+
-+	mrtd_idx = tsm_mr_idx_by_name(ctx->tm, "mrtd");
-+	rtmr0_idx = tsm_mr_idx_by_name(ctx->tm, "rtmr0");
-+	rtmr1_idx = tsm_mr_idx_by_name(ctx->tm, "rtmr1");
-+	rtmr2_idx = tsm_mr_idx_by_name(ctx->tm, "rtmr2");
-+
-+	if ((mrtd_idx == INVALID_MR_IDX) || (rtmr0_idx == INVALID_MR_IDX) ||
-+	    (rtmr1_idx == INVALID_MR_IDX) || (rtmr2_idx == INVALID_MR_IDX))
-+		return -ENODEV;
-+
-+	__create_tsm_pcr_map(ctx, mrtd_idx, rtmr0_idx, rtmr1_idx, rtmr2_idx);
-+
-+	return 0;
-+}
-+
-+static const struct tsm_measurement_register *
-+tsm_mr_get(struct tsm_context *ctx, int pcr_idx)
-+{
-+	int idx;
-+
-+	if (pcr_idx < 0 || pcr_idx >= ARRAY_SIZE(ctx->pcr_map))
-+		return NULL;
-+
-+	idx = ctx->pcr_map[pcr_idx];
-+	if (idx == INVALID_MR_IDX)
-+		return NULL;
-+
-+	return &ctx->tm->mrs[idx];
-+}
-+
-+static int tsm_mr_init(struct ima_mr *mr)
-+{
-+	int rc;
-+	const struct tsm_measurements *tm;
-+
-+	if (!mr)
-+		return -EINVAL;
-+
-+	tm = tsm_default_tm();
-+	if (!tm) {
-+		pr_info("No TSM measurement registers found!\n");
-+		return -ENODEV;
-+	}
-+
-+	tsm_ctx.tm = tm;
-+
-+	if (IS_BUILTIN(CONFIG_ARM_CCA_GUEST))
-+		rc = create_tsm_arm_cca_pcr_map(&tsm_ctx);
-+	else
-+		rc = create_tsm_tgx_pcr_map(&tsm_ctx);
-+
-+	if (rc) {
-+		tsm_ctx.tm = NULL;
-+		return rc;
-+	}
-+
-+	mr->data = &tsm_ctx;
-+	mr->nr_banks = 1;
-+	mr->ops = &ima_mr_tsm_operations;
-+
-+	return 0;
-+}
-+
-+static int tsm_mr_get_bank_info(struct ima_mr *mr, int bank,
-+				mr_bank_info_t *info)
-+{
-+	struct tsm_context *ctx;
-+	const struct tsm_measurement_register *tsm_mr;
-+
-+	if (!mr || !mr->data || !info || (bank >= mr->nr_banks))
-+		return -EINVAL;
-+
-+	ctx = mr->data;
-+	tsm_mr = tsm_mr_get(ctx, TPM_PCR0);
-+	if (!tsm_mr)
-+		return -ENODEV;
-+
-+	info->crypto_id = tsm_mr->mr_hash;
-+	info->digest_size = tsm_mr->mr_size;
-+	info->alg_id = hash_to_alg(info->crypto_id);
-+
-+	if (info->alg_id == TPM_ALG_ERROR)
-+		return -ENODEV;
-+
-+	return 0;
-+}
-+
-+static int tsm_mr_calc_boot_aggregate(struct ima_mr *mr, int bank,
-+				      char *digest, struct crypto_shash *tfm)
-+{
-+	int rc;
-+	struct tsm_context *ctx;
-+	const struct tsm_measurement_register *tsm_mr;
-+	mr_digest_t d = { .digest = {0} };
-+	SHASH_DESC_ON_STACK(shash, tfm);
-+	int mr_idx, pcr_idx;
-+
-+	if (!mr || !mr->data || !tfm || (bank >= mr->nr_banks))
-+		return -EINVAL;
-+
-+	ctx = mr->data;
-+	tsm_mr = tsm_mr_get(ctx, TPM_PCR0);
-+	if (!tsm_mr)
-+		return -ENODEV;
-+
-+	d.alg_id = hash_to_alg(tsm_mr->mr_hash);
-+	if (d.alg_id == TPM_ALG_ERROR)
-+		return -ENODEV;
-+
-+	shash->tfm = tfm;
-+
-+	pr_devel("calculating the boot-aggregate based on TSM bank: %04x\n",
-+		 d.alg_id);
-+
-+	rc = crypto_shash_init(shash);
-+	if (rc)
-+		return rc;
-+
-+	/*
-+	 * In TSM, PCR 0 mapped into MR 0, PCR 1,7 into MR 1 and
-+	 * PCR 2-6 into MR 2. Therefore, accumulate with  MR 0-2.
-+	 */
-+	for (pcr_idx = TPM_PCR0; pcr_idx <= TPM_PCR2; pcr_idx++) {
-+		tsm_mr = tsm_mr_get(ctx, pcr_idx);
-+		if (!tsm_mr)
-+			return -ENODEV;
-+
-+		mr_idx = tsm_mr_idx(ctx->tm, tsm_mr);
-+		rc = tsm_mr_read(ctx->tm, mr_idx, d.digest, tsm_mr->mr_size);
-+		if (rc) {
-+			pr_err("Error Communicating to TSM(%d)\n", rc);
-+			return rc;
-+		}
-+
-+		/* now accumulate with current aggregate */
-+		rc = crypto_shash_update(shash, d.digest,
-+					 crypto_shash_digestsize(tfm));
-+		if (rc)
-+			return rc;
-+	}
-+
-+	/*
-+	 * Extend cumulative digest over MR 3 which corespondant to
-+	 * TPM registers 8-9, which contain measurement for
-+	 * the kernel command line (TPM_PCR8) and image (TPM_PCR9)
-+	 * in a typical PCR allocation. MR 3 is only included in
-+	 * non-SHA1 boot_aggregate digests to avoid ambiguity.
-+	 */
-+	if (d.alg_id != TPM_ALG_SHA1) {
-+		tsm_mr = tsm_mr_get(ctx, TPM_PCR8);
-+		if (!tsm_mr)
-+			return -ENODEV;
-+
-+		mr_idx = tsm_mr_idx(ctx->tm, tsm_mr);
-+		rc = tsm_mr_read(ctx->tm, mr_idx, d.digest, tsm_mr->mr_size);
-+		if (rc) {
-+			pr_err("Error Communicating to TSM(%d)\n", rc);
-+			return rc;
-+		}
-+
-+		rc = crypto_shash_update(shash, d.digest,
-+					crypto_shash_digestsize(tfm));
-+	}
-+
-+	if (!rc)
-+		rc = crypto_shash_final(shash, digest);
-+	return rc;
-+}
-+
-+static int tsm_mr_extend(struct ima_mr *mr, u32 pcr_idx,
-+			 mr_digest_t *digests)
-+{
-+	int rc, mr_idx;
-+	struct tsm_context *ctx;
-+	const struct tsm_measurement_register *tsm_mr;
-+
-+	if (!mr || !mr->data)
-+		return -EINVAL;
-+
-+	ctx = mr->data;
-+	tsm_mr = tsm_mr_get(ctx, pcr_idx);
-+	if (!tsm_mr)
-+		return -ENODEV;
-+
-+	mr_idx = tsm_mr_idx(ctx->tm, tsm_mr);
-+
-+	/* TSM has only one bank. */
-+	rc = tsm_mr_write(ctx->tm, mr_idx, digests[0].digest, tsm_mr->mr_size);
-+	if (rc)
-+		pr_err("Error Communicating to TSM, result: %d\n", rc);
-+
-+	return rc;
-+}
-+
-+struct ima_mr_operations ima_mr_tsm_operations = {
-+	.name                    = "TSM",
-+	.supported               = (IS_BUILTIN(CONFIG_ARM_CCA_GUEST) ||
-+				    IS_BUILTIN(CONFIG_TDX_GUEST_DRIVER)),
-+	.mr_init                 = tsm_mr_init,
-+	.mr_get_bank_info        = tsm_mr_get_bank_info,
-+	.mr_calc_boot_aggregate  = tsm_mr_calc_boot_aggregate,
-+	.mr_extend               = tsm_mr_extend,
-+};
-
--- 
-2.43.0
+Suzuki
 
