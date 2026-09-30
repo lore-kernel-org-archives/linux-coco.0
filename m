@@ -1,108 +1,127 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A58D367B97
-	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 03:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB4538DC4C
+	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 04:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790737649; cv=none; b=RqGLV7sohIaXh3e9j8tgn9SkrqewCjd6EQOPlb/lRmPIZxej7PswTfK5SPOIrW3eEKCOcAEu1rKGuR2aKZr21xLlbQpxV2mWD4Zn6HY6iEgm1fxMX3Z23/Zozlq/tQMNCbhcWGXFZStvPvjI3OizUmKWM+DEZjoueqEaRiMXWjI=
+	t=1790744337; cv=none; b=deRh8JJm5LbiPe9Ju5xulpULEt72eoiYgKbQIByMJ3QVIrxLwlhq0YHB1du3cz5TQaBVsxlhCHGyonG4kqaDvtPDjGcFwtFoI0avGKY0D7v1g1rVRVVGs5oGa2mqqNk+JkygfnsOqiuMeVHlxDYGrRTE7UzcNr8X5lziX+FOJAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790737649; c=relaxed/simple;
-	bh=QcytEi5EFi0lb9dm+YCtFESRKrrcgnTVA1IQXrSU70A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TtmyuRFyAXFzEsW9jfHDRpsx+srGMwg2t7+SjJcGZvYAiTspaXaBU1cb4GCqSTc4fL1mf24Kgbd55lgOsSbR726xPiyIkU4Qu8YYb3YW70gkwjlk3mcrLvOfhMPzXdAscmvp/ed2nfJ71WM0M3pKLmad48LM5lAYTGDAf/bYJd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=GvVBU7V/; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1790744337; c=relaxed/simple;
+	bh=hsZf5e5VlChxQ4CGYkUa32v3Wq/x9KRIHBAF+yDaivI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VvfOxTbJ2B9Mg8udydaDBlql5MI9zKtR4mtQy3qYGIlqRBQcKWb0vTRoQo8jQn4DDnv0V4X63H+hzeqeNddieBY0YGoL+64/GAQCk1q6o/ZNW6EHoM3+q4Wf/08YXBz/Vnsb6ECqYNesuCT8lXzqxQ1RJlLS84rCuy0VMXG7GKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DazCyFsq; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GvVBU7V/"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 57CE040E01B4;
-	Wed, 30 Sep 2026 03:07:19 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id pCl_hRXdEl46; Wed, 30 Sep 2026 03:07:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1790737629; bh=YdJ54MSslT498RjCiYbCQXJS5Z94oOoohsSstXfSlJ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GvVBU7V/AaeBsYehRgDxS3wziUBU0S8xX13bi9Zxq12DjHfLHlQYNeZJOsA2HY+h0
-	 Q7DhEAsg8ZG8w30j9IuMA1NtJ5ysO6iHe/TRxqgKk/DAedwKnIp9JCCvLYhhsTSyFD
-	 EIFDzlWvqST69JP1OlhIL0przaduQujweR1P7JdoE0rADzcCvWNLk/03autNp6nB6i
-	 vgZYViF1Y0OKD6oVWf8ZPCqYZaRRERrXaBf9p2WFfgrZAMTX52u3G6JHMhltt2uSMM
-	 EjJ9NyRaRiI68dmGO/JjA8uIMtBC1GmpTbo9u40TRYCZVtY4tyKxicTANMVZ4HuHyX
-	 mPvkrAqh0V98fxTbSI50DA/rf6ziz1ZMVU/vdpCXwCbyDpuTfCrZ+xmu0dAQvoRq8q
-	 szt/hEJLc6SXduI2CHyFXwqmTLu8J5zDojJA/TN+nDt5+tfrzqGH77RXDyT/054iCb
-	 PBqbu4LqilA9T8X/JZ3PE0y3MYbe+klx64HosKKqKc20WLeZnTDj/q8ocfvnjFY6jv
-	 qgnmeoEg9TrdYpk8hHP8azk2H89sBdjKihkT7MBHTwuntyvDvFwaCmGeoh6CdSEj+L
-	 SbCazCsExuJY1Azg6GFLzPF18b0lqo46iSR9Fjb62zBYhrtiasyBArYAyxiTPqCN1S
-	 mRE+lbEX/1QyL97D/qvcKB1E=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B4D0E40E01ED;
-	Wed, 30 Sep 2026 03:06:52 +0000 (UTC)
-Date: Tue, 29 Sep 2026 20:06:50 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Nathan Fontenot <nathan.fontenot@amd.com>
-Subject: Re: [PATCH v5 2/8] x86/bugs: Allow spectre_v2=ibrs on x86 vendors
- other than Intel
-Message-ID: <20260930030650.GDarx8yvplZzQtGDBz@fat_crate.local>
-References: <20260826223510.3669875-1-kim.phillips@amd.com>
- <20260826223510.3669875-3-kim.phillips@amd.com>
- <20260909210101.GBaqHJDWSUnpjqNcyB@fat_crate.local>
- <9b85be41-db5a-4bdb-95b4-beffb05a5ffc@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DazCyFsq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790744336; x=1822280336;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hsZf5e5VlChxQ4CGYkUa32v3Wq/x9KRIHBAF+yDaivI=;
+  b=DazCyFsqrX8t6Ysfj7MmL+8PpTCJcKXby79MkR+ULaLt6jTok45TILUy
+   b1bnEy8sVchrUh+kuXO7tw6sUe97XzcD+2aJGSKdRN72ZrmD9tzNqadS1
+   DQasyk+isCqUYjeyTLkOiOqN/o1VNwFusNAqsm6T/d3nejueOWN0SiqOo
+   Osau9sqlr6WXpeeL4NRMnCP39iW5DjCNW1WWtZwOMQnCDzbAC9z8HYmP0
+   9Pl85NPGTYMf7WxpRI7aM/dDxcDu+6s9WxrN3NAAYCOOLJZB7yKlvXksR
+   zkD+J8GVU6u/EuHBYS2CsuEyZ5Lei3OR7O0GRuk33QAlH7tJ7WO19XVsU
+   A==;
+X-CSE-ConnectionGUID: sEljc0VSQQm8Ai+e5LwcZg==
+X-CSE-MsgGUID: M2dPsKyUQpGw3N2tKGGpyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91571940"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="91571940"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 21:58:55 -0700
+X-CSE-ConnectionGUID: lD/5/ZTQTdCv4l+AeE3xFA==
+X-CSE-MsgGUID: PLGWriYCTImlgNcZbwGS+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="274186275"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 21:58:35 -0700
+Message-ID: <e5ef8765-5f9b-4784-9272-bc438d148433@linux.intel.com>
+Date: Wed, 30 Sep 2026 12:58:32 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9b85be41-db5a-4bdb-95b4-beffb05a5ffc@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Synthesize SHUTDOWN instead of returning
+ -EIO on unhandled EPT violation
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ James Houghton <jthoughton@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>,
+ Vishal Annapurve <vannapurve@google.com>,
+ Sashiko Bot <sashiko-bot@kernel.org>
+References: <20260930001127.3170009-1-seanjc@google.com>
+ <20260930001127.3170009-3-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260930001127.3170009-3-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 18, 2026 at 06:01:55PM -0500, Kim Phillips wrote:
-> SPEC_CTRL.IBRS is architectural and behaves on AMD just like it does on
-> Intel, but the kernel offers spectre_v2=ibrs on Intel only: the option is
-> rejected at parse time on other vendors, and MITIGATION_IBRS_ENTRY cannot
-> even be built into an AMD-only kernel.
+On 9/30/2026 8:11 AM, Sean Christopherson wrote:
+> Exit to userspace with KVM_EXIT_SHUTDOWN instead of returning -EIO from
+> KVM_RUN if KVM encounters an EPT Violation due to a guest access to a
+> pending page.  Returning -EIO implies KVM is buggy, and most VMMs will
+> respond by completely terminating the VM, versus rebooting the VM in
+> response to KVM_EXIT_SHUTDOWN.  I.e. give the VMM the option of trying to
+> keep the VM (from the end user's perspective) alive.
 > 
-> AMD's SNP BTB Isolation needs the kernel to toggle legacy IBRS in order to
-> optimize the VM exit-to-re-entry path, and right now there is no way to ask
-> for kernel IBRS on an AMD machine at all.
+> Ideally, KVM would probably exit with KVM_EXIT_MEMORY_FAULT, but KVM would
+> need to extend run->memory_fault so that userspace knows the fault can't be
+> handled.  This scenario specifically occurs when the guest has deliberately
+> disabled #VEs on unaccepted memory for security purposes, i.e. the guest
+> literally disabled the mechanism that tells it it screwed up.  But, because
+> this is fatal, and the whole point is to NOT try to fixup the fault,
+> jumping through hoops to return MEMORY_FAULT instead of SHUTDOWN doesn't
+> make a whole lot of sense.
+> 
+> Don't bother bouncing through KVM_REQ_TRIPLE_FAULT as
+> tdx_handle_ept_violation() is a top-level exit handler, i.e. there is no
+> need to worry about failing to actually exit to userspace.
+> 
+> Fixes: e6a85781f783 ("KVM: TDX: Detect unexpected SEPT violations due to pending SPTEs")
+> Cc: stable@vger.kernel.org
+> Cc: James Houghton <jthoughton@google.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Cc: Yan Zhao <yan.y.zhao@intel.com>
+> Cc: Binbin Wu <binbin.wu@linux.intel.com>
+> Cc: Ackerley Tng <ackerleytng@google.com>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Same comments as to the other one: We need:
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-- a proper use case which is *actually* useful to users
+> ---
+>  arch/x86/kvm/vmx/tdx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 29d4751f37fb..e3723f1222fc 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -1939,8 +1939,8 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+>  		if (tdx_is_sept_violation_unexpected_pending(vcpu)) {
+>  			pr_warn("Guest access before accepting 0x%llx on vCPU %d\n",
+>  				gpa, vcpu->vcpu_id);
+> -			kvm_vm_dead(vcpu->kvm);
+> -			return -EIO;
+> +			kvm_prepare_shutdown_exit(vcpu);
+> +			return 0;
+>  		}
+>  		/*
+>  		 * Always treat SEPT violations as write faults.  Ignore the
 
-- have it properly documented in Documentation/admin-guide/hw-vuln/ along with
-  the potential impact so that people can make an *informed* decision whether
-  they really want it
-
-Without any justification for the added complexity to what already is
-a maintenance nightmare, there's no point.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
