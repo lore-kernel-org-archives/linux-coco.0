@@ -1,143 +1,130 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47662340A57
-	for <linux-coco@lists.linux.dev>; Wed, 30 Sep 2026 05:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2996D3A451B;
+	Wed, 30 Sep 2026 05:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790744680; cv=none; b=EhKuHJ5zWN3HjOEfa3/X+s+jckYD7pPSmK2lThPZ6RMuwGpau/eI/WonhpYzI8Rf/IqJlcihH40fepkTqAsB2LFJy/OERxKXqrw7usTcnFjwCBceUZ7FIsdFUejVakrk22x+lQO5o6uwmKS9PGXG0ghcZnhwPEL2fU7rjqzju7E=
+	t=1790745229; cv=none; b=LzZZyc8pT+VypYnoxu2tDkA5vIBH4eipqVRCdTodW5DbOTVbXPYfUG9dKiZn4cVfHlbHPuE67sP/mJ6Nshmy9Pe8t3gn1QL860UPBMNdTPuXAuVsMMEvvCE+IXuWznDsSJJUTNwB/ZSqQFgpMqH8e1BE/dhMmiNg/jSd9Umycjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790744680; c=relaxed/simple;
-	bh=SIvOi4CmqCt39oc7l4v4V8MtZVsnvl0Lf3KpaY2dXZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hqxyAaihgIztz7B2AKoqpOsmsrXeiTAWY5qN5zFpuN/F7QVXmUVjR3XAcWLOjHdpReWv38qN4xKJwv4uCaOHmdkGep0YCwGcfTfGQimERa09+u+SpoXjXEze6LW35KqSEKEurT+Y4k4fNY0/MiMJLWlJBEHN37ikE4Vs4kjIRYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=E9xxlNrW; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1790745229; c=relaxed/simple;
+	bh=9InepKRhqdxTtpIlf0m7y/RELCBjCLrHVYnkTluu1eg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Z3B7pyY/QNGNw2Kazy1jf1Ue/h/UZjdXdvr6ZFZVf7on1Kbr7+OY09PDyEOrQZdE09PovPDnecOL2+mHQh55hi0376A9T+DDBVscW0a+mnAd8mRj0UlUWj0SlNvly4l3vB5+eqf8woPPGzXuZbPxvoOisdSaVdb/GvCAZ6LUOHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e+fxr7wt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="E9xxlNrW"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E83D940E01F9;
-	Wed, 30 Sep 2026 05:04:35 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3PS63uR3uPnK; Wed, 30 Sep 2026 05:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1790744665; bh=sngfBGXrDmp27Rz20KJdhQCRui381Q9eIqXo0Htz5/Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E9xxlNrW+WVuO+r64N2E/di74SdtE/dexl+DtnUE1F3LOM91B80oigMZVY17IV3q7
-	 H7d6JcUiS7QDkqxIH/VhNjazeYcaoS2TkmJp85T17I7PQ8E/v7PrwbMIQCPSfKazWC
-	 7BpJKyymHDhG3atV2id/HkFxH34UGncNln89BSCZj/RS1aKb+rfqxJ6IzbJ5fU70OH
-	 2+7S/U6QI7nCx8jw3QjHzN0cGBNSAIoUd0W2opqE+wAieE5rU21ewIv7q2Idl0x3Ry
-	 0q4xNtf0k+CSeYoVMEOTm8pd/lWSwDjTvSQ0TS4ak4Ccj5BvucM0JSIYTinwzSxOD/
-	 n91xk3k27auMrphXalnsfhqKwKnLg9HCSR0Ybc19jPi06k2uHszDFXdLGgFadSlGfv
-	 0SvoTpiEnT6Ry/jmaNbv2jo7BF5yJLOmwyfrQU6DBG8WfEljuhKHZovhyNBc4RuTKX
-	 6sqoB1SbHeTFaylgJuv60ToaZS6Nk6gGSkNP0W8+KkJ7i8RV0pkKbNOvDR3n6rrhsI
-	 ADS5+0mK45TUYtqdFL8Qz0dj+hv9GOawDHI0yBhAzLT2jt78XNo0lpvvPsHDmm1tWb
-	 lJJcfoeSFkczsA1yJSHvEGtwnv+NqdPTPQO7wwVE1XKmqlIKNRiA/uWsAfhmmwcg0H
-	 1/Vb2wzgDmtiipZPxUauBXK4=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 07CD040E01ED;
-	Wed, 30 Sep 2026 05:04:08 +0000 (UTC)
-Date: Tue, 29 Sep 2026 22:04:06 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: shrutiss@google.com
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Kishon Vijay Abraham I <kvijayab@amd.com>,
-	Tianyu Lan <tiala@microsoft.com>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, jxgao@google.com,
-	Melody Wang <huibo.wang@amd.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+fxr7wt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8C91F000FF;
+	Wed, 30 Sep 2026 05:13:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790745227;
+	bh=AslUM2lUo6zD38QDpyEW5gH0KsNLmoeA0u6LegwyTtk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=e+fxr7wtHemalreywtqv0bwoTJ8T8AQEkpf+pTQI2hhaQtR2TAZXiap1mtvOj68PK
+	 xEalDijuWDnqzMv17GsDmPpX10n2Cbwfsb1tQifZQlm8X2CAxpNWD138U3ANoBBsCt
+	 OOLvvjkQBJhbHGVPLw1FmYnbKUbcJZb9PmwuXD8BT8XyUMFV6XnGzGCfeSU1rVPm4G
+	 kXlvoSrWaM0iqIDa/KEsDdQUGkKfJpA374BZQ+E67FWxcTungLDg+bHCQNa1yu8XBs
+	 rMKinESOLo4yLMeUT8TudRZgkb/AskpKg54BsB4JW4uEPpW/Y659BXZbE7XWdO9udF
+	 YIJNiyy58uFrQ==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, ankita@nvidia.com,
+	Arnd Bergmann <arnd@arndb.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Cedric Xing <cedric.xing@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Kai Huang <kai.huang@intel.com>, Kees Cook <kees@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	Thomas =?utf-8?Q?W?= =?utf-8?Q?ei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Lukas Wunner <lukas@wunner.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, "Fontenot,
+	Nathan" <Nathan.Fontenot@amd.com>,
+	Fang Peter <peter.fang@intel.com>,
+	Petr Pavlu <petr.pavlu@suse.com>, rick.p.edgecombe@intel.com,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH] x86/apic/savic: Forward APIC_SPIV writes to the
- hypervisor
-Message-ID: <20260930050406.GGaryYRlonuAoQ6G3o@fat_crate.local>
-References: <20260929055255.1380202-1-shrutiss@google.com>
+	Will Deacon <will@kernel.org>, yilun.xu@intel.com,
+	Kevin Tian <kevin.tian@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH] coco/tsm: Update maintainership
+In-Reply-To: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
+References: <0-v1-52697321555d+14e66-tsm_maintainer_jgg@nvidia.com>
+Date: Wed, 30 Sep 2026 10:43:33 +0530
+Message-ID: <yq5aik3nuxs2.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260929055255.1380202-1-shrutiss@google.com>
+Content-Type: text/plain
 
-+ some more AMD people and drop stable@
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-On Tue, Sep 29, 2026 at 05:52:55AM +0000, shrutiss@google.com wrote:
-> From: Shruti <shrutiss@google.com>
+> With Dan's passing Aneesh and Jason have volunteered to take this on, with
+> the support of their employers.
+>
 
-You should use your legal name when you sign off on patches.
+Acked-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-Leaving in the rest for the newly CCed.
-
-> For Secure AVIC (SAVIC) guests, the hypervisor (KVM) emulates the LAPIC
-> timer and LVT registers, while the guest's APIC backing page is kept in
-> encrypted guest-private memory that the hypervisor cannot read.
-> 
-> Currently, savic_write() updates APIC_SPIV (Spurious Interrupt Vector
-> Register) only in the guest's private APIC backing page without
-> notifying the hypervisor. Because the hypervisor never sees the guest
-> set the APIC Software Enable bit (APIC_SPIV_APIC_ENABLED) in APIC_SPIV,
-> it continues to treat the vCPU's Local APIC as software-disabled.
-> 
-> When the hypervisor sees a vCPU's APIC as software-disabled, it forcibly
-> masks all LVT writes (including APIC_LVTT for the local timer) and drops
-> timer and fixed interrupts for that vCPU. On SMP guests, where secondary
-> CPUs (APs) start with their emulated APIC reset to software-disabled,
-> this prevents APs from receiving local timer interrupts and leaves them
-> hung in idle (HLT) during boot.
-> 
-> Forward APIC_SPIV writes to the hypervisor via savic_ghcb_msr_write() in
-> addition to updating the guest's APIC backing page so the hypervisor's
-> APIC state stays in sync with the guest.
-> 
-> Fixes: c822f58a4fab ("x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shruti <shrutiss@google.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 > ---
->  arch/x86/kernel/apic/x2apic_savic.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2apic_savic.c
-> index dbc5678bc3b6..1ef4c5b6c494 100644
-> --- a/arch/x86/kernel/apic/x2apic_savic.c
-> +++ b/arch/x86/kernel/apic/x2apic_savic.c
-> @@ -214,7 +214,6 @@ static void savic_write(u32 reg, u32 data)
->  		break;
->  	case APIC_TASKPRI:
->  	case APIC_EOI:
-> -	case APIC_SPIV:
->  	case SAVIC_NMI_REQ:
->  	case APIC_ESR:
->  	case APIC_ECTRL:
-> @@ -223,6 +222,10 @@ static void savic_write(u32 reg, u32 data)
->  	case APIC_EILVTn(0) ... APIC_EILVTn(3):
->  		apic_set_reg(ap, reg, data);
->  		break;
-> +	case APIC_SPIV:
-> +		savic_ghcb_msr_write(reg, data);
-> +		apic_set_reg(ap, reg, data);
-> +		break;
->  	case APIC_ICR:
->  		savic_icr_write(data, 0);
->  		break;
+>  CREDITS     | 9 +++++++++
+>  MAINTAINERS | 3 ++-
+>  2 files changed, 11 insertions(+), 1 deletion(-)
+>
+> I've now spoken to all the main companies contributing here and asked for
+> volunteers. This is what I could confirm at this point. I'll be at LPC also
+> for any further discussion. Regards
+>
+> diff --git a/CREDITS b/CREDITS
+> index a0bd941ca5dd26..7749f1e477ab43 100644
+> --- a/CREDITS
+> +++ b/CREDITS
+> @@ -4414,6 +4414,15 @@ W: ftp://ftp.uk.linux.org/pub/linux/people/willy/
+>  D: Linux/PARISC hacker.  Filesystem hacker.  Random other hacking.  Custom
+>  D: PPC port hacking.
+>  
+> +N: Dan Williams
+> +D: Technical Advisory Board member
+> +D: Asynchronous Transfers/Transforms (IOAT) API, Compute Express Link (CXL),
+> +D: Device Direct Access (DAX), Filesystem Direct Access (DAX),
+> +D: Intel I/OAT DMA driver, libnvdimm BTT: block translation table,
+> +D: libnvdimm PMEM: persistent memory driver,
+> +D: libnvdimm: non-volatile memory device subsystem,
+> +D: Trusted Execution Environment Security Manager (TSM)
+> +
+>  N: G\"unter Windau
+>  E: gunter@mbfys.kun.nl
+>  D: Some bug fixes in the polling printer driver (lp.c)
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 72294ddfa5b757..729ab465af96a8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -27788,7 +27788,8 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/trigger-source/*
+>  
+>  TRUSTED EXECUTION ENVIRONMENT SECURITY MANAGER (TSM)
+> -M:	Dan Williams <djbw@kernel.org>
+> +M:	Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+> +M:	Jason Gunthorpe <jgg@nvidia.com>
+>  L:	linux-coco@lists.linux.dev
+>  S:	Maintained
+>  F:	Documentation/ABI/testing/configfs-tsm-report
+>
+> base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
 > -- 
-> 2.55.0.1082.g2b9226bbc0-goog
-> 
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 2.43.0
