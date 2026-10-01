@@ -1,29 +1,47 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEBD3B95EB;
-	Thu,  1 Oct 2026 10:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6FC3FA5FE;
+	Thu,  1 Oct 2026 10:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790850079; cv=none; b=e9FaHkdPoqjMAF4xIlqOMQoOdtFtr8TiGSgbRe1IoEXlbL6vEl1x1z9sycfJHyFTYIw4FnxYIAXwdVwHbwv3vhHSYOhWBAMa0Zx0L18geaR0r11O8znAc2kYgjZEOV7YzC4DfvarHPxFLhkWJHQEIYOdPbym2BPMkqzWeLpvwzw=
+	t=1790851852; cv=none; b=guQogw4NRl+wD1cNbn9yVcZcPSjVTZ+TatHSOxVsdCarzRY8slw4oq4jExz7pxXSDI0zjjLUNUAjjUOZCrHTucjh2Dpn3K3b2z09FTNR7UGFdiEyQIQyGRyi7bzavtza1rGQl9zkVuVQUXqLqKiKEuLtljwvdFLvbH4P5xhr1Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790850079; c=relaxed/simple;
-	bh=KnqPQ0q5IImBFOlS3dgGtdsrjBhs422+OyNTLk/5Nqo=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HV4e1SfR4W0rGB9OY4LshtsFRbOKoLG6fp89p9fAFObv6lHWTEFPeIkKs+oItD9vSRBPODKsdZilPSWGCvV2Nmm+au8OIwuHHRnMxOR3LPbkxYcUkA51fxS/RRIFZhDSIcNLwjb+HkOiFkJaXdrTntUfKk5r4QmcPqSMY1++Ha0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p200300f6af404a00b07c104f01ad9be8.dip0.t-ipconnect.de [IPv6:2003:f6:af40:4a00:b07c:104f:1ad:9be8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id E6A7B1C778D;
-	Thu,  1 Oct 2026 12:21:09 +0200 (CEST)
-Date: Thu, 1 Oct 2026 12:21:08 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: Re: SVSM Development Call September 30th, 2026
-Message-ID: <ar4z90vVGOT0B_PA@8bytes.org>
-References: <arvj-0XliWJT0809@8bytes.org>
+	s=arc-20240116; t=1790851852; c=relaxed/simple;
+	bh=JVrOeTdxXGig0DbeyzW4m4jIDq1ilZ1bvTg/w5OMrsc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gpON6Wjgi+oHXZQo0J2m5wJ/EcLSQCzMPL2/n2H5NVcnVcVw0BTkW2PSRyaSPo4tGBvXHmfEcNAgch2woHlgI3CYkDrOm8PX4CwUd/ZDZJilDqyLoS4UOWXRS2yK04jkscnti0RYB1RAQmai4jGRtA3tJKvpsq+Ynlgllk6uMog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=C/qAfLAZ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="C/qAfLAZ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED7D6497;
+	Thu,  1 Oct 2026 03:50:46 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 05D7B3F85F;
+	Thu,  1 Oct 2026 03:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790851850; bh=JVrOeTdxXGig0DbeyzW4m4jIDq1ilZ1bvTg/w5OMrsc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C/qAfLAZHct4UPoOg6LrBocfrvBKURODMiArS+zGamTfcjlMA/mpEnGC6brYdwr6V
+	 mIrkEpqMXt3kcjIlQrYiQ2m1VUgKTws4JlauIHOfbWmzjCyKm8w/rL1MJ4nve/RR/f
+	 Q2U+pjuMYwFnVqZyx5V87W2K4gSUFNKRc6Y5JRJA=
+Date: Thu, 1 Oct 2026 11:50:44 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v21 2/9] firmware: arm_rmm: Check for RMI support at init
+Message-ID: <ar47BLk-l4-4VyVl@arm.com>
+References: <20261001084555.1456543-1-suzuki.poulose@arm.com>
+ <20261001084555.1456543-3-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -32,10 +50,42 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arvj-0XliWJT0809@8bytes.org>
+In-Reply-To: <20261001084555.1456543-3-suzuki.poulose@arm.com>
 
-The minutes for the past two meetings are now available for review:
+On Thu, Oct 01, 2026 at 09:45:48AM +0100, Suzuki K Poulose wrote:
+> +#define RMM_BLOCKED_RETRY_COUNT		2
+> +/*
+> + * rmi_smccc_invoke: Invoke the RMI call and return the results, retrying the
+> + * command when status is RMI_BUSY. If we encounter RMI_BLOCKED, we retry
+> + * it one more time before we give up. The caller is supposed to handle the
+> + * result and reissue if required.
+> + *
+> + * We don't expect to see RMI_BLOCKED on a practical system, except when
+> + * there are parallel requests that results in long standing operation,
+> + * with one blocking the other.
+> + *
+> + * @regs: Input parameters filled in. Updated with the ouptput results
+> + * after the call.
+> + */
+> +static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
+> +{
+> +	struct arm_smccc_1_2_regs args = *regs;
+> +	long status;
+> +	int i = 0;
+> +
+> +	while (i < RMM_BLOCKED_RETRY_COUNT) {
+> +		arm_smccc_1_2_invoke(&args, regs);
+> +
+> +		status = RMI_RESULT_STATUS(regs->a0);
+> +		if (status != RMI_BUSY && status != RMI_BLOCKED)
+> +			break;
+> +		if (status == RMI_BLOCKED)
+> +			i++;
+> +		cpu_relax();
+> +	}
+> +}
 
-	https://github.com/coconut-svsm/governance/pull/125
+With changes around RMI_BUSY to return early in patch 8, I think this is
+fine for a brief lock-style retry.
 
--Joerg
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
