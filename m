@@ -1,77 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6313938DC62;
-	Thu,  1 Oct 2026 12:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39BF47F3BE
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 12:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790856860; cv=none; b=bCtWbi9Nut1IBRPp6PoeUxlMtkhkolvxWHV1p2g1e5hI2lW/qSP7RW9JncoKbqzXVgL5dbgu1O7xVJ89gmrNpsqCpI01uXLuNQt7unT1yqSLP4eU5235qJRQhDT67bY5phnQcBR8tS/Z17IH7ZrHi2ENxiixMogDlItZ0Q0hllY=
+	t=1790858447; cv=none; b=OYNFw9gSsJqnw24rji+bbVrhaR9cFBhVGTwPxpiQFeG8cOoxNX5d9ZNG2j961WJPYJ5n+kgGKbW7+jY1QztldZnJ/Vxe3dDwl2UjoNmFFTXCrPzxvYUP2xXqGT5Q4/7AcjKza1LotncB87GycymE3aMziSyEmXOZgMjMCwbiTGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790856860; c=relaxed/simple;
-	bh=eKttG8SaITSxoK/QoG0cajgTN6vm4423JvmMnQkI0KM=;
+	s=arc-20240116; t=1790858447; c=relaxed/simple;
+	bh=i/cKfZ50vNgGTATLuK2eCJ789uoCgVbuV5TIGIHKDD8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jGxU0xHJyjwy2dZJyJr79pvJB2eBl/1DziWbDYrIQM7U/0mgZg4r++4ZmPf5a7GbLGwnA0/S5CSrChqD8vzlfhikEY2ofUkzyhbezKLRux66TTZwkSzfn2PtXmNqfO3yFVnB+kJ1JhlaJZWUYDXzXU1j9BzQDAWbY9y3X8YhAoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2DMBfsC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=bgIGd5NDxGYwPuhKuENXg8YUyQYKDLE1BB3C9Lo64w/SaUmfZNf+CnDw3yDOb+HTAFTsv20JJrNpLRa9xWNf4rRmRJRrUR2hc75z/WRchBFva/If+9DJobFfQi0OXaR6rcrwL8eOAkBhDf35Hze7XXU4yMK7+dkx9nfGcv7VmoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dXQAZNih; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2DMBfsC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E5F1F000FF;
-	Thu,  1 Oct 2026 12:14:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790856859;
-	bh=tsTu+ivO6nYzU4UB6TTwTcgRRAX1fh6kgYdba3siVbI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i2DMBfsClrkhM4UfArR22ifU5uOHAU81OQFXxKW70FVgG91+wu3ySNvJ3gxDYuNw6
-	 TBakz/FX8PFjopzg5K5FOXRjePd64uUhMrtaWyF13pg8JGdA6VNN5Z6WUH240lKsdX
-	 J4jZQvb18OFc3rzBr6gTYWFLbRigHUsqM4aCAeIl5iVQsj03sqqKQEkB0NFDbntagf
-	 v8C8mb/jFX7RPNuCfVEFOuiiVXfPksTAzFWeo8vAoODm47yD7nMhjTIv2+aXjK4Gkx
-	 nVhnVZzYXSv9uLKzoBkmjAjTghNoUef2IUf0NEzUgKaG4foCmFcbT55R4f2P9VnIBx
-	 MqqNFIDttyejw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 56776198003A;
-	Thu,  1 Oct 2026 08:14:13 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 01 Oct 2026 08:14:16 -0400
-X-ME-Sender: <xms:lE6-albcSYUMh1UwShli0-nZ02yJ8v_z08SDST-EvSd6LIlWA2bTAA>
-    <xme:lE6-avtYiSQtACDjxI4oKvESDn0zR1gHVzbWSzttq7QnBrLj7ZhmvzYT8NY99owzQ
-    g5V8wI_HTF3WoV4bZ3ivquqKRFNjiJULytXB-ig8XF3ohblfmYDvbVC>
-X-ME-Received: <xmr:lE6-ajxTYpy_U7fdumzfaZe58yaheXTcpgWZRMJdDwFIOKb0viORfDCiJTs>
-X-ME-Proxy-Cause: dmFkZTGscorWyNN2o5LoOyItHMer0FeaqXCPDWR9S3cL5Rwiug+O4GIdVilaSv6JhPGdG5
-    L/Wy49rTf1gkxMjNx/S7wpW9dLiYyBW7/49BDiOyJci22P2iMTmh1TIDWdAPGoTJOQdxZn
-    Uav/JbHdjXXPh+FENIckI9RqhLeExhEl6VwpdYfL5HQ2/LFYbnhmLlMPtg5vJdOBnQO2y1
-    14s80keGJvgpI2GwGqJk0Ts5bZoUE3RPCBx06BZb2T4UCCU1tlUdtL3DY2jGeg9KuHDZ6z
-    JoIGXCmbpiWX7BEfp28NKmdKnCPCi1XcSD6nuDLpNntEVV7PzliheVkmJ1q5gg2cqekHee
-    Sw1qMXFp93587VCU1BcQkup1tPXqhXP9q7imnKRmOADFEAx7e91e4wC9fgthFSCx04zw9c
-    Xor1c/V5L4oTan3+NBLTKIZrdlwU+wFVMn52T9ce+BL2oK0e/7ElhJmjgn8Pe3s2yCGa/H
-    hRTHwKYQ758Ps/hzWeeUGvYoNLjSNPFXH0Cwq+Z4LDeiArDyMBrc8lyW/kNfnCrxeAuT36
-    P8vcHNlGAvZZuKbYM7r79yZz8GSdG2a3OxlORQNIAPwfxNzQDB8VgQtMDEaxOCRReBWqkv
-    OAVtji2tHLKjvxovFAfgkrsXB9i6oIyLM0nZhOIiaXXS9nyXvsdTlp5m5Cww
-X-ME-Proxy: <xmx:lE6-am0CLb4v3S1hwidglAeGPV5GhfFVnBCdmujhHzaZ1oIpQkX_tQ>
-    <xmx:lE6-aklAo2BvMUoat_-PI5FijphxVMVRS06AehdBDAfcbL4i97QrmA>
-    <xmx:lE6-al44ZLJoltFNc3h-6fgUSlMfQu7sAxiMKoeMMSb-NygZMOM78w>
-    <xmx:lE6-agx6zfKilukC_qEmxfsawQ-FdvZjHP5A3Mk0uIs57szINDdQEA>
-    <xmx:lE6-algzCZQaa0YSa07kkQNnOOMlE0mliUbknQcezRzJTxDrT5aNkY7l>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 08:14:12 -0400 (EDT)
-Date: Thu, 1 Oct 2026 13:14:11 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>, 
-	"Xu, Yilun" <yilun.xu@intel.com>, "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, 
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, 
-	"Maloor, Kishen" <kishen.maloor@intel.com>, "Hunter, Adrian" <adrian.hunter@intel.com>, 
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, "Mehta, Sohil" <sohil.mehta@intel.com>, 
-	"Fang, Peter" <peter.fang@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
-Subject: Re: [PATCH v2 4/5] x86/virt/tdx: Add extra memory to TDX module for
- the extensions
-Message-ID: <ar5M-jQA-rejFjdw@thinkstation>
-References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-5-yilun.xu@linux.intel.com>
- <c373197ce8a8a7238696ce94bcd3dd7ba8be092e.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dXQAZNih"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790858444; x=1822394444;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=i/cKfZ50vNgGTATLuK2eCJ789uoCgVbuV5TIGIHKDD8=;
+  b=dXQAZNihq4HsrKxH/IJFH1j5Y9e21rCf47L6oLf4Ec7erM8GIbMUmZvE
+   9Ih/2nYGOz3R+l3yg2GLeNLRpYIgpCyagADCN6mo5QZl/FHEx8dvE/iIj
+   ArMmW7W7/MlDeDtMIpaiR7qMDl/ZwFaCGOqtFBwrsuCRmlAtyzxwpZgKY
+   Ju9sqJvUacLcVIZq1mHB2uI6PW7zTkSAxmZL8PyciYKnKGhWZreg/UwOh
+   8mvkP3xNMSAg4kNZjM4N/YVK+9OYNl18c/mgo7ZJo00gvbXI1M9mFLG5I
+   GLA/GpB32GyO3wwv0/r1vvzcsyVtXBkS7p4IcU1bGDFP2evMskxEO6d7N
+   Q==;
+X-CSE-ConnectionGUID: DkTskb4tR8ivZccPfEWNCg==
+X-CSE-MsgGUID: Ls5BkKQbQtiGf1Y76MIXsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="90668586"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; 
+   d="scan'208";a="90668586"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 05:40:44 -0700
+X-CSE-ConnectionGUID: lCHhsoJiRbiAAHLbFPeYGg==
+X-CSE-MsgGUID: glVacqwTQkmjZLy9qoP1og==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; 
+   d="scan'208";a="49356"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa011.fm.intel.com with ESMTP; 01 Oct 2026 05:40:39 -0700
+Date: Thu, 1 Oct 2026 20:38:26 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Peter Fang <peter.fang@intel.com>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
+	aik@amd.com, aneesh.kumar@kernel.org, seanjc@google.com,
+	pbonzini@redhat.com, chao.gao@intel.com, vishal.l.verma@intel.com,
+	xiaoyao.li@intel.com, kevin.tian@intel.com, chao.p.peng@intel.com
+Subject: Re: [RFC PATCH 01/15] x86/tdx: Export tdg_vm_rd() for tdx-guest
+ module
+Message-ID: <ar5UQg/Q4zePFSzb@yilunxu-OptiPlex-7050>
+References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
+ <20260924041032.1096569-2-zhenzhong.duan@intel.com>
+ <ar2JlI0ApPCb_C2G@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -80,37 +68,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c373197ce8a8a7238696ce94bcd3dd7ba8be092e.camel@intel.com>
+In-Reply-To: <ar2JlI0ApPCb_C2G@intel.com>
 
-On Tue, Sep 15, 2026 at 09:19:14PM +0000, Edgecombe, Rick P wrote:
-> Hey Kiryl,
-> 
-> On Tue, 2026-09-15 at 18:26 +0800, Xu Yilun wrote:
-> > An alternative solution is to use a loop that gives memory on a memory
-> > error code - TDX_EXT_MEMORY_POOL_REQUIRED, add one page per iteration
-> > until TDH.EXT.INIT succeeds. Something like:
+On Wed, Sep 30, 2026 at 03:13:40PM -0700, Peter Fang wrote:
+> On Thu, Sep 24, 2026 at 12:10:18PM +0800, Zhenzhong Duan wrote:
+> > Export tdg_vm_rd() to allow the tdx-guest driver module to directly
+> > read TD-scoped metadata fields from the Trust Domain Control Structure
+> > (TDCS) via TDG.VM.RD TDCALL.
 > > 
-> > 	do {
-> > 		ret = tdh_sys_init();
-> > 		if (ret == TDX_EXT_MEMORY_POOL_REQUIRED)
-> > 			tdh_ext_mem_add(); //single page
-> > 	} while (ret == TDX_EXT_MEMORY_POOL_REQUIRED);
+> > Since tdg_vm_rd() is read-only and cannot cause harm, exporting it
+> > directly is simpler and more flexible. This allows the tdx-guest driver
+> > to read any TDCS field it needs.
 > > 
-> > This approach is slightly simpler as we don't have to query the module
-> > for the total memory, no memory pre-allocation or segmentation math.
-> > But allocating a single 4K page per iteration may cause permanent memory
-> > fragmentation.
+> > In a following patch, the tdx-guest driver will use tdg_vm_rd() to read
+> > TDCS_CONFIG_FLAGS field directly.
 > 
-> So this is definitely a bad thing to do? Even if this is running at boot before
-> much fragmentation could have happened? Don't early boot allocations tend to be
-> more physically contiguous?
+> Can this be a separate helper? I'm adding another helper for
+> TDCS_QUOTE_MAX_SIZE [1]. I think maybe their patterns should stay consistent.
+> 
+> Yilun, any thoughts on this?
 
-Not necessarily. See CONFIG_SHUFFLE_PAGE_ALLOCATOR, which default Y.
+There was a helper in the series before this public RFC, but was then
+dropped, something like:
 
-But even with shuffling, page allocator shouldn't claim new non-movable
-page block just to keep shuffling satisfied.
+int tdx_get_config_flags(u64 *flags)
+{
+	u64 sret;
 
-It is better to check what happens in practice.
+	sret = tdg_vm_rd(TDCS_CONFIG_FLAGS, flags);
+	if (sret)
+		return -EIO;
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+	return 0;
+}
+EXPORT_SYMBOL_FOR_MODULES(tdx_get_config_flags, "tdx-guest");
+
+The concern is how risky is the tdg_vm_rd() export, and how it impacts
+the existing tdg_vm_rd() usage, and the tdh_mng_rd() export which reads
+the same data set on host.
+
+My initial concern about the cons of tdg_vm_rd() export are, the
+SEAMCALL reads any TDCS fields, some of them are writable by tdg_vm_wr()
+and there is no synchronization between them, so seems not a good kAPI.
+Reducing the scope to read-only fields (e.g. TDCS_CONFIG_FLAGS) may be a
+good start.
+
+Now there are 2 cases in flight: tdx_get_max_quote_size() helper in DICE
+and tdg_vm_rd() export here. Maybe we need more cases to see which is
+better but anyway I agree we'd better stay consistent now.
+
+> 
+> Thanks,
+> Peter
+> 
+> [1] https://lore.kernel.org/kvm/20260930103739.2851980-6-peter.fang@intel.com/
+> 
+> > 
+> > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
