@@ -1,180 +1,204 @@
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AC13B27CE
-	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 11:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790855159; cv=none; b=Oo4tSYDRP2tAL4subY/MhE+QKB4gxRDlARmcpieRq9+AgrXV5SqXxKjsq0jnhCVYEtPneZH3TGHIi0Mmkc5zOxiFZ69X+Hmjz77+X2Y8d+t8PFV+FADPw0zRYi3CjU7xZdw+flrH9BKSsrNpO6aPeKl3Ws48Q839O8GyaiGCvFE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790855159; c=relaxed/simple;
-	bh=uTx1vdvosgb09vSjV5EjRj0itf4VqtDmA8Eg91BV4gc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aNBpbstJwfi2tnq4zj67ANqQnXpQqRLaiWLcETIR9dQyeQPcAVpAzq6vFsyDMReC8ihzKma6cfy56FvThxO35s9DOBT2ixcZBz9wZm9t6S9ymwg8Q1jaWGreAa803dVh3sOdGZYQO2AsBqABStz7GX4RLGys5i3x3qy3qHaU/Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.224.235])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hwVKY0pHjzsvmC
-	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 19:38:25 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id F085E4055F
-	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 19:45:43 +0800 (CST)
-Received: from [10.204.63.22] (unknown [10.204.63.22])
-	by APP2 (Coremail) with UTF8SMTPA id GxC2BwCn1S3ZR75qIAVAAQ--.1291S2;
-	Thu, 01 Oct 2026 12:45:43 +0100 (CET)
-Message-ID: <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
-Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Eric
- Snowberg <eric.snowberg@oracle.com>, linux-integrity@vger.kernel.org, 
-	linux-security-module@vger.kernel.org
-Cc: Dan Williams <djbw@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
- <dmitry.kasatkin@gmail.com>, Paul Moore <paul@paul-moore.com>, James Morris
- <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Suzuki Poulose
- <suzuki.poulose@arm.com>, Steven Price <steven.price@arm.com>, Sami Mujawar
- <sami.mujawar@arm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Jiri
- Pirko <jiri@resnulli.us>, gongruiqi1@huawei.com
-Date: Thu, 01 Oct 2026 13:45:26 +0200
-In-Reply-To: <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
-References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
-	 <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526534A8FF7
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 12:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790856526; cv=fail; b=mtCGDg2XJp7UCY2JXQfZo3XECrYsw/m/hUqnDVd/6mWV+ZvOJx9jK7qNVlJbDLwQBk2fLy8uxEIfGXrmdOjxQJ3hVzNTsj3VDJLN4wczs5aNIltSMepl+UHYi3KTFzuE6XCr0a1JWX9BrJtUNiWOGmLsqMyBIvxyehjpujQ7IR4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790856526; c=relaxed/simple;
+	bh=lSTxvEDnSf+XU0Tw/S1DnDuDwq5mjehNWsTGiyu1J80=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Gprov0ywwTLTcL39PK8aknVeVaw6DctF72yVWZj1W+0FBwrxxGb5avFpITgb85TwPxfGiN7pzMQdbMfXZC2+GSdBVSKFY+MrPh7bvPqhpriZT/0zZB0Ht9+TziBpUfZ5v3O5StIZwL2gzvksSJMup5vcfm7o1V4O0HUnw7b90wY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G9e+D29i; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G9e+D29i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790856518; x=1822392518;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=lSTxvEDnSf+XU0Tw/S1DnDuDwq5mjehNWsTGiyu1J80=;
+  b=G9e+D29iD8s9P210vkWGRvNCQrA/WE6JMp256M1+KYYI0pBtCHXBg+3m
+   8z8fuy3ifDyr+anznsGsLDKk6q1FNOTYVkk+9IN6GJE2uwliIgYzGDOOI
+   sAewY3Za6Ncb6Z21H1xPZn80GWxmnOQVT2OppRnS5jPQLh6qyCIVy7z02
+   nAXKR929seVfc9ujcQREr01MVJGpaGrlFaEAPRwpxMnR/pBYjnn5QQykU
+   gHNA4ip/olXnzBF4ArtOE4wcY5Z+cEaRVKn4VLJni9+RxVJxgW1qSkU+d
+   ccisqtRMyjT96rgvQuMzD8Mhku2vAnFSG52OEInV+MFpPk9eH3g6yehuh
+   w==;
+X-CSE-ConnectionGUID: M2WOW8K3Q7yFLx4EitqrwA==
+X-CSE-MsgGUID: GMQW500JTHC1wGD39jaV2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="101771249"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; 
+   d="scan'208";a="101771249"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 05:08:34 -0700
+X-CSE-ConnectionGUID: yVkQO0/nS0ede9mMGHSo9w==
+X-CSE-MsgGUID: uVjWOf4MQmmW4D8kqztxDg==
+X-ExtLoop1: 1
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 05:08:33 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 1 Oct 2026 05:08:33 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Thu, 1 Oct 2026 05:08:33 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.24)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 1 Oct 2026 05:08:32 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uWs8VbyMc58y/azFjUEPzr8J1gp8GixHFl22+7fQvGbT/fE0A2irN909zMu67ukTsUSRi/e+Wl89gvikdfHSLIH1s/gQjX95Q8mdS5sBo1CTjIrMo0MpSq6ZetLONj8S4WyCAfEQgZnPc6StIG/4G8vdt2EVjtm1ROpyevt5e5G21OwBJ8rvjrnjaR/0/n4uJk69NdjJZpHthsNfoGIeTlVCJKkgbozcRj8MNCnea7nWpnEhUnN7iAnGXYgJUOJb8IOiDYbw+WfpomCO0bOX7IvSjDpoibClo/n52EPdSYc0TmJC0DY9ngFOpZ6yPPMKIVdj79nFXZfmZHplfGj4YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uJoiAO2zk1b4BTrDbiyIPLEnsEclQ4b0iRxtQDwcb0I=;
+ b=UH8zfFnlza0KfHJ1NbQatc/lUlXtzUcdi+z34QdcTHqjUadZYdvsn1gAsHyQPnJfTNy6qLZTzx/kqCnKpf0UIoHUKundPBRyjFS5HJj3bD3HvVHYA6h3gTqu2JRKGxhi6QlUzDjXefr0/p065JwXFUeSldyReioWLKEtA5aPAJJ/zVTGvGimYo6KiuDN0IMywCoXghneUox+ks5dhlehm/3lhJtYwtbSjt6ZPaD+TpAvvHs/NIS+td207uNw++FlaEodmI5FZO7Nw385T6NlEEiDmykqFgLk4vJxY8BuL8ZFIrKa/cAKhAZXrJlC4z66EqNIXCxIFln2lwBQskNKPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
+ by DS0PR11MB7531.namprd11.prod.outlook.com (2603:10b6:8:14a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Thu, 1 Oct
+ 2026 12:08:29 +0000
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d%2]) with mapi id 15.21.0451.026; Thu, 1 Oct 2026
+ 12:08:29 +0000
+Date: Thu, 1 Oct 2026 20:08:18 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kas@kernel.org" <kas@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>,
+	"mingo@redhat.com" <mingo@redhat.com>, "tony.lindgren@linux.intel.com"
+	<tony.lindgren@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>, "yilun.xu@linux.intel.com"
+	<yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v3 07/10] x86/virt/tdx: Convert the td_conf metadata
+ reader
+Message-ID: <ar5NMlJ3KYKuC7y2@intel.com>
+References: <20260930053901.22528-1-chao.gao@intel.com>
+ <20260930053901.22528-8-chao.gao@intel.com>
+ <763dcf982570e0ffcc69a6e1922fd2cc266539aa.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <763dcf982570e0ffcc69a6e1922fd2cc266539aa.camel@intel.com>
+X-ClientProxiedBy: SI1PR02CA0013.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::7) To IA0PR11MB8380.namprd11.prod.outlook.com
+ (2603:10b6:208:485::21)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwCn1S3ZR75qIAVAAQ--.1291S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxur4xuFWkCw1DAr48tw4Dtwb_yoWrGw17pa
-	yag3W3Cr1UJa43Cr1fZ3WUuF4Fg3yrtw1DW343J340kFs8ZFyjgr40kryFkF9xGryftr18
-	tr1aqrs8uw1qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
-	0PDUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQANBGq+Bbco3QAAsb
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|DS0PR11MB7531:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a13f112-095d-40c5-2eb9-08df1fb4b48b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|4143699003|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: KKh+N/G2bEOcdxvJVjmpr/P0CqfCWjWjg4VNSzJ20+/KacwerFCKA147GM69OIefVnXoTS6VWznORBUg2sR2IeAMqugY12YaPjK5MQZyg9nRkI8kHC/cWSMbyFL70seR/fKwtXnCv2RRLbm4TQLasdnmr3KQuL7iVCGjb8zVD76VIOneT/OX2sR00UpN2b/5OJK3Is05e/9XIvkEXZxI8FNuTUrOE/IE8ajqG805DmnjEhei+rBGotjzeS8KQ7g02m5MOdAPk13nrngZBDCEglA3Wr/dy5DyZTxunWVw5+jOckB88G2Wu5EQly42YaH6s5R3f2YnT4hB0e6Mvglc5XSmlYWrB8vGjaWoolg7Wvi4gQz1Bqlt0Q6B2WeZ0KegpV973fLk43KDmKerWCUF4rBDKyVoHOz3Q29dY0wAsiD6sknwgYBYLRjapIDYXJvthpSoq0erDVxVJ/aYIJsctC3EPsZK8hZ1Aay9ng9npaBA4ua9yvfjmdrRMRscPlVOeueXFuIcWLqcGoF1ByDpEZiJax8lYNtmhsdY1ufcT9j3AYh+4vm4+/kGi9gix7Vr4xIlUmZMpMMsj2wx1qiLiEEzNQIiQrC2qwNyntBb/Bx8FTTzKRSVxuwwjWWz6FXkxdvrRhM9WIIZE9d/0SEbyYGX1PHeSlNXpSipSJf0WS0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(4143699003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?vuO1ZUZqP56pgbrHvqll+4Mpr1FKDd4V60hrPB2/ggULyzmEEpd5r88uOI?=
+ =?iso-8859-1?Q?q2sxlRCdaf7AsyXwHddz3vjaq05jlsg6lR/gBNKfxreaN6MO0mVimGXo6W?=
+ =?iso-8859-1?Q?wnB6tLukhnb72CNYwo/hM4LjoR0Gnuylz4iRs1onuTQNkxDSBVNiG8X5E8?=
+ =?iso-8859-1?Q?DCaQdCXGOPopWt/qf3l9DnzgoCwejzrVKqmOgR/CEY3MwnGwI7XW4n57DE?=
+ =?iso-8859-1?Q?V6nKlQtvqqO1yhc1TUKxVKmI168hEUcwhiXoS3J2pnAoVSE040B2Vvo3mL?=
+ =?iso-8859-1?Q?vgQZp9b9+3RHAgfIW68oOSk0kJdBGL1iZ7NZ2y2qWw+rSkXEBQ2bJFHi8S?=
+ =?iso-8859-1?Q?MdW4ehHXad4FA7SOQnf7jc60MGUi4+odyfFU29b8yKnFFnqXKY4X7vlCY/?=
+ =?iso-8859-1?Q?OLYCkCVsqv0wML4fwMYG54v3QzYAoBu8y5q3sDcUMjF2F0LWZ1N2Ft1yxZ?=
+ =?iso-8859-1?Q?8xUMvmSil31TovT884WoDGwB7THSH5Uqw1XNmW94rtkJSEVU0PRwMbbuM8?=
+ =?iso-8859-1?Q?aRagZ9GpwIhVmEpKqdmjYa5xRCcDWh7iy+628xHmSFa5PyzBdcMDPXiZSl?=
+ =?iso-8859-1?Q?ukOU7NRDUrOEdZnKhprI8s4wyUV+qWkJX3JhL19xkh8IpDSooPNw7EurbZ?=
+ =?iso-8859-1?Q?6XlUOyn89EpcynxhB/FroBRpVfoBrL+CwlY1bzR53w2LzUzrykC+Wq7Ymb?=
+ =?iso-8859-1?Q?2zTPeqszjrqy/Gt1z2IQaDE83mdPcwIOA/j2GuZl62IDCHPo3C1Bi7l0oF?=
+ =?iso-8859-1?Q?c+1DD8P/s82z5mDVQdNeA4W22w02Cc4CPwM5nFRz2p4o3bMeOjLkaCuaeq?=
+ =?iso-8859-1?Q?7mBoNZmAoQfWZitOsaAc4pjAboWyNEOc0bRj/vTL4qe4HRgGG3aunJvzvd?=
+ =?iso-8859-1?Q?kOEoDbmMPcOiL3qQdUOgyITCuaVM0Tub/jWIDyQIeb0UHQvhRoCSnCLsCe?=
+ =?iso-8859-1?Q?YDhS1qaL1iEWqSWFt5QCzCLJaCdmtqVc2PIkON9cZL+bfFa2K3oOHom/4d?=
+ =?iso-8859-1?Q?KD3cVw/2cQY7Sxdn7E7M57F7uqL2B+/Ju+6GaFR4BLXL5Cl/3tjPPgOcn5?=
+ =?iso-8859-1?Q?XUanNbziRByin77AI0V5kJKCMY/WzPMInPBxLogkT9i3hvEO+gcc/THrAL?=
+ =?iso-8859-1?Q?g0RBiILN7UmejkvcWyCQZr5VqeHZe4vonIY7P30aXTn8WeyYaXEmvW5ldY?=
+ =?iso-8859-1?Q?N9W5LDWRLet3cgl4Mf12MSRexuJMAIfPMMmLZQEFqRdwHsXOi9Y4IP4hJ2?=
+ =?iso-8859-1?Q?FL4aF/HnQCakglPdJ0jVQH9HhjgVI4T/J2Gq+j27TqqCjEFBnC8mUuhpXx?=
+ =?iso-8859-1?Q?3tpvFt7C7sCroF7yYKOYvxsUvc1N3AhFzRSTS1NfHmGT/lNO+/w6q9Bh/M?=
+ =?iso-8859-1?Q?ZUneNigRgmrNL/5pqHFGMzmlEeVXg6olLc29abEPHBfcwa/i2/IwNwXVDZ?=
+ =?iso-8859-1?Q?PYxeiATSS8SMUJylsnKw9Otyc2Os0Qw4rgizzVWLD/hd8aMJA4KjhC5Ikm?=
+ =?iso-8859-1?Q?9ZAqRBysKDKb8AUVw2X7zpIoj5ifrbkXhpBqjCrPFX329yGCsnr+qL4sIJ?=
+ =?iso-8859-1?Q?ZwmMuVGm6ar2HAkSL6TIa+S3u6TNIo0savebcWq2g+j4+NYOGLOaW/PxT6?=
+ =?iso-8859-1?Q?mZjKS3A3KmKKdyA60/LAwHc1mfc2GiMosNTT2FdO5+g2NuBsWEfmZoL3+J?=
+ =?iso-8859-1?Q?iYtc7JT6HyBRL1feuDW5mhMA3/f4vVguKZxDQ0HfUS7D5+nZd90BTszSfj?=
+ =?iso-8859-1?Q?OstykKj4a9DQnkdI1A7AvpB41ByRw6ovu1vcaJzZw9h2hK4qE0bdKYOiEs?=
+ =?iso-8859-1?Q?4htiByS+qg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: TXAo9cnaFZ0EFM12H4TsVFiSvY3jG6EQurCdUSJXUOgPFhuje1qcmLKR4wb3Io/HvSfEySxYEJ9TqmRm8G70MQjPggrOSapszoc8Rbs25MtohnqDXdXRdWI1XNLK6b1ezscjKJR4KsU4GETCuO/92alJB1Fwnqzcil71SrTdMXcmrtMBz1AUmo/Mj77ZMAIPw+2Kkl25u92ZEacXRjL06ck2Xm0DU/mj6z1I7a+cuQzbMUzSu4NXMwFjHS5aqm8PK4q99cR4SERmSRqOZnSBiFq7JskLd1ygADpUDorKkTtRL6/eRIlmAmNhdSe00w0W9EHQFb7djx0bYivb+CeoNw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a13f112-095d-40c5-2eb9-08df1fb4b48b
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 12:08:29.4674
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: P7BsmNjGCnqrLzIvcIT6juwkUUWDYzyfpFxxaTYSD69P8vgQhxtgJthgb9/hVYcSfVlDqOZqJpz9Jhbx/QlqXQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7531
+X-OriginatorOrg: intel.com
 
-On Thu, 2026-10-01 at 13:27 +0200, Roberto Sassu wrote:
-> On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
-> > Confidential computing guests without a TPM can use TSM measurement
-> > registers to record IMA measurement digests instead of TPM PCRs.
+On Thu, Oct 01, 2026 at 07:54:43AM +0800, Edgecombe, Rick P wrote:
+>On Tue, 2026-09-29 at 22:38 -0700, Chao Gao wrote:
+>> +	/*
+>> +	 * TDX_FIELD_CPUID_CONFIG_LEAVES and TDX_FIELD_CPUID_CONFIG_VALUES
+>> +	 * give the field ID of each array's first element. The remaining
+>> +	 * elements follow consecutively, in the order they appear in the
+>> +	 * structure.
+>> +	 */
+>> +	for (i = 0; i < td_conf->num_cpuid_config; i++) {
+>> +		ret = read_sys_metadata_field(TDX_FIELD_CPUID_CONFIG_LEAVES + i,
+>> +					      &td_conf->cpuid_config_leaves[i]);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		/* Each config has two u64s of CPUID values. */
+>> +		for (j = 0; j < 2; j++) {
+>> +			ret = read_sys_metadata_field(
+>> +				TDX_FIELD_CPUID_CONFIG_VALUES + i * 2 + j,
+>> +				&td_conf->cpuid_config_values[i][j]);
+>> +			if (ret)
+>> +				return ret;
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>
+>The comments are not strictly required, but probably fit into turning this thing
+>into "hand coding". I think it's a nice addition. I wonder if we should make the
+>"i * 2 + j" a bit clearer though?
+>
 
-+ Gong Ruiqi, of course.
+How about:
 
-Roberto
-
-> Hi Yeoreum
->=20
-> a similar patch set has been sent to the linux-integrity mailing list:
->=20
-> https://lore.kernel.org/linux-integrity/20250630125928.765285-1-gongruiqi=
-1@huawei.com/
->=20
-> Could you please work with Gong Ruiqi to have a unified proposal?
->=20
-> Thanks
->=20
-> Roberto
->=20
-> > This series introduces in-kernel interfaces for accessing TSM
-> > measurement registers, abstracts IMA's measurement-register operations,
-> > and adds a TSM backend for Intel TDX and Arm CCA.
-> >=20
-> > The following mappings between TPM PCR indices and TSM measurement
-> > registers are defined for Intel TDX [0] and proposed for Arm CCA [1]:
-> >=20
-> >   TPM PCR index | Intel TDX register | Arm CCA register
-> >   --------------+--------------------+-----------------
-> >   0             | MRTD               | RIM
-> >   1, 7          | RTMR[0]            | REM[0]
-> >   2-6           | RTMR[1]            | REM[1]
-> >   8-15          | RTMR[2]            | REM[2]
-> >=20
-> > These mappings allow IMA to translate PCR indices into the correspondin=
-g
-> > TSM measurement registers.
-> >=20
-> > The TPM backend remains preferred when it is available at IMA
-> > initialization. Otherwise, IMA falls back to a supported TSM backend.
-> > Only one backend is selected; IMA measurements are not extended to both
-> > TPM PCRs and TSM measurement registers.
-> >=20
-> > The attestation proccess for guest with TSM measurement register will
-> > be done with Confidential Compute Event Log (CCEL) which is exported by
-> > /sys/firmware/acpi/tables/data/CCEL. Here is brief process in arm64:
-> >=20
-> >   Verifier                 Realm guest              RMM / Platform
-> >      |                         |                           |
-> >      |--- Challenge (nonce) -->|                           |
-> >      |                         |--- Request token -------->|
-> >      |                         |    with challenge         |
-> >      |                         |                           |
-> >      |                         |<-- CCA token T -----------|
-> >      |<-- CCA token T ---------|                           |
-> >      |<-- CCEL event log ------|                           |
-> >      |<-- IMA measurement log -|                           |
-> >      |                         |                           |
-> >  Verify token T:               |                           |
-> >   - signatures                 |                           |
-> >   - Platform/Realm             |                           |
-> >     token binding              |                           |
-> >   - challenge freshness        |                           |
-> >   - platform/RIM policy        |                           |
-> >   - verify measurement logs    |                           |
-> >      |                         |                           |
-> >      | ----ACCEPT / REJECT---->|                           |
-> >=20
-> > This patch based on arm-cca-mr series [3].
-> >=20
-> > Link: [0] https://uefi.org/specs/UEFI/2.11/38_Confidential_Computing.ht=
-ml#intel-trust-domain-extension
-> > Link: [1] https://github.com/tianocore/edk2/issues/11383
-> > Link: [2] https://github.com/tianocore/edk2/issues/11384
-> > Link: [3] https://lore.kernel.org/all/20260929-arm_cca_mr-v2-0-1d98bba1=
-87fd@arm.com/
-> >=20
-> > ---
-> > Yeoreum Yun (3):
-> >       virt: coco: introduce tsm_default_tm() and tsm_mr_read()/write()
-> >       security: IMA: introduce ima_mr structure
-> >       security: IMA: use TSM measurement registers
-> >=20
-> >  drivers/virt/coco/guest/tsm-mr.c          | 159 +++++++++++++---
-> >  include/linux/tsm-mr.h                    |  26 +++
-> >  security/integrity/ima/Makefile           |   3 +-
-> >  security/integrity/ima/ima.h              |   7 +-
-> >  security/integrity/ima/ima_api.c          |   4 +-
-> >  security/integrity/ima/ima_crypto.c       | 137 +++++---------
-> >  security/integrity/ima/ima_fs.c           |  16 +-
-> >  security/integrity/ima/ima_init.c         |   7 +-
-> >  security/integrity/ima/ima_mr.c           |  48 +++++
-> >  security/integrity/ima/ima_mr.h           |  76 ++++++++
-> >  security/integrity/ima/ima_mr_tpm.c       | 155 ++++++++++++++++
-> >  security/integrity/ima/ima_mr_tsm.c       | 290 ++++++++++++++++++++++=
-++++++++
-> >  security/integrity/ima/ima_queue.c        |  39 ++--
-> >  security/integrity/ima/ima_template.c     |   4 +-
-> >  security/integrity/ima/ima_template_lib.c |   2 +-
-> >  15 files changed, 819 insertions(+), 154 deletions(-)
-> > ---
-> > base-commit: b561246f45174b7472c24b75358ea95bae72b7b8
-> > change-id: 20260929-ima_tgx_integration_v2-1c54aeeaeaee
-> >=20
-> > Best regards,
-
+	/*
+	 * cpuid_config_leaves[i] holds a CPUID leaf and sub-leaf number,
+	 * and the two u64s of cpuid_config_values[i] mark which bits of
+	 * that leaf's EAX/EBX/ECX/EDX the host can set to 0 or 1 for a TD.
+	 *
+	 * TDX_FIELD_CPUID_CONFIG_LEAVES and TDX_FIELD_CPUID_CONFIG_VALUES
+	 * give the field ID of each array's first element, and the rest
+	 * follow in order.
+	 */
