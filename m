@@ -1,227 +1,149 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013038.outbound.protection.outlook.com [40.93.196.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f38.google.com (mail-oo2-f38.google.com [74.125.231.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9BA526AB3
-	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 15:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790867675; cv=fail; b=aS9nmJhhDR46OQ06W8kjDwUkmOdBIoyqS4azwXDFnngdBd0OZYKSmSD8Prd12dF4pBXnzhUljPjJSpyYbFskVg7sYNTYgrBdpGhbUtOQNVeGPDFt+Ug8bJJ5NsJk4XyfB5OKLzZa0iELP7OBa0ov62p3EiIjTn0xTwKfDGPVvsE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790867675; c=relaxed/simple;
-	bh=sfm9L5h+vsH4qUk+sEvNVMYtZgfguDycF8l/x6eZEtQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ig4g5yPGxfKyLiXx1lC95T5qSaj2oFVpd6506UvvLL35HWJIDBUhLEGx1JDuCtG+tDnMV2/ZZW5DQobvmoV/9zzkeMleea9ILslIcDB7C8fxdn+cIVrF3yYfryU325zc28xdm+feswfn+g6wjM9jHGnPe4BZRLT62enJ8KGkTgs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zt0Jbsy0; arc=fail smtp.client-ip=40.93.196.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC7E5304B2
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 15:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.166
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790867886; cv=none; b=V6YlI5+QB75MfkIf7KOo0Q0edMgyVggoqPGE9tuVObDGGT2IE8jXQDdXon5ASgL6PwNbN79VJAp9S7urmvzyaLaBdVfLX0H957gTLWsQpWT6Qd8ZASG7/SJ35xGq2K2futIysTTqu3AIj1i6gFxzWzaQW2QckAIvWKisMy94aso=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790867886; c=relaxed/simple;
+	bh=Q85kZEspfRbBEZSBGOjOQeRPZ7EBf2+4Hi635vpRBZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hO/7lHOxSzQ8aU9+yycjWybSYyg0JB2jM/U8p0zoYYDdYLMFVP0Rw9kWvJAwita6ISf52Pl9RfP+brwS4P7jTSSEyCycAEoEPGk5wpH/KF2XxRNPhoFNe7VX8ib+GQ/9RZWYFr/J+nyo1P4zzIZTB4ER4R+q6LtyfNfnH668cnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=SwUf8Ncp; arc=none smtp.client-ip=74.125.231.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zt0Jbsy0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SDX5b0ahwLRWfjNroom8oeEF8pkHHsuys6GtJF9bHfGA8P8vjVxAUz0mNL2ePBWlimwoff8GaZMJMaAICR1WCYbabN6nLdnTveqeeAP5fmW0VuIpf7s3NC4ElcxPd60JyqUSv4uFJs31xdCD9MhdxEQgboXT4y5xzjmls9UuAtCrLI4zQONRNEWqB+aA3zeWKp3SCfrU82i5X9kEd6rf91RXdtBvTFp+gHD559OG8zZ954sVEtm3ByfL2ylsHyU9ippjSq2Py40Xwu1rw4XhjkJvxJMuFCFY/4c5HVJfnJNiNWPeUD3YW+MLRJlztoz7g56VbKj3Ze4b2Wz09LGOOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xzz5jiEkg7ynLpZK4HTh4K8ITgb/gqrutdJV0uuxdPc=;
- b=AFRLtzycJ9RqZFa49y4N1c2bpCDqM4UGEGE7irEy9WaINnI5FsRewujJNJ3HyGcj+wpQbSyb/ij5nBuK2XVDG4Pru15TftHNxbaQF25pLMlkzx3CBhzzbzmJWfXtiQLpza0BW8UUmfAcl3h3aRJsFMXZZzTaknz5MYM6infvSUa3wu9qYCO2itkz8ahYQKIfNbqCL/PxRZRZsLhAUfy6OVIhcDXvUvx9NxASydd/nY171pO75Oy416Pi+1XBtmCOSKldvb2tcDDs/3nHbb7fUNIVbjqv34dcvffFzmu95pSK1X8xemP9VALtgD+oKwDupeVE2AJ0VMmBEC6Vt4iCzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xzz5jiEkg7ynLpZK4HTh4K8ITgb/gqrutdJV0uuxdPc=;
- b=zt0Jbsy09wq6OET778mVBOjhxL55iUoBE9BVQvkZDib5/ee9OLp+iRkqCfyCcffg6bWHcolofaV0WGjaIJgMVictPvErljG04KwXohJe9uhUC5WVjrWjG2uUByLsITPcTKSBGNLj2l1XNgIK6UbV4SFpuoCxCxIEyJY+FNZWKkM=
-Received: from BN9PR03CA0847.namprd03.prod.outlook.com (2603:10b6:408:13d::12)
- by IA1PR12MB8262.namprd12.prod.outlook.com (2603:10b6:208:3f6::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Thu, 1 Oct
- 2026 15:12:27 +0000
-Received: from BL6PEPF00020E61.namprd04.prod.outlook.com
- (2603:10b6:408:13d:cafe::87) by BN9PR03CA0847.outlook.office365.com
- (2603:10b6:408:13d::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.17 via Frontend Transport; Thu, 1
- Oct 2026 15:12:25 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00020E61.mail.protection.outlook.com (10.167.249.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 15:12:25 +0000
-Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 1 Oct
- 2026 10:12:22 -0500
-From: Babu Moger <babu.moger@amd.com>
-To: <tony.luck@intel.com>, <reinette.chatre@intel.com>, <bp@alien8.de>,
-	<ben.horgan@arm.com>
-CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<babu.moger@amd.com>, <tglx@kernel.org>, <mingo@redhat.com>,
-	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <fenghuay@nvidia.com>,
-	<kas@kernel.org>, <rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>,
-	<rppt@kernel.org>, <dapeng1.mi@linux.intel.com>, <elver@google.com>,
-	<enelsonmoore@gmail.com>, <jlayton@kernel.org>, <kuba@kernel.org>,
-	<ebiggers@kernel.org>, <seanjc@google.com>, <ewanhai-oc@zhaoxin.com>,
-	<binbin.wu@linux.intel.com>, <peterz@infradead.org>, <ashish.kalra@amd.com>,
-	<superm1@kernel.org>, <chang.seok.bae@intel.com>,
-	<prathyushi.nangia@amd.com>, <kim.phillips@amd.com>,
-	<ackerleytng@google.com>, <elena.reshetova@intel.com>, <naveen@kernel.org>,
-	<darwi@linutronix.de>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <eranian@google.com>, <peternewman@google.com>
-Subject: [PATCH v6 11/18] fs/resctrl: Introduce kmode_cpus/kmode_cpus_list per rdtgroup
-Date: Thu, 1 Oct 2026 10:10:34 -0500
-Message-ID: <54b0c60041902accde067b48bc3178c6756294d6.1790867441.git.babu.moger@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1790867441.git.babu.moger@amd.com>
-References: <cover.1790867441.git.babu.moger@amd.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="SwUf8Ncp"
+Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-81f707db14cso2917930a34.2
+        for <linux-coco@lists.linux.dev>; Thu, 01 Oct 2026 08:18:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1790867883; x=1791472683; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PiIPZwDVa/FTGpS0Ac/pTVSem1bCOOPpbOCOtMlbuUk=;
+        b=SwUf8NcpLpI5UK3qxkHaYCQBpl7dlYBZ98WNHywUWKkdBPfzO+XNlKBtTjyqh5Ac/k
+         HXKeYA1xrKXEyB4VBeAc/Ujdl4njNAg5PWJUO7bhrmI+ri/OcamVOVEhi9iWkW9inCsT
+         Ds3Wt6f2D/n8N/imataShW1l0t6k9Q5neBFy7LnPrRVOgAyXuFs6+z/c8pEffug0IHjH
+         iU6ItsN2p1nDafr1PB9hUsIEV/pWfQqrGKinefioo3lGMp2yfy2hcUqUxheFpVH89dNn
+         Z0Ayy7ftqlsUo0qqjFTu07FIcpO5+F6d3ws29g3jWqVmMz+XqDyQ0puZwiSKIR0MRCeo
+         zsBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790867883; x=1791472683;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PiIPZwDVa/FTGpS0Ac/pTVSem1bCOOPpbOCOtMlbuUk=;
+        b=s3APBYq7cLFXqAFfvWlG9jk6dtrZ9LmaCiwOBeoaoVZvtUz3rNSwsRjUIA9FLGpkr9
+         evVyAmxURkoIfN5kK8WlISmC5fcrGoJ+fDsjPdZlEtuXx3RmSKrUf9mumOmjYtV5IpL/
+         IbChY/EnIvVsT7B1lG4S7PQjlexKL1m56grltKE4Tav1hnUoFpHRayyukQMELU+tDU5l
+         j9WwepTFTzCs/h01IhM94Coe8jfB5dHQEB9sRnBPyi+5otiAQKoLDbn+XTf68IYVsM3x
+         hFABuxOKKj4YGTyef3og2ALdZg2YFdvEXz5RzKcqW6U6ezufc9v1yzVlCHRXffgE6EZv
+         f/yg==
+X-Forwarded-Encrypted: i=1; AKwUvBxSziTqL5csR/udo1hjiK1tSIPQ7G5HYiGgKBb0s4vHdzL6p7jNnlodk8Dp0Uy7UcIERmxc3ZiKCr0e@lists.linux.dev
+X-Gm-Message-State: AFuF++lbVfA60dU7ViKsh1ArwfrComuMwKgM5mLGaKxQYlLl3QhpFFTU
+	4Big/jw9BSZ0rhYSkHFpbhP3HSScXQGf9vp549I0WtLFqKskrbqLjal9tCUC0jpnhRQ=
+X-Gm-Gg: AYBFou0740IrJv3oXNJ4LbhwEMSp3Hsrj8nAQ/gRiDW9tFxp4s8LOwpcbUbL3+g5leC
+	KhrIWdFNiNQaUsSDcYxWzacBM8Gxgv/L+PQ05yAHeOMADBKh5+IA3DW3X6bEBoNtTTvsXGoMajf
+	P6e4jAPmX6p5V5VikuyjA1K6qWnSTKZkDsmbvvZ5PlBlrLF7WtzIOge0853L59JLunoML3FZbsb
+	3L/SH2kOWVvoVmXDXbdPxTrNn9EujWR57AFeL1UMc5bTP0RMgX3JAFlrmI4cuS+AQbiBlHqEJKZ
+	uTweuxRvgZrHWFUswQxs4wqT6PT5c7vb1mMR4Zas6THz2LrDoXLMRvPS5s3X1lT/E3vDQ62fu89
+	FOzewPZNsZhnyUB5yqtlD36BgouP3cAu22Ib7Wi4dHvmtv09qw4tZ5lrCTVv0jAFnfVDCITP2lz
+	JQHOTb+ysa2DAVsWp5aLF4oluk3tRtxLLSpM3T/h/YZ6m2
+X-Received: by 2002:a05:6830:6d0b:b0:813:baf6:c644 with SMTP id 46e09a7af769-8204b2bd01cmr6068580a34.26.1790867882898;
+        Thu, 01 Oct 2026 08:18:02 -0700 (PDT)
+Received: from ziepe.ca ([130.41.10.202])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8227a56e124sm18793a34.21.2026.10.01.08.18.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 08:18:02 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xCIXp-0000000ENnk-1pv5;
+	Thu, 01 Oct 2026 12:18:01 -0300
+Date: Thu, 1 Oct 2026 12:18:01 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sami Mujawar <sami.mujawar@arm.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>, gongruiqi1@huawei.com
+Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
+Message-ID: <20261001151801.GC3019323@ziepe.ca>
+References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
+ <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
+ <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E61:EE_|IA1PR12MB8262:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6390aee7-a00b-4a53-a688-08df1fce6665
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|82310400026|376014|7416014|36860700016|6133799003|18002099003|10067099003|22082099003|13003099007|3023799007|5023799004|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	EaZP7ULeTYCStUmCLaAJ5s6Rqh9XpBZ5p5FaqnJY2cVAUPNDWaNf5JWWoeTlXt256u65PAfieTg29Lo2t0YaixwISUdnH7FGzRmwU56zJOMuj/e2O85Mc9CiaeKs3529fOENa5TZVvnTn5/yWiiu6iMrHjEJxcvdnhAN2UYh/W6X5/t9NfZTkucbtAYkjmQ850cA8ugTB3SsIoyv6suB3bK2oPHceb3xKEKdMqv9seXYw2bS2syiqJsbJR0FcFqnBd+E/48zquxQ/lnqCj15rWh/TjC5Gqhke7jF+7OAIlmyzcihcFkFoLGG1W1zBFbRlMjpMplJGPucAHOTR3FUD9yW+Br66vwTSeBsUo8OICnHy1KemfgVshi745W8y3vvc9Yyc0EovGzJXtTbKyksSOOejGv9LPuuaH7oTyq6Dcw4q8gFb/Edflr/Xd8AuBfoJfLOGQoDwbiZG6FauEM15HkaA8E2DmYOcbJ8P4ZQF+f2fDnXSt8il7ZznEFlNLk2EBk9A+NVSZi0C6U4t84knACfuqbKfzrU5hPCgIlHrP4ECnQIIFf/cptI0B/CZehvngB3TeUR/Vh7kVbwK24d4lMYaxGZOKvDpS1AePMDv0KW034CVHa5hYfGEYQ+pJcK1zK86SiDpcAIeZtCaZi6n62pm9pvWm5W516AJewi+tHSDdGVmRJmTIDH/pY7za8kPfKhqoyNFV1mZbZs+1+gVQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(82310400026)(376014)(7416014)(36860700016)(6133799003)(18002099003)(10067099003)(22082099003)(13003099007)(3023799007)(5023799004)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	GytBvQRawbmIcWL6IQww4UmAPin5npLicddH2RT9hwu6oPRAOmxjZ0ljX2rHKekSZNyXG5NNzn3fGn3EpWSwMw8GF2rT/aS2Qzzsd9PHavoRSjX60LpP2woFoG/I0Pcb0Wgw8k6SDZ3VQj/8rHCKR9bnAIk6b2WNoDbft1sfvM+ikyrHbqdDU6XkejfCOSfudq1JvRMnEPx5F1gHJLhNmjKYAxcP8UBB/bOizWQX3Fs+SYWxb8ms5FdCEfxOE/0WftHUIYF5yDZ4CZnhre6GyvI5Qa5twz7jN9AiPfyzA3cpAqgaC9VVokFw9ZHuaQql/2NCG37LO8e12yinI24dhUQDygW22OnzTUYK2rDWs7kGW+PWoONXT52PcioK04RNl8SK8LHXT0g0V0bJOWKDTz9RG0LloNg2OMXkFGD9Df4F3OH3iBP9+paKXoV1lp6c
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 15:12:25.1113
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6390aee7-a00b-4a53-a688-08df1fce6665
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E61.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8262
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
 
-The RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode allows tasks to use different
-allocation and monitoring associations when transitioning from user mode to
-kernel mode. The mode is enabled/disabled on a per-CPU basis.
+On Thu, Oct 01, 2026 at 01:45:26PM +0200, Roberto Sassu wrote:
+> On Thu, 2026-10-01 at 13:27 +0200, Roberto Sassu wrote:
+> > On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
+> > > Confidential computing guests without a TPM can use TSM measurement
+> > > registers to record IMA measurement digests instead of TPM PCRs.
+> 
+> + Gong Ruiqi, of course.
 
-Add kmode_cpus and kmode_cpus_list to display the CPUs associated with a
-kernel mode. These files are exposed only when the global_enable_per_cpu
-mode is active.
+We are working very seriously on this same problem too.
 
-Signed-off-by: Babu Moger <babu.moger@amd.com>
----
-v6: Drop rdtgrp::kmode. Rewrite changelog (not a bugfix; association).
-    https://lore.kernel.org/lkml/ef8804d5-f20c-49a1-87cf-ab39437a5f0d@intel.com/
+For some time we did investigate extending tsm_mr to do more things,
+have a better uAPI, but that eventually evolved into the realization
+that tsm_mr is simply too narrowly focused. It looks like James got to
+this idea before we did. I agree with his remarks in the 2025 thread
+with Gong.
 
-v5: Updated the changelog.
-    Removed the RDT_MODE_PSEUDO_LOCKED check and added rdtgroup->kmode check.
-    Files are created hidden.
+So we've started work on a new comprehensive "Attestation subsytem"
+that will pull in all forms of ROTs, TPM, CC stuff and SPDM use cases
+to give a consistent user API to work with this class of HW. In many
+ways I view this as a rename of tsm_mr (it will eventually fully
+absorb it), but the name evokes the broader goal and encourages
+everyone to come in, not just CC world.
 
-v4: Rewrote the change to be generic.
+Our overall goal would be for something like systemd to have a single
+uniform kernel API that allows it interwork with any ROT someone may
+have. A uAPI to do "Extend", "Quote", "Get Log" operations so that the
+existing TPM support in systemd can be improved to work on any ROT
+flexibly without having to hard code specific ROT behaviors into
+systemd.
 
-v3: New patch to add "kmode_cpus" and "kmode_cpus_list" to support
-    kernel_modes.
----
- fs/resctrl/internal.h |  2 ++
- fs/resctrl/rdtgroup.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
+I've felt the ultimate end goal would be to make all the in-kernel tpm
+users go through the proposed attestation subsystem so they can have
+ROT and "PCR profile" agility. Certainly I've heard enough people
+asking for this.
 
-diff --git a/fs/resctrl/internal.h b/fs/resctrl/internal.h
-index 986b9c942fb2..6b8d14c4bd83 100644
---- a/fs/resctrl/internal.h
-+++ b/fs/resctrl/internal.h
-@@ -216,6 +216,7 @@ struct mongroup {
-  * @mon:			mongroup related data
-  * @mode:			mode of resource group
-  * @mba_mbps_event:		input monitoring event id when mba_sc is enabled
-+ * @kmode_cpu_mask:		CPUs in this group's kernel-mode association
-  * @plr:			pseudo-locked region
-  */
- struct rdtgroup {
-@@ -229,6 +230,7 @@ struct rdtgroup {
- 	struct mongroup			mon;
- 	enum rdtgrp_mode		mode;
- 	enum resctrl_event_id		mba_mbps_event;
-+	struct cpumask			kmode_cpu_mask;
- 	struct pseudo_lock_region	*plr;
- };
- 
-diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
-index 46b2cafd9411..0e638dc654c1 100644
---- a/fs/resctrl/rdtgroup.c
-+++ b/fs/resctrl/rdtgroup.c
-@@ -385,6 +385,31 @@ static int rdtgroup_cpus_show(struct kernfs_open_file *of,
- 	return ret;
- }
- 
-+/*
-+ * Display CPU masks for the kernel-mode associated resource group.
-+ * Supports both "kmode_cpus" (bitmap format) and "kmode_cpus_list"
-+ * (range list format); the output format is selected accordingly.
-+ *
-+ * Returns -ENOENT on error.
-+ */
-+static int rdtgroup_kmode_cpus_show(struct kernfs_open_file *of,
-+				    struct seq_file *s, void *v)
-+{
-+	struct rdtgroup *rdtgrp;
-+	int ret = 0;
-+
-+	rdtgrp = rdtgroup_kn_lock_live(of->kn);
-+
-+	if (!rdtgrp || rdtgrp != resctrl_kmode.rdtgrp)
-+		ret = -ENOENT;
-+	else
-+		seq_printf(s, is_cpu_list(of) ? "%*pbl\n" : "%*pb\n",
-+			   cpumask_pr_args(&rdtgrp->kmode_cpu_mask));
-+	rdtgroup_kn_unlock(of->kn);
-+
-+	return ret;
-+}
-+
- /*
-  * Update the PGR_ASSOC MSR on all cpus in @cpu_mask,
-  *
-@@ -2256,6 +2281,23 @@ static struct rftype res_common_files[] = {
- 		.flags		= RFTYPE_FLAGS_CPUS_LIST,
- 		.fflags		= RFTYPE_BASE,
- 	},
-+	{
-+		.name		= "kmode_cpus",
-+		.mode		= 0444,
-+		.hidden		= true,
-+		.kf_ops		= &rdtgroup_kf_single_ops,
-+		.seq_show	= rdtgroup_kmode_cpus_show,
-+		.fflags		= RFTYPE_BASE,
-+	},
-+	{
-+		.name		= "kmode_cpus_list",
-+		.mode		= 0444,
-+		.hidden		= true,
-+		.kf_ops		= &rdtgroup_kf_single_ops,
-+		.seq_show	= rdtgroup_kmode_cpus_show,
-+		.flags		= RFTYPE_FLAGS_CPUS_LIST,
-+		.fflags		= RFTYPE_BASE,
-+	},
- 	{
- 		.name		= "tasks",
- 		.mode		= 0644,
--- 
-2.43.0
+This is a broader topic than just IMA. For example DRTM also has to
+use the TPM, and other ROTs. It also brings in a global shift of how
+the system wide "PCR Profile" should work as post-DRTM has a different
+TPM locality and access to the protected DRTM-only PCRs that are
+normally blocked.
 
+Jiri posted his current state here:
+  https://lore.kernel.org/r/arzr32ZDComnfmny@FV6GYCPJ69
+
+While we plan to start with SPDM and CC topics as the initial launch
+Jiri has enough detailed plans now for all the main use cases, PCI
+SPDM, TPM, "CC PCRS", CC attestation, and Caliptra that I'm feeling
+confident something like this is the right way forward.
+
+Jason
