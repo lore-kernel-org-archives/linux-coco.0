@@ -1,56 +1,56 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328785304A8
-	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 19:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742D353A3A9
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 19:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790883542; cv=none; b=PVZupYM/IU5QfPx4e5+2dtFqUkvjWVH3j72C+dUSi9M4OQ/G++QRZpP35Y+/5lpVXbBET3DsPr3JqOocdFTJqFKuEfJGfpr0mTKN1ntEYDBHvtPuu0iujIjP0gjg+rH5pEVbT+PJS+DPt/Y6zzRkdCb5ChG4wLQbTSnlzRm9azk=
+	t=1790883543; cv=none; b=P7pk2rNGz6kbOuundISZykkai6OUZ43zUvIh2OOructJq+fi2L2bXvMIXsFvZGyeoh+xRKhNQv7yrhseWvsmIcqexxhE0Os1FcfsYPbKeXfuHotk9xUd0fea2ctxAAKBsnYEpHuZw2nbfYg+A2CX6bx1bouLSyvScC0O7PMrUnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790883542; c=relaxed/simple;
-	bh=SV/MXgGWckWhx+Jyo7DLJEx2fZgBooEYcqqqXWGamts=;
+	s=arc-20240116; t=1790883543; c=relaxed/simple;
+	bh=llNcDEvG5ONSzD4dGt4NNNxutqgk+Vh63Ml8CuMiltM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iIKIcb1ktyeOJ7EtNfAwoAkbbUw7h/IOjxF9JYsK31RbfxCeGViP8HmBwi403mw/PpUqguXxcksMYnoLAyDnBR1e4zXK0AENtYf0v3tknObCrof8MFUdeLJzsVlC5ms6P2T6mn0wTuD+n6A9QoCl/6wTZ+dPLs2B3F5BOihH7ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oSIKckcj; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=nLwNKsuYM6TIGZDho2gRXA5m2KY7cyAkDClWon4Bh39uUl2TRyvoI5icMT63G2va1tbQ0YSoqbXQUN/hQOpteMurjSmtURbfxQOKYXTHOvx8/s3pZiDfSu+10qIGQBsTPfdm6PDBOb32jjWQhlhiq6n/FuUFF7axh5LBKjdHuFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=duX4BOUN; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oSIKckcj"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1b8088202so4865614a12.3
-        for <linux-coco@lists.linux.dev>; Thu, 01 Oct 2026 12:38:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="duX4BOUN"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d55d8cd938so103330095ad.1
+        for <linux-coco@lists.linux.dev>; Thu, 01 Oct 2026 12:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790883538; x=1791488338; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1790883539; x=1791488339; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rRbrmyW96rrCs3DEZjhRs/AR+c7fdb5fNUuxs/BXvEg=;
-        b=oSIKckcjRq/YGK2UVC3toOEhXb3BGmYxcALZVf6ux/ZcoXz4P39XSZ3rjR8nmC5Rny
-         A+QVA0FxABdVv2dg6fDgDkTBP4bMg0ZQtgmfwAe3EVdIdis6uDSFAnkVBDK+7x8XFVDJ
-         /uSx+aXZbTupIEUrsDZaCSazA6fz7S+ucmbmTM8akoCO2TL8GPV9pBETZrTvLLfN2/mk
-         La7RtDUMeSpADKb3VGFNlc0lZgmtK93xCts9BgXCcvS8V4PEprJzlLmszpj2rqtIM42D
-         JN8iUStaUnaFcTAgUop7j1mGvnFI7pkWuCIlG7TAXod36V+bRggc7C7XpRHLHopvbJwx
-         JwYw==
+        bh=CTS9MVYDjyZn0FMdpJO1jd26R6doN//zdf6O3PVKEHc=;
+        b=duX4BOUNatkFrb266EJ0vkQ5LEOrZfSek3so3q09QrijuiUUfB3nhrVBJoyA57oOLt
+         OwH95SwOdmRz/JK0C1zKX9X3MNm/p9cAXJVqv2mtQlOZUR92a/eA2E6ummXD6spohN/D
+         VSRDttTAVZc0HxhEPot4VeEe/KrSxwA0EL3za/brGFUMjuBkPXnDx4CQ45VH8a+UXvec
+         nBdfnrHMWyWpm7X7geP5YNazY0uVY/SU013MvHnMOaWycbpfS6kQsmWqAsfIfh1neWex
+         gEjhfKB0GXHWu/eupH4AMebcedEVlQ1CRuh1/gELJx28rkP8tInGAziNw9F1xEUf1XwJ
+         OZdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790883538; x=1791488338;
+        d=1e100.net; s=20260707; t=1790883539; x=1791488339;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rRbrmyW96rrCs3DEZjhRs/AR+c7fdb5fNUuxs/BXvEg=;
-        b=MgoTV9zhoxXSGTJM/BLywkCqMhZiwb1O5rfUOPv7tyOUzuzll6SONzbReQzemWGYlI
-         z27OCEe5BhMZY+KDr0vPht8OzSWd0zfMGxo9Ta49L/f0awZLJ+Ld4UIp0QXcWuvCGtsW
-         igmlsliy3sAugqbLpNqpjKVzo9aPoO1Vey+TvaYXoSkbqkGWvcr8b4wztRh0SArvRznl
-         sfVQgK4cwAWnX7GT0HCtzylc5C7zDlucnQDaXzsb7AWYOSbhowm9sTKkrNUehPuQPt0X
-         DaylcuEwSyB6BvS99ynhIpogSuA13lr7YeZdewbUYhvIO7mW+01aJoa6K2uyV7bQdx9Q
-         Dk9Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwLjgpgithhtN8n695hOwR13FvtT0MrZqJ30hnG5SEC/KD1+xvGFOz8B10vmtYE0qrZJLkDSVYQPnsv@lists.linux.dev
-X-Gm-Message-State: AFuF++mAOjIKXVA5PuMSvOUKCWjOdE6o3mdAizDCVDfJYkUntajjzTRx
-	bQ1EPaOmJRBL14IKWwCD7G1wqycK7IGYt7boyKWBIPzmiahq+rmbeMVwazbZWKjhZoFhgeZKnTZ
-	MTqlrqw==
-X-Received: from pgaz8.prod.google.com ([2002:a05:6a02:50e8:b0:cc7:caf5:50f3])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3987:b0:3dd:a00a:7ac9
- with SMTP id adf61e73a8af0-3e0bd2ce276mr381873637.54.1790883537939; Thu, 01
- Oct 2026 12:38:57 -0700 (PDT)
-Date: Thu, 01 Oct 2026 19:37:45 +0000
+        bh=CTS9MVYDjyZn0FMdpJO1jd26R6doN//zdf6O3PVKEHc=;
+        b=lppnAtzXiL6q508wEHdNjfUwgHj0P10GxqxAbA0OMW0Cq9QGkbUZAZFn+NbgsGkAzc
+         VZ/8J6NEuRXcb6eXIB2QyO8rqmBjNz8ktdMzR4Bj/PonQDgoPxIIV2UvxMxViEtVacpY
+         40ZDW7A4Zgfl+IIkzYIstSx2p9fqrCOSCIfJ9OqVNrzYyfNe9oXwjUDRtWghQFbSlX9L
+         oYFYi5f2WuVu4gpqDTw0wbnRs241kOlkInCWZE7OGjIAO10giOLZetA9mLXAFxw3oUb6
+         VCCBbqHe1TvhNmWMae+ESwd25gntM5Xd4MBfcQteTCmbL/eEs4pFISi+1/Ia1Etoz944
+         Ds+A==
+X-Forwarded-Encrypted: i=1; AKwUvByQQ7klayCjAsf+jO7xUHy87XJzsmiOVRDY6tdyZcXU8gPYJG+PdIjldedrJFGDQLJx+nmEQl7YDLUr@lists.linux.dev
+X-Gm-Message-State: AFuF++nGDRukZvjX0gvT/xgczu29aEtIkbs7WNNiOC3jU5y3IBPR/6D6
+	iwBq0kxFYUoeO2PRIoqC1sCTUs72H3zZmYgAYkWUTmKVqP7GvsOSfmUIBGt+d5vE1PFv8UCvjur
+	3SVsrtg==
+X-Received: from pgvi18.prod.google.com ([2002:a65:61b2:0:b0:cc7:d53a:a250])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7346:b0:3dd:a196:69da
+ with SMTP id adf61e73a8af0-3e0bcffdc3bmr382730637.53.1790883538817; Thu, 01
+ Oct 2026 12:38:58 -0700 (PDT)
+Date: Thu, 01 Oct 2026 19:37:46 +0000
 In-Reply-To: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,14 +60,13 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=4084;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=1475;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=B0/+AYwoNGMvhRTjH0hvziwoAGkXGZBATDrRe3FTczI=; b=XmUVuwsaLPQHE5JnV3C5LhZEiXXFAZAmrE8yvKo3mx/4aIirB+K9fhi9QYnUBWUyePemkGtoE
- jD6v7R/Wm9KACDs+wsCbUgCBidbgkppxfx37bYK7dbeJaVyokWiPfJA
+ bh=dHazRHKBQXLPWxA291EnS2jS18PMgn3EB4oA4YyhfRw=; b=tgwt8HjwGicHZ76GFPLwalGPdHjLjBULDiEbZpWVQMS4MtToLYJAFVZZBQaYYAekz7/9dcVOU
+ 3qCled8xn9NCQz41bKF0lqBRmeb7alSlvI8zr5o0D8rThRu3XAiEemS
 X-Mailer: b4 0.14.3
-Message-ID: <20261001-tdx-selftests-v15-18-7c62a5d8a992@google.com>
-Subject: [PATCH v15 18/23] KVM: selftests: Add helpers to init TDX memory and
- finalize VM
+Message-ID: <20261001-tdx-selftests-v15-19-7c62a5d8a992@google.com>
+Subject: [PATCH v15 19/23] KVM: selftests: Finalize TDX VM in kvm_arch_vm_finalize_vcpus()
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -85,116 +84,44 @@ Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lis
 	Ira Weiny <iweiny@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sagi Shahar <sagis@google.com>
 
-TDX protected memory needs to be measured and encrypted before it can be
-used by the guest. Traverse the VM's memory regions and initialize all
-the protected ranges by calling KVM_TDX_INIT_MEM_REGION.
+Finalize TDX VM after VM and VCPU creation and memory initialization.
 
-Once all the memory is initialized, the VM can be finalized by calling
-KVM_TDX_FINALIZE_VM.
+To integrate TDX VM finalization seamlessly, the finalization is hooked
+into kvm_arch_vm_finalize_vcpus(). This approach avoids the need for
+every TDX selftest to manually finalize the VM. While it does prevent
+TDX selftests from customizing memory before it is locked, no current
+selftests require this.
 
-Co-developed-by: Erdem Aktas <erdemaktas@google.com>
-Signed-off-by: Erdem Aktas <erdemaktas@google.com>
-Co-developed-by: Sagi Shahar <sagis@google.com>
+In TDX, finalization is a mandatory step to make the TD runnable. It
+also finalizes the MRTD of the VM's initial memory and state, locking
+them in for future attestation and preventing any further modifications.
+
 Signed-off-by: Sagi Shahar <sagis@google.com>
-Co-developed-by: Lisa Wang <wyihan@google.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 ---
- .../selftests/kvm/include/x86/tdx/tdx_util.h       |  2 +
- tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 62 ++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
+ tools/testing/selftests/kvm/lib/x86/processor.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-index f36cddbd045c..dcfc62ffbaeb 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -73,4 +73,6 @@ void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm);
- void tdx_vcpu_load_boot_parameters(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
- void tdx_vcpu_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code);
- 
-+void tdx_vm_finalize(struct kvm_vm *vm);
-+
- #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-index 5f10a7c1455d..b8e1f848cf54 100644
---- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-+++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
-+#include <linux/align.h>
- #include <linux/sizes.h>
- 
- #include "processor.h"
-@@ -228,3 +229,64 @@ void tdx_init_vm(struct kvm_vm *vm)
- 
- 	free(init_vm);
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index b4b76dc505ae..e1d0fd5ed1f6 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -1536,6 +1536,12 @@ bool kvm_arch_has_default_irqchip(void)
+ 	return true;
  }
-+
-+static void tdx_init_mem_region(struct kvm_vm *vm, void *source_pages,
-+				u64 gpa, u64 size)
+ 
++void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
 +{
-+	u32 flags = KVM_TDX_MEASURE_MEMORY_REGION;
-+	struct kvm_tdx_init_mem_region mem_region = {
-+		.source_addr = (u64)source_pages,
-+		.gpa = gpa,
-+		.nr_pages = size / PAGE_SIZE,
-+	};
-+	struct kvm_vcpu *vcpu;
-+
-+	vcpu = list_first_entry_or_null(&vm->vcpus, struct kvm_vcpu, list);
-+
-+	TEST_ASSERT(size && IS_ALIGNED(size, PAGE_SIZE),
-+		    "Cannot add partial pages to the guest memory.\n");
-+	TEST_ASSERT(IS_ALIGNED((u64)source_pages, PAGE_SIZE),
-+		    "Source memory buffer is not page aligned\n");
-+	tdx_vcpu_ioctl(vcpu, KVM_TDX_INIT_MEM_REGION, flags, &mem_region);
++	if (is_tdx_vm(vm))
++		tdx_vm_finalize(vm);
 +}
 +
-+static void tdx_load_private_memory(struct kvm_vm *vm)
-+{
-+	struct userspace_mem_region *region;
-+	int ctr;
-+
-+	hash_for_each(vm->regions.slot_hash, ctr, region, slot_node) {
-+		const struct sparsebit *protected_pages = region->protected_phy_pages;
-+		const gpa_t gpa_base = region->region.guest_phys_addr;
-+		const u64 hva_base = region->region.userspace_addr;
-+		const sparsebit_idx_t lowest_page_in_region = gpa_base >> vm->page_shift;
-+		void *source_pages = NULL;
-+		sparsebit_idx_t i, j;
-+
-+		if (!sparsebit_any_set(protected_pages))
-+			continue;
-+
-+		TEST_ASSERT(region->region.guest_memfd != -1,
-+			    "TD private memory must be backed by guest_memfd");
-+
-+		sparsebit_for_each_set_range(protected_pages, i, j) {
-+			const u64 size_to_load = (j - i + 1) * vm->page_size;
-+			const u64 offset =
-+				(i - lowest_page_in_region) * vm->page_size;
-+			const u64 hva = hva_base + offset;
-+			const u64 gpa = gpa_base + offset;
-+
-+			if (!kvm_has_gmem_attributes)
-+				source_pages = (void *)hva;
-+
-+			vm_mem_set_private(vm, gpa, size_to_load);
-+			tdx_init_mem_region(vm, source_pages, gpa, size_to_load);
-+		}
-+	}
-+}
-+
-+void tdx_vm_finalize(struct kvm_vm *vm)
-+{
-+	tdx_load_private_memory(vm);
-+	tdx_vm_ioctl(vm, KVM_TDX_FINALIZE_VM, 0, NULL);
-+}
+ void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu, u64 smram_gpa,
+ 		 const void *smi_handler, size_t handler_size)
+ {
 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
