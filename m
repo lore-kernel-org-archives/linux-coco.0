@@ -1,82 +1,115 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8665C4734FA;
-	Thu,  1 Oct 2026 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B3D42FCBE
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 16:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790872667; cv=none; b=YEHQWrpk74XD3ELWUQA99IGbKvuTvezmQMVi1TCSQ1fRr+i4NlD20agQ4Bz0x9Ag3vSN6BX9QoBQxCUNCmobdLXp/3/zKf5SQm3+1DS/dY11KZX9dlAP0X1Fzvthcil5rs4p+/BESxt+4aQ4tk0tXG8/Tv140Cb1zYvg0rDcjuM=
+	t=1790872769; cv=none; b=d+Kj1e12iU8uzf2yn5T4HY34PqQwNXD680b/BayWD1YnOgdG080n8d2WlxJKr2TnExZ/ftT3IbTojbEvEWbH6djfwOHLYvnb6xhNAjfQJitsl28Qksp0qC7i0EcwsfBN+yGlLLaX514qlj+KDr5608KKKVJmgu6DOe+cei2+RdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790872667; c=relaxed/simple;
-	bh=K9BrYtciJGkSxMEbrXtvHk2FbFP0IJ/JnLlba9Tczjs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dEJbNnqeo/Jrv9hFQyn9Y912VY1kpr43bp7YU4Oa9RFdPg/9gdpE2VFTHK4jxYF2/uAxK6BlyJaEbG6CsPDDFNmdWq0vCDa8L6//gxXv83J7tKD2KZ3mvQD8rHQuO47C+5NhcJgUTOpLdYJ8dL58NOxgu+E/Qh+EK7FGuRw83O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BsV62LOq; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1790872769; c=relaxed/simple;
+	bh=q4SvOgTXIsNqlpMUOj2ef8MMWb7VA7YCONSmXTiArQk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NH/EcS51W9cJoCYB81Na3xZqoRSLqWtTy0WTOdbyXSiUhnLQQIAXYIDHLPF/lFdIXLjxvfGkMkdgX6kFsNrd3MbCY0gxu0NCyssvAXaQ5jCn9OHY2D37NevsTidNsD+6CHyWO9+gHAj/0czMjj5UM8mn/vuCQ/XAheKHCziZ+Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=thPgHjGq; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BsV62LOq"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="thPgHjGq"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A8D7497;
-	Thu,  1 Oct 2026 09:37:41 -0700 (PDT)
-Received: from [10.57.9.178] (unknown [10.57.9.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8C683F85F;
-	Thu,  1 Oct 2026 09:37:39 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE5E9497;
+	Thu,  1 Oct 2026 09:39:22 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E2E613F85F;
+	Thu,  1 Oct 2026 09:39:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790872664; bh=K9BrYtciJGkSxMEbrXtvHk2FbFP0IJ/JnLlba9Tczjs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BsV62LOqI5ja68sCQcFyb5ijD1CAgATdMGzmBFi4PPZQ2Nl1po/USPeOyjARfB1hR
-	 4IW2nKeALWQxil1hxMsJbWCTmjfJWwrfaJRQWTlMxqg8rSgve5w/QmYdvcMHIJ7CR0
-	 apDR+U8DfZ9vBePkOCIe3Wvt8ZYFIpX+pUeF5fiY=
-Message-ID: <c8ea1847-0a92-46b2-a038-37a9d581e8b2@arm.com>
-Date: Thu, 1 Oct 2026 17:37:37 +0100
+	t=1790872766; bh=q4SvOgTXIsNqlpMUOj2ef8MMWb7VA7YCONSmXTiArQk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=thPgHjGq4KLCxFCMOxTNwhO46NGyh+WVwgUMuprlxt+Nen4cbvbV1B/AetnyZ63cI
+	 qjGPOelzghxSe5sU3NpQYJCnPiPTWokp39L+895qwgszRoFOfxxUCOOwc2wmQus0+8
+	 blikHLD31ZKL4WOfKOE2CFaiphHnqEPP7yfAwj2U=
+Date: Thu, 1 Oct 2026 17:39:20 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Roberto Sassu <roberto.sassu@huaweicloud.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sami Mujawar <sami.mujawar@arm.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>, gongruiqi1@huawei.com
+Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
+Message-ID: <ar6MuKSDQc9J8o-6@e129823.arm.com>
+References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
+ <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
+ <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
+ <20261001151801.GC3019323@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v20 22/22] KVM: arm64: CCA: Control user register access
- for Realms
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20260924160504.853911-1-suzuki.poulose@arm.com>
- <20260924160504.853911-23-suzuki.poulose@arm.com> <ar6CEXfo-AIYtq1J@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ar6CEXfo-AIYtq1J@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001151801.GC3019323@ziepe.ca>
 
-On 01/10/2026 16:53, Catalin Marinas wrote:
-> On Thu, Sep 24, 2026 at 05:05:04PM +0100, Suzuki K Poulose wrote:
->> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>
->> The RMM restricts the access to the register states that the host can
->> read/modify for a given Realm.
->>
->> e.g., At VCPU creation, can modify GPRS (x0-x30) and PC.
->>        While servicing SMCCC calls via RSI_HOST_CALL or servicing PSCI
->>        requests.
->>        MMIO emulation in the unprotected space.
->>
->> Additionally we use the sysreg configuration to advertise/configure the
->> following Realm parameters, which are required before the Realm Descriptor
->> :w
+Hi Jason,
+
+> On Thu, Oct 01, 2026 at 01:45:26PM +0200, Roberto Sassu wrote:
+> > On Thu, 2026-10-01 at 13:27 +0200, Roberto Sassu wrote:
+> > > On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
+> > > > Confidential computing guests without a TPM can use TSM measurement
+> > > > registers to record IMA measurement digests instead of TPM PCRs.
+> > 
+> > + Gong Ruiqi, of course.
 > 
-> Should use Emacs ;)
+> We are working very seriously on this same problem too.
 > 
+> For some time we did investigate extending tsm_mr to do more things,
+> have a better uAPI, but that eventually evolved into the realization
+> that tsm_mr is simply too narrowly focused. It looks like James got to
+> this idea before we did. I agree with his remarks in the 2025 thread
+> with Gong.
+> 
+> So we've started work on a new comprehensive "Attestation subsytem"
+> that will pull in all forms of ROTs, TPM, CC stuff and SPDM use cases
+> to give a consistent user API to work with this class of HW. In many
+> ways I view this as a rename of tsm_mr (it will eventually fully
+> absorb it), but the name evokes the broader goal and encourages
+> everyone to come in, not just CC world.
+> 
+> Our overall goal would be for something like systemd to have a single
+> uniform kernel API that allows it interwork with any ROT someone may
+> have. A uAPI to do "Extend", "Quote", "Get Log" operations so that the
+> existing TPM support in systemd can be improved to work on any ROT
+> flexibly without having to hard code specific ROT behaviors into
+> systemd.
+> 
+> I've felt the ultimate end goal would be to make all the in-kernel tpm
+> users go through the proposed attestation subsystem so they can have
+> ROT and "PCR profile" agility. Certainly I've heard enough people
+> asking for this.
+> 
+> This is a broader topic than just IMA. For example DRTM also has to
+> use the TPM, and other ROTs. It also brings in a global shift of how
+> the system wide "PCR Profile" should work as post-DRTM has a different
+> TPM locality and access to the protected DRTM-only PCRs that are
+> normally blocked.
+> 
+> Jiri posted his current state here:
+>   https://lore.kernel.org/r/arzr32ZDComnfmny@FV6GYCPJ69
 
-Dang it ;-) I have fixed it in v21. Thanks
+Thanks to let me know. I'll take a look for this.
 
-Cheers
-Suzuki
-
+-- 
+Sincerely,
+Yeoreum Yun
