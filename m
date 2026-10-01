@@ -1,115 +1,209 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B3D42FCBE
-	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 16:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C2426ED40
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 19:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790872769; cv=none; b=d+Kj1e12iU8uzf2yn5T4HY34PqQwNXD680b/BayWD1YnOgdG080n8d2WlxJKr2TnExZ/ftT3IbTojbEvEWbH6djfwOHLYvnb6xhNAjfQJitsl28Qksp0qC7i0EcwsfBN+yGlLLaX514qlj+KDr5608KKKVJmgu6DOe+cei2+RdE=
+	t=1790883525; cv=none; b=HN6FfSNbwO/g/s+Xinii2MeNgZrQEkxZ3FY4qWkul9OvFl0ARSTZYFKlvRUEl9lwV78PCopgVtKCrKdlr+9RiHnZHulkKlnjVklrLfQHLVSaePPFcszMgvTepPnXudc+GqoO4e0ViqGPzJyrXIg26dwWdUvqm1JJAvixqX7UVYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790872769; c=relaxed/simple;
-	bh=q4SvOgTXIsNqlpMUOj2ef8MMWb7VA7YCONSmXTiArQk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NH/EcS51W9cJoCYB81Na3xZqoRSLqWtTy0WTOdbyXSiUhnLQQIAXYIDHLPF/lFdIXLjxvfGkMkdgX6kFsNrd3MbCY0gxu0NCyssvAXaQ5jCn9OHY2D37NevsTidNsD+6CHyWO9+gHAj/0czMjj5UM8mn/vuCQ/XAheKHCziZ+Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=thPgHjGq; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790883525; c=relaxed/simple;
+	bh=X1iKfg+PR3aGtis6dzyOimEIL1qrv94z0dqqbBNo7SM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=srzkcWdGXi8V68NiADh9tly3R+3vb5dEFLwfEMcDfdV1snWc2D4ooKnxtV4V4BD23fe4mLOQ5HYRIpsmlyiCHcf+jgcseMVP2vXhMXZS/lkoXNm8KDFb0oUn5qFvZGDgBPcMxvEsO9WnptxNYSMe7xdDkcyhxpnUeEIK8BHSsnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bEElccKv; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="thPgHjGq"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE5E9497;
-	Thu,  1 Oct 2026 09:39:22 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E2E613F85F;
-	Thu,  1 Oct 2026 09:39:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790872766; bh=q4SvOgTXIsNqlpMUOj2ef8MMWb7VA7YCONSmXTiArQk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=thPgHjGq4KLCxFCMOxTNwhO46NGyh+WVwgUMuprlxt+Nen4cbvbV1B/AetnyZ63cI
-	 qjGPOelzghxSe5sU3NpQYJCnPiPTWokp39L+895qwgszRoFOfxxUCOOwc2wmQus0+8
-	 blikHLD31ZKL4WOfKOE2CFaiphHnqEPP7yfAwj2U=
-Date: Thu, 1 Oct 2026 17:39:20 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Roberto Sassu <roberto.sassu@huaweicloud.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sami Mujawar <sami.mujawar@arm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>, gongruiqi1@huawei.com
-Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
-Message-ID: <ar6MuKSDQc9J8o-6@e129823.arm.com>
-References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
- <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
- <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
- <20261001151801.GC3019323@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bEElccKv"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2df5a65671eso14424935ad.1
+        for <linux-coco@lists.linux.dev>; Thu, 01 Oct 2026 12:38:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790883522; x=1791488322; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lvIpe4THwU2429Vg5PUWauuEjS4O/VrneOOpXPs58Tg=;
+        b=bEElccKv9LFHa1s63DMKpWw2a9S35tUbcOGAhhpVKp0oa6KjzSTwZx2LF8n85tDlR4
+         WMdOiH2HgvIBOLRqqOaU4D6l0v2+WGNu/wXpNAIFNKhEYeynYZ4AFJ4brtB7QArajNm6
+         cZzsMjaaPjK/8N3N+ZEcNEex3p2RECSSVYqea5GPVYMo2R7JNyG/wXws/7YmCeF4QQlo
+         1yUBtCq2tEo+C4N9txmAFY98zUKjQt4Nkj6sCVBlU/SK8l8uSIXTBOmuMcDPxjllb0Xl
+         Igra2Bs8gJoqbt/ed7FTTbe7Sn/d2KY9uCmMxGwtzg6ZsugN2Ns1AB4etlG7xwu5R2JD
+         yBfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790883522; x=1791488322;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lvIpe4THwU2429Vg5PUWauuEjS4O/VrneOOpXPs58Tg=;
+        b=BX7Xltzk2o4oTf78fFrWcZ+jidSln3wBaiIgLKW7p8JNBvLzJhmeQ6niKkAptjJYrK
+         c3QzK0oMoSZq/rvzC5KYNu8To2JRQiH5aqOUcIs9CB4lGyiMCo7L2H9+515/NEkSBO3q
+         JxsbRTxpJEEyLUYpBwqDQopIRDb4zJdcUwWT9HqAjTmd6Yc8zOQtuPQgZI7Rlabib74W
+         p3eMxjwSWcIoFXG50qyH/XvwDMECoHbliM5ex5G+mqDSAS3H0OTRzuIYFz5YFHX+rmQJ
+         NJ0aGMve5ng6AhK7L+jQdBW4Q7IcXyQXyF8jqVZOG7HJRbF8Dtna9g+VJhOysRJjk++2
+         2YQg==
+X-Forwarded-Encrypted: i=1; AKwUvBzaRMrjZ8uZzqEeeqXerAcJM+VgKlEc3gT/77iLNORYlxSn9JrNbVXZU6Nwejj3W0kn1VbS+Zb2kbnb@lists.linux.dev
+X-Gm-Message-State: AFq9FYL/T8oKktsU0uY3CZhXkGIhRYKCzUU0pQ69ZP4eTasT/w30avvX
+	lIfxlZnX7cLjkz9CyVuNbnlcIyg+5+wkMLwaslufxD/zMAp//insxmR1pMemzYuAkrYsCyGJrFM
+	aawV7cQ==
+X-Received: from plae3.prod.google.com ([2002:a17:902:e0c3:b0:2e2:d9e8:ae73])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ccd0:b0:2dd:c100:2518
+ with SMTP id d9443c01a7336-2e49b6d1bb0mr2469165ad.33.1790883521992; Thu, 01
+ Oct 2026 12:38:41 -0700 (PDT)
+Date: Thu, 01 Oct 2026 19:37:27 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261001151801.GC3019323@ziepe.ca>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAHe2vmoC/3WMwQrDIBAFfyXsuRaVGEtP/Y+Qg9XVCGksroSU4
+ L/X5t7jzOPNAYQ5IsG9OyDjFimmtYFQlw7sbNaALLomQHI5cC0lK25nhIsvSIWYcEapm7ae9xr a553Rx/0MjlPjOVJJ+XP2N9H/9L9UmxlnQhk3qN4o7p6PkFJY8GrTC6Za6xd5lZsorgAAAA==
+X-Change-Id: 20260722-tdx-selftests-1da5587cf047
+X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=5897;
+ i=wyihan@google.com; s=20260319; h=from:subject:message-id;
+ bh=X1iKfg+PR3aGtis6dzyOimEIL1qrv94z0dqqbBNo7SM=; b=l/5GFGD72CM1/CgLtFPipw5V21iGFJJDaH5jiAH12gZUY6RpYUX6ZX7p0cdXJtdoaokQTFxHc
+ Shyg2kgBxXyAWVeaAl2i2til3vbDZuxe+Yo3+hGcF0RRAJ4L59ynJBT
+X-Mailer: b4 0.14.3
+Message-ID: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
+Subject: [PATCH v15 00/23] TDX KVM selftests
+From: Lisa Wang <wyihan@google.com>
+To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Ira Weiny <iweiny@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-Hi Jason,
+This patch series focuses on setting up a TDX VM and adding all code
+necessary to run a basic lifecycle test.
 
-> On Thu, Oct 01, 2026 at 01:45:26PM +0200, Roberto Sassu wrote:
-> > On Thu, 2026-10-01 at 13:27 +0200, Roberto Sassu wrote:
-> > > On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
-> > > > Confidential computing guests without a TPM can use TSM measurement
-> > > > registers to record IMA measurement digests instead of TPM PCRs.
-> > 
-> > + Gong Ruiqi, of course.
-> 
-> We are working very seriously on this same problem too.
-> 
-> For some time we did investigate extending tsm_mr to do more things,
-> have a better uAPI, but that eventually evolved into the realization
-> that tsm_mr is simply too narrowly focused. It looks like James got to
-> this idea before we did. I agree with his remarks in the 2025 thread
-> with Gong.
-> 
-> So we've started work on a new comprehensive "Attestation subsytem"
-> that will pull in all forms of ROTs, TPM, CC stuff and SPDM use cases
-> to give a consistent user API to work with this class of HW. In many
-> ways I view this as a rename of tsm_mr (it will eventually fully
-> absorb it), but the name evokes the broader goal and encourages
-> everyone to come in, not just CC world.
-> 
-> Our overall goal would be for something like systemd to have a single
-> uniform kernel API that allows it interwork with any ROT someone may
-> have. A uAPI to do "Extend", "Quote", "Get Log" operations so that the
-> existing TPM support in systemd can be improved to work on any ROT
-> flexibly without having to hard code specific ROT behaviors into
-> systemd.
-> 
-> I've felt the ultimate end goal would be to make all the in-kernel tpm
-> users go through the proposed attestation subsystem so they can have
-> ROT and "PCR profile" agility. Certainly I've heard enough people
-> asking for this.
-> 
-> This is a broader topic than just IMA. For example DRTM also has to
-> use the TPM, and other ROTs. It also brings in a global shift of how
-> the system wide "PCR Profile" should work as post-DRTM has a different
-> TPM locality and access to the protected DRTM-only PCRs that are
-> normally blocked.
-> 
-> Jiri posted his current state here:
->   https://lore.kernel.org/r/arzr32ZDComnfmny@FV6GYCPJ69
+Unlike standard KVM selftests can set up the VM through guest registers,
+TDX module protects TDs' register state from the host. This feature of
+TDX causes problems on VM boot state initialization and the ucall
+implementation.
 
-Thanks to let me know. I'll take a look for this.
+In standard KVM selftests, the host directly initializes the guest state
+by manipulating Special Registers (SREGs) and General Purpose Registers
+(GPRs) via IOCTLs (KVM_SET_SREGS, etc.) before the first KVM_RUN.
 
+To bypass direct register initialization by the host, we utilize the
+standard x86 reset vector as the default entry point.
+
+The mechanism works as follows:
+1. The host places register values into a specific memory region and
+   inserts boot code at the VM's default starting point.
+2. When the VM starts, it executes this boot code to "pull" values from
+   memory and manually set up its own SREGs and GPRs.
+3. Once the environment is ready, the boot code jumps to the guest code.
+
+The standard x86 ucall() implementation uses PIO, but it does not
+actually transmit data through the 4-byte PIO data. Instead, it relies
+on the host reading the ucall address directly from the guest's RDI
+register.
+
+TDX selftests cannot utilize the standard x86 ucall implementation
+because the host is unable to access the guest's RDI register. Between
+the two alternatives, TDVMCALL_MMIO and TDVMCALL_REPORT_FATAL_ERROR,
+TDVMCALL_MMIO has fragility concerns and requires hardcoding a magic
+address while ignoring mmio_gpa. Therefore, the Report Fatal Error
+TDVMCALL is the cleanest and most efficient solution for TDX ucalls.
+
+Main Changes from v14[1]:
+1. Include patches from Sean to transition TDX ucalls from TDVMCALL_MMIO
+   to TDVMCALL_REPORT_FATAL_ERROR, and update the rest of the series to
+   support this change.
+2. Rename TDCALL to TDVMCALL and leaf to fn.
+3. Update the commit message to clarify workflow of CPUIDs.
+4. Replace manual JMP rel8 offset calculations with an assembly
+   trampoline.
+
+Thanks review from Ackerley, Binbin, Peter, Rick, Sean and Xiaoyao !
+
+Series is organized by:
+1. Patches 1 - 3: Initialize the TDX VM
+2. Patches 4 - 7: Add the TDX boot code
+3. Patches 8 - 13: Set up the boot region
+4. Patches 14 - 17: Set up the vCPU
+5. Patches 18 - 19: Finalize the TDX VM
+6. Patches 20 - 23: Implement the ucall and run the TDX test
+
+[1]: https://lore.kernel.org/all/20260722-tdx-selftests-v14-0-15ad654a50db@google.com/
+
+Signed-off-by: Lisa Wang <wyihan@google.com>
+---
+Ackerley Tng (1):
+      KVM: selftests: Add helpers to init TDX memory and finalize VM
+
+Erdem Aktas (2):
+      KVM: selftests: Add TDX boot code
+      KVM: selftests: Add a helper to issue TDVMCALLs from the TDX vm
+
+Isaku Yamahata (1):
+      KVM: selftests: Update kvm_init_vm_address_properties() for TDX
+
+Lisa Wang (3):
+      KVM: selftests: Set shared attributes for ucall guest_memfd pages
+      KVM: selftests: Require guest_memfd for TDX VMs
+      KVM: selftests: Support guest_memfd in-place conversion
+
+Sagi Shahar (13):
+      KVM: selftests: Initialize the TDX VM
+      KVM: selftests: Expose segment definitions to assembly files
+      tools: include: Add kbuild.h for assembly structure offsets
+      KVM: selftests: Introduce structures for TDX guest boot parameters
+      KVM: selftests: Expose functions to get default sregs values
+      KVM: selftests: Set up TDX boot code region
+      KVM: selftests: Set up TDX boot parameters region
+      KVM: selftests: Expose function to allocate vCPU stack
+      KVM: selftests: Call KVM_TDX_INIT_VCPU when creating a new TDX vcpu
+      KVM: selftests: Load per-vCPU guest stack in TDX boot parameters
+      KVM: selftests: Set entry point for TDX guest code
+      KVM: selftests: Finalize TDX VM in kvm_arch_vm_finalize_vcpus()
+      KVM: selftests: Add TDX lifecycle test
+
+Sean Christopherson (3):
+      KVM: selftests: Add macros to simplify creating VM shapes for non-default types
+      KVM: selftests: Add support for per-VM ucall ops on x86
+      KVM: selftests: Add support for TDX ucalls, via TDVMCALL_REPORT_FATAL_ERROR
+
+ tools/include/linux/kbuild.h                       |  11 +
+ tools/testing/selftests/kvm/.gitignore             |   3 +-
+ tools/testing/selftests/kvm/Makefile.kvm           |  39 ++-
+ tools/testing/selftests/kvm/include/kvm_util.h     |  27 +-
+ .../testing/selftests/kvm/include/x86/processor.h  |  44 ++++
+ .../selftests/kvm/include/x86/processor_asm.h      |  12 +
+ tools/testing/selftests/kvm/include/x86/sev.h      |   2 -
+ .../selftests/kvm/include/x86/tdx/td_boot.h        |  81 ++++++
+ tools/testing/selftests/kvm/include/x86/tdx/tdx.h  |  16 ++
+ .../selftests/kvm/include/x86/tdx/tdx_util.h       |  83 ++++++
+ tools/testing/selftests/kvm/include/x86/ucall.h    |   6 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c         |  22 +-
+ tools/testing/selftests/kvm/lib/ucall_common.c     |   8 +
+ tools/testing/selftests/kvm/lib/x86/processor.c    | 147 ++++++++---
+ tools/testing/selftests/kvm/lib/x86/sev.c          |  16 --
+ tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S  |  71 +++++
+ .../selftests/kvm/lib/x86/tdx/td_boot_offsets.c    |  21 ++
+ tools/testing/selftests/kvm/lib/x86/tdx/tdx.S      |  39 +++
+ tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 292 +++++++++++++++++++++
+ tools/testing/selftests/kvm/lib/x86/ucall.c        |  54 +++-
+ tools/testing/selftests/kvm/x86/sev_dbg_test.c     |  13 +-
+ tools/testing/selftests/kvm/x86/sev_smoke_test.c   |  40 +--
+ tools/testing/selftests/kvm/x86/tdx_vm_test.c      |  33 +++
+ 23 files changed, 965 insertions(+), 115 deletions(-)
+---
+base-commit: 37e0791600e5f1e2837a270c885296a172f5825e
+change-id: 20260722-tdx-selftests-1da5587cf047
+
+Best regards,
 -- 
-Sincerely,
-Yeoreum Yun
+Lisa Wang <wyihan@google.com>
+
