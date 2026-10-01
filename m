@@ -1,155 +1,178 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42904A3F3B;
-	Thu,  1 Oct 2026 13:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56A751C34F
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 14:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790861489; cv=none; b=i4PG0VEYpB9r9IZd/A1iARiPtAXdsmRPqnTU8rjyD1SVHPKvhnrpiSp6KVJoIGyMWdOZEO+49bdthfgPdhn5Ni4AqBD/HUanrUN6O84ujl7Rvn3T5Ld+RCESINlFAIbkrKmt/vjsBfsuMy0Dz7h1BYnaZ0gzM8dNKyHHZcPdUtk=
+	t=1790864710; cv=none; b=o+AVGzTzYFFb47CPNEF5y51u7fGLvwVTY4TJSipzrVkqVO202uhg6SBxFR3vRE8Kibn9cBDl8bRue2+EpuQyi78Ku6ufFPqtPwHeew1t3wUr/6VQ+wiGmgGpKgZSyz/uL8Tml3nsG/9ixHMm+oXZClREAwv261KwFwKziArjmpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790861489; c=relaxed/simple;
-	bh=9JUs2LAw7B8Ji/NW+YFWdHTHNXeYLFb0WQgfRlzCUoY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LEjxIvQJoYnzJJIKQ62SjrYS75Yk191LM75A+zG/jUXxM576ViKzWyHHHIfMV+yEbTrRYl7ue07KSEtoBlnJV+dxN2EVrby0x7dgo6m+mZpmEs3WDOWgMqZ2NAiBYr9NLbHLapdsCTDRT57ZgMDQwWwMl7XYNbzZgdDrdWPrJhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=q82XEx/S; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1790864710; c=relaxed/simple;
+	bh=1hHoKyAPD/b2cGTc6dQTSAgCcK5RPRJLB0llMk6ht/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFlmPg/nvj6Kk0+NpRzMt8muCHoozeo+QGTSKNqKtzljoCphgd/A8jmnXPfUzrusZMa/kVJJhz9WcoAfEovXV4t0avRFLfPLV8hVsVchFwi+v8Q38fHtHEIXyQyhJZYbEgNzdTZbQtK1n4jifskdGR3QdWCec7ENudPasB+Uxco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vXAk2mOi; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="q82XEx/S"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vXAk2mOi"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E05E3497;
-	Thu,  1 Oct 2026 06:31:19 -0700 (PDT)
-Received: from [10.57.9.178] (unknown [10.57.9.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1339C3F86F;
-	Thu,  1 Oct 2026 06:31:19 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87EDD497;
+	Thu,  1 Oct 2026 07:24:59 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A6FAA3F85F;
+	Thu,  1 Oct 2026 07:24:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790861483; bh=9JUs2LAw7B8Ji/NW+YFWdHTHNXeYLFb0WQgfRlzCUoY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q82XEx/SD1LWxYLGdZs4ctb0uFndIPn8h5YMgtGCxWt6Qv6ZOkaKRgvMYwrJzYXgV
-	 OdEpEG0APgHLpsH4K5HmpWVb5Yvh9PwGO5ou0kicw9b6qL+9u9N6u9F0q5y6QU7r82
-	 HAa/kgOIwvn0p4W6VQBErzSiux9Nk8M6jq0kGoYg=
-Message-ID: <289cb9bc-f591-4f53-a710-c86159356213@arm.com>
-Date: Thu, 1 Oct 2026 14:31:18 +0100
+	t=1790864702; bh=1hHoKyAPD/b2cGTc6dQTSAgCcK5RPRJLB0llMk6ht/Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vXAk2mOiEzPgG8p0QPPgnsQD9c5SttjpCm6UTeqpSxuv3JpF0R9stnfs2sdooXT1+
+	 +mCwykU1KCsMii36XRamLizkeQxtZpwHbBx36tBChLs0b2MUBc+3jhX+h4uZmD5BNU
+	 l8S2Mq3+aGtDdpe0Qwus2ffDKEwIB9946i46aoYk=
+Date: Thu, 1 Oct 2026 15:24:57 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	Dan Williams <djbw@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Suzuki Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sami Mujawar <sami.mujawar@arm.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>, gongruiqi1@huawei.com
+Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
+Message-ID: <ar5tOUor0bp3MtQ6@e129823.arm.com>
+References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
+ <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
+ <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 8/9] firmware: arm_rmm: Add wrappers for Realm related
- RMI commands
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-References: <20261001084555.1456543-1-suzuki.poulose@arm.com>
- <20261001084555.1456543-9-suzuki.poulose@arm.com> <ar5Y_pHBUQHbXr85@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ar5Y_pHBUQHbXr85@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
 
-On 01/10/2026 13:58, Catalin Marinas wrote:
-> On Thu, Oct 01, 2026 at 09:45:54AM +0100, Suzuki K Poulose wrote:
->> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
->> index 5d005054f3c6c..e3503aba646e2 100644
->> --- a/include/linux/arm-rmi-cmds.h
->> +++ b/include/linux/arm-rmi-cmds.h
->> @@ -53,6 +53,17 @@ static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
->>   	}
->>   }
->>   
->> +/*
->> + * rmi_smccc_invoke_once: Invoke the RMI call and return the results. Do not
->> + * retry the command. Let the caller deal with RMI_BUSY or RMI_BLOCKED.
->> + */
->> +static inline void rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *regs)
->> +{
->> +	struct arm_smccc_1_2_regs args = *regs;
->> +
->> +	arm_smccc_1_2_invoke(&args, regs);
->> +}
+Hi Roberto,
+
+> On Thu, 2026-10-01 at 13:27 +0200, Roberto Sassu wrote:
+> > On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
+> > > Confidential computing guests without a TPM can use TSM measurement
+> > > registers to record IMA measurement digests instead of TPM PCRs.
 > 
-> Nit: I don't think we need to copy to args since there's no retry here.
+> + Gong Ruiqi, of course.
 > 
-> That said, the SMCCC call clobbers regs->a0. We should write a comment
-
-Ack. I will add the comment, similar to what we have for rmi_smccc_invoke().
-
-> in case the caller thinks it can just retry with the same regs.
-> Alternatively, we could pass args and res structures separately.
-
-I thought about it, but settled in for copying the arguments.
-
+> Roberto
 > 
->> +/**
->> + * rmi_rec_destroy() - Destroy a REC
->> + * @rec: PA of the target REC
->> + * @sro: Allocated SRO context to be used
->> + *
->> + * Destroys a REC. The REC must not be running.
->> + *
->> + * Return: 0 on success, positive RMI result code or negative Linux error code
->> + */
->> +static inline long rmi_rec_destroy(unsigned long rec,
->> +				   struct rmi_sro_state *sro)
->> +{
->> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_REC_DESTROY, rec);
->> +}
->> +
->> +/**
->> + * rmi_rec_enter() - Enter a REC
->> + * @rec: PA of the target REC
->> + * @run_ptr: PA of RecRun structure
->> + *
->> + * Starts (or continues) execution within a REC.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline long rmi_rec_enter(unsigned long rec, unsigned long run_ptr)
+> > Hi Yeoreum
+> > 
+> > a similar patch set has been sent to the linux-integrity mailing list:
+> > 
+> > https://lore.kernel.org/linux-integrity/20250630125928.765285-1-gongruiqi1@huawei.com/
+> > 
+> > Could you please work with Gong Ruiqi to have a unified proposal?
+> > 
+> > Thanks
+> > 
+> > Roberto
+> > 
+
+Thanks for letting me know and I think the proposal is almost the same
+with the different terminology only.
+
+@Gong, what do you think?
+
+> > > This series introduces in-kernel interfaces for accessing TSM
+> > > measurement registers, abstracts IMA's measurement-register operations,
+> > > and adds a TSM backend for Intel TDX and Arm CCA.
+> > > 
+> > > The following mappings between TPM PCR indices and TSM measurement
+> > > registers are defined for Intel TDX [0] and proposed for Arm CCA [1]:
+> > > 
+> > >   TPM PCR index | Intel TDX register | Arm CCA register
+> > >   --------------+--------------------+-----------------
+> > >   0             | MRTD               | RIM
+> > >   1, 7          | RTMR[0]            | REM[0]
+> > >   2-6           | RTMR[1]            | REM[1]
+> > >   8-15          | RTMR[2]            | REM[2]
+> > > 
+> > > These mappings allow IMA to translate PCR indices into the corresponding
+> > > TSM measurement registers.
+> > > 
+> > > The TPM backend remains preferred when it is available at IMA
+> > > initialization. Otherwise, IMA falls back to a supported TSM backend.
+> > > Only one backend is selected; IMA measurements are not extended to both
+> > > TPM PCRs and TSM measurement registers.
+> > > 
+> > > The attestation proccess for guest with TSM measurement register will
+> > > be done with Confidential Compute Event Log (CCEL) which is exported by
+> > > /sys/firmware/acpi/tables/data/CCEL. Here is brief process in arm64:
+> > > 
+> > >   Verifier                 Realm guest              RMM / Platform
+> > >      |                         |                           |
+> > >      |--- Challenge (nonce) -->|                           |
+> > >      |                         |--- Request token -------->|
+> > >      |                         |    with challenge         |
+> > >      |                         |                           |
+> > >      |                         |<-- CCA token T -----------|
+> > >      |<-- CCA token T ---------|                           |
+> > >      |<-- CCEL event log ------|                           |
+> > >      |<-- IMA measurement log -|                           |
+> > >      |                         |                           |
+> > >  Verify token T:               |                           |
+> > >   - signatures                 |                           |
+> > >   - Platform/Realm             |                           |
+> > >     token binding              |                           |
+> > >   - challenge freshness        |                           |
+> > >   - platform/RIM policy        |                           |
+> > >   - verify measurement logs    |                           |
+> > >      |                         |                           |
+> > >      | ----ACCEPT / REJECT---->|                           |
+> > > 
+> > > This patch based on arm-cca-mr series [3].
+> > > 
+> > > Link: [0] https://uefi.org/specs/UEFI/2.11/38_Confidential_Computing.html#intel-trust-domain-extension
+> > > Link: [1] https://github.com/tianocore/edk2/issues/11383
+> > > Link: [2] https://github.com/tianocore/edk2/issues/11384
+> > > Link: [3] https://lore.kernel.org/all/20260929-arm_cca_mr-v2-0-1d98bba187fd@arm.com/
+> > > 
+> > > ---
+> > > Yeoreum Yun (3):
+> > >       virt: coco: introduce tsm_default_tm() and tsm_mr_read()/write()
+> > >       security: IMA: introduce ima_mr structure
+> > >       security: IMA: use TSM measurement registers
+> > > 
+> > >  drivers/virt/coco/guest/tsm-mr.c          | 159 +++++++++++++---
+> > >  include/linux/tsm-mr.h                    |  26 +++
+> > >  security/integrity/ima/Makefile           |   3 +-
+> > >  security/integrity/ima/ima.h              |   7 +-
+> > >  security/integrity/ima/ima_api.c          |   4 +-
+> > >  security/integrity/ima/ima_crypto.c       | 137 +++++---------
+> > >  security/integrity/ima/ima_fs.c           |  16 +-
+> > >  security/integrity/ima/ima_init.c         |   7 +-
+> > >  security/integrity/ima/ima_mr.c           |  48 +++++
+> > >  security/integrity/ima/ima_mr.h           |  76 ++++++++
+> > >  security/integrity/ima/ima_mr_tpm.c       | 155 ++++++++++++++++
+> > >  security/integrity/ima/ima_mr_tsm.c       | 290 ++++++++++++++++++++++++++++++
+> > >  security/integrity/ima/ima_queue.c        |  39 ++--
+> > >  security/integrity/ima/ima_template.c     |   4 +-
+> > >  security/integrity/ima/ima_template_lib.c |   2 +-
+> > >  15 files changed, 819 insertions(+), 154 deletions(-)
+> > > ---
+> > > base-commit: b561246f45174b7472c24b75358ea95bae72b7b8
+> > > change-id: 20260929-ima_tgx_integration_v2-1c54aeeaeaee
+> > > 
+> > > Best regards,
 > 
-> Nit: should probably be __always_inline. rmi_rec_destroy() and
-> rmi_smccc_invoke_once() as well.
 
-Ack.
-
-> 
-> Not for this series but something claude spotted in the integration
-> branch - kvm_rec_enter() is noinstr. On this path, we end up in
-> arm_smccc_1_1_get_conduit() which is not noinstr (again, that's for the
-> other series; here just __always_inline should suffice).
-
-Good point. I will address this in the other series. May be we can
-always do SMC. We don't support CCA over pKVM yet. Even there, may
-be SMC counduit is available ?
-
-i.e., arm_smccc_1_2_smc() instead of arm_smccc_1_2_invoke()
-
-> 
->> +{
->> +	struct arm_smccc_1_2_regs regs = {
->> +		SMC_RMI_REC_ENTER, rec, run_ptr,
->> +	};
->> +
->> +	rmi_smccc_invoke_once(&regs);
->> +	return regs.a0;
-> 
-> Should this use RMI_RESULT_STATUS(regs.a0)?
-
-No. We should always return the full result.
-
-> 
-> The rest looks fine to me.
-> 
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-
-Thanks Catalin
-
-Suzuki
-
+-- 
+Sincerely,
+Yeoreum Yun
