@@ -1,222 +1,173 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7022330569F;
-	Thu,  1 Oct 2026 11:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516FC3E40E0
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 11:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790854784; cv=none; b=R9UhgmQnut9KMVqBC0QAdLBhFmcJwrYf25ryxusJBL9eV0h6LYmb+jRiUWGZDRuNaqZNPX016VEJw1NMM+qCeZKlvHgNdmpvu+RO/NbnkaHCDrNF8S9KDP4P9wfx0Nwru505m4/eF2ktkKVaWeY1cWSiuSBgqT/m/nG0pcQmoLw=
+	t=1790855053; cv=none; b=kYTmPA5eT5YM6Ya9jk7ZJlSGN/0fjhinv1A68s5AH814Xs6Dns66q+A3HVHtFEwEm0qK7XacjLk/ja3lPSAv/EX3CMhpwaKrALXN4qoiahLMPVWtEMTcS+FoC/2UC2d4sfIULTHIpybkp0oRcKmyxDZ2VXcMtlTWVPoUjoHc8GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790854784; c=relaxed/simple;
-	bh=aIUuO4ENC77y8AatC+unyTYHYRfthaC+8kOZ3gEUHLc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gYpUQJgYs4JRrjYWorKilfMid1lrkp+8aYLXeF8ldEJ6z+Ue0CxPopXgfD2a42DQmS7w7bQxc4aenrisKQFTwl19JfknlwJMGi9QLEzrLzYonhPKL6cApZtZY9pqeNhIzRZtKKXzvoe35YtNvBubOECnTvwimnDg73fsn3ityZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=neqGY7qE; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="neqGY7qE"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F9A6497;
-	Thu,  1 Oct 2026 04:39:38 -0700 (PDT)
-Received: from [10.57.9.178] (unknown [10.57.9.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47ED43F86F;
-	Thu,  1 Oct 2026 04:39:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790854781; bh=aIUuO4ENC77y8AatC+unyTYHYRfthaC+8kOZ3gEUHLc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=neqGY7qENHa5C3IakID0foMencI4cFZZHabSuLJ1lNBFE4M0m2FgM7mAvbQNY3BFx
-	 stn/gI/6Xq2wXq7RIjF5XuMlVa57lMplWsGspYC8wxz97g6TqZdZE3Y5XcZczFYbgm
-	 OpqxKgkX2oAxFSQVnqoXEr45ElxUfdqWnQd2sbTw=
-Message-ID: <bf6efab5-ab8e-48e2-8576-2f3fb69a3d6a@arm.com>
-Date: Thu, 1 Oct 2026 12:39:36 +0100
+	s=arc-20240116; t=1790855053; c=relaxed/simple;
+	bh=uWTjLGxnQ/5ATNS7FIr5/dCE3sbu/nG79bh8J+7Tlz4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uLYfjh6KR7PIb6uT4hgBxT7k2Pd1xaS3fo04d43+0ROKjSmFJPz8ayd9f9CR5BJUuHi5WHMU6jOmNJo7S0GG0dRI2xGhvgmJpUMwo+1r1uWX+CQN2r2cOPd4i4rw5Wa1915GLyPgWYxQkkScbR3A7R94qM/0NXHj6UZGjdoioKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.224.235])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hwTwy2hBXzsvlf
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 19:20:34 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id 3A23640559
+	for <linux-coco@lists.linux.dev>; Thu,  1 Oct 2026 19:27:53 +0800 (CST)
+Received: from [10.204.63.22] (unknown [10.204.63.22])
+	by APP2 (Coremail) with UTF8SMTPA id GxC2BwB3Vy+qQ75qmdM_AQ--.58836S2;
+	Thu, 01 Oct 2026 12:27:52 +0100 (CET)
+Message-ID: <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
+Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Eric
+ Snowberg <eric.snowberg@oracle.com>, linux-integrity@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Cc: Dan Williams <djbw@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
+ <dmitry.kasatkin@gmail.com>, Paul Moore <paul@paul-moore.com>, James Morris
+ <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Suzuki Poulose
+ <suzuki.poulose@arm.com>, Steven Price <steven.price@arm.com>, Sami Mujawar
+ <sami.mujawar@arm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Jiri
+ Pirko <jiri@resnulli.us>
+Date: Thu, 01 Oct 2026 13:27:35 +0200
+In-Reply-To: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
+References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 7/9] arm64: Block hibernate and kexec while RMM is
- active
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Pavel Machek <pavel@kernel.org>, linux-pm@vger.kernel.org
-References: <20261001084555.1456543-1-suzuki.poulose@arm.com>
- <20261001084555.1456543-8-suzuki.poulose@arm.com> <ar4-kg8Jq9BTn7Sb@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ar4-kg8Jq9BTn7Sb@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:GxC2BwB3Vy+qQ75qmdM_AQ--.58836S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCr47KFy7tr4kJw1ruF1ftFb_yoWrJr47pa
+	nIg3W3Gr1UJa43Cr1fA3WjvFWrW3yrGw4DWw43Jw1kCFsxZFy2gr40kFyFkF98Aryftr18
+	tr1Yqrs8u34qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
+	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
+	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
+	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
+	0PDUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgANBGq+BZ0nUgAAsy
 
-On 01/10/2026 12:05, Catalin Marinas wrote:
-> On Thu, Oct 01, 2026 at 09:45:53AM +0100, Suzuki K Poulose wrote:
->> RMM can be deactivated only after all delegated granules have been
->> reclaimed. If a new kernel is entered while any granules remain in the
->> Realm PAS, accesses to that memory can raise a Granule Protection Fault
->> and be fatal to the new kernel.
->>
->> Crash kexec/kdump needs separate handling. It can be supported only once
->> the crash kernel can tolerate delegated memory inherited from the primary
->> kernel. i.e., be able to read the pages safely and fixup the GPF. Until
->> then disable the kexec completely.
->>
->> Hibernate has a similar problem. The image cannot be safely saved for
->> delegated pages, as the RMM doesn't support exporting the pages.
->>
->> Disable both kexec and hiberation while the RMM is active.
-> 
-> I would mention that this adds a new arch_hibernation_available() hook
-> called from hibernation_available(), otherwise the hibernation
-> maintainers may not realise why they've been cc'ed.
-> 
-> Alternatively, just introduce the hook as a separate patch without any
-> arch code.
+On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
+> Confidential computing guests without a TPM can use TSM measurement
+> registers to record IMA measurement digests instead of TPM PCRs.
 
-I will go for this approach, adding the hook in a prep patch and then
-the arm64 version with kexec changes.
+Hi Yeoreum
 
+a similar patch set has been sent to the linux-integrity mailing list:
 
-> 
->> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->> Cc: Len Brown <lenb@kernel.org>
->> Cc: Pavel Machek <pavel@kernel.org>
->> Cc: linux-pm@vger.kernel.org
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> ---
->> Changes since v20:
->>   - Add arch_hibernation_available() hook for archs to have a say and drop the
->>     other checks.
->> Changes since v19:
->>   - New patch to disable kexec and hibernation with RMM
->> ---
->>   arch/arm64/kernel/hibernate.c     | 14 ++++++++++++++
->>   arch/arm64/kernel/machine_kexec.c | 11 +++++++++++
->>   include/linux/suspend.h           |  1 +
->>   kernel/power/hibernate.c          |  8 +++++++-
->>   4 files changed, 33 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/kernel/hibernate.c b/arch/arm64/kernel/hibernate.c
->> index 7bf1174277772..08e03d24b93a8 100644
->> --- a/arch/arm64/kernel/hibernate.c
->> +++ b/arch/arm64/kernel/hibernate.c
->> @@ -10,6 +10,8 @@
->>    * Copyright (C) 2006 Rafael J. Wysocki <rjw@sisk.pl>
->>    */
->>   #define pr_fmt(x) "hibernate: " x
->> +
->> +#include <linux/arm-rmi-cmds.h>
->>   #include <linux/cpu.h>
->>   #include <linux/kvm_host.h>
->>   #include <linux/pm.h>
->> @@ -105,6 +107,18 @@ void notrace restore_processor_state(void)
->>   {
->>   }
->>   
->> +bool arch_hibernation_available(void)
->> +{
->> +	/*
->> +	 * If we have activated the RMM, there could be pages that are
->> +	 * delegated to the RMM. Trying to save them to the image will be fatal.
->> +	 * Also, we donate pages to the RMM at activation and restoring data
->> +	 * to those pages are going to be fatal.
->> +	 * Hence, disable the hibernation when the RMM is active
->> +	 */
->> +	return !cpus_are_stuck_in_kernel() && !is_rmm_active();
->> +}
-> 
-> For now, I would keep is_rmm_active() only in here as not to change the
-> behaviour for pKVM. "disk" would disappear from /sys/power/state with
-> this patch. I think it's the correct thing to do for pKVM as well but we
-> can discuss this separately once this goes in (I also think pKVM using
-> cpus_are_stuck_in_kernel() is a bit of a bodge but it's a handy hook
-> called in the right places).
+https://lore.kernel.org/linux-integrity/20250630125928.765285-1-gongruiqi1@=
+huawei.com/
 
-I was in double mind about this. Yes, I agree, makes sense to deal the
-pKVM case separately.
+Could you please work with Gong Ruiqi to have a unified proposal?
 
+Thanks
 
-> 
->> +
->>   int arch_hibernation_header_save(void *addr, unsigned int max_size)
->>   {
->>   	struct arch_hibernate_hdr *hdr = addr;
->> diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
->> index 8f9bc2327dc85..48f343704cb54 100644
->> --- a/arch/arm64/kernel/machine_kexec.c
->> +++ b/arch/arm64/kernel/machine_kexec.c
->> @@ -6,6 +6,7 @@
->>    * Copyright (C) Huawei Futurewei Technologies.
->>    */
->>   
->> +#include <linux/arm-rmi-cmds.h>
->>   #include <linux/interrupt.h>
->>   #include <linux/irq.h>
->>   #include <linux/kernel.h>
->> @@ -59,6 +60,16 @@ int machine_kexec_prepare(struct kimage *kimage)
->>   		return -EBUSY;
->>   	}
->>   
->> +	/*
->> +	 * We will be able to allow kdump to proceed, once we have the support
->> +	 * for handling GPF from vmcore accesses to delegated pages. Until then
->> +	 * block kexec completely.
->> +	 */
->> +	if (is_rmm_active()) {
->> +		pr_err("Can't kexec: RMM is active.\n");
->> +		return -EBUSY;
->> +	}
->> +
->>   	return 0;
->>   }
->>   
->> diff --git a/include/linux/suspend.h b/include/linux/suspend.h
->> index b02876f1ae38a..a3815027773c5 100644
->> --- a/include/linux/suspend.h
->> +++ b/include/linux/suspend.h
->> @@ -401,6 +401,7 @@ int hibernate_quiet_exec(int (*func)(void *data), void *data);
->>   int hibernate_resume_nonboot_cpu_disable(void);
->>   int arch_hibernation_header_save(void *addr, unsigned int max_size);
->>   int arch_hibernation_header_restore(void *addr);
->> +bool arch_hibernation_available(void);
->>   
->>   #else /* CONFIG_HIBERNATION */
->>   static inline void register_nosave_region(unsigned long b, unsigned long e) {}
->> diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
->> index d2479c69d71a4..9d9d53828542f 100644
->> --- a/kernel/power/hibernate.c
->> +++ b/kernel/power/hibernate.c
->> @@ -106,11 +106,17 @@ bool hibernation_in_progress(void)
->>   	return !atomic_read(&hibernate_atomic);
->>   }
->>   
->> +__weak bool arch_hibernation_available(void)
->> +{
->> +	return true;
->> +}
->> +
->>   bool hibernation_available(void)
->>   {
->>   	return nohibernate == 0 &&
->>   		!security_locked_down(LOCKDOWN_HIBERNATION) &&
->> -		!secretmem_active() && !cxl_mem_active();
->> +		!secretmem_active() && !cxl_mem_active() &&
->> +		arch_hibernation_available();
->>   }
-> 
-> With the comments above addressed:
-> 
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Roberto
 
-Thank you!
-
-Suzuki
+> This series introduces in-kernel interfaces for accessing TSM
+> measurement registers, abstracts IMA's measurement-register operations,
+> and adds a TSM backend for Intel TDX and Arm CCA.
+>=20
+> The following mappings between TPM PCR indices and TSM measurement
+> registers are defined for Intel TDX [0] and proposed for Arm CCA [1]:
+>=20
+>   TPM PCR index | Intel TDX register | Arm CCA register
+>   --------------+--------------------+-----------------
+>   0             | MRTD               | RIM
+>   1, 7          | RTMR[0]            | REM[0]
+>   2-6           | RTMR[1]            | REM[1]
+>   8-15          | RTMR[2]            | REM[2]
+>=20
+> These mappings allow IMA to translate PCR indices into the corresponding
+> TSM measurement registers.
+>=20
+> The TPM backend remains preferred when it is available at IMA
+> initialization. Otherwise, IMA falls back to a supported TSM backend.
+> Only one backend is selected; IMA measurements are not extended to both
+> TPM PCRs and TSM measurement registers.
+>=20
+> The attestation proccess for guest with TSM measurement register will
+> be done with Confidential Compute Event Log (CCEL) which is exported by
+> /sys/firmware/acpi/tables/data/CCEL. Here is brief process in arm64:
+>=20
+>   Verifier                 Realm guest              RMM / Platform
+>      |                         |                           |
+>      |--- Challenge (nonce) -->|                           |
+>      |                         |--- Request token -------->|
+>      |                         |    with challenge         |
+>      |                         |                           |
+>      |                         |<-- CCA token T -----------|
+>      |<-- CCA token T ---------|                           |
+>      |<-- CCEL event log ------|                           |
+>      |<-- IMA measurement log -|                           |
+>      |                         |                           |
+>  Verify token T:               |                           |
+>   - signatures                 |                           |
+>   - Platform/Realm             |                           |
+>     token binding              |                           |
+>   - challenge freshness        |                           |
+>   - platform/RIM policy        |                           |
+>   - verify measurement logs    |                           |
+>      |                         |                           |
+>      | ----ACCEPT / REJECT---->|                           |
+>=20
+> This patch based on arm-cca-mr series [3].
+>=20
+> Link: [0] https://uefi.org/specs/UEFI/2.11/38_Confidential_Computing.html=
+#intel-trust-domain-extension
+> Link: [1] https://github.com/tianocore/edk2/issues/11383
+> Link: [2] https://github.com/tianocore/edk2/issues/11384
+> Link: [3] https://lore.kernel.org/all/20260929-arm_cca_mr-v2-0-1d98bba187=
+fd@arm.com/
+>=20
+> ---
+> Yeoreum Yun (3):
+>       virt: coco: introduce tsm_default_tm() and tsm_mr_read()/write()
+>       security: IMA: introduce ima_mr structure
+>       security: IMA: use TSM measurement registers
+>=20
+>  drivers/virt/coco/guest/tsm-mr.c          | 159 +++++++++++++---
+>  include/linux/tsm-mr.h                    |  26 +++
+>  security/integrity/ima/Makefile           |   3 +-
+>  security/integrity/ima/ima.h              |   7 +-
+>  security/integrity/ima/ima_api.c          |   4 +-
+>  security/integrity/ima/ima_crypto.c       | 137 +++++---------
+>  security/integrity/ima/ima_fs.c           |  16 +-
+>  security/integrity/ima/ima_init.c         |   7 +-
+>  security/integrity/ima/ima_mr.c           |  48 +++++
+>  security/integrity/ima/ima_mr.h           |  76 ++++++++
+>  security/integrity/ima/ima_mr_tpm.c       | 155 ++++++++++++++++
+>  security/integrity/ima/ima_mr_tsm.c       | 290 ++++++++++++++++++++++++=
+++++++
+>  security/integrity/ima/ima_queue.c        |  39 ++--
+>  security/integrity/ima/ima_template.c     |   4 +-
+>  security/integrity/ima/ima_template_lib.c |   2 +-
+>  15 files changed, 819 insertions(+), 154 deletions(-)
+> ---
+> base-commit: b561246f45174b7472c24b75358ea95bae72b7b8
+> change-id: 20260929-ima_tgx_integration_v2-1c54aeeaeaee
+>=20
+> Best regards,
 
