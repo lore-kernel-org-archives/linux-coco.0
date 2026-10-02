@@ -1,193 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791913033E6;
-	Fri,  2 Oct 2026 14:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790950513; cv=none; b=aCIGyuBCwkkQvx7ZUlzl7pnwJFjuKWy3ZEb4QGho2AYtrCPzLg7vmaLP4hoV42JiE5nV7E1l3gO28jnlR6MJwvBX3UdpF92jWVRz+Y8KsKlvM0OCfaRvpQD8tDZrVgl1Ldf43UvdLtuKYHjPCZqdjlb55gVHfPCw6AQz3sWAxVM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790950513; c=relaxed/simple;
-	bh=jbt6HMNpevO3Sru9Gr+rctah7k8MdelRY/4rnrM3z6A=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=clJlZMi/GMBqogEQknGeYdqikrfby58oU9zHaZkqiG6uN0NFr0YyO6x2rRNt7j1vYuIBrf75ae7pj9kCy2CFTs2hOOF8l3wODPo7+Z/GRJBhMWrKleSk1fVdaB4/+2jXJ7TLRUXRO62FP45QA4NHNFYL4upddWYTloEmhnHL/HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YlKx3BnJ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9344D7D25
+	for <linux-coco@lists.linux.dev>; Fri,  2 Oct 2026 14:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790951869; cv=pass; b=MAn8z0/UBSk7BrPpbS2jXZ/7A0DwjXR7fAbASNoJOzoY+5hA1GGCmx8FXPVe+oUubu30Ykt9zgrk4Krs+3/9Frk0qBI6sW6qrEgib5m4v0M7O+UdPq6to8CIkKzUyjf1nNDD8QbQC54sqBPhQmagxlg9GVdSmrCvhHSdXsL0iiw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790951869; c=relaxed/simple;
+	bh=bvtdEPxwSQXjnHdQcA79svDgXzwZQykpi2V56CMH9Ps=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A2EinpTwacIS2Wsie3BsLb4NYRHJFxIaHOpKh/o5XzkfbjT7tjDYW+1RwrsmnjIfXBIXTrQusLxpy6rfbZE/CCUg+RS4EjCfwFMaSLadb9YxVUpV5/P873nrkkIWToNc8dBxBN4lOfBHL03a0Denrs4cWHD0Am3COt37vJNy4ik=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R1xqvz3k; arc=pass smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YlKx3BnJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B081F000FF;
-	Fri,  2 Oct 2026 14:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790950508;
-	bh=YbzZ3YWMbEwGiluxGV1MRuG2h8ePt79LduY47dgmoYk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YlKx3BnJP0wpNWoz5kgh4BYnGpuOexo95Vk32IOGkSgTygnkIl7+36f4ncWYXx4pX
-	 QNtHUCpfpDMikH0CQUbiDtpECeRXCKj/kDOX6YwOmqvEdI5S2rz4bxKvtqhy6Wdl9r
-	 XVRzqMuAav58TvbYpvuPsnWriI7M9bxxNvsb+8B216bEkiOmGF4Ike5ABp4QDoHFWH
-	 sWFFoJUsfZvmLNJOzgOV2pORfi0mozjJxMh/QY2l6z6rXXhJvB4kQO/xk3iaOsuUJg
-	 s5dspUXSNPKRMYPBpm33c6TvDMmqVSJA0XtmwweKRwkbRczVquE096NAhRJ6DxXpJq
-	 HN9jy3sf99Alw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xCe2U-0000000GG11-2M95;
-	Fri, 02 Oct 2026 14:15:06 +0000
-Date: Fri, 02 Oct 2026 15:15:06 +0100
-Message-ID: <86pkxs2npx.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Fuad Tabba <tabba@google.com>
-Cc: 	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
-In-Reply-To: <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
-	<20261001210703.1597150-6-suzuki.poulose@arm.com>
-	<CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
-	<86se2o2rbs.wl-maz@kernel.org>
-	<CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R1xqvz3k"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5ba429b64c5so6659e87.1
+        for <linux-coco@lists.linux.dev>; Fri, 02 Oct 2026 07:37:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790951857; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NzDze1Bk2aIH378V+0ImavbtDGP4dFtPuuvANxC+zK10oxwovHkAbwtT22eiQPTRn/
+         9tP0X7WA0fbDAiUatT69Hdj99REajVcACFZJsVlpFSNAWeoMBPM6M8TnTscB2DjrzC0h
+         AHeXbVFCfOUrUQPujTbSlu+07uBMZWMv5HEvKeqMtcR5LCGPRtwfRJLFf8Bl/EeFaC2H
+         VsyqJ38YrBrn38odtctHbWldjjaxfL7zWy5Q56T4F1kMGGM7n/M/lU3tVCNT8ZnT0/Tq
+         edEDGYIRyCrMFx4aTnoJEt0HQo55RTAky4Pb1ASQvJAd9pIekS8HBQfzDzf+r0AIH7UI
+         mcyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ngc+Dc6mG5eMUNtbuXMSrmBLpP8pJzc9TOtXps7kTTo=;
+        fh=nGE5JG9WPsvEKV3sTbWknfbXALII7Lv4SeHuYPhYYqM=;
+        b=hPY6Oyac6ve4aj8hkxAH0yEUGsU8FS9htklAX4Xz8m7HdLub9i80Y0J/4pILplDCse
+         n7+xIiQXc7TXqhC7HQTP1vi0QVcHknn+rd3PSEJlw+7ATmCbEWOF0kmUSHNMRmoYx0kE
+         D3ym5Oj9i/UEnJRFvVLXWARHU6NCvnV8e7/L6AMM7McPYtBHb1iKK/eF3PA4WZUNilo5
+         yjYJyVezM79x77QUSOVR8h20Z8/Mesfd+3ZGm0KUOUF85upeb9AAfN5GN0hyEOV+4qAB
+         ERKzBWefO3r8mXupKnmOK1a+YVVA1p2G0axpfjGFhbIs7N9PTr5nhGIll9yEVRgJyPfE
+         JQOw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790951857; x=1791556657; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ngc+Dc6mG5eMUNtbuXMSrmBLpP8pJzc9TOtXps7kTTo=;
+        b=R1xqvz3ktffT4BMo/9L5nlwbU9edHygbQvrl2jM5PHWzTRRRcZEfpIfTGjsB8yNaKB
+         eCyDu5OaMQtglP9VfYyt+mol1MwnbkEx4D+bVkoRYIDUzxJyzN/4S5HoSnVW5MbRfY3a
+         D9zVYpHp9s4xyKMrJ79lQNz7A1iTfWooBirJG/q+Nuy1SO9iO6Vr+CtTIny7RhpaBZk1
+         F9/jwACWqI3tmgFzAI5wfEVwwMSG6bf5JwDJQHzNgNbDoEplnuRuT6A2DydcQ63bGXXB
+         8K4SWVQ+rndZe00FOIb14pZlpumSsAJstVwMS0yy3gBr0Gf+CWz+nQ1BhrE/Wgf2rJRf
+         7VwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790951857; x=1791556657;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ngc+Dc6mG5eMUNtbuXMSrmBLpP8pJzc9TOtXps7kTTo=;
+        b=Awhv0NwDi0W5WqhGlB9lLiGYcPUFramEZeVsAJsHkp2XXHdwnciaSRWzrMWM+aIz2z
+         6MXx5s6xNJEQWOhg1puFdb4j6FHdYIm1jivb7STep42H4LXQFfo1cE8DJFvGQXUJnTdS
+         FuQB5891HIcLznYrohTM+5z4e9J2TgN3a7w2D9DzyijE17RFebghcQxWk7VtLOZLmeeD
+         h2Vvj4NexeoQYgNv9k2upd0/rldL4ee6T8QUFKCS/EvxN2ADPLle5FyJ2F+TUfT9/8Nu
+         btNd6XaW0eZquD/apRN0VZ3YHoetgCy7LarwYusV7ySHp0138ZMLKzPOtO95fygjZH9d
+         MXsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwsGCuW1ou0VhMsW5RYbnH03BeJrvcT5kN3kObm1MUKqvLRhJkO0ydMsrI4wWbgC//jM96PIUu+kAjZ@lists.linux.dev
+X-Gm-Message-State: AFq9FYKi/TNg8/heyICpZ5NXq0NUJVg5PZFr1oNtN2TYrEuPs+k5V9mr
+	GzoP3ugbrmHjdNKviL7cO5kvHvrYnyRc0efTsXfeNvVp3vKghey9cjpBYaCFfgdXTZQmOLPfEB3
+	afNEnOfy/3PKQN9ZlNyU2rnAIdXiTBzz8P2OdtstE
+X-Gm-Gg: AYBFou0dp2l2FINMhmIBzn622wXchlpeFkXl3Cf2X1HGiYlyKiwLToKsc9rvFj07qXg
+	YEzQLxNjNmQ8Q965X5Ye2KGBFya0M5tXCWvdp0XTHOSFQr9JJvJ2+tz+Yk+H38QYveKtyp+UWcq
+	EyKJghU+tfxTIUKEs0yxhNWPZxUyyh1B3c6kdNaUhzqTuAJT61mB5aWVe+c0kmr28jGyCFFhoWf
+	GuD/r9v5hQFD9ox0JpwjspvZXwLr35Zjw7jXQlzaf559TLkqnccvu5w87dqyAk3h3qcD6Zfp/Oj
+	IbdMjSU9/9BrosRGm8BulZkZbemoeyW1cCvE5XGU9rMuJCmLShWbP9joLmtv7V5MOa9wXi7k1xJ
+	huCScSRPEDuS1sA==
+X-Received: by 2002:a05:6512:3da9:b0:5ae:cf5f:4a88 with SMTP id
+ 2adb3069b0e04-5bbe07ff87fmr127412e87.8.1790951856416; Fri, 02 Oct 2026
+ 07:37:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, tabba@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+ <20261001210703.1597150-6-suzuki.poulose@arm.com> <CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
+ <86se2o2rbs.wl-maz@kernel.org> <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
+ <86pkxs2npx.wl-maz@kernel.org>
+In-Reply-To: <86pkxs2npx.wl-maz@kernel.org>
+From: Fuad Tabba <tabba@google.com>
+Date: Fri, 2 Oct 2026 15:37:00 +0100
+X-Gm-Features: AclHuK_ts2oonb5gFFEThD7Rzb_QZk1ok5N5MoHVdkKoZ33EulrV9BUtxD17tPM
+Message-ID: <CA+EHjTy4rb+6z0bqh7sPqACES0EDpURdeoyiFGmdw3p0PENcOQ@mail.gmail.com>
+Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
+To: Marc Zyngier <maz@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
+	jonathan.cameron@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 02 Oct 2026 14:05:17 +0100,
-Fuad Tabba <tabba@google.com> wrote:
-> 
-> Hi Marc,
-> 
-> On Fri, 02 Oct 2026 13:57:11 +0100, Marc Zyngier <maz@kernel.org> wrote:
-> [...]
-> > Just to make sure. Is that what you had in mind?
-> 
-> A diff is worth a thousand words :) Yes, that's it. With that, every
-> remaining hyp user of vcpu_is_protected() only runs with pKVM, so the
-> kern_hyp_va() case in the macro can go too.
+Hi Marc,
 
-Actually, scratch all of that. The whole thing is written upside down,
-and makes little sense. I wish I had looked at it more closely...
+On Fri, 02 Oct 2026 15:15:06 +0100, Marc Zyngier <maz@kernel.org> wrote:
+[...]
+> Honestly, we introduce the flavor stuff to make it easy to match
+> things on a particular VM type in a readable way. So why isn't this
+> reading:
+>
+>         if (vcpu->kvm->arch.vm_flavor != VM_PROTECTED_PKVM)
+>                 return;
 
-The *_protected__pkvm() shouldn't exist at all, because nVHE is the
-only context where it matters, and therefore we can specialise the
-*normal* accessors for the nVHE context (see below). No *_pkvm(), no
-kern_hyp_va(), nothing at all.
+I know this is a sketch, but just in case: that's inverted. The sync
+only applies to non-protected pKVM VMs (EL2 ignores it for protected
+ones), so it would be != VM_PKVM.
 
-I'm also dead against the unprotected_pkvm() stuff, as it looks
-pointlessly specialised. Specifically, this nugget is making my head
-spin:
+Otherwise, looks good to me.
 
-+       if (!kvm_vm_is_unprotected_pkvm(vcpu->kvm))
-                return;
-
-Honestly, we introduce the flavor stuff to make it easy to match
-things on a particular VM type in a readable way. So why isn't this
-reading:
-
-	if (vcpu->kvm->arch.vm_flavor != VM_PROTECTED_PKVM)
-		return;
-
-which makes it pretty explicit. You can gate it with a
-is_protected_kvm_enabled() if you want, as it was before.
-
-	M.
-
-
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 9e1fa00d96f7c..6b64f9610f3a3 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1519,41 +1519,22 @@ struct kvm *kvm_arch_alloc_vm(void);
- 
- #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
- 
--#define kvm_vm_is_protected(kvm)	((kvm)->arch.vm_flavor >= __VM_PROTECTED)
--/*
-- * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to convert the
-- * pointer to the hyp VA. With pKVM, the nVHE code runs with the hyp_vcpu,
-- * which is populated correctly.
-- */
--#define vcpu_is_protected(vcpu)						\
--	({								\
--		struct kvm *__kvm = READ_ONCE((vcpu)->kvm);		\
--		bool __protected = false;				\
--									\
--		if (__kvm) {						\
--			if (is_nvhe_hyp_code() &&			\
--			    !is_protected_kvm_enabled()) 		\
--				__kvm = kern_hyp_va(__kvm); 		\
--									\
--			__protected = kvm_vm_is_protected(__kvm);	\
--		}							\
--		__protected;						\
--	})
--
--#define kvm_vm_is_protected_pkvm(kvm)					\
-+#ifdef __KVM_NVHE_HYPERVISOR__
-+#define kvm_vm_is_protected(kvm)					\
- 	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
--
- /*
-  * Rely on is_protected_kvm_enabled() check in kvm_vm_is_protected_pkvm() to
-  * make sure the vcpu->kvm is always valid VA in the context
-  */
--#define vcpu_is_protected_pkvm(vcpu)					\
-+#define vcpu_is_protected(vcpu)						\
- 	({								\
- 		struct kvm *__kvm = READ_ONCE((vcpu)->kvm);		\
--									\
--		(__kvm && kvm_vm_is_protected_pkvm(__kvm));		\
-+		(__kvm && kvm_vm_is_protected(__kvm));			\
- 	})
--
-+#else
-+#define kvm_vm_is_protected(kvm)	((kvm)->arch.vm_flavor >= __VM_PROTECTED)
-+#define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
-+#endif
- 
- #define kvm_vm_is_unprotected_pkvm(kvm)		\
- 	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PKVM))
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 0f4e8b71fa85d..9ba86450fe4af 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -2624,7 +2624,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 	hva_t hva, reg_end;
- 	int ret = 0;
- 
--	if (kvm_vm_is_protected_pkvm(kvm)) {
-+	if (kvm_vm_is_protected(kvm)) {
- 		/* Cannot modify memslots once a pVM has run. */
- 		if (pkvm_hyp_vm_is_created(kvm) &&
- 		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
-
--- 
-Without deviation from the norm, progress is not possible.
+Cheers,
+/fuad
