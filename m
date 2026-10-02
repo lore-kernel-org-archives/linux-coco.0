@@ -1,79 +1,80 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B42497B7C;
-	Fri,  2 Oct 2026 13:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C14A0908;
+	Fri,  2 Oct 2026 13:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790946644; cv=none; b=py7xkSMXyOhuryA3tscZLrHfAM4WUGGBN8y9bqrqmF0R90XKL2ph4TbI+BSR0cnlBwc0Re9zCuL2p1pp2NojaWZPBWixGIOvH+Tr56VyYsGouwg4KWafdMlbAR/KnU/PU1Gu03vzMEPXFL+i/VVY9v5n/MSTIU3QHlBhPMTDMqo=
+	t=1790947952; cv=none; b=qSuYSfV4yg3/yNCHfdx5PmGyA7KaK2ld8eSWI2tdcdITCqcYFtTzrEpB/IvtrerLUwSaZs+FUguEsGsVfPcJIHBvwk0GAoTL7mVS4qAcXEsQw3AyylX0m2spNvOTOBXJKVEOQJ2cnn4oABTYA/2w9UMNdGKhVoseQ93o1PC8Eno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790946644; c=relaxed/simple;
-	bh=O9qAXfSNd9NNc6BfSIg0k7Umhi4nsbNeqt5uiHuVnJo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XwRNtAHL61Ex3fVRbJD3OPewxBLBh/Y+1cikVKj7BS6lSUn5iW7KtGV70Yfm0/xm671jBLZfoxSkOFdNJfNOTiSS2LXuR7bui8+P/ClteEEM1kwMOiA6GIh9cpSiOLfAK1b/wA/cgKX3ieb/IPWeFYSPReux4bpPXlQaoIY2ys4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TvUKc/n0; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790947952; c=relaxed/simple;
+	bh=QHruVCMoFYTNklV6Hc6Pj2xtU7OQpN+0VZLqbsT7pgE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RD5DQPG5Ynga61jxDkDxPV0PY3IEH8w9SW7jKGe/xVQ9QJs8uXcD+nRaRvmH5O1cwHA83QxMd1yEBCGPqu9rwW6YKyLEFW7BRQPgf2qtFWcqbvWEY6zd6n5jIIA51CvSzgA5q+mw8fwsNDYXGWQRQa1jTI8NCTN7JlbFYxJSoUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GwG7mW8q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TvUKc/n0"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52DC2497;
-	Fri,  2 Oct 2026 06:10:32 -0700 (PDT)
-Received: from [10.57.8.170] (unknown [10.57.8.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A46133F85F;
-	Fri,  2 Oct 2026 06:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790946635; bh=O9qAXfSNd9NNc6BfSIg0k7Umhi4nsbNeqt5uiHuVnJo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TvUKc/n0sjb4WDRQ07F+4BkYbOxgyiB2mxnuB8rQI06A3qAbwMiFuyCHfXf+hGr8M
-	 n6H+4gjuzlBeOlfDwc06mQ7avohuIYjKggc9aVN3ReSU9UWVISWu/JuGK+DUZEar3R
-	 00IYnRRT9wyCBGFAXQ9z+t6CLv8X0M2rcvfOqBYI=
-Message-ID: <bda01f30-acd1-4b79-9e15-75e839c198b9@arm.com>
-Date: Fri, 2 Oct 2026 14:10:29 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GwG7mW8q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487A81F000FF;
+	Fri,  2 Oct 2026 13:32:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790947951;
+	bh=5CS+1WddC9LU2dBRnyvoTVR6p6QDTIjDWTeJO+ovyZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GwG7mW8qhr86CaqjYE/Yd2RsfCqwMsCXI1iDGRoNkU4pgH6lUy+JL0qRaqhYUBG6E
+	 zl1APCpFBz4sEk0HnkVUwCVe1/xIrU7ttHBmyJ6P4B5SorjsGlEFBNe6193ibDRnnU
+	 j6nUHNrUC3NQCJS5fFiDDEyjyP1heho25GZBHmlyAjzJdeJI4iVbh3WP8e6mdRDH6B
+	 fmktOK6KbL/vwdzmLlp7dkWpn6MeJ3Y/7RcoE0Ft3eTFc5jaCl8r8P/Fm80rO41m1U
+	 Su3Pmj/VsRAGHjDwyCaduNE0dHjvSg5nTjpt2K3texfLOytpg0mSoBamivZMOo+b8Y
+	 FVGaLt7RCr3VQ==
+Date: Fri, 2 Oct 2026 14:32:25 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	Sudeep Holla <sudeep.holla@kernel.org>, will@kernel.org,
+	catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	jonathan.cameron@oss.qualcomm.com,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v22 07/10] kernel: hibernate: Add an arch hook for
+ preventing hiberation
+Message-ID: <20261002-sloppy-tremendous-guan-30cbe5@sudeepholla>
+References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+ <20261002061507.1600269-8-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
-Content-Language: en-GB
-To: Fuad Tabba <tabba@google.com>, Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
- catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
- gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
- alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
- lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com,
- jonathan.cameron@oss.qualcomm.com
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
- <20261001210703.1597150-6-suzuki.poulose@arm.com>
- <CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
- <86se2o2rbs.wl-maz@kernel.org>
- <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261002061507.1600269-8-suzuki.poulose@arm.com>
 
-On 02/10/2026 14:05, Fuad Tabba wrote:
-> Hi Marc,
+On Fri, Oct 02, 2026 at 07:15:03AM +0100, Suzuki K Poulose wrote:
+> Add a hook to allow arch code disable hibernation. On arm64, with an RMM active,
+> there could be pages that are delegated to the "Realm" security state. Any
+> access to them are fatal (e.g., hibernate save image or restoring an image to
+> a delegated page). pKVM host also has its restrictions on enabling hibernation.
 > 
-> On Fri, 02 Oct 2026 13:57:11 +0100, Marc Zyngier <maz@kernel.org> wrote:
-> [...]
->> Just to make sure. Is that what you had in mind?
+> Add a weak arch hook to let the architectures have a say.
 > 
-> A diff is worth a thousand words :) Yes, that's it. With that, every
-> remaining hyp user of vcpu_is_protected() only runs with pKVM, so the
-> kern_hyp_va() case in the macro can go too.
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Pavel Machek <pavel@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+> Cc: Sudeep Holla <sudeep.holla@kernel.org>
 
-Ack ! That does make things simpler. Marc beat me to it.
+FWIW, it makes sense for this RMM use case:
 
-Cheers
-Suzuki
+Reviewed-by: Sudeep Holla <sudeep.holla@kernel.org>
 
-> 
-> Cheers,
-> /fuad
-
+-- 
+Regards,
+Sudeep
