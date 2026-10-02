@@ -1,146 +1,74 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19B04DEC2B;
-	Fri,  2 Oct 2026 15:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B402264CA
+	for <linux-coco@lists.linux.dev>; Fri,  2 Oct 2026 18:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790955782; cv=none; b=Duvh1h8mnyyEFmzMKWblPkk75Twyxku+ng9z8/lNN8lN2FR3wIO47Ss/a0mybGMVWQtfOHWOpNSyN97prZrFrP62cj2ukvCQ6db9aZxYVUlR0jnCyNiwW6sQzH3P3Dl1HFBcaycdIaVuJOmHYe0AQ8AcXRqptIIxlvC556K/oqM=
+	t=1790966941; cv=none; b=lOUd63X5fFmpjIa675Nskihd/FfvMktrnWRpOhno5yw0NYfMF0eEdJyGwkDxlN0JUP6GOxmLTxtpSKu7DFBTkwTlP8WTUpScG8U7gCXUuv6F3/kLubO99OflAPHRqVCT3Hib49aVTHJExoL6nq6YfvMiHUsAYUoTU8qSEysE75w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790955782; c=relaxed/simple;
-	bh=r8+UnxmyfA5EDSuksv2pnxeyK5XiuiA24DSSA+ymriQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cve9XCq0OvziDnLfxZR7J8U5hPhSizaW4GVTgyxsHjiLzVweGXQkoxTPz/lDKoYYaLTxZYWyKfdpkK+rxvaLVtekejbeubQ4D6QYuGsHz2TVUVwUy6yPGz2/f9j8SvGI1z3EoBjn6Z/O9PQatZJAVT0wEYDVhEQ6LAEXvJURIT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Dzh5F1AK; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1790966941; c=relaxed/simple;
+	bh=sK5tYxknClWdAbipyaHWWd/2P2JBuzpdG2B3l1itnTM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bF1BmFn4gGiKmmb7iKqdMwBge49jY6/EsLswaA65qN5x2cOtco5oQrIvxKqPeHP0Mb2a3w9didZKXOPfs0bYrXrYvYHl+nCRaiD8m9c5WT3SuWsGBtHQ3/EBTzB9x9eCIFjvIqDAZZ80gO57WI8Ds2IvV9tdLgf1Fgkstp86l3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=J5txP/ih; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Dzh5F1AK"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="J5txP/ih"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8AFC2169C;
-	Fri,  2 Oct 2026 08:42:56 -0700 (PDT)
-Received: from [10.57.8.170] (unknown [10.57.8.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 288203F882;
-	Fri,  2 Oct 2026 08:42:54 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 754962F;
+	Fri,  2 Oct 2026 11:48:55 -0700 (PDT)
+Received: from gaia.lan (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C8D8E3F86F;
+	Fri,  2 Oct 2026 11:48:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790955779; bh=r8+UnxmyfA5EDSuksv2pnxeyK5XiuiA24DSSA+ymriQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Dzh5F1AKrpbHWa673YlUnb+QaPBv+ryTwN2qA0v7GExcq5nJEtJAKOdiFHBJNPEFP
-	 pFwajcDOxIV5F67JsKcpzvdtetsme/gidZj8IvCCmDJwCBdfv+qHhDNUFcqS9aqjss
-	 UiKs9r9V+zuQQ5J1dugVGegGFqHZdLdg0ZgZZMCw=
-Message-ID: <87659487-6a77-4b04-907a-859e1738395e@arm.com>
-Date: Fri, 2 Oct 2026 16:42:52 +0100
+	t=1790966938; bh=sK5tYxknClWdAbipyaHWWd/2P2JBuzpdG2B3l1itnTM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=J5txP/ih8bck06EuRngr+7zB63Fkc7cvc79d44Ech54BBRMQgq/9iRxrLautn8Gcm
+	 CWUllr853SSvrS/jswA+HC5OYsctGlnrsNsj36dp28dEkInrRpCdJqkRpGfNpu7YBx
+	 5OtLz09foehOym/HF++cccvkWoJWNTIGSNg/CIRA=
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	steven.price@arm.com,
+	gshan@redhat.com,
+	aneesh.kumar@kernel.org,
+	maz@kernel.org,
+	oupton@kernel.org,
+	mark.rutland@arm.com,
+	linux-coco@lists.linux.dev,
+	Fuad Tabba <fuad.tabba@linux.dev>
+Subject: Re: [PATCH v19] arm64: mm: Handle Granule Protection Faults (GPFs)
+Date: Fri,  2 Oct 2026 19:47:14 +0100
+Message-ID: <179096683483.2356212.14994831758332175382.b4-ty@b4>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260930164930.1388438-1-suzuki.poulose@arm.com>
+References: <20260930164930.1388438-1-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
-Content-Language: en-GB
-To: Marc Zyngier <maz@kernel.org>
-Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
- <20261001210703.1597150-6-suzuki.poulose@arm.com>
- <CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
- <86se2o2rbs.wl-maz@kernel.org>
- <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
- <86pkxs2npx.wl-maz@kernel.org> <10563362-5964-4ef7-b5d7-fe1d67ce4adb@arm.com>
- <86mrsw2jrn.wl-maz@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <86mrsw2jrn.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 02/10/2026 16:40, Marc Zyngier wrote:
-> On Fri, 02 Oct 2026 16:15:07 +0100,
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index 0f4e8b71fa85d..9ba86450fe4af 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -2624,7 +2624,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->>>    	hva_t hva, reg_end;
->>>    	int ret = 0;
->>>    -	if (kvm_vm_is_protected_pkvm(kvm)) {
->>> +	if (kvm_vm_is_protected(kvm)) {
->>
->> We have slightly different handling for Realms. The final code for this
->> looks like :
->>
->> 	if (kvm_vm_is_protected(kvm)) {
->> 		if (new &&
->> 		    new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)) {
->> 			return -EPERM;
->> 		}
->> 	}
->>
->> 	if (kvm_vm_is_protected_pkvm(kvm)) {
->> 		/* Cannot modify memslots once a pVM has run. */
->> 		if (pkvm_hyp_vm_is_created(kvm) &&
->> 		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
->> 			return -EPERM;
->> 		}
->> 	} else if (kvm_realm_is_created(kvm)) {
->> 		/*
->> 		 * Once the Realm is created, we cannot modify any slots that
->> 		 * could be providing private memory. i.e., guest_memfd backed
->> 		 * slots.
->> 		 * TODO: Handle trusted device private memory slots
->> 		 */
->> 		if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
->> 			return -EPERM;
->> 	}
->>
->>
->> Of course we could invert the checks to detect vm_is_protected_pkvm()
+On Wed, 30 Sep 2026 17:49:30 +0100, Suzuki K Poulose wrote:
+> If the host attempts to access granules that have been delegated to RMM
+> (for use as an RMM object or Realm Data), these accesses will be caught
+> and will trigger a Granule Protection Fault (GPF).
 > 
-> This is how I expect this stuff to be written.
+> A fault during a page walk signals a bug in the kernel and is handled by
+> oopsing the kernel. A non-page walk fault could be caused by:
 > 
-> 	if (kvm_vm_is_protected(kvm) && new &&
-> 	    new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY))
-> 		return -EPERM;
-> 
-> 	switch (kvm->vm_flavor) {
-> 	case VM_PROTECTED_PKVM:
-> 		/* Cannot modify memslots once a pVM has run. */
-> 		if (pkvm_hyp_vm_is_created(kvm) &&
-> 		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
-> 			return -EPERM;
-> 		break;
-> 	case VM_CCA:
-> 		/*
-> 		 * Once the Realm is created, we cannot modify any slots that
-> 		 * could be providing private memory. i.e., guest_memfd backed
-> 		 * slots.
-> 		 * TODO: Handle trusted device private memory slots
-> 		 */
-> 		if (kvm_realm_is_created(kvm) &&
-> 		    (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new)))
-> 			return -EPERM;
-> 		break;
-> 	default:
-> 		break;
-> 	}
-> 
+> [...]
 
-Yep, we can do that.
+Applied to arm64 (for-next/fw-rmi), thanks!
 
-Cheers
-Suzuki
+[1/1] arm64: mm: Handle Granule Protection Faults (GPFs)
+      https://git.kernel.org/arm64/c/27fececa00df
 
-
-> We have an enumeration. Make use of it. And the whole "is_created"
-> crap needs to be sorted one way or another.
-> 
-> 	M.
-> 
-
+This is needed since as soon as we add RMM activation, the kernel is
+exposed to GPFs via at least load_unaligned_zeropad(), even in the
+absence of guest_memfd.
