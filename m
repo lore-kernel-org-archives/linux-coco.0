@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C45290DBB;
-	Sat,  3 Oct 2026 05:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54787175A7B;
+	Sat,  3 Oct 2026 07:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791007050; cv=none; b=tUcEqt+KK7KIT2BHc59u0gX6eWLQjzzWoOnekMJy1lClP9Pj/OoyFDZce7uj3+FiJvMW5d4EU7Sb2+4M2u66z1lBFYqfjh05i9WYiv4y+bQi+uRQ6zbXQ17Q/pJxK9KKTNjNE5Ce8SeB8/YB0L/YdAySOCSM3gRZNcsHmDOivF8=
+	t=1791011268; cv=none; b=AyC6KdrI8OT2DArumwtZUUjwX5gEt+XvS0hSpKyKt6i2TI7NJMgPkQiS53wBLHiBhRN+A/pkL+9H/kpQfY7V4wmkdEXMURZM3WNhjDnC81fQI9sCbhrkpqTN1EDkgPBIHP/9/XM/qHSQHR0Hekawm3gXznKLBQmaN+sBGI0TBWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791007050; c=relaxed/simple;
-	bh=tFDkya3P/yKLJCp1gICFrurPqs3+IzYRZ7NfNR2Iomo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gtg2iDqgt84VJV3wBRTm8PAbTtLILT2xLiGhxE2azrw3+Vlh9qVfmNskP/OpYugfkW+Jm9fbm64P4AKvuOoc6HJp6HAfqpy6G1pdx7Oh0577IouLRhyiIEP6ryEEgwX2TCIQmJzuM2qqDrMIZm77XsLk7RaRsOXhzr4Xe6b9w7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bnit/Ug3; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1791011268; c=relaxed/simple;
+	bh=fcWSRwYqC7iDa1xgy0kg2U7wsZFZJLJk1a4HcvjWK5I=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Dydf4q3W0Voyf50XgviZJYn848C+//9W7IqBL7BuF9M68WWzfR+nuuCYvsK0qwsrYnp/HdKZlOARZ3N/TtlyK2C73+/qQHqC84382E3QqSeLJb5GQoEh50tEfQeTPZJAob4GM49upCADuZpWTglBBEYCZWn3qm6PuJMTLuKAQ5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=PPj0gM2R; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bnit/Ug3"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="PPj0gM2R"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD65A2F;
-	Fri,  2 Oct 2026 22:57:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25B942F;
+	Sat,  3 Oct 2026 00:07:43 -0700 (PDT)
 Received: from [10.57.8.170] (unknown [10.57.8.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 89EEB3F85F;
-	Fri,  2 Oct 2026 22:57:22 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 163E63F85F;
+	Sat,  3 Oct 2026 00:07:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791007047; bh=tFDkya3P/yKLJCp1gICFrurPqs3+IzYRZ7NfNR2Iomo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bnit/Ug3xfN4z/vm7IHCCvu/yhzCUCP2bfUgXXkrVejTIQk3nwQaE9o+lhUm+0OSB
-	 9pJJtzlOIpii1/BjB6NI+OdW/Tsb9O7Hxz/K6vPWvuJRiV814decK32VCBnJfnL24W
-	 hwCtS+hiUsp1YeQrX9W3rXlmXbrHVgi8SgQiDOlw=
-Message-ID: <b0c3dfcd-d537-4553-a3bb-0dc2d3d3d82c@arm.com>
-Date: Sat, 3 Oct 2026 06:57:18 +0100
+	t=1791011266; bh=fcWSRwYqC7iDa1xgy0kg2U7wsZFZJLJk1a4HcvjWK5I=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=PPj0gM2RRh21a27DM/q2/tyeKO0DsJnY3GH0PWCJS7UVYAEtbBp7Ez9b8ZaULD6Xj
+	 2dnwFTOkOPfgCECZeEJndniLsNWLRZQ+EHqxBlRJDHEgJ740NaFO9F3W9cUZE9u/PJ
+	 y52tz3Ck56R1gHYTC5TcmWjSuYfZE7m4ksWwojiM=
+Message-ID: <d7a398b3-5cbe-4a1c-bdd3-c1c5925dfc33@arm.com>
+Date: Sat, 3 Oct 2026 08:07:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,79 +35,114 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v22 00/10] firmware: arm_rmm: Add RMM v2.0 base RMI
- support
+Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
 Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Will Deacon <will@kernel.org>, maz@kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- jonathan.cameron@oss.qualcomm.com, Fuad Tabba <fuad.tabba@linux.dev>,
- Sudeep Holla <sudeep.holla@kernel.org>, rafael@kernel.org
-References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
- <179096683487.2356212.5555509708136944708.b4-ty@b4>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <179096683487.2356212.5555509708136944708.b4-ty@b4>
+To: Marc Zyngier <maz@kernel.org>, Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
+ catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com
+References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+ <20261001210703.1597150-6-suzuki.poulose@arm.com>
+ <CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
+ <86se2o2rbs.wl-maz@kernel.org>
+ <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
+ <86pkxs2npx.wl-maz@kernel.org>
+ <CA+EHjTy4rb+6z0bqh7sPqACES0EDpURdeoyiFGmdw3p0PENcOQ@mail.gmail.com>
+ <86o6dc2ka1.wl-maz@kernel.org> <83e79119-b331-4640-b2c7-cc8135d71c77@arm.com>
+In-Reply-To: <83e79119-b331-4640-b2c7-cc8135d71c77@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 02/10/2026 19:49, Catalin Marinas wrote:
-> On Fri, 02 Oct 2026 07:14:56 +0100, Suzuki K Poulose wrote:
->> This series adds the generic firmware layer for talking to the Realm
->> Management Monitor (RMM), as specified by the RMM v2.0-bet3
->> specification[1]. It is the first part of the Arm CCA host support that
->> was previously posted as part of the larger KVM series.
+On 03/10/2026 06:53, Suzuki K Poulose wrote:
+> On 02/10/2026 16:29, Marc Zyngier wrote:
+>> On Fri, 02 Oct 2026 15:37:00 +0100,
+>> Fuad Tabba <tabba@google.com> wrote:
+>>>
+>>> Hi Marc,
+>>>
+>>> On Fri, 02 Oct 2026 15:15:06 +0100, Marc Zyngier <maz@kernel.org> wrote:
+>>> [...]
+>>>> Honestly, we introduce the flavor stuff to make it easy to match
+>>>> things on a particular VM type in a readable way. So why isn't this
+>>>> reading:
+>>>>
+>>>>          if (vcpu->kvm->arch.vm_flavor != VM_PROTECTED_PKVM)
+>>>>                  return;
+>>>
+>>> I know this is a sketch, but just in case: that's inverted. The sync
+>>> only applies to non-protected pKVM VMs (EL2 ignores it for protected
+>>> ones), so it would be != VM_PKVM.
 >>
->> The split allows this RMM support to be used as a base for other work,
->> including Aneesh's PCI IDE support with Arm CCA RMM as the TSM,
->>   without depending on the KVM Realm support that will follow as separate
->>   series. (See more on that below)
+>> See what I meant about this stuff being completely intractable? I
+>> still have no idea what it means! ;-)
 >>
->> [...]
 > 
-> Applied to arm64 (for-next/fw-rmi), thanks!
+> Just to be clear: unprotected_pkvm() != (vm_flavor != VM_PROTECED_PKVM).
+> Rather, unprotected_pkvm => (vm_flavor == VM_PKVM).
 > 
-> Rafael, I took the liberty of merging patch 7 below adding an arch
-> hibernation hook needed for arm64 (I changed the subject as well to
-> PM: ...).
+> And the code wanted to bail out early for !unprotected_pkvm(). We can
+> stick in "is_protected_kvm_enabled()" for unprotected_pkvm predicate
 > 
-> For now the RMI is default off. We should only make it default y when we
-> have a deferred activation gated by kvm rmm option (or PCIe?).
-> 
-> There are a few typo fixes, some reordering of the Kconfig and Makefile
-> entries to preserve a somewhat alphabetical order. No functional change
-> though.
+> But, I can drop the helper and use the vm_flavor check.
 
-Thank you Catalin ! Much appreciated.
+FWIW: Here is the diff for the above change. If you are happy
+with the following, I could fold this in.
+
+
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 90547fbbc8ad7..bcec14c587119 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -772,7 +772,7 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+                 kvm_call_hyp_nvhe(__pkvm_vcpu_put);
+
+                 /* __pkvm_vcpu_put implies a sync of the state */
+-               if (kvm_vm_is_unprotected_pkvm(vcpu->kvm))
++               if (vcpu->kvm->arch.vm_flavor == VM_PKVM)
+                         vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
+         }
+
+@@ -1006,7 +1006,7 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu 
+*vcpu)
+
+         if (is_protected_kvm_enabled()) {
+                 /* Start with the vcpu in a dirty state */
+-               if (kvm_vm_is_unprotected_pkvm(vcpu->kvm))
++               if (vcpu->kvm->arch.vm_flavor == VM_PKVM)
+                         vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
+                 ret = pkvm_create_hyp_vm(kvm);
+                 if (ret)
+diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
+index 384c5d258c7f8..4e16e7d165515 100644
+--- a/arch/arm64/kvm/handle_exit.c
++++ b/arch/arm64/kvm/handle_exit.c
+@@ -490,7 +490,7 @@ static void handle_exit_pkvm_state(struct kvm_vcpu 
+*vcpu, int exception_index)
+  {
+         int exception_code = ARM_EXCEPTION_CODE(exception_index);
+
+-       if (!kvm_vm_is_unprotected_pkvm(vcpu->kvm))
++       if (!is_protected_kvm_enabled() || vcpu->kvm->arch.vm_flavor != 
+VM_PKVM)
+                 return;
+
+         /*
+
+
 
 Cheers
-Suzuki
-
-
+Suzuki>
+> Cheers
+> Suzuki
 > 
-> [01/10] firmware: arm_rmm: Add SMC definitions for calling the RMM
->          https://git.kernel.org/arm64/c/9e201043cbd2
-> [02/10] firmware: arm_rmm: Check for RMI support at init
->          https://git.kernel.org/arm64/c/24657f2ce536
-> [03/10] firmware: arm_rmm: Configure the RMM with the host's page size
->          https://git.kernel.org/arm64/c/a0382431a0fe
-> [04/10] firmware: arm_rmm: Add support for SRO
->          https://git.kernel.org/arm64/c/bc1360cabe27
-> [05/10] firmware: arm_rmm: Activate the RMM
->          https://git.kernel.org/arm64/c/fa193c502990
-> [06/10] firmware: arm_rmm: Ensure the RMM has GPT entries for memory
->          https://git.kernel.org/arm64/c/c20b65a03eff
-> [07/10] kernel: hibernate: Add an arch hook for preventing hiberation
->          https://git.kernel.org/arm64/c/5487bff69b85
-> [08/10] arm64: Block hibernate and kexec while RMM is active
->          https://git.kernel.org/arm64/c/fe4a24613bc2
-> [09/10] firmware: arm_rmm: Add wrappers for Realm related RMI commands
->          https://git.kernel.org/arm64/c/c4a16839abb1
-> [10/10] firmware: arm_rmm: hotplug: Skip memory added to ZONE_MOVABLE
->          https://git.kernel.org/arm64/c/06898e5320b5
+>>     M.
+>>
+> 
 
