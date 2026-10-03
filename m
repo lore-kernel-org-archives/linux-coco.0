@@ -1,134 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27EF39023A;
-	Sat,  3 Oct 2026 17:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27FE39D6E7
+	for <linux-coco@lists.linux.dev>; Sat,  3 Oct 2026 22:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791048560; cv=none; b=GSMha9ZXQCXaIAX4k1nbm8K8D9UPGpbZb7/LBK4yUsrr46IzYuFWbY4b8GGPGHToTIE0svvGJZBUSsLMCpHENMhgdC3IpnV42w+VFlKXFt89Fk6VzD+DxRGAYh5OoBq9QzbSuYaEZLLPD9Vxy3H8jJFr2+YQyQB1WmbQ7YMGsz0=
+	t=1791066812; cv=none; b=iJyL7Yi4FXO2rKum9ctEm0pvYkiMPomCLV5KgiuT7+ycGJY3lHSY6ETd480AZSopO6+vJJuZqXY5qGwEsM0JSnR5FFEzEHRhHUGQnJoQ3B2ReMLQSeufT+i23iepmkGHiMQYeeThrb59XvoyYGLPR7UjLec6luX3Cbp5umDLCVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791048560; c=relaxed/simple;
-	bh=CqnWtRM63vGOFDy8hHfwMapffw7itr4fH4oD25dDnNI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BUK78teXvVRAA4QDp7IhABtuTOaAbcrnElPK6JlqdvM8SivG5OaGihyqOSh+RcZJgc2JCE/3KKhsvBYMPmGemqwgCOv/HVZr4nxc2OgDternotDEElMej4q6a406Jlw2KB10nAzditXcEA8M4Bx5mxpnFTZc+TiqGRLQfP5xE/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0KeWhWQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791066812; c=relaxed/simple;
+	bh=B+AzlxaEDOIbUR2XgxY3SS/3ebqvCC16gLh4COnivCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XffGa2COkYtYM7fzftUr3Tf+8ey6CVtz67eAp6vhTvI6oV02TJwTxdKIwozI9vmWaru0i/cidwjOk8Kg8sOKirR3S2ta8cJMeG2Gd9bF0a3VqjjaSoNn40i350GNgiiFjHK65rqMdGhh4gWpMS4S6/hHuoNvrHwu1/WPD+bLU20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f/fCL1W+; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0KeWhWQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC821F0089B;
-	Sat,  3 Oct 2026 17:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791048558;
-	bh=/By2OE0+/5lBAO79HI0ShVxfSlShXYgYRuhLK9eN7no=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=c0KeWhWQDKHWS7d50/NydMyub1tr1wvxe5M1WAakXEmbrIAlZmehc+TqbIVgm8yEf
-	 Pd10HJC1byIsdZ33IVR2Nn+XeC+XUc9buAf7GZCkyig+/wC04+rf/4607jd8PVvsqb
-	 Ncos1ve2x3vaA6VGCaa9lnlpXbiZMZu5sVMER6EjT9VEMjlSsiwxo6zibnbmHf017B
-	 BAX+fr2PeaBbdwDuLTNqfAUQYGskWTpkohYpUdIE0Yv8dkBGhAmnwU0/lmoEFoE1ha
-	 VyCxfljyoUxqI0iGqUIFCNJVE/I1+DojNkomIYHCfpjaKU920gPdlJD/UpGMpabq2M
-	 oRkJpadK6g/Sg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xD3Xv-0000000GbIs-3dJ5;
-	Sat, 03 Oct 2026 17:29:16 +0000
-Date: Sat, 03 Oct 2026 18:32:23 +0100
-Message-ID: <87ld8e3d20.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f/fCL1W+"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48b0ef9c76eso508608f8f.0
+        for <linux-coco@lists.linux.dev>; Sat, 03 Oct 2026 15:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791066809; x=1791671609; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KOWsHQRSHb+0OiLgXs2lkzN27RX1yq7wkT9nw+eMr9Q=;
+        b=f/fCL1W+9U+5DCzHL2a8S/M7tvzzFw2INp05e5niPUgz288PijwoBBxy+gBAGaY5xI
+         ZCPjQzRu7Wih40g0AsJK9Z2DgQbdQi5NEeEJhkadCF8A2cNPb2uujl+U5R3YNmBEKA/0
+         x4TxY39gYHBx12xH+FM9lUjIgIiaekhH0ilK0hTNAqAhvOeFO+9uzCktzRVaS0I4uCFP
+         T3qyrctrECNOI+HRrrUg3YnIv70e7SPeyPgMy6sE1INh5GrjNcOjza5OCyko21/IOgGC
+         xotIXMC4CIB+ySNcfPSPaIQtRFuz+c7eTnNuc/zzLEYqknSLGHfWH2qM3SyE8uXKFrGj
+         3xmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791066809; x=1791671609;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KOWsHQRSHb+0OiLgXs2lkzN27RX1yq7wkT9nw+eMr9Q=;
+        b=VC8BbeINTSw3VdawU1hPw8mrzbHrz44lR9I6vDulpkl+uM93AatosjgpR9iwmscdTT
+         okvozx+KpaE92YtgrvTR2deTnPqg065DUkRN2OoPZMqF7dTwY4J5T2pq+1XyjP+MhwWB
+         QZr8fVdZlO/PY9ifX+1AfJmIShb8ixciihIwrKS1xrQYEgp6XKA/zLB39hkKkaaiubRG
+         8G54cbr0kwo1ETZZaXDDZnlUE2UV1AHjGfeYAjOtoFE90guCbI7veL3oIUai+JcZPZrx
+         eMJnFB36M6+L8RJS96fYJFfLtIQdB//6EjlOlAOWLNU2nlfh9jwxTAQ6PGb7Ch4ldzsN
+         oIrw==
+X-Gm-Message-State: AFq9FYJCGVeroBWCfT6tKh9Ja3c5XRoTj/BEubI8S2qBeGxqSpevPgJM
+	MOy3ZM3vhz7d+SniH55piVVGeb+1Fd81O4CHEW4ONKMyuXcgMzguJ1/A
+X-Gm-Gg: AYBFou2Oooi9JYm2uM5D2W19NVwNTOuWI2LEueX4FVB9x5KfZYdsC/KTq7R9UV8OTXi
+	dTaABgt51DCOPBHL0BsYVH2ys0NofsIrqN9C2ERHxhAF4zj5rS3cZXAe5J/IuFW+ynSVVEdsVoO
+	kWlFHz9liJKllhVPUImOVCIH1ET+lPTfr9pYTO0U/dBAxDBipO63/ybYsiSb1rXWvZymXRGrlgj
+	x91PIoaj+aq6BNo638FidfE/2zGtOCwDg74AgT3syVuQpobxpX/7O2gTSahod64mUW6NIyvho9U
+	L2h+8dyQoTZ4OV3NWJXeaLPIF3RVqz7v5DNB2yS2Iy0FPkb24zlVRnza6vh9Obps8J/Ig9JjmSO
+	sKOTmUEeboss9edbPOp94hL3c2YxoyTiKsdlfqBO85javWNDxBzDf0FyEm1h2thOf8Uvg1OQVGb
+	XlKaAyPFIVQs2LIgto2S+/TyXigcewxPDOOObi/KxjLsxt2yJI8dQmvcZYK96G/I5fmwN1Jy3s5
+	hNOgh4Tlpmr0aZdoLpwRlxjbQZ/bGnGv+X00lXrX3hZbXxcn6WuJ1zcS//6ExuRNJRIfe9EfA==
+X-Received: by 2002:a5d:5f91:0:b0:486:f907:ebec with SMTP id ffacd0b85a97d-48c47fe4ee6mr5052425f8f.31.1791066808651;
+        Sat, 03 Oct 2026 15:33:28 -0700 (PDT)
+Received: from voyt-laptop-dell.fritz.box ([2001:9e8:bd7a:9200:44fb:d9e0:fc9a:51c9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c5270569fsm1886371f8f.5.2026.10.03.15.33.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 15:33:28 -0700 (PDT)
+From: Dmitry Voytik <voytikd@gmail.com>
+To: Kiryl Shutsemau <kas@kernel.org>,
+	Chao Gao <chao.gao@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-coco@lists.linux.dev,
+	x86@kernel.org,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v21 10/23] KVM: arm64: Add VM specific callback for S2 MMU operations
-In-Reply-To: <ce2e8885-d848-48d3-b82e-49fcd9a6cfcc@arm.com>
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
-	<20261001210703.1597150-11-suzuki.poulose@arm.com>
-	<86ik3j2m5v.wl-maz@kernel.org>
-	<9873fb9d-6f32-46f6-bcac-6a52e293d011@arm.com>
-	<ce2e8885-d848-48d3-b82e-49fcd9a6cfcc@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Dmitry Voytik <voytikd@gmail.com>
+Subject: [PATCH] coco/tdx-host: add Kconfig description
+Date: Sun,  4 Oct 2026 00:32:37 +0200
+Message-ID: <20261003223237.513456-1-voytikd@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sat, 03 Oct 2026 17:12:28 +0100,
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->=20
-> On 03/10/2026 16:30, Suzuki K Poulose wrote:
-> > On 03/10/2026 10:01, Marc Zyngier wrote:
-> >> On Thu, 01 Oct 2026 22:06:50 +0100,
-> >> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >>>=20
-> >>> Add VM type specific S2 MMU operation backends which can be
-> >>> initialized per
-> >>> VM flavor, to keep the handling cleaner.
-> >>>=20
-> >>> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-> >>> Tested-by: Gavin Shan <gshan@redhat.com>
-> >>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> >>> ---
-> >>> Changes since v19:
-> >>> =C2=A0 - Add a blank line in kvm_arch_flush_remote_tlbs()
-> >=20
-> >=20
-> >>> =C2=A0 struct kvm_s2_mmu {
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_vmid vmid;
-> >>> @@ -332,6 +345,8 @@ struct kvm_arch {
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 fgu[__NR_FGT_GROUP_IDS__];
-> >>> +=C2=A0=C2=A0=C2=A0 const struct kvm_vm_s2_ops *vm_s2_ops;
-> >>> +
-> >>=20
-> >> If you're touching this patch, can you please move this pointer next
-> >> to the vcpu_ops pointer?
-> >=20
-> > Sure, I will do that.
->=20
-> Sorry, this is only stored in kvm_arch, while the vcpu_ops are stored
-> in the vcpu_arch, to avoid pointer chasing vcpu->kvm->arch->.
+Fix the issue when the driver always gets compiled as a module.
+How to reproduce the issue:
+	make mrproper
+	make defconfig
 
-Ah, my bad,
+	./scripts/config \
+	  -e CMA \
+	  -e ALLOC \
+	  -e KVM \
+	  -e KVM_INTEL \
+	  -e KVM_INTEL_TDX \
+	  -e INTEL_TDX_HOST \
+	  -e TDX_HOST_SERVICES \
+	  --refresh
+	make olddefconfig
+	make mod2yesconfig
+	grep '=m$' .config
 
-> I could move it closer to the vm_flavor ?
+	returns only this driver as module:
+	  CONFIG_TDX_HOST_SERVICES=m
 
-Maybe. Check whether that introduces a hole or not (I'm trying to keep
-this structure as packed as possible). But we can always change this
-later on.
+"make menuconfig" doesn't let switch from =m to =y either.
 
-Thanks,
+Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
+---
+ drivers/virt/coco/tdx-host/Kconfig | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-	M.
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+index 57d0c01a4357..5a13ec6f51e8 100644
+--- a/drivers/virt/coco/tdx-host/Kconfig
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -1,6 +1,10 @@
+ config TDX_HOST_SERVICES
+-	tristate
++	tristate "TDX host user interface driver"
+ 	depends on INTEL_TDX_HOST
+ 	select FW_LOADER
+ 	select FW_UPLOAD
+ 	default m
++	help
++	  See INTEL_TDX_HOST for details.
++
++	  If unsure, say N.
+-- 
+2.55.0
 
---=20
-Jazz isn't dead. It just smells funny.
