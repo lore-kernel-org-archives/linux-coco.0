@@ -1,126 +1,99 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27FE39D6E7
-	for <linux-coco@lists.linux.dev>; Sat,  3 Oct 2026 22:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4133B47EB;
+	Sat,  3 Oct 2026 23:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791066812; cv=none; b=iJyL7Yi4FXO2rKum9ctEm0pvYkiMPomCLV5KgiuT7+ycGJY3lHSY6ETd480AZSopO6+vJJuZqXY5qGwEsM0JSnR5FFEzEHRhHUGQnJoQ3B2ReMLQSeufT+i23iepmkGHiMQYeeThrb59XvoyYGLPR7UjLec6luX3Cbp5umDLCVo=
+	t=1791070481; cv=none; b=gCcOCZQ6ZT5EXrECpKtkBAHkjaY6KwJeOGx2FEfXXHW9CAWO/vMGvvyqUE1G9PDVFgFR50FnscGlRQHdE1FlATODOYEbftTwtb4Wl8+pUegzG8eMpVySWeqnydmx02ZRM54LGwXjRz1q5qFtzIZijyk7cHBOx/C7HZDXnOCqNiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791066812; c=relaxed/simple;
-	bh=B+AzlxaEDOIbUR2XgxY3SS/3ebqvCC16gLh4COnivCk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XffGa2COkYtYM7fzftUr3Tf+8ey6CVtz67eAp6vhTvI6oV02TJwTxdKIwozI9vmWaru0i/cidwjOk8Kg8sOKirR3S2ta8cJMeG2Gd9bF0a3VqjjaSoNn40i350GNgiiFjHK65rqMdGhh4gWpMS4S6/hHuoNvrHwu1/WPD+bLU20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f/fCL1W+; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791070481; c=relaxed/simple;
+	bh=ChtEv5Gs/odsv1gaJSaXotF2IXOOEMl3n2Kr1I5juAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NhzCThDs22izecrU2eXIrcx6h+AjE+I2Uh81K0nvb2wiqMIrKYb1U+RJjSzzct3GGSCYt0GzhYbVKP50YMd1E5RuVpLVp++GK0GnkKevTrm1aNVXiS3oyuSoE6InRLxqEiqYDut777kZqLKjF9C39CzA+fnt/P8nTXKk0bpWaBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKYjrD04; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f/fCL1W+"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48b0ef9c76eso508608f8f.0
-        for <linux-coco@lists.linux.dev>; Sat, 03 Oct 2026 15:33:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791066809; x=1791671609; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KOWsHQRSHb+0OiLgXs2lkzN27RX1yq7wkT9nw+eMr9Q=;
-        b=f/fCL1W+9U+5DCzHL2a8S/M7tvzzFw2INp05e5niPUgz288PijwoBBxy+gBAGaY5xI
-         ZCPjQzRu7Wih40g0AsJK9Z2DgQbdQi5NEeEJhkadCF8A2cNPb2uujl+U5R3YNmBEKA/0
-         x4TxY39gYHBx12xH+FM9lUjIgIiaekhH0ilK0hTNAqAhvOeFO+9uzCktzRVaS0I4uCFP
-         T3qyrctrECNOI+HRrrUg3YnIv70e7SPeyPgMy6sE1INh5GrjNcOjza5OCyko21/IOgGC
-         xotIXMC4CIB+ySNcfPSPaIQtRFuz+c7eTnNuc/zzLEYqknSLGHfWH2qM3SyE8uXKFrGj
-         3xmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791066809; x=1791671609;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KOWsHQRSHb+0OiLgXs2lkzN27RX1yq7wkT9nw+eMr9Q=;
-        b=VC8BbeINTSw3VdawU1hPw8mrzbHrz44lR9I6vDulpkl+uM93AatosjgpR9iwmscdTT
-         okvozx+KpaE92YtgrvTR2deTnPqg065DUkRN2OoPZMqF7dTwY4J5T2pq+1XyjP+MhwWB
-         QZr8fVdZlO/PY9ifX+1AfJmIShb8ixciihIwrKS1xrQYEgp6XKA/zLB39hkKkaaiubRG
-         8G54cbr0kwo1ETZZaXDDZnlUE2UV1AHjGfeYAjOtoFE90guCbI7veL3oIUai+JcZPZrx
-         eMJnFB36M6+L8RJS96fYJFfLtIQdB//6EjlOlAOWLNU2nlfh9jwxTAQ6PGb7Ch4ldzsN
-         oIrw==
-X-Gm-Message-State: AFq9FYJCGVeroBWCfT6tKh9Ja3c5XRoTj/BEubI8S2qBeGxqSpevPgJM
-	MOy3ZM3vhz7d+SniH55piVVGeb+1Fd81O4CHEW4ONKMyuXcgMzguJ1/A
-X-Gm-Gg: AYBFou2Oooi9JYm2uM5D2W19NVwNTOuWI2LEueX4FVB9x5KfZYdsC/KTq7R9UV8OTXi
-	dTaABgt51DCOPBHL0BsYVH2ys0NofsIrqN9C2ERHxhAF4zj5rS3cZXAe5J/IuFW+ynSVVEdsVoO
-	kWlFHz9liJKllhVPUImOVCIH1ET+lPTfr9pYTO0U/dBAxDBipO63/ybYsiSb1rXWvZymXRGrlgj
-	x91PIoaj+aq6BNo638FidfE/2zGtOCwDg74AgT3syVuQpobxpX/7O2gTSahod64mUW6NIyvho9U
-	L2h+8dyQoTZ4OV3NWJXeaLPIF3RVqz7v5DNB2yS2Iy0FPkb24zlVRnza6vh9Obps8J/Ig9JjmSO
-	sKOTmUEeboss9edbPOp94hL3c2YxoyTiKsdlfqBO85javWNDxBzDf0FyEm1h2thOf8Uvg1OQVGb
-	XlKaAyPFIVQs2LIgto2S+/TyXigcewxPDOOObi/KxjLsxt2yJI8dQmvcZYK96G/I5fmwN1Jy3s5
-	hNOgh4Tlpmr0aZdoLpwRlxjbQZ/bGnGv+X00lXrX3hZbXxcn6WuJ1zcS//6ExuRNJRIfe9EfA==
-X-Received: by 2002:a5d:5f91:0:b0:486:f907:ebec with SMTP id ffacd0b85a97d-48c47fe4ee6mr5052425f8f.31.1791066808651;
-        Sat, 03 Oct 2026 15:33:28 -0700 (PDT)
-Received: from voyt-laptop-dell.fritz.box ([2001:9e8:bd7a:9200:44fb:d9e0:fc9a:51c9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c5270569fsm1886371f8f.5.2026.10.03.15.33.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 15:33:28 -0700 (PDT)
-From: Dmitry Voytik <voytikd@gmail.com>
-To: Kiryl Shutsemau <kas@kernel.org>,
-	Chao Gao <chao.gao@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-coco@lists.linux.dev,
-	x86@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dmitry Voytik <voytikd@gmail.com>
-Subject: [PATCH] coco/tdx-host: add Kconfig description
-Date: Sun,  4 Oct 2026 00:32:37 +0200
-Message-ID: <20261003223237.513456-1-voytikd@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKYjrD04"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1893E1F0089C;
+	Sat,  3 Oct 2026 23:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791070480;
+	bh=McNvrbaXa8pRLURHJC626TEpOy+lAMWBxLS6cgVjDHM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YKYjrD04ggURlFPKc1Vix6lrnkAR1oOBLG4eEPU4ljnqd1Tz0nmhKLafGe6AnqqxV
+	 d6BdpYUI1yV0EuT02SJba4pY3pe3XOwINxr7997soIB7rmH3gybXUJcSIeZH2ifWo4
+	 rZvfpw/i4LerKgqZX6tQ63XaA1qgSr8t7Tm435aQuqUJBI7G8RC1QkybgXD5y/c9Cj
+	 ATaJdHVWvBEZvBrQTffTB192KOnIwVmpCeazB7HHPv5pLMvDI6Dwm4u8wp33/+xP9v
+	 SNllzi3B1DfwKrCBLe2trEaZohwCtIRe8Xl+71x5EAJKH+132rimFkXVJne1j8bIxh
+	 EUQlErFdzmFUw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id D8EE5198003A;
+	Sat,  3 Oct 2026 19:34:35 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sat, 03 Oct 2026 19:34:37 -0400
+X-ME-Sender: <xms:C5HBasxVVLk6p18CVsx9YwRdV6isHzVuA-PBDRaOpeVEkHXG0Oz8Xg>
+    <xme:C5HBakMXOHy3TjE5Nc2HsA16s7JQUGvPpMOLXWnKcxlwoy4k0hIAphMhFFaZdIaF6
+    iJDMFV44rxn7dOc36xHAEZrfL1CkECqVCI2Rw8EP0sVf8jQPLcORQBL>
+X-ME-Received: <xmr:C5HBam1ZSR0iYNPWX7LoGst8448ULPFH8bfI-HQbe99Ip9a9ZrzlPfAM3YE>
+X-ME-Proxy-Cause: dmFkZTEdHe940eMECZiWakIif7cd+T/iqkkgGwdGKD6o5Y3YI6YAy4zxNQlyF890iSqBlD
+    WIo7gM+kuyvs6ffFMZzz36iAAXIZRNW9iLFCxtGfOmIxr240HqvHyzHdLljN2T67P8GTuL
+    y5jVbyBYWhjAAULmBB6sCstWvmhU2/SywInr9NsjCW4+udjjakE1JnpVSK9M83QfWnY45J
+    i0ur14UsVGe9TZf0A15Kt4eX1jocS2GvO+4c5JB1OlidDy3j70GRSQdrcn71jV/015xwFw
+    WkA620GdOPCCDHNiGSI1aumLRBXCBZe1e8Zhucc99LyPx2bBckvUO/r6XcuvifqT7SWQBs
+    BINBB1OfjPOUG7W8dPY/1ImIqzWnOkVeIFBLHCwoLfGoXGopsLsSAEO6QKOH3ogWWU3epB
+    I0h7YztqaCd12PQDpK7+5RFoAPH0y/Y0kGxT0F1NIWbnSRnOs7VDGThfcSXtUlcxTMQGqa
+    Pi7FsR24cj7JMPoH1p6jAK4Y7/6OQQNfkrm7a1eWiLJ9GMqnT3LtJscRDQcVVBqbi6GGbT
+    dIDGU39MLfxezW3ytMPGcFl72sI6QmgyD22J3sgKJs/dJk1GhpTB2G1FlIn/WrM3/j3xd3
+    NgW6B2z1Y9usNjJsprcimxt5T3OINYAgtjI354xSwxVwPVPQ+Qo61TAe1LjA
+X-ME-Proxy: <xmx:C5HBakES68ZgUATiGiYmmD62wFwN7X9BgDacj9w5SbAZ56A0v1g1uA>
+    <xmx:C5HBalh-MeXoOPEkAUKiukpdz4KbfrWUZdsS9ul1q9h9Eajq9pHgOw>
+    <xmx:C5HBalft_tUbkIogweCujQ7VBTgTeQUXfpJnkDQMBLI3Vduqb1PZPg>
+    <xmx:C5HBajxe7LRZ5RnvwOxwliFvZwDiQ2mlv1D0H99ly8TFHNW-dPFjTg>
+    <xmx:C5HBanY2QKVSLGKKCeI6nybtn61WOiEGmHFBmcx1Pm0JkpqFnjEq7_lY>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 3 Oct 2026 19:34:34 -0400 (EDT)
+Date: Sun, 4 Oct 2026 00:34:33 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+Cc: "corbet@lwn.net" <corbet@lwn.net>, 
+	"rdunlap@infradead.org" <rdunlap@infradead.org>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] x86/early_printk: Add earlyprintk=tdx to drive
+ the UART with TDVMCALLs
+Message-ID: <asGQ6wkOmLGkeYsL@thinkstation>
+References: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
+ <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
+ <arZbBqArD9NqWPry@thinkstation>
+ <c41ffc542bd677b71bcecbe4e2c2e2a3b605ffcf.camel@intel.com>
+ <ar_GLgzxdWUdXn0Z@thinkstation>
+ <dfe6e3aa7bd37679d2d5e559b9af8e254d88044f.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dfe6e3aa7bd37679d2d5e559b9af8e254d88044f.camel@intel.com>
 
-Fix the issue when the driver always gets compiled as a module.
-How to reproduce the issue:
-	make mrproper
-	make defconfig
+On Fri, Oct 02, 2026 at 07:31:00PM +0000, Verma, Vishal L wrote:
+> > +/* Only referenced when X86_FEATURE_TDX_GUEST is enabled, no stubs needed */
+> > +unsigned int tdx_serial_in(unsigned long addr, int offset);
+> > +void tdx_serial_out(unsigned long addr, int offset, int value);
+> > +
+> > 
+> 
+> .. Should these also be:
+> 
+> +__noendbr unsigned int tdx_serial_in(unsigned long addr, int offset);
+> +__noendbr void tdx_serial_out(unsigned long addr, int offset, int value);
 
-	./scripts/config \
-	  -e CMA \
-	  -e ALLOC \
-	  -e KVM \
-	  -e KVM_INTEL \
-	  -e KVM_INTEL_TDX \
-	  -e INTEL_TDX_HOST \
-	  -e TDX_HOST_SERVICES \
-	  --refresh
-	make olddefconfig
-	make mod2yesconfig
-	grep '=m$' .config
+Yes, my bad.
 
-	returns only this driver as module:
-	  CONFIG_TDX_HOST_SERVICES=m
-
-"make menuconfig" doesn't let switch from =m to =y either.
-
-Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
----
- drivers/virt/coco/tdx-host/Kconfig | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-index 57d0c01a4357..5a13ec6f51e8 100644
---- a/drivers/virt/coco/tdx-host/Kconfig
-+++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -1,6 +1,10 @@
- config TDX_HOST_SERVICES
--	tristate
-+	tristate "TDX host user interface driver"
- 	depends on INTEL_TDX_HOST
- 	select FW_LOADER
- 	select FW_UPLOAD
- 	default m
-+	help
-+	  See INTEL_TDX_HOST for details.
-+
-+	  If unsure, say N.
 -- 
-2.55.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
