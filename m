@@ -1,276 +1,297 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010010.outbound.protection.outlook.com [52.101.46.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFD53769FC
-	for <linux-coco@lists.linux.dev>; Mon,  5 Oct 2026 07:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791183835; cv=fail; b=jeiocc8rrnSsjBMbz240VxAUNqnnIJ9dnN8NCbGFoNXEg9D43Krhe1DlsK+9LHZNiM9jaW0lApR628TOujnk9DxacT2VJKXs7ylDxhRryI80Z98x7GTTHFVhi7oOPCqjosWTF22PQIUR7D3WV5M3GpPb9S+jiAMmzBEwKCdP0Vk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791183835; c=relaxed/simple;
-	bh=6YVFgDKjpB32oDKr93MuEb9P2RHrLX1NkvrowuzNQG0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t60RRftWE2XOcBGiCBXpGscSC8MbuSNss8sUNciNsejelAVe1qUBPnaK8DL+B4pDQLsXaOEMOxJ2VvgMQ25a+A6msQz+Ejpv9gUo5lBSj854vGYp4ylky+g65DJXpXhtpWktiELbdI+zu4B48IjNAsnxM3YEfys0aMkgUFSkQlM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=snD9H5cK; arc=fail smtp.client-ip=52.101.46.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A9842AF85;
+	Mon,  5 Oct 2026 09:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791191289; cv=none; b=EekRorF2qvkrBCREUAaerCVK8fU+anobN6IJL0z+uQiaqibra4LaHEWLSV35zxU9zeoCnY/Pjdd+KJKUO03wg1zH2iNTRrNHsOAiWjNW1J0wWV/IBNC+X9AXxRyWSbqCGVMowqaF3wJO2+z112gpgWoKQu2CsjE6jRns4GthWhA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791191289; c=relaxed/simple;
+	bh=dXQ18aMobkg8vJ7RpOVIi1jqlWhubANiu7se/D4beaQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fUm33t2Oq9xqeRlFBBkxZT5gaVmrs7pH1uXIWYXkijnJHJs50+ORzA1UEjr3iwyLPghPuoeTfvRa7urPaTQSy2wd0X3jiPBnNWAEx5FhvdQNhNbsXYaIDRf01gDWhEtcYHq53jS+rJT4TKNKS1mgLF0S6aXpojFk9tBLbM/ddYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=INet3jcp; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="snD9H5cK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UyTRdbgiYAawvsc4hV1u+GYtN8gWyzUjjO1oLxEpFXEpiIVspGpw6Itp2Fw2ciw1HooR07Wd5ugC6pGVxivW+/EV3N9PorfBsUaEmuQO0SR4GebIIZ5bkBr0gV4HkNZ34aiIkz55HyotM6d7aGFKWC4JdTsBv6AEy+aa6H/MOZVTEtMEfhjc6P+YsVsdCclN8HLFMRa9uPof6MjdEXxfOe1D9rN6i2vrhBguQGJgYzToxO7p9rbmhqvwP6HqGwcw7g0JvCUZE/U6M8C1/HGX8AmzOiruBl4kCCSIuiFhWF7Lz7XX7CXEV51oXbdrDaDzODVseK0scUcfpqivCllgFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Bk4jN7DxI0XK2wRetl9w+Hjh1ExSTtRc9AuiVPSwMyk=;
- b=hwuveHl0+3yECPHwejcVmu1WoX/5Ua1sStNawXQzZ9m4+T2IKORdr0PRvGZJID05D6k/qBU9zNKJ6QJ5hdZxxnZNY7zw8XFFzAd8xpeFXouH5uWGyxFV5IHFgxWCWMn+O4PivwfKBEqZLt3BjunUYUgG11TSdO6okhiWHDw8wbxHTBplr3Z4RDi4y3hw9jkq4NvdGgU2r5uuxdHiMk8Y4X39BWczIz854LouXhTak6OOGTb16V/lvFIyAPGLNIW6CPdJQEAPlX3rzL3ur+AP8IbM+bNESiacAGTKwyvvl/4IzP5ge9D4r8Y6g3BlvDY/r+tzZ9wdjlEhuRazKVY9Kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Bk4jN7DxI0XK2wRetl9w+Hjh1ExSTtRc9AuiVPSwMyk=;
- b=snD9H5cK/AA9RtfF3wRj6fRnFlIkPKTqYJuHI4wV6IkZ6n4/REtyLqb2R2aZTanTG/y2yTebpjeGo95TCwht9M/ujEjZXPLjCP9W45uZM6f0el2pK+62rS3UTTxSJZNm6Rj7yx8aiEGnJ+NL9/2Xcmzy34ndV5TCf8ScGHDgmd5lpxNdMS4ah0SMswO0ecT+1PDfKBtkmHy4bvkGed9tw0u7VWwp8Oyx2+jLot1/0LbVH0rLfv+13zc2QMbPAPKK19LZt2/hzkghla3/YrKLwBu0fUapX9A1ZzRBBbOcT8Lw5GHoVyxFwSnLKz1qy+1tusB4NTAqjum/Tn3STYyWIQ==
-Received: from BN9PR03CA0754.namprd03.prod.outlook.com (2603:10b6:408:13a::9)
- by CH3PR12MB8457.namprd12.prod.outlook.com (2603:10b6:610:154::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Mon, 5 Oct
- 2026 07:03:45 +0000
-Received: from LV8PEPF0000006B.namprd03.prod.outlook.com
- (2603:10b6:408:13a:cafe::3b) by BN9PR03CA0754.outlook.office365.com
- (2603:10b6:408:13a::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Mon, 5
- Oct 2026 07:03:45 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- LV8PEPF0000006B.mail.protection.outlook.com (10.167.248.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Mon, 5 Oct 2026 07:03:45 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
- 2026 00:03:27 -0700
-Received: from NV-9TMPJL3.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
- 2026 00:03:22 -0700
-From: Ankit Agrawal <ankita@nvidia.com>
-To: <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <dave@stgolabs.net>, <jic23@kernel.org>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>, <jgg@nvidia.com>,
-	<aneesh.kumar@kernel.org>, <aik@amd.com>, <yilun.xu@linux.intel.com>,
-	<iweiny@kernel.org>, <ming.li@zohomail.com>, <icheng@nvidia.com>,
-	<bhelgaas@google.com>, <smadhavan@nvidia.com>, <ankita@nvidia.com>,
-	<ilpo.jarvinen@linux.intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
-	<andriy.shevchenko@linux.intel.com>, <linux-coco@lists.linux.dev>
-Subject: [RFC PATCH 4/4] PCI/TSM: Support multiple coherent ranges via coh_idx
-Date: Mon, 5 Oct 2026 09:02:52 +0200
-Message-ID: <20261005070252.84810-5-ankita@nvidia.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="INet3jcp"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CE90152B;
+	Mon,  5 Oct 2026 02:08:03 -0700 (PDT)
+Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 777E53F66F;
+	Mon,  5 Oct 2026 02:08:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791191286; bh=dXQ18aMobkg8vJ7RpOVIi1jqlWhubANiu7se/D4beaQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=INet3jcpdIszjC2dHD2v/DYePPWtp8RGta2fNAlUC+nAebHLNbvjoojUh8T96Uvid
+	 LoHdDSCdgL6gdr0cFQegwdI5s8vtBEDmzumsN7MlYPpkyl6r0J8rTTPqU1kxql+ouD
+	 oP7EOeYMovvF67GjyRBbsqh4OsfKfRZeVwZoX7E0=
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: maz@kernel.org,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	tabba@google.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com,
+	jonathan.cameron@oss.qualcomm.com,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH v22 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
+Date: Mon,  5 Oct 2026 10:07:31 +0100
+Message-ID: <20261005090754.2140522-1-suzuki.poulose@arm.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261005070252.84810-1-ankita@nvidia.com>
-References: <20261005070252.84810-1-ankita@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PEPF0000006B:EE_|CH3PR12MB8457:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71fb85aa-7a46-45f4-a801-08df22aecc33
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|36860700016|82310400026|11063799006|5023799004|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	U6m3qa83G86e3jgKbKZ4xTnmRBvbiYnY1WCXliSebPb6MfHq8KkX88REx20LrFwMhotRsp4p4VwLRoz39gfgemYSbi+QarbZxaMzJ1zsnJ2a9MkM+u8xxQg7aJscK6o1QSeYgLsOVAsoqe55lx3C8y26/+ybEUivRMByzcliI+BeDG08o6eMq1YB6yD7MHKpYOgY5QYDxKTnFcwxB2AeKPvc/CHksGzegtHmjGQALhRwsF2jIhoGRcB9x3uMesymgpE4YZvwv9utIg9lCpwvMeV0wynOmVZ3VeIrY/GfOINcy6MfhbaPVM+Hez6xW+uWOh8ID59mNvxbPNHpKaFSIJepsP4HwejxX+bwgfT7R81gC7DD5zl88uTDpjmhQUJ/Jo7+D7AA1+IjBLjFNLw8sLjdA3IJiy0msbtKeYmEYy8oTd1DLm6k6cxGR1l8AtdnjXuuneOFG/sT4eh6GwZ39hMhLT6SEUfA9RlpRLSjbxoL99UrJpCl+KgK9JABVSFwXyyNaXZkoxIU3C11YLAnRWHzSyhmE2OJWEgBPpGnczNmFRbVDWppD6llYtAB1AJqpBhhSqMq0pjowWarWKoGhknM7z97jPbBln7PMeNFAZpfMGf74YQu3Iq8zYgc+5itinX/4IjCQvQgCQZNY2y2EA1F73GvAIDNaA1u/Y9MUxF/jCG0JlrP21uYx6MDSI0iB5j9zi4Z5IYPftg+CqJQOw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(36860700016)(82310400026)(11063799006)(5023799004)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	KiOit5pW3ywKAsIpXbXa/LR8oDfUyBrpGYZKJ7ACw2LDSDsdvVqFw6xK3wlJBOFdOUmGL2vVK8afFxNNVbVAXf3nhQmK6WDlXnSAwW7B6gE5qwbcgem+Qm640TFAz4XqoPautcynBmFEV/yIq/Z+ibiD6MvMiYIx/XbAYvzrOrxcmgyrm3FIu/JIaoTKM5ItT/t93dOR2SeT3CtsHrIdjCfZzwXJoWnrwqllcftyg7j6LsDmYXeiLT4js3bIMjY9MxT1DADkj91wcnWX3r9Abz3q/B3+7cMbZhFp1cnP/0FUrUvMzvUzHfcjojeswazFRFzoWmIk3mZYI+Ff7AZff0Lwe6qfjTs4Cagh1hGCAtGleWMIoJrirNRazMedDC9ajJ0deHKsPlBxdYOo03D+xi9T+3ZtCCIMpcA+9bzSmzBKfarsF+6fuNzlbH+7VXkT
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 07:03:45.3606
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71fb85aa-7a46-45f4-a801-08df22aecc33
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	LV8PEPF0000006B.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8457
 
-Devices with multiple decoders can report more than one coherent
-window in a single interface report. Generalize the single
-0xffff sentinel into a small id space:
-PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_TO_COH_IDX() treats any range id in
-the top PCI_CXL_MAX_COHERENT_RANGES values (counting down from ~0) as
-a coherent range index coh_idx. This keeps id 0xffff (~0) backward
-compatible with the single-range case (coh_idx 0) while allowing ~1,
-~2, and so on for additional windows.
+This series is a trimmed down version of the Arm CCA KVM support, previously
+posted here [0]. Like in the v17, we have tried to split the entire series
+into the following chunks.
 
-Only id 0xffff (~0) is spec-defined: Arm RME System Architecture
-(DEN0129) section B2.3.5.2 reserves range ID 0xFFFF for a device's
-region range. ~1, ~2, and so on are this tree's own extension of that
-idea, invented to cover multi-range reporting.
+ 1) Base RMM RMI support under drivers/firmware/arm_rmm -> [1]
+ 2) Linux Host support for handling GPFs - [2]
+ 3) NEW: Enlighten KVM arm64 about the different VM types and use call
+    backs for the VM type, rather than spilling the is_this_type_of_vm()
+    everywhere. Adds VCPU and Stage2 MMU related callbacks with support
+    for the existing VM types. There are other places where we may be
+    able to abstract, but those need careful performance evaluations
+    to make sure they are fit (e.g., vcpu_run)
 
-Use coh_idx through pci_tsm_coherent_range() to select the coh_idx
-entry of pdev->coh_resource[], the precommitted-decoder snapshot and
-relax pci_tsm_mmio_alloc() to accept more than one coherent region.
-The coherent-range entries follow all BAR entries in the report
-and allow multiple trailing coherent ranges.
+   With that in place we generalise the predicate "kvm_vm_is_protected()"
+   to cover all  "Confidential" VMs (which includes Protected VM and Realms),
+   allowing us to handle common themes without having to do things like :
 
-Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-Assisted-by: Claude:sonnet-5
----
- drivers/pci/tsm.c | 78 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 46 insertions(+), 32 deletions(-)
+     if (kvm_vm_is_protected() || kvm_vm_is_realm())
 
-diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-index 1d736b606a7c..b4f18a7c7187 100644
---- a/drivers/pci/tsm.c
-+++ b/drivers/pci/tsm.c
-@@ -1031,7 +1031,14 @@ EXPORT_SYMBOL_GPL(pci_tsm_mmio_teardown);
- #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE BIT(2)
- #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
- #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
--#define PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT 0xffff
-+
-+/*
-+ * Only id ~0 (0xffff) is spec-defined (Arm RME DEN0129 section B2.3.5.2);
-+ * ~1, ~2, etc. extend it for multi-range reporting: id ~N selects coherent
-+ * window N, keeping coherent ids disjoint from BAR ids
-+ * (0..PCI_STD_NUM_BARS-1) without a separate flag.
-+ */
-+#define PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_TO_COH_IDX(id) ((u16)~(id))
- 
- /* An interface report 'pfn' is 4K in size */
- struct pci_tsm_devif_mmio {
-@@ -1052,37 +1059,39 @@ struct pci_tsm_devif_report {
- 
- #ifdef CONFIG_CXL_RESET
- /*
-- * pci_tsm_coherent_range() - resolve the device's coherent CXL window
-+ * pci_tsm_coherent_range() - resolve the device coherent CXL window
-  * @pdev: device owner of the reported ranges
-+ * @coh_idx: which coherent range to resolve, per
-+ *	     %PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_TO_COH_IDX()
-  * @out_base: host physical (guest IPA) base of the coherent window
-  * @out_size: size of the coherent window
-  *
-- * The coherent range carries no BAR number, so its address comes from
-- * pdev->coh_resource[], a pre-driver-bind snapshot of committed CXL HDM
-- * decoders.
-+ * Each @coh_idx names one of the device coherent (CXL) windows. It carries
-+ * no BAR number and so its address comes from pdev->coh_resource[@coh_idx],
-+ * which is a snapshot of committed CXL HDM decoders regions.
-  *
-- * Return: 0 with *@out_base / *@out_size set from the first populated entry,
-- * or -ENODEV if no entry is populated.
-+ * Return: 0 with *@out_base / *@out_size set, or -ENODEV if @coh_idx is out
-+ * of range or has no populated coh_resource[] entry.
-  */
--static int pci_tsm_coherent_range(struct pci_dev *pdev, u64 *out_base,
--				  u64 *out_size)
-+static int pci_tsm_coherent_range(struct pci_dev *pdev, unsigned int coh_idx,
-+				  u64 *out_base, u64 *out_size)
- {
--	for (int i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
--		struct resource *res = &pdev->coh_resource[i];
-+	struct resource *res;
- 
--		if (!(res->flags & IORESOURCE_MEM))
--			continue;
-+	if (coh_idx >= PCI_CXL_MAX_COHERENT_RANGES)
-+		return -ENODEV;
- 
--		*out_base = res->start;
--		*out_size = resource_size(res);
--		return 0;
--	}
-+	res = &pdev->coh_resource[coh_idx];
-+	if (!(res->flags & IORESOURCE_MEM))
-+		return -ENODEV;
- 
--	return -ENODEV;
-+	*out_base = res->start;
-+	*out_size = resource_size(res);
-+	return 0;
- }
- #else
--static int pci_tsm_coherent_range(struct pci_dev *pdev, u64 *out_base,
--				  u64 *out_size)
-+static int pci_tsm_coherent_range(struct pci_dev *pdev, unsigned int coh_idx,
-+				  u64 *out_base, u64 *out_size)
- {
- 	return -ENODEV;
- }
-@@ -1107,6 +1116,7 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
- 	u64 reporting_bar_base, last_reporting_end;
- 	u32 mmio_range_count;
- 	int last_bar = -1;
-+	bool seen_coherent = false;
- 	int i;
- 
- 	if (report_len < sizeof(*devif_report))
-@@ -1135,28 +1145,32 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
- 		u32 attr = __le32_to_cpu(mmio_data->attributes);
- 		int bar = FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID,
- 				    attr);
--		bool coherent =
--			bar == PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT;
-+		unsigned int coh_idx =
-+			PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_TO_COH_IDX(bar);
-+		bool coherent = coh_idx < PCI_CXL_MAX_COHERENT_RANGES;
- 
- 		if (coherent) {
--			if (i != mmio_range_count - 1) {
--				pci_dbg(pdev, "Coherent reporting range is not last\n");
--				return NULL;
--			}
-+			seen_coherent = true;
- 
- 			/*
--			 * No BAR names the coherent range, so fail closed if
--			 * neither a CXL region nor a committed HDM decoder
--			 * resolves its address.
-+			 * Fail closed if pdev->coh_resource[coh_idx] isn't
-+			 * populated: nothing else in the report identifies
-+			 * the window's address.
- 			 */
--			if (pci_tsm_coherent_range(pdev, &range_base,
-+			if (pci_tsm_coherent_range(pdev, coh_idx, &range_base,
- 						   &range_len)) {
--				pci_dbg(pdev, "No CXL region or committed HDM decoder for coherent reporting range\n");
-+				pci_dbg(pdev, "No populated coh_resource[] entry for coherent range %u\n",
-+					coh_idx);
- 				return NULL;
- 			}
- 
--			/* Coherent range is last and not part of the BAR sequence. */
-+			/* Coherent ranges are not part of the BAR sequence. */
- 		} else {
-+			if (seen_coherent) {
-+				pci_dbg(pdev, "BAR reporting range follows a coherent range\n");
-+				return NULL;
-+			}
-+
- 			if (bar >= PCI_STD_NUM_BARS ||
- 			    !(pci_resource_flags(pdev, bar) & IORESOURCE_MEM) ||
- 			    (pci_resource_flags(pdev, bar) & IORESOURCE_UNSET)) {
+   Also replaces the code with precise check for a given VM type to
+   avoiding combination of if (). e.g,, kvm_vm_is_unprotected_pkvm(kvm).
+   The checks under arch/arm64/kvm/{nvhe,pkvm} still retain the vm_is_protected()
+   check as pVMs are the only possible protected VMs there.
+   
+ 4) Bare minimal Realm VM support without the actual functionality to
+    run a Realm. This would help the maintainers to review the series in
+    smaller chunks. This doesn't depend on [1] and can be independently
+    merged, without being "functional".
+    This series includes vcpu operations and the s2 vm operations, which
+    do need the RMI driver backend to be meaningful. But the KVM handler
+    is in the right shape. The remaining changes would be added once the
+    RMI firmware library lands. Also covers the SET_ONE_REG/GET_ONE_REG
+
+ 5) Core implementation of the RMI driver for KVM and actual enablement of the
+    Realm support. This depends on (1), (2) and the guest-memfd-in-place
+    conversion series v12 from Ackerley. This is available here at the integration
+    branch [3]
+
+
+NOTE: There is a conflict with Fuad's patch to drop the WARN for unknown vm
+ioctls, that is queued in ~fixes~ in v7.3-rc5. I have dropped the
+WARN_ON_ONCE() to match the code after resolution.
+
+  https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev 
+
+This series is comprised of (3) and (4) above.
+
+The integration branch has been tested with the following components:
+
+  tf-RMM:   main branch (commit 5e6e2acd) compliant to RMM-v2.0-beta3 [4]
+  kvmtool: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git tag:cca-kvm-v20
+
+[0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
+[1] Linux firmware RMI v22 https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/fw_rmm/v22
+[2] Linux GPF Host  https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/host-gpf/v19
+[3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v222integration
+[4] https://support.arm.com/documentation/den0137/2-0bet3/
+
+Changes since v21:
+ https://lore.kernel.org/all/20261001210703.1597150-1-suzuki.poulose@arm.com
+ - Keep the kvm_arch struct packed, by moving psci_version, closer to vm_flavor and also moving the vm_s2_ops, closer to vm_flavor.
+ - Drop the kern_hyp_va() for vcpu_is_protected() in nVHE, instead ban nVHE
+   code from using vcpu_is_protected() (by using BUILD_BUG_ON()) and convert
+   all users to vcpu_is_protected_pkvm()
+ - Drop kvm_vm_is_unprotected_pkvm() in favor of open coded check against VM_PKVM
+ - Drop WARN_ON_ONCE() in the kvm_vm_ioctl_allowed() to match Fuad's fix merged in v7.3-rc5
+ - Move '&' to the KVM_*_OPS macros
+ - Nuke __unmap_stage2_range() and define per-VM callback for stage2_unmap_range, removing the KVM_PGT_FN() hack for the call, and also for the others
+ - Drop NULL check for vm_s2_ops callbacks and always define everything.
+ - Add no_age_gfn() which plugs in for pVMs and Realms for the vm_age_*gfn callbacks
+
+Changes since v20:
+ https://lore.kernel.org/all/20260924160504.853911-1-suzuki.poulose@arm.com
+
+ - Allow KVM_ARM_CAP_DEVICE_CTRL for Realms to allow SMCCC filtering
+ - New patch: Deny vcpu features not compatible with protected VMs
+ - Remove suprious ":w" in commit description (Thanks Catalin)
+
+Changes since v19:
+ https://lore.kernel.org/all/20260920212845.707-1-suzuki.poulose@arm.com
+
+ - Collect Reviews from Jonathan, and Tested-by from Gavin - Thank you both!
+ - Add a new patch prepare the the vcpu_set_pauth_traps for the addition of
+   VCPU callbacks. Could have merged with the existing one, but that becomes
+   quite too much to follow.
+ - Add another new preparatory patch to replace vcpu->kvm => new local variable
+   kvm in kvm_handle_guest_abort(), making it also easier for abstracting memory
+   abort handling.
+ - Fix vcpu_is_protected for nvhe hyp code, by using kern_hyp_va() for vcpu->kvm
+ - Use READ_ONCE() to read the host kvm->arch.vm_flavor in EL2 pKVM code
+ - Move the replacement of !kvm_vm_is_protected() in kvm_arch_vcpu_put() with
+   kvm_vm_is_unprotected_pkvm() to this patch
+ - Drop ',' after the end marker in vm_flavor enums
+ - Wrap kvm_arm_vmid_clear_active() in 'vcpu_put_mmu()' to compliment the
+   vcpu_prepare_mmu and call it conditional on !pKVM.
+ - Update the time loading constraints comment to clarify that it only applies
+   for VHE.
+ - Sort the vcpu ops by vm_flavor enum value
+ - Add blank line in kvm_arch_flush_remote_tlbs()
+ - Drop local variable ret and directly return from if...else for kvm_vm_mem_abort
+
+Changes since v18:
+  https://lore.kernel.org/all/20260915160141.3543048-1-suzuki.poulose@arm.com
+
+ - Patch count down by 3, after merging different patches together, see more below
+ - Retain NULL vm_offset for pVMs and move the counter offset flag initialisation
+   to kvm_timer_init_vm() - Marc
+ - Merge widening the scope of kvm_vm_is_protected() to the patch where the
+   flavors are introduced(Marc) and also dropped Fuad's reviewed-by, as the
+   patch is now bigger.
+ - Merge "Use kvm_vm_is_unprotected_pkvm" for !kvm_vm_is_protected to patch
+   where flavor is introuced.
+ - Merge "vgic-v3" mandate and preventing vgic-v2 mappings to a single patch,
+   where kvm_vm_hyp_is_distrusting() introduced - Fuad
+ - Drop kvm_vm_hyp_is_pkvm(), reverting to is_protected_kvm_enabled()
+ - Use is_protected_kvm_enabeld() for pKVM guest flavor checks.
+ - s/PKVM/pKVM for commit descriptions too
+ - Make sure the vm_mem_abort callback is !NULL at init time.
+ - Bail out early for !pKVM && !Realm VMs in kvm_vm_ioctl_allowed(). Use
+   kvm_vm_hyp_is_distrusting()
+ - WARN_ON_ONCE(!kvm) for kvm_vm_ioctl_allowed() as it must be only called with
+   a valid kvm instance and only from kvm_arch_vm_ioctl()
+ - Rename kvm_arch_vm_{ext,ioctl}_allowed => kvm_vm_{ext,ioctl}_allowed - Fuad
+ - Move kvm_realm_ext_allowed() to asm/kvm_rmi.h - Fuad
+ - Don't expose PMCR_EL0 to the userspace until we support PMU
+
+
+Changes since v17:
+https://lore.kernel.org/all/20260908162223.1683432-1-suzuki.poulose@arm.com 
+
+ - Add a patch to fix pKVM handling of SYS_CNTVCT/CNTPCT to override the counter
+   offset (Patch1)
+ - Restrict Realms to VGIC v3 only - New patch
+ - Add kvm_vm_is_unprotected() to replace is_protected_kvm_enabled() &&
+   !kvm_vm_is_protected() - New patch
+ - Use macro to initialize the per-flavor vcpu, s2_vm ops
+ - Add a wrapper to initialise vcpu and s2_vm ops with a BUILD_BUG_ON()
+   for the array size checks against VM flavour types
+ - Drop forward decalaration of the vcpu, s2_vm operations that spoiled the
+   fun ;-)
+ - Remove irrelevant comment about the order of timer loading for !VHE
+ - Use the explicti kvm_call_hyp_nvhe for pKVM specific ops
+ - Don't call nvhe_vcpu_put from pkvm_vcpu_put, open code them
+ - Drop cpu argument for vcpu_load() callback. We set the cpu
+   before the callbacks are invoked
+ - Drop kvm_vm_is_confidential(), instead widen the scope of kvm_vm_is_protected()
+   to cover pVMs and Realms. Add an explicit helper kvm_vm_is_protected_pkvm()
+   for the cases where we need to check for a "pVM on pKVM"
+ - Add kvm_vm_hyp_is_pkvm() for checking if the VM is running on pKVM.
+   covers both unprotected and pvms. But really uses is_protected_kvm_enabled()
+   under the hood
+ - Add kvm_vm_hyp_is_distrusting() to cover pKVM guests (both protected and
+   unprotected) and Realms. Use this for preventing the vgic v2 mapping into
+   Stage2 for a guest
+ - Drop superfluous !kvm check from kvm_vm_ioctl_enable_cap() - Sashiko
+ - Drop KVM_CAP_CREATE_IRQCHIP, as we don't support VGIC_V2 for Realms
+ - Filter out the vm_ioctls that are based on blocked cap.
+ - Repurpose the pkvm plumbing for filtering the caps and ioctl to generic
+   and plumb the Realm support in
+ - s/PKVM/pKVM for the comments
+ - Drop type argument for pkvm_init_host_vm and also drop protected variable,
+   now that we have the vm_flavor to check.
+ - Use kvm_vm_hyp_is_pkvm() to replace is_protected_kvm_enabled() with valid
+   kvm instance
+ - CCA: Merge the GET/SET REG handling patches into a single patch
+ - CCA: Reword the commit description for SVE VL access handling
+ - Reordered the patches to group the Realm realted to changes to the rear end
+
+Jean-Philippe Brucker (2):
+  KVM: arm64: CCA: Expose SVE VL register before VCPU finalization
+  KVM: arm64: CCA: Control user register access for Realms
+
+Steven Price (4):
+  KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+  KVM: arm64: CCA: Introduce Realms
+  KVM: arm64: CCA: WARN on injected undef exceptions
+  KVM: arm64: CCA: Support timers in realm RECs
+
+Suzuki K Poulose (17):
+  KVM: arm64: protected VM: Handle user writes to CNTVCT_EL0/CNTPCT_EL0
+  KVM: arm64: Disable Steal time accounting for protected guests
+  KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  KVM: arm64: Track the type of VM in kvm_arch
+  KVM: arm64: Don't call vcpu_set_pauth_traps for pKVM host
+  KVM: arm64: Refactor the vcpu_load to allow for VM specific callbacks
+  KVM: arm64: Add vcpu load/put call backs for flavors
+  KVM: arm64: Prevent unsupported vcpu features for VM types
+  KVM: arm64: Consolidate stage2 unmap range into kvm_stage2_unmap_range
+  KVM: arm64: Add VM specific callback for S2 MMU operations
+  KVM: arm64: Use a local kvm pointer in kvm_handle_guest_abort()
+  KVM: arm64: Abstract out memory abort handling
+  KVM: arm64: Mandate VGIC v3 for pKVM VMs and Realms
+  KVM: arm64: CCA: Add a new mode for supporting Realm guests
+  KVM: arm64: CCA: Add VCPU load/put for Realms
+  KVM: arm64: CCA: Add bare minimal S2 operations for Realm
+  KVM: arm64: CCA: Don't expose unsupported capabilities for realm
+    guests
+
+ .../admin-guide/kernel-parameters.txt         |   3 +
+ arch/arm64/include/asm/kvm_emulate.h          |  16 +
+ arch/arm64/include/asm/kvm_host.h             |  90 ++++-
+ arch/arm64/include/asm/kvm_pgtable.h          |  10 +-
+ arch/arm64/include/asm/kvm_pkvm.h             |  25 +-
+ arch/arm64/include/asm/kvm_rmi.h              |  85 ++++
+ arch/arm64/include/asm/virt.h                 |   1 +
+ arch/arm64/kvm/Makefile                       |   2 +-
+ arch/arm64/kvm/arch_timer.c                   |  34 +-
+ arch/arm64/kvm/arm.c                          | 367 ++++++++++++++----
+ arch/arm64/kvm/guest.c                        |  73 +++-
+ arch/arm64/kvm/hyp/include/nvhe/pkvm.h        |   2 +-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                |   6 +-
+ arch/arm64/kvm/hyp/nvhe/switch.c              |   4 +-
+ arch/arm64/kvm/hyp/nvhe/timer-sr.c            |   2 +-
+ arch/arm64/kvm/hyp/pgtable.c                  |   1 +
+ arch/arm64/kvm/hypercalls.c                   |   4 +-
+ arch/arm64/kvm/inject_fault.c                 |   1 +
+ arch/arm64/kvm/mmio.c                         |   1 +
+ arch/arm64/kvm/mmu.c                          | 273 +++++++++----
+ arch/arm64/kvm/pkvm.c                         |   6 +-
+ arch/arm64/kvm/pvtime.c                       |  14 +-
+ arch/arm64/kvm/rmi.c                          |  18 +
+ arch/arm64/kvm/sys_regs.c                     |  28 +-
+ arch/arm64/kvm/vgic/vgic-init.c               |   2 +
+ include/kvm/arm_psci.h                        |   2 +
+ 26 files changed, 858 insertions(+), 212 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+ create mode 100644 arch/arm64/kvm/rmi.c
+
 -- 
 2.43.0
 
