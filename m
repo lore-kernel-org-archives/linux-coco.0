@@ -1,323 +1,451 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6050D44C51A;
-	Mon,  5 Oct 2026 09:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1408B3C0A13
+	for <linux-coco@lists.linux.dev>; Mon,  5 Oct 2026 11:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791191365; cv=none; b=IhZ82+ncXccfKFvHAwrXzwJ0UQm45w545Pt8JlA/x4uyL6uvfbva8F5W835cif0RKEMnNTozXFfLcO/wTxpcSwAbUigHsWenqD0fUpuuyC2DOVC2D5Hrp6PUVif9g0qcyAOkz7yRFbghgf/XCZEyLcu2+5lzI3xJG+RJhcY7v7M=
+	t=1791199079; cv=none; b=NdI2h6aJtf0SKTDYFKWEhDhY88a7KhgMze1mF9zcNaZoXcwEiS+g9f3etHzJMN7duPvoigqTmXeLN1j5bJsf6vUDa1NXGV5TYK+l02wusiUaYMdLqoHvkt3U0rAKGazX9dkgfaszM4VYqGx99+2KdWUYQpXlT63LHuYht+FDldY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791191365; c=relaxed/simple;
-	bh=8jAq80x3TURNKIO2NDN3Otpk86ME1KBkTs13mlfLINg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arwX9HYoJD/gOL+8bl7/281/u3htHyMxVnPp6xhxvSHL0epl7uhcm314eBnyKAkL3nC7aDKGrYeEz8J2pFUYJ8tQKUvTEii57ANxhGSgY2UqUwRA1A3dNKlMWD36W4CL0K6/bNAQn/l0Zo4s5UDrrJxvvgL8BRJiCrnXipbtDdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=nfXn1QBA; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791199079; c=relaxed/simple;
+	bh=8IUrosC6W/xobqKOSM43nQ6GGRlHLOM590t73UTw3kQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type; b=W0yp0jZJlge0eKwpr84Zfou85TM2nmysNdgX7kgVaPjTK5fcuUFqxwD2A8qLokRgJSe8TyXt0HfEJAoQq8+JQ678jiHXtb5kEMHnbX+dkIQTTcokBEIBtErzQe3xtUimv/sjHDjYk4Lr/7tIy8FSdtI8DP0gdj77iRNyiOtf8wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=r9gUI9KX; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=/nyhSE7B; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="nfXn1QBA"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8732D1684;
-	Mon,  5 Oct 2026 02:09:19 -0700 (PDT)
-Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CD9A53F66F;
-	Mon,  5 Oct 2026 02:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791191362; bh=8jAq80x3TURNKIO2NDN3Otpk86ME1KBkTs13mlfLINg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfXn1QBAVJ1qhY4f4ZbsZnXaxl3Wh/CUm9b6/AmOz4H1Q9KP4oiBgSoKwPPGC1US5
-	 E44BqKA7uopYZkSQvJ+fIrqT8dZbNnbkHrNKTull83I01+6GVVGsW4zxD6eSB1OpXs
-	 UhjYp3JuaeH+30efqGt8kq6HbSMZegPFRSQtngrw=
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: maz@kernel.org,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v22 23/23] KVM: arm64: CCA: Control user register access for Realms
-Date: Mon,  5 Oct 2026 10:07:54 +0100
-Message-ID: <20261005090754.2140522-24-suzuki.poulose@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261005090754.2140522-1-suzuki.poulose@arm.com>
-References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="r9gUI9KX";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="/nyhSE7B"
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1791199069; bh=VG7SijGObD/mat/VETltwvm
+	0Dx4PXid4IbEr+4FUyqI=; b=r9gUI9KX2eL/TJVGF6WsGdcg/iaTiFZHq6ag42CNAbYTvuwXSb
+	TtmgWJjGZCecv1w9c2Uw1BUqno1Eh4J2fWtltVlxw7mxNm2d2uqlorES4BjmWUv5G73nWnn7vkr
+	HWT6VnbBZRCRKJm8tl5V2WpbAiy7W9NkJPtt/pdcYJ4+dqZxFyYddPOcQgAHG8xlFdwCN6fKuKj
+	IRY7W07+jitQhvAgGDYhxd3L95ad119qQzRkwjv0QZ5woKFHdeqh/HZaLZZRTYSicjlO/IpLzxH
+	k/JmYwAllcYOVNeW2xDp/vRF3NtUITF1rnktV+FsySt29tf54/SNYctecDiSoNLDJzg==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1791199069; bh=VG7SijGObD/mat/VETltwvm
+	0Dx4PXid4IbEr+4FUyqI=; b=/nyhSE7B0ZhVRn6DBgUhbKCZMAqNUSBYtdzNE6VHZh7MCJwVwd
+	q9sQUBPwyC5dyO/9G2XhS5wD5LxfPptTtfAQ==;
+Date: Mon, 05 Oct 2026 12:17:49 +0100
+From: Bradley Morgan <brads@mainlining.org>
+To: ankita@nvidia.com
+CC: Smita.KoralahalliChannabasappa@amd.com, aik@amd.com,
+ alison.schofield@intel.com, andriy.shevchenko@linux.intel.com,
+ aneesh.kumar@kernel.org, bhelgaas@google.com, dave.jiang@intel.com,
+ dave@stgolabs.net, icheng@nvidia.com, ilpo.jarvinen@linux.intel.com,
+ iweiny@kernel.org, jgg@nvidia.com, jic23@kernel.org,
+ linux-coco@lists.linux.dev, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ ming.li@zohomail.com, smadhavan@nvidia.com, vishal.l.verma@intel.com,
+ yilun.xu@linux.intel.com
+Subject: Re: [RFC PATCH 1/4] PCI/TSM: Create MMIO descriptors via TDISP Report
+In-Reply-To: <20261005070252.84810-2-ankita@nvidia.com>
+Message-ID: <317D506F-8079-4776-8EBC-2BA1A7535BC9@mainlining.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+On 5 October 2026 08:02:49 BST, Ankit Agrawal <ankita@nvidia.com> wrote:
+>After pci_tsm_bind() and pci_tsm_lock() the low level TSM driver is
+>expected to populate the TDISP GET_DEVICE_INTERFACE_REPORT response
+>payload for the device.
+>
+>Add pci_tsm_mmio_alloc()/pci_tsm_mmio_free() to parse that report into
+>a set of encrypted MMIO ranges, and pci_tsm_mmio_setup()/
+>pci_tsm_mmio_teardown() to mark those ranges as encrypted in iomem via
+>a new encrypted_iomem_resource tree (IORES_DESC_ENCRYPTED). With those
+>descriptors the TSM driver can use pci_tsm_mmio_setup() to inform
+>ioremap() how to map the device per the device expectations. The VM
+>is expected to validate the interface with the relying party before
+>accepting the device for operation.
+>
+>pci_tsm_mmio_alloc() also recovers the obfuscated starting address for
+>each encrypted MMIO range, since the VM is never disclosed the HPA
+>that correlates to the GPA of the device's MMIO. The obfuscated
+>address is BAR aligned.
+>
+>Based on an original patch by Aneesh Kumar K.V [1], and cherry-picked
+>from Dan Williams' upstream commit [2]. Major functional differences
+>from Dan's posting is due to the lack of evidence-store infrastructure
+>yet (device_evidence / DEVICE_EVIDENCE_TYPE_REPORT). The
+>pci_tsm_mmio_alloc() takes the raw report bytes directly from the caller
+>instead of pulling them from a device evidence store.
+>
+>Link: https://lore.kernel.org/linux-coco/20251117140007.122062-8-aneesh.kumar@kernel.org/ [1]
+>Link: https://lore.kernel.org/all/20260705220819.2472765-15-djbw@kernel.org/ [2]
 
-The RMM restricts the access to the register states that the host can
-read/modify for a given Realm.
+LGTM from a kernel/resource.c standpoint:
 
-e.g., At VCPU creation, can modify GPRS (x0-x30) and PC.
-      While servicing SMCCC calls via RSI_HOST_CALL or servicing PSCI
-      requests.
-      MMIO emulation in the unprotected space.
+Reviewed-by: Bradley Morgan <brads@mainlining.org> # kernel/
 
-Additionally we use the sysreg configuration to advertise/configure the
-following Realm parameters, which are required before the Realm Descriptor
-is created:
- - SVE Vector Length
- - Number of HW Breakpoints/Watchpoints
- - PMU Counters.
 
-Thus KVM also additionally allows access to ID_AA64DFR0_EL1 and SVE_VLS for
-the configuration of Realm creation parameters. We don't support PMUs for
-the Realm VMs yet, so PMCR is not exposed.
+>
+>Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+>Assisted-by: Claude:sonnet-5
+>---
+> drivers/pci/tsm.c       | 236 ++++++++++++++++++++++++++++++++++++++++
+> include/linux/ioport.h  |   2 +
+> include/linux/pci-tsm.h |  33 ++++++
+> kernel/resource.c       |   8 ++
+> 4 files changed, 279 insertions(+)
+>
+>diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+>index 5fdcd7f2e820..c8cfe89b6224 100644
+>--- a/drivers/pci/tsm.c
+>+++ b/drivers/pci/tsm.c
+>@@ -9,11 +9,16 @@
+> #define dev_fmt(fmt) "PCI/TSM: " fmt
+> 
+> #include <linux/bitfield.h>
+>+#include <linux/overflow.h>
+> #include <linux/pci.h>
+> #include <linux/pci-doe.h>
+> #include <linux/pci-tsm.h>
+>+#include <linux/range.h>
+>+#include <linux/sizes.h>
+>+#include <linux/slab.h>
+> #include <linux/sysfs.h>
+> #include <linux/tsm.h>
+>+#include <linux/unaligned.h>
+> #include <linux/xarray.h>
+> #include "pci.h"
+> 
+>@@ -898,3 +903,234 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
+> 		       resp, resp_sz);
+> }
+> EXPORT_SYMBOL_GPL(pci_tsm_doe_transfer);
+>+
+>+static void mmio_teardown(struct pci_tsm_mmio *mmio, int nr)
+>+{
+>+	while (nr--) {
+>+		struct resource *res = pci_tsm_mmio_resource(mmio, nr);
+>+
+>+		/*
+>+		 * Entries past the point where pci_tsm_mmio_setup() stopped
+>+		 * (or that were never run through setup() at all, e.g. a
+>+		 * caller that only wants the resolved range from
+>+		 * pci_tsm_mmio_alloc()) were never insert_resource()'d, so
+>+		 * res->parent is NULL. remove_resource() dereferences
+>+		 * res->parent unconditionally.
+>+		 */
+>+		if (res->parent)
+>+			remove_resource(res);
+>+	}
+>+}
+>+
+>+/**
+>+ * pci_tsm_mmio_setup() - mark device MMIO as encrypted in iomem
+>+ * @pdev: device owner of MMIO resources
+>+ * @mmio: container of an array of resources to mark encrypted
+>+ */
+>+int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
+>+{
+>+	int i;
+>+
+>+	device_lock_assert(&pdev->dev);
+>+	if (pdev->dev.driver)
+>+		return -EBUSY;
+>+
+>+	for (i = 0; i < mmio->nr; i++) {
+>+		struct resource *res = pci_tsm_mmio_resource(mmio, i);
+>+		int j;
+>+
+>+		if (resource_size(res) == 0 || !(res->flags & IORESOURCE_MEM))
+>+			break;
+>+
+>+		/* Only require the caller to set the range, init remainder */
+>+		*res = DEFINE_RES_NAMED_DESC(res->start, resource_size(res),
+>+					     pci_name(pdev), IORESOURCE_MEM,
+>+					     IORES_DESC_ENCRYPTED);
+>+
+>+		for (j = 0; j < PCI_NUM_RESOURCES; j++)
+>+			if (resource_contains(pci_resource_n(pdev, j), res))
+>+				break;
+>+
+>+		/* Request is outside of device MMIO */
+>+		if (j >= PCI_NUM_RESOURCES)
+>+			break;
+>+
+>+		if (insert_resource(&encrypted_iomem_resource, res) != 0)
+>+			break;
+>+	}
+>+
+>+	if (i >= mmio->nr)
+>+		return 0;
+>+
+>+	mmio_teardown(mmio, i);
+>+
+>+	return -EINVAL;
+>+}
+>+EXPORT_SYMBOL_GPL(pci_tsm_mmio_setup);
+>+
+>+void pci_tsm_mmio_teardown(struct pci_tsm_mmio *mmio)
+>+{
+>+	mmio_teardown(mmio, mmio->nr);
+>+}
+>+EXPORT_SYMBOL_GPL(pci_tsm_mmio_teardown);
+>+
+>+/*
+>+ * PCIe ECN TEE Device Interface Security Protocol (TDISP)
+>+ *
+>+ * Device Interface Report data object layout as defined by PCIe r7.0 section
+>+ * 11.3.11
+>+ */
+>+#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_TABLE BIT(0)
+>+#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_PBA BIT(1)
+>+#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE BIT(2)
+>+#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
+>+#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
+>+
+>+/* An interface report 'pfn' is 4K in size */
+>+struct pci_tsm_devif_mmio {
+>+	__le64 phys;
+>+	__le32 nr_pfns;
+>+	__le32 attributes;
+>+};
+>+
+>+struct pci_tsm_devif_report {
+>+	__le16 interface_info;
+>+	__le16 reserved;
+>+	__le16 msi_x_message_control;
+>+	__le16 lnr_control;
+>+	__le32 tph_control;
+>+	__le32 mmio_range_count;
+>+	struct pci_tsm_devif_mmio mmio[];
+>+};
+>+
+>+/**
+>+ * pci_tsm_mmio_alloc() - allocate encrypted MMIO range descriptor
+>+ * @pdev: device owner of MMIO ranges
+>+ * @report: raw TDISP Device Interface Report bytes (PCIe r7.0 section
+>+ *	    11.3.11), e.g. as returned by GET_DEVICE_INTERFACE_REPORT
+>+ * @report_len: length of @report in bytes
+>+ *
+>+ * Return: the encrypted MMIO range descriptor on success, NULL on failure
+>+ *
+>+ * Unlike upstream, @report is supplied directly by the caller rather than
+>+ * pulled from a device evidence store, which this tree does not yet have.
+>+ */
+>+struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
+>+					const void *report, size_t report_len)
+>+{
+>+	const struct pci_tsm_devif_report *devif_report = report;
+>+	u64 reporting_bar_base, last_reporting_end;
+>+	u32 mmio_range_count;
+>+	int last_bar = -1;
+>+	int i;
+>+
+>+	if (report_len < sizeof(*devif_report))
+>+		return NULL;
+>+
+>+	mmio_range_count = __le32_to_cpu(devif_report->mmio_range_count);
+>+
+>+	/* check that the report is self-consistent on mmio entries */
+>+	if (report_len < struct_size(devif_report, mmio, mmio_range_count))
+>+		return NULL;
+>+
+>+	/* create pci_tsm_mmio descriptors from the report data */
+>+	struct pci_tsm_mmio *mmio __free(kfree) =
+>+		kzalloc_flex(*mmio, mmio, mmio_range_count);
+>+	if (!mmio)
+>+		return NULL;
+>+
+>+	for (i = 0; i < mmio_range_count; i++) {
+>+		u64 range_off;
+>+		struct range range;
+>+		const struct pci_tsm_devif_mmio *mmio_data = &devif_report->mmio[i];
+>+		struct pci_tsm_mmio_entry *entry =
+>+			pci_tsm_mmio_entry(mmio, mmio->nr);
+>+		u64 tsm_offset = __le64_to_cpu(mmio_data->phys);
+>+		u64 size = (u64)__le32_to_cpu(mmio_data->nr_pfns) * SZ_4K;
+>+		u32 attr = __le32_to_cpu(mmio_data->attributes);
+>+		int bar = FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID,
+>+				    attr);
+>+
+>+		if (bar >= PCI_STD_NUM_BARS ||
+>+		    !(pci_resource_flags(pdev, bar) & IORESOURCE_MEM) ||
+>+		    (pci_resource_flags(pdev, bar) & IORESOURCE_UNSET)) {
+>+			pci_dbg(pdev, "Invalid reporting bar ID %d\n", bar);
+>+			return NULL;
+>+		}
+>+
+>+		if (last_bar > bar) {
+>+			pci_dbg(pdev, "Reporting bar ID not in ascending order\n");
+>+			return NULL;
+>+		}
+>+
+>+		if (last_bar < bar) {
+>+			resource_size_t mask = pci_resource_len(pdev, bar) - 1;
+>+
+>+			/* Transition to a new bar */
+>+			last_bar = bar;
+>+
+>+			/*
+>+			 * Determine the obfuscated base of the BAR. BAR
+>+			 * offsets are never obfuscated.
+>+			 */
+>+			reporting_bar_base = tsm_offset & ~mask;
+>+		} else if (tsm_offset < last_reporting_end) {
+>+			pci_dbg(pdev, "Reporting ranges within BAR not in ascending order\n");
+>+			return NULL;
+>+		}
+>+
+>+		/* Per spec the tsm_offset never results in overflow / underflow */
+>+		last_reporting_end = tsm_offset + size;
+>+		if (last_reporting_end < tsm_offset) {
+>+			pci_dbg(pdev, "Reporting range overflow\n");
+>+			return NULL;
+>+		}
+>+
+>+		range_off = tsm_offset - reporting_bar_base;
+>+		if (pci_resource_len(pdev, bar) < range_off + size) {
+>+			pci_dbg(pdev, "Reporting range larger than BAR size\n");
+>+			return NULL;
+>+		}
+>+
+>+		range.start = pci_resource_start(pdev, bar) + range_off;
+>+		range.end = range.start + size - 1;
+>+
+>+		/* Only record the TEE ranges for later consideration by ioremap() */
+>+		if (FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE,
+>+			      attr)) {
+>+			pci_dbg(pdev, "Skipping non-TEE range, BAR%d %pra\n",
+>+				bar, &range);
+>+			continue;
+>+		}
+>+
+>+		entry->res.start = range.start;
+>+		entry->res.end = range.end;
+>+		entry->res.flags = IORESOURCE_MEM;
+>+		entry->tsm_offset = tsm_offset;
+>+		mmio->nr++;
+>+	}
+>+
+>+	return_ptr(mmio);
+>+}
+>+EXPORT_SYMBOL_GPL(pci_tsm_mmio_alloc);
+>+
+>+/**
+>+ * pci_tsm_mmio_free() - free a pci_tsm_mmio instance
+>+ * @pdev: device owner of MMIO ranges
+>+ * @mmio: instance to free
+>+ *
+>+ * Returns 0 if @mmio was idle on entry, -EBUSY otherwise
+>+ */
+>+int pci_tsm_mmio_free(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
+>+{
+>+	for (int i = 0; i < mmio->nr; i++) {
+>+		struct resource *res = pci_tsm_mmio_resource(mmio, i);
+>+
+>+		if (dev_WARN_ONCE(&pdev->dev, resource_assigned(res),
+>+				  "MMIO resource still assigned %pr\n", res))
+>+			return -EBUSY;
+>+	}
+>+	kfree(mmio);
+>+	return 0;
+>+}
+>+EXPORT_SYMBOL_GPL(pci_tsm_mmio_free);
+>diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+>index f7930b3dfd0a..122f1eefb4b9 100644
+>--- a/include/linux/ioport.h
+>+++ b/include/linux/ioport.h
+>@@ -144,6 +144,7 @@ enum {
+> 	IORES_DESC_RESERVED			= 7,
+> 	IORES_DESC_SOFT_RESERVED		= 8,
+> 	IORES_DESC_CXL				= 9,
+>+	IORES_DESC_ENCRYPTED			= 10,
+> };
+> 
+> /*
+>@@ -240,6 +241,7 @@ struct resource_constraint {
+> extern struct resource ioport_resource;
+> extern struct resource iomem_resource;
+> extern struct resource soft_reserve_resource;
+>+extern struct resource encrypted_iomem_resource;
+> 
+> extern struct resource *request_resource_conflict(struct resource *root,
+> struct resource *new);
+> extern int request_resource(struct resource *root, struct resource *new);
+>diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+>index a6435aba03f9..e54ad057fa8e 100644
+>--- a/include/linux/pci-tsm.h
+>+++ b/include/linux/pci-tsm.h
+>@@ -199,6 +199,34 @@ enum pci_tsm_req_scope {
+> 	PCI_TSM_REQ_DEBUG_WRITE = 3,
+> };
+> 
+>+/**
+>+ * struct pci_tsm_mmio_entry - an encrypted MMIO range
+>+ * @res: MMIO address range (typically Guest Physical Address, GPA)
+>+ * @tsm_offset: Host Physical Address, HPA obfuscation offset added by the TSM.
+>+ *		Translates report addresses to GPA.
+>+ */
+>+struct pci_tsm_mmio_entry {
+>+	struct resource res;
+>+	u64 tsm_offset;
+>+};
+>+
+>+struct pci_tsm_mmio {
+>+	int nr;
+>+	struct pci_tsm_mmio_entry mmio[];
+>+};
+>+
+>+static inline struct pci_tsm_mmio_entry *
+>+pci_tsm_mmio_entry(struct pci_tsm_mmio *mmio, int idx)
+>+{
+>+	return &mmio->mmio[idx];
+>+}
+>+
+>+static inline struct resource *pci_tsm_mmio_resource(struct pci_tsm_mmio *mmio,
+>+						     int idx)
+>+{
+>+	return &mmio->mmio[idx].res;
+>+}
+>+
+> #ifdef CONFIG_PCI_TSM
+> int pci_tsm_register(struct tsm_dev *tsm_dev);
+> void pci_tsm_unregister(struct tsm_dev *tsm_dev);
+>@@ -216,6 +244,11 @@ void pci_tsm_tdi_constructor(struct pci_dev *pdev, struct pci_tdi *tdi,
+> ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope
+> scope,
+> 			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
+> 			  size_t out_len, u64 *tsm_code);
+>+int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio);
+>+void pci_tsm_mmio_teardown(struct pci_tsm_mmio *mmio);
+>+struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
+>+					const void *report, size_t report_len);
+>+int pci_tsm_mmio_free(struct pci_dev *pdev, struct pci_tsm_mmio *mmio);
+> #else
+> static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
+> {
+>diff --git a/kernel/resource.c b/kernel/resource.c
+>index cfc1a00e86aa..5500f7828b2d 100644
+>--- a/kernel/resource.c
+>+++ b/kernel/resource.c
+>@@ -56,6 +56,14 @@ struct resource soft_reserve_resource = {
+> 	.flags	= IORESOURCE_MEM,
+> };
+> 
+>+struct resource encrypted_iomem_resource = {
+>+	.name	= "Encrypted MMIO",
+>+	.start	= 0,
+>+	.end	= -1,
+>+	.desc	= IORES_DESC_ENCRYPTED,
+>+	.flags	= IORESOURCE_MEM,
+>+};
+>+
+> static DEFINE_RWLOCK(resource_lock);
+> 
+> /*
+>
 
-The RMM makes similar restrictions for reading of the guest's registers
-(this is *confidential* compute after all), however we don't impose the
-restriction here. This allows the VMM to read (stale) values from the
-registers which might be useful to read back the initial values even if
-the RMM doesn't provide the latest version. For migration of a realm VM,
-a new interface will be needed so that the VMM can receive an
-(encrypted) blob of the VM's state.
-
-Reflect the above in KVM_GET_REG_LIST, KVM_SET_ONE_REG calls.
-
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Co-developed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
- arch/arm64/kvm/guest.c      | 63 +++++++++++++++++++++++++++++++++++++
- arch/arm64/kvm/hypercalls.c |  4 +--
- arch/arm64/kvm/sys_regs.c   | 28 +++++++++++++----
- 3 files changed, 87 insertions(+), 8 deletions(-)
-
-diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index c3ca369882273..ffe3f5ce4b3cf 100644
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -73,6 +73,25 @@ static u64 core_reg_offset_from_id(u64 id)
- 	return id & ~(KVM_REG_ARCH_MASK | KVM_REG_SIZE_MASK | KVM_REG_ARM_CORE);
- }
- 
-+static bool kvm_realm_validate_core_reg(u64 off)
-+{
-+	/*
-+	 * Note that GPRs can only sometimes be controlled by the VMM.
-+	 * For PSCI only X0-X6 are used, higher registers are ignored (restored
-+	 * from the REC).
-+	 * For HOST_CALL all of X0-X30 are copied to the RsiHostCall structure.
-+	 * For emulated MMIO X0 is always used.
-+	 * PC can only be set before the realm is activated.
-+	 */
-+	switch (off) {
-+	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
-+	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
-+	case KVM_REG_ARM_CORE_REG(regs.pc):
-+		return true;
-+	}
-+	return false;
-+}
-+
- static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
- {
- 	int size;
-@@ -553,6 +572,9 @@ static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
- 		u64 reg = KVM_REG_ARM64 | KVM_REG_ARM_CORE | i;
- 		int size = core_reg_size_from_offset(vcpu, i);
- 
-+		if (vcpu_is_rec(vcpu) && !kvm_realm_validate_core_reg(i))
-+			continue;
-+
- 		if (size < 0)
- 			continue;
- 
-@@ -598,6 +620,9 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
- 	if (!vcpu_has_sve(vcpu))
- 		return 0;
- 
-+	if (kvm_vm_is_realm(vcpu->kvm))
-+		return 1; /* KVM_REG_ARM64_SVE_VLS */
-+
- 	if (!kvm_arm_vcpu_sve_finalized(vcpu))
- 		return 1; /* KVM_REG_ARM64_SVE_VLS */
- 
-@@ -625,6 +650,10 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
- 		return -EFAULT;
- 	++num_regs;
- 
-+	/* For Realms only support SVE_VLS */
-+	if (kvm_vm_is_realm(vcpu->kvm))
-+		return num_regs;
-+
- 	if (!kvm_arm_vcpu_sve_finalized(vcpu))
- 		return num_regs;
- 
-@@ -705,6 +734,11 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- 	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
- 		return -EINVAL;
- 
-+	/*
-+	 * We don't filter out the register reads for Realms, like we do for
-+	 * the user writes. We expose junk data for the VMM instead of
-+	 * denying the requests.
-+	 */
- 	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
- 	case KVM_REG_ARM_CORE:	return get_core_reg(vcpu, reg);
- 	case KVM_REG_ARM_FW:
-@@ -716,12 +750,41 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- 	return kvm_arm_sys_reg_get_reg(vcpu, reg);
- }
- 
-+#define KVM_REG_ARM_ID_AA64DFR0_EL1	ARM64_SYS_REG(3, 0, 0, 5, 0)
-+/*
-+ * The RMI ABI only enables setting some GPRs and PC. The selection of GPRs
-+ * that are available depends on the Realm state and the reason for the last
-+ * exit.  All other registers are reset to architectural or otherwise defined
-+ * reset values by the RMM, except for a few configuration fields that
-+ * correspond to Realm parameters.
-+ */
-+static bool validate_realm_set_reg(struct kvm_vcpu *vcpu,
-+				   const struct kvm_one_reg *reg)
-+{
-+	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_CORE) {
-+		u64 off = core_reg_offset_from_id(reg->id);
-+
-+		return kvm_realm_validate_core_reg(off);
-+	}
-+
-+	switch (reg->id) {
-+	case KVM_REG_ARM_ID_AA64DFR0_EL1:
-+	case KVM_REG_ARM64_SVE_VLS:
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- int kvm_arm_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- {
- 	/* We currently use nothing arch-specific in upper 32 bits */
- 	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
- 		return -EINVAL;
- 
-+	if (kvm_vm_is_realm(vcpu->kvm) && !validate_realm_set_reg(vcpu, reg))
-+		return -EINVAL;
-+
- 	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
- 	case KVM_REG_ARM_CORE:	return set_core_reg(vcpu, reg);
- 	case KVM_REG_ARM_FW:
-diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
-index b11b8821c9fbc..2b1e6fdeb4d5c 100644
---- a/arch/arm64/kvm/hypercalls.c
-+++ b/arch/arm64/kvm/hypercalls.c
-@@ -414,14 +414,14 @@ void kvm_arm_teardown_hypercalls(struct kvm *kvm)
- 
- int kvm_arm_get_fw_num_regs(struct kvm_vcpu *vcpu)
- {
--	return ARRAY_SIZE(kvm_arm_fw_reg_ids);
-+	return vcpu_is_rec(vcpu) ? 0 : ARRAY_SIZE(kvm_arm_fw_reg_ids);
- }
- 
- int kvm_arm_copy_fw_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(kvm_arm_fw_reg_ids); i++) {
-+	for (i = 0; i < kvm_arm_get_fw_num_regs(vcpu); i++) {
- 		if (put_user(kvm_arm_fw_reg_ids[i], uindices++))
- 			return -EFAULT;
- 	}
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 44aae52c473d7..47ebde943a09e 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -5638,18 +5638,18 @@ int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
- 
--static unsigned int num_demux_regs(void)
-+static inline unsigned int num_demux_regs(struct kvm_vcpu *vcpu)
- {
--	return CSSELR_MAX;
-+	return vcpu_is_rec(vcpu) ? 0 : CSSELR_MAX;
- }
- 
--static int write_demux_regids(u64 __user *uindices)
-+static int write_demux_regids(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
- 	u64 val = KVM_REG_ARM64 | KVM_REG_SIZE_U32 | KVM_REG_ARM_DEMUX;
- 	unsigned int i;
- 
- 	val |= KVM_REG_ARM_DEMUX_ID_CCSIDR;
--	for (i = 0; i < CSSELR_MAX; i++) {
-+	for (i = 0; i < num_demux_regs(vcpu); i++) {
- 		if (put_user(val | i, uindices))
- 			return -EFAULT;
- 		uindices++;
-@@ -5693,11 +5693,27 @@ static bool copy_reg_to_user(const struct sys_reg_desc *reg, u64 __user **uind)
- 	return true;
- }
- 
-+static inline bool kvm_realm_sys_reg_hidden_user(const struct kvm_vcpu *vcpu,
-+						 u64 reg)
-+{
-+	if (!vcpu_is_rec(vcpu))
-+		return false;
-+
-+	switch (reg) {
-+	case SYS_ID_AA64DFR0_EL1:
-+		return false;
-+	}
-+	return true;
-+}
-+
- static int walk_one_sys_reg(const struct kvm_vcpu *vcpu,
- 			    const struct sys_reg_desc *rd,
- 			    u64 __user **uind,
- 			    unsigned int *total)
- {
-+	if (kvm_realm_sys_reg_hidden_user(vcpu, reg_to_encoding(rd)))
-+		return 0;
-+
- 	/*
- 	 * Ignore registers we trap but don't save,
- 	 * and for which no custom user accessor is provided.
-@@ -5735,7 +5751,7 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
- 
- unsigned long kvm_arm_num_sys_reg_descs(struct kvm_vcpu *vcpu)
- {
--	return num_demux_regs()
-+	return num_demux_regs(vcpu)
- 		+ walk_sys_regs(vcpu, (u64 __user *)NULL);
- }
- 
-@@ -5748,7 +5764,7 @@ int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- 		return err;
- 	uindices += err;
- 
--	return write_demux_regids(uindices);
-+	return write_demux_regids(vcpu, uindices);
- }
- 
- #define KVM_ARM_FEATURE_ID_RANGE_INDEX(r)			\
--- 
-2.43.0
-
+--- Thanks!
+"I'm not a very positive person" - Linus torvalds
