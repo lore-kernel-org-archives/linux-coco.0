@@ -1,99 +1,226 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011052.outbound.protection.outlook.com [40.107.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4133B47EB;
-	Sat,  3 Oct 2026 23:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791070481; cv=none; b=gCcOCZQ6ZT5EXrECpKtkBAHkjaY6KwJeOGx2FEfXXHW9CAWO/vMGvvyqUE1G9PDVFgFR50FnscGlRQHdE1FlATODOYEbftTwtb4Wl8+pUegzG8eMpVySWeqnydmx02ZRM54LGwXjRz1q5qFtzIZijyk7cHBOx/C7HZDXnOCqNiE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791070481; c=relaxed/simple;
-	bh=ChtEv5Gs/odsv1gaJSaXotF2IXOOEMl3n2Kr1I5juAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NhzCThDs22izecrU2eXIrcx6h+AjE+I2Uh81K0nvb2wiqMIrKYb1U+RJjSzzct3GGSCYt0GzhYbVKP50YMd1E5RuVpLVp++GK0GnkKevTrm1aNVXiS3oyuSoE6InRLxqEiqYDut777kZqLKjF9C39CzA+fnt/P8nTXKk0bpWaBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKYjrD04; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE95236B928
+	for <linux-coco@lists.linux.dev>; Mon,  5 Oct 2026 07:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791183814; cv=fail; b=dLuziXva8yEku7EcWueDvDdBuUBFvlRL4dJlMqel0sLapS4A+qgndoV/7mkMEB79PHjVdo03uAR9Q6fJdy1wYJDYLdCvrAillLhMYPPMlO/RKUUC6R+fiGH8bcclZ8m0JlfZfBazyDI5548WzMFHhXkAoAekZ0PKm3kFSnVJHNw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791183814; c=relaxed/simple;
+	bh=JHJt2l4/u7u7dWcXSgTZ+TXmKViHEMn+KFzZlJrDrv8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bRO6DYNiIl3POwBZI8hdJxzrCUy8RP207qHURcZMLBTcbKmyiLLWsokUG9321cmm0ki3gl+B/crT9EkUKua2BJ950nofjdTd7t+ih81YW2HRMCMLPGdm2MkDPp/mREGUVPTCQxeVLTmcsYo4ayxEO1jfJrloT8XDeF6++cTSqlA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ed7obwr4; arc=fail smtp.client-ip=40.107.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKYjrD04"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1893E1F0089C;
-	Sat,  3 Oct 2026 23:34:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791070480;
-	bh=McNvrbaXa8pRLURHJC626TEpOy+lAMWBxLS6cgVjDHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YKYjrD04ggURlFPKc1Vix6lrnkAR1oOBLG4eEPU4ljnqd1Tz0nmhKLafGe6AnqqxV
-	 d6BdpYUI1yV0EuT02SJba4pY3pe3XOwINxr7997soIB7rmH3gybXUJcSIeZH2ifWo4
-	 rZvfpw/i4LerKgqZX6tQ63XaA1qgSr8t7Tm435aQuqUJBI7G8RC1QkybgXD5y/c9Cj
-	 ATaJdHVWvBEZvBrQTffTB192KOnIwVmpCeazB7HHPv5pLMvDI6Dwm4u8wp33/+xP9v
-	 SNllzi3B1DfwKrCBLe2trEaZohwCtIRe8Xl+71x5EAJKH+132rimFkXVJne1j8bIxh
-	 EUQlErFdzmFUw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id D8EE5198003A;
-	Sat,  3 Oct 2026 19:34:35 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sat, 03 Oct 2026 19:34:37 -0400
-X-ME-Sender: <xms:C5HBasxVVLk6p18CVsx9YwRdV6isHzVuA-PBDRaOpeVEkHXG0Oz8Xg>
-    <xme:C5HBakMXOHy3TjE5Nc2HsA16s7JQUGvPpMOLXWnKcxlwoy4k0hIAphMhFFaZdIaF6
-    iJDMFV44rxn7dOc36xHAEZrfL1CkECqVCI2Rw8EP0sVf8jQPLcORQBL>
-X-ME-Received: <xmr:C5HBam1ZSR0iYNPWX7LoGst8448ULPFH8bfI-HQbe99Ip9a9ZrzlPfAM3YE>
-X-ME-Proxy-Cause: dmFkZTEdHe940eMECZiWakIif7cd+T/iqkkgGwdGKD6o5Y3YI6YAy4zxNQlyF890iSqBlD
-    WIo7gM+kuyvs6ffFMZzz36iAAXIZRNW9iLFCxtGfOmIxr240HqvHyzHdLljN2T67P8GTuL
-    y5jVbyBYWhjAAULmBB6sCstWvmhU2/SywInr9NsjCW4+udjjakE1JnpVSK9M83QfWnY45J
-    i0ur14UsVGe9TZf0A15Kt4eX1jocS2GvO+4c5JB1OlidDy3j70GRSQdrcn71jV/015xwFw
-    WkA620GdOPCCDHNiGSI1aumLRBXCBZe1e8Zhucc99LyPx2bBckvUO/r6XcuvifqT7SWQBs
-    BINBB1OfjPOUG7W8dPY/1ImIqzWnOkVeIFBLHCwoLfGoXGopsLsSAEO6QKOH3ogWWU3epB
-    I0h7YztqaCd12PQDpK7+5RFoAPH0y/Y0kGxT0F1NIWbnSRnOs7VDGThfcSXtUlcxTMQGqa
-    Pi7FsR24cj7JMPoH1p6jAK4Y7/6OQQNfkrm7a1eWiLJ9GMqnT3LtJscRDQcVVBqbi6GGbT
-    dIDGU39MLfxezW3ytMPGcFl72sI6QmgyD22J3sgKJs/dJk1GhpTB2G1FlIn/WrM3/j3xd3
-    NgW6B2z1Y9usNjJsprcimxt5T3OINYAgtjI354xSwxVwPVPQ+Qo61TAe1LjA
-X-ME-Proxy: <xmx:C5HBakES68ZgUATiGiYmmD62wFwN7X9BgDacj9w5SbAZ56A0v1g1uA>
-    <xmx:C5HBalh-MeXoOPEkAUKiukpdz4KbfrWUZdsS9ul1q9h9Eajq9pHgOw>
-    <xmx:C5HBalft_tUbkIogweCujQ7VBTgTeQUXfpJnkDQMBLI3Vduqb1PZPg>
-    <xmx:C5HBajxe7LRZ5RnvwOxwliFvZwDiQ2mlv1D0H99ly8TFHNW-dPFjTg>
-    <xmx:C5HBanY2QKVSLGKKCeI6nybtn61WOiEGmHFBmcx1Pm0JkpqFnjEq7_lY>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 3 Oct 2026 19:34:34 -0400 (EDT)
-Date: Sun, 4 Oct 2026 00:34:33 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>
-Cc: "corbet@lwn.net" <corbet@lwn.net>, 
-	"rdunlap@infradead.org" <rdunlap@infradead.org>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] x86/early_printk: Add earlyprintk=tdx to drive
- the UART with TDVMCALLs
-Message-ID: <asGQ6wkOmLGkeYsL@thinkstation>
-References: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
- <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
- <arZbBqArD9NqWPry@thinkstation>
- <c41ffc542bd677b71bcecbe4e2c2e2a3b605ffcf.camel@intel.com>
- <ar_GLgzxdWUdXn0Z@thinkstation>
- <dfe6e3aa7bd37679d2d5e559b9af8e254d88044f.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ed7obwr4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DCYw7oT3nW2iHyRgzzfsZ3YBDiiOJlJcLDBrp6+XNKIJKW7Jeo5x0Z2yjeb2E0843S9pF+avBtHcYS+wS+XKTA+4qc3gybP3ocHBM/xPqvg8xhlLTEHtMNrAcPk7a33xe/txyLpPC0fWLdaVjz+Es4bKwqgLGa5Oqal3RGqSA11C0EOcZspXJw/5OKwJbs7HOoKZ2HwlcReIpytboGKZPOoBNwbW33kqHPqlnUhMzsVhd5hFBhM82SAiOnZEY794qRkIqVpvLA6fE/Fghnu+R1y34xjvmSj/3X6hnbGDqDXq0YAjbjnuDD8bECR/bc1C6kzK2N2CoybWYKYfmY0IVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ERARyNQzvISrQXkBnJnzxwwIIrVY4UcdUudFM0hz6OM=;
+ b=q4346aSnWxj079NV3eUVdATQlNXB8uVtAJR9i0ozrtELXsEtZpES3iJqlVhqD+x0p6yQvAOvf0k5/VSW2aS1+0qDcm73e0+LokRzV6fT48x8Kg23VdVJ8gn2HEBheVWaFxHPRPaY8M0lvx9y+hsMEGKVfEhGlF9vzT7j8yLpioUPgSB1rrWZXHa74mTFZ41d3A8tHgepRw70xOlJEZKWpd5FXyC1YA/RESy4z3bBZaah6+qoT0uoFgH2nZNYoj0ZaWs4SmgWi6kkhmJBNlpw9Ph469A9s7DAS7tAnHUevrON3ddIDdHdnNo+eCebO0OCUGTN5Giw6EfS1+2emi114A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ERARyNQzvISrQXkBnJnzxwwIIrVY4UcdUudFM0hz6OM=;
+ b=Ed7obwr4l9yes10sBD54U3lgvUpkEx37NV63Iw1APgoqyNoGVHZdmZrG5Kd9RU49YH0mZXAUoCwxNrw4tQOFwIm4twKzYXXO4a1VtQ2RUJZ2H0hMF1+t8ZaETV9JT7uz9nSpWarWAqyESPSG195dsynvLqdOdRRlZ10c0Fnglnnm9wMkOEqishHr0d1lSBKhiQ1VBWNJxaW1XH4DUap5Uje139awj7kxY3X7IfJjoqteEnG/CW5eKbPEv+ww6HwEVHR35OWc2PEm4fXBzReODoHyGIuOrw7J0Mfh/Vf73/lk5JSWFWgXzyclg1E+z9IsAyQZLQUxqSviIyNZkPSGSQ==
+Received: from SJ0PR13CA0009.namprd13.prod.outlook.com (2603:10b6:a03:2c0::14)
+ by DS0PR12MB8416.namprd12.prod.outlook.com (2603:10b6:8:ff::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Mon, 5 Oct
+ 2026 07:03:26 +0000
+Received: from BY1PEPF0002695C.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c0:cafe::86) by SJ0PR13CA0009.outlook.office365.com
+ (2603:10b6:a03:2c0::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Mon, 5
+ Oct 2026 07:03:26 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BY1PEPF0002695C.mail.protection.outlook.com (10.167.244.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Mon, 5 Oct 2026 07:03:25 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
+ 2026 00:03:05 -0700
+Received: from NV-9TMPJL3.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
+ 2026 00:02:59 -0700
+From: Ankit Agrawal <ankita@nvidia.com>
+To: <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <dave@stgolabs.net>, <jic23@kernel.org>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>, <jgg@nvidia.com>,
+	<aneesh.kumar@kernel.org>, <aik@amd.com>, <yilun.xu@linux.intel.com>,
+	<iweiny@kernel.org>, <ming.li@zohomail.com>, <icheng@nvidia.com>,
+	<bhelgaas@google.com>, <smadhavan@nvidia.com>, <ankita@nvidia.com>,
+	<ilpo.jarvinen@linux.intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
+	<andriy.shevchenko@linux.intel.com>, <linux-coco@lists.linux.dev>
+Subject: [RFC PATCH 0/4] PCI/TSM: Resolve TDISP coherent (CXL) ranges from precommitted HDM decoders
+Date: Mon, 5 Oct 2026 09:02:48 +0200
+Message-ID: <20261005070252.84810-1-ankita@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dfe6e3aa7bd37679d2d5e559b9af8e254d88044f.camel@intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0002695C:EE_|DS0PR12MB8416:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5b9dd94-ab5c-461d-6dbc-08df22aec093
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|7416014|23010399003|10067099003|56012099006|3023799007|11063799006|6133799003|5023799004|18002099003|10063799003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	EpSWrUaX2mRd+RGzjetuXVeqzPKFY5yvQK8a513qPxDNpzLgVmk35NL4NiwYmAnxvKTNiklwpZoWDGqVaO8XnjXJoT2NA+VZYOwld2Dn3tTNh9MEXCJSZg7yyGziTI1Nej6maw6MnLp7b7ZgjuqsulWGUCfLM5jaUS8oh0ZIFDHTyBAt1+dRpzYRPUZ0vqO69NQuOxqkYMZ8r0zLFUxcTOiTqhI3PvjauulZAWrNmrNUvjThUDpEyjch5WW0nXsRVn1NOVc65SSI7QKvyKYnUZcLe5PJ1rN16QqsgxS+ZojdxZOFiSHz6wnhLgcuCIS8029y/qSuZYN+vibDzqb7JHAckhOnJZcOXe0e0Rk/3jkkMxr2pyRGOrjlh93un3Klvssk8UQxBbtQgudqlwIuR6pnLQSEZ7DUumvF59sxpUqa+TgegBWSLvkLIYHixKmBhmBc8J2To2Ct8VZB4qw7MsfIsucaZNMM+/9Z4DXJX5ptLbdz/kH5pObjBG6Q/OLM1YcwIvs9FUhTp1cWOBthntmM9LblzCju4scFmBbwftsVw/OxH7i8hLllDu6F+389nJEqUeoSa0EngHKMdNr3/mHCsORU3jgHtPaEiFN3vHt5wFbtstVAnrIqP+zVVNLm+DHuDZntjucfIc4N+mbdrGaI5mLxtcA4Y/SmYcgFvtBc3jY2mLmo1rdsPaLHEEXbIUt1UP+jOz8EuwX5pKS7cA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(7416014)(23010399003)(10067099003)(56012099006)(3023799007)(11063799006)(6133799003)(5023799004)(18002099003)(10063799003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	8Al/SFUSJSHUypZ8mXfGm8ljMIRBP1y6AmVENDc3kli6iuAaQKg5xooIzAbhef9LtGwskLeQdfs17CfW4ZNV3wrq5Qn/tygSumfZJSa49VNaY+3ysJiik5F/l2o1h/smAeUoRla4ZlKCtYK0PRmDbEvw5Bi6Qobtg4nE1lJ+TGpyCqnxvOC3Fcg7xuZNhtBAK9Ka7XPL93oTyqp0Z2xBVWvIM07x+0/VUKFaAXztbjzWaR9IsMKyOx7qGW9xaWJw/CTSzRSFeZddkZ12F+oUKNROD3y5aVJS7oU5EMv8jnRIBoCyZdBr93DaimIs+2OeNv/hFcnevtsZM7AbxnCt1U79NP+TYyX9OHHjuxapXyqcMKdwWIzilw6CiJl1STMBs3zpLhLF6cF8y6XK2j4nTXf9FvtW1mJ6yL4P1sCZcUB8CgmSI4mEz0YRFIhAEhqc
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 07:03:25.9197
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5b9dd94-ab5c-461d-6dbc-08df22aec093
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0002695C.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8416
 
-On Fri, Oct 02, 2026 at 07:31:00PM +0000, Verma, Vishal L wrote:
-> > +/* Only referenced when X86_FEATURE_TDX_GUEST is enabled, no stubs needed */
-> > +unsigned int tdx_serial_in(unsigned long addr, int offset);
-> > +void tdx_serial_out(unsigned long addr, int offset, int value);
-> > +
-> > 
-> 
-> .. Should these also be:
-> 
-> +__noendbr unsigned int tdx_serial_in(unsigned long addr, int offset);
-> +__noendbr void tdx_serial_out(unsigned long addr, int offset, int value);
+=== Background ===
 
-Yes, my bad.
+TDISP (TEE Device Interface Security Protocol) lets a Confidential
+Compute Architecture (CCA) guest establish a trusted, encrypted MMIO
+mapping to an assigned PCI device. The device's TSM (TEE Security
+Manager) reports the device interface's MMIO layout back to the guest
+via a GET_DEVICE_INTERFACE_REPORT response. The guest kernel should
+parse this report and get the IPA for the regions present in the report.
+This is required to validate the device regions.
+
+CXL (Compute Express Link) runs over the PCIe physical/electrical
+layer but adds protocols beyond plain PCIe config/MMIO access. The
+one relevant here is CXL.mem on Type-2 CXL devices, which lets a
+device expose device-attached memory (e.g. HBM on a GPU) to the
+host as regular cacheable, coherent system memory (called CXL region
+in this series).
+
+A CXL type 2 device exposes this CXL region through one or more HDM
+(Host-managed Device Memory) decoders - hardware on the device that
+maps a System Physical Address (SPA) range, as seen by the host/guest,
+to the corresponding Device Physical Address (DPA) range on the device's
+own memory. The host (or VMM/firmware) programs an HDM decoder's SPA
+(IPA) base and size, then "commits" it - after which reads/writes into
+that range are transparently steered by the decoder to the device's
+memory. This is conceptually similar to a BAR, as both are ways of
+mapping device resources into a physical address range that software
+can access. However, while a BAR is discovered and sized generically
+via PCI config space, an HDM decoder's mapping is CXL-specific and is
+not visible in config space or backed by any BAR.
+
+On the systems this series targets, the HDM decoder for the coherent
+window is "precommitted": platform firmware programs and locks it
+before any software - including the guest OS - ever runs, and the
+mapping is fixed and stable across boots (i.e. the guest never needs
+to program or resize it itself - it only needs to know where the
+firmware already put it). Because this window has no BAR, the TDISP
+interface report describes it with a special sentinel range ID
+instead of a BAR number.
+
+=== What this series does ===
+
+This series does two things: it first introduces the interface-report
+parsing infrastructure itself, adapted from out-of-tree work [1]
+originally developed by Dan Williams and Aneesh Kumar and built around
+the common BAR-based case, and then extends that same infrastructure
+to also understand firmware-precommitted CXL coherent ranges which
+cannot be expressed as a BAR. Concretely, in four steps:
+
+ 1. "PCI/TSM: Create MMIO descriptors via TDISP Report"
+    Introduces the report-parsing infrastructure itself. Only BAR-relative
+    ranges are handled at this point. Cherry-picked and adapted from
+    Dan Williams' posted series [1] (based on Aneesh Kumar K.V [2],
+    co-developed with Xu Yilun), with the evidence-store dependency
+    removed.
+
+ 2. "PCI/CXL: Populate and insert/remove pdev->coh_resource[]"
+    Snapshots the precommitted HDM decoder's SPA base/size into a new
+    pdev->coh_resource[] array early during CXL enumeration and
+    inserts/removes each entry into/from iomem_resource so the range
+    is reserved like any other device resource, giving later patches
+    a known-good source of truth for the coherent window.
+
+ 3. "PCI/TSM: Derive the coherent-range IPA from CXL"
+    Extends the patch 1 parser to recognize the coherent-range
+    sentinel range ID (0xffff) and resolve its address from
+    pdev->coh_resource[] instead of a BAR offset.
+
+ 4. "PCI/TSM: Support multiple coherent ranges via coh_idx"
+    Generalizes the spec defined single 0xffff sentinel to a small
+    index space so devices with multiple HDM decoders can report
+    several coherent windows, indexing into pdev->coh_resource[].
+
+=== Dependencies ===
+
+This series is rebased on top of next-20261002, and requires Srirangan
+Madhavan's v14 "CXL HDM decoder state caching across PCI reset" series [4]
+that is also undergoing review.
+
+=== Open design questions ===
+
+ - Patch 2 adds pdev->coh_resource[PCI_CXL_MAX_COHERENT_RANGES] (10
+   struct resource entries, ~640 bytes) unconditionally to struct
+   pci_dev under CONFIG_CXL_RESET regardless of whether a given
+   device is actually CXL-capable. Feedback is welcome on whether
+   this should instead be allocated dynamically.
+
+=== Testing ===
+
+This series has been verified using an adapted version of Dan
+Williams' devsec tool [3], modified to exercise the coherent-range
+reporting path added here.
+
+Link: https://lore.kernel.org/all/20260705220819.2472765-15-djbw@kernel.org/ [1]
+Link: https://lore.kernel.org/linux-coco/20251117140007.122062-8-aneesh.kumar@kernel.org/ [2]
+Link: https://github.com/ankita-nv/linux/tree/next-20261002-tsm-cxl-devsec-0410-2026 [3]
+Link: https://lore.kernel.org/all/20261001092227.3004747-1-smadhavan@nvidia.com/ [4]
+
+Ankit Agrawal (4):
+  PCI/TSM: Create MMIO descriptors via TDISP Report
+  PCI/CXL: Populate and insert/remove pdev->coh_resource[]
+  PCI/TSM: Derive the coherent-range IPA from CXL
+  PCI/TSM: Support multiple coherent ranges via coh_idx
+
+ drivers/cxl/core/resource.c |  52 ++++-
+ drivers/pci/tsm.c           | 370 ++++++++++++++++++++++++++++++++++++
+ include/linux/ioport.h      |   2 +
+ include/linux/pci-tsm.h     |  37 ++++
+ include/linux/pci.h         |  14 ++
+ kernel/resource.c           |   8 +
+ 6 files changed, 482 insertions(+), 1 deletion(-)
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.43.0
+
