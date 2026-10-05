@@ -1,52 +1,51 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6EB4DAF94
-	for <linux-coco@lists.linux.dev>; Mon,  5 Oct 2026 17:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172CC4334BC
+	for <linux-coco@lists.linux.dev>; Mon,  5 Oct 2026 22:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791222373; cv=none; b=lyrDYbPN6kwOvt6WhTebHnQ9Hs7JtDhlyV2BRYlhDGFfR0MzYOOZbVIrAg3qNYkkxJqnD7pTvselAoCpZjWcB1arGpho5jZzZqAiFKYKkn+9K9EWPb/nORMfHZ8xrDEMluYYQ83Aoxk7HAnNGWhmNm4NvNdC/7Tj3qRU7KwsSNw=
+	t=1791240627; cv=none; b=IDoKimxg0M0gYHYljAVj8j4yQZQMcn7vq3NGkJyXzUIMyPUxzkkUYE5lwvp8hq8f9Qw6DEe/fF7l+8XT/ub5HRQzmUzVZoWT6arGd57t++DTiWJfjoKtzmQriW+Ml9EaMI98xU0f4Mji3kGXmM32X5gyDQ34hCijXgme6GoyuR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791222373; c=relaxed/simple;
-	bh=8wuRTBjZg2VId8lF4Tpe7C8zexrFwUJaK3Lkfkk+4oU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bUGCR+cyXmaAifVo28bMouaEiGF5Y9gcqKTfBqmuG6ROsTg6Wejw2HHmJQVhNwv9zEc6BJ65unEO/uNVM26P5LEQSQnAOp/7RdDTeHPYeGkV7w/qNhH5+uOWaUz5C21UiNxuzIorwtRy6AJ3vBFX4cvciq3hbMZncYA2BRvsuZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O0CZt3Na; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791240627; c=relaxed/simple;
+	bh=SdsGJ8xqSDaaQyoYBqei7X+VtMmyV2viAQXFMQwEmPY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YRfI4gNWxnuQOSLsNtVY16pb7F3NxrhK9CBL/Mh9Pt8IlkHusbcEIyu4IY+Zd9afA8zvmRzLqLXbrKYUkQqlDURGQ0OOu3CiFVuiaaINtlhndQnjNIbmoxdk3lsESJfeJe0ta/sQsvnc8GAmYnAb0eOuVhPrjA36neoRN4yt3AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lZu9fVvw; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O0CZt3Na"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lZu9fVvw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791222372; x=1822758372;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=8wuRTBjZg2VId8lF4Tpe7C8zexrFwUJaK3Lkfkk+4oU=;
-  b=O0CZt3NaPTJDOU4OVUaXo6PC8s01iIKZan01qLWRbKRN9DnBifJ7W2EM
-   qmvLjNk/aiOi9qAsiOJ+eAAzaHjARqEsFw+0ECTQ7yVfpTBD2/sEURc46
-   OV6x0EsPIosNUwYcRABc7YgjKTz0GErT/5paYwzTdC6YxAcue1zG2x8Xh
-   xPc81Z+QN1F1cHZxr0rYL3Nm0JvPsSOtgtNJV4Vqg6jUjZ7o43Pk2it3/
-   QRG1eEYMExIJ+1LVh1e7u+Wz/z44//O64CjBO9PtdeooysdKjiKFPdRSK
-   2u3FFdxcoR1B5Ow7/7musF3ZAHzQAW4IvlTCrz4vbYpQzZddNJ62LK42x
-   w==;
-X-CSE-ConnectionGUID: XBZxfcz9Q5687AuqRYn77Q==
-X-CSE-MsgGUID: yN2pjNxSTSWNmBILJtqxww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="102419847"
+  t=1791240623; x=1822776623;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=SdsGJ8xqSDaaQyoYBqei7X+VtMmyV2viAQXFMQwEmPY=;
+  b=lZu9fVvwUdMYwSbm3pmxZjD6UqTfz6BCPmrw9efvbfL7dSZ4UJLyOzrd
+   Kfvcf4aGQwCr+qYvP+kk1kiRze4w6TOzrb/VAH9pUWQYK2rVXoY9q9S3u
+   w7S0hS9FJVqYS8wF6bnJuyJTkLS5Ixx2v+cD6NRRj5OZMNF5sXtCklI5M
+   awAr7+DAggAlFQuo7jsLdgPoqz/m0vvmzHKfr10uN+ZFGlIDUBdA+4XRB
+   pOUafqcFA0yvA/JhVxIXLMu2DSdaK9SVtyKXCZJQZVAdORPkycWO+WZ2w
+   0kX5GY7zkMI3DdPg2GbGZ6TEftukoDBpFSqSuW6NdiC/ssFyIR7Leq1Qf
+   A==;
+X-CSE-ConnectionGUID: iwqmVda9RIW51bjl67jVog==
+X-CSE-MsgGUID: im/h/YzVSCmOF8as1hqYtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="94798733"
 X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="102419847"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 10:46:12 -0700
-X-CSE-ConnectionGUID: IIARi963TN2+vK6jjnZjQw==
-X-CSE-MsgGUID: yxtzGfKeR3SEdCBv80lOlQ==
+   d="scan'208";a="94798733"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 15:50:23 -0700
+X-CSE-ConnectionGUID: vXZD3QIuSGaLTwpBrwmq/g==
+X-CSE-MsgGUID: Pb/xQbQORemo/oiZ8qSHvg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="276002504"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
-  by orviesa008.jf.intel.com with ESMTP; 05 Oct 2026 10:46:08 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-Date: Tue, 06 Oct 2026 01:41:50 +0800
-Subject: [PATCH v3 6/6] x86/virt/tdx: Support DPAMT when adding memory for
- the extensions
+   d="scan'208";a="277063563"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.108.147])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 15:50:22 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH v4 0/2] x86/tdx: Use TDVMCALLs directly for earlyprintk
+Date: Mon, 05 Oct 2026 16:50:05 -0600
+Message-Id: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,76 +54,105 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-tdx-module-ext-v3-6-db52cb05b918@linux.intel.com>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
-In-Reply-To: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
-To: x86@kernel.org, linux-coco@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-Cc: Kiryl Shutsemau <kas@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NQY7CMAyF4augrAmy3YKmrLgHQihunCEzpUVJq
+ ECodycFFhWLLp9sff9DRQleotouHipI76Pv2jzK5ULVJ9P+ivY2b0VAG6ig0FzqZG9HMaG5X4J
+ v0/8x2do0TdQlWGRC88OGVAYuQZy/vfD94b3jlf+kTqM4fpx8TF24v+o9jn+fEMJcqEcNumRiZ
+ FcBIO/yWZpV3Z3VGOppQhHOUpQpY9FZKRytnf2miilFs1SRqY2wMeuqsg5hSg3D8AQZmpTnbAE
+ AAA==
+X-Change-ID: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
+To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
  Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, 
- kvm@vger.kernel.org, yilun.xu@intel.com, yilun.xu@linux.intel.com, 
- xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
- kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
- peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
- chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1776;
- i=yilun.xu@linux.intel.com; h=from:subject:message-id;
- bh=8wuRTBjZg2VId8lF4Tpe7C8zexrFwUJaK3Lkfkk+4oU=;
- b=owGbwMvMwCH2Zztz45IFPbcYT6slMWQdfjhntpjEH9Zp5ewVJ1tZ2v+KGd7T3v9gVwjr4nvmT
- M0X3mtxdHSyMIhxMBiKKbIs8JjlNKV9FtPWTzuvwcxhZQIZIixTmZlTmqdXUeqQmVeSmqOXnJ/L
- wMUpAFMVsYWR4e2MSXfm3rRlNlQxfbhx2jazLt4HxsqXviR+488vlmadw8DwPycwvOp+50GrWwc
- kp3zJctx8o0RW8Nm6t/enl+3XX6y0lgUA
-X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
- fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Vishal Verma <vishal.l.verma@intel.com>
+X-Mailer: b4 0.17-dev-e5168
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2861;
+ i=vishal.l.verma@intel.com; h=from:subject:message-id;
+ bh=SdsGJ8xqSDaaQyoYBqei7X+VtMmyV2viAQXFMQwEmPY=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDFlHNFcYiYbcmei5/bBFcqxZ7MG8pU+nTY1O7Lp/devUF
+ o/5x26+6ihlYRDjYpAVU2T5u+cj4zG57fk8gQmOMHNYmUCGMHBxCsBEtHMYGXbYWZpePMUfmaRr
+ s2LN21OvlJZsef99krLEwUlvdocHvOpkZNgWcuiYFFeyzuHivFOcFW8nxFwLMnlzw17rz14uzzW
+ 5mdwA
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
+ fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-The TDX module uses Physical Address Metadata Table (PAMT) to track some
-state for each page of physical memory that it might use. 3 levels of
-PAMTs are used to track pages of different sizes - 1GB, 2MB and 4KB.
-Dynamic PAMT (DPAMT) allows saving memory by allocating 4KB PAMT
-dynamically, while the 1GB and 2MB levels remain allocated on TDX module
-initialization. The kernel has helpers to install 4K DPAMT.
+Background
+==========
 
-Although the memory for the extensions is tens of megabytes and the host
-allocates it in a large chunk, the TDX module accepts it at 4K
-granularity. Thus the host has to install 4K DPAMT for each page of it.
+TDX guests have early_printk support, but it is through a roundabout way
+using a #VE exception as a functional mechanism. The exception handler
+has to use TDG.VP.VEINFO.GET to find out what faulted, and then issue
+the TDVMCALL. Simplify this by using a TDVMCALL from the guest which can
+directly perform the port I/O.
 
-Call tdx_pamt_get() for each page before adding it to TDX module.
-Normally, these operations should not fail, and if they do,
-intentionally keep the error handling as simple as before - leak all
-pages, including the installed 4K DPAMT metadata.
+Patch details
+=============
 
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Patch 1 is a cleanup that moves the port I/O direction constants to
+arch/x86/include/asm/shared/tdx.h.
+
+Patch 2: Add a new earlyprintk=tdx option, which calls the new
+tdx_serial_in() / tdx_serial_out() helpers to perform the port I/O
+directly using TDVMCALLs.
+
+The serial earlyprintk path is left as is - TD guests using this will
+still take a #VE exception, and the exception handler will perform the
+I/O.
+
+Testing
+=======
+
+Added a counter for the number of COM1 port I/O #VEs handled:
+
+  no earlyprintk     -  ~63000
+  earlyprintk=ttyS0  -  ~61000
+  earlyprintk=tdx    -  ~35000
+
+The new tdx option nearly halves the number of #VEs handled.
+
+Additionally, ran the usual suite of CI testing, which covers KVM self
+tests, KVM unit tests, and Avocado KVM tests without any regressions.
+
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
-v3:
- - New patch
+Changes in v4:
+- Rename the tdx_inb()/tdx_outb() helpers directly to the serial
+  accessors with __noendbr annotations, and remove the config ifdefs
+  from early_printk.c. (Kiryl)
+- Rebase to v7.3-rc6
+- Link to v3: https://patch.msgid.link/20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com
+
+Changes in v3:
+- Drop the ttySN and baudrate option parsing for earlyprintk=tdx (Dave Hansen)
+- Link to v2: https://patch.msgid.link/20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com
+
+Changes in v2:
+- Rebase to v7.3-rc4
+- Move the TDX hypercall helpers into coco/tdx/tdx.c (Kiryl)
+- Add a new earlyprintk=tdx option that implements the direct TDVMCALL
+  path (Dave Hansen)
+- Link to v1: https://patch.msgid.link/20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com
+
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Vishal Verma (2):
+      x86/tdx: Move port I/O definitions to a shared header
+      x86/early_printk: Add earlyprintk=tdx to drive the UART with TDVMCALLs
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 5d5f9da1ab02..27a7039ee443 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1330,8 +1330,15 @@ static __init int tdx_ext_mem_setup(void)
- 		struct page *chunk = page + added_pages;
- 		unsigned int i;
- 
--		for (i = 0; i < chunk_pages; i++)
-+		for (i = 0; i < chunk_pages; i++) {
-+			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
-+			if (ret) {
-+				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
-+				goto out_free_hpa_list;
-+			}
-+
- 			hpa_list->phys[i] = page_to_phys(chunk + i);
-+		}
- 
- 		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
- 		if (ret) {
+ Documentation/admin-guide/kernel-parameters.txt |  8 ++++++
+ arch/x86/include/asm/shared/tdx.h               |  6 ++++
+ arch/x86/include/asm/tdx.h                      |  4 +++
+ arch/x86/boot/compressed/tdx.c                  |  4 +--
+ arch/x86/coco/tdx/tdx.c                         | 37 +++++++++++++++++++++----
+ arch/x86/kernel/early_printk.c                  | 20 +++++++++++++
+ 6 files changed, 71 insertions(+), 8 deletions(-)
+---
+base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
+change-id: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
 
--- 
-2.25.1
+Best regards,
+--  
+Vishal Verma <vishal.l.verma@intel.com>
 
