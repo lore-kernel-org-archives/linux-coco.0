@@ -1,371 +1,231 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430D33DDDD9
-	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 17:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791309234; cv=fail; b=HUviOPw8jP+3ILLyadvTgrW9uwxjwDrUDyrNVxJ3q+KygKp0WTHvH64/xN+r3N8hP4OKO/VyDBecOsVeXYf+7wtxUDz+SAQ5PAg3rIb72cIO0WAOqAkUv6Aj2h6DbFxsw3Bg8ktSCiSNjuOq3ytbXuPp7+8ib6e19FJjpqrcvZ8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791309234; c=relaxed/simple;
-	bh=a+Etom3flzjdPlx6JMNYTc/p1vVEVL6Ps3AmTZLpNJU=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZeLPvm3RvfgQCeMQKoTWAlDyTVKRxh4lXWnzzKXx0Nw95uj3hAKvtD+PGFjZ2dQuoEMM8Cidr7VaLH8y+MHwhPP9UuzFcU0aM8xDJ9KTF2ZUbyLYDLPnF75Jb/E1tTJSdPJiQ9mX3o8RlglrdpXJUromEjr9oJDiEUGOJfoIrx0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g/5U/hLo; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C091522425B
+	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 22:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791324070; cv=none; b=pQ+dx5zAUQp3Bby+EXtGkVt6Xaw8b9UFI6mhS7LHBPGd4230SSKpO0lsS3H2wOS83gjPjbtcojcaP3vJxHwuqHVPrNvVF4Bz++ONhkIUZNhIU9Mml8bbPbkeNpdc2UTdiFGmjg3szX4OARGP+ebPFKZHFF7iUJFrqsWLRd3yDtg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791324070; c=relaxed/simple;
+	bh=naWDN0pyZLWNc93EvdZ1r5h5QJkl363qtBoJNanvnAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XbxZNFT0JA/1set8dbPjpaENM4+pt4RI4PEYnngXj2y0de5IcY+3S1ibxTiyG7lMmD/xakZrEBjJR9Dj95dxh0+N2hgchBqC34XfQ7odkuQ5pAZ5oD2osBt0pXUybNkpwcmX4ddQqGMYKuflrCgXS9NgomWLmVHMbo3x1ywgQsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NXyzRBp1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g/5U/hLo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791309231; x=1822845231;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=a+Etom3flzjdPlx6JMNYTc/p1vVEVL6Ps3AmTZLpNJU=;
-  b=g/5U/hLoubFZFnYsn+nYLN5Ep/plvCblDKzvzXZwBdj+/c5U/2AjZBQy
-   ZCSxYXSAGnD5U7uQ5Rbgxr8aAmyMyM6KczH/SNSptP94ID+WapHoO18Dt
-   Mvlygl1DrUy1oYIwz7fQ3OYG5oZGfbcdvYG9FVj8Fc50U/fXttd+lIwtr
-   ld1WcVxctjawjTd7JMnd+LXgJyps2Vst4nrdwY2owZpmnJg2OBt/D9ET2
-   tsNKQVGGhruQ+maQDujmC3XWTq536wtqLiABpSfhRB8w7odDCnuWQl255
-   3vhpEks6iMZpXUU+OycZZjWbJuhQT5yP6FWkf3tz4n4pIyRSrkahwqi7u
-   A==;
-X-CSE-ConnectionGUID: Qwyp+AWnQCq93nErINtNhA==
-X-CSE-MsgGUID: LUfsU5XCT/i3UkLsQLmiAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="63633"
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="63633"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:53:49 -0700
-X-CSE-ConnectionGUID: UDUSzX+pQBS7yvtt2ugTQA==
-X-CSE-MsgGUID: E+IUJ05AQxyfrNn1QZ+zGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="315239262"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:53:48 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 10:53:47 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 10:53:47 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.66) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 10:53:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eg5cQBmBuysyCxt3EB5VS1BlrYh7umS83LB9n+4JUvUTUBI6arWS3FQXJWGxauZxHMn1MCgQ39Tpw4D4QzxfslEmrPN1Ad4DJMeGChYLtDL7QojZNbJ67u7PQZaXFEVoHh+SOZfoWRLPmZ4t0bRIXKZYAHdkmiHz/VrRHdaBBQwYp9d8jkMcUFpGFaedxC5MecvnbcdG+5Odrn7l1bY6CpheLdxujAbi0Gr/Shm5GG3BBr7KcIAFSBB9tAEvY8j9XlGzXyDXBa4lqxit/eZ7z5RjouqutSUVlacYfMF4DLn7CwC1y+1bB5xnw2JQ9jtpJazN9148OGVx+t6kGruO8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Uz/QLAuNPbgglLpxzfwgpkGVVkQEVXWVLDiDn5LkfB8=;
- b=vvZVqq0L5J6gjPl9DAglxcZWdFB59OT+UDdVhHO+UYSScxE3j+slHIV5Hva4aa+OnhKGevsuK4gqVAqyad05Udy6a8xBpzHQpoEHkLsR2QIQMBcQiE9EyMbFhTB4eDRsbAPMxjd6QDxortIeuuKHx3zZicLyd46wRY5mgU9ilWLA1q2h9ahh3yMr9yI88NNs13sMDua8e0bjci/wXDJZ7dhUyk7LWYPbhUbkY3ELGqBDRIE5rIjWbwv84IAOWnSzGk0+AhGri+ZosU3IqS4HpU47RoCwNLBlL0aN8EPc+u9IUaNdslj5b7n+y0qHxnBosh+YLq3tkm2RQgmPZp5BbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB8379.namprd11.prod.outlook.com (2603:10b6:208:488::20)
- by IA4PR11MB9279.namprd11.prod.outlook.com (2603:10b6:208:561::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
- 2026 17:53:45 +0000
-Received: from IA0PR11MB8379.namprd11.prod.outlook.com
- ([fe80::549f:e4b3:e10d:aaa6]) by IA0PR11MB8379.namprd11.prod.outlook.com
- ([fe80::549f:e4b3:e10d:aaa6%6]) with mapi id 15.21.0451.024; Tue, 6 Oct 2026
- 17:53:45 +0000
-Message-ID: <200d21ee-3041-40f2-9032-18e8544a7030@intel.com>
-Date: Tue, 6 Oct 2026 10:53:42 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] x86,fs/resctrl: Keep mbm_assign_mode in default
- mode at boot
-To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
-CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-References: <cover.1790976400.git.babu.moger@amd.com>
- <b969687be3162715e10242424b5a489857d67f2a.1790976400.git.babu.moger@amd.com>
-From: Reinette Chatre <reinette.chatre@intel.com>
-Content-Language: en-US
-In-Reply-To: <b969687be3162715e10242424b5a489857d67f2a.1790976400.git.babu.moger@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0352.namprd03.prod.outlook.com
- (2603:10b6:303:dc::27) To IA0PR11MB8379.namprd11.prod.outlook.com
- (2603:10b6:208:488::20)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NXyzRBp1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791324067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BX1nDoHfY9wIaK7n+kTY5G9GqR52mFVKGv7vDMVDhYE=;
+	b=NXyzRBp1ckiIDcObA5THYAq6MH+VihOJAsMvUdk8x9OH50qv7dx1/X64naQFIUkwJbKDF3
+	Gt9ZZoO2SifkkEvsai+++Zo8phWSJJH5NCopVSMuRr9fTxAZQaQwxth1LXeUKbF6qpnJ9W
+	Y1Co1I4RAnkJhAFkEdKzNkyKGz0C/5Y=
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com
+ [74.125.82.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-111-uute3zc0M36fSxPS2VlU_Q-1; Tue, 06 Oct 2026 18:01:06 -0400
+X-MC-Unique: uute3zc0M36fSxPS2VlU_Q-1
+X-Mimecast-MFC-AGG-ID: uute3zc0M36fSxPS2VlU_Q_1791324065
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-154e9d2d94fso6962197c88.0
+        for <linux-coco@lists.linux.dev>; Tue, 06 Oct 2026 15:01:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791324065; x=1791928865;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BX1nDoHfY9wIaK7n+kTY5G9GqR52mFVKGv7vDMVDhYE=;
+        b=J6m6DqeUiuDhp3ATikYvHAqTSYuxNqMb+Kcdm2hUgFKkbMezZ2UC3JRytFLYPRHBP8
+         5oVpYVM2omaxnmfCJzQIVARdGubjBclU1csG6CYMr2u8ElHpGwBwjEs1Kv07igR3r6TT
+         Tu9u1s2oP2XlPXdtWdtrW2522W44KVoxqQT0Vny4jM5ppXp2Op1jqFSfiNrs+hibklT4
+         b66Uxe/p5fbAYws9sd6cEtxn+TlFMo1psBU3Z6ZFE8sB1uFTXQ+XNBVzy0gjHSgB8qgJ
+         VcTkI0lLdUVmRIUtWqL7AJsrgO5/8A6yJ8IIa3HgraO1tASDENqr/nXuuH8x2oZk+qqz
+         OADg==
+X-Forwarded-Encrypted: i=1; AKwUvBwsMDu2IA3n612fPwmy4hMU+1PWPJvwDOxrRaSsqy01y+c3nu66gjGmmatiTpqZP/oY1hMaIJHZV3DS@lists.linux.dev
+X-Gm-Message-State: AFuF++numwj2aruewFmAeHvEGPFvKCjvh60iZxj56dUOJjb4Z3mJYL2t
+	UXUcHueaYtvDWIdemy4Vc2ebhEw6ThOGiY8qoM3u18AfPcgfwrsz0V2xSrGK76Cu8ikyqT1nm7l
+	0haQ3yd2g34n5BcW82g5oR+kDkU8H+vpoFXz+0QeJumv0EabfHdiyTPcw2Bff1t8=
+X-Gm-Gg: AYBFou1IathVa+3378w0907fNmXH7Gy2pN1AO1mETB928uQCRaw6lmxtvUlAsHZxcLy
+	15yRKuIiZSDXEWSZpgRum2fDmSaswvXNi6fkcb7KXFfvTV7d7bxdeJo/KtZOGuqxJ33X3uIzcue
+	6O8ZqpVy3p9CUkS1Z1HmScwLMUKxL50BRN+acQTF+fwkq8h3tfjMPomkGpASnnUQpiXHanYEWz0
+	+/k6TlifVFXHo8BnHv/wSCQVyNf51CUL01j99J9G3KtPw8aHK6vV7ktlLwiV8v6uCdo/9pooyA2
+	9IS5C67bRDXyqNpBSkMnDmkR7fut4njNSVYIVM6e5PFH3NjPtid8kfQE8bd4Fu3bOMBvcou1Izw
+	h7AqgVUcnVU1Bj0egUa5uvypOYKiPOPMoHrYRV2Ypow==
+X-Received: by 2002:a05:701b:2618:b0:145:7a:7765 with SMTP id a92af1059eb24-162092950d9mr130468c88.36.1791324064793;
+        Tue, 06 Oct 2026 15:01:04 -0700 (PDT)
+X-Received: by 2002:a05:701b:2618:b0:145:7a:7765 with SMTP id a92af1059eb24-162092950d9mr130376c88.36.1791324062351;
+        Tue, 06 Oct 2026 15:01:02 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-16167463910sm1401330c88.9.2026.10.06.15.00.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Oct 2026 15:01:01 -0700 (PDT)
+Message-ID: <e854517f-b364-4c64-b542-7546afadbda3@redhat.com>
+Date: Wed, 7 Oct 2026 08:00:45 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB8379:EE_|IA4PR11MB9279:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38ba8429-0057-4d58-29f7-08df23d2c47d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|6133799003|22082099003|18002099003|10067099003|3023799007|260925021911599003|4143699003|260925021311599003|260925022911599003|56012099006|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info: 0RGXbuN7ZixBXw0No7SmD6f+wXAMG+LKdVUaaHe+bmeWHdiSuPZvMoSrQu5sfdxl9so2GzoRVaPewqLrVIp+5RsAwarZDg9OTaKhLhJA9qFAS8lfVi5+WC260zMgwOLr5V4Ab1NgKfumYft8jAtDQzzGVZIKNeILQ+Z2mQJs7HPyn40oUp5lj+OWdn/1jAohwxh+89zvU+cMqpcqiXDYIeCyZu51FV5IhkndN5oU8eVzjaXo9nRxvzyc6b9QH8KQBYhPlWmAqXWF9+daAFAZHSkO9rcFDmUwjmqiSnoWHLTPzsEGNYY3P9PPyhPekbVxOa36a5wTbRu6rrTRBpLA1f5BAZIwBwyzJHRotkbO+QRxVvTTh/jyKHix5aj/kAdkxqqPqfloTDxgYYdsK0Tk/KzJ6RnyvYa5oDJrAGaL5ZCAh7D9cvLCX6iEZEzSzAv/7SJmDOH2vO51FvmiS64Sy7byK59WkjveBHoBLW4Q3k/5NB2DvL7fi80BS0nsOi5TlJQnTLMQY1Ci9budj7aG1n4F3104E1zyk5f2cSGW837pjzyJt+Ribe4hv+RI7QK5aVsOAlnH7gHu1WBU0YMh/5BNhsVJdbDSdG3fzmyjjssxX76gK/TPfmqDR29et8CFuzCCP3yZyEU0RPhvkrkjPMC72SFtXCWQPxO6KWsiWmw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8379.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(6133799003)(22082099003)(18002099003)(10067099003)(3023799007)(260925021911599003)(4143699003)(260925021311599003)(260925022911599003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WUJ4bmR1YjdsTk1oaG5nTFdtYnRnSFgxMlRIK0pwbWFDZUYwV29ORmdxYUpT?=
- =?utf-8?B?L3RqcUN4eFRaOGFKMDlxeFpCQ2hUbzF0WHlIMG9uWUJxcTVmR0Q1YVVycXcx?=
- =?utf-8?B?K1lXa2ZJNHQ3Z0l6cE5JVkRyUlFJcW81bmRkYS80ay9KNGNFYmZmR1FMcVEz?=
- =?utf-8?B?ZndNNWZvbmMyTnhQVnprS2dHMU9UTG52QlkzZkRUbDBDVVFxdUg2UTB5Mm1Y?=
- =?utf-8?B?SFNOcFduRzVVSDdpUmQyZmo4N2gzTDlENEF6MmdZZ25Vamd6K1RtMTZtUEp4?=
- =?utf-8?B?WHF2eFdMYWFCMFVQTjk1citMb1V0Mkkvc2VBVjJlV0c2d2VDOHdYQ2NWZnFa?=
- =?utf-8?B?YUdNZUFSdjc4dWlLMUNBdDFqSDVkOVpPVmhIazNrKzErd296ZTdWRk1HcDFh?=
- =?utf-8?B?QjJoZ0E5cE5XUTltcEFLMnBEMitjSTROaXk2bllPY0FTaVlHT3BZZ2RFVG8v?=
- =?utf-8?B?ejhIWkllOWNRWUl5N21VTE5Ea2pRSThRUnJ4SEZyY01lZjlOZS84WWs0Q01L?=
- =?utf-8?B?NjhwVFlpZmpVbWJtelFHeDdYVms1S3ZBU0VOZW5qdDNwUm5vdjdOdGo2cVE0?=
- =?utf-8?B?UkE2OEh0Y1ZSQkNhMGNNT3ZkRUxCUkxiRnFmellJUDlLaVF4cGVHUkZmMGJG?=
- =?utf-8?B?OU16allXdUdmTlJzcFdjQ3NZN2hNRTNlSkZjaHBIbWNpaXNReW4rTndxY2tx?=
- =?utf-8?B?NWJPQzEvZExqTDJjSVh2eDluOU9IVXErdnJncktLQ1NLcE5GM3Z0c1gxV1lv?=
- =?utf-8?B?TzZwRVhVUGhBWGpOVlBxSTNvdmV5ang3U0FlZzlEOVF1eFI0c1BCMUpVS3ZC?=
- =?utf-8?B?R3cvQW1EZDVha2V1dFh5cHQySXF1cEJacHI3SmszV3d6S0pkSklnRFpFVG1a?=
- =?utf-8?B?NHc5QldXT2JrMy9BeTRZRFEvN3g5NERVQjNYZUVvRjJyeE9CT1JxOXN5TTcz?=
- =?utf-8?B?eERtYmQ1Qlc4ajNLSUNsUnVPbHhwYXNKY2dHU2F4ekc4N3M0VnE5UzdHeDVL?=
- =?utf-8?B?akY1ZEk3dnN3SmRCMGNPZkFFZmUrRk51RmpSQVB0djFWdHp2ZFBwa0FRWnky?=
- =?utf-8?B?eFJBTmRWaHNKWS9MTTRIeHRQUzI4czBrU0xyblY3VEdtcHczMlhPc29EWmF6?=
- =?utf-8?B?YmxDb2JrTTFoZlFITzhneE96STBybjhBV1ZWbU5ZTU5Cc0dpck5JdWxRSHdk?=
- =?utf-8?B?N0U0SWQzSm44U2JyRUF4MUR3THVjYkNTM3ZxMElTYzN4blNkTjZTTE1TZXFI?=
- =?utf-8?B?b2VDTTBOeFB6clE5elVTTTNpR1pDeXFTSnJuU1d4VTVNaWk4dnQvNmtzbHZK?=
- =?utf-8?B?NVk2bmtiSTBLQXRjSlFMbXVYWHVPNk1Gdk1pTjdSTVRpZ2s4OE54NFRSRG1l?=
- =?utf-8?B?MnJGaXRGaEhYMGU2Yjg2MlJTRlh6VzhpYjUwNGhyby9DaEtFT1JOenl2Skd5?=
- =?utf-8?B?dEFacFFpRmp3QlBRdTVqVCtUbEw0VnN4SE84UVZ4QTVuWFV3R21XcU4ydlJS?=
- =?utf-8?B?eFk1Ni9EMDVWSEl6UjdySlJjWnZPbDIxTDhDeFJSL2d6c2RFWTNPc1ZHREFW?=
- =?utf-8?B?TG5rajlmYmNjazdlTG14NlZqVnE3TW5aTWFlYWRaSDZNN0lTYS90L3JBbHZQ?=
- =?utf-8?B?WXhJNit1VWNxMWxzRTZpdkQwSmJPS3hXcEFIbjU5aXZtZVNjUjZtYkMxaHk3?=
- =?utf-8?B?dkJOTmJHOG1nd2xocjJIV0dDVXFMd0ovdkk1ZytMSzZKc01CYUNkRmlkMFYv?=
- =?utf-8?B?R0RzRnhNNmg1S3B6ckhIY25nRm0zK205Q3VyWHlzOFZJSm1lTlNuK1JQNDIx?=
- =?utf-8?B?QWFVMTJYRW1wNnpkK0U0OW5Eb3FhVm9JYkRLWkZtVEk3bXdrQXBxdXhnTTlC?=
- =?utf-8?B?aTRJd2kzbXhncitoeU94SG1xTzdRbXA4UHRFK0FyRUIveVBYd0ZqRXc0T25r?=
- =?utf-8?B?cGJOQjYwcTNrVVNlb3JEOGJFQTJiWmVsTytCSkNwYmZhVE5YYW1WY20wSnh4?=
- =?utf-8?B?YXk3WlQyc3RSVFpWNU53Q0NybGE1dlhDaHphSllhTHFodmgzaFhoRnE1cEgy?=
- =?utf-8?B?dFhOVTBITkNzdmxRYklhbGVBWHM0Z0RBb25yelNDTzlSM2JHWkFHWk9iNUZX?=
- =?utf-8?B?MkJRMXNmVVp4MnFBcFIwOG9PMTZYRW51UVkzWTRJT3VtbGhnMUlNZWR4ZWNy?=
- =?utf-8?B?ODJpSUxqM21yU2ExZ041NlF6QmJKNmNpMHM2MytQS3YyUGRmRHAzMlBaajBF?=
- =?utf-8?B?b3ZQajc4cUQ4SEFabE1jVlkva1ExTFZtRnlJSHF0Yk1LSERQbEFlMTBwYWVK?=
- =?utf-8?B?RXhYR1cwV3pwRmJRRmYvSGJWekpqSUFkTTdobXJkWStIQzZHYzRwYlYxVnNo?=
- =?utf-8?Q?wOxzcLwmyqrWDTwE=3D?=
-X-Exchange-RoutingPolicyChecked: cTB6OC6reMU5Uo/zz2nnCZw58CHYRUfNT/Io0UIiW9IViieW7CC4TfhjiX4Nq5QiGRhyqW2Molj5vpYFt/z28Y7L+2JPjDGe/lAt+ey9e0NuTDhHG6yeuCQw5bA7WtwgASPH7R02n1/QVI3ahA4rvS2xpwSLQON6BxA9PFRrf3E5Gefxh455pkgQSpRN7SSO4Ekgcr67Bf1kjngS47vTsUWsx5GDl77ZCxTZGaOeRsiRe4K5Ms0gjyICuyBn8cfVzRTYJR2Szga2wcClhL11GVyIHpXHgUu5W1w/E00LsMBQrNOPl+1nVsKQaiK/BxYgwklJQdUSE3hIA6aUyi/fRg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38ba8429-0057-4d58-29f7-08df23d2c47d
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8379.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 17:53:45.8260
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J6oLX06X3RhQyeUnCJJzJQAZBLaDwGKa8wRqd8UmOIoJ5rCgu2GFWfGCiyrrUrL3IFe77dWQEhPTc+v/fLFL5hS9MAMqAKtseTO9+na7dBU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9279
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 23/23] KVM: arm64: CCA: Control user register access
+ for Realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
+ <20261005090754.2140522-24-suzuki.poulose@arm.com>
+ <52e3e45a-751e-40b2-8dd3-3db589ddebee@redhat.com>
+ <7b6ed626-eca4-41f2-ae56-0af59a931b29@arm.com>
+ <6bd785aa-4693-407d-b70a-39b1d0eda63e@redhat.com>
+ <71ceb680-e168-450e-99e0-7a8cf4160bba@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <71ceb680-e168-450e-99e0-7a8cf4160bba@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DFlDL14sQz_BU7zKmdxbQKsyECx1kV34KhL32Q35sr0_1791324065
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Babu,
-
-On 10/2/26 2:26 PM, Babu Moger wrote:
-> The "mbm_event" mode assigns hardware MBM counters to RMID/event pairs.
-> It is intended for deployments that need to manage counter assignment on
-> platforms where the number of monitoring groups exceeds the available
-> hardware counters. Hardware counters are scarce, so mbm_event mode suits
-
-"Hardware counters are scarce" -> "Hardware counters are scarce on these platforms"
-(to make it specific to the context and not a general statement)
-
-> workflows that monitor a subset of groups at a time and rotate
-> assignments as needed.
+On 10/6/26 10:36 PM, Suzuki K Poulose wrote:
+> On 06/10/2026 07:16, Gavin Shan wrote:
+>> On 10/6/26 4:01 PM, Suzuki K Poulose wrote:
+>>> On 06/10/2026 06:47, Gavin Shan wrote:
+>>>> On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
+>>>>> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+>>>>>
+>>>>> The RMM restricts the access to the register states that the host can
+>>>>> read/modify for a given Realm.
+>>>>>
+>>>>> e.g., At VCPU creation, can modify GPRS (x0-x30) and PC.
+>>>>>        While servicing SMCCC calls via RSI_HOST_CALL or servicing PSCI
+>>>>>        requests.
+>>>>>        MMIO emulation in the unprotected space.
+>>>>>
+>>>>> Additionally we use the sysreg configuration to advertise/configure the
+>>>>> following Realm parameters, which are required before the Realm Descriptor
+>>>>> is created:
+>>>>>   - SVE Vector Length
+>>>>>   - Number of HW Breakpoints/Watchpoints
+>>>>>   - PMU Counters.
+>>>>>
+>>>>> Thus KVM also additionally allows access to ID_AA64DFR0_EL1 and SVE_VLS for
+>>>>> the configuration of Realm creation parameters. We don't support PMUs for
+>>>>> the Realm VMs yet, so PMCR is not exposed.
+>>>>>
+>>>>> The RMM makes similar restrictions for reading of the guest's registers
+>>>>> (this is *confidential* compute after all), however we don't impose the
+>>>>> restriction here. This allows the VMM to read (stale) values from the
+>>>>> registers which might be useful to read back the initial values even if
+>>>>> the RMM doesn't provide the latest version. For migration of a realm VM,
+>>>>> a new interface will be needed so that the VMM can receive an
+>>>>> (encrypted) blob of the VM's state.
+>>>>>
+>>>>> Reflect the above in KVM_GET_REG_LIST, KVM_SET_ONE_REG calls.
+>>>
+>>>>>   static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
+>>>>>   {
+>>>>>       int size;
+>>>>> @@ -553,6 +572,9 @@ static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
+>>>>>           u64 reg = KVM_REG_ARM64 | KVM_REG_ARM_CORE | i;
+>>>>>           int size = core_reg_size_from_offset(vcpu, i);
+>>>>> +        if (vcpu_is_rec(vcpu) && !kvm_realm_validate_core_reg(i))
+>>>>> +            continue;
+>>>>> +
+>>>>>           if (size < 0)
+>>>>>               continue;
+>>>>> @@ -598,6 +620,9 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
+>>>>>       if (!vcpu_has_sve(vcpu))
+>>>>>           return 0;
+>>>>> +    if (kvm_vm_is_realm(vcpu->kvm))
+>>>>> +        return 1; /* KVM_REG_ARM64_SVE_VLS */
+>>>>> +
 > 
-> resctrl enables the "mbm_event" mode by default on hardware that
-> supports it. That breaks the pqos tool [1], which assumes the historical
-> default mode. pqos treats a non-numeric event read as zero bandwidth. It
-> creates 16 or more monitoring groups and uses two counters per group.
-> On a platform with 32 counters per domain, that consumes the pool, so
-> further groups read "Unassigned" and pqos reports 0 MB/s for them:
+> This could be vcpu_is_rec().
+
+vcpu_is_rec() is preferred here.
+
+>>>>>       if (!kvm_arm_vcpu_sve_finalized(vcpu))
+>>>>>           return 1; /* KVM_REG_ARM64_SVE_VLS */
+>>>>>
+>>>>
+>>>> Aren't above two checks conflicting to each other?
+>>>
+>>> Do they? We allow SVE_VLS only for the Realms and we allow that
+>>> before the vCPUs are finalized. For normal VMs, depending on
+>>> whether the vcpus are finalized, we either send 1 or the full list.
+>>>
+>>
+>> num_sve_regs() can be called for 3 cases: (a) non-finalized RECs; (b) finalized
+>> RECs; (c) Other finalized vCPUs, correct? "if (kvm_vm_is_realm(vcpu-  >kvm))", which
+>> would be "if (vcpu_is_rec(vcpu))", covers (a) and (b). We needn't the excessive
+>> check "if (!kvm_arm_vcpu_sve_finalized(vcpu))". So the check would be something
+>> as below after this series is applied:
+>>
+>>      /*
+>>       * KVM_REG_ARM64_SVE_VLS is visible on realm vCPU no matter if it
+>>       * has been finalized.
+>>       */
+>>      if (vcpu_is_rec(vcpu))
+>>          return 1;
+>>
+>> This check "if (vcpu_is_rec(vcpu))" belongs to PATCH[22]. Hope I make myself
+>> clear this time :)
 > 
->   $sudo pqos -m all:0-4
->   CORE         IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
->      0        0.69         16k       192.0         0.0         0.0
->      1        0.40          3k         0.0         0.0         0.0
->      2        0.44          1k        64.0         0.0         0.0
->      3        0.39          1k        64.0         0.0         0.0
->      4        0.43          1k         0.0         0.0         0.0
+> Sure, these two patches are closely related and may be even could be
+> folded in. I split it out to make it easier to review.
 > 
-> Leave mbm_assign_mode in "default" mode during initialization. Default
-> mode uses one counter per monitoring group. On existing AMD platforms
-> that pool is 64 counters and may be larger on newer hardware. The
-> "mbm_event" mode uses two counters per group, so 32 counters cover only
-> 16 groups.
+> 22: Allow exposing SVE_VLS for unfinalized VCPU RECs
+> 23: Control register accesses includingthe SVE_VLS, but prevent
+> everything else
 > 
-> Deployments within that pool receive accurate bandwidth measurements
-> with default mode. The hardware supports 4096 monitoring groups. Beyond
-> that pool, readings may be misleading or "Unavailable", with no
-
-At this point I am lost because the word "pool" is used to mean three
-different things. It is used for the number of "ABMC counters" as well  
-as the number of "non-ABMC counters" that exist on the same platform,
-above it seems to be used for number of RMIDs (number of monitoring
-groups) also. Could you please add some context at beginning of
-changelog to introduce the various counts applicable to the description,
-associate unique terms to these counts at that time, and then use
-those unique terms in the rest of the changelog?
-
-> user-visible indication.
+> Does it help ?
 > 
-> Default mode is still limited once the number of monitoring groups
-> exceeds that counter pool. After hardware re-allocates a counter, a
-> read may return "Unavailable". pqos still treats "Unavailable" as zero.
-> Successive reads can be a count, "Unavailable", then another count.
-> pqos treats those jumps as wraparound and can report an inconsistent
-> rate:
+
+I would suggest to fold PATCH[22] into PATCH[23].
+
+Thanks,
+Gavin
+
+> Cheers
+> Suzuki
 > 
->   $sudo pqos -m all:0-4
->   CORE     IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
->   0        0.76         60k        32.0         0.0         0.0
->   1        0.45          1k        32.0         0.0         0.0
->   2        1.57        107k        64.0         0.0 17592186044184.9
->   3        1.62        276k      4928.0         3.2         0.5
 > 
-> Users that need stable measurements beyond that pool should use
-> "mbm_event" mode and rotate assignments as needed.
-> Enable it with:
+>>
+>>>>
+>>>>> @@ -625,6 +650,10 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
+>>>>>           return -EFAULT;
+>>>>>       ++num_regs;
+>>>>> +    /* For Realms only support SVE_VLS */
+>>>>> +    if (kvm_vm_is_realm(vcpu->kvm))
+>>>>> +        return num_regs;
+>>>>> +
+>>>>>       if (!kvm_arm_vcpu_sve_finalized(vcpu))
+>>>>>           return num_regs;
+>>>>
+>>>> Same question here.
+>>>
+>>> As above.
+>>>
+>>> Suzuki
+>>
+>> Thanks,
+>> Gavin
+>>
 > 
->   $echo mbm_event > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
-> 
-> Fixes: 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
-> Closes: https://github.com/intel/intel-cmt-cat/issues/311
-> Link: https://github.com/intel/intel-cmt-cat # [1]
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
 
-See "Ordering of commit tags" in Documentation/process/maintainer-tip.rst
-
-> ---
->  Documentation/filesystems/resctrl.rst | 48 ++++++++++++++++++---------
->  arch/x86/kernel/cpu/resctrl/monitor.c |  1 -
->  2 files changed, 33 insertions(+), 16 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystems/resctrl.rst
-> index c8507580474a..2efc99223bdc 100644
-> --- a/Documentation/filesystems/resctrl.rst
-> +++ b/Documentation/filesystems/resctrl.rst
-> @@ -354,8 +354,8 @@ with the following files:
->  	::
->  
->  	  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
-> -	  [mbm_event]
-> -	  default
-> +	  [default]
-> +	  mbm_event
->  
->  	"mbm_event":
->  
-> @@ -363,6 +363,9 @@ with the following files:
->  	pair and monitor the bandwidth usage as long as it is assigned. The hardware
->  	continues to track the assigned counter until it is explicitly unassigned by
->  	the user. Each event within a resctrl group can be assigned independently.
-> +	mbm_event mode uses one counter per event of one RMID. A monitoring group
-> +	can use two counters, one for mbm_total_bytes and one for mbm_local_bytes.
-> +	For example, 32 counters can monitor 16 groups.
-
-This addition looks redundant to me. "mbm_event mode uses one counter per event of one RMID."
-just repeats earlier "...assign a hardware counter to an RMID, event pair ...", no?
-The example being added ("A monitoring group can use two counters ...") also looks
-to be specific to AMD's usage and including platform specific example as part of generic
-introduction seems unnecessary.
-
->  
->  	In this mode, a monitoring event can only accumulate data while it is backed
->  	by a hardware counter. Use "mbm_L3_assignments" found in each CTRL_MON and MON
-> @@ -376,20 +379,37 @@ with the following files:
->  	"mbm_L3_assignments" after switching to "mbm_event" mode for counter
->  	assignment states of all monitoring groups.
->  
-> -	The mode is beneficial for AMD platforms that support more CTRL_MON
-> -	and MON groups than available hardware counters. By default, this
-> -	feature is enabled on AMD platforms with the ABMC (Assignable Bandwidth
-> -	Monitoring Counters) capability, ensuring counters remain assigned even
-> -	when the corresponding RMID is not actively used by any processor.
-> +	It is intended for deployments that need to manage counter assignment on
-> +	platforms where the number of monitoring groups exceeds the available
-> +	hardware counters. Hardware counters are scarce, so mbm_event mode suits
-
-"Hardware counters are scarce" -> "Hardware counters are scarce on these platforms"?
-
-> +	workflows that monitor a subset of groups at a time and rotate assignments
-> +	as needed. The mode is beneficial for AMD platforms that support more
-
-Text from "The mode is beneficial for AMD ..." does not seem necessary here
-since it just duplicates the text added below?
-
-> +	CTRL_MON and MON groups than available hardware counters. The mbm_event
-> +	mode ensures counters remain assigned even when the corresponding RMID is
-> +	not actively monitored.
->  
->  	"default":
->  
->  	In default mode, resctrl assumes there is a hardware counter for each
-> -	event within every CTRL_MON and MON group. On AMD platforms, it is
-> -	recommended to use the mbm_event mode, if supported, to prevent reset of MBM
-> -	events between reads resulting from hardware re-allocating counters. This can
-> -	result in misleading values or display "Unavailable" if no counter is assigned
-> -	to the event.
-> +	event within every CTRL_MON and MON group. This mode is enabled by default.
-> +
-> +	On AMD platforms that support more CTRL_MON and MON groups than hardware
-> +	counters, hardware dynamically shares a smaller pool of counters among
-> +	RMIDs. One counter from this pool is used per monitoring group and counts
-> +	every MBM event of that group's RMID. The size of the pool is not
-> +	enumerated to software (unlike "num_mbm_cntrs"), and "num_rmids" may be
-> +	much larger. For example, 64 counters in this pool monitor 64 groups.
-> +	Newer hardware may provide a larger pool.
-> +
-> +	While the number of monitoring groups does not exceed that pool, a counter
-> +	stays attached to each RMID and readings remain accurate. Creating more
-> +	groups than the pool can cause hardware to re-allocate those counters
-> +	between successive reads of an event. Bandwidth values may then be
-> +	misleading, or a read may return "Unavailable" if no counter is allocated
-> +	to the RMID. There is no user-visible indication when this begins.
-> +	Users who need stable readings beyond that pool should switch to mbm_event
-> +	mode, if supported, and assign counters to the groups of interest
-> +	(rotating assignments as needed).
->  
-
-Above usage of "pool" looks ok since it only uses the term for the "non-ABMC hardware
-counters" while using the accurate terms for the other counts.
-
->  	* To enable "mbm_event" counter assignment mode:
->  	  ::
-> @@ -1787,11 +1807,9 @@ View the llc occupancy snapshot::
->  Examples on working with mbm_assign_mode
->  ========================================
->  
-> -a. Check if MBM counter assignment mode is supported.
-> +a. Check if MBM counter assignment mode is supported and enabled.
->  ::
->  
-> -  # mount -t resctrl resctrl /sys/fs/resctrl/
-> -
->    # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->    [mbm_event]
->    default
-> diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-> index 5d0d3b18f9b8..a6a9090c4808 100644
-> --- a/arch/x86/kernel/cpu/resctrl/monitor.c
-> +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-> @@ -472,7 +472,6 @@ int __init rdt_get_l3_mon_config(struct rdt_resource *r)
->  		cpuid_count(0x80000020, 5, &eax, &ebx, &ecx, &edx);
->  		/* cntr_id is 12 bits and can only encode 4096 counters. */
->  		r->mon.num_mbm_cntrs = min((ebx & GENMASK(15, 0)) + 1, BIT(12));
-> -		hw_res->mbm_cntr_assign_enabled = true;
->  	}
->  
->  	r->mon_capable = true;
-
-Rest looks good to me.
-
-Reinette
