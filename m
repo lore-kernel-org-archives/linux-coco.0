@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68902E738B
-	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 02:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3AB2D1931
+	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 03:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791254287; cv=none; b=nAEVdXDhqzRQxg/gV2lw1ZlCOBIq+XcQKhKzh8icnU5LLUrvB8OmuQlwGB4e0rFn3t0EQ1hvGmIDFJppTOiyYo7X7Fslvi7WuHj84VT4FNW4RQq1K8CzzhTE6oH2c2hFLvDX132Zefx3NMf/pmpy1fF1TLDgp8ytulRS5tPDq2c=
+	t=1791255672; cv=none; b=nuW8doX7d8Ir1GzEBZEj09kHuUVcBu5in5vHcrszzA2hqWlCv4kuNv2FhrlMB3g7FemcIQ3v11LuStvjSrJegL/7crqQGDhwlek7yjtLeAzXbRrkQgaVjMS1oeBacIiOXB0eP+eL9Fi4C4GYe/OavPvkgndaniyMOQcnvZiLmJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791254287; c=relaxed/simple;
-	bh=D0UxWkrGDJEjJknTZwzjCJ31q1+uUyqqvfVL7rYvYbY=;
+	s=arc-20240116; t=1791255672; c=relaxed/simple;
+	bh=zeTZ2+q7/rM4wiP77zJbSjHtDXn20c99SaN/0DOByv0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kug5qcQAkZQUX3oJS5NxTiNb4O4YmvqDIOMhBvq5mJ42XLNGWjfD0YXx8EjbaPYDZWplpFRiGfs5EhuW/uc6OzkdCam7i3QSKa0zptLH5afhOaUe3CypXV39a/FqCf1EzJvpWvHA6H33lVG37yf7o3/Klmg8DzNXvnmsemLHS/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eQQ7Vk+k; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=fU+se9mhAexuO64Ycv4r++wkEn/r5KO7BrPB3WTboMq77blBjOeUb17NZN03g4xUtY6yWwtUdRyF1cwW82PHegz8v0uEpN/npiT6xSV47kRkn3O3Hlg9u5rjvYiQsGrIqtv9XGpXoVUO19mj3G5sdd/R+L2Z4XL5kW8jElWsRLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GEPE4eO6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eQQ7Vk+k"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GEPE4eO6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791254284;
+	s=mimecast20190719; t=1791255668;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Di6epxlZpoHDGpBk057UhpR75wL2RoTA8HU7YmJFqJk=;
-	b=eQQ7Vk+kFlXNfzFH9aDqc1Wgck6kR/gvO8ngr0e2ngOu51jgwu5Vzu0z6up+Kw3dueDBxO
-	WFW3dJhpZ+68OCN4TjvwKXQGQPFSphLeQAojAcwiOqiTHnlVY5ZPWpSiNXf1Jxq9phGkHI
-	N1wC1J9oPDZiWbxTe+DUgDcHXa5ww5Q=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=fMmY6n/MH6ca3TbNnMvPhVpWJPvoIQVMRX+7sRuvar4=;
+	b=GEPE4eO6gmKfNXgr51p+tXm3kZhIWSXD+rJVG8R5p3zhjxvh+blneQOEGe/9fIKX8b0wth
+	ZT3CTYH/LyDPWpAxaORanv51nej2Msqo9xNe5YO77G1gv3/0HuOT5mnZD2qyaXVGft+70r
+	TszkJ3Tbxds0dAPaj4Q9xSFr4o5rLLM=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-6EK0CK_4PwerbXOCu6C8FA-1; Mon, 05 Oct 2026 22:38:01 -0400
-X-MC-Unique: 6EK0CK_4PwerbXOCu6C8FA-1
-X-Mimecast-MFC-AGG-ID: 6EK0CK_4PwerbXOCu6C8FA_1791254281
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39533bb224cso2925520a91.3
-        for <linux-coco@lists.linux.dev>; Mon, 05 Oct 2026 19:38:01 -0700 (PDT)
+ us-mta-264-kVtZCXFANs-v7GYssx3XXw-1; Mon, 05 Oct 2026 23:01:07 -0400
+X-MC-Unique: kVtZCXFANs-v7GYssx3XXw-1
+X-Mimecast-MFC-AGG-ID: kVtZCXFANs-v7GYssx3XXw_1791255666
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a470ead068so2143206a91.3
+        for <linux-coco@lists.linux.dev>; Mon, 05 Oct 2026 20:01:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791254280; x=1791859080;
+        d=1e100.net; s=20260707; t=1791255666; x=1791860466;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Di6epxlZpoHDGpBk057UhpR75wL2RoTA8HU7YmJFqJk=;
-        b=hOi8TvM1gzPeEHdJRvTy2mvTi+2ddpWf+ZeWvgURiyu9qPE9rYxb+U1zSDQfl1NVah
-         FzUf4HaFK8XsksRfzy+PzwjR6GX7WS64UahCBLdkkaGJJJksr9/xeJGiN8x4DDci+Emk
-         UFUHSqzeXU3D5Mm3Zkm6Kd3cnag0u+FtzEoB/hGdG7o/85NjK/P81YfpXBvNswfuLESo
-         zMEZR5o5SIeGreLvVhOhuE7x8gXrG8Ux2EI8A47tL8+NwnoxWfz7KBWCjSOkwp02j4wW
-         yYV9hvnBv8JIyXX7v9kWxqX90tUSnmQpaESkE9Y4LAjSiPYAufzdLzGbSIfwEg5m6OL4
-         5mZw==
-X-Forwarded-Encrypted: i=1; AKwUvBz1geApuVDBNO2BJbmXip/aTJlOtQg4mv74by/q44tWc01qI3g1mkcz2zNv+aMJpXpIdMcXnrOVvNlj@lists.linux.dev
-X-Gm-Message-State: AFq9FYJQkza2gXW3KihYH8fyYV3zvs/nkS8A6BuGzzwU8QZ3vB6SLM6b
-	UlLTU4pnX6iSBliKv6tpAIx0QaOljglPWV1FWcYE4fe+O/pjaQ6LXPgkZ4TzKhW02twYNHL3YKp
-	EVrk3hq4lTcmRpd/qdh2eXlQBpZLFUwwxo6QzQfaNJfV2FUvwh8FppaqZdHDaji4=
-X-Gm-Gg: AYBFou1Mslg5/8tTdvgeKaj/0SqJx11gnvUAiwu4v1/PMJeHwOI0uqKOkG0DCr808mI
-	q+pTAE5+qcbzO4wEt2+UT5j8+qHqgj9/UhJwyjPQOKnSHqiGo2KcKg+2qyTUQrIlCZ9ZQo/VJz7
-	toj+wVYezBYbykCM+cORhG04nGVmZk1tVtBE2StW8hngB0xSPGOKRkXHzNelezKKx6ihWQTiWpl
-	OTqFjJ+aLuXIERqV9t0pmMLaWujWGOwhPlVuPLwb6tTr+cKtZYCmOI5WeQYTcQ3l53trbWaJBig
-	qLnNKrJimuv5LcBs8Vc/PRsW2I0IDdQI0DMAvliAjTkYoBbDBmTVRRR44wEiAmGIA/PPouM3cSw
-	HRYs+e6a/DbPw0M7WuAr8yd0iTGW1+LGtYtckeNvj6g==
-X-Received: by 2002:a17:90b:4d09:b0:3a7:9413:cfa3 with SMTP id 98e67ed59e1d1-3a79413ddc3mr6299032a91.55.1791254280387;
-        Mon, 05 Oct 2026 19:38:00 -0700 (PDT)
-X-Received: by 2002:a17:90b:4d09:b0:3a7:9413:cfa3 with SMTP id 98e67ed59e1d1-3a79413ddc3mr6299010a91.55.1791254279897;
-        Mon, 05 Oct 2026 19:37:59 -0700 (PDT)
+        bh=fMmY6n/MH6ca3TbNnMvPhVpWJPvoIQVMRX+7sRuvar4=;
+        b=TgTtSaJyZarI6frax3LSaXmphK8PyWW78tgUAkGSF1ovdB5Wrh42LhRc8BCOkx0rDg
+         Yac9uwL4s7GgMyySTU3VWDvnA8uWAG1IQB3gNdeHK4cTvvk6/UJyfLwpspGL1mXxUSWC
+         uLawXIMRlEVKLc+6Jpxw55acXRS3K3dv3OCWkUvyRIctL/A9v8wMrHYgtuSCkbFPzh8Y
+         7XBy/Rwukq0AxOX97KsEeDsRmqAxYWJi/Itnt/eqF506Qbi4ElFK/osYq0gGs1DASVcO
+         RDAPWMSKX7xZXLTdrLV6gdtRTWCGYNk66yfrGMauN21gvku+2EANXrlhU5PZ4EvdZhcU
+         GZRw==
+X-Forwarded-Encrypted: i=1; AKwUvBxMq7sumjJ8rFvyZXZpEOSAAaIWOREGl2inDA2e7LreHo0bKRUzzjDKIwJnrKBi7fFtypcJEUVTSXg+@lists.linux.dev
+X-Gm-Message-State: AFq9FYIEQzjuZfHGcJ5x7V39IjMF4hP0qbzlxpjtMQpLPwPfKJsv1MBi
+	KGdAIksPDT2rZeTKpcF/qGTwA7tE/PqTEnyNGxpyoHSKmCgN6XjMgo/2eEJg+EtQI45Hp0/T+7Q
+	fXfaRjxFp0Qv6rlEzZ1o9ngCZ3aNFPcPldNMsc/GaVsjAse2W/fgZb7J8vqDiySk=
+X-Gm-Gg: AYBFou2tKWGUh7TQ/Ur4Gd/WIqQ+C9y85v8RrsgRpnTfVF2a7gony1qwP2Sk3QB6BtO
+	FpkNOb7m3drGUvip1NXQvExMtu8RnkvNrCrHrerZT2eHKXouWTgoQwFyrkaxYJYgQr9QRP4WCL6
+	TzyawGBwc2ajkcwH9OC5mCCl5wjYVxH5ShtdJAO6nrgkYmjIb7VDkt068xbgpttaUiYqQXjiq1s
+	wi1J3lYNKwY5c2UsIL52+ji0/GIn5Y5HVs+KXNvjZoPjxmJakn9qzukAyiuPqRZc16mDqTDT9RV
+	yXkqM2dVg22R7HI1g6IA5nviljd3MdqrsJyuN7Q/ps03/zEZli1KWY6/qx6Mmm3c97Zzf4YZOQa
+	hOGurdl4j9czIJuckstK/Fl8EY0gm6Y/GD/arE8CJrw==
+X-Received: by 2002:a17:90b:4c4d:b0:3a8:240e:b493 with SMTP id 98e67ed59e1d1-3a8734fcaddmr7225a91.45.1791255666056;
+        Mon, 05 Oct 2026 20:01:06 -0700 (PDT)
+X-Received: by 2002:a17:90b:4c4d:b0:3a8:240e:b493 with SMTP id 98e67ed59e1d1-3a8734fcaddmr7192a91.45.1791255665438;
+        Mon, 05 Oct 2026 20:01:05 -0700 (PDT)
 Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6d2406b1sm1679514a12.8.2026.10.05.19.37.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd1c308csm8666500a91.2.2026.10.05.20.00.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2026 19:37:58 -0700 (PDT)
-Message-ID: <c8930670-32b1-4f20-af0b-a13d17b45044@redhat.com>
-Date: Tue, 6 Oct 2026 12:37:49 +1000
+        Mon, 05 Oct 2026 20:01:04 -0700 (PDT)
+Message-ID: <b6de5d5c-e7e5-4e24-abd6-bdea9bcf8db6@redhat.com>
+Date: Tue, 6 Oct 2026 13:00:55 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,8 +74,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v22 10/23] KVM: arm64: Consolidate stage2 unmap range into
- kvm_stage2_unmap_range
+Subject: Re: [PATCH v22 11/23] KVM: arm64: Add VM specific callback for S2 MMU
+ operations
 To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
@@ -87,40 +87,350 @@ Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
  WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
  sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
 References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
- <20261005090754.2140522-11-suzuki.poulose@arm.com>
+ <20261005090754.2140522-12-suzuki.poulose@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20261005090754.2140522-11-suzuki.poulose@arm.com>
+In-Reply-To: <20261005090754.2140522-12-suzuki.poulose@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: gWFVW22p8d4A6LXXrabWEm2cX90p1eFwUFO5n8teMQo_1791254281
+X-Mimecast-MFC-PROC-ID: Cs2tjt5NsDqpZf3Ku6knyxQemS8sHNCD1xN_0-8H3EE_1791255666
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
-> In preparation for adding VM specific backends for stage2 operations,
-> nuke __unmap_stage2_range() and fold the logic into
-> kvm_stage2_unmap_range(). Also, make kvm_unmap_gfn_range(), the only other
-> user of the __unmap_stage2_range() call the kvm_stage2_unmap_range(). Also,
-> while at it fix the comment to make it clear that mmu_lock must always be
-> held while unmapping. The code already mandates that and the two call paths
-> do have the write mmu_lock held.
-> 
-> Later we would replace the logic in kvm_stage2_unmap_range() with VM
-> specific backends.
-> 
-> No functional changes intended.
+> Add VM type specific S2 MMU operation backends which can be initialized per
+> VM flavor, to keep the handling cleaner.
 > 
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
 > Change since v21:
->   - Nuke __unmap_stage2_range and consolidate the stage2_unmap_range logic
->     into kvm_stage2_unmap_range(), in preparation for removing the KVM_PGT_FN()
->     for stage2_unmap
+>   - Define all vm_s2_ops call back. All calls are mandatory.
+>   - Define callback for each flavor, disjointing the non-protetcted pKVM and
+>     normal KVM (VHE & nVHE) and remove the KVM_PGT_FN() hacks.
+>   - Dropped Reviews due to the changes.
+>   - Add "no_age_gfn" and "no_stage2_unmap_range" for pKVM callbacks, no_age_*
+>     to be also reused by Realms later.
+>   - Move kvm_vm_s2_ops field to keep the structure packed
 > ---
->   arch/arm64/kvm/mmu.c | 38 ++++++++++++++++----------------------
->   1 file changed, 16 insertions(+), 22 deletions(-)
+>   arch/arm64/include/asm/kvm_host.h |  14 +++
+>   arch/arm64/kvm/mmu.c              | 173 +++++++++++++++++++++++++-----
+>   2 files changed, 160 insertions(+), 27 deletions(-)
 > 
 
+With the following nitpicks addressed:
+
 Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 839f5e9c7c65e..0778c308ce597 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -155,6 +155,19 @@ struct kvm_vcpu_ops {
+>   	void (*vcpu_put)(struct kvm_vcpu *vcpu);
+>   };
+>   
+> +struct kvm_gfn_range;
+> +
+> +struct kvm_vm_s2_ops {
+> +	bool (*vm_age_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
+> +	bool (*vm_test_age_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
+> +	int (*vm_flush_remote_tlbs)(struct kvm *kvm);
+> +	int (*vm_flush_remote_tlbs_range)(struct kvm *kvm, gfn_t gfn,
+> +					  u64 nr_pages);
+> +	void (*vm_stage2_unmap_range)(struct kvm_s2_mmu *mmu,
+> +				      phys_addr_t start, u64 size,
+> +				      bool may_block);
+> +};
+> +
+>   struct kvm_s2_mmu {
+>   	struct kvm_vmid vmid;
+>   
+> @@ -321,6 +334,7 @@ enum kvm_arm_vm_flavor {
+>   
+>   struct kvm_arch {
+>   	struct kvm_s2_mmu mmu;
+> +	const struct kvm_vm_s2_ops *vm_s2_ops;
+>   
+>   	enum kvm_arm_vm_flavor vm_flavor;
+>   	/* Mandated version of PSCI */
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 4ae3bb6baef1a..c046c76833876 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -37,6 +37,8 @@ static unsigned long __ro_after_init io_map_base;
+>   
+>   #define KVM_PGT_FN(fn)		(!is_protected_kvm_enabled() ? fn : p ## fn)
+>   
+> +static int kvm_vm_init_vm_s2_ops(struct kvm *kvm);
+> +
+>   static phys_addr_t __stage2_range_addr_end(phys_addr_t addr, phys_addr_t end,
+>   					   phys_addr_t size)
+>   {
+> @@ -166,6 +168,18 @@ static bool memslot_is_logging(struct kvm_memory_slot *memslot)
+>   	return memslot->dirty_bitmap && !(memslot->flags & KVM_MEM_READONLY);
+>   }
+>   
+> +static int pkvm_flush_remote_tlbs(struct kvm *kvm)
+> +{
+> +	kvm_call_hyp_nvhe(__pkvm_tlb_flush_vmid, kvm->arch.pkvm.handle);
+> +	return 0;
+> +}
+> +
+> +static int kvm_vm_flush_remote_tlbs(struct kvm *kvm)
+> +{
+> +	kvm_call_hyp(__kvm_tlb_flush_vmid, &kvm->arch.mmu);
+> +	return 0;
+> +}
+> +
+>   /**
+>    * kvm_arch_flush_remote_tlbs() - flush all VM TLB entries for v7/8
+>    * @kvm:	pointer to kvm structure.
+> @@ -174,26 +188,31 @@ static bool memslot_is_logging(struct kvm_memory_slot *memslot)
+>    */
+>   int kvm_arch_flush_remote_tlbs(struct kvm *kvm)
+>   {
+> -	if (is_protected_kvm_enabled())
+> -		kvm_call_hyp_nvhe(__pkvm_tlb_flush_vmid, kvm->arch.pkvm.handle);
+> -	else
+> -		kvm_call_hyp(__kvm_tlb_flush_vmid, &kvm->arch.mmu);
+> -	return 0;
+> +	return kvm->arch.vm_s2_ops->vm_flush_remote_tlbs(kvm);
+>   }
+>   
+> -int kvm_arch_flush_remote_tlbs_range(struct kvm *kvm,
+> -				      gfn_t gfn, u64 nr_pages)
+> +static int pkvm_flush_remote_tlbs_range(struct kvm *kvm,
+> +					gfn_t gfn, u64 nr_pages)
+> +{
+> +	return pkvm_flush_remote_tlbs(kvm);
+
+No need to have another function call, which causes unnecessary overhead?
+
+	kvm_call_hyp_nvhe(__pkvm_tlb_flush_vmid, kvm->arch.pkvm.handle);
+	return 0;
+
+> +}
+> +
+> +static int kvm_vm_flush_remote_tlbs_range(struct kvm *kvm,
+> +					 gfn_t gfn, u64 nr_pages)
+>   {
+>   	u64 size = nr_pages << PAGE_SHIFT;
+>   	u64 addr = gfn << PAGE_SHIFT;
+>   
+> -	if (is_protected_kvm_enabled())
+> -		kvm_call_hyp_nvhe(__pkvm_tlb_flush_vmid, kvm->arch.pkvm.handle);
+> -	else
+> -		kvm_tlb_flush_vmid_range(&kvm->arch.mmu, addr, size);
+> +	kvm_tlb_flush_vmid_range(&kvm->arch.mmu, addr, size);
+>   	return 0;
+>   }
+>  
+
+Since we're here, the local variable 'addr' and 'size' can be dropped by:
+
+	kvm_tlb_flush_vmid_range(&kvm->arch.mmu,
+                                  gfn << PAGE_SHIFT,
+                                  nr_pages << PAGE_SHIFT);
+
+  
+> +int kvm_arch_flush_remote_tlbs_range(struct kvm *kvm,
+> +				     gfn_t gfn, u64 nr_pages)
+> +{
+> +	return kvm->arch.vm_s2_ops->vm_flush_remote_tlbs_range(kvm, gfn, nr_pages);
+> +}
+> +
+>   static void *stage2_memcache_zalloc_page(void *arg)
+>   {
+>   	struct kvm_mmu_memory_cache *mc = arg;
+> @@ -289,6 +308,27 @@ static void invalidate_icache_guest_page(void *va, size_t size)
+>   	__invalidate_icache_guest_page(va, size);
+>   }
+>   
+> +static void kvm_vm_stage2_unmap_range(struct kvm_s2_mmu *mmu,
+> +				      phys_addr_t start,
+> +				      u64 size, bool may_block)
+> +{
+> +	WARN_ON(stage2_apply_range(mmu, start, start + size,
+> +				   kvm_pgtable_stage2_unmap, may_block));
+> +}
+> +
+> +static void pkvm_stage2_unmap_range(struct kvm_s2_mmu *mmu,
+> +				    phys_addr_t start,
+> +				    u64 size, bool may_block)
+> +{
+> +	WARN_ON(stage2_apply_range(mmu, start, start + size,
+> +				   pkvm_pgtable_stage2_unmap, may_block));
+> +}
+> +
+> +static void no_stage2_unmap_range(struct kvm_s2_mmu *mmu,
+> +				  phys_addr_t start, u64 size, bool may_block)
+> +{
+> +}
+> +
+>   /*
+>    * Unmapping vs dcache management:
+>    *
+> @@ -329,15 +369,10 @@ void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
+>   {
+>   	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   
+> -	if (kvm_vm_is_protected(kvm))
+> -		return;
+> -
+>   	lockdep_assert_held_write(&kvm->mmu_lock);
+>   	WARN_ON(size & ~PAGE_MASK);
+>   
+> -	WARN_ON(stage2_apply_range(mmu, start, start + size,
+> -				   KVM_PGT_FN(kvm_pgtable_stage2_unmap),
+> -				   may_block));
+> +	kvm->arch.vm_s2_ops->vm_stage2_unmap_range(mmu, start, size, may_block);
+>   }
+>   
+>   void kvm_stage2_flush_range(struct kvm_s2_mmu *mmu, phys_addr_t addr, phys_addr_t end)
+> @@ -977,6 +1012,12 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   	int cpu, err;
+>   	struct kvm_pgtable *pgt;
+>   
+> +	/* Initialize the VM ops for the VM instance for the first time */
+> +	if (mmu == &kvm->arch.mmu) {
+> +		err = kvm_vm_init_vm_s2_ops(kvm);
+> +		if (err)
+> +			return err;
+> +	}
+>   	/*
+>   	 * If we already have our page tables in place, and that the
+>   	 * MMU context is the canonical one, we have a bug somewhere,
+> @@ -2441,34 +2482,68 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>   	return false;
+>   }
+>   
+> -bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> +static bool kvm_vm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+>   {
+>   	u64 size = (range->end - range->start) << PAGE_SHIFT;
+>   
+> -	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
+> -		return false;
+> -
+> -	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
+> +	return kvm_pgtable_stage2_test_clear_young(kvm->arch.mmu.pgt,
+>   						   range->start << PAGE_SHIFT,
+>   						   size, true);
+> +}
+> +
+> +static bool pkvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> +{
+> +	u64 size = (range->end - range->start) << PAGE_SHIFT;
+> +
+> +	return pkvm_pgtable_stage2_test_clear_young(kvm->arch.mmu.pgt,
+> +						    range->start << PAGE_SHIFT,
+> +						    size, true);
+> +}
+> +
+> +static bool no_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> +{
+> +	/* The hypervisor doesn't support aging */
+> +	return false;
+> +}
+> +
+> +bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> +{
+> +	if (!kvm->arch.mmu.pgt)
+> +		return false;
+> +
+> +	return kvm->arch.vm_s2_ops->vm_age_gfn(kvm, range);
+>   	/*
+>   	 * TODO: Handle nested_mmu structures here using the reverse mapping in
+>   	 * a later version of patch series.
+>   	 */
+>   }
+>   
+> -bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> +static bool kvm_vm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+>   {
+>   	u64 size = (range->end - range->start) << PAGE_SHIFT;
+>   
+> -	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
+> -		return false;
+> -
+> -	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
+> +	return kvm_pgtable_stage2_test_clear_young(kvm->arch.mmu.pgt,
+>   						   range->start << PAGE_SHIFT,
+>   						   size, false);
+>   }
+>   
+> +static bool pkvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> +{
+> +	u64 size = (range->end - range->start) << PAGE_SHIFT;
+> +
+> +	return pkvm_pgtable_stage2_test_clear_young(kvm->arch.mmu.pgt,
+> +						    range->start << PAGE_SHIFT,
+> +						    size, false);
+> +}
+> +
+> +bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> +{
+> +	if (!kvm->arch.mmu.pgt)
+> +		return false;
+> +
+> +	return kvm->arch.vm_s2_ops->vm_test_age_gfn(kvm, range);
+> +}
+> +
+>   phys_addr_t kvm_mmu_get_httbr(void)
+>   {
+>   	return __pa(hyp_pgtable->pgd);
+> @@ -2790,3 +2865,47 @@ void kvm_toggle_cache(struct kvm_vcpu *vcpu, bool was_enabled)
+>   
+>   	trace_kvm_toggle_cache(*vcpu_pc(vcpu), was_enabled, now_enabled);
+>   }
+> +
+> +static const struct kvm_vm_s2_ops protected_pkvm_vm_s2_ops = {
+> +	.vm_flush_remote_tlbs		= pkvm_flush_remote_tlbs,
+> +	.vm_flush_remote_tlbs_range	= pkvm_flush_remote_tlbs_range,
+> +	.vm_age_gfn			= no_age_gfn,
+> +	.vm_test_age_gfn		= no_age_gfn,
+> +	.vm_stage2_unmap_range		= no_stage2_unmap_range,
+> +};
+> +
+> +static const struct kvm_vm_s2_ops pkvm_vm_s2_ops = {
+> +	.vm_flush_remote_tlbs		= pkvm_flush_remote_tlbs,
+> +	.vm_flush_remote_tlbs_range	= pkvm_flush_remote_tlbs_range,
+> +	.vm_age_gfn			= pkvm_age_gfn,
+> +	.vm_test_age_gfn		= pkvm_test_age_gfn,
+> +	.vm_stage2_unmap_range		= pkvm_stage2_unmap_range,
+> +};
+> +
+> +static const struct kvm_vm_s2_ops kvm_default_vm_s2_ops = {
+> +	.vm_flush_remote_tlbs		= kvm_vm_flush_remote_tlbs,
+> +	.vm_flush_remote_tlbs_range	= kvm_vm_flush_remote_tlbs_range,
+> +	.vm_age_gfn			= kvm_vm_age_gfn,
+> +	.vm_test_age_gfn		= kvm_vm_test_age_gfn,
+> +	.vm_stage2_unmap_range		= kvm_vm_stage2_unmap_range,
+> +};
+> +
+> +#define KVM_VM_S2_OPS(flavor, ops)		\
+> +		[flavor] = &(ops)
+
+s/[flavor]/[(flavor)]
+
+> +
+> +static const struct kvm_vm_s2_ops *arm64_vm_s2_ops[] = {
+> +	KVM_VM_S2_OPS(VM_VHE, kvm_default_vm_s2_ops),
+> +	KVM_VM_S2_OPS(VM_NVHE, kvm_default_vm_s2_ops),
+> +	KVM_VM_S2_OPS(VM_PKVM, pkvm_vm_s2_ops),
+> +	KVM_VM_S2_OPS(VM_PROTECTED_PKVM, protected_pkvm_vm_s2_ops),
+> +};
+> +
+> +static int kvm_vm_init_vm_s2_ops(struct kvm *kvm)
+> +{
+> +	BUILD_BUG_ON(ARRAY_SIZE(arm64_vm_s2_ops) != VM_FLAVOR_MAX);
+> +
+> +	kvm->arch.vm_s2_ops = arm64_vm_s2_ops[kvm->arch.vm_flavor];
+> +	if (WARN_ON(!kvm->arch.vm_s2_ops))
+> +		return -EINVAL;
+> +	return 0;
+> +}
+
+Thanks,
+Gavin
 
