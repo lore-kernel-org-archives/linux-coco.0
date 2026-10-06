@@ -1,72 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251D37B01F
-	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 06:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411DD37B01F
+	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 06:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791267413; cv=none; b=aMdSFjbrXyxZIlnAJmLFSIp/hu6pdPSkPZaqzAbc3Hm5SkU3/PaJ1Iy7qjAnixK2rfPbTI10N+M2cIJeRx06/Dg3C8a7ev5tQMs0ehpy8vw0BmtvJKLCsotsN1cf7fZPCkXL6xBlz15LfY/Our5+yokqFuo3d+uatjIdw5vmlwY=
+	t=1791267841; cv=none; b=pa1m/xIzamUotRwQqH4FFMOTerwxeSx1lo5o7JI7X4Lzf0AGVtrWdKORbit63An3/C41S2OnBC+Xt6cvaiPe8Riu5HP7U8KWS1LuHwQNahrBsgHuuXjVtXXMRlH+uD3h+nx+Rmhl/SCp3W9zZZiaEFpMgAO5+ajcKkRV3z8FwCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791267413; c=relaxed/simple;
-	bh=9sfxC1+KgE1nDpW3pcZvcn/al45MEVpLjYPt9I1uPWs=;
+	s=arc-20240116; t=1791267841; c=relaxed/simple;
+	bh=SMeDTIX8jSBWXiQnBBwSiyWPRzAqbGBsla0efRqXLEM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tRw+1Y9yQx+abAt13uKTRyfHaPOTTiDGLYeJzWMEM2UO3XdqxAr7LAANUVLgNo6P2iJMwT43y3iQ5XblI/94GetTTZzqo5CMQ2iP69xKrzSIdvGPMete+1k04JG8cj+9buSPyuP49hOLXWghK5bCQ9aDo9E6t4F3cSCYeL/kCco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cIuEGIxP; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=krN2kD1WQoO9tLc538BZpNPLUeceIRqgC9geEYSJDVgAD6tGdN8y27keIXyyqYgMuBFzvT05g/D5AKLpLSyz7RujQReF6+F9C8ZSkRTObpZrKf24MfM4Rpt2PZEWey17q52B0gvun+iig2SQmorn96xwBoG9r70dZXlBjKMqcx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d+525Zx7; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cIuEGIxP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d+525Zx7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791267410;
+	s=mimecast20190719; t=1791267837;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ndLbXF3FabNtb+dQsv+BJtM4Aj2t7FSPtRaAHVuld68=;
-	b=cIuEGIxPJGEZUDfQWJKooVBhH/RvDOVF+Lb+XvMi9KMN5HIDy3OWfR40ZTZAAGBs2NPGFr
-	7NLQnJ1qV99Tzx2BNMknPSHI0y3TubEMRZ5EyAp8gaMahUcyX5TUbALG/J6Ok8aJwSvVa1
-	xSxkOVgVbhHrj6Yw3zGbZp+kONRGY/E=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=DLLq1R13uyDoTfMnvHZDH/2dbxOMckf2plTOpZS7OhQ=;
+	b=d+525Zx7h/e+KpJVNOOAPUkoMx0+Y+i3LIadOdKs8TpdkroQ2E2Ub/evfGQa4h6wjrU/XI
+	ZivwCuzVEWoW2StqVvHxcArRMgLT2yVOWa5pngfIUkbo3k7ZmhNy0pPBCYUQJ8oNlbjR3w
+	VMXDHzeCwPViPeKBDq8raqFYrBg8P7s=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-QWAPswkYO8SlrPRMvWSI-w-1; Tue, 06 Oct 2026 02:16:49 -0400
-X-MC-Unique: QWAPswkYO8SlrPRMvWSI-w-1
-X-Mimecast-MFC-AGG-ID: QWAPswkYO8SlrPRMvWSI-w_1791267408
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39533bb224cso3142654a91.3
-        for <linux-coco@lists.linux.dev>; Mon, 05 Oct 2026 23:16:49 -0700 (PDT)
+ us-mta-112-z1-HeT43MAmlOjradOsYcQ-1; Tue, 06 Oct 2026 02:23:56 -0400
+X-MC-Unique: z1-HeT43MAmlOjradOsYcQ-1
+X-Mimecast-MFC-AGG-ID: z1-HeT43MAmlOjradOsYcQ_1791267835
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3a7d2f25f65so504454a91.0
+        for <linux-coco@lists.linux.dev>; Mon, 05 Oct 2026 23:23:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791267408; x=1791872208;
+        d=1e100.net; s=20260707; t=1791267835; x=1791872635;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ndLbXF3FabNtb+dQsv+BJtM4Aj2t7FSPtRaAHVuld68=;
-        b=PP3ljvFFFKfQ1XRzAGdjI27SDADqcdAL4X2rMh/RfqVtWBdd9Nuo+OiaxZdMZJsJn4
-         HSInJY+jngqbG23h0SMWBZKa0frti33FzUphkwN+FfIA8SqdjbAqtbNmUsW1yNF9MoG1
-         Vq1Vt8sqjCnzYtg2G3kPiwkTnu21N6h77WR5186pb8SzQNsO6WEk0RmzQkFPWSmdmZyl
-         iylJbmuJSVx195ypLiq2v6F3hXsTcy1PowSJHz1veF/Ptz80/rvLEK2EUH08/HaRmDvd
-         KnfDpf+v4t9JHJtbN2sW+6GpP6nAKDuBTh1J70eyXVlqlFjIJD/FWtv1uCB0PoIrQRTu
-         wq5A==
-X-Forwarded-Encrypted: i=1; AKwUvBycVFf51/eBwSpRC3LF9emVKKzEJx2InlaNE60kah5sIN5lE+O9/hkfpfRJTgOiTt5XiY+7M1kDKdNW@lists.linux.dev
-X-Gm-Message-State: AFq9FYLcXXnEtM1gA6+C87QT9XKTLVVJIlHzvlqhPilsWAsT+GkLZBCl
-	NuIluwsVxu0nrpvBG8SgHIxU7LneucFKrVtN5aOlcOYgYbhl4pF7xiQe/X0qI94EXcnoK9rr5yG
-	ZR7jNbcN3Rw5P0AXEQ9CgbNBq2X5zREcQhlgE/Nawbn4btVzdNR+u7aavVgeMidI=
-X-Gm-Gg: AYBFou2P8ZuJCGkp9b7aZtClxjnjtXpujTmuBPitfQ4H7BK5ADNHaYDkyHkVNlkLw27
-	/qFXXsPpBoszcPBiqnkN5YHdGGFptfeqjBb/42XT8IhdYWyrLBZ/e3UKm0NPp+NDtYy/Bh5vgFu
-	4vEKETiriunYLHcBTO+X+QkTcqIKbPwfyatk29KreQtFLLMD+6ANKQR0e+wfij5tfBhGyoboxQZ
-	3xJR6G06qxdoBn+uIkkF78H55xG6OdmAubJ+8wWzOpmY/UNHFE7SJSlaEvl3KuHCzCCDRp5EpyC
-	TYCer2DLE2plOuA5xFNfXr1JLbD7L8BjEf2Nd4hIX4z5cYKkcOlkjgkWiA2Pq6Lkc9Tnuej0isS
-	t+nc6Ja28RyPI6ioDHMZkv7s8ngvjgOlMajao2q4fXg==
-X-Received: by 2002:a17:90b:28c6:b0:3a4:b30b:b50a with SMTP id 98e67ed59e1d1-3a873697b55mr247329a91.25.1791267408198;
-        Mon, 05 Oct 2026 23:16:48 -0700 (PDT)
-X-Received: by 2002:a17:90b:28c6:b0:3a4:b30b:b50a with SMTP id 98e67ed59e1d1-3a873697b55mr247306a91.25.1791267407661;
-        Mon, 05 Oct 2026 23:16:47 -0700 (PDT)
+        bh=DLLq1R13uyDoTfMnvHZDH/2dbxOMckf2plTOpZS7OhQ=;
+        b=N8FXawZAjgy4lUoPXV9JE/UZwNQ9IzqRYVCxG30nHErUu/TL+U/vMukSat7b0PKEJZ
+         sn3VW1PVBiHVajClhVZHMxiG+Hlfnpanq/OK8Q4v/oyOumbUjDvkd+6pKYf9eqIRv9e5
+         be8M+pw5m3Zy6y7wYiRLKkgzv/zClyxOZs1VlWDGF5rRSJHzKpPL4WxZduzPmYpYOWv9
+         ilfs5iRSBnXHWT8Bbb6eQt/I8LzBp19h2OJ6hArW+L+ktELxfzS2WoqMmOQJ4jUevh1W
+         ukgP80xbJCAxwu1TVc8vQVTSjP3Xp7amhTRMMnjwYeWisV2Zv3Fsqj7zV+vqCkfCfv9o
+         YI/w==
+X-Forwarded-Encrypted: i=1; AKwUvByop5oDWvqHMSmp7HBe/MLdp6+MncfZknpS2xb7EAIbOYiI7ZYqRGLF7sDZp3FF2BDDdQXNxpHzTyGK@lists.linux.dev
+X-Gm-Message-State: AFq9FYI+t+lDrhuR+MBGuWkXVxM4V73J7FecvX3nXO5cvHemfv0bCMJ0
+	pMWnAnzWRsUuXTGYbt2u2fRRhLEvY5tFwlxeZK14cRoQUnu4BOsB7oQnRcaLo6xS08h3IRjJv/C
+	nLmEoWzPmrnGsPHJzhvl+7tSOYXOmHD6BFzEzNZWNVFIIqT6/YIODcZE0+mOkdFU=
+X-Gm-Gg: AYBFou3FAusDqIg854UJypL2PQ4Fw7RWqpLMTSLm2qReHevj9W1BF3Kkwo8iPRVs/3s
+	420gjQF/WgGoPUjIJNgqmCOHRlZv3sdRZExbwFgOZT7qofZ+XrXKh4GM8O5xzZFPJnBZuLC5qk4
+	cNsUixKjjAlM4Usbl/9jifXuRbSpGKHWWJG+NvccNy9rsNlrvjoUkK+xg3juzelb8iL48s3cQIO
+	9mEaA3Tybd5/VZy7ZXAkKD4D23rLDr+S4I+JGbUJ3diOZrQiKaaHHZzhTHirrf862u34EAVEVZ5
+	BCAD9JRqdkOaRWcqoYwXJymY0jXkERuXUXpIxafFEL1aDun1PIny267XaT0++DxOlH3GvCsHDU1
+	qw3uGegz01ZSvlgKIht0Vr5HIs4Yf/Dd9cVmhC4S2pw==
+X-Received: by 2002:a17:90b:1f92:b0:3a4:e635:a8c3 with SMTP id 98e67ed59e1d1-3a8545cceb1mr1330582a91.20.1791267834670;
+        Mon, 05 Oct 2026 23:23:54 -0700 (PDT)
+X-Received: by 2002:a17:90b:1f92:b0:3a4:e635:a8c3 with SMTP id 98e67ed59e1d1-3a8545cceb1mr1330556a91.20.1791267834199;
+        Mon, 05 Oct 2026 23:23:54 -0700 (PDT)
 Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a8211b74c8sm3504720a91.0.2026.10.05.23.16.38
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6f734ae3dsm9932948a91.2.2026.10.05.23.23.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2026 23:16:47 -0700 (PDT)
-Message-ID: <6bd785aa-4693-407d-b70a-39b1d0eda63e@redhat.com>
-Date: Tue, 6 Oct 2026 16:16:37 +1000
+        Mon, 05 Oct 2026 23:23:53 -0700 (PDT)
+Message-ID: <7bbee080-e8b9-4f8e-a4bd-c24f0b3b815f@redhat.com>
+Date: Tue, 6 Oct 2026 16:23:44 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -94,7 +94,7 @@ References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
 From: Gavin Shan <gshan@redhat.com>
 In-Reply-To: <7b6ed626-eca4-41f2-ae56-0af59a931b29@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: eOglUiEYaKcjfNeeSOFsH_l6hpBOmnluz7OcoLfdPoI_1791267408
+X-Mimecast-MFC-PROC-ID: 5hB8VZ7UB06gvR3ybuwXsv7O3BmNqgNyffhJduPkUcU_1791267835
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -162,21 +162,21 @@ On 10/6/26 4:01 PM, Suzuki K Poulose wrote:
 > whether the vcpus are finalized, we either send 1 or the full list.
 > 
 
-num_sve_regs() can be called for 3 cases: (a) non-finalized RECs; (b) finalized
-RECs; (c) Other finalized vCPUs, correct? "if (kvm_vm_is_realm(vcpu->kvm))", which
-would be "if (vcpu_is_rec(vcpu))", covers (a) and (b). We needn't the excessive
-check "if (!kvm_arm_vcpu_sve_finalized(vcpu))". So the check would be something
+num_sve_regs() can be called for 3 cases: (a) non-finalized realm vCPU; (b) finalized
+realm vCPU; (c) Other finalized vCPUs, correct? The check "if (kvm_vm_is_realm(vcpu->kvm))",
+which would be "if (vcpu_is_rec(vcpu))", covers (a) and (b). The second check
+"if (!kvm_arm_vcpu_sve_finalized(vcpu))" isn't used. The check here would be something
 as below after this series is applied:
 
 	/*
-	 * KVM_REG_ARM64_SVE_VLS is visible on realm vCPU no matter if it
-	 * has been finalized.
+	 * Only KVM_REG_ARM64_SVE_VLS is visible on realm vCPUs no matter if
+	 * they have been finalized.
 	 */
 	if (vcpu_is_rec(vcpu))
 		return 1;
 
-This check "if (vcpu_is_rec(vcpu))" belongs to PATCH[22]. Hope I make myself
-clear this time :)
+Besides, this check "if (vcpu_is_rec(vcpu))" belongs to PATCH[22]. Hope I make myself
+clear :-)
 
 >>
 >>> @@ -625,6 +650,10 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
