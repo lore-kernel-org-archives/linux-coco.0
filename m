@@ -1,413 +1,249 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F7B49F134
-	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 16:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791303238; cv=none; b=rQxS59RBXaBDUDQyEEWi275NkWFDr9t6snPeiiWWljwN6vsO5G7a59bLxWZgWy82q3fs9IZQNMj1XjwqtB76ywdWOg8Cd3+uCSHkERJNd9tJt4TwuvqtnkPdpG8PSgnd63XCF6e+i7cpGAaWl//4y8H+jFYlB0VD8NYloV0hU68=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791303238; c=relaxed/simple;
-	bh=ZYIXDLW4Ra+PX0mYATIt872O2Qb5mougQ5QLOr46I/o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SF5Fj/zEDxxStdlO1NYAn7sHbilqSlt5AypWKTqz32eYmW9sYvlkyY6LH+lRbQpQ9Jv/w8W8j/6f398AyRv/fTjECYQPv++/zk+LKXUz5o5cuYbvsLauve/NYvbSkKNpN0K4V7XKiMEz73nor7ikmB/nZJ9MzRez0gKJWR49hS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l7cWSmNP; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7445449C4CD
+	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 17:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791308876; cv=fail; b=hS8gE+EEZl1zp8XpLvJ8nA7+YKTUvG/UPl9dLkZuR8+vZRe7RwXJvK9hieyISTf3NQUTa+YtN1m/c4DBSYtGyYKxuAJxDckilW8IxMml7z8mb3C160ZsB+U73fQCxBGKFlh/MvpVv8L1RJ0hzFUqBnczkq3C5wE2dIPU46pawBo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791308876; c=relaxed/simple;
+	bh=TrE5YxL36yA9qjXFDvr6ge7u94jiqJK0J13k+wUpVwg=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EMvyLQqDh+vibtfh0dfn/UHWN5gjeETRsElt0Oo6lFr47K7lHq8GRrLRLZ2OZhQfZeUWYLb7gTgHh+VlE8vtABubqQ3UcFa3OV21Gg9RGvpGRuBQMk96TInNryVERZOEJKYkEqfUq3A0fgOuzKRQIW3TMoIXVjo2hpFqkceiMBQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E1dM6ZYu; arc=fail smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l7cWSmNP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E1dM6ZYu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791303237; x=1822839237;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZYIXDLW4Ra+PX0mYATIt872O2Qb5mougQ5QLOr46I/o=;
-  b=l7cWSmNPD9AqDJQhdn88XKcObsnJ1UD1tZ+JbqAA2GZcmfK6sDFe/lQo
-   icLgXDcfBjxmgmZRF1lsw531iDyQF7yRdMKmLQcowt0zzB1EfN2ui6mgn
-   TojB9Gu2cDmb+ZZoNglXFGhYHKdRdbb7K2l2A+0cQouwat55Pdm140JXF
-   mozXqmDSiB4PoeR6lbyz8+Xzs1imGDcWowhhl2n4zWb39J5TNXsPWQi71
-   KBNHO84yF2uMGKAGZY2ksuIZ0m94DHWLw5TlPFHMSqj98Ty0P0Rjuy9sp
-   0tYtpoDItVoqneZetKu3QI3LfI9yxQ2NzAbsg3+Xu6810dNPlcUKSFB4S
-   w==;
-X-CSE-ConnectionGUID: 5MxeQ0stSeam5xEpjhNgsg==
-X-CSE-MsgGUID: rI7471J3QP2KXbHebrEneg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="52728"
+  t=1791308871; x=1822844871;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=TrE5YxL36yA9qjXFDvr6ge7u94jiqJK0J13k+wUpVwg=;
+  b=E1dM6ZYuU0H4/Z1B8BgxYv7+ZHcXFYL9LVvw2taKl2OoB20qnnYvpRIm
+   Q6sSnVxE5yIC8VXf6kxhytxTrbJFzldDU6UCypkaM2FqVxDIajTMv/SZZ
+   lNnc+CjXCY+ViN/xlAUfgHa0OYEeNhQ3SJgS/wikN/uaxxfw0jcUn/OoI
+   u6SSjv+GTAQEkjnfvEpItMKfRQHM2Q3OKjxifsKE9sgHvZT8VPcnBTHc4
+   NcPBsm8chGGqMGbMryQjjF+P2vnmLT1KAtYJk1CH6EdS699fPb2i1nsXT
+   JypEg/Eyx2JEHFf9beNx1swY/jW+ORB5yQR2F8kB6q53jiMsXR+IgxbIH
+   A==;
+X-CSE-ConnectionGUID: hlu1H67WSyW7ysYRsIJjdQ==
+X-CSE-MsgGUID: FStTH8YHT0ixhZq0Y/DrpA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="102171232"
 X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="52728"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 09:13:56 -0700
-X-CSE-ConnectionGUID: AXqU/1ZIT76ZgrtbZltyUg==
-X-CSE-MsgGUID: H6ErxPe1TvqS3B3WGsal0Q==
+   d="scan'208";a="102171232"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:47:50 -0700
+X-CSE-ConnectionGUID: dkP7RP3HQcWWzn1K7Ih2Pg==
+X-CSE-MsgGUID: AQ/CN+VMTt25XWPS2BTXtA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="275836152"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.108.200]) ([10.125.108.200])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 09:13:54 -0700
-Message-ID: <f5c8a479-5c00-4a4b-8bfc-3f83f3df8c8f@intel.com>
-Date: Tue, 6 Oct 2026 09:13:52 -0700
+   d="scan'208";a="282006802"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:47:50 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 10:47:49 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 10:47:49 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.63) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 10:47:48 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ICjbMxPI68BxyT8aGCvj7wUPjb8SWGMj4cBwLuVs4EqLuXPAHndlwLbNotCkdbNbQ7BkCWQcHnkHYQBtTNli5GTByzSdEqmcqk2nBFwbkFCWxKLuJcsNeiEvlQqTDCV4gBIUZRKCECLa5x/G7CYHkRS5dZnhH1bPMGdhQXm5HA6U+++YAz9ojKDXu33iqDqJJhiVhGsXTQJUHB/EiO8Cj1cRYergQd32svBs3U/LaJkf9uV0yWdlW7rIFdgtrgw+kw5c0iNHUMBsHdIePtEe2pHJEeFCNAABxqMyLGZhCntHGyE7m0KLPKh2IQUWgO8LoRjDqlFl9gNyDntxnKiS2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2n62hRN7zu6iYDrMx/itdm5A0K2vSZJAT/39D7s8BKI=;
+ b=qib0VNfygg7Tmk7evlIY4glmtzmQ3EARmMNcHtOc5sJxDWllyvQV5DJryxLQbswaCYUrZR5LwLYfq9K8T0hYbxaH6t6N1AdYO+YrddAjHRLSd/Ktg2CqH7y1sns67gCZ74Rwao37WoVYscaigBtVPfwvETa8W9wfcQRAL7kDEcF68QFS87TOmnS78H7BlUZ9eqHPVzQQjz4zaAMpUvbHY+aNewJZwzoJ4vTj64u+jqGATDvwGNWpxRqHsizfOWAujkydtjH8AFP8AAaKRC4w73ieTcpGpklYowO4TD5+5zpW8aOMB+lEjhZBUIr/n1go90gIWMwHAYGLDJ42bMoU5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB8379.namprd11.prod.outlook.com (2603:10b6:208:488::20)
+ by SA3PR11MB808482.namprd11.prod.outlook.com (2603:10b6:806:531::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
+ 2026 17:47:39 +0000
+Received: from IA0PR11MB8379.namprd11.prod.outlook.com
+ ([fe80::549f:e4b3:e10d:aaa6]) by IA0PR11MB8379.namprd11.prod.outlook.com
+ ([fe80::549f:e4b3:e10d:aaa6%6]) with mapi id 15.21.0451.024; Tue, 6 Oct 2026
+ 17:47:39 +0000
+Message-ID: <f4a82716-5107-4f39-8c9f-94374f188857@intel.com>
+Date: Tue, 6 Oct 2026 10:47:34 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] x86/resctrl: Fix ABMC counter programming
+To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
+CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+References: <cover.1790976400.git.babu.moger@amd.com>
+ <95bbc2e322ac18e2566c4963b7e6d13ac8485e20.1790976400.git.babu.moger@amd.com>
+Content-Language: en-US
+From: Reinette Chatre <reinette.chatre@intel.com>
+In-Reply-To: <95bbc2e322ac18e2566c4963b7e6d13ac8485e20.1790976400.git.babu.moger@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0298.namprd04.prod.outlook.com
+ (2603:10b6:303:89::33) To IA0PR11MB8379.namprd11.prod.outlook.com
+ (2603:10b6:208:488::20)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/4] PCI/TSM: Derive the coherent-range IPA from CXL
-To: Ankit Agrawal <ankita@nvidia.com>, linux-cxl@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: dave@stgolabs.net, jic23@kernel.org, alison.schofield@intel.com,
- vishal.l.verma@intel.com, jgg@nvidia.com, aneesh.kumar@kernel.org,
- aik@amd.com, yilun.xu@linux.intel.com, iweiny@kernel.org,
- ming.li@zohomail.com, icheng@nvidia.com, bhelgaas@google.com,
- smadhavan@nvidia.com, ilpo.jarvinen@linux.intel.com,
- Smita.KoralahalliChannabasappa@amd.com, andriy.shevchenko@linux.intel.com,
- linux-coco@lists.linux.dev
-References: <20261005070252.84810-1-ankita@nvidia.com>
- <20261005070252.84810-4-ankita@nvidia.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20261005070252.84810-4-ankita@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8379:EE_|SA3PR11MB808482:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14639330-c5a9-4e89-248b-08df23d1e9d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|22082099003|18002099003|4143699003|56012099006|6133799003|3023799007|10067099003|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info: xq1rvrFArymfu5nGdiY0HCgDCAJG22KmjZHgfsy3Xo8Qr7C4gtpoiB1sLTg0R19/dyFHksZZyHYQQ8ZhbXrEqPON5E9GTDNWX1fR96xScN80+dp0i+zUsivhebAJsUis0TmTPtjMEFYOc3r3eooYJ5D4is2sKyGQjMd1RMoQEJRVdkTx7Pjd3vR4kxctSl+SePoBaz6jyThFYY7ItSH3iFdci57Tl+fk+RPz+qvAIwHJfcXy61eNb+l5oVQ1FkOYBY55EzrHBsa21JcdEjUZN8yG4tMHsU1F/nki9O8CPQPO8IHPpEyfYFFrFZKh3M+NvILgzZIYXguh01B+VkZ25leXDFcTEAvZ1tQcDNdRPBcAzOe1O0xG+TGfe8bPhH74fmHggbbqHOSQKAdPtdloEXLreH5ZgrNmDOvZz5+WXO6/R6y2A0MTyeVXJJ0POGwknzASPOIC6UKImWLcdq42BDMgzGFl6rtrFzXt0qeM3ijDzXC5tPbhlbkpK9Ocxuse956oz7mNrU2e1PWKcM32+S+KqOeeyso17PHG+5gi4JNOPp/tqqW5vQP9T1aYraUbhK6gIVrCfpuLRigl73YUAsa9Okri6RwljziR390VxfdbsV6u17KsqYlNY+geUbxpRowg/Ri7q/9IfFY0+SmS1CsxoyoZgwrDtxSAURaucUY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8379.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(22082099003)(18002099003)(4143699003)(56012099006)(6133799003)(3023799007)(10067099003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eFZxMlhaMDF6YllTVlRpZW1rUEc2Sm5pZjM5V1JZdUNzOXpFUEpZNi9VdW9B?=
+ =?utf-8?B?QkFHUjRBMWtudFJHb3ZLekVaTWQxam0reGl6V0FjM3VPVzR0WEh0dHV2dmZV?=
+ =?utf-8?B?U0lwRmd0Wk1IVFg1d0N0TldZeHhyWUFHTitrUkd2eVZZc2R1SWJjcnhyUzd4?=
+ =?utf-8?B?a3p5eHFzTGJNNUpGWC92R3RxNUsxRXN2Y0Rnck9LR1VWSzBFSTdZc0pQeFpt?=
+ =?utf-8?B?VUNCV2I5cFVOdTFKU2pvZVdGeFhpR1k4VjNURWQ3WU1sQU1wcStNOUVjbTE3?=
+ =?utf-8?B?UjQ3SnU1Ym1HaTlreERMSFlxTlprTm5lWXBsSC82V1RyOVZJU3dleExWSnFO?=
+ =?utf-8?B?SVZvU0lGMnRVMnoya2JEYTBmZmFLdkwyQmdJUjRia1A2L1kvY0NibXd4dlJV?=
+ =?utf-8?B?RUU1cjBERE5mM3ovL2tZZVV0eUNOSlJxc1c4SEpKN3dUVVZ4a2ZGYXBkME1B?=
+ =?utf-8?B?K05sY3hXZ0toUkZhMUNleDlJbTBXa1RnQmc4Y3BlZ3RDYUh3b1ljNnBFS3Z6?=
+ =?utf-8?B?TW92OUlJRlYzUFJ6dEYrVytJRmdrK2xuV1J0NGhRcmtMbUwwU05QSlkxalBU?=
+ =?utf-8?B?OGlxcUJuWmRGYmREOFFrT2VSSzVBOTRGdjhDY0Q1cmxtTForaEp1RWlQeHdQ?=
+ =?utf-8?B?eXZmNVRpNnYyUWZwNWcxRWdrQnl2eWVNc0JIMkVwN1lSR05qWW5FaEI5NUll?=
+ =?utf-8?B?bkxoL3VFK0ZXYmJrcHY3RW56ZUlOU2ZZZXgzT3pqYkFNQlBuRlVOV2Ftbm55?=
+ =?utf-8?B?TnpvS0ErQk5meHlXYll4cnVqcmNzdzRrbytrYkE0U3h4NnZQWHRrUjIrZEcv?=
+ =?utf-8?B?WXRyV0Jrbnl3cDl3bjNUWHc5WVllRnYzTlVQa1ZmaG9QUktxTVZobXpHb05Q?=
+ =?utf-8?B?NmVtek9WZXFDdHN5S2MzRVpHdkFCbmZnRHdyL1g5Zjc3WVl4TnJRbDhMTktV?=
+ =?utf-8?B?UFRQdVdFRlVUMTZIL3kxWnQ0Ync0SXIrYXNhM3M5WUtDNXg1UFFWbFdNcmpK?=
+ =?utf-8?B?bG90NjYvUThHb2xFd01aSXlvVXNhNHFuSERRWGFBVG43M01xSUtvMHpTMm50?=
+ =?utf-8?B?Q3RwOFltL0Y4TUFCdjVHVy91Z3lIWUx4UklzN2djTm9la0htcy9xUzV2NkRo?=
+ =?utf-8?B?eHRZOWxGbGc5QzNsZDJ2c3dsdlAzZGNhWmtJOHhvTWsraXhvUytYbVBNYm9C?=
+ =?utf-8?B?RDNONlZSa0c4SjBtYTkvdmFoZUI4ck91K01qSnZJbFVmNUhnMUhKN013Nk1r?=
+ =?utf-8?B?V2VBYlMwK2tVT2VEa1Z3UExRazdPVU5VZXkxSUVDemhVMmJxVXAwNTFyMkky?=
+ =?utf-8?B?RG0wZ0s4TmxzZzVTbUpQNVZ4VWVzcm5COGJJbVlhNmp0NGNRSjk3MGp4TVAx?=
+ =?utf-8?B?cTR1RWpqZ0xid1crWXZ3MGZGdTA3RlRtaEszN0l0WWl5eXRscGc4ZlZZeUdi?=
+ =?utf-8?B?ckE4Q1BlVjZhUDkxZ0VGUG9HTHNGN1d3SWtsWTdrQm9ZYnJBLzRldnFxZWF6?=
+ =?utf-8?B?MTA3bXBNNG9UNFE5QjNROFBpbjFHb1BSNVdNQUxKcXBoWVBlczBBc3dpblRk?=
+ =?utf-8?B?cnErY2hCRUl2ZVV0K0VMV09KcjFQL0Q3T1ZsM3RLMkEzdCs0amNMQmcxbUdC?=
+ =?utf-8?B?ak9UQlVESGNjRDNpZTBITWhiSThOU2hoR0lnT2EydkJxbXZyOENTR0dOZVRq?=
+ =?utf-8?B?UjlVUzVhSE1STzhqdGxzSXZ0akVZS2toczFiVU44MzhDS1JWNXFPNXZ5WG9N?=
+ =?utf-8?B?U2Q1ckx1eHJGaUlNK3hLWlVsYlVzTExEK3dvL2U5MnRFUGJIa2pYaEFwUENM?=
+ =?utf-8?B?Y2szckhzNXoxMXIzU0xFSWJhMDRBQS8vaTFveWZ4WmZCeUZyUGpkVGJsWThU?=
+ =?utf-8?B?VWZ5NXlvbW9Tdk5JR1FQcGo4WVB1RzBwZWNRb0lScGZ2cGsvYnlWcW5LejFp?=
+ =?utf-8?B?bDhsVERoaU8rbVcrak4ybHAyRlFRZW5qck5xc0doN29Rb0d6VjZmeDVsdHBm?=
+ =?utf-8?B?NzhibFFuWnF4eWNkYzl4MDVuVnZnWm4wMzN3TjhhWHVGOFR3b3lJT1lxN29I?=
+ =?utf-8?B?NW9qOE5rL2Z0K21QdVk0TzhTOERiY2oyd3VUQlJoWlhidStKNTJEMEdCZ2tS?=
+ =?utf-8?B?TnZVOW5IcWtqZVI0RG00Z0U5SHdqVFlqTGNXQWxGSzRDak83R1NCU3VzZkcv?=
+ =?utf-8?B?MG0wVVNHMmR5UlZzWWd4U0F5cjFLeFdsYWpmQWl0LzVXb01EaXM1a0xYRWFW?=
+ =?utf-8?B?ZGdVTjNhZGtrOE1yWERqRzBqT1VyVGdKQUNFYnBSVG9ybysrUkxMS3F6QVZG?=
+ =?utf-8?B?QjFIblN0RnQzWFFiWCthTXpxeW1sV2FtTHJFK1RXTDM4UWtXWThRTGxpcVdx?=
+ =?utf-8?Q?DX4U9HbssccFkR3g=3D?=
+X-Exchange-RoutingPolicyChecked: e+cNgRDIPv1cK28e0NOZ8XO2DHUGJHcQuA5/ox6q7B4Vnzo83vtgALJ+WHV4HWWPOUjqWiCyg+Vr9c8qY8m/jj4N/LcQzs5HAqSwJglEkajBX2AINcJsTdYACkufwDRmIyQtHlXSFwzKFctrMj7QBsbsfPEgU7098Fk5C6NOZ/N1vCvPy6jJOWVux6BvScyqjuTbYndVTwiefOQFlHpsTUVjgyURMUMf3/pI6NcCCIlwdtB3F7eo61KtIUGzPhDVk5EpZYvpC0YhbAAkI+Gki/zcmcUU9o6Zkc+paHixfxJQHtthwlDOLuEkVZ25hupnd9SCcfEMv13qWuqO++Vl7Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14639330-c5a9-4e89-248b-08df23d1e9d4
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8379.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 17:47:39.0259
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vEYmOEKjHyhBEZ0Am9TnVbyfGWP2mEyauNtH/KgwlnIsbpTn6nvr+/CpZ/1bXFyrVK8tY38UyDsugoBZ+S8iuaKsegUeaJaCTy/jx5q1LMw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB808482
+X-OriginatorOrg: intel.com
+
+Hi Babu,
+
+On 10/2/26 2:26 PM, Babu Moger wrote:
+> AMD's Assignable Bandwidth Monitoring Counters (ABMC) are configured via
+> MSR_IA32_L3_QOS_ABMC_CFG. The architecture [1] received an update that
+> expands the counter ID field (l3_qos_abmc_cfg.split.cntr_id) from 5 to 12
+
+This describes an architecture change as a code change (l3_qos_abmc_cfg)?
+
+The subject also claims a "fix" but above establishes this just as an update because
+of architecture change without making clear what the problem needing fixing is.
+using the tip guidance when writing changelog will ensure that problem description
+is always clear.
+
+> bits.
+> 
+
+> Use the updated field width. The number of supported counters is enumerated
+
+The second sentence of above paragraph seems out of place as it seems to add
+in a bit of additional context as part of the rest of the paragraph that describes
+the fix.
+
+> separately. Mark this as a fix to the original ABMC support to avoid
+
+Tag can speak for itself, just focus on describing the problem being fixed.
+
+The problem and fix are fused together making it difficult to see what is being
+fixed here. Placing problem in its own paragraph helps to make this clear.
+
+> misconfigurations caused by truncating counter IDs on hardware that
+> supports a large number of counters.
+> 
+> Also limit the number of supported counters to the maximum value that can
+> be represented by the 12-bit cntr_id field if hardware reports more than
+> 12 bits.
+
+This is the actual fix though but is added as an afterthought?
+
+> 
+> The AMD64 Architecture Programmer's Manual [1], available at [2], will be
+> updated in a future revision to document the expanded cntr_id field.
 
 
+Consider an example changelog like below that aims to follow the x86 changelog
+guidelines:
 
-On 10/5/26 12:02 AM, Ankit Agrawal wrote:
-> The DevIf report range with range ID 0xffff describes the device's
-> coherent (CXL) memory window and unlike every other reported range
-> carries no BAR number. Recognize
-> PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT and recover that window's
-> address from the CXL side of the device instead of treating it as a
-> BAR-relative offset.
+AMD's Assignable Bandwidth Monitoring Counters (ABMC) are configured via
+MSR_IA32_L3_QOS_ABMC_CFG; MSR_IA32_L3_QOS_ABMC_CFG.cntr_id selects which counter
+the configuration applies to. The number of counters a platform supports (the
+number of possible values written to MSR_IA32_L3_QOS_ABMC_CFG.cntr_id) is
+enumerated separately via CPUID.
+
+On a platform that enumerates more than 32 counters, writing a counter ID
+through the current 5-bit encoding truncates the ID and misprograms ABMC.
+
+The AMD64 Architecture Programmer's Manual [1], available from [2], has been
+updated to widen MSR_IA32_L3_QOS_ABMC_CFG.cntr_id from 5 bits to 12 bits (the
+published revision 3.41 does not yet reflect this; a future revision will). The
+CPUID enumeration reports the maximum counter ID in a 16-bit field and can
+still report more counters than a 12-bit MSR_IA32_L3_QOS_ABMC_CFG.cntr_id
+can address.
+
+Widen MSR_IA32_L3_QOS_ABMC_CFG.cntr_id to 12 bits to match the architecture. Cap
+the enumerated counter count at BIT(12) so every counter ID resctrl uses can be
+written to MSR_IA32_L3_QOS_ABMC_CFG.cntr_id without truncation.
+
+
 > 
-> pci_tsm_coherent_range() resolves the window from pdev->coh_resource[],
-> snapshotted once with the committed CXL HDM decoders range. The
-> range to IPA conversion is applied onto range_base/range_len using
-> pdev->coh_resource[]. The ascending BAR order checks stay on the BAR
-> path only. The coherent range is required to be the last report entry
-> and is not part of the BAR sequence.
+> [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming,
+>     Publication #24593, Revision 3.41, Section 19.3.3.3 "Assignable
+>     Bandwidth Monitoring (ABMC)"
 > 
-> An HDM decoded window lives in the CXL Fixed Memory Window and is not
-> part of a BAR. So by construction, no pci_dev resource contains it. So
-> the function pci_tsm_coh_resource_contains() validates the range against
-> pdev->coh_resource[] instead; the same known-good snapshot
-> pci_tsm_coherent_range() already trusts.
-> 
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> Assisted-by: Claude:sonnet-5
+> Fixes: 84ecefb76674 ("x86/resctrl: Add data structures and definitions for ABMC assignment")
+> Signed-off-by: Babu Moger <babu.moger@amd.com>
+> Cc: stable@vger.kernel.org
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
 > ---
->  drivers/pci/tsm.c       | 192 ++++++++++++++++++++++++++++++++--------
->  include/linux/pci-tsm.h |   4 +
->  2 files changed, 160 insertions(+), 36 deletions(-)
-> 
-> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-> index c8cfe89b6224..1d736b606a7c 100644
-> --- a/drivers/pci/tsm.c
-> +++ b/drivers/pci/tsm.c
-> @@ -904,6 +904,41 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
->  }
->  EXPORT_SYMBOL_GPL(pci_tsm_doe_transfer);
->  
-> +#ifdef CONFIG_CXL_RESET
+Patch looks good to me.
 
-May want to move this to a header. Having KCONFIG ifdefs in .c is typically not preferred.
-
-Also I do wonder if we want to put this code behind CONFIG_CXL_RESET. There's dependency of being able to run the reset stuff for a type2 device before passthrough to user space. But the attestation code is not part of reset code. Maybe putting it behind a different kconfig symbol with dependency on CONFIG_CXL_RESET?
-
-
-> +/*
-> + * pci_tsm_coh_resource_contains() - check a coherent range against the
-> + * PCI-core coh_resource[] snapshot
-> + * @pdev: device owner of @res
-> + * @res: candidate coherent MMIO range to validate
-> + *
-> + * The coherent (CXL.mem) range isn't BAR-backed. So pci_resource_n()
-> + * containment doesn't apply. Check against pdev->coh_resource[] instead.
-> + *
-> + * Return: true if @res falls within a populated coh_resource[] entry.
-> + */
-> +static bool pci_tsm_coh_resource_contains(struct pci_dev *pdev,
-> +					  const struct resource *res)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
-> +		struct resource *coh_res = &pdev->coh_resource[i];
-> +
-> +		if ((coh_res->flags & IORESOURCE_MEM) &&
-> +		    resource_contains(coh_res, res))
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +#else
-> +static bool pci_tsm_coh_resource_contains(struct pci_dev *pdev,
-> +					  const struct resource *res)
-> +{
-> +	return false;
-> +}
-> +#endif /* CONFIG_CXL_RESET */
-> +
->  static void mmio_teardown(struct pci_tsm_mmio *mmio, int nr)
->  {
->  	while (nr--) {
-> @@ -936,7 +971,9 @@ int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
->  		return -EBUSY;
->  
->  	for (i = 0; i < mmio->nr; i++) {
-> -		struct resource *res = pci_tsm_mmio_resource(mmio, i);
-> +		struct pci_tsm_mmio_entry *entry = pci_tsm_mmio_entry(mmio, i);
-> +		struct resource *res = &entry->res;
-> +		bool coherent = entry->flags & PCI_TSM_MMIO_F_COHERENT;
->  		int j;
->  
->  		if (resource_size(res) == 0 || !(res->flags & IORESOURCE_MEM))
-> @@ -947,13 +984,22 @@ int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
->  					     pci_name(pdev), IORESOURCE_MEM,
->  					     IORES_DESC_ENCRYPTED);
->  
-> -		for (j = 0; j < PCI_NUM_RESOURCES; j++)
-> -			if (resource_contains(pci_resource_n(pdev, j), res))
-> +		/*
-> +		 * The coherent (CXL.mem) range isn't BAR-backed, so check it
-> +		 * against pdev->coh_resource[] instead of pci_resource_n().
-> +		 */
-> +		if (coherent) {
-> +			if (!pci_tsm_coh_resource_contains(pdev, res))
->  				break;
-> +		} else {
-> +			for (j = 0; j < PCI_NUM_RESOURCES; j++)
-> +				if (resource_contains(pci_resource_n(pdev, j), res))
-> +					break;
->  
-> -		/* Request is outside of device MMIO */
-> -		if (j >= PCI_NUM_RESOURCES)
-> -			break;
-> +			/* Request is outside of device MMIO */
-> +			if (j >= PCI_NUM_RESOURCES)
-> +				break;
-> +		}
->  
->  		if (insert_resource(&encrypted_iomem_resource, res) != 0)
->  			break;
-> @@ -985,6 +1031,7 @@ EXPORT_SYMBOL_GPL(pci_tsm_mmio_teardown);
->  #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE BIT(2)
->  #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
->  #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
-> +#define PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT 0xffff
->  
->  /* An interface report 'pfn' is 4K in size */
->  struct pci_tsm_devif_mmio {
-> @@ -1003,6 +1050,44 @@ struct pci_tsm_devif_report {
->  	struct pci_tsm_devif_mmio mmio[];
->  };
->  
-> +#ifdef CONFIG_CXL_RESET
-> +/*
-> + * pci_tsm_coherent_range() - resolve the device's coherent CXL window
-> + * @pdev: device owner of the reported ranges
-> + * @out_base: host physical (guest IPA) base of the coherent window
-> + * @out_size: size of the coherent window
-> + *
-> + * The coherent range carries no BAR number, so its address comes from
-> + * pdev->coh_resource[], a pre-driver-bind snapshot of committed CXL HDM
-> + * decoders.
-> + *
-> + * Return: 0 with *@out_base / *@out_size set from the first populated entry,
-> + * or -ENODEV if no entry is populated.
-> + */
-> +static int pci_tsm_coherent_range(struct pci_dev *pdev, u64 *out_base,
-> +				  u64 *out_size)
-
-pci_tsm_retrieve_coherent_range()? Also, why not just pass in a 'struct range'?
-
-DJ
-
-> +{
-> +	for (int i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
-> +		struct resource *res = &pdev->coh_resource[i];
-> +
-> +		if (!(res->flags & IORESOURCE_MEM))
-> +			continue;
-> +
-> +		*out_base = res->start;
-> +		*out_size = resource_size(res);
-> +		return 0;
-> +	}
-> +
-> +	return -ENODEV;
-> +}
-> +#else
-> +static int pci_tsm_coherent_range(struct pci_dev *pdev, u64 *out_base,
-> +				  u64 *out_size)
-> +{
-> +	return -ENODEV;
-> +}
-> +#endif /* CONFIG_CXL_RESET */
-> +
->  /**
->   * pci_tsm_mmio_alloc() - allocate encrypted MMIO range descriptor
->   * @pdev: device owner of MMIO ranges
-> @@ -1040,7 +1125,7 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
->  		return NULL;
->  
->  	for (i = 0; i < mmio_range_count; i++) {
-> -		u64 range_off;
-> +		u64 range_base, range_len, range_off;
->  		struct range range;
->  		const struct pci_tsm_devif_mmio *mmio_data = &devif_report->mmio[i];
->  		struct pci_tsm_mmio_entry *entry =
-> @@ -1050,33 +1135,58 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
->  		u32 attr = __le32_to_cpu(mmio_data->attributes);
->  		int bar = FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID,
->  				    attr);
-> +		bool coherent =
-> +			bar == PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT;
->  
-> -		if (bar >= PCI_STD_NUM_BARS ||
-> -		    !(pci_resource_flags(pdev, bar) & IORESOURCE_MEM) ||
-> -		    (pci_resource_flags(pdev, bar) & IORESOURCE_UNSET)) {
-> -			pci_dbg(pdev, "Invalid reporting bar ID %d\n", bar);
-> -			return NULL;
-> -		}
-> -
-> -		if (last_bar > bar) {
-> -			pci_dbg(pdev, "Reporting bar ID not in ascending order\n");
-> -			return NULL;
-> -		}
-> -
-> -		if (last_bar < bar) {
-> -			resource_size_t mask = pci_resource_len(pdev, bar) - 1;
-> -
-> -			/* Transition to a new bar */
-> -			last_bar = bar;
-> +		if (coherent) {
-> +			if (i != mmio_range_count - 1) {
-> +				pci_dbg(pdev, "Coherent reporting range is not last\n");
-> +				return NULL;
-> +			}
->  
->  			/*
-> -			 * Determine the obfuscated base of the BAR. BAR
-> -			 * offsets are never obfuscated.
-> +			 * No BAR names the coherent range, so fail closed if
-> +			 * neither a CXL region nor a committed HDM decoder
-> +			 * resolves its address.
->  			 */
-> -			reporting_bar_base = tsm_offset & ~mask;
-> -		} else if (tsm_offset < last_reporting_end) {
-> -			pci_dbg(pdev, "Reporting ranges within BAR not in ascending order\n");
-> -			return NULL;
-> +			if (pci_tsm_coherent_range(pdev, &range_base,
-> +						   &range_len)) {
-> +				pci_dbg(pdev, "No CXL region or committed HDM decoder for coherent reporting range\n");
-> +				return NULL;
-> +			}
-> +
-> +			/* Coherent range is last and not part of the BAR sequence. */
-> +		} else {
-> +			if (bar >= PCI_STD_NUM_BARS ||
-> +			    !(pci_resource_flags(pdev, bar) & IORESOURCE_MEM) ||
-> +			    (pci_resource_flags(pdev, bar) & IORESOURCE_UNSET)) {
-> +				pci_dbg(pdev, "Invalid reporting bar ID %d\n", bar);
-> +				return NULL;
-> +			}
-> +
-> +			if (last_bar > bar) {
-> +				pci_dbg(pdev, "Reporting bar ID not in ascending order\n");
-> +				return NULL;
-> +			}
-> +
-> +			if (last_bar < bar) {
-> +				resource_size_t mask = pci_resource_len(pdev, bar) - 1;
-> +
-> +				/* Transition to a new bar */
-> +				last_bar = bar;
-> +
-> +				/*
-> +				 * Determine the obfuscated base of the BAR. BAR
-> +				 * offsets are never obfuscated.
-> +				 */
-> +				reporting_bar_base = tsm_offset & ~mask;
-> +			} else if (tsm_offset < last_reporting_end) {
-> +				pci_dbg(pdev, "Reporting ranges within BAR not in ascending order\n");
-> +				return NULL;
-> +			}
-> +
-> +			range_base = pci_resource_start(pdev, bar);
-> +			range_len = pci_resource_len(pdev, bar);
->  		}
->  
->  		/* Per spec the tsm_offset never results in overflow / underflow */
-> @@ -1086,20 +1196,28 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
->  			return NULL;
->  		}
->  
-> -		range_off = tsm_offset - reporting_bar_base;
-> -		if (pci_resource_len(pdev, bar) < range_off + size) {
-> -			pci_dbg(pdev, "Reporting range larger than BAR size\n");
-> +		/*
-> +		 * Use tsm_offset directly for the coherent range instead of
-> +		 * masking: an HDM decoder's size - unlike a BAR's - need not be
-> +		 * a power of two. So masking could wrap an out-of-range
-> +		 * offset back in-bounds. The bounds check below still catches it.
-> +		 */
-> +		range_off = coherent ? tsm_offset :
-> +					tsm_offset - reporting_bar_base;
-> +		if (range_len < range_off + size) {
-> +			pci_dbg(pdev, "Reporting range larger than %s size\n",
-> +				coherent ? "coherent range" : "BAR");
->  			return NULL;
->  		}
->  
-> -		range.start = pci_resource_start(pdev, bar) + range_off;
-> +		range.start = range_base + range_off;
->  		range.end = range.start + size - 1;
->  
->  		/* Only record the TEE ranges for later consideration by ioremap() */
->  		if (FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE,
->  			      attr)) {
-> -			pci_dbg(pdev, "Skipping non-TEE range, BAR%d %pra\n",
-> -				bar, &range);
-> +			pci_dbg(pdev, "Skipping non-TEE range, %s %pra\n",
-> +				coherent ? "coherent range" : "BAR", &range);
->  			continue;
->  		}
->  
-> @@ -1107,6 +1225,8 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
->  		entry->res.end = range.end;
->  		entry->res.flags = IORESOURCE_MEM;
->  		entry->tsm_offset = tsm_offset;
-> +		if (coherent)
-> +			entry->flags |= PCI_TSM_MMIO_F_COHERENT;
->  		mmio->nr++;
->  	}
->  
-> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-> index e54ad057fa8e..90bd8d1dd729 100644
-> --- a/include/linux/pci-tsm.h
-> +++ b/include/linux/pci-tsm.h
-> @@ -1,6 +1,7 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  #ifndef __PCI_TSM_H
->  #define __PCI_TSM_H
-> +#include <linux/bits.h>
->  #include <linux/mutex.h>
->  #include <linux/pci.h>
->  #include <linux/sockptr.h>
-> @@ -204,10 +205,13 @@ enum pci_tsm_req_scope {
->   * @res: MMIO address range (typically Guest Physical Address, GPA)
->   * @tsm_offset: Host Physical Address, HPA obfuscation offset added by the TSM.
->   *		Translates report addresses to GPA.
-> + * @flags: PCI_TSM_MMIO_F_* attributes for the range
->   */
-> +#define PCI_TSM_MMIO_F_COHERENT BIT(0)
->  struct pci_tsm_mmio_entry {
->  	struct resource res;
->  	u64 tsm_offset;
-> +	u32 flags;
->  };
->  
->  struct pci_tsm_mmio {
+Reinette
 
