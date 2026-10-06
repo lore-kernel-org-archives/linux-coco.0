@@ -1,102 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4271D3AB273;
-	Tue,  6 Oct 2026 09:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1453BE174;
+	Tue,  6 Oct 2026 10:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791278464; cv=none; b=sPGm38p6ixQi+zZ0DD/kmODhywimEqAYEcKtVB/4kSkaPnsb9sVHxGeppVN39H6B2p1R98WUW82tsAFdxCiUTssGfX1hCKQwMBlUgpW9mGAPn9jUT58yc6ODpIM2Iz5EzWzY84t8frtrOiXDPiNIaR+9aw9SQFhtxlPSHhrMpHM=
+	t=1791283030; cv=none; b=TpFS00NGg4r7jUx7p3I9pjePPp8DNyYlvWxIpgdEA31V6UnEFAD0jtc53LtE15ohhuu1aOMUAEX5zZgxbueP773SdH6iwbv9xGhnSNgU/GvP4o/JYGdbUuoJIwScXCI75mWzwKf+u1wTR6BIMPtgF1TmWVlUs7sRTIkYivAi/Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791278464; c=relaxed/simple;
-	bh=PPslDzfuLJgD8FRs3rfIC7ONG8uWiqOG1mJq0t7RMtM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=faLm0y/bdMqS7ICHXuu79IxHCAX5kpUhSXnN5lPe3k5q47JBMDe5WLEWXAkhbyZrXdzPHvwY6Y1kTyUIJDbqDQ9vJayeUP798lCYIkDfrCZO7se2cRsCeJC8bllgnL/5hSWb6iTit4T+Ekb2vMYCdxirLq/M8/NJBbiBZopvDZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VLoNKXgN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791283030; c=relaxed/simple;
+	bh=7jQqKnJQRfynsLC1aLrSuAZ0vQikfppkGJpYclmeve0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p2awDK+oUEUdHtpX8xKxriZeSFv462GjXNbn7WbvxeJhrndABjFx0qXJZUiDBVO0HfJVsQ7zB/VcOp3NiZEZl5oupiIfps1LYAWLcgPaZOySA3+Gyd3n01ZzE9Zbzn2Nzg8Xq9PMY/v1dS87hgYV/+U/qqAiot/BHuMzoj7ilVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Xz9tE7q5; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VLoNKXgN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E661F000FF;
-	Tue,  6 Oct 2026 09:21:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791278462;
-	bh=z8HCIhNuDYrT+ORH4aIuCyvFjp7fM67uCGXy31jymWA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VLoNKXgNbL5pvIdvKiXXog0YYD7C2kt7elX+06jHvy+c2SJhZue6JFyyytxOQLq9g
-	 mtgEu/cO9bfr14AopOHBezZx+5b72rYYfjUUA80TA6GvBTSV5DNTAOY6pF8tPmckUc
-	 CuzOwQfKNPg1GzG2OiY2+nGPY9RtiVQprPpeKFR6V9rKbCZkmKHrGZEp42tX/1MwJ9
-	 ifxgVVf9I8J0cK8JQcpJntzCj4lXCM0pOswejwkZvyangfbasvP6qJft8DTjL9ko6z
-	 QccDXxdAQ0r7bwKpKknd3Z59aijfxt7rxcQAKAiKGT5gPFbDnndDhD0+yUF1c7vxmk
-	 NVlR4DBfDzAFA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xE1M3-0000000HM6R-45B4;
-	Tue, 06 Oct 2026 09:21:00 +0000
-Date: Tue, 06 Oct 2026 10:24:06 +0100
-Message-ID: <87a4or2nd5.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v22 11/23] KVM: arm64: Add VM specific callback for S2 MMU operations
-In-Reply-To: <20261005090754.2140522-12-suzuki.poulose@arm.com>
-References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
-	<20261005090754.2140522-12-suzuki.poulose@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Xz9tE7q5"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C230A1477;
+	Tue,  6 Oct 2026 03:37:02 -0700 (PDT)
+Received: from [10.57.10.233] (unknown [10.57.10.233])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8DE943F86F;
+	Tue,  6 Oct 2026 03:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791283026; bh=7jQqKnJQRfynsLC1aLrSuAZ0vQikfppkGJpYclmeve0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Xz9tE7q5AFb2q7YDljNnLJhAaMfmi7qbHlKxdcj2W2QWIC3a1xdwr/frfvgrqAfhj
+	 yUkgGEXCKFTTVhnDSEJ041O6z+ZilugTOb/LapASebPgbTEvEE/5XpAtbx+fJ+J0BB
+	 D3KxfHP0S+TOvDAbmomOdsNdUmD8SvCT8+EKLsDo=
+Message-ID: <089e57c8-93ee-4384-a6d6-978bde917650@arm.com>
+Date: Tue, 6 Oct 2026 12:36:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 11/23] KVM: arm64: Add VM specific callback for S2 MMU
+ operations
+Content-Language: en-GB
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
+ catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
+ <20261005090754.2140522-12-suzuki.poulose@arm.com>
+ <87a4or2nd5.wl-maz@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <87a4or2nd5.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 05 Oct 2026 10:07:42 +0100,
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On 06/10/2026 10:24, Marc Zyngier wrote:
+> On Mon, 05 Oct 2026 10:07:42 +0100,
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> Add VM type specific S2 MMU operation backends which can be initialized per
+>> VM flavor, to keep the handling cleaner.
+>>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>> Change since v21:
+>>   - Define all vm_s2_ops call back. All calls are mandatory.
+>>   - Define callback for each flavor, disjointing the non-protetcted pKVM and
+>>     normal KVM (VHE & nVHE) and remove the KVM_PGT_FN() hacks.
 > 
-> Add VM type specific S2 MMU operation backends which can be initialized per
-> VM flavor, to keep the handling cleaner.
+> It is a bit annoying that we still have part of the operations being
+> indirected by kvm_vm_s2_ops, and others by KVM_PGT_FN(), which is
+> still there. I was hoping that we'd have only one indirection. after
+> this patch.
+
+I agree and I did think about it. The issue is, some of these calls are
+deep burried from the higher leve dispatcher callbacks (e.g.,
+user_mem_abort->kvm_pgtable_stage2_map). We could go all in and remove
+all of them if you are happy with that change. Also, some of the call
+paths aren't valid for certain VM types, that adds quite a lot of dummy
+callbacks (now that they all are mandatory. e.g., pVM or Realms).
+
+
+Cheers
+Suzuki
+
 > 
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
-> Change since v21:
->  - Define all vm_s2_ops call back. All calls are mandatory.
->  - Define callback for each flavor, disjointing the non-protetcted pKVM and
->    normal KVM (VHE & nVHE) and remove the KVM_PGT_FN() hacks.
+> 	M.
+> 
 
-It is a bit annoying that we still have part of the operations being
-indirected by kvm_vm_s2_ops, and others by KVM_PGT_FN(), which is
-still there. I was hoping that we'd have only one indirection. after
-this patch.
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
