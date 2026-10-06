@@ -1,72 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540511922FD
-	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 03:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F801C5F27
+	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 03:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791256634; cv=none; b=YdIqBlKHq6LALzDzto/EGjG83eU787jbgMCqTjibRpHr81UgFYogCHKYH1leMqkivL1Uqtp3FvDBmkZDkQVKOLC0nPPz/+vLdkr8X/8/1lC2njCPqKduFDyRXhIuMmOLJncpMF/QiaGkMDNs7a6zN7kfrSQOxo21N5/eDuvC3as=
+	t=1791256738; cv=none; b=ERx8izdHWZMDqiVBigMK3ZQYvJTYJ5SLS8MnVYoLiiMsZC9X5hh93do03v3K7QAEh5xHIE8AsTnF/H8j2jdJuq5k5y0W1fz7xHyF71fg4o6CVlsTYm+wYum3nmfHJVJ7SXljyZG1k1tVfd8jX9NAgwqgEDcyM2HVNAdcXTCPGYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791256634; c=relaxed/simple;
-	bh=OCwy2T21o6KZK5vUec+S24BqJgmIfSohdnltBRqhZh4=;
+	s=arc-20240116; t=1791256738; c=relaxed/simple;
+	bh=ZVbjw66CG6A5xcmMat7LXv1MIDZBEKIeNvSdl57psXU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qFJHROldR4rpGM26rQeRmPUH3bfxUitD91odbCRPR+xx85qrSaRMiempBVjkK03rENqyJVvURI/X4XiKsB7AmVkeoN2wr2bzcN07EG1JczIJf5tM6IeJB/LVnH+b1HBEZE3Xn5v8IDTu9DwZvA3ufVIts0ZCHz1DTquOQ8qZQ6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JmRa6+pG; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=JrTKrFf4DOvSDNyhJ8pyqYj83mEZKQR7Gv5eBLzsLwY4dN3RPZvxz8JBCVNE+9EcMNOIspGUvOkpP7kj1xBpuI3k3OmdyxoLwYgJzc01hfs73/qWbC6fOt9pcFjgQV3Eun8oyEk7q6O0pbE3qN6/rnYxSQAfwSd1ft6Lp4QBccs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hm9nEvHL; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JmRa6+pG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hm9nEvHL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791256632;
+	s=mimecast20190719; t=1791256735;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cmIEoaAK9H0I/DObf/8+7Lpe62dBXA5oIjHsrjeoKTg=;
-	b=JmRa6+pG+IfDsTB9eepNfpqWczkdHGUdGggMTuKdZCcorkxOVQklsIna/sgOlxYcPNymWc
-	ddHuqZo1Xk8cuGs9GxmKRpWVNOv98I1IGdxmE8HJfPdGLKK0MzyGmN9xX5ZAgC+oO+Du4+
-	DbQmt6Axb51VYKrsTbJeQjyFL7Ot74I=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1jMiWdjITXmdV/ikrHHf6jmvGBH/AsJXpXasV0+qQL8=;
+	b=hm9nEvHLnYSPXfDzpndbnS+8qfFq0JSqamB/V1S6aXkuZUPwsSAJ8D3D2Ss8qWkUJXjo6Y
+	Qm0DN0vUy1gaHBugdWe4fsSUDPCojs2rt/Eza5jMdpniM/wXgfFUZd5Ukghs66MsHFnnMH
+	1GqxKcH0IAt3bz79LLZngKHckQwULl0=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-BEG48Z5lONqfmr3BUEaiQg-1; Mon, 05 Oct 2026 23:17:11 -0400
-X-MC-Unique: BEG48Z5lONqfmr3BUEaiQg-1
-X-Mimecast-MFC-AGG-ID: BEG48Z5lONqfmr3BUEaiQg_1791256630
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso2018266a91.1
-        for <linux-coco@lists.linux.dev>; Mon, 05 Oct 2026 20:17:11 -0700 (PDT)
+ us-mta-201-ej7J__DINum_YOfOSyiobg-1; Mon, 05 Oct 2026 23:18:54 -0400
+X-MC-Unique: ej7J__DINum_YOfOSyiobg-1
+X-Mimecast-MFC-AGG-ID: ej7J__DINum_YOfOSyiobg_1791256733
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cec4226c70so22604595ad.1
+        for <linux-coco@lists.linux.dev>; Mon, 05 Oct 2026 20:18:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791256630; x=1791861430;
+        d=1e100.net; s=20260707; t=1791256733; x=1791861533;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cmIEoaAK9H0I/DObf/8+7Lpe62dBXA5oIjHsrjeoKTg=;
-        b=Phi4uVTPyFVbwrTfsfJam07Jnlb2YviIlTfTxh4Vhtkej+yAOLPF2CrQjtbBoVGzX5
-         B8LxROrGbgRd28z1fzFpnnv6yMdNNqWOEg5lv80FbcC1hy8aNHXiAmjOIaV/qAkMmlzS
-         w42ecbn8PJUh5MG/wcGXVzVfMFWSj7rHRSQPy0grXK5uW+IysSBtEezmoBt6SnfvxA4+
-         xBLnicTjx0Z3ACVq9IMG1XZkHWbqBPw8xrAphQuTIToLWAw28gBQPt7XBOrvOOew2AUq
-         tFN/tjg9Df4i/13bCDrUJgbGDIcYXdWGnh62qPDzN2XfYlVqwuhBOHUMCB5fqWiua/8x
-         sidQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy9G1AMRTu1pZ1ZFP3rxsjdbHPAEg/f2+HsC4yA/WWjZWhAMPYN9a1ddtfN8hd8zyvEwOfJwNei7tBm@lists.linux.dev
-X-Gm-Message-State: AFuF++ntFSEvcZtlSRjj2dsmbsOqj/R/+NGs1s9TtzIuW6LXXlJdx3IF
-	F8X/4AE4e1ebhibzSW1ejMPdd4x5g1vOYPRYHe2JY/soCWjh4z5QVO2hNMpPMFjRFW9HDlFZIMM
-	yyaNNVksxI+kz3J5RB/8+o5Ao7XvnYadjWMgbIKWx+9oiHPSLF7Kp86kkGq2Mfro=
-X-Gm-Gg: AYBFou293jFruYCflGWx0AfDMX6+TQG+bbVGqucS88HkBPna6ZwNyPd/GihzhC7ywwq
-	PzKdPV3pmrXJ/wqxRxmMbzKPbndxiHtLEWV1xZP11YlS0mNYW/UBXYrPoRpd5IaLAzyaO2eGPeh
-	C7eIeKKZmRvveYqcM/U56FB5Yzz4VW/TNALiGBKMJJqkR4IMJR5VcG7ysbzKFmOF9PGLsaVtm4o
-	+Wah+T5zqcjxxVcTH5kANgS7KiKxha6Q3BI8l51A7NbVHnSynpqVQUaAAM3XUobDk4RxgqT8MMs
-	B3KniFa1o1XcwVuSq5+LbMFd9Q6/K7WNoR5a0jvhUDeic6ZpGZyW93n49uq/eiNKJlmNQnF+mA1
-	dKt+RaIK53sM4q2vhBsvIcMQ2ip8tmfoEHOh5t8M5Og==
-X-Received: by 2002:a05:6300:6698:b0:3de:7bd5:fb47 with SMTP id adf61e73a8af0-3e12474463bmr68480637.39.1791256630139;
-        Mon, 05 Oct 2026 20:17:10 -0700 (PDT)
-X-Received: by 2002:a05:6300:6698:b0:3de:7bd5:fb47 with SMTP id adf61e73a8af0-3e12474463bmr68459637.39.1791256629711;
-        Mon, 05 Oct 2026 20:17:09 -0700 (PDT)
+        bh=1jMiWdjITXmdV/ikrHHf6jmvGBH/AsJXpXasV0+qQL8=;
+        b=e4K9cG5MrepVvK5EzlzOIoKUiymMjy840gIcJpV0+OKThbcrvfyO221AxX4d+LKZ4o
+         n3ATc3WEbgz/YpYHtpNogMIrIkb58+PqPDuAbirZfaCLHdZi7qTK9rg3zWfZPrX3X8Rq
+         83JgopmReakInRATGmZUga7hy4p3dHlhNrBNP3bdg/4d/rTcTgX0nISD/N7dW8RaWOIF
+         FquBqc7uoQjthdLY0PpgCZQtSiw+8GHGOdKwGT5SF5OHhjoc/0Foi7iMjtPCFOQx4UD9
+         rkAVYcqSzFIJijpNOQ1t0n1qplw2FpsoHKRGiHFrTtTpReRVWVZGorjeQpUnXGm6Ek6S
+         lTbA==
+X-Forwarded-Encrypted: i=1; AKwUvBxIp+UJasJZJsLVOgKQUFOQ+3PK5IWNB3pSxf9Q6ZJ07c5xpa/PW745qHqlVTmEQgv3XgyhsUw0Mg5d@lists.linux.dev
+X-Gm-Message-State: AFq9FYIxDQkWuPJup1x24KM0mqIwIbkh9vSu/Lpt/TN5utuWWRGHWd+J
+	SK54ecqVDBp8LErw8nzHu93tyv8fGAxITP5x+o+hUniG22A9lSv3yxRl4rBhzWuHNeUwjUFhJ8p
+	ugn8BNBna1GrKQknA9W/ZGbjrvGGulp9yMEqCmPsqikQhd8mS2lI0oLQYoaxW/cM=
+X-Gm-Gg: AYBFou1Vo1XLOKLpydC+5h+2AlHOmI4SwsCHmrVWXAFa9q1+apqtFsm2BefMDGYRm9Z
+	znmNycHSC/wWJScYiMmTSkBIyeBlTJRCvwf67IkVNiV+dbjNHr9nJd+ue7Wq6WbfsbP+E2f6UJ8
+	Fh4GUSPpfZ9brbxVgysaNj18MNdleFwLf2ljG0tTv5rWeJ5eyeUI+kcyXWukpyUfgw88uJtqcnG
+	sfeaWEXkU78ZOLmPHMJ+dCggT20uUAP4J+ex26QuGwasxwMjF2C/mMdP6yF07JkSiJQhVf0QDfd
+	xn5rgCOopTS6MM20geYsQLnNVQvyO7t/GNMmh3iW4M0+CTLUtjyCdbba5pDM2zLKqBHF0DlrC2B
+	kFc4DvefBCvAHNCZcmcUlNXD8Vhdeajn0GTsuZ6wJ/g==
+X-Received: by 2002:a17:902:c952:b0:2e2:dc54:3148 with SMTP id d9443c01a7336-2e5dcdbe031mr1348485ad.66.1791256733326;
+        Mon, 05 Oct 2026 20:18:53 -0700 (PDT)
+X-Received: by 2002:a17:902:c952:b0:2e2:dc54:3148 with SMTP id d9443c01a7336-2e5dcdbe031mr1348145ad.66.1791256732898;
+        Mon, 05 Oct 2026 20:18:52 -0700 (PDT)
 Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6b358400sm1870050a12.4.2026.10.05.20.17.01
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e5a5ecf461sm15865645ad.53.2026.10.05.20.18.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2026 20:17:08 -0700 (PDT)
-Message-ID: <fdc81d01-27df-4557-80bf-80d4527e4bf2@redhat.com>
-Date: Tue, 6 Oct 2026 13:16:59 +1000
+        Mon, 05 Oct 2026 20:18:51 -0700 (PDT)
+Message-ID: <e556089c-18bf-44c2-8b94-3c558b0398db@redhat.com>
+Date: Tue, 6 Oct 2026 13:18:42 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,7 +74,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v22 16/23] KVM: arm64: CCA: Add VCPU load/put for Realms
+Subject: Re: [PATCH v22 17/23] KVM: arm64: CCA: Add bare minimal S2 operations
+ for Realm
 To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
@@ -86,77 +87,37 @@ Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
  WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
  sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
 References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
- <20261005090754.2140522-17-suzuki.poulose@arm.com>
+ <20261005090754.2140522-18-suzuki.poulose@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20261005090754.2140522-17-suzuki.poulose@arm.com>
+In-Reply-To: <20261005090754.2140522-18-suzuki.poulose@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FGFuuWxcsFdG3keXK9XoS7FNlhO215ji67m3Uj6yNcI_1791256630
+X-Mimecast-MFC-PROC-ID: ZuKQsGpuYnT6G3i-CsIatbHJUvSUQ_AQj2rSuRtX-hI_1791256733
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
-> RMM controls the VCPU settings and most are hidden from the KVM, except
-> for the VGIC and timer bits.
+> Add bare minimal MMU operation hooks for Realms. The mem_abort handling
+> is chosen as the default KVM variant. However this cannot be reached for
+> Realms yet and we would need real RMI command support to make it fully
+> functional. Similarly, unmapping stage2 requires RMI command support.
+> Until then reuse follow protected pKVM hook and ignore unmapping.
+> This will be addressed in the later series.
 > 
-> A later patch would add syncing the VCPU state into the Realm REC related
-> SMC parameters.
+> RMM takes care of the TLB flushing as required, when the Stage2 is
+> modified. So host doesn't need to do anything explicitly. RMM doesn't
+> support access flags for the stage2, even for the shared IPA.
 > 
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
->   arch/arm64/kvm/arm.c | 18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
+> Changes since v21:
+>   - Reuse no_age_gfn for Realms. Also use no_stage2_unmap_range for
+>     now, until we get proper RMI backed driver.
+> ---
+>   arch/arm64/kvm/mmu.c | 23 +++++++++++++++++++++++
+>   1 file changed, 23 insertions(+)
 > 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 6c81fec35ecec..294cea4cc8271 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -802,6 +802,13 @@ static void pkvm_vcpu_load(struct kvm_vcpu *vcpu)
->   			  &vcpu->arch.vgic_cpu.vgic_v3);
->   }
->   
-> +static void realm_vcpu_load(struct kvm_vcpu *vcpu)
-> +{
-> +	kvm_timer_vcpu_load(vcpu);
-> +	kvm_vgic_load(vcpu);
-> +	vcpu_set_wfx_traps(vcpu);
 
-Why we need to call vcpu_set_wfx_traps(), which updates 'vcpu->arch.hcr_el2'? I don't
-see how 'vcpu->arch.hcr_el2' is affects realm in RMM. Could you please explain in the
-commit log.
-
-> +}
-> +
->   void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->   {
->   	vcpu->cpu = cpu;
-> @@ -854,6 +861,12 @@ static void pkvm_vcpu_put(struct kvm_vcpu *vcpu)
->   	kvm_vcpu_pmu_restore_host(vcpu);
->   }
->   
-> +static void realm_vcpu_put(struct kvm_vcpu *vcpu)
-> +{
-> +	kvm_timer_vcpu_put(vcpu);
-> +	kvm_vgic_put(vcpu);
-> +}
-> +
->   void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
->   {
->   	vcpu->arch.vcpu_ops->vcpu_put(vcpu);
-> @@ -2213,6 +2226,11 @@ static const struct kvm_vcpu_ops pkvm_vcpu_ops = {
->   	.vcpu_put = pkvm_vcpu_put,
->   };
->   
-> +static const struct kvm_vcpu_ops realm_vcpu_ops = {
-> +	.vcpu_load = realm_vcpu_load,
-> +	.vcpu_put = realm_vcpu_put,
-> +};
-> +
->   #define KVM_VCPU_OPS(flavor, ops)		\
->   	[(flavor)] = &(ops)
->   
-
-Thanks,
-Gavin
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
