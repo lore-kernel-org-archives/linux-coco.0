@@ -1,245 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC47443C16
-	for <linux-coco@lists.linux.dev>; Mon,  5 Oct 2026 22:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789F454706D
+	for <linux-coco@lists.linux.dev>; Tue,  6 Oct 2026 00:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791240633; cv=none; b=ksyoxI1kPJr//6ux3vn8Fag7uVmjQ3zOEDnuopwKzAiCzHknWBtW+runwyCxn9FHsg1+EVhBJuPwtrK+Ztl6s+4HXFoUnF/Qja32IAZcykQL5dnfjt5fsIlkv8qo7I0fdPvzJJKLlYmCAzWq6BWWuBLUkb26MW0Ur9kX6L6VxXk=
+	t=1791244961; cv=none; b=JViI3k/s4IolG6TNbfx4aAgqDU/dh1VUOxm41AAPUQq+0GYskfHGpGYkqYc2qKG27ijuyloW5ygbFg0wUfW4aY9Bt1h+wI3IrwZ4LUwylkvu9DeJ//lHGY1szPI5Ab/r57Ri/FhlBXoQ0UboPCVznW2dGxswd4lJDcKCIz7diWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791240633; c=relaxed/simple;
-	bh=3hZBFPyundk9tWeTI4sVuy9MK+787aojzii6KnOyxzs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rSQ/Pw4XtkuJCprjCdvMdrqNAXi7Lj5XR9JYEq8/LsNrw12u/31+Ak5jnRkFiODza5PRljE4vEralb/uiVTi3Arpllvi/FKXXXmlc3NyYt2wmoEibrWkLQwxnkRyIlrv6J/FDk+NrYzeY18akIAw4zeVe+Cm/F0cB5MDiDC8M7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P4Jmq0I3; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791244961; c=relaxed/simple;
+	bh=bbI1GlrUdF/ahNCG52V/oWZizEAOPQOpaRP4fBVF3RY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YYHxTQ4eg7MmzN4lx4WyFVB6xnVwkIzohnReFfVzb7gcx1QJAN7nziXPWQ6FuzfO70QB2t36EKmEVIjWp+eZhR2G3yihBg2E8L3bBRvdyktOkkVO++I9BNnFb5XIFoV1uyC6Hl/ROqZnfleuq9UuvRr6TcrV+6Z0iq5UjCUGwYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HZrDvHx7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P4Jmq0I3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791240628; x=1822776628;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=3hZBFPyundk9tWeTI4sVuy9MK+787aojzii6KnOyxzs=;
-  b=P4Jmq0I3Ws1wyqTfkeH4CD6GHgJitYcSeSidlSbCVEb6LNfKHK32ugUG
-   AMaJhpQNfjBKIXcV1OKWEakpFU/a3k7I8sUMutnUXFewsuQVs9SrOolNG
-   it1Hb+Vl5blsMpZ67NuxsENuOYbc0YcshJkeaHnosZge70XlQrhUVju7p
-   rp9JkkEvJFDa2SWiKP7W7K4j9NQ8Hs+F50enZ+jvHeZsQ1c36mFm0VKht
-   2ib/29OxumEMjMYu3fq0db9kQsGn+TludWD4f1s5VmH59grFDHTC4UvAN
-   9b5QNFlU6qHIfuNzohoNjCsC3z7n3JLjtuisifpJEiZWgSkfcnl09utCH
-   Q==;
-X-CSE-ConnectionGUID: cFe5xlPfQ0CIpiVsvUztxw==
-X-CSE-MsgGUID: hgLrt7nESaWClx4zaHOPTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="94798750"
-X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="94798750"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 15:50:24 -0700
-X-CSE-ConnectionGUID: GKpV9rDMQqqowMkUjPtYEg==
-X-CSE-MsgGUID: BKKM73jTQLyAR0W89EJEpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="277063571"
-Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.108.147])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 15:50:23 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Mon, 05 Oct 2026 16:50:07 -0600
-Subject: [PATCH v4 2/2] x86/early_printk: Add earlyprintk=tdx to drive the
- UART with TDVMCALLs
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HZrDvHx7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791244958;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PDFj6k/aDmm3juPYr/fQM/Yto+7HWelNY9uNTEiKbGU=;
+	b=HZrDvHx7o2DVQPytjsKqQnQRzDRDzQwlHln09y7C24935MV83DYjNdPtZPjAofwcj+uZYd
+	td3cHUyVVDeROmmR4BZJJAnZbD858plOR+RnRJw4X/PeCuHFIEfhRMKFNyQBWtNKSc+iTa
+	T/JVm10KrUbjpxNGBwjWdRebUsPWjmg=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614--HxD692xNFaiCDkllfpC9g-1; Mon, 05 Oct 2026 20:02:37 -0400
+X-MC-Unique: -HxD692xNFaiCDkllfpC9g-1
+X-Mimecast-MFC-AGG-ID: -HxD692xNFaiCDkllfpC9g_1791244956
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so2187476a91.3
+        for <linux-coco@lists.linux.dev>; Mon, 05 Oct 2026 17:02:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791244956; x=1791849756;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PDFj6k/aDmm3juPYr/fQM/Yto+7HWelNY9uNTEiKbGU=;
+        b=ojwm062Q64qaApx20+1QtMQ+oOT7XdsejA1I9bawXFFZjGgVkFtBL2CHMyIReq0zPM
+         uba7ddnbYAOJ7Nc3PKvzs1TO+Aj/AEfpC+yu0Cdy03dxpFJw/kcOUBdwwYdK9n1lKRaP
+         Ywy41+WQiBlnOt9qLld/k55rCZorlYtYt0scndtthy+yYjsxUVX+f2RiDJgCl2kijwI/
+         DgNy5U8F1m29PavJfeWY0jLG9jbBlfc/mHavRhSezkeXBi2xElyVbW5rif2AUAVC01gS
+         gXJO2pYplgCZfEmLOkqOr1jtn6oQwC3I4IWBNMC+B5h3v4agW1I5GXok06wJ1o72mUOm
+         O/aw==
+X-Forwarded-Encrypted: i=1; AKwUvBwS9riCzlTGeZxqlZLAewvjXaXJGUUKnLqtHyt2caV9x5trVd4gxNO6XXKLC9ZSOToLihEWWZtu2iVu@lists.linux.dev
+X-Gm-Message-State: AFq9FYKZ5IwAa1cEXQMMuGTj9U196Q/5ZajU1P1bn7L++fTDv58yEW3i
+	cxjYSpFV1h/ghf0BOupTE2PIT0dpMPstcTKto4eeBj/tUin9W++UyIKZHGVPI9SNrhDh/NhREbH
+	qpg+0AFIdKedZjuTMIqhYvJXzhS3jhfr/Rl3CzAMuNgsx7jB3hcYWqEqkSwAo9Fw=
+X-Gm-Gg: AYBFou0GBclpAFYS9MvGJ805VvJM9oronA0zVLuT6sUzqLLAc9bMX7DKQc3dS5sOLJL
+	ZAdPui4lPWm+RfNn5//ycIvFH4GIV74AAHtR7/0SZzBRwJYK44vWH4kvBQgPX3ZZDUVIHMT8WSv
+	EY6qJiSYJavqimiqKoT9K7IP+3la6fMnnwx0Koy9NyatCDsiVXU+fSp24qlGEgb6VpH+0w5zGGA
+	+U9ZJKV0Z8jHpSpCehd5udopv+exc+QsIno65+Ku/bk5uhU7hMsQgn/lefj5cQlgxXQ3dvQtOZL
+	WZlx+jPgY7yrj8PSLwojnh+SSr2K/vsa5pQLs8SDR5aq7MU1L+NQYkpNdsDPHUaShowo7ZMmXPg
+	nMq/vHpA93fL2V0AloDBhgf2JvC2+CnftpvvsA/EBWA==
+X-Received: by 2002:a17:90b:4c05:b0:3a4:ba6e:65c9 with SMTP id 98e67ed59e1d1-3a6ce963ad0mr5001511a91.59.1791244955774;
+        Mon, 05 Oct 2026 17:02:35 -0700 (PDT)
+X-Received: by 2002:a17:90b:4c05:b0:3a4:ba6e:65c9 with SMTP id 98e67ed59e1d1-3a6ce963ad0mr5001495a91.59.1791244955239;
+        Mon, 05 Oct 2026 17:02:35 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a85436fb54sm1801682a91.10.2026.10.05.17.02.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Oct 2026 17:02:34 -0700 (PDT)
+Message-ID: <0fa5d03c-9e6c-4d81-a0de-e7aafc34918f@redhat.com>
+Date: Tue, 6 Oct 2026 10:02:25 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 01/23] KVM: arm64: protected VM: Handle user writes to
+ CNTVCT_EL0/CNTPCT_EL0
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
+ <20261005090754.2140522-2-suzuki.poulose@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20261005090754.2140522-2-suzuki.poulose@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: vqipwkfNGZu0qM7GJf6GRG4lox8ItXy6Ba9buyve6I4_1791244956
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261005-b4-tdx_earlyprintk_tdcalls-v4-2-3f7c56dd568a@intel.com>
-References: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
-In-Reply-To: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
-To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
- Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
- Vishal Verma <vishal.l.verma@intel.com>
-X-Mailer: b4 0.17-dev-e5168
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6350;
- i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=3hZBFPyundk9tWeTI4sVuy9MK+787aojzii6KnOyxzs=;
- b=owGbwMvMwCXGf25diOft7jLG02pJDFlHNFdu2fVRT/W+belffyaT41NXbMkvbXvUOZsl8omiz
- 98UxqlTOkpZGMS4GGTFFFn+7vnIeExuez5PYIIjzBxWJpAhDFycAjCRh4UM/wOOLLJ4IHVbtO5V
- ToLAqUX7/Rt3f7HlPDK7K+X/34mimQEMv5gcuC9NjvGL9go5LukTwrI7IerDbaFk5TDHubcmnJC
- I5QQA
-X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
- fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-A TDX guest cannot execute port I/O instructions directly, but
-earlyprintk's serial console still issues plain inb()/outb() and lets
-each one fault into the #VE handler to be emulated as a TDVMCALL.
-
-While that works, it is a roundabout way to get a character out.
-early_serial_putc() polls the LSR, and then writes a byte, but since the
-TDX guest can't directly do port I/O, a #VE exception is raised. The #VE
-handler must call TDG.VP.VEINFO.GET to find out what faulted, and then
-it can issue the TDVMCALL that does the actual work.
-
-This makes #VE a functional mechanism for doing I/O, which is not
-desirable, is unnecessarily complicated and fragile, and results in
-twice the number of calls into the TDX module.
-
-Instead, add an earlyprintk=tdx option, which can issue the TDVMCALLs
-directly. Add a pair of tdx_serial_in() and tdx_serial_out() accessors
-and set them up in this case.
-
-Note that the output does not appear any earlier - "earlyprintk=" is an
-early_param(), so the console is still registered from
-parse_early_param(). This only changes how the bytes leave the guest
-once it is up.
-
-LLMs were used under supervision to create this patch, to help
-understand the scope and mechanisms, create testing instrumentation
-(throwaway) to count #VEs in the serial vs tdx earlyprintk setups,
-and to drive lab machines to do this testing.
-
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- Documentation/admin-guide/kernel-parameters.txt |  8 +++++++
- arch/x86/include/asm/tdx.h                      |  4 ++++
- arch/x86/coco/tdx/tdx.c                         | 29 +++++++++++++++++++++++++
- arch/x86/kernel/early_printk.c                  | 20 +++++++++++++++++
- 4 files changed, 61 insertions(+)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index e75344f4e0cd..3e43e7c7385c 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1546,6 +1546,7 @@ Kernel parameters
- 			earlyprintk=serial[,ttySn[,baudrate]]
- 			earlyprintk=serial[,0x...[,baudrate]]
- 			earlyprintk=ttySn[,baudrate]
-+			earlyprintk=tdx
- 			earlyprintk=dbgp[debugController#]
- 			earlyprintk=mmio32,membase[,{nocfg|baudrate}]
- 			earlyprintk=pciserial[,force],bus:device.function[,{nocfg|baudrate}]
-@@ -1559,6 +1560,13 @@ Kernel parameters
- 			Use "nocfg" to skip UART configuration, assume
- 			BIOS/firmware has configured UART correctly.
- 
-+			On x86, "tdx" is a fixed COM1 console, and takes no
-+			options. In a TDX guest the port is driven with
-+			TDVMCALLs rather than port I/O instructions, avoiding
-+			the #VE exception that would otherwise be taken to
-+			emulate every access. Outside a TDX guest it falls back
-+			to port I/O, behaving like "earlyprintk=serial".
-+
- 			Append ",keep" to not disable it when the real console
- 			takes over.
- 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 89e97d5761d8..eac298979498 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -95,6 +95,10 @@ static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
- 
- #endif /* CONFIG_INTEL_TDX_GUEST */
- 
-+/* Only referenced when X86_FEATURE_TDX_GUEST is enabled, no stubs needed */
-+__noendbr unsigned int tdx_serial_in(unsigned long addr, int offset);
-+__noendbr void tdx_serial_out(unsigned long addr, int offset, int value);
-+
- #if defined(CONFIG_KVM_GUEST) && defined(CONFIG_INTEL_TDX_GUEST)
- long tdx_kvm_hypercall(unsigned int nr, unsigned long p1, unsigned long p2,
- 		       unsigned long p3, unsigned long p4);
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7d1a93ee2534..c5e16ea3844d 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -194,6 +194,35 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
- }
- EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
- 
-+/*
-+ * early_printk accessors for a TDX guest. Ask the VMM to do the port I/O with
-+ * TDG.VP.VMCALL<Instruction.IO> instead of executing IN/OUT and having the
-+ * resulting #VE emulate it.
-+ */
-+__noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
-+{
-+	struct tdx_module_args args = {
-+		.r10 = TDX_HYPERCALL_STANDARD,
-+		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
-+		.r12 = 1,
-+		.r13 = TDVMCALL_PORT_READ,
-+		.r14 = addr + offset,
-+	};
-+
-+	if (__tdx_hypercall(&args))
-+		return 0xFF;
-+
-+	return args.r11;
-+}
-+ANNOTATE_NOENDBR_SYM(tdx_serial_in);
-+
-+__noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
-+{
-+	_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), 1,
-+		       TDVMCALL_PORT_WRITE, addr + offset, value);
-+}
-+ANNOTATE_NOENDBR_SYM(tdx_serial_out);
-+
- static void __noreturn tdx_panic(const char *msg)
- {
- 	struct tdx_module_args args = {
-diff --git a/arch/x86/kernel/early_printk.c b/arch/x86/kernel/early_printk.c
-index cba75306e5b6..04dadcd73b85 100644
---- a/arch/x86/kernel/early_printk.c
-+++ b/arch/x86/kernel/early_printk.c
-@@ -21,6 +21,7 @@
- #include <linux/usb/xhci-dbgp.h>
- #include <asm/pci_x86.h>
- #include <linux/static_call.h>
-+#include <asm/tdx.h>
- 
- /* Simple VGA output */
- #define VGABASE		(__ISA_IO_base + 0xb8000)
-@@ -196,6 +197,20 @@ static __init void early_serial_init(char *s)
- 	early_serial_hw_init(divisor);
- }
- 
-+/*
-+ * Use early_serial_base (COM1) and same default baud rate as
-+ * "earlyprintk=serial"
-+ */
-+static __init void early_serial_tdx_init(void)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+		static_call_update(serial_in, tdx_serial_in);
-+		static_call_update(serial_out, tdx_serial_out);
-+	}
-+
-+	early_serial_hw_init(115200 / DEFAULT_BAUD);
-+}
-+
- static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
- {
- 	u32 __iomem *vaddr = (u32 __iomem *)addr;
-@@ -414,6 +429,11 @@ static int __init setup_early_printk(char *buf)
- 			early_serial_init(buf + 4);
- 			early_console_register(&early_serial_console, keep);
- 		}
-+		if (!strncmp(buf, "tdx", 3)) {
-+			early_serial_tdx_init();
-+			early_console_register(&early_serial_console, keep);
-+			break;
-+		}
- #ifdef CONFIG_PCI
- 		if (!strncmp(buf, "pciserial", 9)) {
- 			buf += 9; /* Keep from match the above "pciserial" */
-
--- 
-2.55.0
+On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
+> Protected VMs doesn't allow setting offsets for virtual and physical
+> counters, as the offset is always fixed to 0. The VM ioctl is filtered
+> out based on the cap. However we don't prevent the userspace from trying
+> to write to the CNTVCT/CNTPCT registers. This would lead to KVM triggering
+> a WARN() in timer_set_offset() as the vm_offset pointer is set to NULL.
+> 
+> Fix this by always "fixing" the timer offsets to 0 and marking that the
+> timer offset is set in the kvm->arch.flags at KVM init time for protected
+> VMs. This prevents the access to the VM specific vm_offset at low cost.
+> A userspace writing to the CNT*CT_EL0 would observe success, without
+> any real effect. This is cleaner over spilling "*_is_protected()"
+> checks and "matches" what we really do in practise. i.e., always run
+> with "fixed counter offset of 0".
+> 
+> Reported by Sashiko
+> 
+> Link: https://lore.kernel.org/all/20260908164641.416911F00A3A@smtp.kernel.org
+> Fixes: f7d05ee84a6a ("KVM: arm64: Prevent host from managing timer offsets for protected VMs")
+> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+>   Changes since v19:
+>    - Fix typos in commit description and explain why we choose the approach.
+>    - Improve comment in the code
+>   Changes since v18:
+>    - Retain NULL vm_offset for protected VMs to avoid host tampering with the
+>      offset.
+>    - Moved the flag setting into kvm_timer_init_vm(), where it should have been
+>      in the first place
+> ---
+>   arch/arm64/kvm/arch_timer.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
