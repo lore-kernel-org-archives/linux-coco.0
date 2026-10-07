@@ -1,69 +1,70 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012000.outbound.protection.outlook.com [40.107.209.0])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010025.outbound.protection.outlook.com [52.101.193.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0EA4D17A5
-	for <linux-coco@lists.linux.dev>; Wed,  7 Oct 2026 18:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072A54E0219
+	for <linux-coco@lists.linux.dev>; Wed,  7 Oct 2026 19:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791399295; cv=fail; b=RWct3/C+zAsrGKWXaEc1q5oOpnF6Xuo00Hn/dcPhuW1IxcZiKs60IQkXGo8w37CS+Qk0c4JZiNrwEmdQ4x2Nkmcsf1BhNs2N5bY04n4t17nOuuHz9WYWt57/ro96EmKtl/SweWyRMqmoip/hCUVBKzAefyNfBuHTm86jh5yiDwc=
+	t=1791401234; cv=fail; b=qq2zy/5VRNCdW7zj4kZqu2sEEAPErXrcevRbO15WCckAkyMtA4LgNro3FuHQ6JeQbStES5FgxsmC+PlDMuyJM8GfgisIiswwhlqjZhikLCGv1nGhiLSzQwDXXNfeNVCt32ZQrpA70EyFa/l2OhbDuuLt6kR0ygn0JfSBoOlpFvY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791399295; c=relaxed/simple;
-	bh=+xbGeyUa/GMaJSqzyM8M8JNRH44d0KW+w6pfiGfpEv8=;
+	s=arc-20240116; t=1791401234; c=relaxed/simple;
+	bh=D9WIojUSHPnxJlxJF3R8xHyFv69ZXnuKkO1MpGmlM8Y=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=HWxgTflALfE0GS2LeqdFgp/GSksCYUAz9rxG/hJf3sJfcWQG9E3WK6Q1tEnuaqMZoclXUWaWmTvjvXyFAAzwux8QbahJF1JwceDCZwb0a4Vrk8A77SOq7bksaMY/f7EThFA4bpQB9Bu0Ro/sSPaG69M7kuozEQl4VaPHc0AFkB8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ryezgpU/; arc=fail smtp.client-ip=40.107.209.0
+	 Content-Type:MIME-Version; b=fzJQxx1KUEz+sfRbSn4Hmv/S26kqK+kTU+PPhwLM/W14Qh/eKzuRrbGimh5s4XqsfClwH/OF4PWZS+1G6GLuIs82MGYhYmp2PYlojrN+WSaUFwsGMkeIgfJH+SfUghjbnyudzswbXsDsWjggXa0KvIOz+ajn5smI5bd1r32pO/w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RVNxgfHq; arc=fail smtp.client-ip=52.101.193.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ryezgpU/"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RVNxgfHq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KnPzrsokCIZy3lIPj2VWd5SAgBCcNfwWVAztaxhY6dUoeKx4atR29LuQy1vqRUnw3vWI+UmXbeQ6baXocTOHnjNT7xh6IUhCyJal1ANELMS+PjGfxcxK2EEq+tr6G9rkhXGF8HD3K3f/X/PAzzzeRFlShjDLcvZNBULqxm+aO7WjVBQVQFDWV8o9oqrmXDP4ERsrSnAjlbYjucdECaY0qiLnFCYZk0vSIx49YLClXE91tP2s9z/VgU7BpOdnx3o6H8BVPbXwKQEHJO+CT/ZJLNYjPslzZb+7b/qw412s7l82Vi3GwMzlJZTdR1/AeuOGF0QpLnB/C9rOvhRp2rGqAQ==
+ b=KpP/e6LYSs4NbZ4sUTu146hlDnkiwa0fQmx5P6y8dbrh0EfCD5c7uGseV435e2gOUKKtkBAHfhoSq1Gs1mZ42VqejxyQSt77qXTINRb2koP8GFoRDRE1SMDJp7WwviEXO95sO6kQ0OwCTJAgvUxybfvM+tsSH0KL9ZQZB/PJFhPLu/S6df/Op3zr0AtvBLS1+vAK0DuFTpdpMXnAcwiLG2qyAHvrs9/BAmTFNK68spoAK9BGT14w9jxNVU6s+XJDqj65FAEM3dYElRUGkQn5UfnGYiU6696VqUrH50CYf+k/nk71O0ASnMONVE7E4hNqaaEbms4MXN1v2Qzk7mo9dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l0CFczehegK8pRpJ82XzAO/Gui7a4ZLrAjEhtmirS8A=;
- b=IAMS/f8lyPJxFTpvb7ByWlUVnFTDSRCCke0kMO+/QA0fPObzNQgJMZzutf+ue4krovCKGTUO4teVpNrn1HcaqsHa9fp70TJwpI1cgRMGlN8k8OYcrIWYsbbRah4jru+hj/fwe7lk/ft0GOiHywzE1QcJoO+hR/kVdDWdlMxD9kEm3h5zhEhHBPXDISyNRvvopgYju8rXsPDS/a8v29KmxGLFKJakXJ6OrdXrzy0x9cHRWZ94KJKNfz9Ml4avOANvzlyS52TOkYX5zU3/zicgZkZ6FCABfvyPaIxlwq6np1eO/FdR90HsbrfD5k/UR1mmyX3+4oeZ82Wjb4qpPRwZkg==
+ bh=ymrcxKAqF0CwlyOPMZOZInyYXoNnfGmU90dAuFsYJb4=;
+ b=qfBmOIEsSeniric29Vgbe9ulJOm8GXWhwwRbGjH5/O5xJJSsu0kmdEGdmxZDnt07EhjzXLEtFNG4zBRjAlkLyPjtH6BVROlv7lgVqPC9Z1f2/ZPf0kIGpSf05jmLC0u5hr772jJ29bNprAYNPWWPsymYgjDxQLg22A5mAnUy5Q+riK2QBIxYeiWCnY7thXueGvr/LdkF2kTi9VOrXcz5E2u6qtXczOf+064pyCsPUqIH+TUedtJNwfN4h3agb79iXPJw29WpWNz7UT6ap+r9mlcc3/cW+eiN8z8m5XOlDlecqCWAwrHWh0gN7fUqHaV6Zhr3cVWjLkHoryVs4U3AJA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l0CFczehegK8pRpJ82XzAO/Gui7a4ZLrAjEhtmirS8A=;
- b=ryezgpU/iKsGRlPab4Knm17JpDOY0TSRlMxFbF4ympb5i56fff/EGD8qULGzFQBsrYvTNmDyO19NRaHlYcpbQqGv9aO5YqHMnl39R+QE1+G0EYfGwyeefE9nXVDXTE4F1RO6Mi54f9Lhw8kpXtMrxgL1HAvYQ/J+P5w9CStdhyI=
+ bh=ymrcxKAqF0CwlyOPMZOZInyYXoNnfGmU90dAuFsYJb4=;
+ b=RVNxgfHq/wkSXlgT4i0NYkFicnf8/w1s1CoyilbsuBygcbPm+UnvpSVuJgxgVtSd17jKfNmv7cKyGRXEgZHefGQDCBgtMkr/pMZYa9LSswfQJgzSFyqBOO3/L71+umgb/fvY9bIYaWabnpc1GKnjgRPlUCKpSMBu7pv8mBfxe4c=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by SJ0PR12MB7457.namprd12.prod.outlook.com (2603:10b6:a03:48d::16) with
+Received: from CH8PR12MB9766.namprd12.prod.outlook.com (2603:10b6:610:2b6::10)
+ by CY5PR12MB6382.namprd12.prod.outlook.com (2603:10b6:930:3e::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
- 2026 18:54:42 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0496.015; Wed, 7 Oct 2026
- 18:54:42 +0000
-Message-ID: <c2ca9eec-57f2-41b2-b8fa-4ed193b5b2dc@amd.com>
-Date: Wed, 7 Oct 2026 13:54:40 -0500
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Wed, 7 Oct
+ 2026 19:27:09 +0000
+Received: from CH8PR12MB9766.namprd12.prod.outlook.com
+ ([fe80::be0f:431f:5f27:96d9]) by CH8PR12MB9766.namprd12.prod.outlook.com
+ ([fe80::be0f:431f:5f27:96d9%5]) with mapi id 15.21.0496.010; Wed, 7 Oct 2026
+ 19:27:09 +0000
+Message-ID: <bf41f28d-5fb0-4b10-b2f2-3c7dcefdda57@amd.com>
+Date: Wed, 7 Oct 2026 14:27:04 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] x86,fs/resctrl: Keep mbm_assign_mode in default
- mode at boot
-To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
- bp@alien8.de
-Cc: x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <cover.1790976400.git.babu.moger@amd.com>
- <b969687be3162715e10242424b5a489857d67f2a.1790976400.git.babu.moger@amd.com>
- <200d21ee-3041-40f2-9032-18e8544a7030@intel.com>
+Subject: Re: [RFC PATCH 2/4] PCI/CXL: Populate and insert/remove
+ pdev->coh_resource[]
+To: Ankit Agrawal <ankita@nvidia.com>, linux-cxl@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: dave@stgolabs.net, jic23@kernel.org, dave.jiang@intel.com,
+ alison.schofield@intel.com, vishal.l.verma@intel.com, jgg@nvidia.com,
+ aneesh.kumar@kernel.org, aik@amd.com, yilun.xu@linux.intel.com,
+ iweiny@kernel.org, ming.li@zohomail.com, icheng@nvidia.com,
+ bhelgaas@google.com, smadhavan@nvidia.com, ilpo.jarvinen@linux.intel.com,
+ Smita.KoralahalliChannabasappa@amd.com, andriy.shevchenko@linux.intel.com,
+ linux-coco@lists.linux.dev
+References: <20261005070252.84810-1-ankita@nvidia.com>
+ <20261005070252.84810-3-ankita@nvidia.com>
 Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <200d21ee-3041-40f2-9032-18e8544a7030@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Bowman, Terry" <terry.bowman@amd.com>
+In-Reply-To: <20261005070252.84810-3-ankita@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR08CA0008.namprd08.prod.outlook.com
- (2603:10b6:610:33::13) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+X-ClientProxiedBy: SN7PR04CA0066.namprd04.prod.outlook.com
+ (2603:10b6:806:121::11) To CH8PR12MB9766.namprd12.prod.outlook.com
+ (2603:10b6:610:2b6::10)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,296 +72,203 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|SJ0PR12MB7457:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30cda633-2295-49f3-ad3a-08df24a4725d
+X-MS-TrafficTypeDiagnostic: CH8PR12MB9766:EE_|CY5PR12MB6382:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef6a1aec-1bb2-4681-d37a-08df24a8faab
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|56012099006|10067099003|5023799004|11063799006|4143699003|260925021911599003|260925022911599003|260925021311599003|22082099003|18002099003|6133799003|3023799007;
+	BCL:0;ARA:13230040|23010399003|7416014|1800799024|376014|366016|18002099003|22082099003|10067099003|4143699003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	oReSShniMkHuwENzWjStD6MVCp5e2AFvabYIPKho+8gHUwRCdpBKRkpbOuC2dvA4gSr5HmYaVdd/wt4Fou8Hfqs3ffi3kc4jRb/g5t7GgkQ4VMaWUkkPRmq9FHrnnxUlJAMB6Qpq8+KDASqgWxjK41ZsrkWlrGc3JLqmcUzI9oiiwS1Vz8SHI1E6pw0I0mk6lyVQhEpZ7uZo+tZtf2uepOc5EhdQIX9SrZAfEee7l+MTsAsbbE+Shp+zY1U4EFnNmnbCXSvXfwVUecP0toYsMeMCDQ6GxpFObwMs5IFAQIJbZEl38BxtM6hW0urbz799DBn/rCnyhfRlTMEFdgqp5UVjuwiw1SYi2M+dKHtvVNtQ3vcoPzvFx0ELf2tQhVZAFTpL3FI4nTCAY9VdMfp5RD8wXaPrHEAdjrdkK8sBEXbL6BbVbc+1U+itQ7fp46w9N1fmBXQgbMdPY0KLHCvGm9uz0i+7zcvGxnOeeekOPz6TBn53MfIDu1UHq5ym3nhrbR+0VweqodLVK3YLmTwMklBtdYntFWopcGNAz5QDkqxjPWMEFXuREXsnjkphsysJyJd4Ht4ml6KkIULytLx6OQ4eBEHMjXx9IQTeok5mdVdx6DRdQpc0Utrx2p0U2YeuCXpWgqXo09xCyN8TqJKQQnfkm11NyZGx33XFmkaNgrg=
+	vBjn9+NHkGd0F53mxDbXqT59d3lPwW3Zc/Cy34DZlIONFXxi79xWYKjZVr5lwhbJlZhXgIw00GVNOLeE5RO94X+QlwmIFQFfdlpuZQxV+yEN3lxKcEZMw0SM9X3pGQk0HM79YvsM8Z5DEgQI8aX9QWTA5YVKjshtn4zV4aaEN2ZCDKL0Tuu7xaG+Zt0bVVOPZ4xvAEewI7vjSFdFC4t/Y2U7nXKIubuTqIwaFYZx7nbk/hOg98/Hr5qP9sworT/evUi5XemBX9JoyKP6CtWaPcIS9eU+Q50XrVyOt9olKzWCDB8u+gr5vowQ/5+4v68q7Z0Y0lcxZGJAOSiBPHIiVPVD5yS8G2LpjLbaMJCXXGB5NW5U4MUQy0Olbb3upx77jt124XyKWYBtNQDuJHNah9+5w1o6TsBVay3zlLxJn52YGoUjF/1/RaIgsplOn+XvVcQsyOt6NHDb1z+GrbaeNWgxUldRGihzJhGsWPN48TfE4IyMupJQzVF1yS7BmOHWfYyMAwtQuSwqpZI4Y71t4nTLx8rtNL2svjSEKxpAhsav/rL+Lnh8wezHLH4pr8LJUVaOF8BcBRffg114pDdD9ScpnC4r2mD9G61JSN7FxVAAUq9Dd+w//DvyTr/UBlCSKogRNThl9h3P9r/qG4FWy6lI83jDGgooLBjk1ezt0UA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(56012099006)(10067099003)(5023799004)(11063799006)(4143699003)(260925021911599003)(260925022911599003)(260925021311599003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR12MB9766.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(376014)(366016)(18002099003)(22082099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cDY1a0h2dHE1YmZZSG9SRWcyZHQ3d2xhZHdEeFFHNWVKd3JFRUhIR3dQVTBE?=
- =?utf-8?B?aFJoWXl6T1VtVTZER0ZDOC95Z2lZTWpNTHBIRGZjV0VWRWJlSUlnM2RBWWt2?=
- =?utf-8?B?VzBocU5uSXVVTC9GaE1OVjNra013TjF3dGZZTkU5SVNhbEY4Y3NXZ3ltU0Zr?=
- =?utf-8?B?R01PWlpEYWtOakhiVzlHQ0hGanorOHV5bElKeUgrYlBrT0NqM1oxdHl5VWg2?=
- =?utf-8?B?QjRQNFhTcFdQWGZjdWRFUWJNZ2pFbUlDaTJ0aVAydE9hYnF6ZEN4U21TL245?=
- =?utf-8?B?cHJQYmVaL2Rsdm5qc2c4RlNjbWFhV2V4ZzlUWWlNYytFVXRrZHRsUitCUlJJ?=
- =?utf-8?B?WWpkUWlpdTAveHBKMFV4NzZVcThzZWgrV1ZRa010VGxMS2VveTBITFE0VGJm?=
- =?utf-8?B?anQ1WCtEZFhLTGJ2OE9UOTdUdzFzWmxLaTM0YVNMY1d5NGZMMjZMemFOSFhY?=
- =?utf-8?B?ZS9kbWZhSVJBVXBUT0RMdUZibSsyMlYxVlR6akRPTFg0T3B6OGVSYys3ZDFT?=
- =?utf-8?B?N2hRSCtwbUtjQzhtY3Z6bXpTWEQ1YXlSNmNPMWhSOUxTR1cyNEpDRGN6VlJZ?=
- =?utf-8?B?cGNIUTFoTFlPVzlza0JnWC8zQjhmNFVzRkU0VWlFNVVaVTFCR3dtV29Ua2Ry?=
- =?utf-8?B?TSs0bUtwSGNHbStkVDFXQ2FuV2JxS1JIL0E5MGp1eUpZUW5lODFCRnE2ZjdD?=
- =?utf-8?B?cG81MjhrVUJVZ002aEYyUjF3dDRSTUVGbmhVQ1RJRi9RZ1pTdDM3Z1FzY2x3?=
- =?utf-8?B?aHlMdjNOV0x6bFg2aDdiVkVrOG5qNk9tM0w1NkVjQzEzNDBzOFA2R3FsSzd5?=
- =?utf-8?B?WFdraVRTcEFTVGxSeE5pYjVsQlZTdjhTOE1zQ0pFaWdpcE1wVTR3YXRTOTJP?=
- =?utf-8?B?cWpMNE5kZGt6VDhGbXR5YWZQYUVpa29NdGc1VkxyYm1YRnFrSnBFR28wTUE1?=
- =?utf-8?B?bzl6cGpnQ1RZbXA5WFFGZXQxSHM5UEgrblZsWkUyWHRVeUZJNk1UaE40cVJi?=
- =?utf-8?B?cmVoUENzTEgvYzZDSTdRQ1hSazdkYTVzNmVwWVVVWElwRW9QMFJRdmFKd0s2?=
- =?utf-8?B?ZGdObzUreXpPZ3ltV29lUHlCOVNZN3BQWE8zK1g4MU54WENTN2xSVkdTWjhG?=
- =?utf-8?B?Z1VCTUhlcE9rdldEWWY5Wk9sK3lRdmVlUG5iYnByRno5Mnk2Sm4xMmgxUmVK?=
- =?utf-8?B?TjJIeW5Eb2g5TkhVQm8rTVA3Q1lRUVR0TmhSU3BSdFlZWFpzc2FmRSsyeGxn?=
- =?utf-8?B?NU02cUROTDh1Tmp2VlBvdWk0S1R6OXNLYWZCOWxPaEZqak5GMm5saUV2aWJF?=
- =?utf-8?B?YU9wSk1adTAwbTBtVE91dldnSmlqdmRHY3MyVWliQVF4ZzdFZVJmVEtBdHNS?=
- =?utf-8?B?L2pWcmNNUDlkaXJoK0lINHRLczVJcWw4NjBYWmJDYkVUNVZJN0liYTFaUm5J?=
- =?utf-8?B?LzRIK3RkWEVVaW9FUDlmUXRZMk40L0NXamNFWS9QaGo0NUJPRDJoSDFtbHdr?=
- =?utf-8?B?ZS82L3k2cDkwUkJzaUpxUUVrclBsaTFrZEk5UkJZMllHT3ZxYVNSQmRwdnpj?=
- =?utf-8?B?TytJRDVrNWdTVHlyR0VWb2JDclFzNzBEUUhMZFRITTljN0JGQS90MTZHQzBj?=
- =?utf-8?B?Ull3VjkzMkovdnVDL1M1dFJtaVhBYThBN2V3UHBWV2pjcWx5UHVZTkFXK1ZU?=
- =?utf-8?B?aHR4bWp2Q1RsSndtRWtwcVpwZDhxQ01aaDBQUnFsTUsrL1hPM2h3YXV5WEhF?=
- =?utf-8?B?OUovYVY0ZWZUVTlBWk1ZV0lqcHNya0RmYVZzb0RHNjNDODB2dlBBekFZeUxs?=
- =?utf-8?B?NElzTjRuVGhrOGFYWWM2MFRwNTdabnJjbyttYTQ3L3VFZlduMXFXelJQUHhM?=
- =?utf-8?B?MnF5RjR2ZFYrdjBJWFdFdlNTdmMvSVNlUWYyd1ZET1d4c0VtUHYvcytjTUJq?=
- =?utf-8?B?eFJrU3Q3RHhyV1N2c2ZDb2E1KzB4dVQ4SmdPU05Yak5Sdlp0RzV3Z0RRTjQ5?=
- =?utf-8?B?OWJCMG8wZmw5cGRMZmMyS3hSa3FPTk1BY0EvcWlpRGdSR2NodGM2T2sxM1BR?=
- =?utf-8?B?MEkwWHJ4UmlJYTRtVGpyMTY4OC9OYnR3bE1uWmxwUXVqYmxXbktzUEo5d2E0?=
- =?utf-8?B?SXdXd011VFI5eVh4blcyZE9ObzI5RTM2UWVUOWQ2L3Uwa1ZKOGpiMXFRUU9i?=
- =?utf-8?B?NzU5dkZUajIwc1dXWVMrRDVWdk9oVStEbkhnYmR4ZmZnbzlyVzhaeTVrMnZ4?=
- =?utf-8?B?d2IyYzc1eS9TMnkvUEVBTi9mT2hOS3NYKzE5N3RHcE1pK3dmQzBULzZpMmhM?=
- =?utf-8?Q?UpNRBtiR4AJ740vtOM?=
+	=?utf-8?B?YzVacDZiUU5Md0xpM0lwRUZtR1ZMRDZRV0NFNWVBTndYOFJuanBVamJZcG5F?=
+ =?utf-8?B?OSs4akplaVRtQm1iVFdtcXYxdHlnemtxT05TVXI3cVVoR2JtS1g2SFJVSmRv?=
+ =?utf-8?B?RHRYRUtqajJFSXo2M08vNmFjSmw1RzZmMVhmWFdLZTF3S1BOUWtKM2wrdTBs?=
+ =?utf-8?B?QWVGUDhHUmQ2cjNsTHVnOU5PMnFrd1lXdHdsQmtBOERMakwvMjVEYVBiUElX?=
+ =?utf-8?B?VUNiM1VsRCtwbjRSZVM0eTRrQWdERFBSU21VYXAxWjRMQlRhWlhJcEp2ZVJn?=
+ =?utf-8?B?RGxTdDVRR1c5bllsbCszaGo0bGE0bzRXRzJ1NkZGais3Ti9tei9NT2RreWlY?=
+ =?utf-8?B?SkhjY3M3Y01uNzkwclNUN1JVM2hPVHk3ZE5HcERrSzl3NWJGM3lyWVEvWEpM?=
+ =?utf-8?B?VytiTHhPbTh6R0dvbkRWYkJ0Wk51clB2c0dTTHE2V2xpMGlQTjFab2tDQVRE?=
+ =?utf-8?B?WTFTUkVzTTB0MzVNRFEvdmhocjFvWm0xajJFQmZRbHpkWUY3K0pPS05mb0dq?=
+ =?utf-8?B?UVJHZnNRV3hLMTBlNlJmUDh6eFRBd2FTSWJtNVVPbzQwQnRlSmJXSmdtNWdB?=
+ =?utf-8?B?R1EyQ3MwbVZaME14VHVjdzNOZm84S3BnenFhN0ZvTitobHdTMFRyYk9VWGo0?=
+ =?utf-8?B?WFQxZlVlU0x0YnlLODd2MFNsK2NjTlZnTVpVUGx3VFdOcXpSeEFST0R1Qlhu?=
+ =?utf-8?B?TjlsUlFlWHVmQnZGLzhlVTdzdlQ0Nm1yYzd1Zmp6KysyUTFjZmM4dkpMMnN4?=
+ =?utf-8?B?bS9EdHBrcy92UTViZUNGNzlBdWY0UkFtSTV2K1FNcWYvVlZTSENFYnZRS0FC?=
+ =?utf-8?B?eHpKcGQyd0J1M1lHMXF5d3dsMkxZT2U0MEFXVXRXTm4wc2ZpMGFNZUI5WUxj?=
+ =?utf-8?B?Sjc1MVRrd01lbnNJSDg1MEJkdTQ2VmhKZ29ZRFBjMTF0dHR2MFBYS0ZiN3Uv?=
+ =?utf-8?B?M0NwenRhbkRiSDRreXFSVVRJV1Vnb3hxRXhCNUZwSzl2VFJaUkxDaHRiTC95?=
+ =?utf-8?B?dzRzcjJiYlZjMmhmRU5NcVRkZ1lpZHRPZEt6dk85VGhQZWt2WlE4NDZ4TFN1?=
+ =?utf-8?B?RWtzMDgyWGt0MTIzZzQrR1hTckR1cUx4NTZOMFBBb0VsRmczbFZRRm5VdVpu?=
+ =?utf-8?B?SURyYkV1L0FrR1RpWXg2VU9Bc3VrTXNzdEVJVFp3b21Kb2lnN3owNlZ1eEUw?=
+ =?utf-8?B?MnVBTlRhSzk3QWN6RWtyT3p5ME1TR2IwUXpMaFEvYkN6NWlOY2FSaXFIcFlZ?=
+ =?utf-8?B?aVFpTXNrVGVqNE9kOVZKZFVpc0hacnFnRlRvU0huMUwwZkZ5UTZ4eGNYSW9H?=
+ =?utf-8?B?NUF4Rkp5ajdkdG5DV3dqOFR3cTZ5WndrdDJCZFZkQ0xLS3NVdVYva1ZWYVZp?=
+ =?utf-8?B?TXM2TW9OWEtUZFlCeU16YTRzb2lSV1o1Y1R4MkZIdjVtNkpjdjBYSUI3c1Vl?=
+ =?utf-8?B?YVNUSGw3alp4bTY4TklVMFRxYjhuc0FMQVpoOEZveFZMVDBSeFpkeGFpYm1j?=
+ =?utf-8?B?SmZPMlBRUTFPTEJTOGozZmpuT0V3YXpKSWJSQy9UNXFxRVZ2Ujk5TmxHT3hJ?=
+ =?utf-8?B?ek9UZTBhdUpFSXJWRDhGbituTnNsK2FRMlcrczI1emdaR3VXQkFTNlNrbG04?=
+ =?utf-8?B?YlNMRzVFcy83bVloOExMaEVqamEvSkFNRk1MMkVadThVeGVQWGZWeCtTaS9Y?=
+ =?utf-8?B?NitDYUhmdGZQY1RGUkRLNDBidmpzOXI4b3NYR3lmM2xxdWd5Tm9LUFlUMGpJ?=
+ =?utf-8?B?MlZEVUwrNjhMUSt1djlhckJrSFREK0xscCtKc1FYbDFOdHhNd3JydFhBZTlT?=
+ =?utf-8?B?cVhQWXNza3k4dWtDSVh0Q2xoeU5ia1gxZ0JGZzRqSVFpQk1aZVRtMkFRN1dk?=
+ =?utf-8?B?QVhFYnY0UkJvWHFiMTdOWVN3a3kwNnAvWUE1cHZSVFppSW1PZmtnQXNJTFFQ?=
+ =?utf-8?B?L0d5UWc2MWlRSGZUc0gzU2cza3pickMwWExFS29DcmhQOUI2TVA2c0M5UUJL?=
+ =?utf-8?B?N1FZd3pmYllTeUtVdFVUalBSNXNROEVCVStHcmRtUlRjYlljeStMNk9Tc3Jt?=
+ =?utf-8?B?ejBTNkF1azNiTnBNamkzK1FRdTFhcERPdjdsbldhUVJMN3dRK0hLd0VKZTht?=
+ =?utf-8?B?ZVhRNk41MXJqUjZRNnNRaUgvbG1WaUMrN25RUjJqU0lLQk03dHVYdDV1UG41?=
+ =?utf-8?B?VmxFQnpzbGdMS3hHR1k4YlYyME0yYnlpVk9iRDlJYlJpM3dLNTZUYUZrZzlY?=
+ =?utf-8?B?M2F0WWxoNi9LQTEzU2h3SVpxK0hqSVQrTk1GZ2FheEZ0V09sdEZMM3p5MVNT?=
+ =?utf-8?Q?G5B2TxgshD9bmNljs9?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30cda633-2295-49f3-ad3a-08df24a4725d
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef6a1aec-1bb2-4681-d37a-08df24a8faab
+X-MS-Exchange-CrossTenant-AuthSource: CH8PR12MB9766.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 18:54:42.3974
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 19:27:09.0764
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lizAQ6ddxMhhezppaueStqnxT+J0ESIR8nDpaI1JtdBo/rVyYEewyyxCzeWHNQUY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7457
+X-MS-Exchange-CrossTenant-UserPrincipalName: k3+HIysp/MHBMDYpbLD0HfUg9ZfNT53cPdtoEniFko6vuq9bNFlerdCI6ASFyArmxlZjgzFea/9LORlJGQGbdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6382
 
-Hi Reinette,
+On 10/5/2026 2:02 AM, Ankit Agrawal wrote:
+> On systems with precommitted HDM decoders, the firmware programs
+> the decoders before any software runs. This range also stays constant
+> over the runs.
+> 
+> Snapshot precommitted CXL HDM decoder ranges into a new
+> pdev->coh_resource[] array, so later code has a known-good source for
+> a device coherent (CXL) windows without re-scanning decoder
+> registers.
+> 
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> Assisted-by: Claude:sonnet-5
+> ---
+>  drivers/cxl/core/resource.c | 52 ++++++++++++++++++++++++++++++++++++-
+>  include/linux/pci.h         | 14 ++++++++++
+>  2 files changed, 65 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cxl/core/resource.c b/drivers/cxl/core/resource.c
+> index 3422139ae3ab..4d2082c8e321 100644
+> --- a/drivers/cxl/core/resource.c
+> +++ b/drivers/cxl/core/resource.c
+> @@ -404,6 +404,46 @@ static struct cxl_hdm_info *cxl_pci_hdm_read_info(struct pci_dev *pdev,
+>  	return ERR_PTR(pcibios_err_to_errno(rc));
+>  }
+>  
+> +/*
+> + * Snapshot committed decoders into pdev->coh_resource[] which is called
+> + * once per pdev before any driver can bind, so a populated entry is
+> + * always firmware-committed and not driver-committed.
+> + *
+> + * Insert each entry into iomem_resource for /proc/iomem visibility and
+> + * conflict detection.
+> + */
+> +static void cxl_populate_coh_resource(struct pci_dev *pdev,
+> +				      struct cxl_hdm_info *info)
+> +{
+> +	int count = min(info->decoder_count, PCI_CXL_MAX_COHERENT_RANGES);
+> +
+> +	for (int i = 0; i < count; i++) {
+> +		struct cxl_decoder_config *config = &info->settings[i].config;
+> +		struct resource *res = &pdev->coh_resource[i];
+> +		struct resource *conflict;
+> +
+> +		if (!(config->flags & CXL_DECODER_F_ENABLE))
+> +			continue;
+> +
+> +		*res = DEFINE_RES_NAMED_DESC(config->hpa_range.start,
+> +					     range_len(&config->hpa_range),
+> +					     "CXL coherent memory",
+> +					     IORESOURCE_MEM, IORES_DESC_NONE);
+> +
 
-On 10/6/26 12:53, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/2/26 2:26 PM, Babu Moger wrote:
->> The "mbm_event" mode assigns hardware MBM counters to RMID/event pairs.
->> It is intended for deployments that need to manage counter assignment on
->> platforms where the number of monitoring groups exceeds the available
->> hardware counters. Hardware counters are scarce, so mbm_event mode suits
-> 
-> "Hardware counters are scarce" -> "Hardware counters are scarce on these platforms"
-> (to make it specific to the context and not a general statement)
+On platforms using Normalized Addressing the Endpoint decoders contain DPA ranges. This 
+patch will then record DPA ranges as a result. Translating this requires call to prm_cxl_dpa_spa() ?
+The challenge is the PRM in drivers/cxl/core/atl.c may not be initialized this early.
 
-Sure.
+> +		conflict = insert_resource_conflict(&iomem_resource, res);
+> +		if (conflict) {
+> +			pci_warn(pdev,
+> +				 "CXL coherent range: decoder%d %pR conflicts with %s %pR, leaving unpopulated\n",
+> +				 i, res, conflict->name, conflict);
+> +			memset(res, 0, sizeof(*res));
+> +			continue;
+> +		}
+> +
 
-> 
->> workflows that monitor a subset of groups at a time and rotate
->> assignments as needed.
->>
->> resctrl enables the "mbm_event" mode by default on hardware that
->> supports it. That breaks the pqos tool [1], which assumes the historical
->> default mode. pqos treats a non-numeric event read as zero bandwidth. It
->> creates 16 or more monitoring groups and uses two counters per group.
->> On a platform with 32 counters per domain, that consumes the pool, so
->> further groups read "Unassigned" and pqos reports 0 MB/s for them:
->>
->>    $sudo pqos -m all:0-4
->>    CORE         IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
->>       0        0.69         16k       192.0         0.0         0.0
->>       1        0.40          3k         0.0         0.0         0.0
->>       2        0.44          1k        64.0         0.0         0.0
->>       3        0.39          1k        64.0         0.0         0.0
->>       4        0.43          1k         0.0         0.0         0.0
->>
->> Leave mbm_assign_mode in "default" mode during initialization. Default
->> mode uses one counter per monitoring group. On existing AMD platforms
->> that pool is 64 counters and may be larger on newer hardware. The
->> "mbm_event" mode uses two counters per group, so 32 counters cover only
->> 16 groups.
->>
->> Deployments within that pool receive accurate bandwidth measurements
->> with default mode. The hardware supports 4096 monitoring groups. Beyond
->> that pool, readings may be misleading or "Unavailable", with no
-> 
-> At this point I am lost because the word "pool" is used to mean three
-> different things. It is used for the number of "ABMC counters" as well
-> as the number of "non-ABMC counters" that exist on the same platform,
-> above it seems to be used for number of RMIDs (number of monitoring
-> groups) also. Could you please add some context at beginning of
-> changelog to introduce the various counts applicable to the description,
-> associate unique terms to these counts at that time, and then use
-> those unique terms in the rest of the changelog?
 
-Sure.
-I can name as "ABMC counters pool" and "default active counters pool"
+- Terry
 
-And update the text in terms of the words.  RMID pool may not be 
-required and will update the text around that.
+> +		pci_info(pdev, "CXL coherent range: decoder%d precommitted, populated %pR\n",
+> +			 i, res);
+> +	}
+> +}
+> +
+>  static int __pci_cxl_hdm_cache_init(struct pci_dev *pdev)
+>  {
+>  	struct cxl_register_map map = { };
+> @@ -442,8 +482,10 @@ static int __pci_cxl_hdm_cache_init(struct pci_dev *pdev)
+>  	struct cxl_hdm_info *info __free(kfree) = read_info;
+>  	guard(rwsem_write)(&cxl_rwsem.dpa);
+>  	/* Another initializer may have published while we read MMIO. */
+> -	if (!pdev->hdm)
+> +	if (!pdev->hdm) {
+> +		cxl_populate_coh_resource(pdev, info);
+>  		pdev->hdm = no_free_ptr(info);
+> +	}
+>  
+>  	return 0;
+>  }
+> @@ -466,6 +508,14 @@ void pci_cxl_hdm_cache_release(struct pci_dev *pdev)
+>  	info = pdev->hdm;
+>  	/* Unpublish before freeing so subsequent readers cannot use stale state. */
+>  	pdev->hdm = NULL;
+> +
+> +	for (int i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
+> +		struct resource *res = &pdev->coh_resource[i];
+> +
+> +		if (res->parent)
+> +			remove_resource(res);
+> +	}
+> +
+>  	kfree(info);
+>  }
+>  
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index b00f5f38f77d..ce724d067fd2 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -148,6 +148,13 @@ enum {
+>  	DEVICE_COUNT_RESOURCE = PCI_NUM_RESOURCES,
+>  };
+>  
+> +/*
+> + * Max CXL HDM decoders tracked per endpoint in pci_dev->coh_resource[].
+> + * CXL 3.1 spec section 8.2.4.20.1 - CXL HDM Decoder Capability Register,
+> + * mention a max of 10 decoders for a CXL device.
+> + */
+> +#define PCI_CXL_MAX_COHERENT_RANGES 10
+> +
+>  /**
+>   * enum pci_interrupt_pin - PCI INTx interrupt values
+>   * @PCI_INTERRUPT_UNKNOWN: Unknown or unassigned interrupt
+> @@ -572,6 +579,13 @@ struct pci_dev {
+>  #endif
+>  #ifdef CONFIG_CXL_RESET
+>  	struct cxl_hdm_info *hdm;	/* CXL HDM decoder state */
+> +	/*
+> +	 * Precommitted CXL HDM decoder coherent ranges, snapshotted before
+> +	 * any driver binds. One entry per decoder index. Only written by
+> +	 * pci_cxl_hdm_cache_init()/_release(), outside any bound driver's
+> +	 * read window.
+> +	 */
+> +	struct resource coh_resource[PCI_CXL_MAX_COHERENT_RANGES];
+>  #endif
+>  #ifdef CONFIG_PCI_NPEM
+>  	struct npem	*npem;		/* Native PCIe Enclosure Management */
 
-> 
->> user-visible indication.
->>
->> Default mode is still limited once the number of monitoring groups
->> exceeds that counter pool. After hardware re-allocates a counter, a
->> read may return "Unavailable". pqos still treats "Unavailable" as zero.
->> Successive reads can be a count, "Unavailable", then another count.
->> pqos treats those jumps as wraparound and can report an inconsistent
->> rate:
->>
->>    $sudo pqos -m all:0-4
->>    CORE     IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
->>    0        0.76         60k        32.0         0.0         0.0
->>    1        0.45          1k        32.0         0.0         0.0
->>    2        1.57        107k        64.0         0.0 17592186044184.9
->>    3        1.62        276k      4928.0         3.2         0.5
->>
->> Users that need stable measurements beyond that pool should use
->> "mbm_event" mode and rotate assignments as needed.
->> Enable it with:
->>
->>    $echo mbm_event > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>
->> Fixes: 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
->> Closes: https://github.com/intel/intel-cmt-cat/issues/311
->> Link: https://github.com/intel/intel-cmt-cat # [1]
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> 
-> See "Ordering of commit tags" in Documentation/process/maintainer-tip.rst
-
-Ack.
-
-> 
->> ---
->>   Documentation/filesystems/resctrl.rst | 48 ++++++++++++++++++---------
->>   arch/x86/kernel/cpu/resctrl/monitor.c |  1 -
->>   2 files changed, 33 insertions(+), 16 deletions(-)
->>
->> diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystems/resctrl.rst
->> index c8507580474a..2efc99223bdc 100644
->> --- a/Documentation/filesystems/resctrl.rst
->> +++ b/Documentation/filesystems/resctrl.rst
->> @@ -354,8 +354,8 @@ with the following files:
->>   	::
->>   
->>   	  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->> -	  [mbm_event]
->> -	  default
->> +	  [default]
->> +	  mbm_event
->>   
->>   	"mbm_event":
->>   
->> @@ -363,6 +363,9 @@ with the following files:
->>   	pair and monitor the bandwidth usage as long as it is assigned. The hardware
->>   	continues to track the assigned counter until it is explicitly unassigned by
->>   	the user. Each event within a resctrl group can be assigned independently.
->> +	mbm_event mode uses one counter per event of one RMID. A monitoring group
->> +	can use two counters, one for mbm_total_bytes and one for mbm_local_bytes.
->> +	For example, 32 counters can monitor 16 groups.
-> 
-> This addition looks redundant to me. "mbm_event mode uses one counter per event of one RMID."
-> just repeats earlier "...assign a hardware counter to an RMID, event pair ...", no?
-> The example being added ("A monitoring group can use two counters ...") also looks
-> to be specific to AMD's usage and including platform specific example as part of generic
-> introduction seems unnecessary.
-
-ok. Will remove this text.>
->>   
->>   	In this mode, a monitoring event can only accumulate data while it is backed
->>   	by a hardware counter. Use "mbm_L3_assignments" found in each CTRL_MON and MON
->> @@ -376,20 +379,37 @@ with the following files:
->>   	"mbm_L3_assignments" after switching to "mbm_event" mode for counter
->>   	assignment states of all monitoring groups.
->>   
->> -	The mode is beneficial for AMD platforms that support more CTRL_MON
->> -	and MON groups than available hardware counters. By default, this
->> -	feature is enabled on AMD platforms with the ABMC (Assignable Bandwidth
->> -	Monitoring Counters) capability, ensuring counters remain assigned even
->> -	when the corresponding RMID is not actively used by any processor.
->> +	It is intended for deployments that need to manage counter assignment on
->> +	platforms where the number of monitoring groups exceeds the available
->> +	hardware counters. Hardware counters are scarce, so mbm_event mode suits
-> 
-> "Hardware counters are scarce" -> "Hardware counters are scarce on these platforms"?
-
-Sure.
-
-> 
->> +	workflows that monitor a subset of groups at a time and rotate assignments
->> +	as needed. The mode is beneficial for AMD platforms that support more
-> 
-> Text from "The mode is beneficial for AMD ..." does not seem necessary here
-> since it just duplicates the text added below?
-
-Sure.
-
-> 
->> +	CTRL_MON and MON groups than available hardware counters. The mbm_event
->> +	mode ensures counters remain assigned even when the corresponding RMID is
->> +	not actively monitored.
->>   
->>   	"default":
->>   
->>   	In default mode, resctrl assumes there is a hardware counter for each
->> -	event within every CTRL_MON and MON group. On AMD platforms, it is
->> -	recommended to use the mbm_event mode, if supported, to prevent reset of MBM
->> -	events between reads resulting from hardware re-allocating counters. This can
->> -	result in misleading values or display "Unavailable" if no counter is assigned
->> -	to the event.
->> +	event within every CTRL_MON and MON group. This mode is enabled by default.
->> +
->> +	On AMD platforms that support more CTRL_MON and MON groups than hardware
->> +	counters, hardware dynamically shares a smaller pool of counters among
->> +	RMIDs. One counter from this pool is used per monitoring group and counts
->> +	every MBM event of that group's RMID. The size of the pool is not
->> +	enumerated to software (unlike "num_mbm_cntrs"), and "num_rmids" may be
->> +	much larger. For example, 64 counters in this pool monitor 64 groups.
->> +	Newer hardware may provide a larger pool.
->> +
->> +	While the number of monitoring groups does not exceed that pool, a counter
->> +	stays attached to each RMID and readings remain accurate. Creating more
->> +	groups than the pool can cause hardware to re-allocate those counters
->> +	between successive reads of an event. Bandwidth values may then be
->> +	misleading, or a read may return "Unavailable" if no counter is allocated
->> +	to the RMID. There is no user-visible indication when this begins.
->> +	Users who need stable readings beyond that pool should switch to mbm_event
->> +	mode, if supported, and assign counters to the groups of interest
->> +	(rotating assignments as needed).
->>   
-> 
-> Above usage of "pool" looks ok since it only uses the term for the "non-ABMC hardware
-> counters" while using the accurate terms for the other counts.
-
-Ack.
-
-> 
->>   	* To enable "mbm_event" counter assignment mode:
->>   	  ::
->> @@ -1787,11 +1807,9 @@ View the llc occupancy snapshot::
->>   Examples on working with mbm_assign_mode
->>   ========================================
->>   
->> -a. Check if MBM counter assignment mode is supported.
->> +a. Check if MBM counter assignment mode is supported and enabled.
->>   ::
->>   
->> -  # mount -t resctrl resctrl /sys/fs/resctrl/
->> -
->>     # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>     [mbm_event]
->>     default
->> diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
->> index 5d0d3b18f9b8..a6a9090c4808 100644
->> --- a/arch/x86/kernel/cpu/resctrl/monitor.c
->> +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
->> @@ -472,7 +472,6 @@ int __init rdt_get_l3_mon_config(struct rdt_resource *r)
->>   		cpuid_count(0x80000020, 5, &eax, &ebx, &ecx, &edx);
->>   		/* cntr_id is 12 bits and can only encode 4096 counters. */
->>   		r->mon.num_mbm_cntrs = min((ebx & GENMASK(15, 0)) + 1, BIT(12));
->> -		hw_res->mbm_cntr_assign_enabled = true;
->>   	}
->>   
->>   	r->mon_capable = true;
-> 
-> Rest looks good to me.
-> 
-Thanks
-Babu
