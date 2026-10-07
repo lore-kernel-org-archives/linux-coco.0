@@ -1,134 +1,95 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC8041169F;
-	Wed,  7 Oct 2026 07:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mta0.migadu.com (out-164.mta0.migadu.com [91.218.175.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5BF4963A2
+	for <linux-coco@lists.linux.dev>; Wed,  7 Oct 2026 10:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791358606; cv=none; b=BLsijuoB40IftFDCuqxtLW1wsf6vZvZEJ0yqYqN42vT/1S8ii6QwgtciZ8YanhN5d3S1XkvsPDqP/RsDTiWncwat17g6xpylJLLeolQuZupCO/PLWlNS3BqBLM3UFM9schFesTgFT9n6ir114i3w6XnnMF/1NST6u9v8GhQWW5s=
+	t=1791369909; cv=none; b=Hq/2Vlo7H9D1R3CGTd+2+FHG8vvHomBbNtrNnFsYRDv0scHAZAyKbcnK7tfyqWB7+fr3UXjj64j58JM9s3IwHoNLsg0ZNAGkQ8c6BP2kWnH2odDZBY131ctmpMFqz2B4UDsqQuMrl9e7CRIWXIzHpIceSVNRuiIAekp+hjXuvzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791358606; c=relaxed/simple;
-	bh=vccP3PxOpy/dguFeUeUDJUfsgRBp6pEFcWHYQiK1mIA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WiLCDLgACZ4B+t8XEmP2/L2w7wC4PjYlh3rNYTa9dfJ3scYBTJZ4TG2K4ZZSOcwhasjfqm7GXtrEds9lMVQJsLbkrsWNXep9Yg3JMNWDcVIQvPR4u5LtP2yLPPgLETWUJUn+x0W+mtQLhZMMpUdIxOI1nVLfLAR5av8QazQvbVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LZBjYezZ; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791369909; c=relaxed/simple;
+	bh=/01lQesds7Qu15IlWJStcj8pAkrlNp3+XW9pTMK80Mw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BtW+wUSgvDSxx4DlyjVqTvqPJfBOxGIIIjjwx3qus+aRJlaG4OlHuK3xieMrRr2VkvWocllA/cDR5c1qfMqCZjkWqqWL4qi36Bx2zdykz/4h59QD5wTIdx6q7TeEmWC+LsH75V4Ip4g1dJUYv6SWO5nCVg89hkJ6k2/ghsZIinI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ORWhDxxZ; arc=none smtp.client-ip=91.218.175.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LZBjYezZ"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C11E41BA8;
-	Wed,  7 Oct 2026 00:36:40 -0700 (PDT)
-Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9543D3F763;
-	Wed,  7 Oct 2026 00:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791358604; bh=vccP3PxOpy/dguFeUeUDJUfsgRBp6pEFcWHYQiK1mIA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZBjYezZYR8DyL4iFNk4gX7d2HGciOOlrKZcWy9iZ764NePYh45UeC6WeyTtPvLFJ
-	 eQvQApGn0ot+3Tjf0Hrsjdt2WJH7bdRpV8sphq1jioet1xZ+RYpEblgEpVI4XMexVw
-	 Q7iemDdyU0a7cfYvQBYDarW/7pha3xHX0r7s74Zs=
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: maz@kernel.org,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v23 14/14] KVM: arm64: Prevent unsupported vcpu features for VM types
-Date: Wed,  7 Oct 2026 08:35:37 +0100
-Message-ID: <20261007073537.2454351-15-suzuki.poulose@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261007073537.2454351-1-suzuki.poulose@arm.com>
-References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ORWhDxxZ"
+X-Envelope-To: linux-coco@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=/01lQesds7Qu15IlWJStcj8pAkrlNp3+XW9pTMK80Mw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791369866; v=1; x=1791974666;
+ b=ORWhDxxZkI0U4JGf7NsOpwDiVb+2aZ5xrz8z0GNale1mwHcKxKIk2K9GNw6d2dJRo96bo6U4
+ HKDxTW0XNk9PdzlKTYKH1hPOUaNyikCFOfhgZz8Jh1bagYzed6B7gf6V6PDj2SwDA9s+xFppMAx
+ 97lemgnHFT3B8iDNGP+8eoMY=
+X-Envelope-To: linux-coco@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id d6b527c0a5c386e5;
+	Wed, 07 Oct 2026 10:44:26 +0000
+X-Mizu-Trace-ID: d6b527c0a5c386e5
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5ba429b64c5so5461e87.1
+        for <linux-coco@lists.linux.dev>; Wed, 07 Oct 2026 03:44:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz6iZIH2ubxLuUdPaenEUadxblurYJ6FwaQpeBKxyqbn2EeRtQJLjqIYcQENKlQPTpSf0N4L+rrWPeg@lists.linux.dev
+X-Gm-Message-State: AFq9FYL+Ps6XzCIPIksiJpBXOQ2ruKWgbl2c3n98dGgvRoeTSdZTD4Pa
+	vyeC8B6wDlCADkoGbJvpA4DdPggIRHyAibwrKUeFKV7OVAWAy5I4Qwb5FnVQ3JshB6t+5kg6+tf
+	x0Jv4kstvDnLWysONU3BltcxplQRkl4qp4/ORZVWh
+X-Received: by 2002:a05:6512:2c9b:b0:5bb:27df:415f with SMTP id
+ 2adb3069b0e04-5bcca969b08mr280500e87.15.1791369860573; Wed, 07 Oct 2026
+ 03:44:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261007073537.2454351-1-suzuki.poulose@arm.com> <20261007073537.2454351-2-suzuki.poulose@arm.com>
+In-Reply-To: <20261007073537.2454351-2-suzuki.poulose@arm.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 7 Oct 2026 12:43:44 +0200
+X-Gmail-Original-Message-ID: <CA+EHjTy44W8srPO2y2MJT7nijeWcek-BLsiwYfSPXVOA8DpRCQ@mail.gmail.com>
+X-Gm-Features: AclHuK9bYO3-lIjbLvu1WEmia2gdqzHBdvJpWxSZu00WMWjDLerDBVC4C9fwiYI
+Message-ID: <CA+EHjTy44W8srPO2y2MJT7nijeWcek-BLsiwYfSPXVOA8DpRCQ@mail.gmail.com>
+Subject: Re: [PATCH v23 01/14] KVM: arm64: protected VM: Handle user writes to CNTVCT_EL0/CNTPCT_EL0
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
+	jonathan.cameron@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
 
-Prevent unsupported VCPU features for the protected VCPUs. Realms and pVMs
-not support 32bit EL1 or NV yet. pKVM doesn't rely on the host vcpu
-features for protected VMs and hand picks features while hyp_vcpu is
-initialised. Block the features early in the vcpu init if we detect
-incompatible features.
+On Wed, 7 Oct 2026 at 09:35, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>
+> Protected VMs doesn't allow setting offsets for virtual and physical
+> counters, as the offset is always fixed to 0. The VM ioctl is filtered
+> out based on the cap. However we don't prevent the userspace from trying
+> to write to the CNTVCT/CNTPCT registers. This would lead to KVM triggering
+> a WARN() in timer_set_offset() as the vm_offset pointer is set to NULL.
+>
+> Fix this by always "fixing" the timer offsets to 0 and marking that the
+> timer offset is set in the kvm->arch.flags at KVM init time for protected
+> VMs. This prevents the access to the VM specific vm_offset at low cost.
+> A userspace writing to the CNT*CT_EL0 would observe success, without
+> any real effect. This is cleaner over spilling "*_is_protected()"
+> checks and "matches" what we really do in practise. i.e., always run
+> with "fixed counter offset of 0".
+>
+> Reported by Sashiko
+>
+> Link: https://lore.kernel.org/all/20260908164641.416911F00A3A@smtp.kernel.org
+> Fixes: f7d05ee84a6a ("KVM: arm64: Prevent host from managing timer offsets for protected VMs")
+> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
-Changes since v22:
- - Start off with the base features supported per VM type
----
- arch/arm64/include/asm/kvm_host.h |  7 +++++++
- arch/arm64/kvm/arm.c              | 11 ++++++++---
- 2 files changed, 15 insertions(+), 3 deletions(-)
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 4d0e6bd2009ac..97089c81d6428 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -42,6 +42,13 @@
- #define KVM_VCPU_MAX_FEATURES 10
- #define KVM_VCPU_VALID_FEATURES	(BIT(KVM_VCPU_MAX_FEATURES) - 1)
- 
-+/* As dictated by kvm_pkvm_ext_allowed() */
-+#define KVM_PROTECTED_VCPU_VALID_FEATURES		\
-+	(BIT(KVM_ARM_VCPU_POWER_OFF)		|	\
-+	 BIT(KVM_ARM_VCPU_PSCI_0_2)		|	\
-+	 BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)	|	\
-+	 BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
-+
- #define KVM_REQ_SLEEP \
- 	KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
- #define KVM_REQ_IRQ_PENDING		KVM_ARCH_REQ(1)
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index f31d31fa27ad9..a53f2b2799cf8 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1668,9 +1668,14 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
- 	return -EINVAL;
- }
- 
--static unsigned long system_supported_vcpu_features(void)
-+static unsigned long system_supported_vcpu_features(struct kvm_vcpu *vcpu)
- {
--	unsigned long features = KVM_VCPU_VALID_FEATURES;
-+	unsigned long features;
-+
-+	if (vcpu->kvm->arch.vm_flavor == VM_PROTECTED_PKVM)
-+		features = KVM_PROTECTED_VCPU_VALID_FEATURES;
-+	else
-+		features = KVM_VCPU_VALID_FEATURES;
- 
- 	if (!cpus_have_final_cap(ARM64_HAS_32BIT_EL1))
- 		clear_bit(KVM_ARM_VCPU_EL1_32BIT, &features);
-@@ -1708,7 +1713,7 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
- 			return -ENOENT;
- 	}
- 
--	if (features & ~system_supported_vcpu_features())
-+	if (features & ~system_supported_vcpu_features(vcpu))
- 		return -EINVAL;
- 
- 	/*
--- 
-2.43.0
-
+Cheers,
+/fuad
