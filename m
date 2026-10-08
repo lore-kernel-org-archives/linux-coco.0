@@ -1,285 +1,253 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E911246788
-	for <linux-coco@lists.linux.dev>; Thu,  8 Oct 2026 05:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791438605; cv=fail; b=iTgPhzsAoJIc3pUhHBbcdnbHtT+d43LUjkqm3xeKR4j7PLWFTVTAyyQWtX1oQBrsyozjhErs3mS9z90Dc4vu/IV2j2o4egxfJEQHHZ6btQcZsRrEkpqTnLI92H/ArBEuCmbRt5YqPdiKUE54s3Boj2zHoIvGe6RLTGpYawtBfNY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791438605; c=relaxed/simple;
-	bh=6WqJdlXZecZpCH9XfZTfHiLo5Le1/XWPQfOJf+pMRzs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UmHUikmFrdEZWlb+WT+xYyJ75FH+zfWH+qY3R2LvKDtGqk9mgqc0Kjkwr6egmr+tFbrI8WaEl7+evPD9+uD3LQwSy+g3KFFzWKbiubBndvrY2X0hGri+CHEVqqSQ1+R+AM5M42EfUzlvlaMkgO9vg/sFfNoYhlt4/CTXkN9cI+k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c2RRaTa4; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6537B37E316;
+	Thu,  8 Oct 2026 06:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791439215; cv=none; b=fgEEI3N1JardZoD4FfjuETRWxKqrl1WthVHNd+7Yjb1bIcwA8GvzxnqXrZAW4yh0I4TmA+rW5MPhjVvKiksnQoZsFc1tjfqNgdOlqhnxViH0HvoHc/lSRGOsPXF8h1qmnMZ42Sr5zcUUcDTyMwXLcgRNBhp5KFqIlbruRuk8ogY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791439215; c=relaxed/simple;
+	bh=CWXwUoC8C3Vk139oKSzyQMaY69RG3Wg9yXa0Eecy3Q0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b2C7cij5KO8Sa8iJimuVdDZcx1g2O6lEsJZe+9XkQM25Jum8qGl9zBSxN/210C00guRfg2y0K5fUyZs276GnRjYcvbnb+NJ5OzfqPrYJzph8++PPz6J/ASm+6aFYbSRYaMdTuEqRcwhd7b+xh6ygjhFWs6m8+gMqaKQv//eD2Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XecI8/3Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c2RRaTa4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791438603; x=1822974603;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=6WqJdlXZecZpCH9XfZTfHiLo5Le1/XWPQfOJf+pMRzs=;
-  b=c2RRaTa4/7jNDUuHZhw9lL/olhj7IKLC4kR3/X6BfuQ953+QZCZfiSiy
-   SHApRLtvAWvrsFPi222I06gFsV3z9vpYySWHY1XNWSWzecyltZzbaaMpj
-   u9XLJE9aumUd073e2sHsE9SitXATcEpwVAt+oDuXEdFKkx46skpBuOawq
-   sbZ8G4CE0SEYefEmOdk95RO+8ME9haZljXGBNqsXhBtdgsYOAuAXVOqSL
-   IzQc7Pzl9z1rC0R6GQDQmwzYyiwC1ch0lj/mLDYBPR68amFGEyOSrFYJO
-   HjHvlVMHMYaPGqawoKuLWYU6wVv2CN2OaI/0fCAZbD1Rd0EbeAlghHQsF
-   A==;
-X-CSE-ConnectionGUID: LaTsREGeSsGTzZAG5jEGKA==
-X-CSE-MsgGUID: FJpCvdO4S7eYr5rwGWydJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="99669"
-X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
-   d="scan'208";a="99669"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 22:50:02 -0700
-X-CSE-ConnectionGUID: oC/Gol+ZR2OECn2oBU3Dhg==
-X-CSE-MsgGUID: 8S2C6aY9RTu8w6x0toC0EQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
-   d="scan'208";a="255557"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 22:50:03 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 7 Oct 2026 22:50:01 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 7 Oct 2026 22:50:01 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.34)
- by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 7 Oct 2026 22:50:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mz4IczQdXhSLseSHE++yYBLmbU74HNphtBP9Eo/EW1TN9SjnHxJEm3pSfXBzrOZYzLlY0F7gJpA8nWQyM2LqMb3JfD8ZfBvo6/wq9ATUy8FXnz0FWmQaqvGV+FI9Gu7qw9ej1I6l6g7Nv7TZC4S5ciErQJJPnD1EVror4dFEDDblRoLEzloFBI090bPUgo0FCYebA0KQv6VJkmwyIXiF3ZXTPJrM48yZGXh/hP1bCXN/37uvBQpXUYrdHxKnLD/FfbfPcH5RXbm5RUssBK/S4LBsefsiNsYk4wsMbcfX0yh3JyrC2MAfS0edAPORsOU6w8k/C/Lkqf2vhVMHWw8XSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0vvoDOgREhDf3W7lZrJCvL+pFGE/McKzA1cnalqqsVU=;
- b=NN7L8r259GuQcnlDvU5yNaPOOz4h8IRHrlPqr7a4WVUnNWMYKpixpPvvU/Jor7Gwn9ikPX5yUMU8v8q3iELXdyPIT1iMCrdFoxJndLPtRRlibWrA0fXzBIPYwknW4YExJ2oDpltMGthU2+mKj0J94cXTitudDWwOEO0MOiO1suoMjJg7hUNGjCaS3itZVt8QBlS/BXO4vQa6t5TM5LZgmWbnc6HUuj71LI8Fhtah1fHbrDAtcQt3yR8A5ROsm1QdWMVg/BMCiBYrR6zWDEPyqu3547NYWCjeLJLVHA/njOoxipimcyfMIFgiNt9u8aDDhZ+J7468Qa13LOP9VHfPQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com (2603:10b6:208:574::12)
- by PH0PR11MB5829.namprd11.prod.outlook.com (2603:10b6:510:140::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Thu, 8 Oct
- 2026 05:49:58 +0000
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::37b4:37a9:4f3:518b]) by IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::37b4:37a9:4f3:518b%5]) with mapi id 15.21.0496.010; Thu, 8 Oct 2026
- 05:49:58 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>
-CC: "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Hansen, Dave"
-	<dave.hansen@intel.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>,
-	"mingo@redhat.com" <mingo@redhat.com>, "seanjc@google.com"
-	<seanjc@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "Peng, Chao
- P" <chao.p.peng@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"jgg@nvidia.com" <jgg@nvidia.com>, "aneesh.kumar@kernel.org"
-	<aneesh.kumar@kernel.org>, "Tian, Kevin" <kevin.tian@intel.com>,
-	"hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
-	"nicolinc@nvidia.com" <nicolinc@nvidia.com>, "bp@alien8.de" <bp@alien8.de>,
-	"Gao, Chao" <chao.gao@intel.com>, "aik@amd.com" <aik@amd.com>,
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>
-Subject: RE: [RFC PATCH 08/15] x86/tdx: Add TDG.MMIO.ACCEPT module call
- wrapper for TDX Connect
-Thread-Topic: [RFC PATCH 08/15] x86/tdx: Add TDG.MMIO.ACCEPT module call
- wrapper for TDX Connect
-Thread-Index: AQHdS9rIdRCadJg8uEm6GsazTtQ82bbeZNsAgBSotGA=
-Date: Thu, 8 Oct 2026 05:49:58 +0000
-Message-ID: <IA3PR11MB9136B922CD5755958ED5D30892932@IA3PR11MB9136.namprd11.prod.outlook.com>
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
-	 <20260924041032.1096569-9-zhenzhong.duan@intel.com>
- <3d38cbbd51f8e75d5a3886ca203447fd19a3dad1.camel@intel.com>
-In-Reply-To: <3d38cbbd51f8e75d5a3886ca203447fd19a3dad1.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9136:EE_|PH0PR11MB5829:EE_
-x-ms-office365-filtering-correlation-id: b5b78e01-8848-4c14-eafb-08df24fffc79
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|23010399003|1800799024|376014|366016|18002099003|22082099003|10067099003|38070700021|11063799006|4143699003|56012099006;
-x-microsoft-antispam-message-info: Kwf9iE2E0kBrQ/79RS2HweQxf+76CiD9QWDxyfF9PgvcY1dZ3yobPeddkbZ22azlLMyWSBVe6jhfPcuAVdbXSHHrP3UhQ2yU9c5Kz/7/0zYRzjvy81aOlIRtPZPoCN2698P4G0KDcmf8h9oKSyIJTmZ3jl93mq/fboX5obTaWj7uD51N/vD/9tAizhNnwQQWVtrD7W2AgqoS4aZYsSgNr1c2+kITOha91ybcGPtcHPqItHHRb83lavrkPsuss4lH9RbjLqLCOy/QY+vZeBuhizlak8p3trZpuCDevqV1X3nLQ+eRDr5ZQgQ9LZQQnkRhkIEgdhhsyUgpdf0/JrhP/GKVvy8NN0C06FBnoxcfmIlVQDiuvS5j94eBPztS2X/Dbv5ZGnfpwXGC2tW7BTPuWLOYUB1hsZWHHGSRvE5oGeVb/08ClAWFEdcqdn+tiIJevlFy1Si4KZ6DF4FJFzdw7n75SGdO4TeA7borlMHPGleS5g5MwndnF2d1UVQxf1IEt8F34c0Zp6XistFUgLaPrNmtvds2EJFA7OdHHFL4KHeuooXIRAQzIiw+IjQmHmeJYze+DENg6qhktfmgGPF8aGQVBoR6AlK14Xry9/Oi+IOcUd+edob/BooE9wzUTY7FtMIAM62AEZtB2UPRe8gOGRidVYX0Mjh6VR3tgDfpDjbgGdAYoGzZ5Wf/orYT3uozq6bHSXffUT+peApkGwMOzK3Mmlp65I97byl8m2t5F0A=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB9136.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(376014)(366016)(18002099003)(22082099003)(10067099003)(38070700021)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?bAyj+zW/rKfN2uxM6tOiJ42boHLxotbkIdN57+UgPWRlU4tZcrzSTL0eg8Le?=
- =?us-ascii?Q?NW7WZhWCdYQXlpvMNcikR98ge0qI3vsmf9Ej8V4jV6UneXQnpxXeyYB2jpz/?=
- =?us-ascii?Q?jOsiEz8Kdba4jx5gfCWwFgVEKjSKEqp1PKUm5UXnkEQlVODXEerPjmSiOXMP?=
- =?us-ascii?Q?Y/98Mtbt0wxtn1ZQSVBgGsNbpgDWw0VWS6/1HgX6Q+e/5x8cvKXMuIR9vB3b?=
- =?us-ascii?Q?qErXAJ56nrBTGrKhhhHYRECHKyirXgYjXmI96aFnNlTPMJJ4komBSR0FRXnT?=
- =?us-ascii?Q?8cn8FVZhwSZl9BiIU9onjQ0SuDVoAdSnZlJ+IbQ7xHH5wLVyaKNL+LS8lGb4?=
- =?us-ascii?Q?NltT6W6lOLs/Udfg6+y76cAHKnd55NwECVP+7ruGQMCaoNQ0cEl2I2cOuiNY?=
- =?us-ascii?Q?0iYlnijLgQAaLPZz1E6PqL1JFandFWZvMt0F/SI0IjZu7lcfIubg3hcUVET5?=
- =?us-ascii?Q?/vBMIRvwuXIDNj2FWXbtFFsCI+kT5GxYtg3Drqas0Q6PmrzHWd/jXx2WbzyV?=
- =?us-ascii?Q?bSVpNIv8atZYPoEf8Yxjc6hKhVYC2ukT6l/+rtUoZa8KB9hZ87awZsGdsARe?=
- =?us-ascii?Q?FOO/pm8FpPw02j1DMgeFPl3VR+wyRCdsOdMYd9j/C3t+0l5XBHyQ7TyDie8U?=
- =?us-ascii?Q?Abc9t+RQhSofQ9UwcME5I6q9CzhghiW8xutmikQhvrJ1G55T2FnIde4YRdcQ?=
- =?us-ascii?Q?VF232Jli5dHQ3nlJE/kLFQELZnbbsKI4Q+mkAC79uHQsw74TtEOfjma+7vZm?=
- =?us-ascii?Q?kHxf7P4/utykN5nWili+K0mQIZ4aE/20d8Qh5ImSMmSVjHc0b8qLmyCv3vXz?=
- =?us-ascii?Q?pmrHMxwNseFPP/Y5gT8cVcGvbFoPqT9zqlzdj3t1qFDeqfZxWcejZrOYkKOo?=
- =?us-ascii?Q?IGT7ZhaoFFO21eP4UgRwYys9pWgeOaNzLv2I19Kv3xN2UV96kOvfiGo0hlRt?=
- =?us-ascii?Q?4P989UTrUn6EfmpSEfCeTzqGtZmO5sXrpUd88qGiBvUBlk7t02NRFYmzRjP3?=
- =?us-ascii?Q?d5LyWOKEhtO1wt5TqHQoBV5eLh0MRjxKTGqy6ZF66lmhnKWtBr63qfnoPkWp?=
- =?us-ascii?Q?45M13vsdAFQLBEbAqBpJy0CkfeEloWepxuXFdV7hN1rR5IC+w3k3GlWu/rRh?=
- =?us-ascii?Q?G4UHmgK29SI+wxlZh022wOuNv8xZSensibIdJ37MzUn3u6TdsNjxwsvZOtB5?=
- =?us-ascii?Q?u3G0Jh5m/PBUCFGbqp0t+NM38nYnOxzhQPMhU+K43jf1AO5ICFxxSxhcJ263?=
- =?us-ascii?Q?Mn7aLC1gfOEUJLOexhTDIDk+Eb7FDNUtdrvKd2rBOFVyT+4BY9KAo//PfHM0?=
- =?us-ascii?Q?z/rvi1ZNIXXyoPJr+wODoefoSXQSqflEcFMZrjQoabmiMkkZIteAY6p8x307?=
- =?us-ascii?Q?gSoQtzGnw89Ar4LgVvylPDLuWjYEDqzb7uUs91S1eqBlJtA4jFiZ0mms3Z4d?=
- =?us-ascii?Q?Djx+ZqJOw1W4SnqHV8qJMQ+5RK4Jnf5XGyLo34r+ySZFye6J/8Yv0RIC0xG9?=
- =?us-ascii?Q?2XRgUDh/I2XsTYjzIUabbS3H/KpyK+slis7p73F/3DRvtyO0LlUfd6nZ1yZw?=
- =?us-ascii?Q?vIBCl9exhldpZmAqrc4/mXX4MPVCK+0kzClSI1Su3qhNiYtw2oILnKBwPeUI?=
- =?us-ascii?Q?8f8ViFSLNyeukKdApAMEFdyUIk4wIhvXljpOUrWFsdPFXxkHNKCWg+sTMcVo?=
- =?us-ascii?Q?NtHiuZCttPXHIznyLJvQDVU8/up3mb/tzMtvderwGQRfagEitUx/Zt0J+mPL?=
- =?us-ascii?Q?08XFxgRONw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XecI8/3Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E511F000FF;
+	Thu,  8 Oct 2026 06:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791439214;
+	bh=/bHTGZMzM4w6xwig+RjqaHBwjvdE8aY9v1cTkEXLvIA=;
+	h=From:To:Cc:Subject:Date;
+	b=XecI8/3ZQU3h+nwgEgT8B163FnicZXb5taygrZgyqNxVgYnIX4dOYfOJLIS/BF/BY
+	 fo7Tdo7rqHWJwVZPqgpY4EITNaQyRvtUytleMo6+eQ3Pngjq3Rz/kKdy68Tyzl9hwt
+	 kdSQ1ymBca46zPz+539vrPXicNregsaP2vBA+ZmiAb6YeiLwUpTgmr6CZNfPDr6Ixx
+	 WhXTuoP4f0jVp45a0YQ0BFU3CkkgJpB48KE/w3S3bqSUPljENxrSDi3crSwIWhW0d1
+	 WYuEI+DL33qAHDCaS8K2qny9sZzoMPq7//HcMo/EK557E78ccM/N8zyny2EEaQdefU
+	 EQfxHQ7qPK+SA==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: iommu@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v7 00/16] iommufd: vIOMMUs and TSM guest requests for confidential guests
+Date: Thu,  8 Oct 2026 11:29:39 +0530
+Message-ID: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: SVEcmlXAgEy0oQvAGS8Ba+p8pDGxDyxPWhq6F34ZTajY3VsiJIiOFwGo5rpWcf6jRa1U/q/hET5Y0KeyD0fJvMgkH7D29Va1cOoVL74s7NN9BAqxJTrO6eOMQ1VOaL3DGJkl7LqyniiXh2r6mxjOjIQW9iDH9ykG3ZhVlUTdnwUWrUUNMXySY0c6pC7QJ94CRGE4P1CkGSO/JUrFdZOvxZzwC2/zT03aPtDx7yrC/Bo+Xl4VOkKETz8L/Y5fVsqrzSkGjEbGgbwSL4juQ/9QHqlCuSNeQPY8dGL6A4H/dEAx0xF7dYWcSFerHdhsCxckou1JTuN/QqSvZxsqe2ZfSA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9136.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5b78e01-8848-4c14-eafb-08df24fffc79
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Oct 2026 05:49:58.0957
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PCe4uBsm6xS6I77e/LHEpV1KfqJNc2yC9oRVBPj4SUpliBCfi5zUwA/lgCGAFcpje/qQZIlKSafIsbQfULjQNRToEU1FuNpBEaCnp9jmOXo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5829
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+
+This series adds IOMMUFD and PCI/TSM infrastructure for assigning PCI
+devices to confidential guests. It includes the IOMMU_VDEVICE_TSM_REQ
+ioctl. The Arm CCA host backend is supplied in a separate series; this
+series provides the interfaces it uses.
+
+Physical IOMMU drivers and PCI TSM backends now provide vIOMMU ops before
+IOMMUFD validates the parent HWPT. These ops provide callbacks for
+determining the allocation size and initializing the vIOMMU, along with
+flags specifying whether a parent HWPT is required. A nesting parent is
+required by default. When the selected ops set IOMMUFD_VIOMMU_NO_HWPT,
+userspace must supply a zero hwpt_id, and IOMMUFD passes NULL as the parent
+domain to the initialization callback. Nested HWPT and hardware queue
+allocation are rejected for a vIOMMU without a parent.
+
+IOMMUFD first queries the TSM attached to the selected PCI device. Lookup
+pins the backend module before using its vIOMMU ops, and that
+reference is released after the backend's vIOMMU destruction callback.
+The backend must keep its TSM registered while the module is pinned.
+When no TSM provides ops for the requested type, IOMMUFD falls back
+to the physical IOMMU driver. An error from TSM lookup or querying its ops is
+returned without falling back.
+
+Vdevice contexts replace the legacy PCI/TSM bind and unbind interface.
+Context acquisition verifies that the device's current TSM matches the
+vIOMMU's TSM. An explicit sysfs disconnect returns EBUSY while contexts
+remain active. Guest requests are dispatched through the vIOMMU ops.
+
+IOMMU_VDEVICE_TSM_REQ checks the guest architecture and the vdevice's
+supported-operation mask before forwarding userspace buffers to the
+backend. Request and response lengths are limited to INT_MAX so a
+successful residue fits in the ioctl return value. The backend supplies
+the architecture-specific request handling and TSM result code.
+
+Notes:
+* Codex was used to assist with commit message formatting and code
+  rearrangement.
+* This series also includes patches from the following series to provide
+  the dependencies needed for Sashiko to review the combined changes:
+  https://lore.kernel.org/all/20260928-vfio-v4-0-e32e226d5932@linux.ibm.com
+
+Changes from v6:
+https://lore.kernel.org/all/20260917140159.1163281-1-aneesh.kumar@kernel.org
+* Replace the IOMMUFD provider registry with per-device TSM operation lookup.
+* Move vIOMMU allocation size and initialization into the selected vIOMMU ops.
+* Select parent HWPT policy from the vIOMMU ops flags.
+* Pin a vIOMMU's TSM backend module through vIOMMU destruction.
+
+Changes from v5:
+https://lore.kernel.org/all/20260525154816.1029642-1-aneesh.kumar@kernel.org
+* Replace the TSM bind/unbind interface with reference-counted contexts.
+* Add the IOMMUFD vIOMMU provider abstraction.
+* Route TSM guest requests through vIOMMU ops.
+
+Changes from v4:
+https://lore.kernel.org/all/20260427061005.901854-1-aneesh.kumar@kernel.org
+* Switch VFIO/iommufd to use struct file *kvm_file instead of relying on
+  kvm->users_count references.
+* Define TSM request scope values globally in iommufd.
+* Rename the ioctl to IOMMU_VDEVICE_TSM_REQ.
+* Address other review feedback.
+
+Changes from v2:
+https://lore.kernel.org/all/20260309111704.2330479-1-aneesh.kumar@kernel.org
+* Bump the series revision to v4 to keep it in sync with the dependent CCA DA
+  patchsets. There was no v3 posting.
+* Drop [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd with a
+  vIOMMU
+* Add two new patches to associate a struct kvm * with iommufd objects:
+  iommufd/device: Associate a kvm pointer to iommufd_device
+  iommufd/viommu: Associate a kvm pointer to iommufd_viommu
+* Address review feedback
+
+Changes from v1:
+https://lore.kernel.org/all/20250728135216.48084-8-aneesh.kumar@kernel.org
+* Rebase onto the latest kernel
+* Address review feedback
+* Drop the TSM map ioctl; the KVM prefault patch will be used instead to
+  ensure that private memory is preallocated
+
+Cc: Alex Williamson <alex@shazbot.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com> 
+CC: Jacob Pan <jacob.pan@linux.microsoft.com> 
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Krishna Reddy <vdumpa@nvidia.com>
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Nicolin Chen <nicolinc@nvidia.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Samuel Ortiz <sameo@rivosinc.com>
+Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Thierry Reding <thierry.reding@kernel.org>
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: kvm@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+
+Aneesh Kumar K.V (Arm) (8):
+  tsm: Remove the device from lookup before PCI teardown
+  iommufd: Add the vdevice TSM request ioctl
+  PCI/TSM: Remove the legacy guest request interface
+  PCI/TSM: Add vIOMMU-bound contexts for vdevices
+  iommufd/viommu: Select vIOMMU operations before allocation
+  iommufd/viommu: Allow PCI TSM backends to provide vIOMMU operations
+  iommufd: Allow vIOMMUs without a parent HWPT
+  PCI/TSM: wait for vdevice contexts before removing a DSM
+
+Nicolin Chen (1):
+  iommufd/viommu: Keep a reference to the KVM file
+
+Shameer Kolothum (1):
+  iommufd/device: Associate KVM file pointer with iommufd_device
+
+Steffen Eiden (6):
+  KVM: Introduce file_to_kvm_<arch>() infrastructure
+  KVM: Add file back-pointer to struct kvm
+  KVM: x86: Use file_to_kvm_x86() in SEV
+  KVM/vfio: Use file-based reference counting for KVM
+  KVM: Restrict kvm_get_kvm/kvm_put_kvm export to internal KVM modules
+  KVM: Remove unused file_is_kvm
+
+ Documentation/ABI/testing/sysfs-bus-pci       |  17 +-
+ Documentation/userspace-api/iommufd.rst       |  44 ++-
+ arch/s390/include/asm/kvm_host_s390.h         |   4 +-
+ arch/s390/kvm/s390/pci.c                      |   9 +-
+ arch/x86/include/asm/kvm_host.h               |   2 +
+ arch/x86/include/asm/kvm_page_track.h         |  10 +-
+ arch/x86/kvm/Makefile                         |   4 +-
+ arch/x86/kvm/mmu/page_track.c                 |  22 +-
+ arch/x86/kvm/svm/sev.c                        |   8 +-
+ drivers/iommu/amd/iommu.c                     |   3 +-
+ drivers/iommu/amd/iommufd.c                   |  18 +-
+ drivers/iommu/amd/iommufd.h                   |  11 +-
+ drivers/iommu/amd/nested.c                    |   4 +-
+ .../arm/arm-smmu-v3/arm-smmu-v3-iommufd.c     |  37 +-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   |   7 +-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   |  16 +-
+ .../iommu/arm/arm-smmu-v3/tegra241-cmdqv.c    |  24 +-
+ drivers/iommu/iommufd/Makefile                |   2 +
+ drivers/iommu/iommufd/device.c                |   7 +-
+ drivers/iommu/iommufd/hw_pagetable.c          |  14 +-
+ drivers/iommu/iommufd/iommufd_private.h       |  10 +
+ drivers/iommu/iommufd/main.c                  |   3 +
+ drivers/iommu/iommufd/selftest.c              |  33 +-
+ drivers/iommu/iommufd/tsm.c                   |  80 ++++
+ drivers/iommu/iommufd/viommu.c                | 117 ++++--
+ drivers/pci/tsm.c                             | 362 ++++++++----------
+ drivers/s390/crypto/vfio_ap_ops.c             |  20 +-
+ drivers/vfio/group.c                          |  11 +-
+ drivers/vfio/iommufd.c                        |   3 +-
+ drivers/vfio/vfio.h                           |  12 +-
+ drivers/vfio/vfio_main.c                      |  57 +--
+ drivers/virt/coco/tsm-core.c                  |  55 ++-
+ include/linux/iommu.h                         |  20 +-
+ include/linux/iommufd.h                       |  35 +-
+ include/linux/kvm_host.h                      |  19 +-
+ include/linux/pci-tsm.h                       | 153 ++++----
+ include/linux/tsm.h                           |  46 +++
+ include/linux/vfio.h                          |   5 +-
+ include/uapi/linux/iommufd.h                  |  85 +++-
+ virt/kvm/kvm_main.c                           |  21 +-
+ virt/kvm/vfio.c                               |  13 +-
+ 41 files changed, 893 insertions(+), 530 deletions(-)
+ create mode 100644 drivers/iommu/iommufd/tsm.c
 
 
+base-commit: 551c722f40809618230001baccf219193e22fc5a
+-- 
+2.43.0
 
->-----Original Message-----
->From: Edgecombe, Rick P <rick.p.edgecombe@intel.com>
->Subject: Re: [RFC PATCH 08/15] x86/tdx: Add TDG.MMIO.ACCEPT module call
->wrapper for TDX Connect
->
->On Thu, 2026-09-24 at 12:10 +0800, Zhenzhong Duan wrote:
->> TDG.MMIO.ACCEPT verifies and accepts a pending private MMIO range for
->> a trusted device.
->>
->> The MMIO range to be accepted can be a sub-range of the MMIO ranges
->> originally defined in the Device Interface Report. Because the TDX
->> module caches these ranges from the Device Interface Report, the guest
->> does not need to pass the explicit physical start and end addresses of
->> the MMIO range. Instead, it only needs to provide the target MMIO
->> range index, the offset within that range, and the size to be accepted.
->>
->> Translate TDX module return codes into Linux errno values.
->>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->
->We are going to need a lot more info about what this TDG call is doing. Lo=
-ok at
->the host side seamcall wrapper commits for examples.
-
-OK, will do.
-
->
->> ---
->>  arch/x86/coco/tdx/tdx_connect.c   | 38 +++++++++++++++++++++++++++++++
->>  arch/x86/include/asm/shared/tdx.h |  1 +
->>  arch/x86/include/asm/tdx.h        |  1 +
->>  3 files changed, 40 insertions(+)
->>
->> diff --git a/arch/x86/coco/tdx/tdx_connect.c
->b/arch/x86/coco/tdx/tdx_connect.c
->> index 1409b1a30cc6..09a92fe23357 100644
->> --- a/arch/x86/coco/tdx/tdx_connect.c
->> +++ b/arch/x86/coco/tdx/tdx_connect.c
->> @@ -71,3 +71,41 @@ int tdx_mcall_tdi_read(u64 func_id, u64 field, u64 *v=
-alue)
->>  	return tdx_mcall_tdi_to_errno(ret);
->>  }
->>  EXPORT_SYMBOL_FOR_MODULES(tdx_mcall_tdi_read, "tdx-guest");
->> +
->> +/**
->> + * tdx_mcall_mmio_accept() - Accept a pending private MMIO mapping of a
->> + *                           Trust Device Interface (TDI) instance
->> + * @func_id: Function identifier specifying the TDI instance
->> + * @index: MMIO range index from the Device Interface Report
->> + * @pg_offset: Range offset to start accepting the subrange from, in pa=
-ges
->> + * @page_cnt: Count of pages to accept
->> + * @gpa: GPA base address the subrange mapped to
->> + *
->> + * Verify and accept a pending private MMIO mapping. Upon success, the
->MMIO
->> + * pages are set as mapped in the TDX module.
->> + *
->> + * Return 0 on success, -EINVAL for unaligned GPA, -ENXIO for invalid o=
-perands,
->> + * -EBUSY for busy operation, -ENODEV for TDI not present or invalid me=
-tadata,
->> + * or -EIO on other TDCALL failures.
->> + *
->> + */
->> +int tdx_mcall_mmio_accept(u64 func_id, u64 index, u32 pg_offset, u32
->page_cnt, phys_addr_t gpa)
->> +{
->
->offset is 0 for all callers in this series. So I'd think to drop it unless=
- there
->is some other code coming very very soon.
-
-Will do.
-
->
->Can we turn some of these others into proper types? Why not pass struct
->pci_tsm_mmio_entry or struct pci_dev pointers instead of raw unsigned ints=
-?
->
->Actually, the only caller just accepts the whole pci_tsm_mmio_entry, so yo=
-u just
->need:
->
->int tdx_mcall_mmio_accept(struct pci_dev *dev, struct pci_tsm_mmio_entry
->*entry)
->
->What do you think?
-
-Yes, it's cleaner. But how about below to use func_id as first parameter to=
- align with other TDI specific mcalls.
-
-int tdx_mcall_mmio_accept(u64 func_id, struct pci_tsm_mmio_entry *entry)
-
-Or maybe passing "struct pci_dev *dev" for all TDI specific mcalls?
-
->
->> +	struct tdx_module_args args =3D {
->> +		.rcx =3D gpa | TDX_PS_4K,
->
->Always 4KB?
-
-Spec says:
-
-"RCX	GPA_BASE_AND_LVL: GPA Base address. MMIOMT_L0 level (4KB pages) is sup=
-ported"
-
-> Needs an explanation in the log at least.
-
-Sure, will do.
-
-Thanks
-Zhenzhong
