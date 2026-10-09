@@ -1,115 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AF24E4323;
-	Fri,  9 Oct 2026 15:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0944E2F21
+	for <linux-coco@lists.linux.dev>; Fri,  9 Oct 2026 15:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791558257; cv=none; b=JlFTTl/zHxSqZsITrragA55U/NR9LWrj7cOlGN9mFijBB2IYCDuLb3ypAd4w5AFewkzjKGpbgKX5RUArNmMcOFwQYnPgJr3QCrfeMNntIj+IxJa8e84AH1knxOUSuu4QW1k7zzcvx58v4HYuG+afJx7wMLI7UtvDTndgbsHMAM0=
+	t=1791560707; cv=none; b=kAx2o8C7T1HdsmcryR30VYzH/0DhDheAAZWYHsx5Ez98na4qNiQX5Mh4ko90lOAjJpB1acVPRTucJGHKU6ACcw3OCjN2/DZZFckb4OMtqMRGIANWWwOO0uzuzYwDFf9AsP4a/Aw4gaQXajFXYbDUCeUCl8iUPZCqWX/BgB9RnjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791558257; c=relaxed/simple;
-	bh=CWDf+4/5YxHaAt9cHoijFqJXNuN0eb5DdzWTqJTxlNU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gMhVdjiF2R5nCnYglyPKNPmEKaq5AYcTJbU9Tt0D7T053B5XFp/gN9J0PFVVl4WOcGIF2bAP/lEI3qbY8t7aR9PQlmO28nNWyFDGyyWhSJxYC0S4b9yRvznhLyej0cuycZvK2P3ltkIBlZuN3sqOspis/qLzfQZf3qaWmcHMz/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aAd4pUCC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791560707; c=relaxed/simple;
+	bh=fip7VI4RxW9/THSoP5eEW65d5uAQ6PqFRVmadq9QyHw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u0CWqSOtALw8zGiS1lP2rOrcaKF2VG120SawbmrqT4+J9rUdFvrqM3F/1GoNUy7D8r+RXGK42fAgxcJbBc2GqkQfzElj/twc76ZjGWOVRkSIZKUAtnaW4saEMuoByshA5XV464xqcoyClR2slmy0f02BodQbblrnPfxdtqNslPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LeaELG5H; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aAd4pUCC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E301F00893;
-	Fri,  9 Oct 2026 15:04:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791558255;
-	bh=S5dCcc6sEnDParSMcBNX+g8x/2XGsg88AsvK7InyEuc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aAd4pUCCnjo+FaIjpip+1t2CJ6iCbVAgDkW4OqMFBLBgAQ62bDJuzIIUCSrO3jJmg
-	 Gb31c6DQC1rRC9nJzjtGtCcd8jAnK53n7MXfq/pD+vpW32pgyD5W/BG4jm5kvxjfw2
-	 9RSHY7cvOi+9E2Y0IesHVR1VPVoymzDLPVsM2xwFtKZnZLY+iN9bkx4feJrX30RWDA
-	 3ISr6qjM7OJKVopHjPfu4k8PvXOOrxu5uK9HqGuBxY/W/PMygF5Gn2AEhfUkfwsZSv
-	 tSHyCs7CvzwblrgMJ33BqSmFF3ZTKfG/lUI9gYj22VXBUnZC3P6K6AhnLu+n71IoHm
-	 jr9nxsP3U26jw==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id BE992198003A;
-	Fri,  9 Oct 2026 11:04:11 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 09 Oct 2026 11:04:13 -0400
-X-ME-Sender: <xms:awLJanXsM2I1sGZYMZ8zV8EEZXb5oEUwg8HTGRJY-9rndphFvAN2HQ>
-    <xme:awLJajgTk7aahNxNQlvISKrlE8AIwk80egDwcjhfN0ltVQLlpm1HSHn2TF-DPG71X
-    hBwghO7RNpXu-78A0b8hRhvc6-ZEL7DRp3GhDuh9KCI_uFPpu6G81A>
-X-ME-Received: <xmr:awLJar6-QHAf0vkpyCrvrdz7uFwvhRRrMVn6b-FoIlOrxFWnYMFqTpcDHYk>
-X-ME-Proxy-Cause: dmFkZTGJ/XhBGpPi97MqhD44hU74yMhsQKwQwC/aPUyQ4MaG5oZsznyJvNE4EXcwdzzEyF
-    87tbKrDAR0JtsUQRErGMu+n7kX+YErfUeqecd8yDc4Sx369XclRlObM+DUSB2SyFrJ7hYa
-    gxAsijn36xI/Tr0CoGEx17adMC65DyT4MPcGQUEWxNEqcw4ihMq6UtaAkWxspz2eWmvpo+
-    v4GHKLGyLNkdXcT03bQxlHN2RlesiSH+HycRKl2FswXNTX87OEheEfJTv09IdmzkHpvLcc
-    NB45yZVEGfeUeUPJIzQGFuCh5IUX/oNYngnlv0gJPdZvCbRyhqDH22107TUszX6cFXSfpK
-    q3XbfGfWDdQ56g1Jn/JG1rRk1wvkJwMoUaHyPeGgJWteP9+AgpoRmqi22oEI4p36ZQ+nYb
-    24Q8VA6W601FQsgJPgn9Ar2Ajay/kWCqM5bJ7XR8ldZhsyubcQbZIo3479SckVl8YXfZQm
-    LPLY4z1WVlTttFCeHY/4DCkx+hghBT2alBz3ArIZEWA+3w+/cESqvcppYyeQbH+flhBlk6
-    bZQlMouvgh0BkpFeZmpeN50bF79Xuuvp/pKNU1DY74WZmqHAfdzamhdgesfTWftEnY+jc1
-    SnOy168OU/dmS7QCZdoaCjth9vp+ADs7Ww8xl3iUeSyGQADyXDVWmnztMi3g
-X-ME-Proxy: <xmx:awLJar778wOrEkl1jgfwbaz-4QeMMVVc5RaSA2Seu5yTxJG-FXh6iw>
-    <xmx:awLJapE2_4iwH9Zoa2yMDOMAzvVY_Q4oBfAoqja04cSxi64O-S25iw>
-    <xmx:awLJapyTparEaJgs6lLI_2zPbLVjP2VLkE41sE--LCXn6FUDQ95y1w>
-    <xmx:awLJap0n3xboDZachFfyifzXYHqbv3i_mOxSGT5vwNaSXEtd7LHJqQ>
-    <xmx:awLJasMa-T1M3CZVKEMUN6B3YHNQUESr44WcLS2oZiBut3feTNNaOAIV>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Oct 2026 11:04:10 -0400 (EDT)
-Date: Fri, 9 Oct 2026 16:04:09 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] x86/early_printk: Add earlyprintk=tdx to drive
- the UART with TDVMCALLs
-Message-ID: <askBV7fBxg9Wfdqz@thinkstation>
-References: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
- <20261005-b4-tdx_earlyprintk_tdcalls-v4-2-3f7c56dd568a@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LeaELG5H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791560704; x=1823096704;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fip7VI4RxW9/THSoP5eEW65d5uAQ6PqFRVmadq9QyHw=;
+  b=LeaELG5HqD5C45GTEwIGUeKa7tdiq/7beayme/OjPhdpYjT5ZpI3OTyM
+   itDqdMPkUyTCnhG9tpU+LzKfz47vbwVUTGk2ioyyiRJ5J4zAe+N8X+rie
+   X3fW9qsaWL6TyduI8SazMY85WLjdO2pSCXSDmVHtUlk/M7ZxgaRK2bDs2
+   TpgB90jN4GuZh2jMT9xl/hdpADthMRAzvtSeOwdBmZy+vsr7uwWFEI3nL
+   6VTVNNuc3vi3oXK8d0zNOa9VULA2jlJzoTn6fWkUlAVL4YMycnBsmi5W8
+   D0zEViE8+bYhb2d4RbV240yR+o5Dh89Fg62/TDHE40aIviFYOhFKwluti
+   A==;
+X-CSE-ConnectionGUID: 4Gx2Bl/wRYCOgU522iGYIg==
+X-CSE-MsgGUID: oR2Z/P2ISoGb6iaOBSyVkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="388994"
+X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
+   d="scan'208";a="388994"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 08:45:03 -0700
+X-CSE-ConnectionGUID: smsCV1cITQ6LLOV8QsS1Jg==
+X-CSE-MsgGUID: W+Z4XyD8SM+BeJqhZDz0Rg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
+   d="scan'208";a="461742"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 08:44:57 -0700
+Message-ID: <7ca516ea-a931-4497-b3c8-b62110ae006a@intel.com>
+Date: Fri, 9 Oct 2026 23:44:55 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261005-b4-tdx_earlyprintk_tdcalls-v4-2-3f7c56dd568a@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 11/23] KVM: selftests: Set shared attributes for ucall
+ guest_memfd pages
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
+ <20261001-tdx-selftests-v15-11-7c62a5d8a992@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261001-tdx-selftests-v15-11-7c62a5d8a992@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 05, 2026 at 04:50:07PM -0600, Vishal Verma wrote:
-> A TDX guest cannot execute port I/O instructions directly, but
-> earlyprintk's serial console still issues plain inb()/outb() and lets
-> each one fault into the #VE handler to be emulated as a TDVMCALL.
-> 
-> While that works, it is a roundabout way to get a character out.
-> early_serial_putc() polls the LSR, and then writes a byte, but since the
-> TDX guest can't directly do port I/O, a #VE exception is raised. The #VE
-> handler must call TDG.VP.VEINFO.GET to find out what faulted, and then
-> it can issue the TDVMCALL that does the actual work.
-> 
-> This makes #VE a functional mechanism for doing I/O, which is not
-> desirable, is unnecessarily complicated and fragile, and results in
-> twice the number of calls into the TDX module.
-> 
-> Instead, add an earlyprintk=tdx option, which can issue the TDVMCALLs
-> directly. Add a pair of tdx_serial_in() and tdx_serial_out() accessors
-> and set them up in this case.
-> 
-> Note that the output does not appear any earlier - "earlyprintk=" is an
-> early_param(), so the console is still registered from
-> parse_early_param(). This only changes how the bytes leave the guest
-> once it is up.
-> 
-> LLMs were used under supervision to create this patch, to help
-> understand the scope and mechanisms, create testing instrumentation
-> (throwaway) to count #VEs in the serial vs tdx earlyprintk setups,
-> and to drive lab machines to do this testing.
+On 10/2/2026 3:37 AM, Lisa Wang wrote:
+> The default attributes for guest_memfd pages without in-place conversion
+> is private. 
 
-Sounds like you are missing "Assisted-by: LLM" tag.
+This is wrong. The default memory attribute is of a @gfn is shared without
+in-place conversion, i.e., with per-vm memory attribute.
 
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+We don't need this patch actually. And I have tested with reverting this patch,
+with both out of place conversion and in-place conversion. Both worked.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> However, the ucall pages need to be shared between the host
+> and the guest. Thus, set them as shared.
+> 
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> ---
+>  tools/testing/selftests/kvm/lib/ucall_common.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/kvm/lib/ucall_common.c b/tools/testing/selftests/kvm/lib/ucall_common.c
+> index 029ce21f9f2f..c03dfc763172 100644
+> --- a/tools/testing/selftests/kvm/lib/ucall_common.c
+> +++ b/tools/testing/selftests/kvm/lib/ucall_common.c
+> @@ -27,6 +27,7 @@ static struct ucall_header *ucall_pool;
+>  
+>  void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+>  {
+> +	struct userspace_mem_region *region;
+>  	struct ucall_header *hdr;
+>  	struct ucall *uc;
+>  	gva_t gva;
+> @@ -37,6 +38,13 @@ void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+>  	hdr = (struct ucall_header *)addr_gva2hva(vm, gva);
+>  	memset(hdr, 0, sizeof(*hdr));
+>  
+> +	region = vm_get_mem_region(vm, MEM_REGION_DATA);
+> +	if (region->region.flags & KVM_MEM_GUEST_MEMFD) {
+> +		size_t aligned_sz = align_up(sizeof(*hdr), vm->page_size);
+> +
+> +		vm_mem_set_shared(vm, addr_gva2gpa(vm, gva), aligned_sz);
+> +	}
+> +
+>  	for (i = 0; i < KVM_MAX_VCPUS; ++i) {
+>  		uc = &hdr->ucalls[i];
+>  		uc->hva = uc;
+> 
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
