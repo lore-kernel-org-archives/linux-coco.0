@@ -1,122 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4388A42A152;
-	Fri,  9 Oct 2026 12:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9004738DC57;
+	Fri,  9 Oct 2026 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791548227; cv=none; b=dDKcTTS2SKPAMOOLfNcRjgpUWx1m8VZCnaSHDMAkSw9rPQmRAZGpVVkUG+3wKcOcq/6sb1/h3c9ophmTEsFkk5W0UfhWScWDwcFal+xF/5/UglhGXxjfW2NlcaJWCSqScn0nMYjX3hI2xCCz/C4P9i1fpAHyETBF5mF7j6gGRio=
+	t=1791551304; cv=none; b=HEUkdlwsLj6XM40mkHubS2Ev1DyDm5Iegx00O8nlhCs4UIgpxb5XNdn3dg+faMndBHgTZ9rJfmF5ZF/r4Mvh86FDiB7LVpsLWDJTK1IRWU1as9lMwaFuq22ft92aq+FFJipkGEzRMzz/1nktptZh9QrAlm460wc+0j8TCArds0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791548227; c=relaxed/simple;
-	bh=kf9dg50ujd8CthO4zIArtdQ1S9/f19tZLRH75JxQSkE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KuvCsbXQKJ1bTlfIMNvzhLV4sPYEPns98JWbZYYCNBNnXTyLHs0q7yyiHbldMJcDLDGvlHVePzf5YeBC/El1mF3RQ7Mui2eO4f6n9GJQHZjv65k0aCkn5Fy4biACWAze6BM3VD3D/WjU3cdcYq38UY5RXX9oafDyKhZfLXxRPVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PL9IPTYq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791551304; c=relaxed/simple;
+	bh=yhTc7H+0IqN4frsO9baGH1rCR17Pji1FxlEXnUH5cBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JS3UlEe1SK+DVBqD9RHNTOWIofCMnPpwgVi8Y1kKGEeAc9CROl8t8ZUtDBVW4IlRN6gLUCx4OOgnvOE7PUORYyrnevgPe4ocLZn94uDu1PCalRj89Ei/lFpKAQ5B+K8VMb9ra/MV002bk3xZZ1RGmW+2TnNFU0ueNQUJsfL3las=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2qqCgv0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PL9IPTYq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834B91F000FF;
-	Fri,  9 Oct 2026 12:17:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2qqCgv0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F98C1F00893;
+	Fri,  9 Oct 2026 13:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791548220;
-	bh=6/A+on6QTcsynPBLF2wcK5YT384IqIK0ywry4fp4NAo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PL9IPTYqlfvHL+IF9BEowQEj+uuzDibLKxsIj7RBMNCrBx/PdQkyBGqsi9P9NWrWf
-	 X68m6skXLFM4qKc18VNrF8rDSSacoinKTCYD15iSoBkKIbT/Q5n9exe2z42IvNKqON
-	 pXUKAtJmt82QV4EfJDDbNdJX+o4OeJrQG2S22PLdP17PyfptkVlWxlL04uanmVqasy
-	 0C9xFCZ4laTK1J6p10pWLJOzgQLQy64Te5n9pFKsg25loGY2K9vcqtY9wrDW6wR53M
-	 TfvExeqSQUPo1jXgoqfo+VOaGLHWtr9n/l31zaHyuncoJW1kQH1VuqyPm7kKHTy4xf
-	 oGwY+qx3CQy3A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xF9X0-00000000zPz-1ZsQ;
-	Fri, 09 Oct 2026 12:16:58 +0000
-Date: Fri, 09 Oct 2026 13:16:57 +0100
-Message-ID: <868q472hmu.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v23 14/14] KVM: arm64: Prevent unsupported vcpu features for VM types
-In-Reply-To: <CA+EHjTxZM2kEtsG7+pq7zygA8Mhwzai9PL7+ex1K35BPVSt6hQ@mail.gmail.com>
-References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
-	<20261007073537.2454351-15-suzuki.poulose@arm.com>
-	<CA+EHjTx-niYPnnRDvAAiY3MXLpSYau_PhiBTCiE9mOYUChASPQ@mail.gmail.com>
-	<86a4on2qxz.wl-maz@kernel.org>
-	<CA+EHjTxZM2kEtsG7+pq7zygA8Mhwzai9PL7+ex1K35BPVSt6hQ@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1791551303;
+	bh=FpUIQG2ildfJUJXlKIPJfIgmZEi5bWUOemoR8HcahF4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=c2qqCgv0D58/0e+k9zxI9o6dg3GYpDAHOtqCZbpcGXac3qwbIvxYpa3bQHSmqrAyV
+	 VsbnWIASJih0kFuAw4OTbBagMheW9GxPXdx7eadF0QUvCJ7NM2xmMlSZ0qprbBTc/K
+	 n20YP9NzuQfludLWwDvLQjdb6QoK3liPhRuyryMZHAyPbZs9AAR4Px0k1NL88KQp9u
+	 UxYSlHPSPJvYXRhzh37T9CMKT8VZVA9w3hFuCqZVVCu9jX6FPCT7ecTe605nzua1sr
+	 biOTq+gYuahC7BnenqIHkldbrWfR2yghlxyKT0NuYKmSdqfectrWBgw2AirTZ9L/f5
+	 k1njNHyfO800Q==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 92507198003A;
+	Fri,  9 Oct 2026 09:08:16 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 09 Oct 2026 09:08:19 -0400
+X-ME-Sender: <xms:P-fIajBkki790Caehe3DTmvhDY-2WDVcOvDkZdaUGk9ejDcosdz3Dg>
+    <xme:P-fIagwvaFs17JgJc6_4-W7UbnqQzsF00tXRD44Ft0Mpp3sF00kmWh0Z59Kxq7Hnd
+    rmJaBJp73yKvYu3vIy-zqeVTfQMwnZm1yehbW3roBzX6WbUpYs9YlXq>
+X-ME-Received: <xmr:P-fIanIyPDsDm4HxWS_Ml4co6ihgNtYzg3RKCqcIjKXd1hLONamUEkACkww>
+X-ME-Proxy-Cause: dmFkZTFj6c6YPtf1RuC5ge2DhrVWepaKzhdu396taV7DKjafJHPQen98eiWB0+ajyHRDBo
+    V9e4R6BapcDruKkFzt7wbLaUPtObKYs7i9noBdPNd/Q6HdaKBiK7wc4jCqMfUhvS89D9zD
+    6H8Qa2Lh150MpeNHzv+CKjV1NHARmiVAuljI7sPclv0uj2VaIlohhugxZpGz+KzF2cLXXD
+    aw9miqNb9hjy9GUg6ZWhHJkCKHUPOnumFVmQYAyIbqyiR9vu2DTsyIAAhfPUlXZgZ4aiFu
+    QOaOGft0y6E/laBs0cB6CcqW5Ibby+5XmFvevcK3EPGURVWQnT6jrlijFDsdGYcPZOA3gT
+    mvvTl13TDo8h6/vmkHXJs1G7Ql6NxAv+Ch5hGDhY70m3VIQ9uhGLUoy9F7cLI/eJu4b/nH
+    lZHFRwYYsu8dWgU8q3poX6OpVnmzbYLjMIAvFBb07hNoBj1OAiC7+LOJNVo0Wlqf709ua/
+    unpiNAskSwxOrVmfClu4Wi6a5hNXGTwKeZao5bkjWPxcs5imNSE0IINWKBTC4avlAQQbZ3
+    AMAI7l/Pat2dhWY2egMZFwwCy61AKkUl32pYmptN5sGsIrbFue5WT2TB2Y5QPmTWSaFT7q
+    dOeSzIVEOjElCH6Rc9LqzfHAEcPBk6BUIy5wGHyo0tpH6H2v3Ux0jgPpbRAQ
+X-ME-Proxy: <xmx:P-fIajKGf4zhBmdyhwypcQ3169QKNwWnxMm41auc61SakHcDgCHoRw>
+    <xmx:QOfIagXlsaiZSwUyCDE55Ioe3vzwaWNk2BaouJcaTtI-Kf8uBsnZXQ>
+    <xmx:QOfIav8zCruYSxG2TPYpmSt9_vRXpdghozhNXpAW4iJ7KTnDHAg_bA>
+    <xmx:QOfIaiJAi-7lJkBSB5Hj-ngVS49AhBqCuLjBaj271j_CoRja9LoXSQ>
+    <xmx:QOfIal0RcBbcM0t8osyWDiAAsLKGGpsCc6xY5E_m7UlM0spMTe9MHwpK>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 9 Oct 2026 09:08:14 -0400 (EDT)
+Date: Fri, 9 Oct 2026 14:08:13 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, kvm@vger.kernel.org, yilun.xu@intel.com, 
+	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
+	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
+Subject: Re: [PATCH v3 1/6] x86/virt/tdx: Move TDH.SYS.CONFIG operations into
+ a wrapper
+Message-ID: <asjnNXbMfro4k2t8@thinkstation>
+References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
+ <20261006-tdx-module-ext-v3-1-db52cb05b918@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tabba@google.com, suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261006-tdx-module-ext-v3-1-db52cb05b918@linux.intel.com>
 
-On Fri, 09 Oct 2026 11:10:55 +0100,
-Fuad Tabba <tabba@google.com> wrote:
+On Tue, Oct 06, 2026 at 01:41:45AM +0800, Xu Yilun wrote:
+> In Linux, SEAMCALL wrappers are introduced to avoid broad SEAMCALL
+> access by exposing only a selection of SEAMCALL leafs, but also to
+> abstract the SEAMCALL register ABIs. The abstraction improves
+> readability and reuse for SEAMCALL leafs that are called multiple times.
 > 
-> Hi Marc,
+> Some SEAMCALL leafs are not explicitly wrapped because the level of TDX
+> ABI details needed to perform the call is low enough to flow well with
+> the calling code.
 > 
-> On Fri, 09 Oct 2026 09:55:52 +0100, Marc Zyngier <maz@kernel.org> wrote:
-> [...]
-> > A rebase would be a terrible idea. This thing *must* go on its own
-> > branch, and not depend on anything else.
-> >
-> > I can however fix things at merge time. is something like this what
-> > you had in mind? It compiles, and is therefore perfect...
+> For some of the currently unwrapped SEAMCALL leafs, the TDX architecture
+> has evolved the ABI to introduce new leaf versions. The host can select
+> the version to call based on what is supported by the loaded TDX module.
+> When future kernel implements this version selection, more ABI details
+> will leak into the surrounding caller code, which decreases the
+> readability of the caller logic. To keep the ABI details contained, move
+> the SEAMCALL leaf that will need version selection into a wrapper.
 > 
-> Yes, that's what I had in mind, but please keep the PSCI 0.2 check
-> from kvm_vcpu_init_check_features():
+> When defining the wrapper, the cleanest separation would be to have
+> kernel data types for the SEAMCALL wrapper arguments, and have them
+> marshaled into SEAMCALL leaf ABI types (often u64s) inside the wrapper.
+> This works for many SEAMCALL leafs but becomes cumbersome when the
+> register ABI type is a physical address which points to a buffer for an
+> in-memory ABI. If the SEAMCALL wrapper only accepts kernel data types,
+> it may need duplicate buffer allocation and copies to match the
+> in-memory ABI. Another solution is to define a named helper structure
+> that mirrors the in-memory ABI, populate it in a separate flow, then
+> pass it to the SEAMCALL wrapper. struct seamldr_params is an existing
+> example of this pattern.
 > 
->         /* EL2 implements PSCI 1.1; the host must not dispatch as 0.1. */
->         if (vcpu_is_protected(vcpu) &&
->             !test_bit(KVM_ARM_VCPU_PSCI_0_2, &features))
->                 return -EINVAL;
+> TDH.SYS.CONFIG requires a list of TDMR information in the form of a PA
+> array. The PA array is the in-memory ABI. Create a structure for the PA
+> array, use it as the argument when creating the wrapper for
+> TDH.SYS.CONFIG.
 > 
-> Folding the allowed set into the mask covers the rest of the block you
-> dropped, but a mask can only reject a feature, not require one.
-> Without the check a protected vCPU can init without PSCI_0_2, and the
-> host then dispatches the forwarded calls as PSCI 0.1, while EL2
-> returns 1.1 to the guest.
+> For readability, adjust a bit of the existing PA array size calculation:
+> use the new PA array structure's element type instead of hardcoding u64.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 
-I think eventually we will have to implement this stuff as a pair of
-masks on a backend basis: one for what is acceptable, one for what is
-mandatory.
-
-In the meantime, I'll fold the above hack in.
-
-Thanks,
-
-	M.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-Without deviation from the norm, progress is not possible.
+  Kiryl Shutsemau / Kirill A. Shutemov
