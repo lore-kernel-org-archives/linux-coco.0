@@ -1,180 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388B13264EA
-	for <linux-coco@lists.linux.dev>; Fri,  9 Oct 2026 08:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341B44248CE;
+	Fri,  9 Oct 2026 08:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791534206; cv=none; b=sjqWaXdQoSc9CHDhM20eWYpx1IqaDS898/BMjr+axAgR/m5Uu4gM40YmP0u4Uc0aqh43Z8FOl9vcj2W9aivCr4zv/JldDwHIfFgobg+7b1hDQ02tknCSOqGUHpe2QxeEuQaPr8bijUnvBgkjPZXm629YKTyyslKfQzHbfDT7PqE=
+	t=1791536158; cv=none; b=qRgY8H0UbjInggww+9VV2WkpiSQy5lDwMx6nWKLayIvBbFJ4bcRoq0bHJebwGEouqt8FYhpNDjSWBI8ko2kSI1npmsmeu3hkcuAaDDdIkp8vchbIr35ryN/8kMHyvl1iDbuZqsRXRJ3CFiYLsn1TWOPHk/94r3HPwKNgFDjPnTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791534206; c=relaxed/simple;
-	bh=5D3XaR1PEUXeG8lJ2wu/SZ+C5knT6CSp0uwVvehwoO4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YLANxkm11ftO+0JBSiMflgq0rI8Sxl9GFLvdntK7XMBFfkjs00IYEOj1D2M0cUDwo1LVgrZD2NSNVjyQTbSWoArqEgi6dCARVlT5ZP+0qEfnktyJv+rKpZLlvMb+RkqfeXaMANGYb6sFmVN//RwkJXlzkUPfvkU9mAsv0nULhj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fUSdG6i4; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791536158; c=relaxed/simple;
+	bh=k5CsmijKQl/rAcDEA0cbJQKgTfQD/JM0gZZ4pXklOqo=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T+KdtYkAeLI0JDmAbZ93qaPAQuHG/5dbL4VQdNnGvr2tgEAY0QvgOpbntdvYEGs+3+qygBi+KDGbouqdU12C2rLyOY/2VUe1LqYxCk0b+pbB6F5knWl+g32C+s5kr0UQeeLRKGPXgDNkewMkWOUhpSpTsp+A3ZoIh9uYc1dM7iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eD98WeCo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fUSdG6i4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791534204; x=1823070204;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5D3XaR1PEUXeG8lJ2wu/SZ+C5knT6CSp0uwVvehwoO4=;
-  b=fUSdG6i4lW+rRrEj4JVWa4+/tYYJVCNoIRmI8zOoAMCqILBc9ebxSBEl
-   8FP9STeZowdtP+/U14LVm3hBG9/wjuwNymN6KxWq9KId1zrAULUtfOykL
-   l6dJ6P+J4os0wRcI/Q7kVapoIZ8OfAvwFz+Phb5DlOnF7hDs7JarGARNG
-   d3TW4OcEAFcA4KMucPsa6ySQAEEmbK7d6pll6SRh9vn/Z8XJLKN7mUrPl
-   5hoLpSpR9Vs2QyTXaZbeJvKzEsA2BWaeKIwB8WHqO4cVJcLgUD/QYT6Al
-   RUp7DlZi6j2q2MSZqWepWeVCDzwurmmzixVHBaFJe4iZlgnpYajw4bG7v
-   Q==;
-X-CSE-ConnectionGUID: JONCMphFQEyZgdl0UQzBRA==
-X-CSE-MsgGUID: dRiL5g3OTPezm4ZdZuJ4Vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="226502"
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="226502"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 01:23:24 -0700
-X-CSE-ConnectionGUID: l/dPVwoiRFCwQbVUcvH5Nw==
-X-CSE-MsgGUID: Qjx7M2lPS5SLHH6U2Il+VQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="348380"
-Received: from yizheliu-ivm.ccr.corp.intel.com (HELO [10.238.208.114]) ([10.238.208.114])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 01:23:15 -0700
-Message-ID: <d410fef4-237d-4d3b-839a-3eff3912c550@intel.com>
-Date: Fri, 9 Oct 2026 16:23:12 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eD98WeCo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679B21F000FF;
+	Fri,  9 Oct 2026 08:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791536155;
+	bh=RUTuEHoA6y1ZBd7WiFp1nW0Ji2GbuE6iesB+SQXale4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eD98WeCoGtEZI2OmM43W4l2cL8MMXqic+6xM6OAdSmr7OqFyF6511ri3twgHI2l0Z
+	 +6yeHmG7W+iL3UYmmMN7vWGD7dG74xmv0/FIRrelgITei+s9X0rrAcz2HHn3KY0a7T
+	 1pxMFA5OtxjtotzUOFr289jnBw8wu34sIbsEan3GFLR0rEq0Q8pIWC1IQNhskW/X++
+	 6dyoy3FefGrw8zinzf3Mfns/E2/ZLbxx+hpgiCwr4+pCRAVG/Eb2BQG9mMWIQ8Lkhc
+	 9qWM5Z/ch4NjxDkxsWek6e0lpstgu5oKc/wlBPiH/G97NDWcCS2K0VMlsxQCJ7q6pn
+	 XB7qJaGHMCkFw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xF6OP-00000000v22-0Ezj;
+	Fri, 09 Oct 2026 08:55:53 +0000
+Date: Fri, 09 Oct 2026 09:55:52 +0100
+Message-ID: <86a4on2qxz.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com,
+	jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v23 14/14] KVM: arm64: Prevent unsupported vcpu features for VM types
+In-Reply-To: <CA+EHjTx-niYPnnRDvAAiY3MXLpSYau_PhiBTCiE9mOYUChASPQ@mail.gmail.com>
+References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
+	<20261007073537.2454351-15-suzuki.poulose@arm.com>
+	<CA+EHjTx-niYPnnRDvAAiY3MXLpSYau_PhiBTCiE9mOYUChASPQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 20/23] KVM: selftests: Add a helper to issue TDVMCALLs
- from the TDX vm
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-20-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-20-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tabba@google.com, suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Erdem Aktas <erdemaktas@google.com>
+On Wed, 07 Oct 2026 15:19:53 +0100,
+Fuad Tabba <tabba@google.com> wrote:
 > 
-> TDX VMs need to notify the host, e.g. ucall. Add tdvmcall() to allow VMs
-> to issue TDG.VP.VMCALL with a single function call instead of
-> open-coding TDVMCALL registers setup at every call site.
+> Hi Suzuki,
 > 
-> The helper makes standard GHCI TDVMCALLs: the caller passes the GHCI
-> sub-function and up to four arguments and returns the TDVMCALL status
-> from R10.
+> On Wed, 07 Oct 2026 08:35:37 +0100, Suzuki K Poulose
+> <suzuki.poulose@arm.com> wrote:
+> [...]
+> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > index 4d0e6bd2009ac..97089c81d6428 100644
+> > --- a/arch/arm64/include/asm/kvm_host.h
+> > +++ b/arch/arm64/include/asm/kvm_host.h
+> > @@ -42,6 +42,13 @@
+> >  #define KVM_VCPU_MAX_FEATURES 10
+> >  #define KVM_VCPU_VALID_FEATURES        (BIT(KVM_VCPU_MAX_FEATURES) - 1)
+> >
+> > +/* As dictated by kvm_pkvm_ext_allowed() */
+> > +#define KVM_PROTECTED_VCPU_VALID_FEATURES              \
+> > +       (BIT(KVM_ARM_VCPU_POWER_OFF)            |       \
+> > +        BIT(KVM_ARM_VCPU_PSCI_0_2)             |       \
+> > +        BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)      |       \
+> > +        BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
 > 
-> Co-developed-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Co-developed-by: Lisa Wang <wyihan@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
-> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> kvmarm/next already restricts protected VM features through
+> kvm_pkvm_vcpu_allowed_features(), shared with EL2 (0b7d843ef3bf).
+> Could you rebase on that and drop the protected half of this patch,
+> rather than add a second list?
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+A rebase would be a terrible idea. This thing *must* go on its own
+branch, and not depend on anything else.
 
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm          |  1 +
->  tools/testing/selftests/kvm/include/x86/tdx/tdx.h |  9 ++++++
->  tools/testing/selftests/kvm/lib/x86/tdx/tdx.S     | 39 +++++++++++++++++++++++
->  3 files changed, 49 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 9464168e361a..495de8ef8166 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -34,6 +34,7 @@ LIBKVM_x86 += lib/x86/tdx/tdx_util.c
->  LIBKVM_x86 += lib/x86/ucall.c
->  LIBKVM_x86 += lib/x86/vmx.c
->  LIBKVM_x86 += lib/x86/tdx/td_boot.S
-> +LIBKVM_x86 += lib/x86/tdx/tdx.S
->  
->  LIBKVM_arm64 += lib/arm64/gic.c
->  LIBKVM_arm64 += lib/arm64/gic_v3.c
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> new file mode 100644
-> index 000000000000..d41a1efc8a63
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> @@ -0,0 +1,9 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTEST_KVM_TDX_TDX_H
-> +#define SELFTEST_KVM_TDX_TDX_H
-> +
-> +#include <linux/types.h>
-> +
-> +u64 __tdvmcall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15);
-> +
-> +#endif /* SELFTEST_KVM_TDX_TDX_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
-> new file mode 100644
-> index 000000000000..e3f0f7f2232b
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
-> @@ -0,0 +1,39 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +.globl __tdvmcall
-> +/*
-> + * u64 __tdvmcall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
-> + */
-> +__tdvmcall:
-> +	push %r12
-> +	push %r13
-> +	push %r14
-> +	push %r15
-> +
-> +	/*
-> +	 * Map C ABI fast arguments to TDX GHCI payload registers
-> +	 * RDI=fn, RSI=r12, RDX=r13, RCX=r14, R8=r15
-> +	 */
-> +	mov %rdi, %r11
-> +	mov %rsi, %r12
-> +	mov %rdx, %r13
-> +	mov %rcx, %r14
-> +	mov %r8,  %r15
-> +
-> +	mov $0, %rax		/* TDCALL leaf 0: TDG.VP.VMCALL */
-> +	mov $0xFC00, %rcx	/* Expose R10-R15 */
-> +	mov $0, %r10		/* Standard GHCI call */
-> +
-> +	/* TDCALL instruction */
-> +	.byte 0x66, 0x0f, 0x01, 0xcc
-> +
-> +	/* Extract status */
-> +	mov %r10, %rax
-> +
-> +	pop %r15
-> +	pop %r14
-> +	pop %r13
-> +	pop %r12
-> +	ret
-> +
-> +.section .note.GNU-stack,"",%progbits
-> 
+I can however fix things at merge time. is something like this what
+you had in mind? It compiles, and is therefore perfect...
 
+	M.
+
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 300ffc2e31c7d..1c6632216e327 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -45,13 +45,6 @@
+ #define KVM_VCPU_MAX_FEATURES 10
+ #define KVM_VCPU_VALID_FEATURES	(BIT(KVM_VCPU_MAX_FEATURES) - 1)
+ 
+-/* As dictated by kvm_pkvm_ext_allowed() */
+-#define KVM_PROTECTED_VCPU_VALID_FEATURES		\
+-	(BIT(KVM_ARM_VCPU_POWER_OFF)		|	\
+-	 BIT(KVM_ARM_VCPU_PSCI_0_2)		|	\
+-	 BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)	|	\
+-	 BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
+-
+ #define KVM_REQ_SLEEP \
+ 	KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+ #define KVM_REQ_IRQ_PENDING		KVM_ARCH_REQ(1)
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 3ae8f51ce948a..a0e7f1d2d1575 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1706,12 +1706,10 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
+ 
+ static unsigned long system_supported_vcpu_features(struct kvm_vcpu *vcpu)
+ {
+-	unsigned long features;
++	unsigned long features = KVM_VCPU_VALID_FEATURES;
+ 
+ 	if (vcpu->kvm->arch.vm_flavor == VM_PROTECTED_PKVM)
+-		features = KVM_PROTECTED_VCPU_VALID_FEATURES;
+-	else
+-		features = KVM_VCPU_VALID_FEATURES;
++		kvm_pkvm_vcpu_allowed_features(vcpu->kvm, &features);
+ 
+ 	if (!cpus_have_final_cap(ARM64_HAS_32BIT_EL1))
+ 		clear_bit(KVM_ARM_VCPU_EL1_32BIT, &features);
+@@ -1753,19 +1751,6 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+ 	if (features & ~system_supported_vcpu_features(vcpu))
+ 		return -EINVAL;
+ 
+-	/* Reject features EL2 would drop when it creates the hyp VM. */
+-	if (vcpu_is_protected(vcpu)) {
+-		DECLARE_BITMAP(allowed, KVM_VCPU_MAX_FEATURES);
+-
+-		kvm_pkvm_vcpu_allowed_features(vcpu->kvm, allowed);
+-		if (!bitmap_subset(&features, allowed, KVM_VCPU_MAX_FEATURES))
+-			return -EINVAL;
+-
+-		/* EL2 implements PSCI 1.1; the host must not dispatch as 0.1. */
+-		if (!test_bit(KVM_ARM_VCPU_PSCI_0_2, &features))
+-			return -EINVAL;
+-	}
+-
+ 	/*
+ 	 * For now make sure that both address/generic pointer authentication
+ 	 * features are requested by the userspace together.
+
+-- 
+Without deviation from the norm, progress is not possible.
