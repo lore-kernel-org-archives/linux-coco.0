@@ -1,188 +1,206 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011032.outbound.protection.outlook.com [52.101.52.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7BE3D6461
-	for <linux-coco@lists.linux.dev>; Fri,  9 Oct 2026 20:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791579487; cv=none; b=eHqpnFrGDzUoUz0S97m/RhBv2/6eD7uUp2tIwvw1m4sSK/D9tzNQn9nKce5w0XGxfCegcck32GpFxOAP3+GKEMqDFT2xzktoA0lnQ1/QCtuLX8Y29G8XU6QMB22EQKyYG491a/qL7kys4+MWsegSlnb0DD9KMEkzbBhLyDQ76/I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791579487; c=relaxed/simple;
-	bh=V+RY7E/8ADFShFuMjLzmRHdN9yccpKO1Gep1q5N/n94=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pnaBUPkSM6zcqGl8B6P9PJtEVrkG0d4q0Xtox9PwNGtuoFaZ6Dk8sQqYE0MHmD+RO2bOe8L1IqCu5j0cp5ppv1P/WingS55uUFoLxNjEmyeO78bbxd7u0SstIO33jH/GMk7sAi8i0vkHYH43gTGu8fZoOr1wMTwQxOYKvsY1QT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mnutmpl2; arc=none smtp.client-ip=209.85.216.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E079634B1A6
+	for <linux-coco@lists.linux.dev>; Fri,  9 Oct 2026 23:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791589473; cv=fail; b=f7iRNig6OeJiSQxkWkj/qf9VUVvN0zVHPvOtrbiyHYCjmA5vVTli746b4VsLVw3unrqzuh+DIZvjZFkLvhB59DbBOyNp7sgbQI6xKPo6x0f/ZVWWBuCyNZfIEjcpZEoLU2380itapcWDHdBKSneNrZWxiZYaKhKlMraK/IUTUww=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791589473; c=relaxed/simple;
+	bh=ZWbUVrSauXWjhTjrjaU5hDUoht3m8KYB7X7tY5AaR1E=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Wx8Tl60wdIlRsQyV2VJp/DPH0f7jSIaUhnVL50Ha5cB/oJG1BYVZAsM9xoNluWfgDgl0yJ/7HwmJx4weYqs0TYfjWu3f9ZRP8zvfMYzehZ855RzdanDqxbKiR7WeRBo4AdCNZ4pRfxdwyXkwepcqaf1d6zMslT7K2Qw7JvryxcQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WGWmO7vX; arc=fail smtp.client-ip=52.101.52.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mnutmpl2"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38dbf293831so247330a91.3
-        for <linux-coco@lists.linux.dev>; Fri, 09 Oct 2026 13:58:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791579486; x=1792184286; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LMjGbLW9lc1R7yfLy7ZOR+jBeeIII4unV9kdR2KwDOE=;
-        b=Mnutmpl2Sin/ppP1AJ65g4SR1yCj6ClNwQ/kX52Bk0HVwP7kYsRu0MO0oBQsQsXLhE
-         WfpJ0OmwAC1yK0Arq9PyJSW55xhMmUPpOcpeKKZ6ujzRSBqqIBXGAJ4oLAIgPJkwEYSL
-         BzT4bPxtX7FZMwn/aRSpQiFIZoHkjpr2ht0LhCsE9cODvpXF7GNwHhavYD4aw4nOnu8b
-         tCU0Vf/loqubfAvihu7qDb8xmp9jpJbWKr9Li2RdzBk/fX5/XlpCKyI8r0ozTqPWhLoQ
-         HQSZYpQogToxaqR2+1jICN/tzn4LfqwcipN8+Zxc4cdCW6pzWDvBAC19Gmoq6LAa2jw5
-         fjsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791579486; x=1792184286;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LMjGbLW9lc1R7yfLy7ZOR+jBeeIII4unV9kdR2KwDOE=;
-        b=CigV+t12b64IAmZpGHQbF82sg4Uy1edrlwR4hVSP46QLg8uz1oeL2HS/eF7k7u1eJB
-         aj8j9L7OWFCC/WmB/TBa06pE99qrU+MES1npDS7P4yMuZFoklAVZ60J3/IvzIFbzcWZY
-         XzSnM1oSPg9hZOI1Yw8DugLR87HUtX36mM3jb+Z/bJV+m1NHL3qTG7NxXWKQzW038fJJ
-         w9O5CDEoUdoWKezP461JfrAMTDyS+tNhEXeIEoc3YK7Tw3ZLCZdcFACP3+bQTCFcK911
-         4UdhaZMAYU/dIMv2BpwQQ4dIvF3fobelkbRR5cu2PQvzCDqsX9xtz9ix9bZ33jKsQbIv
-         SFQw==
-X-Forwarded-Encrypted: i=1; AKwUvBwmZW4B1rj3Lf+wlXZ2ilu2iRlM+GoYn1vO77TFOeFWuJ7xaPBK+SzsrH7BC3DBKpBW202Q+eCzKNHh@lists.linux.dev
-X-Gm-Message-State: AFq9FYIe7RAgmMxhKHSuLX0wi3Sra+j4XpnmA4CD5MmNGUB0x/dnONhI
-	i+R3BDq7Bgk8Q/YCD+ee52SUgrU0ICTVIAnYR0Kaob+WHPGEFTjNoJMASV3XjoITeXJFnHOMem7
-	XMDdpRQ==
-X-Received: from pjbch18.prod.google.com ([2002:a17:90a:f412:b0:3ab:147a:52a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e7ce:b0:3ab:9cb:b5a4
- with SMTP id 98e67ed59e1d1-3ab3ac7eecemr2968909a91.40.1791579485511; Fri, 09
- Oct 2026 13:58:05 -0700 (PDT)
-Date: Fri, 9 Oct 2026 13:58:04 -0700
-In-Reply-To: <asdOF41hqDpycXKU@yzhao56-desk.sh.intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WGWmO7vX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nHGyaVE1ZeliwIItgjfp2brDbD4YF/lwb0p/tn2qywqL+FWo3Y1Xd1HxVZ7DiWQ0uUY6ZGKO1pc+9cw6y5H6vrF8QUYeY22okraFNisxG0rIxJ3F6lRR/RtZEFNUP8tDH7gksUaND9AZyPL14Q25XMusY0S273SEVjPVYCLp8j96R5Jus9gnzL0l4sSkrf5Xmq+bjg6fE1l6f0ca2Ip1Yg1vVvYnZWjD5K51oJssiyA+qJc1z5WfWhUdsZMv5RA9Wt0mWd1jCgZyPo+kk/0V1Zhxh9YIsdSVtNXaPWRk4tPuIRSrISWIDdaADWwPU/SE9s5OUh3HPgpU2vCf/WHpiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=afs7wO4B1RbTKybyw5EPZBa1xny/KObecDZy2pzyqog=;
+ b=caXuFLfxI9JIYprr30CGWnv4TQnunVeeBB7hCdJ1r7I7iHcoIXUXi9tJfD4SL5zMAjUlrINAN/eIpJLe8R8B0Cse0Ldw7adaEuN4fJs8IEByZWZXFz1HvI+KmfnUjII7OB5//AK6S6Ao738/YwSMij63cz6G9RScX7vGPuNV/yEZb5nUhG3ZgPEXiXqcur9c2ogHhFceYUmxmutU9vsDrY9Yr+lkakS7G8aiFa4bsi2SO6eDgRNzjdVSQ4mdwBu6iY1D620LMAoPc5MGujyi7xxvmW3MDoFwcPm5zkUpU3UjI4KgT58oBEXr/wsG9XcwnzgKjnmHpZkXEhzJS2fTKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=afs7wO4B1RbTKybyw5EPZBa1xny/KObecDZy2pzyqog=;
+ b=WGWmO7vXbXoNJpPArnqP5k2BfaSXzHYNASMijLS80EU2Hxz5iouStOj58jdW3/ae8ABA0exEUWqmzDAAClLf0I4vnaMCJ0bt5QHxGRBsLXOFn0P5n1dMLFp77gJILs3DED8PIV8gOcrFApMKFVAiQjyU6hi4J9hgMYDtiytjOjM=
+Received: from BN0PR04CA0018.namprd04.prod.outlook.com (2603:10b6:408:ee::23)
+ by SJ5PPFA5F0E981D.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::99d) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Fri, 9 Oct
+ 2026 23:44:27 +0000
+Received: from BN2PEPF0000A98E.namprd04.prod.outlook.com
+ (2603:10b6:408:ee:cafe::9) by BN0PR04CA0018.outlook.office365.com
+ (2603:10b6:408:ee::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Fri, 9
+ Oct 2026 23:44:26 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF0000A98E.mail.protection.outlook.com (10.167.248.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Fri, 9 Oct 2026 23:44:26 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 9 Oct
+ 2026 18:44:20 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <babu.moger@amd.com>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
+	<bp@alien8.de>
+CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+Subject: [PATCH v4 0/3] x86,fs/resctrl: Keep default MBM mode at boot and fix ABMC programming
+Date: Fri, 9 Oct 2026 18:44:06 -0500
+Message-ID: <cover.1791589412.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260930001127.3170009-1-seanjc@google.com> <3c0ee89f560b0235f293b32019327186785aa795.camel@intel.com>
- <arxd78Pn6WWL6TGq@google.com> <asdOF41hqDpycXKU@yzhao56-desk.sh.intel.com>
-Message-ID: <aslVXBSovWuAsNtN@google.com>
-Subject: Re: [PATCH v2 0/3] KVM: TDX: Syntehsize SHUTDOWN on unhandled EPT Violation
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "jthoughton@google.com" <jthoughton@google.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"sashiko-bot@kernel.org" <sashiko-bot@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A98E:EE_|SJ5PPFA5F0E981D:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffa58ac9-b7c1-4805-ff08-08df265f4129
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|82310400026|1800799024|376014|36860700016|10067099003|56012099006|260925021911599003|11063799006|3023799007|6133799003|261009223027099003|260925022911599003|18002099003|260925021311599003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	4jP4ZDf01N/sHu/WzXqKMw/EG7SOlS4dx0a68gqVnTRheVidtd6lrtGhioDg4CkhVmhGsDN3GpklT4pdDHiuo5nX0jkpo4zO0sagUpzHhUoZSZiMChBulpkRVPJt0FXBakAEYjz365/5cHH1tsrT1Yce9d3xZmhLJNWmW+3CwH51hyDFSg+jaHh7e+fmOBCMVfAVvR48Teg4j38FCtwPZ7YLqMtedYGOkQruzZ/Q9CcBkELITExL/wDN33wSDvjMFYc8wB6jpdQgSEWgI4DkA11lNQIrVjsrs9XpwrkFvgWi2KyoQVQB3GuhmhBPc7GRyzOt3eRmsHaDEyasYNBOx8SoeeUvg6g9gVS2tH6Hbo+erMaUOefwl0LPCsUV1upMLEfU8FvTTDkpm9tdz0c+YwAMPmcWxZc1QKEqJSPcH+1nYbhXkXPdNBFKsEtiDjvXLWsIIsNwJEM6lR8Q5Dqn0S25kZwJcA6QrG0IdusOBSBQ70zDEhhCBs3nzxO6Yb5SZaQgR+9kX/3Jtqgh4CTDN88Gvxi0cieYW2Dh7wrzhAbjbhVn7FJofV9gJV/58S0QznWgS8RafiIb9FER25OT9LSW4sQURacha5baF9TUFzMxTbaOpGGS6EdRYqyRYaqg1ZMbx26Gc2nEadV2VHvWSQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(82310400026)(1800799024)(376014)(36860700016)(10067099003)(56012099006)(260925021911599003)(11063799006)(3023799007)(6133799003)(261009223027099003)(260925022911599003)(18002099003)(260925021311599003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	cU70orAOwNiFYHv08DLdeugwVNFlEt3V7GkPmLDQ3KxDgOgLk3e3XMNIs421T4TozZ2pm+KoQbNStdkejOme4GHyHreTPfLN3CRkTTWQrG/DeNhGx2iyyhv1/1dSyrehQiMwAE97Qp8LPU7YYPkElFvBqsKTYNdFiy4jVMd91XO6FVr9PJsbl9bRRZJAmcUwGHPoehWlOd45F2Jj/D6OFILfsP6N30Nl8XTY9DbOJ0hwdxZNZMivPePn0qDj685IVjSgAXESEBv4WhdkOrMbIIRrjt6TooTMgZRsMnoag0k/1JXwGJY9khn7PV+G7aGP3XeocdQOZ3x7sOszKFBQQCURc+wYSGdu1Yv1q0r1WpHySBPZK6ISP81SiktRaEsPzYxulJfdWKk3RHlKnO38R+hfMMJ+STio7ytxxn3TlzcnAF2SoCzLrVX+o3DIXpuY
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 23:44:26.6484
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffa58ac9-b7c1-4805-ff08-08df265f4129
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF0000A98E.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFA5F0E981D
 
-On Thu, Oct 08, 2026, Yan Zhao wrote:
-> On Tue, Sep 29, 2026 at 05:55:11PM -0700, Sean Christopherson wrote:
-> > On Wed, Sep 30, 2026, Rick P Edgecombe wrote:
-> > > On Tue, 2026-09-29 at 17:11 -0700, Sean Christopherson wrote:
-> > > > Signal SHUTDOWN instead of -EIO if the guest accesses an unaccepted=
- page and
-> > > > has disabled EPT Violation #VEs on such accesses.=C2=A0 Returning -=
-EIO is all but
-> > > > guaranteed to mislead the VMM into thinking KVM (or the VMM) messed=
- up, and
-> > > > will likely result in the VM being terminated instead of rebooted.
-> Hmm, it's by design in my previous implementation to terminate a VM when =
-the
-> guest accesses an unaccepted page and has disabled EPT Violation #VEs on =
-such
-> accesses, according to the TDX module spec:
->=20
-> "This happens if the TD is configured to TD-exit (instead of a #VE) on an=
- EPT
->  violation due to accessing a PENDING page. It normally indicates an erro=
-r
->  condition; the host VMM may decide to tear the TD down."
->=20
-> So, for the initial implementation, we chose to invoke kvm_vm_dead() and =
-print
-> out the exact reason as a hint to the system admin.
 
-kvm_vm_dead() should only be used when KVM *needs* to prevent userspace fro=
-m
-running the VM.
+Hi All,
 
-> (Previously, reboot was also not supported for a TDX guest).
+This series restores default MBM assignment mode at boot, assigns counters
+when switching to mbm_event, and fixes ABMC programming for more than 32
+counters.
 
-But QEMU isn't KVM.  While QEMU is the de facto reference VMM, it's importa=
-nt to
-keep in mind that it's not the only VMM (and that's not just about Google's=
- VMM,
-there are plenty of other non-QEMU VMMs that are used in production environ=
-ments).
+Commit 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
+enabled ABMC at boot. That breaks the pqos tool from intel-cmt-cat [1],
+which treats a non-numeric event read as zero bandwidth. pqos creates 16
+or more groups and uses two counters per group. On a platform with 32
+counters per domain, that consumes the pool, so further groups read
+"Unassigned" and pqos reports 0 MB/s.
 
-> Returning -EIO was based on the following considerations:
-> - vcpu_enter_guest() returns -EIO when kvm_test_request(KVM_REQ_VM_DEAD, =
-vcpu)
->   is true.
-> - A request to handle a specific EPT violation is rejected by the firmwar=
-e (the
->   TDX module).
->=20
-> > > I'm pretty sure Yan had a test for this path, and I'd love to see it =
-actually
-> > > exercised. What is the urgency on getting this fix upstream? Can we w=
-ait a week?
-> I triggered the EPT violation in the kexec path, and successfully had the=
- TD
-> - killed with error msg: "qemu-system-x86_64: cpus are not resettable,
->   terminating" on an old QEMU, or
-> - rebooted on a new QEMU with the msg printed:
->   "qemu-system-x86_64: info: virtual machine state has been rebuilt with =
-new
->    guest file handle".
->=20
-> The TDX selftests we are using do not handle KVM_EXIT_SHUTDOWN, so if suc=
-h
-> an error occurs, it's silently ignored by the TDX selftests even with msg
-> "kvm_intel: Guest access before accepting 0x8000c000 on vCPU 1" printed i=
-n dmesg.
+Leaving the mode at default does not make pqos correct. pqos still
+treats "Unavailable" as zero. Once the default-mode counter pool is
+exceeded, hardware can re-allocate a counter between reads and pqos can
+report that as a wraparound. That shows up only after the pool is
+exceeded. Default mode uses one counter per monitoring group. On existing
+AMD platforms that pool is 64 counters and may be larger on newer
+hardware, so common deployments stay within it. mbm_event mode uses two
+counters per group, so the same 32 counters cover only 16 groups.
 
-If TDX selftests don't fail due to an unexpected KVM_EXIT_SHUTDOWN, then th=
-at needs
-to be fixed irrespective of this change.
+mbm_event remains available as an opt-in. Users that need stable
+measurements beyond the default-mode pool should enable it and rotate
+assignments. The limitation of default mode is documented.
 
-> > Absolutely.  It can probably wait a month and no one would care.  IIRC,=
- this got
-> > hit by someone (internal to Google) deliberately crashing a guest kerne=
-l and doing
-> > funky things with kexec.  It showed up on my radar purely because our a=
-utomated
-> > madness alerted on the resulting assertion (on -EIO) in the VMM.
-> Though I didn't realize that returning -EIO would mislead the VMM into th=
-inking
-> KVM (or the VMM) messed up, such an error could also be introduced by a V=
-MM bug?
+Patch 1: widen cntr_id in L3_QOS_ABMC_CFG from 5 bits to 12 bits, and
+limit the enumerated counter count to 4096, which is what that field can
+encode. The APM [2] at [3] will be updated for the expanded cntr_id field.
 
-Yes, but that holds true for literally every guest failure.  It's like sayi=
-ng that
-all observed errors could be due to a CPU bug, e.g. because the CPU corrupt=
-ed state
-or because a bit flipped in DRAM.  It's technically true, but in practice t=
-he vast
-majority of failures (outside of pre-production hardware) are software erro=
-rs, and
-so absent evidence that a hardware/VMM/KVM bug is at play, KVM shouldn't as=
-sume
-anything.  I.e. as above, unless KVM needs to protect itself, KVM should aw=
-ays try
-to provide semantics that are rooted in the CPU architecture.
+Patch 2: when switching to mbm_event, assign counters to existing
+groups, including the default group, matching mkdir auto-assignment.
 
-E.g. an analogous failure would for non-TDX guests would be if the host zer=
-oed a
-page that happened to be necessary to handle exceptions in the guest, and a=
-s a
-result the guest hit a triple fault shutdown.  KVM doesn't return -EIO inst=
-ead of
-KVM_EXIT_SHUTDOWN just because the failure could have been introduced by a =
-kernel
-or VMM bug.
+Patch 3: leave mbm_assign_mode as "default" at boot. This seems to be
+the patch that has generated the most discussion. Let me know, if additional
+justification in the documentation would be helpful, I'd be happy to add it.
 
-> e.g., VMM removes an accepted page without any notification to the TD con=
-figured
-> with TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE bit.
+Based on tip/master:
+  6b27d3127c05 Merge branch into tip/master: 'x86/tdx'
+
+[1] https://github.com/intel/intel-cmt-cat/issues/311
+[2] AMD64 Architecture Programmer's Manual Volume 2: System Programming,
+    Publication #24593, Revision 3.41, Section 19.3.3.3 "Assignable
+    Bandwidth Monitoring (ABMC)"
+[3] https://bugzilla.kernel.org/show_bug.cgi?id=206537
+
+v4:
+ - Patch 1: Updated changelog(from Reinette's input).
+ - Patch 2: Changelog update (Reinette's input).
+            Function comment update for rdtgroup_assign_cntrs().
+            Tag order update.
+ - Patch 3: Introduced mbm_event counter pool and default active counter pool.
+            Removed duplicate texts in resctrl.rst.
+            Re-arranged the tag order.
+v3:
+- Patch 1: drop the 32-bit u64 change and the bw_src widening. Cap the
+  enumerated counter count at 4096 instead of truncating the CPUID field.
+- Patch 2: clean up comments. Add Reported-by, Closes, and Cc: stable.
+- Patch 3: document one counter per group in default mode and two counters
+  per group in mbm_event mode. Describe the default-mode pool and the pqos
+  wraparound once that pool is exceeded.
+
+v2:
+- Added patch 2 to address Sashiko's comment regarding the documentation
+  issue. In fact, it exposed a real issue. When switching to mbm_event mode,
+  existing monitoring groups should be assigned counters whenever counters
+  are available. This provides a smooth transition between modes and aligns
+  the behavior with the existing auto-assignment mechanism.
+  https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
+
+- Combine the two v1 patches and add patch 2 (assign existing groups
+  on mbm_event switch; Sashiko review).
+- Keep boot-default separate from the encoding/truncation fixes.
+- Document the default-mode counter-pool limitation.
+
+Previous versions:
+
+v1: https://lore.kernel.org/lkml/980f39d3a0e0d9f73925e362f835aeef070a1bc5.1784322818.git.babu.moger@amd.com/
+v2: https://lore.kernel.org/lkml/cover.1788545152.git.babu.moger@amd.com/
+v3: https://lore.kernel.org/lkml/cover.1790976400.git.babu.moger@amd.com/
+
+Thanks
+Babu Moger
+
+
+Babu Moger (3):
+  x86/resctrl: Fix ABMC counter programming
+  fs/resctrl: Assign counters to existing groups when enabling mbm_event
+  x86,fs/resctrl: Keep mbm_assign_mode in default mode at boot
+
+ Documentation/filesystems/resctrl.rst  | 50 +++++++++++++++++---------
+ arch/x86/kernel/cpu/resctrl/internal.h |  4 +--
+ arch/x86/kernel/cpu/resctrl/monitor.c  |  4 +--
+ fs/resctrl/monitor.c                   | 47 +++++++++++++++++++-----
+ 4 files changed, 75 insertions(+), 30 deletions(-)
+
+-- 
+2.43.0
+
