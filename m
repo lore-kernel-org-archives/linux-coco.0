@@ -1,142 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40213B42C5
-	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 03:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EAD3BCD0D
+	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 03:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791603695; cv=none; b=kCgND+amtQ8ngSFWE0hB7MJnujhyr0Lreai2IBpoMpfvwVi9eMdd/G+5WCIs2l0o6yOdUyHfAEOkj3mEF2+Gcs/QZrh6rB5vkoPMGdc5DDAD+tXy54nSp0qGFynPJ/AktnI58JbIjzPOIYshbza+tE6zXomn4imz+Ak0buTR12M=
+	t=1791604496; cv=none; b=nJBGB1BtFVM8wDaDp9eVT/YyPkUA/nggg6pFP2j/kEezZWHmj1K1ePpnwzG2jlJfPPRe4XyWg6R4aQ+SR9moCkUQxvt3HncWayK9j1RE/z5rtOgFX9g2TBRI+LUTtSn/IikdXFuIbgTjarRM40J8g58dADsl9yTivZY39eYPC2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791603695; c=relaxed/simple;
-	bh=1/SZOvUxJPVAklKg/0T2y39fh1+kBupLWOuf8mMxNTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcCO1PNvFf9VrJHlfijxTrSM3Zm0UiykkaxIM0AcQYsDtTVTwv0dxx00XtZMS0aliqrTaKGx0PV9yD2ZbTPC/g1+U0+oUD2nw7Urr9WUlH1Qf5zZDZ2Xjla4SSZYTqjLvVC8WjFStSKrmvVPPgDo/cOelAy9+tuNiAaJ7nhmVgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D1MtqeH1; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1791604496; c=relaxed/simple;
+	bh=vao8T0ntCrZ65nxL5fkeRY2wkDgW73C1nkNvuLDdxXo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IL3tj22O4aY92jf3IQq+STEDgmaLnaL4wM13hzlT7L4NMh1dvBjtfuFq3Nka7mDeX5jPMn1Bkjiih9W6fjiTMPh0QCedmIh23C2C1/VcUwUkGAoOTzGnaZIo6jskHiaCzaoKT1dS0UJyvp9+TcWQmuLIw/ANa1UZjHFF+6YyrgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g8nWeZRv; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D1MtqeH1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g8nWeZRv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791603693; x=1823139693;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1/SZOvUxJPVAklKg/0T2y39fh1+kBupLWOuf8mMxNTQ=;
-  b=D1MtqeH14F8InIddLnZZxtTz8FUS/DAdFFjPKvT76eIN72iW1azzqVSD
-   fN85T0JWxTD3w5bN6kytaOjh93Pp/WqqOw9D5zRps8pGSbkBl84LlpABf
-   Pmfnl1FpkJdr3u23qA63Q6bL7XeScyKlvupp4oh6G118ZAKRNQgFArhiA
-   lfWA+1hgoaiY0RjWGlHJ6sIFYqQOyzRT5qPXVOI7zHJ8Z70TlfRcRASew
-   AJri5kDFYCLhYgss6GPK4AEYPYcSs+VIq7C2BR/IBmtnW2uLASbu7TC4g
-   +gmPiVKdLMs5WysBPQBF0G1PGqkI/b01MJf91uC9Ai6n3mbu6vnaDL1om
+  t=1791604491; x=1823140491;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vao8T0ntCrZ65nxL5fkeRY2wkDgW73C1nkNvuLDdxXo=;
+  b=g8nWeZRvealF1YHbmmouskzWmSNaAUbgb2dx2aY/+FnFlbcpwRF+oLJc
+   ai1HG4cPALenPk51WXQey3vlXaQKb9z9UEzQhaOR3w+DzizmGnl1VsFoq
+   wLpvV8CTPyThHwazPM6CUm0e2KUNJBw458kSqTQHhHW2bnI9Q9W98NL6i
+   NdmAA8JjrfctMdZRNHMxTQhM/LMUtgEyJih16BJHOEmPFCftmJrAA+Fhl
+   7mfYXQpRaGnGON4nHgImsfQKHvSiOXfbQmYiQQD28WEG/nMmfyPg+F7R2
+   koHsnUeS+8oP3ySz1DnHarXnjH4JoKvV+/n/V+Kc+90ouiaG8mrS++MUR
    w==;
-X-CSE-ConnectionGUID: xXwEwA9OTQytAUlPx+zb8g==
-X-CSE-MsgGUID: jBIhVVn5T2y3whWQbI88tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="280864"
+X-CSE-ConnectionGUID: QACml3OGSi6en3O3tG1Wjg==
+X-CSE-MsgGUID: ic1N4CnrQquk2rlpVeJL0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="407437"
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="280864"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:41:32 -0700
-X-CSE-ConnectionGUID: RolorA4tTGGuCfEP8NrhAA==
-X-CSE-MsgGUID: rOH0JdrxRQi2GpUAw/Vv0w==
+   d="scan'208";a="407437"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:54:51 -0700
+X-CSE-ConnectionGUID: GLD/bdgAS4WSKp88uBXzDw==
+X-CSE-MsgGUID: K+HpcyrdQ8i8dSSlCWQEGQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="437819"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa005.jf.intel.com with ESMTP; 09 Oct 2026 20:41:28 -0700
-Date: Sat, 10 Oct 2026 11:38:02 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Tony Lindgren <tony.lindgren@linux.intel.com>, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com,
-	kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com,
-	sohil.mehta@intel.com, adrian.hunter@intel.com,
-	kishen.maloor@intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
-	nik.borisov@suse.com
-Subject: Re: [PATCH v3 6/6] x86/virt/tdx: Support DPAMT when adding memory
- for the extensions
-Message-ID: <asmzGnpjrDKmFLLP@yilunxu-OptiPlex-7050>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-6-db52cb05b918@linux.intel.com>
- <asR64ovVXEmTVgg6@tlindgre-MOBL1>
- <asceeI8LD5ltEOje@yilunxu-OptiPlex-7050>
- <asjrTLfebkjDzB9F@thinkstation>
+   d="scan'208";a="2288765"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:54:45 -0700
+Message-ID: <932ec219-5951-489b-bda9-1f6e9a605a9b@linux.intel.com>
+Date: Sat, 10 Oct 2026 11:54:42 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asjrTLfebkjDzB9F@thinkstation>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 14/23] KVM: selftests: Expose function to allocate
+ vCPU stack
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Lisa Wang <wyihan@google.com>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+ Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng
+ <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
+ <20261001-tdx-selftests-v15-14-7c62a5d8a992@google.com>
+ <b2143700-da36-418c-af63-0b50b33f080e@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <b2143700-da36-418c-af63-0b50b33f080e@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 09, 2026 at 02:28:34PM +0100, Kiryl Shutsemau wrote:
-> On Thu, Oct 08, 2026 at 12:39:20PM +0800, Xu Yilun wrote:
-> > On Tue, Oct 06, 2026 at 07:36:50AM +0300, Tony Lindgren wrote:
-> > > On Tue, Oct 06, 2026 at 01:41:50AM +0800, Xu Yilun wrote:
-> > > > The TDX module uses Physical Address Metadata Table (PAMT) to track some
-> > > > state for each page of physical memory that it might use. 3 levels of
-> > > > PAMTs are used to track pages of different sizes - 1GB, 2MB and 4KB.
-> > > > Dynamic PAMT (DPAMT) allows saving memory by allocating 4KB PAMT
-> > > > dynamically, while the 1GB and 2MB levels remain allocated on TDX module
-> > > > initialization. The kernel has helpers to install 4K DPAMT.
-> > > > 
-> > > > Although the memory for the extensions is tens of megabytes and the host
-> > > > allocates it in a large chunk, the TDX module accepts it at 4K
-> > > > granularity. Thus the host has to install 4K DPAMT for each page of it.
-> > > > 
-> > > > Call tdx_pamt_get() for each page before adding it to TDX module.
-> > > > Normally, these operations should not fail, and if they do,
-> > > > intentionally keep the error handling as simple as before - leak all
-> > > > pages, including the installed 4K DPAMT metadata.
-> > > > 
-> > > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > > > ---
-> > > > v3:
-> > > >  - New patch
-> > > > ---
-> > > >  arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
-> > > >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > index 5d5f9da1ab02..27a7039ee443 100644
-> > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > @@ -1330,8 +1330,15 @@ static __init int tdx_ext_mem_setup(void)
-> > > >  		struct page *chunk = page + added_pages;
-> > > >  		unsigned int i;
-> > > >  
-> > > > -		for (i = 0; i < chunk_pages; i++)
-> > > > +		for (i = 0; i < chunk_pages; i++) {
-> > > > +			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
-> > > > +			if (ret) {
-> > > > +				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
-> > > > +				goto out_free_hpa_list;
-> > > > +			}
-> > > > +
-> > > >  			hpa_list->phys[i] = page_to_phys(chunk + i);
-> > > > +		}
-> > > >  
-> > > >  		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-> > > >  		if (ret) {
-> > > > 
-> > > 
-> > > How about just fold this change in into patch 3/6?
-> > 
-> > I think patch 3/6 is already quite heavy. Is it good that I put this
-> > patch right after patch 3/6?
+On 10/9/2026 3:56 PM, Xiaoyao Li wrote:
+> On 10/2/2026 3:37 AM, Lisa Wang wrote:
+>> From: Sagi Shahar <sagis@google.com>
+>>
+>> Introduce kvm_allocate_vcpu_stack() to allocate a vCPU's stack
+>> in preparation for TDX to allocate a vCPU's stack and initialize
+>> its stack pointer.
+>>
+>> TDX VMs' registers are protected state and cannot be initialized
+>> using the KVM_SET_REGS ioctl() that is used for normal VMs. A TDX
+>> vCPU's stack address will be a property of the TDX specific boot code
+>> that initializes the vCPUs' stack pointers at boot.
+>>
+>> Signed-off-by: Sagi Shahar <sagis@google.com>
+>> Signed-off-by: Lisa Wang <wyihan@google.com>
+>> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+>> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+>> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>>  .../testing/selftests/kvm/include/x86/processor.h  |  2 ++
+>>  tools/testing/selftests/kvm/lib/x86/processor.c    | 25 +++++++++++++++++++---
+>>  2 files changed, 24 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+>> index 8854ee052d29..1eb380dd216c 100644
+>> --- a/tools/testing/selftests/kvm/include/x86/processor.h
+>> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
+>> @@ -1212,6 +1212,8 @@ static inline void vcpu_clear_cpuid_feature(struct kvm_vcpu *vcpu,
+>>  	vcpu_set_or_clear_cpuid_feature(vcpu, feature, false);
+>>  }
+>>  
+>> +gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm);
+>> +
+>>  u64 vcpu_get_msr(struct kvm_vcpu *vcpu, u64 msr_index);
+>>  int _vcpu_set_msr(struct kvm_vcpu *vcpu, u64 msr_index, u64 msr_value);
+>>  
+>> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+>> index da430d4e7765..4a753fb43007 100644
+>> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+>> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+>> @@ -851,12 +851,31 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
+>>  	vcpu_regs_set(vcpu, &regs);
+>>  }
+>>  
+>> -struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+>> +gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm)
 > 
-> But that breaks bisectability, no? Even placed right after 3/6, that
-> commit fails TDX module init on a machine with DPAMT and extensions
-> whenever the module asks for a non-zero pool.
+> Besides what Sashiko pointed out[1], this patch was just messed up during the
+> rebase and it even doesn't compile.
 
-It will not. Any patch for extension-backed features should be applied
-after this series. So the pool will always be zero until something like:
 
- /* List all kernel-supported add-on features0 bits here */
--#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (0)
-+#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (TDX_FEATURES0_QUOTE)
+Yes.
+
+And since the upstream code already has vm_alloc_stack(), which basically does
+the same thing.
+
+I think this patch can be dropped. 
+
+> 
+> [1] https://lore.kernel.org/all/20261002091331.BA23F1F00893@smtp.kernel.org/
+> 
+>>  {
+>>  	struct kvm_mp_state mp_state;
+>>  	struct kvm_regs regs;
+>> +	gva_t stack_gva;
+>>  	struct kvm_vcpu *vcpu;
+>>  
+>> +	stack_gva = __vm_alloc(vm, DEFAULT_STACK_PGS * getpagesize(),
+>> +			       DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
+>> +
+>> +	stack_gva += DEFAULT_STACK_PGS * getpagesize();
+>> +
+>> +	/*
+>> +	 * Align stack to match calling sequence requirements in section "The
+>> +	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
+>> +	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
+>> +	 * 16 when control is transferred to the function entry point.
+>> +	 *
+>> +	 * If this code is ever used to launch a vCPU with 32-bit entry point it
+>> +	 * may need to subtract 4 bytes instead of 8 bytes.
+>> +	 */
+>> +	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
+>> +		    "__vm_alloc() did not provide a page-aligned address");
+>> +	stack_gva -= 8;
+>> +
+>>  	vcpu = __vm_vcpu_add(vm, vcpu_id);
+>>  	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
+>>  	vcpu_init_sregs(vm, vcpu);
+>> @@ -864,8 +883,8 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+>>  
+>>  	/* Setup guest general purpose registers */
+>>  	vcpu_regs_get(vcpu, &regs);
+>> -	regs.rflags = regs.rflags | X86_EFLAGS_FIXED;
+>> -	regs.rsp = vm_alloc_stack(vm, DEFAULT_STACK_PGS);
+>> +	regs.rflags = regs.rflags | 0x2;
+>> +	regs.rsp = kvm_allocate_vcpu_stack(vm);
+>>  	vcpu_regs_set(vcpu, &regs);
+>>  
+>>  	/* Setup the MP state */
+>>
+> 
+
