@@ -1,90 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104AF2701B8
-	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 07:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA3F33EB10;
+	Sat, 10 Oct 2026 09:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791618051; cv=none; b=RX5kIARQdB3RRdqNkLDvodhrTiB5ASpwmBzGKgy6AKQjZ98j+rdWH2i+6Lra1zACK4chg+x9YQPWRwx75QdtuQTmHJ95YIFJgNlcLl5+wicvuu1KQFPVot0tZf5h8MG/TxVdWwiFrCSFYZhWU1TcglQZj/YIl1LA0PlfkG5tiuE=
+	t=1791623952; cv=none; b=ki163UGo6Fw7ihgg/MaaZAb2+2/PM22wocFjBLs6o9lsBAcO5BhUohShF69Sv0KZ/gtPns02CRGT4mnW/337BdUNJ9vyPHks4W2CVoMhOQ7hnr0bPB8XXCyWQSq3cF+SMbY9iXeUCRLs7zMV76bXBN4ehWdXuey9GSD6yppIjY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791618051; c=relaxed/simple;
-	bh=1vuW7igmuBaOaVd7Qx/9Busg1gOXOOX/G1LV5HNvmG8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wm2t4zghSkIpKok47NDvSMR2FsJOJU9d1u8KCgFS4cofHMXah3j+ig6UoJANnbpPXUv1Agm0CkjUmR1XrNNEU1wbnVsQPX05FkWnTh2p7pauc2x7fXlPk9O8QoN1Ixb4QlP3s9scjyyzjXHdhA+Y3qmapDOWARrtB/2MNrO90Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GGF+ItV1; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791623952; c=relaxed/simple;
+	bh=xJWOuAfcQ5pH23EefrBgictiwLlfihQDSTjnoO+K1HM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NOP4nMzTSNqgwOuUEkMcEarJJCqoRzHqpPHeeRM+L1b7/LYqkinqYRe2Uwql64V/X+2P2ICbjoi8pgX57+j51aax5DmNGUIG5zrWSX0diXXS+007x0iOisuPvwzry9AiWB1O+mrWfgtuObCjo6V8ub4kX/EMjUfme4jwuvZO7Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9nfPoD3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GGF+ItV1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791618050; x=1823154050;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1vuW7igmuBaOaVd7Qx/9Busg1gOXOOX/G1LV5HNvmG8=;
-  b=GGF+ItV17ZDbcWLosMKJnwCnpXYii8YFaGSR5s5thtnLK9ZWxa1tZDaw
-   x8HdoRBgFkfN7oryVUugGZmnVpjauQO+4rlRBri0OS6ZVacrk6/0RCQty
-   4GBimkglCrl0CZznCydVo7OYKiPnmAIHZxihiVDJY3+7ravbBeaBdTGvR
-   J+eW7LZIMwtCJQ+NybrnnPzeeXDx53R88c0Syku7xE3i5FUltK6vDb4Js
-   qOCnWjDrmZ8Gr8QvdN/ObRo4oo91327XFlBrZt/1e35bCBC/U7w5TFXu0
-   +LdtdYIknylfU4hBYl93cy2BGgWhRmNkxZ7nO2lI8b4F7Ga4j81g6D70B
-   Q==;
-X-CSE-ConnectionGUID: 9e5KwDKOROuzFn73RCaqRQ==
-X-CSE-MsgGUID: mE4hKjU2TAm03o9396Ef9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="415458"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="415458"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 00:40:49 -0700
-X-CSE-ConnectionGUID: pC2/cJPORAiRYpM0ldlElQ==
-X-CSE-MsgGUID: WpdbfLUDTXad1/9cw7Oi/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="415171"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 00:40:44 -0700
-Message-ID: <20778a25-8e89-440c-9c2b-16b42fe00c1d@linux.intel.com>
-Date: Sat, 10 Oct 2026 15:40:42 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9nfPoD3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530151F000FF;
+	Sat, 10 Oct 2026 09:19:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791623950;
+	bh=D4+Af9krnXG1FyhekW6iYE8+UMidk+F4PGKFcs/h4no=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Q9nfPoD3r0DN+zYl9hJGdoxzF+vQaPfP2sWcCXS3tjgtErSXq5ULXDJaNx3eg9SyG
+	 8oCobmGKCekdNmes0FH0zVEuQL1zRiEqLU6d8psZDuppz0ldsQ8dEIhc0bjKYK8RDm
+	 ejcrgaDOim3ulP9XsAy+piqwKQ7fBM8BwAbBwzDQT6YUni84MUec4lgKoY9CBtYot6
+	 sO7yUEuLGYCMsxFekTAveHnDSNLRATspHd6/bo4lHFMBT+kOsSC4KPOXI+6jA/EfM5
+	 OuTHp5rJ/sbc8p0h6NrGxye9ng7NkFAgYGB8l/M+tDAnk35WXrCOqeJ3/JVDOhTwlU
+	 S0hie+wH93mCA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xFTER-00000001JUf-3yLq;
+	Sat, 10 Oct 2026 09:19:08 +0000
+Date: Sat, 10 Oct 2026 10:19:07 +0100
+Message-ID: <865wz93oc4.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	jonathan.cameron@oss.qualcomm.com,
+	Sudeep Holla <sudeep.holla@kernel.org>
+Subject: Re: [PATCH v23 00/14] KVM: arm64: CCA: Add basic plumbing for Realms
+In-Reply-To: <CA+EHjTymHEqCJco+d_yy33ndqPPsoZARhOQZ5A0Zwc5N3SV4Qg@mail.gmail.com>
+References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
+	<179155224299.829527.1733164520192309991.b4-ty@b4>
+	<CA+EHjTymHEqCJco+d_yy33ndqPPsoZARhOQZ5A0Zwc5N3SV4Qg@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 23/23] KVM: selftests: Add TDX lifecycle test
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-23-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-23-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev, suzuki.poulose@arm.com, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, jonathan.cameron@oss.qualcomm.com, sudeep.holla@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
+On Fri, 09 Oct 2026 15:20:44 +0100,
+Fuad Tabba <fuad.tabba@linux.dev> wrote:
 > 
-> Add a test to verify TDX lifecycle by creating a simple TDX VM.
+> Hi Marc,
 > 
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> On Fri, 09 Oct 2026 14:28:03 +0100, Marc Zyngier <maz@kernel.org> wrote:
+> [...]
+> > Of course, mmu.c is where the crap happens, so anyone with any interest
+> > in this stuff being halfway sane, please review the conflict resolution.
+> 
+> I went through the mmu.c resolution and it looks good to me. Unmap and
+> aging are still no-ops for protected VMs, their abort handler is
+> unchanged, and the default op keeps the tracked unmap for nested MMUs.
+> Two minor things you might want to tidy up.
+> 
+> kvm_vm_stage2_unmap_range() repeats the lockdep_assert_held_write()
+> and WARN_ON(size & ~PAGE_MASK) that kvm_stage2_unmap_range() already
+> does before calling the op.
+> 
+> The VM_WARN_ON_ONCE() in kvm_vm_mem_abort() reads the ESR from the
+> vcpu again, where next had moved these checks to s2fd->esr. It's the
+> same result today, since the only caller handles a real abort, but
+> this (and dropping the vcpu local) would keep it in line with the
+> rest:
+> 
+>         VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
+>                         !esr_abt_is_write_fault(s2fd->esr) &&
+>                         !kvm_s2_fault_is_exec(s2fd));
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Thanks for looking. I've now applied this to the merge resolution.
+
+Cheers,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
