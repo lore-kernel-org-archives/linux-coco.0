@@ -1,389 +1,252 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3BC2EEE65
-	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 02:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791597913; cv=none; b=lK+8TZCYj2ThUZPCLJqC51O8QORzRGGIZ8OPgJneDuGBMWjT8w9p8WJjFCNDjapLE0IaFyLAhJyn7+TkEkxC9GopJn9fqdKHqIV2O5BniPzr0SFqXzs2XLn3IUGVDPOgcNfArJ+hn3KKsAbzXsoG6K3Nl1ueWou/jiSG/AI2yvI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791597913; c=relaxed/simple;
-	bh=9I23wXfeNydjEbABcHCnbMQ5LG3hAZhYYOwXKTc4oGM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n31cKlG0e2ck/e45z9hYWzEcsfCFdTXDw/oY70oSTLi5kExo9toDlWdkRQyOVOoJNlirTtQqfowME5K99V5rr7cKVjusGoP8sB3TvWkRSsTybEhMKkxdOHUBtZJXIsUIJ5BWUAJpXM9GixIUtuEz31FUfvUEYAqoaqnVg0pYhiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MVTnBAUR; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8A82BFC60
+	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 02:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791599455; cv=fail; b=Addwhb5gyYP670AAlhkdlUO7n2jF0UqnsTyqoIbGfXAaVGc1iE9c4qk/f7j1Sm99SA3UQ09XD09g9IM59QTclSZ/Kpt6hWl6tW2tEdM58qrmBf+FYp4/Wa0gCAMAUgtXQWOwQfRXn6uue2KcCur9ebyC9JM2z6vne2NqRZprDmU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791599455; c=relaxed/simple;
+	bh=lqOu/ygZgwrzIcQm9PoBfUBd2NTFs6kp/Nh5ZYf6TL4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=COBGJxfpJ9Ojz0t8rylqhylaYYbFm/6ZM0jRE1b8eryqANuXtl3NZ7xp1G5sxNoBrwUiBcQVHFDhD0aOYlmdmh+UGED/ggWepbME02eWi3SScxWVsWvgqCyBl5MMxYcD1tP58CIkdCCUktychKBp34FUL0TXA2U7liMMBV67gzE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GI/olUQ3; arc=fail smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MVTnBAUR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GI/olUQ3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791597911; x=1823133911;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9I23wXfeNydjEbABcHCnbMQ5LG3hAZhYYOwXKTc4oGM=;
-  b=MVTnBAURyAAbJ/5NSM+bknYtKvxxexqE2o4/7oCX+jL3rV5k3tg8rWcj
-   +74NY9fWCJzB+7E0pDYAxc1jWjlDjnFmXncrkgxe56lEkjb0v6NGhaxtZ
-   1EF4X3XcqRYfWcfF6ypluPYV4sgbxIykn+drjKJg3SAt8PXMCIlNwtiZS
-   WQw5whRMDqiiHV5vk08X6GLdw0G9CLIugJqx27cLIerFqef5hxPFRmyrN
-   +L1TyqG4dssNM7Ah4AaRV46HvBWPRt43VlHuYOM5giJ/+otkc0w+AJu0S
-   vsNiQcbhAsMJ87uw7RYfMp/Hza6G//5dZ8/pfToPNMKJ7EXN+BPQfqMSk
-   g==;
-X-CSE-ConnectionGUID: bIxKM0UBSnCZXjqBrl7MDA==
-X-CSE-MsgGUID: Nh0qZ3PoQtOpKEJVI5c64w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="509854"
+  t=1791599453; x=1823135453;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=lqOu/ygZgwrzIcQm9PoBfUBd2NTFs6kp/Nh5ZYf6TL4=;
+  b=GI/olUQ3g+O7un1ROvaF/x9s5CwMHzAEZPPTDmZPC97vfDtL3C0V/VNb
+   raRwZBf1UF0JcX4Dwfzkxh7ktcuUgG5UUVK3fFydnn7WsilKPSVL081AR
+   ZJaLp3c79eFkqZTl0ejwDUs7M8Hm3dwYUPVjq74kcboXoJkXnZROjjZ3S
+   6IQpNDE/KyDVtj0PQfEh6f38OItf9vByiw4T6ivHBrKhq2g6Hh1TqZ+zc
+   U8th5SMKDyZoUqERqSwTtT8/Gh3Y90W9Cb5352swtOcUpwvslcp39lyRL
+   VgAg2MOQ197zOzeFLvYxfWJi5L8SvgSEyZA3enxTSOKiPRRRFEjkwXBac
+   w==;
+X-CSE-ConnectionGUID: FjcO4TjvSgGcaYHmWffu9A==
+X-CSE-MsgGUID: j5TviMFOTTersDC2KASCwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="393128"
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="509854"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:05:11 -0700
-X-CSE-ConnectionGUID: QQqejKl6SZC1Yv3uZ6HNuQ==
-X-CSE-MsgGUID: 3H1uBa4QR4uqaY5lBts9Cg==
+   d="scan'208";a="393128"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:30:53 -0700
+X-CSE-ConnectionGUID: A3A/co7wR+isgEqO192cVw==
+X-CSE-MsgGUID: wctOWa9GRsacr0oPVuOmqQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="412298"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:05:05 -0700
-Message-ID: <dc3ff4f6-0017-45ce-96c4-1e40d91cbfc4@linux.intel.com>
-Date: Sat, 10 Oct 2026 10:05:02 +0800
+   d="scan'208";a="901983"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:30:51 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 9 Oct 2026 19:30:51 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Fri, 9 Oct 2026 19:30:51 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.38) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 9 Oct 2026 19:30:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t5LMmjvEmmLtE8wII2WN4ms+C+PB4SAWmakdFozRW3UXHsa/1VIMCxEIG9+t14fXsMusS1JtcfpoU2RZgLR/+gjEqnYrC3jYZwwrqfTJCUFYM3S61IcTZOwnGmjPzccqvoPE++mcOT5QvlLB23xNi+EO4Dy5EBZwoonfS4BltyB8JJLK+pRRtSYm34rKcQtXotOW5ZToFTHGGQxN+2Lf0m8qKCJS44YEUnTIGzMevp8ghOmF3wzfI9ceG/DGIBdQ12oi7aOFwRxPOvT47RVDjKK71aOHHWwZ7sJTnijDCq2aszabhem2MlgysmR5hZc9z5M+71tZwVlH8kBeNMP0FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LdU9rnC9dDn46kG1gmCuYGVi8fYqMr95ULeSLaZcTCo=;
+ b=eR/Z2JEmw7wkVWE2nIdmZb4pPT9vLPfmMmWa7Bm85f14W8OTHWasEAy8iY4QNmAaWcOI0o9V58HJ5AHPj2NStsvGnXVYNR9jR2dQrxUrewW6/iQ9Z4o78bOh9Elyp0HSyR9+ejuVnX6h+LgzR1cn5509AWj6kq6I4/dXPACQVsPKTQSGJRKOEE7mcEL89+kq0Yi6YncjBTVv5/5E+dIdjkbGe3Z+2s5tIvoY9pX298mjvCHl6lbyWHFRiavkB/IeGU9qjjbLl+kJED/MrGHZVdOUtw1eyu+20Atg+kyaaIvSv2r2klZyX/2dXOhxl6+oPWtki1ywOUYx8KAyudl9yQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL0PR11MB3236.namprd11.prod.outlook.com (2603:10b6:208:60::18)
+ by DS0PR11MB7443.namprd11.prod.outlook.com (2603:10b6:8:148::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Sat, 10 Oct
+ 2026 02:30:42 +0000
+Received: from BL0PR11MB3236.namprd11.prod.outlook.com
+ ([fe80::b026:a3ba:5162:beb2]) by BL0PR11MB3236.namprd11.prod.outlook.com
+ ([fe80::b026:a3ba:5162:beb2%5]) with mapi id 15.21.0496.017; Sat, 10 Oct 2026
+ 02:30:42 +0000
+Date: Sat, 10 Oct 2026 10:29:54 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "sashiko-bot@kernel.org"
+	<sashiko-bot@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, Vishal Annapurve
+	<vannapurve@google.com>
+Subject: Re: [PATCH v2 0/3] KVM: TDX: Syntehsize SHUTDOWN on unhandled EPT
+ Violation
+Message-ID: <asmjItCkW74Z6AV1@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260930001127.3170009-1-seanjc@google.com>
+ <3c0ee89f560b0235f293b32019327186785aa795.camel@intel.com>
+ <arxd78Pn6WWL6TGq@google.com>
+ <asdOF41hqDpycXKU@yzhao56-desk.sh.intel.com>
+ <aslVXBSovWuAsNtN@google.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aslVXBSovWuAsNtN@google.com>
+X-ClientProxiedBy: SI3PR01CA0014.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:296::10) To BL0PR11MB3236.namprd11.prod.outlook.com
+ (2603:10b6:208:60::18)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 03/23] KVM: selftests: Initialize the TDX VM
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-3-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-3-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR11MB3236:EE_|DS0PR11MB7443:EE_
+X-MS-Office365-Filtering-Correlation-Id: d29f53ab-fb0a-4b7a-a5f2-08df26767a51
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|23010399003|376014|22082099003|18002099003|261009223027099003|4143699003|10067099003|5023799004|56012099006|11063799006|6133799003|20046099003;
+X-Microsoft-Antispam-Message-Info: HFOAjQa2zxOyjF26gMYX6fv6x5M5Ehe1cSLw1FP9d28nKyJ7qMeABoiE7j1CTkE0HeHqsgFsAiujAYPOukO7SzoLJgscjumk/pIP6b+UH3Zy1nLM/u3eC3ejObxdd85Vmqfo2y3YiIRMb/Oj49uRTypqkJjG4mmPf2aLbn2gSKP2QrGkfaEcx7HL5snPRYjClU4ShrEi3AoWhqEJIsueksirTjiQTEw5Bo023FVer/YprdmHcFighwnun+a2UGYm7A5XPCVij4a3SJivakJwjVERzcseI2Z1VbC6twbRPJ7WACRoHY8Qsrc1jdbEkzgoT15qYQ+28m3HpYljxMNXzrk3EPP/CcRxxzFugvZWACum0XnghVlh2oucOHAbNi50K6GSGtUjUHLKB/X4MjWlboT4NfddU6HTaED7zaSrDuNiw00+x5PJOw55sXDJ9Tu+/wUR2VRWW9RYRlVJyE9XrpqWFSrwD76gBV5BsBjPMxaAIZ0WkJibDgso+4jRl8yYFooOXCptRok0kg1LEIdgWwT6mKAwKqAc86GHetc22CfCXyoRF59XlUglCISKj4v9hN/W6oolLbwLY/VM55YqRmyEnR5vW1Lwb7DSwaQXxacJPZeW1Y7P5aaTJFEJ0Y+r65oGRsjHdlKbnHexci3h41Ihue9zdyrQUBJZvyje0MQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3236.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(23010399003)(376014)(22082099003)(18002099003)(261009223027099003)(4143699003)(10067099003)(5023799004)(56012099006)(11063799006)(6133799003)(20046099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?bgcZFIIb2jmnRNl6yuHMlWRhbUBUOVP9g7Tukrh+tfuYYbeJHspDUzmhcc?=
+ =?iso-8859-1?Q?rYbBokgzv+l3LOEqZ37H08JZ9T1/IjMQsrdezq4FeY8vomH85n5viIXyeZ?=
+ =?iso-8859-1?Q?ntDaHGfAqKHRvoToUw6eoqMUtWcphM0E2Hz86cEPwRwaXH5e0vYXiUGwh8?=
+ =?iso-8859-1?Q?k5KjZA89vnrMQrjNmh/dKS6Lp/0Wl3vm4nqF1TsAuxBPgMVDHmuOxhuNLL?=
+ =?iso-8859-1?Q?LWnKm3lfeKwvpCVWTe/IohLGM5fH0Z/w7WgrSy0Oj2CeHmfnUGjrLrSGGK?=
+ =?iso-8859-1?Q?r2aen2Q+f6Wlf3EqFmvwJc1a0ZysIpMDf7/XYEp3153Icg8NzGmkwNz8lg?=
+ =?iso-8859-1?Q?505dt8CB+BfJ5oDN0N32a4GUz21k+4+KA3AWixyYmeQSIVQnsSw1I8H0LH?=
+ =?iso-8859-1?Q?unq9eK3+MEvPikfQjcB5/TV+GexXQsMDsyuNCrKZjaVddjRwfBLbxWQ2q/?=
+ =?iso-8859-1?Q?sgk6FssrqeeqknIJ2K1xjzrehz8xTwJ1zvXIcfvUCBFzk6j4YOJ8ufjU6K?=
+ =?iso-8859-1?Q?VNPumpv2EnDg/5OhK/4X2scFN7q0jHru5O0wPQNCXt+15t2KoR2xgLPfdh?=
+ =?iso-8859-1?Q?dYmccdmmAt3DLuT9vpgNOrLF7MVi/FybXkuQQEaFwTCnJNXmLgcSTnZ5Y4?=
+ =?iso-8859-1?Q?7Hs4H5g8dQ00Yzwhy8eZb1PP9tsxphswzGHZ99dC4RFnU9A8dK8rIUyU8B?=
+ =?iso-8859-1?Q?ATagPzjZseYdCej8p7dkJf5N71QCj3RPQQlnIjkdfg7s/2qk3dCSsp3LU+?=
+ =?iso-8859-1?Q?aygGN3f/cZT3wpTGBNdTyVLwQYhYGG/FO78xH4SLcr4NkA6fm+upe1iWPQ?=
+ =?iso-8859-1?Q?epCWM5eKKuzJ+i6OrD9sCANyqm5gk8XTFikb2SZ96s/0icPIy9yngFQBeP?=
+ =?iso-8859-1?Q?Ny4zW32ISo3MuU5uWUG7V8HN/8xBsvq0FcwfCrZBJLnpY/UnYotCeJvUai?=
+ =?iso-8859-1?Q?I6iLb6wwSAEHOuL5eRtUgTusvIGxS954ydqoW47mqu9mQJCKLdWTmP/xN0?=
+ =?iso-8859-1?Q?MpkhkKaAc2qbNLTonkp3QrW3YLkBh/e+gt5I6J57FwifC1PZHYDcrhnQR6?=
+ =?iso-8859-1?Q?gIh7F2FDTJlfX75x38lnIvRSK5rWPz7MoyzqXIa18fxrctmyxOPe6R/YR6?=
+ =?iso-8859-1?Q?p1cchIV5yKDQkYTrGw4f2l0ki8DirpErk2CpzsPZihqARkm0VqbUtmWYsJ?=
+ =?iso-8859-1?Q?Z7O93snpzCcDVQNsBaOpRGwuwlLfa2G9eFS/vH6ViQe2W0jnMsyA7iAN2I?=
+ =?iso-8859-1?Q?xXoD2hG2KYk+ov4zWjRenu2I22DD99hAiCoynprbPIIk3ZN9K3zvdJMq6O?=
+ =?iso-8859-1?Q?+LFMhoyvlb4M5V4EXN1qyUdrvt7p2qdyFSs1ZqH1UOj+4RDoank/E/4BxG?=
+ =?iso-8859-1?Q?ihj3qBYYaL0LHOd74J5mLeZMmU242wA9eBldJKNerN6KVhk1gQU1nZcKH+?=
+ =?iso-8859-1?Q?KHQJLsVusQ9IsIVLqyRzhZWPaoZdMsXEj+cX1XnizDYySXS1o+fPzAkUWw?=
+ =?iso-8859-1?Q?n/0j+UUowQorBX2+BhSow3PZYAzjj9iQYWIaVjzqk9ZmGSK/4N0Polrs38?=
+ =?iso-8859-1?Q?EmgZkemzGj57dVMoNJ5LlTqEhgMZoGhfVnAEkCLGhF+8qNXc7uuZxN46aZ?=
+ =?iso-8859-1?Q?1kDoW3HbU5I6bv8y58XVHkwBpCG1WsJNOn9HYxQQkAjNKlxB0LhKJUY9eO?=
+ =?iso-8859-1?Q?fi1RKmFyTDINky/UyG1R/ffSXwAREcAXyCoce6sw46BnckurugAGASkTzz?=
+ =?iso-8859-1?Q?T8iqFwHduD/7MRyaMVnjUQa29O8bcuOx89LhxQWpel23k3fhA5qftze1Jz?=
+ =?iso-8859-1?Q?j791om5mzg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: A+NH/eYFxnVm5OQ2fI/jBXIwZ8RF4eM+OhxC0HC6B4ksm9O9tELQGHpVG4fWGYKKRrDXj+A743tkGRV/2m+I0MoRaN1SEK/046Uai8+kJ+OCb8Th265CE+4tShKgvKEJsk+4ZyEIUa2OdbP/Ggpz3ZMC7Icbmml0dvp8B1cCxCJBjD3fdv1JUMyh71T+nk/6NiR/tUERTfnsZb4Ya56e6ltm4d4ji+apSPziRV6JxTDz0XDtgPKJVnNpKKQM8J92cki9teemKad9P9YHShFUiq8+VedSRJV22DgWfWTxFzSH6bAU4VWRYrzxYYY16h15H10gM1VEtDpzvhyLQPkP2w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d29f53ab-fb0a-4b7a-a5f2-08df26767a51
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB3236.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2026 02:30:42.1285
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zLt6tbrvNo1+Ky2cTlnzS4wFl0oUCraTHhPeVMbwx7Wk4X8S4c/a8rjUMjsluzlgO5I68YdWhPELFLJlvALNcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7443
+X-OriginatorOrg: intel.com
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
+On Fri, Oct 09, 2026 at 01:58:04PM -0700, Sean Christopherson wrote:
+> On Thu, Oct 08, 2026, Yan Zhao wrote:
+> > On Tue, Sep 29, 2026 at 05:55:11PM -0700, Sean Christopherson wrote:
+> > > On Wed, Sep 30, 2026, Rick P Edgecombe wrote:
+> > > > On Tue, 2026-09-29 at 17:11 -0700, Sean Christopherson wrote:
+> > > > > Signal SHUTDOWN instead of -EIO if the guest accesses an unaccepted page and
+> > > > > has disabled EPT Violation #VEs on such accesses.  Returning -EIO is all but
+> > > > > guaranteed to mislead the VMM into thinking KVM (or the VMM) messed up, and
+> > > > > will likely result in the VM being terminated instead of rebooted.
+> > Hmm, it's by design in my previous implementation to terminate a VM when the
+> > guest accesses an unaccepted page and has disabled EPT Violation #VEs on such
+> > accesses, according to the TDX module spec:
+> > 
+> > "This happens if the TD is configured to TD-exit (instead of a #VE) on an EPT
+> >  violation due to accessing a PENDING page. It normally indicates an error
+> >  condition; the host VMM may decide to tear the TD down."
+> > 
+> > So, for the initial implementation, we chose to invoke kvm_vm_dead() and print
+> > out the exact reason as a hint to the system admin.
 > 
-> Add tdx_init_vm() to handle the mandatory VM-level initialization
-> sequence required for Intel TDX.
+> kvm_vm_dead() should only be used when KVM *needs* to prevent userspace from
+> running the VM.
+Ok. But my previous intention was to kill the VM regardless of whether the
+userspace handles KVM_EXIT_SHUTDOWN or not.
+Did I use it correctly?
+I'm asking because you added the Fixes tag and "Cc: stable@vger.kernel.org" for
+patches 1/2 as well.
+
+> > (Previously, reboot was also not supported for a TDX guest).
 > 
-> For TDX, the VM's CPUID configuration must be "sealed" during
-> KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
-> the TDX module does not allow the host to create and initialize any
-> vCPUs before the VM's CPUID configuration is accepted and sealed into
-> the TDCS.
+> But QEMU isn't KVM.  While QEMU is the de facto reference VMM, it's important to
+> keep in mind that it's not the only VMM (and that's not just about Google's VMM,
+> there are plenty of other non-QEMU VMMs that are used in production environments).
+Hmm. That was the reason for me to choose forcefully killing the VM inside KVM,
+since for the initial implementation, I didn't want to bother updating every
+VMM :)
+
+> > Returning -EIO was based on the following considerations:
+> > - vcpu_enter_guest() returns -EIO when kvm_test_request(KVM_REQ_VM_DEAD, vcpu)
+> >   is true.
+> > - A request to handle a specific EPT violation is rejected by the firmware (the
+> >   TDX module).
+> > 
+> > > > I'm pretty sure Yan had a test for this path, and I'd love to see it actually
+> > > > exercised. What is the urgency on getting this fix upstream? Can we wait a week?
+> > I triggered the EPT violation in the kexec path, and successfully had the TD
+> > - killed with error msg: "qemu-system-x86_64: cpus are not resettable,
+> >   terminating" on an old QEMU, or
+> > - rebooted on a new QEMU with the msg printed:
+> >   "qemu-system-x86_64: info: virtual machine state has been rebuilt with new
+> >    guest file handle".
+> > 
+> > The TDX selftests we are using do not handle KVM_EXIT_SHUTDOWN, so if such
+> > an error occurs, it's silently ignored by the TDX selftests even with msg
+> > "kvm_intel: Guest access before accepting 0x8000c000 on vCPU 1" printed in dmesg.
 > 
-> Additionally, to satisfy the strict requirements of the TDH.MNG.INIT
-> SEAMCALL, the helper masks the host-supported CPUID
-                                     ^                                
-KVM-supported is more accurate
+> If TDX selftests don't fail due to an unexpected KVM_EXIT_SHUTDOWN, then that needs
+> to be fixed irrespective of this change.
+Ok.
 
-> (kvm_get_supported_cpuid()) against the "directly configurable"bits
-> reported by KVM_TDX_CAPABILITIES.
+> > > Absolutely.  It can probably wait a month and no one would care.  IIRC, this got
+> > > hit by someone (internal to Google) deliberately crashing a guest kernel and doing
+> > > funky things with kexec.  It showed up on my radar purely because our automated
+> > > madness alerted on the resulting assertion (on -EIO) in the VMM.
+> > Though I didn't realize that returning -EIO would mislead the VMM into thinking
+> > KVM (or the VMM) messed up, such an error could also be introduced by a VMM bug?
 > 
-> Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm           |   1 +
->  .../testing/selftests/kvm/include/x86/processor.h  |   2 +
->  .../selftests/kvm/include/x86/tdx/tdx_util.h       |  37 +++++++
->  tools/testing/selftests/kvm/lib/x86/processor.c    |  21 +++-
->  tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 121 +++++++++++++++++++++
->  5 files changed, 178 insertions(+), 4 deletions(-)
+> Yes, but that holds true for literally every guest failure.  It's like saying that
+> all observed errors could be due to a CPU bug, e.g. because the CPU corrupted state
+> or because a bit flipped in DRAM.  It's technically true, but in practice the vast
+> majority of failures (outside of pre-production hardware) are software errors, and
+> so absent evidence that a hardware/VMM/KVM bug is at play, KVM shouldn't assume
+> anything.  I.e. as above, unless KVM needs to protect itself, KVM should aways try
+> to provide semantics that are rooted in the CPU architecture.
 > 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 239bc61ea384..8f514008daa2 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -28,6 +28,7 @@ LIBKVM_x86 += lib/x86/pmu.c
->  LIBKVM_x86 += lib/x86/processor.c
->  LIBKVM_x86 += lib/x86/sev.c
->  LIBKVM_x86 += lib/x86/svm.c
-> +LIBKVM_x86 += lib/x86/tdx/tdx_util.c
->  LIBKVM_x86 += lib/x86/ucall.c
->  LIBKVM_x86 += lib/x86/vmx.c
->  
-> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-> index ed50007e3504..08b7b194f213 100644
-> --- a/tools/testing/selftests/kvm/include/x86/processor.h
-> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
-> @@ -1024,6 +1024,8 @@ static inline void vcpu_xcrs_set(struct kvm_vcpu *vcpu, struct kvm_xcrs *xcrs)
->  	vcpu_ioctl(vcpu, KVM_SET_XCRS, xcrs);
->  }
->  
-> +const struct kvm_cpuid_entry2 *__get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> +						 u32 function, u32 index);
->  const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
->  					       u32 function, u32 index);
->  const struct kvm_cpuid2 *kvm_get_supported_cpuid(void);
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> index f647e6ca6b34..571f7ce4b8fe 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> @@ -11,4 +11,41 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
->  	return vm->type == KVM_X86_TDX_VM;
->  }
->  
-> +/*
-> + * TDX ioctls
-> + * Use underscores to avoid collisions with struct member names.
-> + */
-> +#define __tdx_vm_ioctl(vm, cmd, _flags, arg, hw_err)			\
-> +({									\
-> +	u64 *__hw_err = (hw_err);					\
-> +	int r;								\
-> +									\
-> +	union {								\
-> +		struct kvm_tdx_cmd c;					\
-> +		unsigned long raw;					\
-> +	} tdx_cmd = { .c = {						\
-> +		.id = (cmd),						\
-> +		.flags = (u32)(_flags),					\
-> +		.data = (u64)(arg),					\
-> +	} };								\
-> +									\
-> +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> +	if (__hw_err)							\
-> +		*__hw_err = tdx_cmd.c.hw_error;				\
-> +	r;								\
-> +})
-> +
-> +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
-> +({									\
-> +	u64 hw_error;							\
-> +	int ret = __tdx_vm_ioctl(vm, cmd, flags, arg, &hw_error);	\
-> +									\
-> +	TEST_ASSERT(!ret,						\
-> +		    "%s failed, rc: %d errno: %i (%s) hw_error: 0x%llx",\
-> +		    #cmd, ret, errno, strerror(errno),			\
-> +		    (unsigned long long)hw_error);			\
+> E.g. an analogous failure would for non-TDX guests would be if the host zeroed a
+> page that happened to be necessary to handle exceptions in the guest, and as a
+> result the guest hit a triple fault shutdown.  KVM doesn't return -EIO instead of
+> KVM_EXIT_SHUTDOWN just because the failure could have been introduced by a kernel
+> or VMM bug.
+Makes sense. Thanks for the explanation!
 
-hw_error is already u64, why cast it to unsigned long long?
-TDX cases can only be done in x86-64, just use 0x%lx for u64? 
-
-> +})
-> +
-> +void tdx_init_vm(struct kvm_vm *vm);
-> +
->  #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index 24395a8e654a..b87ba7d8538b 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -829,6 +829,9 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
->  		vm_sev_ioctl(vm, KVM_SEV_INIT2, &init);
->  	}
->  
-> +	if (is_tdx_vm(vm))
-> +		tdx_init_vm(vm);
-> +
->  	r = __vm_ioctl(vm, KVM_GET_TSC_KHZ, NULL);
->  	TEST_ASSERT(r > 0, "KVM_GET_TSC_KHZ did not provide a valid TSC frequency.");
->  	guest_tsc_khz = r;
-> @@ -1347,8 +1350,8 @@ void kvm_init_vm_address_properties(struct kvm_vm *vm)
->  	}
->  }
->  
-> -const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> -					       u32 function, u32 index)
-> +const struct kvm_cpuid_entry2 *__get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> +						 u32 function, u32 index)
->  {
->  	int i;
->  
-> @@ -1358,11 +1361,21 @@ const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
->  			return &cpuid->entries[i];
->  	}
->  
-> -	TEST_FAIL("CPUID function 0x%x index 0x%x not found ", function, index);
-> -
->  	return NULL;
->  }
->  
-> +const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> +					       u32 function, u32 index)
-> +{
-> +	const struct kvm_cpuid_entry2 *entry;
-> +
-> +	entry = __get_cpuid_entry(cpuid, function, index);
-> +	if (!entry)
-> +		TEST_FAIL("CPUID function 0x%x index 0x%x not found ", function, index);
-> +
-> +	return entry;
-> +}
-> +
->  #define X86_HYPERCALL(inputs...)					\
->  ({									\
->  	u64 r;							\
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> new file mode 100644
-> index 000000000000..3a8900ff2540
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> @@ -0,0 +1,121 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include "processor.h"
-> +#include "tdx/tdx_util.h"
-> +
-> +static const struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
-> +{
-> +	static struct kvm_tdx_capabilities *tdx_cap;
-> +	int nr_cpuid_configs = 4;
-> +	int rc = -1;
-> +	int i;
-> +
-> +	if (tdx_cap)
-> +		return tdx_cap;
-> +
-> +	do {
-> +		nr_cpuid_configs *= 2;
-> +
-> +		tdx_cap = realloc(tdx_cap, sizeof(*tdx_cap) +
-> +					   (sizeof(struct kvm_cpuid_entry2) * nr_cpuid_configs));
-> +		TEST_ASSERT(tdx_cap,
-> +			    "Could not allocate memory for tdx capability nr_cpuid_configs %d\n",
-
-Nit: Trailing newline in the message could be dropped.
-
-
-> +			    nr_cpuid_configs);
-> +
-> +		tdx_cap->cpuid.nent = nr_cpuid_configs;
-> +		rc = __tdx_vm_ioctl(vm, KVM_TDX_CAPABILITIES, 0, tdx_cap, NULL);
-> +	} while (rc < 0 && errno == E2BIG);
-> +
-> +	TEST_ASSERT(rc == 0, "KVM_TDX_CAPABILITIES failed: %d %d",
-> +		    rc, errno);
-> +
-> +	pr_debug("tdx_cap: supported_attrs: 0x%016llx\n"
-> +		 "tdx_cap: supported_xfam 0x%016llx\n",
-> +		 tdx_cap->supported_attrs, tdx_cap->supported_xfam);
-> +
-> +	for (i = 0; i < tdx_cap->cpuid.nent; i++) {
-> +		const struct kvm_cpuid_entry2 *config = &tdx_cap->cpuid.entries[i];
-> +
-> +		pr_debug("cpuid config[%d]: leaf 0x%x sub_leaf 0x%x eax 0x%08x ebx 0x%08x ecx 0x%08x edx 0x%08x\n",
-> +			 i, config->function, config->index,
-> +			 config->eax, config->ebx, config->ecx, config->edx);
-> +	}
-> +
-> +	return tdx_cap;
-> +}
-> +
-> +/*
-> + * Filter CPUID based on TDX supported capabilities
-> + *
-> + * Input Args:
-> + *   vm - Virtual Machine
-> + *   cpuid_data - CPUID fields to filter
-> + *
-> + * Output Args: None
-
-cpuid_data should be Input/Output Arg?
-
-I am not sure Input Args / Output Args / Return needed though.
-It seems the selftests code in kvm/x86 doesn't use this format.
-
-> + *
-> + * Return: None
-> + *
-> + * For each CPUID leaf, filter out unsupported bits based on the capabilities
-> + * reported by the TDX module
-
-KVM filters directly configurable features that it doesn't support.
-The capabilities reported are not the original version reported by the TDX module.
-
-the TDX module -> KVM ?
-
-> + */
-> +static void tdx_filter_cpuid(struct kvm_vm *vm,
-> +			     struct kvm_cpuid2 *cpuid_data)
-> +{
-> +	const struct kvm_tdx_capabilities *tdx_cap;
-> +	const struct kvm_cpuid_entry2 *config;
-> +	struct kvm_cpuid_entry2 *e;
-> +	int i;
-> +
-> +	tdx_cap = tdx_read_capabilities(vm);
-> +
-> +	i = 0;
-> +	while (i < cpuid_data->nent) {
-> +		e = cpuid_data->entries + i;
-> +		config = __get_cpuid_entry(&tdx_cap->cpuid, e->function, e->index);
-> +
-> +		if (!config) {
-> +			int left = cpuid_data->nent - i - 1;
-> +
-> +			if (left > 0)
-> +				memmove(cpuid_data->entries + i,
-> +					cpuid_data->entries + i + 1,
-> +					sizeof(*cpuid_data->entries) * left);
-> +			cpuid_data->nent--;
-> +			continue;
-> +		}
-> +
-> +		e->eax &= config->eax;
-> +		e->ebx &= config->ebx;
-> +		e->ecx &= config->ecx;
-> +		e->edx &= config->edx;
-> +
-> +		i++;
-> +	}
-> +}
-> +
-> +void tdx_init_vm(struct kvm_vm *vm)
-> +{
-> +	struct kvm_tdx_init_vm *init_vm;
-> +	const struct kvm_cpuid2 *tmp;
-> +	struct kvm_cpuid2 *cpuid;
-> +
-> +	tmp = kvm_get_supported_cpuid();
-> +
-> +	cpuid = allocate_kvm_cpuid2(tmp->nent);
-> +	memcpy(cpuid, tmp, kvm_cpuid2_size(tmp->nent));
-> +	tdx_filter_cpuid(vm, cpuid);
-> +
-> +	init_vm = calloc(1, sizeof(*init_vm) +
-> +			 sizeof(init_vm->cpuid.entries[0]) * cpuid->nent);
-> +	TEST_ASSERT(init_vm, "init_vm allocation failed");
-> +
-> +	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
-> +	free(cpuid);
-> +
-> +	init_vm->attributes = 0;
-> +	init_vm->xfam = 0;
-
-May be some comments for setting attributes and xfam to 0.
-Especially why the test doesn't need SEPT_VE_DISABLE?
-
-
-> +
-> +	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
-> +
-> +	free(init_vm);
-> +}
-> 
-
+> > e.g., VMM removes an accepted page without any notification to the TD configured
+> > with TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE bit.
