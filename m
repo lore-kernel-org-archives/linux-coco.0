@@ -1,119 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601213BBFCD
-	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 02:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08023C0613
+	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 03:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791600429; cv=none; b=lteXDris6dyPmizBFyiC6XkeLOM08QnDYjaJYsoT2dmR7sW1HDVYuRvdDELmFsjOsgIZvbnhy1vLHN1mSM2UNEWUtu99VHY5SJfLqE8E+TjpVXtwNe2ptlan0tu+vEXdyMY0eWFCJ+SSMPI0liCZXgiqm5CwrefB0jxeV+B2hk4=
+	t=1791602622; cv=none; b=WygZ5/U/+C0Tw8ZQxWo5wE8hhl7VE3N1D7doO9t2GPRv/dbmxWpthbIdlbbkHCz984kdztCUU2cvayWZwC3FR68xFVhPyTwN/Ag8AA93byOtVekrlnqo1riUes0UAz4pgmjIvxV+doSAePkY43wBiKXEBh12nylAD90L+vDpVaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791600429; c=relaxed/simple;
-	bh=TwvxuliLdqh6Kvf8xBvOYb5mrkLELcwTdcUa6mDjPbo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pTxVP1KS7HrLVNvREstVJ1nYmSqsAwQ+7V12T4YWTYE+FzqtFfjvzR56UdFYs1XvYqTs381YVNI2DWtdIn2mGlCtDoBaTa3qNR5XkTIr4IWh0n9Epotr0hBXeYiynLLwwT1xkNwChe9/dvPfqNQQcef3JQMe4h2MqfHE+Am3ESc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LZadtJc5; arc=none smtp.client-ip=192.198.163.16
+	s=arc-20240116; t=1791602622; c=relaxed/simple;
+	bh=boeBybVkHR4ylIABwK1fJFz3P6gqUYTFRsppyS7PUio=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=enpLmlSMCN7xenCQ64Kn45uTdhTTh21KApwnUPycbAmd63QacgYVsA5NBNsmnAY9PrC82Hb9Eg2A9ew5j//ihipGyqjkp6Pk28tp13g+yxZaYL4PgUtZggOTqwFdcm3K+DiFYvHt8O7z4iw2G7+JsVQjtoR3qRW8IEjhwflobu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YgmVqQN7; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LZadtJc5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YgmVqQN7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791600425; x=1823136425;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TwvxuliLdqh6Kvf8xBvOYb5mrkLELcwTdcUa6mDjPbo=;
-  b=LZadtJc54DbAdnDozOn7i+Bo6HIqXkMp6ROmJkYDUSacw3BoCoQg0Ih4
-   VLfh/9Byo4IviTwpTPHXEIuCdmnZn+UI3nOJsUtRIDjvHKg8qtRRh8Nab
-   lkLtRecfbfGkrmgyB3s99VfvNlligWcBjBjgtQMNJoJO8GXuFz1vuiyu2
-   dP3kb/drKTQeo5q/O97pxkzQDqP6Hr6HnOT5EonswQ6H2f/H/8bLXaqZt
-   nNhOxBp9GVhzdyFGVbQHDnt1TIioYELYcu5+UNA7uR6fm9aXz8tR5CGU6
-   44LX0libpgVrguTr4+mDJ0bJopuXgdNhY3hYWfj80kkF426xn/UxOOw4X
-   g==;
-X-CSE-ConnectionGUID: qKZjwXWkRxGIg/1i8oDLGA==
-X-CSE-MsgGUID: IWeSiCs6Q0uHjLNcbLRnyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="406742"
+  t=1791602621; x=1823138621;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=boeBybVkHR4ylIABwK1fJFz3P6gqUYTFRsppyS7PUio=;
+  b=YgmVqQN7MZAgFH5+KudMtqiAgiJOF2musPUTzesn2fGTxYuWAzLbXdGD
+   Jph6KL9IDzMnSFQkUBSSXUGRZ/F1x3BeWTb9PxNxHOrHfFYGevZFktan/
+   IyCqTncoVYhVegBLCi1g+jxGxgo9yM0eF6Z81lD2Jd0DxGziccwLiBcG5
+   AqJ/r4NBpypevwYJbtosNe9gOM9cCBOQy23j+lMykLqXPeLP0BwbxQrq5
+   OGzBxj6REmFIw8iuSXOPhpeu2ajl85K5VseHFZMzrn8diqQXtgq5adQbS
+   +gV3dbtn1EsvY+pyNsFr3fIAAtGo9B+DZwabIFhbv0yEQ8Aj8gHHsrBXy
+   w==;
+X-CSE-ConnectionGUID: bWsOx/sVTeyROJw5x/iUIg==
+X-CSE-MsgGUID: XXufgAhqSu2+R9RAwtmvag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="395598"
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="406742"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:47:05 -0700
-X-CSE-ConnectionGUID: B8KXmx6rTC6C1JQxgMBDDw==
-X-CSE-MsgGUID: 0oFwvbnTT4mKrLi7+6ZRNg==
+   d="scan'208";a="395598"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:23:41 -0700
+X-CSE-ConnectionGUID: wXLdcWPOR7OcB45omJPC5A==
+X-CSE-MsgGUID: Ws8vEc+cRGWOER0ondcQhQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="792483"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:46:59 -0700
-Message-ID: <a1fc92af-b2f4-4fe4-b113-0b206fb728b7@linux.intel.com>
-Date: Sat, 10 Oct 2026 10:46:56 +0800
+   d="scan'208";a="640160"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa001.fm.intel.com with ESMTP; 09 Oct 2026 20:23:36 -0700
+Date: Sat, 10 Oct 2026 11:20:10 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>
+Subject: Re: [PATCH v3 3/6] x86/virt/tdx: Add extra memory to TDX module for
+ the extensions
+Message-ID: <asmu6nwPYKPnZ3jC@yilunxu-OptiPlex-7050>
+References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
+ <20261006-tdx-module-ext-v3-3-db52cb05b918@linux.intel.com>
+ <e6207c3e0443be4ee120ad4ce2b10359f7769964.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 10/23] KVM: selftests: Set up TDX boot parameters
- region
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-10-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-10-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e6207c3e0443be4ee120ad4ce2b10359f7769964.camel@intel.com>
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
+On Fri, Oct 09, 2026 at 06:58:44PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-10-06 at 01:41 +0800, Xu Yilun wrote:
+> > +static __init int tdx_ext_mem_setup(void)
+> > +{
+> > +	unsigned int required_pages, added_pages;
+> > +	struct tdx_sys_info_ext sysinfo_ext;
+> > +	struct tdx_hpa_list *hpa_list;
+> > +	struct page *page;
+> > +	int ret;
+> > +
+> > +	ret = get_tdx_sys_info_ext(&sysinfo_ext);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	required_pages = sysinfo_ext.memory_pool_required_pages;
+> > +
+> > +	/*
+> > +	 * Skip the memory setup if no memory is required. This may happen when
+> > +	 * no add-on features requiring TDX module extensions are configured
+> > +	 * via TDH.SYS.CONFIG.
+> > +	 */
+> > +	if (!required_pages)
+> > +		return 0;
 > 
-> Allocate memory for TDX boot parameters and define the utility functions
-> necessary to fill this memory with the boot parameters.
+> Marshaling this through the struct just to get a set it to required_pages seems
+> a bit silly. But I see required_pages is needed for line length.
 > 
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Two options:
+> 
+> Make the get_tdx_sys_info_ext() just take an unsigned int pointer arg. When
+> Chao's metadata reading stuff lands, we can keep the struct internal to the
+> helper, to still re-use the macro struct mapper stuff.
 
-One nit below and the issue pointed by the sashiko.
+struct tdx_sys_info_handoff is an existing example so I don't want to
+make it different.
 
-Otherwise,
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> 
+> Rename memory_pool_required_pages to required_pages to shorten the lines to
+> something manageable and use it directly below.
 
-[...]
+I prefer the 2nd one. I also want to rename the sysinfo_ext to ext, to
+make the field short enough for direct usage everywhere.
 
-> +void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus)
-> +{
-> +	size_t boot_params_size = sizeof(struct td_boot_parameters) +
-> +		nr_runnable_vcpus * sizeof(struct td_per_vcpu_parameters);
-> +	int npages = DIV_ROUND_UP(boot_params_size, PAGE_SIZE);
-> +	const u64 gmem_flags = 0;
-> +	gpa_t gpa;
-> +
-> +	vm_mem_add(vm, VM_MEM_SRC_SHMEM, TD_BOOT_PARAMETERS_GPA,
-> +		   TD_BOOT_PARAMETERS_SLOT, npages,
-> +		   KVM_MEM_GUEST_MEMFD, -1, 0, gmem_flags);
-> +	gpa = vm_phy_pages_alloc(vm, npages, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_SLOT);
-> +	TEST_ASSERT(gpa == TD_BOOT_PARAMETERS_GPA, "Failed vm_phy_pages_alloc\n");
+  struct tdx_sys_info ext ext;
 
-Nit: the tailing newline can be dropped.
+  ret = get_tdx_sys_info_ext(&ext);
+  if (ret)
+	return ret;
 
-> +
-> +	virt_map(vm, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_GPA, npages);
-> +}
-> +
+  if (!ext.required_pages)
+	return 0;
+
+  ...
