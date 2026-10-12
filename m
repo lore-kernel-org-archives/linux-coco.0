@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2625D474266
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 09:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A803476694
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 09:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798625; cv=none; b=EQ0CbMDP3FhpgFTqweAadUq+vHAqDVYiHGo2ORoHD1MxvclzH90M8TthDMz+k8JajLqL8l7uUdlqTnWiu7fFp5FJ3Jfwce2D+3bnoVrxz7Konn0xSUAtRpDtYjzhKBNaVmYq/HuAEMf2cqsn3LfOmp0ut95i0Oa56/LkntFqPCM=
+	t=1791798626; cv=none; b=GquhJeuLZwl8XK+/HxaQExxAC3PUK0LxQiDcDGAN4M/nUO+SI8P4ks48bbLqBvD2DQHNv1t692JsEZcf+wkjFYRrxjaN8o9Cge9ZISq0/jvfb2KXGTzRV0vf25bWBbbhhMG+y3qXfPrrB7SacsrX02Nn282AMXt92bGyLrKduCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798625; c=relaxed/simple;
-	bh=RzLWHjemQgbwtVJ+gZtIzOuwMdap2fNgwJ8Dkzq7gnI=;
+	s=arc-20240116; t=1791798626; c=relaxed/simple;
+	bh=LqDCTOZZDfsrSnUcDj4rZwu8FSgEik8ZhbEY7Dpe7g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t74Vra6PDiyoRVn9WwU6bZMPBH78rrqvOIJTX/0ZjHib04UIkiQu+MoUmdA74DZ/jti7Wr/tRgfKGgOXBIWb2N0+2YIBbmEzT2BGTyPNld8frT30r3jXRVjasNyj2Jv/Hy3Rqd5nl71XhYYMteK/B232EGpuuUhIFy4NojFph1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DI2jfzOR; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=JI2ge3exLEXH2NGKM1E5JeHvtQS3d872szqtbgQpaAzAJWhCcpsD2b8wBgZZhfm1OHfoeTSUMGKwD/wQCIaH/YLiV8xuJYYvn/nfxcTJAhbNmYDBZrdrHkMq//1rUsg9BC+EQQHGiWESoJt6VM8ih3PvdcenDWbI29CktIF+GRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OR36j0a/; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DI2jfzOR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OR36j0a/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791798621; x=1823334621;
+  t=1791798623; x=1823334623;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RzLWHjemQgbwtVJ+gZtIzOuwMdap2fNgwJ8Dkzq7gnI=;
-  b=DI2jfzORYRbfMbzKmVYWVKdD0hENKO5raHks1bOe7vw3rw1Nu1exSLkO
-   rUpH9/hWxBE7LN2Ccdu3DhfmyLgt75RqhJB1tyPYfVpbJ77QpLWgjk80Y
-   vD2GxPNT5+0HYcj+T+1keBLeDj6JfOj5n1r4+F8ewNkWgzev8GfQTpqB7
-   5g4PvlwIBKzjLAq6RaA/eoPgJVQZvSOZh0m9C+V3x3xI/28DYY9Dhan+P
-   YsoZ1BhnONOLhf7ciIQ2S2Xsh2FB+K1pdFMfLVOBXUgz5jtU9KT0IHbpl
-   pmPmmF3vOoeA390IDr/8fP6vZjTVnsC65vxfL6bk2qD2EjKfx9x91GkDN
-   Q==;
-X-CSE-ConnectionGUID: 7tv8r/drRJ+Xh2CKhHOqDw==
-X-CSE-MsgGUID: sHA8TxrmRB2G+KYP4SgUFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="387986"
+  bh=LqDCTOZZDfsrSnUcDj4rZwu8FSgEik8ZhbEY7Dpe7g8=;
+  b=OR36j0a/gJhLWIihDVgsgqFpCrGaOeZRfXOb4d4kEWzYaxdbxrGbp4Me
+   bo6UI5n+rAoE9zAMAMnXNWFm7c/sLXeOV/DjlWDnswF7kFexapPBOUIMM
+   l+oJc2jb4ZS5pQtb1qsBJGh6hHCsnv0pZn1fTb7AAASeXIluPdPmrWVda
+   mXqCKaBKRkLsQW0W4eF7qOqRwfnu+ifN4JeCQ6E7BsR/zgdmB4qoRj2U0
+   qi/1aL8WZF3aPrXkwAcCJzKxaH69ruy7lMMaBTiiMad1aCF9Cvv8vxHmh
+   C/Pc1HIZ7tuAlISntjZ4LB96V9OHa1Fa8ijFKeOshrhiPCaT1cT5tNUv9
+   w==;
+X-CSE-ConnectionGUID: aZiHe3CbQDqTItMthl0VlA==
+X-CSE-MsgGUID: 8QwPdXJqTXKp2Re7oXGmRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="387996"
 X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
-   d="scan'208";a="387986"
+   d="scan'208";a="387996"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:20 -0700
-X-CSE-ConnectionGUID: sCJeaolgQ3m6hFPrjsSrjA==
-X-CSE-MsgGUID: 4ppjaFv/T9GfsF3+3DNzyw==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:21 -0700
+X-CSE-ConnectionGUID: FowlmGKQRrGIX4YPvoftBw==
+X-CSE-MsgGUID: 9WGmSr4xRui8UmJjVCLAIQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
-   d="scan'208";a="776818"
+   d="scan'208";a="776826"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:20 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:21 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -60,9 +60,9 @@ Cc: yilun.xu@linux.intel.com,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH v4 01/10] x86/virt/tdx: Add a helper to read a table of metadata fields
-Date: Mon, 12 Oct 2026 02:47:28 -0700
-Message-ID: <20261012094754.27702-2-chao.gao@intel.com>
+Subject: [PATCH v4 02/10] x86/virt/tdx: Convert the version metadata reader
+Date: Mon, 12 Oct 2026 02:47:29 -0700
+Message-ID: <20261012094754.27702-3-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261012094754.27702-1-chao.gao@intel.com>
 References: <20261012094754.27702-1-chao.gao@intel.com>
@@ -74,112 +74,129 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The metadata field readers get_tdx_sys_info_<class>() in
-tdx_global_metadata.c were generated by an out-of-tree script. That has
-not worked out: the JSON file they were generated from is neither stable
-nor authoritative enough [1].  The goal now is to maintain the readers by
-hand and to establish one standard way of adding a metadata field.
+With the helper to read a table of metadata fields in place, the
+existing metadata readers can be standardized on it.
 
-Take get_tdx_sys_info_version() as an example:
+Convert the version metadata reader: add a table that pairs each field ID
+with the 'struct tdx_sys_info_version' member that holds its value, and
+read all version fields by walking that table.
 
-      if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
-              sysinfo_version->minor_version = val;
-      if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
-              sysinfo_version->major_version = val;
-      if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
-              sysinfo_version->update_version = val;
+Name the field IDs for readability, so the table entries don't carry raw
+hex literals.
 
-Two patterns stand out: the read-check-store sequence repeats once per
-field, and the error of each read is chained into the reads that follow.
-Neither is common in hand-written code.
-
-Prepare to eliminate both with a loop that reads each field, stores the
-value into its structure member, and returns on the first error.
-
-Add 'struct field_mapping' to describe one field as its ID plus the offset
-and size of the member that receives its value. Add FIELD_MAP() to
-build such an entry from a field ID, a structure type and a member name.
-Add __read_sys_metadata_table() helper to read every field in a table.
-Annotate that helper __maybe_unused as there is no caller right now.
-
-Following changes will convert the existing readers to use the new helper.
-
-AI was used under supervision to review code and workshop logs. It
-suggested adding read_sys_metadata_table() macro, which avoids repeating
-the table name when passing both the table and its size.
+AI was used under supervision to review code and workshop logs.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Link: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [1]
 ---
 v4:
- - Collect tags [Nikolay, Rick]
- - Rename TDX_SYSINFO_MAP() to FIELD_MAP() to keep table entries short
- - Builds the full structure name from its tdx_sys_info_ suffix [Yilun]
+ - Collect tags [Rick]
+ - Drop per-class macros [Nikolay, Dave]
 
 v3:
- - Pass the field ID to TDX_SYSINFO_MAP() instead of pasting the
-   TDX_MD_FIELD_ID_ prefix onto a suffix inside the macro [Rick]
- - Say that this patch only prepares to eliminate the two patterns. [Rick]
- - Define @offset in struct field_mapping as size_t [Binbin]
+ - Drop the get_tdx_sys_info_*() wrappers to remove an unnecessary layer
+   of abstraction. [Rick, Dave]
+ - Shorten the field ID defines from TDX_MD_FIELD_ID_* to TDX_FIELD_*
+   [Rick]
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 42 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ arch/x86/virt/vmx/tdx/tdx.c                 | 12 +++++++++---
+ arch/x86/virt/vmx/tdx/tdx.h                 | 10 ++++++++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 17 +----------------
+ 3 files changed, 20 insertions(+), 19 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 96ced0494b68..65a6aae6fab0 100644
+index 65a6aae6fab0..3b7d13a1aa32 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -395,6 +395,48 @@ static int read_sys_metadata_field(u64 field_id, u64 *data)
- 	return 0;
- }
+@@ -408,8 +408,8 @@ struct field_mapping {
+ };
  
-+/*
-+ * Map a TDX global metadata field to a structure member.
-+ * @field_id: The TDX global metadata field ID.
-+ * @size: The size of the structure member.
-+ * @offset: The member's offset within its containing structure.
-+ */
-+struct field_mapping {
-+	u64 field_id;
-+	size_t size;
-+	size_t offset;
+ /* Read each metadata field listed in @mappings[] into @data. */
+-static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *mappings,
+-						    int num_mappings, void *data)
++static int __read_sys_metadata_table(const struct field_mapping *mappings,
++				     int num_mappings, void *data)
+ {
+ 	int i, ret;
+ 	u64 val;
+@@ -437,6 +437,12 @@ static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *
+ #define FIELD_MAP(_field, _type, _member)	\
+ 	__FIELD_MAP(_field, struct tdx_sys_info_##_type, _member)
+ 
++static const struct field_mapping version_mappings[] = {
++	FIELD_MAP(TDX_FIELD_MINOR_VERSION,	version, minor_version),
++	FIELD_MAP(TDX_FIELD_MAJOR_VERSION,	version, major_version),
++	FIELD_MAP(TDX_FIELD_UPDATE_VERSION,	version, update_version),
 +};
-+
-+/* Read each metadata field listed in @mappings[] into @data. */
-+static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *mappings,
-+						    int num_mappings, void *data)
-+{
-+	int i, ret;
-+	u64 val;
-+
-+	for (i = 0; i < num_mappings; i++) {
-+		ret = read_sys_metadata_field(mappings[i].field_id, &val);
-+		if (ret)
-+			return ret;
-+		memcpy((char *)data + mappings[i].offset, &val, mappings[i].size);
-+	}
-+
-+	return 0;
-+}
-+
-+#define read_sys_metadata_table(_mappings, _data)	\
-+	__read_sys_metadata_table(_mappings, ARRAY_SIZE(_mappings), _data)
-+
-+#define __FIELD_MAP(_field, _type, _member)			\
-+{								\
-+	.field_id	= _field,				\
-+	.offset		= offsetof(_type, _member),		\
-+	.size		= sizeof_field(_type, _member),		\
-+}
-+
-+#define FIELD_MAP(_field, _type, _member)	\
-+	__FIELD_MAP(_field, struct tdx_sys_info_##_type, _member)
 +
  #include "tdx_global_metadata.c"
  
  static __init int check_features(struct tdx_sys_info *sysinfo)
+@@ -1404,7 +1410,7 @@ int tdx_module_run_update(void)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = get_tdx_sys_info_version(&tdx_sysinfo.version);
++	ret = read_sys_metadata_table(version_mappings, &tdx_sysinfo.version);
+ 	/*
+ 	 * Only fails if there is something unexpected
+ 	 * and severely wrong with the module.
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index db209541d3cd..10cbc2d77a5a 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -52,6 +52,16 @@
+ #define TDH_PHYMEM_PAMT_REMOVE		59
+ #define TDH_SYS_DISABLE			69
+ 
++/*
++ * TDX global metadata field IDs.
++ *
++ * See "global_metadata.pdf" in Intel TDX Module ABI Definitions.
++ */
++/* Class "TDX Module Version" */
++#define TDX_FIELD_MINOR_VERSION			0x0800000100000003ULL
++#define TDX_FIELD_MAJOR_VERSION			0x0800000100000004ULL
++#define TDX_FIELD_UPDATE_VERSION		0x0800000100000005ULL
++
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 98ebf17aab1c..c55674cd4ce6 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -7,21 +7,6 @@
+  * Include this file to other C file instead.
+  */
+ 
+-static int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
+-{
+-	int ret = 0;
+-	u64 val;
+-
+-	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
+-		sysinfo_version->minor_version = val;
+-	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
+-		sysinfo_version->major_version = val;
+-	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
+-		sysinfo_version->update_version = val;
+-
+-	return ret;
+-}
+-
+ static __init int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_features)
+ {
+ 	int ret = 0;
+@@ -129,7 +114,7 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+ {
+ 	int ret = 0;
+ 
+-	ret = ret ?: get_tdx_sys_info_version(&sysinfo->version);
++	ret = ret ?: read_sys_metadata_table(version_mappings, &sysinfo->version);
+ 
+ 	pr_info("Module version: " TDX_VERSION_FMT "\n",
+ 		sysinfo->version.major_version,
 -- 
 2.52.0
 
