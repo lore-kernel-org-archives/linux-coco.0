@@ -1,103 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13673BB669
-	for <linux-coco@lists.linux.dev>; Sat, 10 Oct 2026 16:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C841396D03
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 05:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791651579; cv=none; b=ZCiXJ8mgiXBY4buewOydC3yQtsdGa8MsiexLmQrws3N1ZSWM1vafBfA1CGDc1xancpTgGyw0RWEBuF6BbF54pZLrO5HpfbXqFr0MCfpx3FLxPU3uX9WNkF4WQ9jA7ZDNN3bp2cNEMdGtvzIqurnKjm/MSWAQbNuSuHSRu7bJy7A=
+	t=1791781690; cv=none; b=oTpaYb8oJlCslFTnz/Wj4BbBlcyGOxLsyU5BBuF72WQfa96nNfxAPzP8dE0BdkuSXX3Qs6KQvNV6basJ3k1Z2+aGEa/WO9RfIE9Y1ooh0rjV4CLXKhvLPoqD3BwezhePuJiaKRijt+mnNNWYPYtMiw4kY/uwtdkdTzfO/fEmTKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791651579; c=relaxed/simple;
-	bh=Wc0a+mXNNhZfdKgzwWdQVOGoT9u4FAMY9yGFHnO9GQs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ibQwhMWiv1hezj4ryDOp2mTaeMpV6R+3Wu86VFzwbzfUcfUk2A1uvY5p2g7errBcUgp9LybYzH+q+GHSHHT936h6QXMJgAiaHemBAmLJX4SpEz4iJnkYrzyJbgY7O82YNBi/iGw76ybPnXIi/he0coFWMIR2cq8o1uDASZQOD1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hGMt/kyG; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791781690; c=relaxed/simple;
+	bh=K+knay5Iz8E3ciwKAf777y2Zx+awC/so3KBEGtn46Pc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d3imbRtFxSNZzQnkKBEB73DEuoidvIgCAEqHoIXe4LkY98ELOLRcFMuFOhNul0CqkRQ0PKu84JfzCbeMBg011lGR6I+CHwvo+ZbsXN0Lh0dcKqUFJ2EA0wzPvH5uwX+Gckbj/+l2i6nL0Vza9vOrZuqfJITm/TJORhP5mhNNGo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UfShpwnp; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hGMt/kyG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UfShpwnp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791651578; x=1823187578;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Wc0a+mXNNhZfdKgzwWdQVOGoT9u4FAMY9yGFHnO9GQs=;
-  b=hGMt/kyGFCwdlzjwjcSsJ+9AZn1mF8ay2C/70nbtoLvegTH87NyOHImU
-   6yeddUvzeFhl8RNffumEFiO2Cwt3lbzoTGsQt0FaTd7R3uHcsGsa147Zd
-   Fb88cT/eVhyw5avdfhbbdONOJFw20uC86nnj495td8Bk2iKA2gaOH0vZy
-   boFAmtGRE27K81OB5txoREa0eblYw2dpOPe4gSe3kY2BQAyysQGBcyBhe
-   +GtQb2eaTWaAj5eZQrw1MLdhXBHhJv7Bw9PE08eDv/1Y1oVMKSeTxGFh8
-   LFBR9Q/9B3iZsBcrh+6EI9CUWQ4HTIr7oeHSH15gAfT7VbFeYZIt0nGKr
-   g==;
-X-CSE-ConnectionGUID: GjCk5eq9SqWFEH5JaKHsvw==
-X-CSE-MsgGUID: 1HCxhn6dRcuo3Fg6J8VqKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11931"; a="301494"
-X-IronPort-AV: E=Sophos;i="6.27,150,1787036400"; 
-   d="scan'208";a="301494"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 09:59:37 -0700
-X-CSE-ConnectionGUID: dLaGOM1gSHmrmFhoKsDQSQ==
-X-CSE-MsgGUID: Qp+PzNnXRse/RNtTwuavQg==
+  t=1791781690; x=1823317690;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=K+knay5Iz8E3ciwKAf777y2Zx+awC/so3KBEGtn46Pc=;
+  b=UfShpwnpWNEvKEGLkwcgLSRm1lJq6u8K1ANjZbnOBIwQLJC8aJn8cDrN
+   6HwDqE/C9Jw+Os2tQSkzAE0OJJ6TBD3NVJG8Vdpf3W+Hvs2rxJx77OnXi
+   OPaDLwH2ak21rjDcwc0N+z2bpkuonkMDftVY7mSqXL9zAd45JN7eWoEmj
+   OddkMPEZ3Rozg724ciekZYVG6TDvtNzU0gsNB9U1c+f7nMpBlHLcrFnVx
+   i390uagq23XuS+sRkO/99aAE9VjPTv+Xd4kaBRBNNzhtH9ebahCS/7Twq
+   0EB6LPrhVjxCW8FExsJ53/rDV6Tvagr2Nx8VL6fmMv5hxJ0k9ZISXJsB0
+   A==;
+X-CSE-ConnectionGUID: YU/LIFW7TJKx3QnseU93Ew==
+X-CSE-MsgGUID: nYVzK428Rju6n824q2FZ0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="473583"
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="473583"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2026 22:08:09 -0700
+X-CSE-ConnectionGUID: Wa/IBWVMTyCjQ17JLx1EDA==
+X-CSE-MsgGUID: qvRab8M/RaeQikEe9gqBTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,150,1787036400"; 
-   d="scan'208";a="631713"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Oct 2026 09:59:32 -0700
-Date: Sun, 11 Oct 2026 00:56:02 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>
-Subject: Re: [PATCH v3 4/6] x86/virt/tdx: Make TDX module initialize the
- extensions
-Message-ID: <aspuIg3Oeaw1LWZ1@yilunxu-OptiPlex-7050>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-4-db52cb05b918@linux.intel.com>
- <1b142a6d4f4714796027876e765c0c27ae770eab.camel@intel.com>
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="736169"
+Received: from unknown (HELO [10.238.3.65]) ([10.238.3.65])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2026 22:08:01 -0700
+Message-ID: <e32bd731-454a-4152-b13f-2d6e8c57d90f@intel.com>
+Date: Mon, 12 Oct 2026 13:07:58 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1b142a6d4f4714796027876e765c0c27ae770eab.camel@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 13/23] KVM: selftests: Support guest_memfd in-place
+ conversion
+To: Binbin Wu <binbin.wu@linux.intel.com>, Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
+ <20261001-tdx-selftests-v15-13-7c62a5d8a992@google.com>
+ <4d57c0f7-5ed9-4a1f-b401-a1072af5dd6c@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <4d57c0f7-5ed9-4a1f-b401-a1072af5dd6c@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 09, 2026 at 07:03:08PM +0000, Edgecombe, Rick P wrote:
-> On Tue, 2026-10-06 at 01:41 +0800, Xu Yilun wrote:
-> > TDX module extensions need memory for their execution environment
-> > to serve SEAMCALL leafs. Several add-on features depend on the
-> > extensions to execute their SEAMCALL leafs.
-> 
-> Can we get a little more about what this SEAMCALL is actually doing? To be able
-> to reason about how long it will take. Obviously it does nothing now, but when
-> we enable the fist extension.
+On 10/10/2026 11:32 AM, Binbin Wu wrote:
+> On 10/2/2026 3:37 AM, Lisa Wang wrote:
+>> With guest_memfd in-place conversion, the memory region can be set as
+>> shared, eliminating the need for dual-backed memory.
+>>
+>> By setting the region to shared initially, the KVM selftest framework
+>> can populate the mmap()-ed guest_memfd memory just like any standard
+>> memory provider.
+>>
+>> For CoCo VMs, pages that need to be private are explicitly set to
+>> private before executing the VM.
+>>
+>> Signed-off-by: Lisa Wang <wyihan@google.com>
+>> ---
+>>  tools/testing/selftests/kvm/lib/kvm_util.c         | 20 ++++++++++++++------
+>>  tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c |  6 +++++-
+>>  2 files changed, 19 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+>> index 7625908caf21..f474664b5d92 100644
+>> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+>> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+>> @@ -494,8 +494,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>>  	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+>>  						 nr_extra_pages);
+>>  	struct userspace_mem_region *slot0;
+>> +	u64 gmem_flags = 0;
+>>  	struct kvm_vm *vm;
+>> -	int i, flags;
+>> +	int flags = 0;
+>> +	int i;
+>>  
+>>  	kvm_set_files_rlimit(nr_runnable_vcpus);
+>>  
+>> @@ -505,14 +507,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>>  	vm = ____vm_create(shape);
+>>  
+>>  	/*
+>> -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+>> -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+>> +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+>> +	 * initialize it as shared if in-place conversion is supported, so the
+>> +	 * selftest framework can populate it exactly like other memory
+>> +	 * providers.
+>>  	 */
+>> -	flags = 0;
+>> -	if (is_guest_memfd_required(shape))
+>> +	if (is_guest_memfd_required(shape)) {
+>>  		flags |= KVM_MEM_GUEST_MEMFD;
+>> +		if (kvm_has_gmem_attributes)
+>> +			gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED |
+>> +				      GUEST_MEMFD_FLAG_MMAP;
+>> +	}
+>>  
+>> -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+>> +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags,
+>> +		   -1, 0, gmem_flags);
+> This is common for both TDX and SNP, does it break SNP?
 
-Good to me. I re-wrote a new version:
+As I commented in the v14[1], I still believe this part belongs to gmem in-place
+conversion series. Without this part, I think the SNP selftests will fail if
+in-place conversion is enabled.
 
-    TDX module extensions use kernel-gifted memory for their execution
-    environment to serve SEAMCALL leafs. Several add-on features depend on
-    the extensions to execute their SEAMCALL leafs.
+Ackerley, did you test SNP selftests?
 
-    After providing all required memory to the TDX module, initialize TDX
-    module extensions via TDH.EXT.INIT. This is a time-consuming process,
-    during which the TDX module loads its internal extension image into this
-    memory and builds the execution environment. Once initialized, those
-    add-on features can use their SEAMCALL leafs normally.
+
+[1] https://lore.kernel.org/kvm/f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com/
