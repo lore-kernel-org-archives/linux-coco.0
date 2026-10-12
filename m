@@ -1,67 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3491C4CB8C0
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 18:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCDE37B011
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 18:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791830708; cv=fail; b=SGbay5lGQHYOUIO/vYDS4CigGS9Oj+z8zrbIj4qZKgyOYcdgpuXL7H4W4zSd5C/5I6axHpBIa3l+LEQjR/bGgEiV0bzsA3xm2XYhwYjf+/WRBknrzYAePc3DZzWAQ3IKAJ+HZX+0c8hlU30A2FchEcEJGZRJzfGa4meHacY2ZVg=
+	t=1791830875; cv=fail; b=o84/m9S6JB5RUtjo1WbJxyXMKJmohIU7rNi5orEsDx8oDXgchH3dY7ILswyvF7kyoW/AZcJdAeNzhdOqyJN3Jx8htke+CNvHUnULWPEKrWcLuHiUgCbz7KIVCgwYzkQoyJzlrF/00vDw3F4t3gG550fuC+PHspfr1LXjNIFSiK0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791830708; c=relaxed/simple;
-	bh=PApA+Am4PgS5/p03hCVxwdlN6qYMGdfTlaFQsV+GKAQ=;
+	s=arc-20240116; t=1791830875; c=relaxed/simple;
+	bh=GdS7NHfrZMPOI1jpfFb7hQ0T/I4THd8C2gT9jcIc2wA=;
 	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=mT5hE6jTBWN/x5ILfhFe0pB/AM8P4J1JQmCbepk1E7Fxqh4SxQzHn92c0PzA+OZdtBb+bh/Qd6Y48s6faBWJx8941maFbU4JevRPcySMC/dffTsdqt/bLIyv+o1vO9b3ngi6uAmWHyB1i40YQS2qmChN/cIxGWpKz2V1OHHc9FY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vlv0N1hU; arc=fail smtp.client-ip=192.198.163.9
+	 Content-Type:MIME-Version; b=qbkw6q9PGCFGSAS+wWEEUdnp+SgR7UznLUAgvYOV0IMvRkQSeNUn0LYN8isk/07qLi8w7BQdvEF06pIpYLm3YxH1go6s4yM9E97HkTJJKDZdrdp5yAhSXI6I9nKNSFArtkUs9RpchU+6JjrlXurhPHhLaxBeYIeP6cjiITZv2Rk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FebNr0D4; arc=fail smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vlv0N1hU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FebNr0D4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791830706; x=1823366706;
+  t=1791830873; x=1823366873;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=PApA+Am4PgS5/p03hCVxwdlN6qYMGdfTlaFQsV+GKAQ=;
-  b=Vlv0N1hUKPy/kqBocbz7/BebZIgZaGORJEGKIjVHW78zLMcTAl1DvyHI
-   jPP9Mc8tUySpOk14P7kz8rb0jShe6nsR4iG5H8AfQaceLGVyn+Qr7At1g
-   bxIfCoh0WsX0OobXeYlV1B+Klv2YxgU+CIU9ZyAdko2xtkF8wPmcfkqQl
-   vV0tQsYPDmxYSXSH1EVo2TcnOEcLOfQpYPjjoCgqZ0Zpe9h4anxksp9FJ
-   DAuVnEEXMG7caFdPHbQ8CzsMKCdwWsnhSxpvQ75XqegRU5Vvv3AAtJ67z
-   uYCO9kpyEoMbLonvmP2/3pHaDhlcb1H0ZvI5WFwi5hFJ8UoLO3WKn9Xt8
-   Q==;
-X-CSE-ConnectionGUID: 3Uh8XYFNQ6S/9s1pAvbJrw==
-X-CSE-MsgGUID: qFI7lF3ERAam5SFWvPyGww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="442838"
+  bh=GdS7NHfrZMPOI1jpfFb7hQ0T/I4THd8C2gT9jcIc2wA=;
+  b=FebNr0D4GeFLJrOYrfkbCjzxoeWijvaGBW7aHIYt07XtnEl4ptN7Pw4X
+   uKU4qgfmPjrS1/Lk8N0d7h8AZaS1deaYdrWYcHxcv1Vhn7g/mWjRBCXxN
+   mkW1pmHVdogBUJdmAfiOmWzd268q6uXlGAj+fl5P1jAHHLXbv6APmfrKD
+   IZhFQy5EM2jM9znDVAlQAd/Y996ukp0HSMw43NPFFQanFJXkSYAIlxZHu
+   AWaOP1Y8rAVonx88BATf4K27TvdN/wIf+PbCTaqiVrDwWhqGE9FQ1HDUB
+   tFJj9u1ZaWkSVljKWQSkQf4mq5RjKYOhOmlpKRsUQQMRo1uYD6G/Ol3ap
+   w==;
+X-CSE-ConnectionGUID: aEqFVNLPS4enTzYFOf02ug==
+X-CSE-MsgGUID: BVJNnokWSWKfYmvk1XM+Zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="440890"
 X-IronPort-AV: E=Sophos;i="6.27,154,1787036400"; 
-   d="scan'208";a="442838"
+   d="scan'208";a="440890"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 11:45:06 -0700
-X-CSE-ConnectionGUID: 9ts7UbPGTLGn6g/TUSYXjA==
-X-CSE-MsgGUID: gSHZ4i6bTbKEyVRkOsjA7A==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 11:47:53 -0700
+X-CSE-ConnectionGUID: rNongLyqQKyp6NiWrxDYAw==
+X-CSE-MsgGUID: eIx6oxaJTHO53aLyKmZPyw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,154,1787036400"; 
-   d="scan'208";a="1299364"
+   d="scan'208";a="1299742"
 Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 11:45:06 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 11:47:54 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
  fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 12 Oct 2026 11:45:05 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.2.2562.49; Mon, 12 Oct 2026 11:47:52 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 12 Oct 2026 11:45:05 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.42) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.49 via Frontend Transport; Mon, 12 Oct 2026 11:47:52 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.30) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 12 Oct 2026 11:45:04 -0700
+ 15.2.2562.49; Mon, 12 Oct 2026 11:47:52 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cKH9AxnxL0n/UDPTEDJX8ej9lHz394z4BTAcX0kIoF82LYuozCm6ybcwA1+/xd54MDpdVlIgY4Q1dtCJxcs+gFbegK+FuS/LSAifV/74zJc9GbK7ejZxcerr6nFaW3u01U9jyJ9Oiyc0HxICq0zC/8Fc0wAyVEdVzpgvnhjsEsrdu+/AvxfD6ZIiCSXVfffSISY52BITPdTJCQFL1TCd+t1278h/cdHtetoM+y1lsosma/4enZcbBhBkPpfax736k+Da+RoiNfnPD515oLWVPALgZ5kOhViY5HlNsyKuf9UAiJwJjzjhW057W/muRWNMam3QKjVYad6b+A+tnanaRQ==
+ b=TJ+L3uuPQUPFWQxNrvapPwyaSbRrhxLt2MnSrZXoh5iSvZNtL1Emf9UixXi/QSDxKMXSPT3sxCXkK17j1TXyzmtgvI3NxxAjMC8Huh0OSiDCZu2we7w72+0EIhWGCydjbYvz211HgVxR0XreTH7HsheIQK7xXUX1TLL9HBQQpSWQSa2LZ33RDZeUlK2qHLfZCAjP3c7Uay0hOU4n+WQNlGYvojIkAdCxqngq+Gn33MWUutG+pOMPhXKrXFWxdfVkvNIAkioiCeRCVcAGe06D5OnShYDon61UhPRk2Z4fmXtkjBaj8FHiiok9cXW5MRN8NXUEizpwXV8ZBe3jd0Yx9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XiasoOBarIvVXhM6lfCrac7y5pibpjRusizoGEau6n4=;
- b=uLo7W3gxlm1vVbtL9fiM5azLh0mBnS5RY2IOudDeOiYVbFZskRqtQWjTneQLCcJ2G6MHEt/iQRre8ntXR5WQPcUZylUl8rjyPz5P2exCvwHXwwRhFDZFLsoDyGY98OMWQbowu95GoUexx8urzvWSTVOCrCH3HO53gGeOw3PJwzFeYWa/em2Z/NP5AUkJHLcZbzd6VCzz39zN/BrkoDpOM75cysXa7MjBTLki4CLvWUao1UmM22HjqzsF50JYEKVUTQRY5Wdw6QAd5ucKpaZ3J08NFZ+dajcS9Wr2/41c2HzjfjgbZ4uyuPoJ6cXOBXL3RKchHhI5NZYKyHYhCs/Vow==
+ bh=b8lnsj7fz01MMiRQMoyMYG5AtXppCgEuG5aKWUrsFEA=;
+ b=S60rLEvJ1SDFqyEdmHadQerwqyJXC9cFaePeRYT2miaEHqBqS/uooDO/FAr7hX0J84REI+4qr+7ZYd1AcDSinhBOeTdlMmAZXr9INgEaqmnitR3BAlVpwpwMutGofojcSkWc/2HwAg1J/EF3d0W/aF5ypXcdfzPtKk7867ob7kbfhnqc/ReXNCkVHut/rW+D5C+QnbEoMCE/TgNgDjrdlNTkOHSn4UgU93iAOIKPMk+ql4CmJNbBACnnRtLysIDD3tlBtKsatLw/KBMa83+T6IXN2n2JvDAe484XD3RSOeDIL1tWllAc4A+0cDglNlnGrw+9MAvSCb3xlfYuCs5yGA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -71,16 +71,16 @@ Received: from SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20)
  by IA1PR11MB7943.namprd11.prod.outlook.com (2603:10b6:208:3fc::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Mon, 12 Oct
- 2026 18:44:55 +0000
+ 2026 18:47:47 +0000
 Received: from SJ2PR11MB8370.namprd11.prod.outlook.com
  ([fe80::b6cf:ce77:3cdf:7cc]) by SJ2PR11MB8370.namprd11.prod.outlook.com
  ([fe80::b6cf:ce77:3cdf:7cc%6]) with mapi id 15.21.0496.018; Mon, 12 Oct 2026
- 18:44:54 +0000
-Message-ID: <918780dd-30ad-429d-ac35-25d79d47450d@intel.com>
-Date: Mon, 12 Oct 2026 11:44:52 -0700
+ 18:47:47 +0000
+Message-ID: <f979d477-9beb-4e24-8e51-4a5cbaf75aa4@intel.com>
+Date: Mon, 12 Oct 2026 11:47:44 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] fs/resctrl: Assign counters to existing groups
- when enabling mbm_event
+Subject: Re: [PATCH v4 3/3] x86,fs/resctrl: Keep mbm_assign_mode in default
+ mode at boot
 To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
 CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
 	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
@@ -89,14 +89,14 @@ CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
 	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
 	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
 References: <cover.1791589412.git.babu.moger@amd.com>
- <3d966ae2e051ef54e1aedb1a2839c812ab880bcb.1791589412.git.babu.moger@amd.com>
+ <fb62d29c027514fbd371bd932f098d119625acfd.1791589412.git.babu.moger@amd.com>
 Content-Language: en-US
 From: Reinette Chatre <reinette.chatre@intel.com>
-In-Reply-To: <3d966ae2e051ef54e1aedb1a2839c812ab880bcb.1791589412.git.babu.moger@amd.com>
+In-Reply-To: <fb62d29c027514fbd371bd932f098d119625acfd.1791589412.git.babu.moger@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0231.namprd04.prod.outlook.com
- (2603:10b6:303:87::26) To SJ2PR11MB8370.namprd11.prod.outlook.com
+X-ClientProxiedBy: MW4PR04CA0149.namprd04.prod.outlook.com
+ (2603:10b6:303:84::34) To SJ2PR11MB8370.namprd11.prod.outlook.com
  (2603:10b6:a03:540::20)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -106,242 +106,238 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ2PR11MB8370:EE_|IA1PR11MB7943:EE_
-X-MS-Office365-Filtering-Correlation-Id: 992ba18f-5376-4168-2fd3-08df2890e846
+X-MS-Office365-Filtering-Correlation-Id: 51e5abe9-a9fe-46a0-2787-08df28914f01
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|22082099003|4143699003|11063799006|260925021911599003|56012099006|261009223027099003|260925021311599003|260925022911599003|10067099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info: 6fVmGUaLgoWiqjFExXcew+IJ/fji8bWtCJlBSmoFzPDvb/7cN3D0dUK6Jv4CO26qlZCsA73gggIUw/5FMPjtsIKhqAKLPmitNpT1faGI2mQC/Y6+R4WHAv6LwTvE/R96Svse03zjX+asTREZ1cVRz0bw4jEil4kgWma5xQ3eGMMdgnVEHUULVxftzLcIT3WeHRC3Avipx6bAMy3LaKQ++A/YkKEBWPBEM9x8cMEoOrKp064LDV+MoEKPUYed5/NF2oc3z0WoVNfWCpm9gLlI2aRK1aIjWeusHKlNREgj96yPZjqs18OXFEcqaTLLw9/8F8jiDEZgVF538viuxpCIExiqT5UvyB247aDPasiwlx0VEI39iX9dGX5mBNKUOH98Ge7RE3scal80+fLdPllPOnYzfBuPuu/dionGjJpB3+LK7rtEGHPD3xw0pdniMv9cBtZ309SkyRV/1Rwd9COqM99Ognngc+zqTKN53l7CEgqufNSB/I4n4J6KbQQn0F3+hwEa1iSaJ7PKquO+Rdv3bIO0KCr4sdLbTFtsdZWhwZB3/DZyGGUZ/8nmLI9wAfkB/z8EKwFfubsgjvlR8CdDwMbnxQnvjb7+iJissOxIlck=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(22082099003)(4143699003)(11063799006)(260925021911599003)(56012099006)(261009223027099003)(260925021311599003)(260925022911599003)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|22082099003|4143699003|11063799006|260925021911599003|5023799004|56012099006|261009223027099003|260925021311599003|260925022911599003|10067099003|18002099003|3023799007|6133799003;
+X-Microsoft-Antispam-Message-Info: JvHyNSODfF6ijMxJJcSA6fD22Bh/UkdykneYT4ea6D4tmxhUEn30n6XZl0vFw4RV/YYNzFHoavEngaAIja3YOfvrADrVScCHkYb4fx0nddBcXh1MhIXOsTd8it9Zz5f9ISaoXrzUPGKG3qVqmsXfn1G2h2HfUzRJLjXj7mtrvILKamXSG9/E3PKtwJtHyerEORMuJzQ1NDDESrvNg84DBr1t8MBmc5czhos9iKQeZhbuZf9/3t2g+XoO2O4yWpEcmD+wW8YYB8uLQv3YQdMBo5R5DqYfCZI5fcarXeeVf62g53eovN6+Kv0ATzJEeQLWP9/5QavLVRVFUQ8jAznu4VT8rubBBvkn6Bi1yMYW7W7ycK3i8tXIfWtXJgGqqsJcMS0hM//G13YfoD/ouKqqIWrmaqMqSLnXgefwxfdkB+XVxyWQc5tqmGCNN+yNt3+hE8yE2MhMt617pnkep2zIoQ2dwcAyg3xUjWTytQh6c4pf5S0yLaceKcikNK30qo1L4EnANc3xRfqGWou9VVYNP2rg0TqdOHp5J0r3aAXg5gWyTxMbd22s22z2w1uMB/U0mFaTJvdvDtnYo0C9bJVk2eMhYlqnOdroVjrQeijK+4KwqmGeGDnoqJuxAPPZpNRcEtjd/KTyqLDSqxV7YxaV1Cou0czrwz0jT/tNSxZZwTc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(22082099003)(4143699003)(11063799006)(260925021911599003)(5023799004)(56012099006)(261009223027099003)(260925021311599003)(260925022911599003)(10067099003)(18002099003)(3023799007)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OEJrMXE3UE9zOTg4WGlzV3B2ZDVnZWxzOHdtbVJJNDRPNSs4U1k0RzBzd29T?=
- =?utf-8?B?dmEwTWR5VWdaWVRXa1kvOUtETzI2NnlHcVdHWDFPUDN3Z2gyUmNRTVltY1VV?=
- =?utf-8?B?bnQ4bC81V2V1dXlBeXVGaFhvL09IdzBsOVVVdE1iWVc5dDFDYVplUGo3RDht?=
- =?utf-8?B?Vnh6TGRKNm8vV0UwV2w1WWYrMUxHcW5YbjlIU2FQTzdwZHRiRHk1K0RkYSsy?=
- =?utf-8?B?Zk5XTFFDMmN4cGM1cEQwRFZHTzExYUJXOUdFdnN4RjR3ck5Ta1ZKMHRIb2lv?=
- =?utf-8?B?Q1o0bnBwTmRaQUtDd1U4Z0owSERTeWlhdDdFNnFTTnc4TkZOZ1NaMkhZN2ZD?=
- =?utf-8?B?Tkd3Y3QyVmdQd1FFQWtDcWVnN2d2WG45eEU4QXowcnVqN1JZNmxzL1FqOTJE?=
- =?utf-8?B?TTdsbUpaQ0hDT2diVnU2aGF0Z1F5Tm0xVWJ3TFpPeVAwQ0hqNmNuY1VFOS9X?=
- =?utf-8?B?VkNBellkSFh0dzdFSmVXMGpNVEVPRFlVU1d2SlpDam1IRURScDJFMGxiTVJV?=
- =?utf-8?B?ZnFLYzhZeEFLUkpaMlozSHZEdjdsUWJ5aHR6VlVCbTYyU3Y3RTYzMmZJMDND?=
- =?utf-8?B?RWtZTXFuU2VFaVdUK2FLSFR2dzJhZlV5UXp2MTZnNUd0OXpiVVcrSTZEVkhY?=
- =?utf-8?B?bXRQREZaRDNGcllrMXBnb3NkYmxsSFZiQnRGOG45clFET2NDbVRZVUlRaEVL?=
- =?utf-8?B?d2ZCMzBqTUNsRExBejkzaHVtZjgxMzM1ZHJrVzY2ZTduWE5XTnZvWnZtcEtj?=
- =?utf-8?B?UDdqQmt2QXVRODdEb296NSt6RHc2dFB1ZjNMYU1vR0VIdFR3YU9zU2FBQzFw?=
- =?utf-8?B?QU5hRGNPZGlEWVZlNUUxMEpCYzBwM3YwY0pXem1ERnVkVnFhYUZVY2NpYU1H?=
- =?utf-8?B?MHlpdmZpOTVaYThHUkJwWVJsVit2bzRYMklISW1yVlRqY1ZkbFpCM3dmNzE1?=
- =?utf-8?B?NUMzUUozWUdqWDJ6SEpDUkYzeFJkWnVMR2FHMHQycy8zOERIQkZQUkxVVXlN?=
- =?utf-8?B?SWs1UUpHRmJSeWFCVkdha3R1aGhZV1J2WmtoR1ZIZHpEbHE4UGU4VjlEOWxM?=
- =?utf-8?B?Vzh2MDB5M1NUZkhnUlQyY3pZdlNEL0hOOGZRMm9BSGp0elhoUUptQm93U1E0?=
- =?utf-8?B?MzViVW5McEJoQWYyTmpuQWg4WkdMZnVNTDU0SEhUQjczYWFEMzQrczlKNXRh?=
- =?utf-8?B?RVlIcThpWjJ2K3VKNGJ0VTdSWDZtY1BiUEZ5RmxmV1huV2h3Wk9VZUoxbTc3?=
- =?utf-8?B?eWVKMU96RVFhOFRxdEdieWl6RTRab0RmanVJYkQ0anFWa2V0UzYwbDdUOHBm?=
- =?utf-8?B?NzRtdlVsS0VDMTAyN0NuZXFudllseFBob0hBM2hoWThlcnlXdXFyc3hqbXY0?=
- =?utf-8?B?cnJhRUYvZFZqWVF6MThZVFFyZTIrWUtsOHUxYVF6cldFUC92dE9WQnNWdEo5?=
- =?utf-8?B?ZXdUMFJWWHJ0Y1FkNzBPMDBEL1RrWmtFVlA1akU0dFgrRitrZ0VDSkJKaFlB?=
- =?utf-8?B?aWJwek9rNmVHMmVKZGlkaXZydU5mYVZtZ0FabmFQNTlXSGk3NG9tYWRHRFFJ?=
- =?utf-8?B?L0ErNTQyMCs4UDhGdjNGL2dacHpnNENMZFJEeHkzdXhsRllTNldwTXg0QXIw?=
- =?utf-8?B?TkRsQWtxcTlDNDJ0NzdXVmxZOXVJem5iaTJHYzNIaXdpMWt0NTVQRkptelc2?=
- =?utf-8?B?RkRjcko4WWluVVdqTEtsV3BWZlpvam9xaVozTmY4OUljbzBDVWV4VUVuT0Iz?=
- =?utf-8?B?Nk13UG5XVmcvbTJmVER1Q1FyMklHZXBuUE5KR0dsb01iOElMV2JobnpZV3Vj?=
- =?utf-8?B?di9PRFNKdDNZR1U0OGIwK1JiWnFmeU5ZNjBpYkE5QjdETldyT09QeU51cnZk?=
- =?utf-8?B?ZXF6dDBFS2QvUlF2Y1NGWGxDM0lYQ3FBUTRmNWFCWjN3dEVja1BweUw1cm1i?=
- =?utf-8?B?R3FPaThZNit6eFdzc2RpUVRxZXlmRG41bTNYS0J6TE8xWEp3MldoSkxZemVn?=
- =?utf-8?B?b1cvTngvVDNweE5DTVR1Q0NVVFVieDhWV0NiV2ZCMVNSR01hd2dFeW5udTV2?=
- =?utf-8?B?bzUvYU1pU2dEL0dLS2lXdzNySlR1d0MxV0ZRZ3RGWTkxWno1ZVNPdksxLzVt?=
- =?utf-8?B?ZVVXaCt1TDJRS1I1VGNqaURJVmZlOTNRNWNLWE14eFVPNUdKMmM5citiZk42?=
- =?utf-8?B?cVRBMGFCNFJwazBIMExMczBFMUVzMkw2dTl4azY5eW9LTXJOZHdualYrSXJG?=
- =?utf-8?B?NnB6V2RndFBGZ0RBbDJucm04ZnUwU094Zmc3ckVFaDlqZ28ybkRwbFlzTi9F?=
- =?utf-8?B?M1Z1QVVLUVQ2Wi9SSHJMVzM1S0FaZFV2bFNJc1VnUGVJZk51SGJETk1LNFpK?=
- =?utf-8?Q?mCQHEnFV0mkCUGjs=3D?=
-X-Exchange-RoutingPolicyChecked: adg9P2UyQ1XuwIjE1BTYc3j6YJeYCzSNTUWpNj35NswflGWMh0Sufts/8wykvb9pjv1TIZjBH1z3fovp4z8jR58kdLWJbU5wAFQokRKhhEj5IWlOGKhsSBovZW3fPByMBTExUZyHCQ1rHZvWwXogsAGuGvwUWnVplHeBzpDyre95YGm6dukmx7t4HBhU6lB96vO/To45uvy58+6xCnWPKztXKAVBdQWPESO/BJ5IH3qk/VPrnZyozRtochDMSUhSgApHtMIpnptb2OgVz9JSK5rs7zEZoM2YUvOr+XxN3HSLoaSJ/T7mgh1rGeBUUtWh4lkcyXzH+OL0yR0+I/wE2w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 992ba18f-5376-4168-2fd3-08df2890e846
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?KzVtcUFmNzVCdElIcGtNdUsvdjZqdWZ6TEQyTm9KUEI5VDJ1U2VVZ3kzb25z?=
+ =?utf-8?B?Y1FKeXRMbmF0VUxobXNPUk5xR1lPMDd6TnVKaE9helZseHJBbysxRVRaSER1?=
+ =?utf-8?B?MUc5ZVhwdXNUUGtnbEV6RC9oSi9DcUJZa1I1aFpyRTN4cUNHUHp5M0Q5UVpp?=
+ =?utf-8?B?NjhLSkZobUt3Z2dsQ1RiZUJTeXEwdjhkeXFhNVNJYnhzbGppTDUvZzZ4b2VF?=
+ =?utf-8?B?SXZpdmExUjFwYXZBNXZIcG9GRXFVQmhHQ05hWk5OMWhEaDFBT1owL3NJOEpy?=
+ =?utf-8?B?cEJmaHphK29WSnBuOWhydmk1bGVmNG0zSXJnazliUGJZVEJaNFhQS3REd21I?=
+ =?utf-8?B?WWVPeXlndnp6M1lNUzh1VlNKd0x6N1ZUUjRNZnJpWTdhWTNCQnlKV0ZYdU1M?=
+ =?utf-8?B?MDR1MW03UllidFlkSkhNRnFCU3BGWWt5c01paGR2WE1HRHllU2RYMzZ5aW5I?=
+ =?utf-8?B?RW1lMHdwRkRTUVI4aFRsaE9WRE5mWGdiUC81S2o5T2lLNG9NMjBwdkpwMHVW?=
+ =?utf-8?B?a3EyaUpCemsyWGNKMjg0V01wYzNUNlk0R29CU05LRTllSmJVajVtSEpEM0U3?=
+ =?utf-8?B?SVBPbkZRRXBJTXgyeVB6clpxbTZmZGg4MjlmS282MVhBS25IbmFsNTZWMURr?=
+ =?utf-8?B?ZGJqYnZsdUJGMGU3UDMvYVVLNElSVmZPVkEyOHd3SU1BYTVQRkxJOGJzVE1H?=
+ =?utf-8?B?M2Z6VkNVR1RDS0hpT1hobnZKVFlNMWpIcHI4eEZVN1FzVE1RTHpoa0NITVVJ?=
+ =?utf-8?B?Q01YSi82cWoyZHBZditMRTJiSURxYzhHNFg5SHFnOGw4ZTVUd3VlVC9RYllx?=
+ =?utf-8?B?b2VVRitVWkdzT2lmUnA3cW8rYUYvVmNERkhWRTEwcDhwejhvcmx1a25nYUVP?=
+ =?utf-8?B?c2xBSWdVZWZYUjA1UGp0ZGtjYXZHL3BNNE5NUkhaeSsrUUxUL09jYkovWEhY?=
+ =?utf-8?B?WDMyUUJTTG5WNmFYSHM5blZmRHJiZVJNSmtQRWlWM3UrdHMwVEtBMjdMYU9C?=
+ =?utf-8?B?RnF6UFZSa1k5T0o5OFZqUTZmeXQ3ZzJmdkFHNVVIUWcrWDd2SXpxMFFYaHZo?=
+ =?utf-8?B?REtpZ2ZFY2FPRHJQaVNBL05BWkxsRVRRZURVaHZQN0poYXFOdHhUTkFMOS94?=
+ =?utf-8?B?Q1RTUkV1alNodDRSUUF5dDVmN0syS0I3NnptUGljakdyVEYvaHFmM0VUYW12?=
+ =?utf-8?B?WGRybkp1Umg5WjhKSm5CTm9SSW9ZbHNBdnJ6Tzh3c3luMkdJeHloTElCSXNT?=
+ =?utf-8?B?NjlXd2FJZC9nMDVHRS95eVN4STZTeUVkSjMvVlM0dHRHSVNYdXJUakZESVpj?=
+ =?utf-8?B?MUlnN2w2OGpZQkM5TGF5NWIrL05JZnZxV0NUaHAzN2RJQWpubUZtNC90b2tX?=
+ =?utf-8?B?Q0R1V3pWYUdnc0h4eDM3dmJueWhNQURJeVl4MUJVNlpZL3pVdEFRQ3BSY2FX?=
+ =?utf-8?B?aXNYazMvVjU1aWRpdUZsSEZoYjJWTk5lZGtFUUNpSVdBamRaUUJvcVIyaVJS?=
+ =?utf-8?B?NXBpZEl4NDB0L2hHZzhrRHlXT3VJYnNqd09oc0FmY3VxMDBnek9ROHJ1YWkv?=
+ =?utf-8?B?THdwRGNBZHA2aWQ2blZWSENzRzJLbWZJdGtqMTZUMTVIYjVWWlRwb0x4Z3V4?=
+ =?utf-8?B?eTFGdmJqQzVVN2k1TjU5V1Jkbk54U3ZFcFJtK2g0QTRPMW40RnhFdkMxRDFF?=
+ =?utf-8?B?V1JOczdDYkZlWms1YnpDR3RjZEd3bnowVnMvMDAxTVdkeGFROXFnMmhtY2Zv?=
+ =?utf-8?B?R1Q1UkZFWXZoZ3hEQUUyZTN1eDRtYjh4ckx0d3N3dW5mclpKVU1Fa1Zjc0Za?=
+ =?utf-8?B?KzlIWWg4VzV1NmV2SGRmRk5veE9CYjJmYzB1akZBeXBpUnNoU1ljVDlzK3ZJ?=
+ =?utf-8?B?bFZrQ0Rnb3k3RHQ0MTZQVnl5Uis2Y0xIa3VmRkNVMTlGanZ1MG9zTmFtdDU1?=
+ =?utf-8?B?eThoRHdXY1EvZkZLKytzMVQ2RUhiOUxLL3NmY1U4WEIrNlMrUlBwMXpETWlo?=
+ =?utf-8?B?SCtyS2V0aStyczByS1cvMVdjVE50VWpEdEV2UExVc05EL0RnMThPZE5YVDlS?=
+ =?utf-8?B?TnpwSEgwRkpadnJ6eE5hc1oxOHA3SHdKTVdxWGdaWDdOMWhaLzRmSTF6Qk5y?=
+ =?utf-8?B?a0VZeDA0dENrWVlrajYrZ3Y4aXkxeit1Umd0RHFjbEJqaWNia21EMVNDZjEz?=
+ =?utf-8?B?WDVCMmE4NmlaT1NuM0hRczhrcDNZK1FJekxnRzNnYVhuRjBUcFpwWkxEdG1y?=
+ =?utf-8?B?QlRVY1R2RkN5Z1hBL0FwUDBFTENHNkovL0graEdzNkNmenlSa3VUWjd2YWZC?=
+ =?utf-8?B?WmdXOWNlaDIwbEx3MDVXRUdzOHZzQzY4Z2ZsNVhLeGhtODJhZC9HZFU0bTlR?=
+ =?utf-8?Q?hjACO6UUPRC06E8Y=3D?=
+X-Exchange-RoutingPolicyChecked: v5b71Dgxxc/Y3x3Cc3q2DUQtOlyXOW04UK/M8gpE0gbBvs6aHtFTRnzRikj06j4TTXHA/9dOji2zZUiaBlebNYiUiylyGM/TWfwxCMlT2MG8BnNjx2VXPgRHzQRepZBukYkfYea9Moqwb1UpUwG23oeud2u83qhdVrZqBuFtf9F/co2NFSYSjF9HhRwE0jDyRDmRqpn1wZkfsFnTNKmi60VKEE6S5iR54DUX5WtqP7tbYToHNljvSTCKDalWp0UfhNcsIZpjDn32mTFN/nsphUKJzYZNZPbRzmN6q7nIieRvDkz2herP1i3snJF5wz1yxnklwwVRlWjYqytC88+mgw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51e5abe9-a9fe-46a0-2787-08df28914f01
 X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8370.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 18:44:54.9072
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 18:47:47.2484
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: swIIO3Fuld9YV2SdhuC0KvMuU9omf5WycXcYN51pZ7zvhHmDSxm0cPWmBE7LSSanvFQtYtMMOFxlg6NwiU25Q7WKH0TA7sqOIewoC07pnik=
+X-MS-Exchange-CrossTenant-UserPrincipalName: CE+G1R3T3TYC7yUfk2wBIsLgZDN/F2KJMD0PN4Wyeb5Lhusav4KVZQMOkEZT6IPoHtnYuPuqVujwfLuFbFYqHa0dx/+O1jKTAz0Gp724bYo=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7943
 X-OriginatorOrg: intel.com
 
 Hi Babu,
 
 On 10/9/26 4:44 PM, Babu Moger wrote:
-> When the user switches counter assignment mode by writing "mbm_event" to
-> /sys/fs/resctrl/info/L3_MON/mbm_assign_mode, resctrl frees all assignable
-> counters, resets per-domain RMID state, and enables counter auto-assignment
-> exposed to user space as mbm_assign_on_mkdir.
+> The mbm_event mode assigns hardware MBM counters to RMID/event pairs.
+> It is intended for deployments that need to manage counter assignment
+> on platforms where the number of monitoring groups exceeds the available
+> hardware counters. Hardware counters are scarce on these platforms, so
+> mbm_event mode suits workflows that monitor a subset of groups at a time
+> and rotate assignments as needed.
 > 
-> Even though counter auto-assignment is enabled, groups that already exist
-> at the time of the switch, including the default group created at mount,
-> are not assigned a counter. All MBM events read "Unassigned" until the user
-> assigns a counter by hand.
+> resctrl enables the mbm_event mode by default on hardware that supports
+> it. This breaks the pqos tool [1], which assumes the historical default
+> mode. It creates 16 or more monitoring groups and uses two counters per
+> group. On a platform with 32 counters per domain, that exhausts the
+> mbm_event counters pool, causing additional groups to read "Unassigned".
+> pqos interprets a non-numeric event read as zero bandwidth and reports 0
+> MB/s for those groups:
 > 
-> Walk every existing CTRL_MON and its MON children after the reset and
-> assign counters to their MBM events. Enabling "mbm_event" now leaves the
-> same per-group state that auto-assignment would have produced. There may be
+>   $sudo pqos -m all:0-4
+>   CORE         IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
+>      0        0.69         16k       192.0         0.0         0.0
+>      1        0.40          3k         0.0         0.0         0.0
+>      2        0.44          1k        64.0         0.0         0.0
+>      3        0.39          1k        64.0         0.0         0.0
+>      4        0.43          1k         0.0         0.0         0.0
+> 
+> Leave mbm_assign_mode in default mode during initialization. Default mode
+> uses one counter per monitoring group. On existing AMD platforms, the
+> default active counters pool is 64 and may be larger on newer hardware.
+> The active counters pool is the number of counters that the hardware can
+> actively track in default mode.
+> 
+> Deployments within the active counter pool receive accurate bandwidth
 
-nit: Related to more detailed comments later the above "that auto-assignment
-would have produced" may not always be accurate. If the patch behavior is
-maintained (more later) then one way around this may be to just instead say
-"that auto-assignment could have produced". 
+nit: "active counter pool" -> "active counters pool"
+(to be consistent with all the other instances)
 
-> fewer available counters than MBM events across the existing groups; in
-> that case stop assignment when no counters remain. Events in the remaining
-> groups read "Unassigned", matching the behavior of creating a group when no
-> counters are available. Also revise the rdtgroup_assign_cntrs() function
-> comments to account for the new callers.
+> measurements in the default mode. Users can create more monitoring groups
+> (4096) than there are active counters in the pool. Beyond that pool,
+
+Unexpected where the hardcoded 4096 comes from. Could this be "(for example,
+4096 on current hardware)"?
+
+> readings may be misleading or report as "Unavailable", with no user-visible
+> indication.
 > 
-> Fixes: 8004ea01cf63 ("fs/resctrl: Introduce the interface to switch between monitor modes")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
+> Default mode is still limited once the number of monitoring groups exceeds
+> that active counters pool. After hardware re-allocates a counter, a read
+> may return "Unavailable". pqos still treats "Unavailable" as zero.
+> Successive reads can be a count, "Unavailable", then another count. pqos
+> treats those jumps as wraparound and can report an inconsistent rate:
+> 
+>   $sudo pqos -m all:0-4
+>   CORE     IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
+>   0        0.76         60k        32.0         0.0         0.0
+>   1        0.45          1k        32.0         0.0         0.0
+>   2        1.57        107k        64.0         0.0 17592186044184.9
+>   3        1.62        276k      4928.0         3.2         0.5
+> 
+> Users that need stable measurements beyond the active countes pool should
+
+"countes" -> "counters"
+
+> use mbm_event mode and rotate assignments as needed. Enable it with:
+> 
+>   $echo mbm_event > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+> 
+> Fixes: 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
+> Closes: https://github.com/intel/intel-cmt-cat/issues/311
 > Signed-off-by: Babu Moger <babu.moger@amd.com>
 > Cc: stable@vger.kernel.org
+> Link: https://github.com/intel/intel-cmt-cat # [1]
 > ---
 
 ...
 
 > ---
->  Documentation/filesystems/resctrl.rst |  7 ++--
->  fs/resctrl/monitor.c                  | 47 ++++++++++++++++++++++-----
->  2 files changed, 43 insertions(+), 11 deletions(-)
+>  Documentation/filesystems/resctrl.rst | 43 +++++++++++++++++----------
+>  arch/x86/kernel/cpu/resctrl/monitor.c |  1 -
+>  2 files changed, 28 insertions(+), 16 deletions(-)
 > 
 > diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystems/resctrl.rst
-> index b52795e03303..c8507580474a 100644
+> index c8507580474a..a896bcae3319 100644
 > --- a/Documentation/filesystems/resctrl.rst
 > +++ b/Documentation/filesystems/resctrl.rst
-> @@ -370,8 +370,11 @@ with the following files:
->  	of counters available is described in the "num_mbm_cntrs" file. Changing the
->  	mode may cause all counters on the resource to reset.
+> @@ -354,8 +354,8 @@ with the following files:
+>  	::
 >  
-> -	Moving to mbm_event counter assignment mode requires users to assign the counters
-> -	to the events. Otherwise, the MBM event counters will return 'Unassigned' when read.
-> +	Moving to mbm_event counter assignment mode enables "mbm_assign_on_mkdir" and
-> +	assigns counters to the events of all existing monitoring groups, including
-> +	the default group, while counters remain available. Consult
-
-This also adds the "including the default group" caveat that I will refer to later.
-
-> +	"mbm_L3_assignments" after switching to "mbm_event" mode for counter
-> +	assignment states of all monitoring groups.
+>  	  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+> -	  [mbm_event]
+> -	  default
+> +	  [default]
+> +	  mbm_event
 >  
->  	The mode is beneficial for AMD platforms that support more CTRL_MON
->  	and MON groups than available hardware counters. By default, this
-> diff --git a/fs/resctrl/monitor.c b/fs/resctrl/monitor.c
-> index 04e4ea612b7c..9e705eafe873 100644
-> --- a/fs/resctrl/monitor.c
-> +++ b/fs/resctrl/monitor.c
-> @@ -1302,14 +1302,17 @@ static int rdtgroup_assign_cntr_event(struct rdt_l3_mon_domain *d, struct rdtgro
->  }
+>  	"mbm_event":
 >  
->  /*
-> - * rdtgroup_assign_cntrs() - Assign counters to MBM events. Called when
-> - *			     a new group is created.
-> + * rdtgroup_assign_cntrs() - Assign counters to enabled MBM events of a
-> + *                         resource group
-
-nit: please fix alignment. This patch inconsistently uses tabs vs spaces for this
-alignment. That is not major since this file itself is not consistent in this
-regard, but the file does consistently align the description irrespective of
-character used.
-
->   *
->   * Each group can accommodate two counters per domain: one for the total
-> - * event and one for the local event. Assignments may fail due to the limited
-> - * number of counters. However, it is not necessary to fail the group creation
-> - * and thus no failure is returned. Users have the option to modify the
-> - * counter assignments after the group has been created.
-> + * event and one for the local event. Assignments may fail due to the
-> + * limited number of counters.
-> + *
-> + * Intended to be called in auto assignment scenarios ("mbm_assign_on_mkdir"
-> + * enabled in "mbm_event" counter assignment mode) where counter assignment
-> + * is not required to succeed. Thus no failure is returned. Users can modify
-> + * the counter assignments afterwards if needed.
->   */
->  void rdtgroup_assign_cntrs(struct rdtgroup *rdtgrp)
->  {
-> @@ -1328,6 +1331,22 @@ void rdtgroup_assign_cntrs(struct rdtgroup *rdtgrp)
->  					   &mon_event_all[QOS_L3_MBM_LOCAL_EVENT_ID]);
->  }
+> @@ -376,20 +376,35 @@ with the following files:
+>  	"mbm_L3_assignments" after switching to "mbm_event" mode for counter
+>  	assignment states of all monitoring groups.
 >  
-> +/*
-> + * resctrl_assign_cntrs_allrdtgrp() - Assign counters to the MBM events of
-> + *				      every existing group.
-> + */
-> +static void resctrl_assign_cntrs_allrdtgrp(void)
-> +{
-> +	struct rdtgroup *prgrp, *crgrp;
+> -	The mode is beneficial for AMD platforms that support more CTRL_MON
+> -	and MON groups than available hardware counters. By default, this
+> -	feature is enabled on AMD platforms with the ABMC (Assignable Bandwidth
+> -	Monitoring Counters) capability, ensuring counters remain assigned even
+> -	when the corresponding RMID is not actively used by any processor.
+> +	It is intended for deployments that need to manage counter assignment on
+> +	platforms where the number of monitoring groups exceeds the available
+> +	hardware counters. Hardware counters are scarce on these platforms, so
+> +	mbm_event mode suits workflows that monitor a subset of groups at a time and
+> +	rotate assignments as needed. The mbm_event mode ensures counters remain
+> +	assigned even when the corresponding RMID is not actively monitored.
+>  
+>  	"default":
+>  
+>  	In default mode, resctrl assumes there is a hardware counter for each
+> -	event within every CTRL_MON and MON group. On AMD platforms, it is
+> -	recommended to use the mbm_event mode, if supported, to prevent reset of MBM
+> -	events between reads resulting from hardware re-allocating counters. This can
+> -	result in misleading values or display "Unavailable" if no counter is assigned
+> -	to the event.
+> +	event within every CTRL_MON and MON group. This mode is enabled by default.
 > +
-> +	list_for_each_entry(prgrp, &rdt_all_groups, rdtgroup_list) {
-> +		rdtgroup_assign_cntrs(prgrp);
+> +	On AMD platforms that support more CTRL_MON and MON groups than hardware
+> +	counters, hardware dynamically shares a smaller pool of counters among
+> +	RMIDs. One counter from this pool is used per monitoring group and counts
+> +	every MBM event of that group's RMID. The size of the pool is not
+> +	enumerated to software (unlike "num_mbm_cntrs"), and "num_rmids" may be
+> +	much larger. For example, 64 counters in this pool monitor 64 groups.
+> +	Newer hardware may provide a larger pool.
 > +
-> +		list_for_each_entry(crgrp, &prgrp->mon.crdtgrp_list, mon.crdtgrp_list)
-> +			rdtgroup_assign_cntrs(crgrp);
-> +	}
-> +}
-> +
->  /*
->   * rdtgroup_free_unassign_cntr() - Unassign and reset the counter ID configuration
->   * for the event pointed to by @mevt within the domain @d and resctrl group @rdtgrp.
-> @@ -1601,9 +1620,6 @@ ssize_t resctrl_mbm_assign_mode_write(struct kernfs_open_file *of, char *buf,
->  									   (READS_TO_LOCAL_MEM |
->  									    READS_TO_LOCAL_S_MEM |
->  									    NON_TEMP_WRITE_TO_LOCAL_MEM);
-> -		/* Enable auto assignment when switching to "mbm_event" mode */
-> -		if (enable)
-> -			r->mon.mbm_assign_on_mkdir = true;
->  		/*
->  		 * Reset all the non-achitectural RMID state and assignable counters.
->  		 */
-> @@ -1611,6 +1627,19 @@ ssize_t resctrl_mbm_assign_mode_write(struct kernfs_open_file *of, char *buf,
->  			mbm_cntr_free_all(r, d);
->  			resctrl_reset_rmid_all(r, d);
->  		}
-> +
-> +		/*
-> +		 * Counters were freed above, so both new groups (via mkdir) and
-> +		 * the groups that already exist need assignments. Groups created
-> +		 * while in "default" mode have no counter assigned, including the
-> +		 * default group created when resctrl is mounted. Assign counters
+> +	While the number of monitoring groups does not exceed that pool, a counter
+> +	stays attached to each RMID and readings remain accurate. Creating more
+> +	groups than the pool can cause hardware to re-allocate those counters
+> +	between successive reads of an event. Bandwidth values may then be
+> +	misleading, or a read may return "Unavailable" if no counter is allocated
+> +	to the RMID. There is no user-visible indication when this begins.
+> +	Users who need stable readings beyond that pool should switch to mbm_event
+> +	mode, if supported, and assign counters to the groups of interest
+> +	(rotating assignments as needed).
+>  
+>  	* To enable "mbm_event" counter assignment mode:
+>  	  ::
+> @@ -1787,11 +1802,9 @@ View the llc occupancy snapshot::
+>  Examples on working with mbm_assign_mode
+>  ========================================
+>  
+> -a. Check if MBM counter assignment mode is supported.
+> +a. Check if MBM counter assignment mode is supported and enabled.
+>  ::
+>  
+> -  # mount -t resctrl resctrl /sys/fs/resctrl/
+> -
+>    # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>    [mbm_event]
+>    default
 
-This patch refers three times to how "default group" receives counters during auto assignment.
+After the above doc changes the mbm_assign_on_mkdir description still reads
+"Enabled by default on boot". This is still technically accurate, but this patch
+makes it unobservable by user space. Fine with me if you intentionally decide to
+keep it but I would just like to confirm that you considered it?
 
-How important is it that the default group is assigned counters when switching to "mbm_event" mode?
-
-This patch implies that auto assignment will always include the default group but that cannot be
-guaranteed since the default group is always at the end of the rdt_all_groups list. This means
-that when traversing rdt_all_groups in resctrl_assign_cntrs_allrdtgrp(), whether default group
-receives counters would depend on how many other CTRL_MON and MON groups there are.
-
-
-> +		 * to them so that enabling the mode leaves the same assignments
-> +		 * that mkdir would have made.
-
-Related to previous comment is that the changelog mentions "same per-group state that auto-assignment
-would have produced" that repeats a similat claim made above that states "same assignments that mkdir
-would have made". This behavior assumes that a CTRL_MON group is created with all its MON groups before
-the next CTRL_MON group is created *and* that enough counters are available for all groups. If
-there are not enough counters then the most recent CTRL_MON groups will receive counters first potentially
-leaving the first "mkdir" created CTRL_MON groups without counters. 
-
-It is not clear to me whether default group requires counters. Separately, I do not see whether resctrl
-can or should support the same ordering as what "mkdir" would have produced. If these are not actually
-requirements then the patch is fine but the comments, documentation change, and changelog need to change
-to match the code.
-
-If the default group does require counters then we either need to change how groups
-are added to rdt_all_groups or how resctrl_assign_cntrs_allrdtgrp() traverses the list.
-
-> +		 */
-> +		if (enable) {
-> +			r->mon.mbm_assign_on_mkdir = true;
-> +			resctrl_assign_cntrs_allrdtgrp();
-> +		}
+> diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+> index 5d0d3b18f9b8..a6a9090c4808 100644
+> --- a/arch/x86/kernel/cpu/resctrl/monitor.c
+> +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+> @@ -472,7 +472,6 @@ int __init rdt_get_l3_mon_config(struct rdt_resource *r)
+>  		cpuid_count(0x80000020, 5, &eax, &ebx, &ecx, &edx);
+>  		/* cntr_id is 12 bits and can only encode 4096 counters. */
+>  		r->mon.num_mbm_cntrs = min((ebx & GENMASK(15, 0)) + 1, BIT(12));
+> -		hw_res->mbm_cntr_assign_enabled = true;
 >  	}
 >  
->  out_unlock:
+>  	r->mon_capable = true;
 
 Reinette
