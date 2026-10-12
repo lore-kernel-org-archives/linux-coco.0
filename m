@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8884E485929;
-	Mon, 12 Oct 2026 09:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC9C3AC0F0;
+	Mon, 12 Oct 2026 10:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798973; cv=none; b=WbJ9FDhgU9q1p39L0MT1KnCTs05FziTNTNt7t5MI6Lh734BkARsBUxlN9Md/gCKO7rBydSMcYKAbGb1ogQSBn8fxtby15x88hwvsw6UYeHKEuObE84F1I461NBogpG6A5fEPX9ImzH22ryVuYRXefyBxwpirBTdKfKDUF9PgFd4=
+	t=1791799288; cv=none; b=KvEpC0C0XrdrC/SUrqm7Y/Iv/B7Qgy6WYBr6gQIQGMPqgGfwbrlr7Uwzed0wO0C1t1MH2+uSrVljwBxQ+NrxtpjiOv7FiCuFy1M28oVNM22mlM6p9FqEbmqXMpnHU2rCKEBcdWWMxI5bgWBVtTV1/tTgntnxIHCIhh+eEmXKe8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798973; c=relaxed/simple;
-	bh=tbvAgt7Rd/DjnZNw9Uj0KdhXn3qgAaBAfIoU8Po2k14=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=H8fUbCA21dBlsmh14UqJn6+SS3n1Pkgtfzdf4DTht9rdFcoRC7Op6H0USedNEaZy3Dm7Cn/53C+jg2z5vubfK0KFGolDoAISfkU8+pqR3ECLHfIdhwaV6BM+9rDsYs90KCd5WvJGx7qtYFJvYofJF08owsEXBKhkPJjh7nuagY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVIHtgRX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791799288; c=relaxed/simple;
+	bh=qT47KZZqPzMezaTCqQ7sHJiHTWRRK3Felo7O1F82g8o=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AVwIwTmiF6oniufNWsov1JmdXHs/U3Kq46ZiLOi/NZPD7Sdp5crQGTe97PSnYjbtwaAUsatoYFCtGnREQRTAmMYVgpIgKIULuELpLyJsr/85wpQI3+SKdvUKBoKX5qG5QYAlByZhNoA/ymdVPTw8XLqtfCYlBYn9mabjttNmhCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9V2Gkac; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVIHtgRX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB741F0089C;
-	Mon, 12 Oct 2026 09:56:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9V2Gkac"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACC41F0089B;
+	Mon, 12 Oct 2026 10:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791798964;
-	bh=CVHrQuAJ61cQxXtDbuatkxXHw1nLvVEknlTPc5E36UA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=FVIHtgRXxZRhYE6maSjehRkWuBF2HH0RayYfx/krs1AI5oe31QO1pDX+lBMY86byq
-	 YJjaq/QKQAVJW7RXLCS/vht2HZmd3c10JMx1r96e8YrN5itL+Ua1TBc16aZkEQFmgf
-	 2Q/6fDJAjHcscVS1BpvBPrxrTREc/AMpDUXXXZNBLLAxKjKTcKJZpjP2FNTX+Ftb+T
-	 B19geR2QBjNTYHqQqyyffgqW0FviJXuqrjWaYmMpqdxUMdOQRwYZErvT22E26fTOBx
-	 j3JRi6xV0/xcht6VLYJJ3IgCwWNa46TQyf0NHPGhyIMG6o6EtrWyqiFhVzW8yv9hRh
-	 VCjhYDFwXA5OQ==
+	s=k20260515; t=1791799282;
+	bh=bkZFqXrBK2oowRQLizf57Luwn8acr/lrYHsk/m/NRRk=;
+	h=From:To:Subject:In-Reply-To:References:Date;
+	b=R9V2GkacqCxdIJ7U4OUqEeedA3aA2IyiX/COxiL6M8wQqE9tEEDVuFeE+1VtJ+SRb
+	 tYt6WVfGz3EJsLbL3akVxsLwanaEcTm1n0WLv1uink7kWegKkmi42uLkz9pOUP6hZA
+	 YjF6Za3BhFKgBxqaihrxGXOmZz+wMyOvWqv9+ubiyPjnIy04Y9U12pk6Y/EIymBdIZ
+	 xvxtFLZSDkjQwqf14laW87OABxzjG61PvwmbIxIypLlMc+Hf11BTCq6El5c9D8YRMc
+	 Cp0npplb07TsgDmOVNQ8N+PvcdO3qRDBnIEDBB5osXkiH3aq+RMghzrQzmvBVXOwlu
+	 hFXJb+5izP3nQ==
 X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
 To: sashiko-reviews@lists.linux.dev, iommu@lists.linux.dev,
 	linux-coco@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v7 14/16] iommufd/viommu: Allow PCI TSM backends to
- provide vIOMMU operations
-In-Reply-To: <sashiko-outbox-163680@kernel.org>
+Subject: Re: [PATCH v7 16/16] PCI/TSM: wait for vdevice contexts before
+ removing a DSM
+In-Reply-To: <sashiko-outbox-163687@kernel.org>
 References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-15-aneesh.kumar@kernel.org>
- <sashiko-outbox-163680@kernel.org>
-Date: Mon, 12 Oct 2026 15:25:59 +0530
-Message-ID: <yq5awlrn4500.fsf@kernel.org>
+ <20261008055955.4014342-17-aneesh.kumar@kernel.org>
+ <sashiko-outbox-163687@kernel.org>
+Date: Mon, 12 Oct 2026 15:31:17 +0530
+Message-ID: <yq5atsmr44r6.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,123 +49,94 @@ Content-Type: text/plain
 sashiko-bot@kernel.org writes:
 
 > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] pci/tsm: Use-After-Free of tsm_dev due to missing device reference count
+> - [High] PCI/TSM: UAF due to bypassed drain wait in pci_tsm_unregister()
 > --
 >
-> commit 45c3cda47ad9fdb8464c2ba275fcaa5077625b75
+> commit 70b40a7c8d41eb1bbe070cea07e7f252f47338e8
 > Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 >
-> iommufd/viommu: Allow PCI TSM backends to provide vIOMMU operations
->
-> This commit allows a vIOMMU implementation to be provided by a TEE Security
-> Manager (TSM) rather than the physical IOMMU driver. It queries the TSM
-> associated with the target PCI device and resolves the PCI TSM association
-> under pci_tsm_rwsem while pinning the module.
+>     PCI/TSM: wait for vdevice contexts before removing a DSM
+>     
+>     A PF0 DSM can be removed while a sibling function still has a vdevice.
+>     The context pins both the pci dev, but those references do not keep the
+>     PF0 DOE mailbox alive. Ignoring -EBUSY from link disconnect lets PCI
+>     continue to pci_doe_destroy(), leaving the vdevice with a stale mailbox
+>     pointer.
 >
 >> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
->> index dca9634f8d5eb..c8603867e09df 100644
+>> index c8603867e09df..8aa74ba31932b 100644
 >> --- a/drivers/pci/tsm.c
 >> +++ b/drivers/pci/tsm.c
->
 > [ ... ]
->
->> @@ -36,6 +38,25 @@ static const struct pci_tsm_ops *to_pci_tsm_ops(struct pci_tsm *tsm)
->>  	return tsm->tsm_dev->pci_ops;
+>> @@ -751,8 +769,44 @@ static void __pci_tsm_destroy(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
+>>  
+>>  void pci_tsm_destroy(struct pci_dev *pdev)
+>>  {
+>> -	guard(rwsem_write)(&pci_tsm_rwsem);
+>> +	struct pci_tsm_pf0 *pf0 = NULL;
+>> +	struct completion *drained;
+>> +	bool interrupted = false;
+>> +	long rc;
+>> +
+>> +	down_write(&pci_tsm_rwsem);
+>> +	if (pdev->tsm && is_link_tsm(pdev->tsm->tsm_dev) &&
+>> +	    is_pci_tsm_pf0(pdev)) {
+>> +		pf0 = to_pci_tsm_pf0(pdev->tsm);
+>> +		drained = &pf0->contexts_drained;
+>> +		mutex_lock(&pf0->lock);
+>> +		pf0->removing = true;
+>> +		mutex_unlock(&pf0->lock);
+>> +
+>> +		/* An unused DSM may never have completed contexts_drained. */
+>> +		rc = pf0->context_users ?
+>> +			try_wait_for_completion(drained) : 1;
+>> +		/* Context release needs the read side of pci_tsm_rwsem. */
+>> +		up_write(&pci_tsm_rwsem);
+>> +		while (rc <= 0) {
+> [ ... ]
+>> +			if (!rc)
+>> +				pci_warn(pdev, "TSM connection is in use, waiting for vdevices\n");
+>> +		}
+>> +		down_write(&pci_tsm_rwsem);
+>> +	}
+>>  	__pci_tsm_destroy(pdev, NULL);
+>> +	up_write(&pci_tsm_rwsem);
 >>  }
->>  
->> +struct tsm_dev *pci_tsm_get_device(struct pci_dev *pdev)
->> +{
->> +	const struct pci_tsm_ops *ops;
->> +	struct tsm_dev *tsm_dev;
->> +
->> +	guard(rwsem_read)(&pci_tsm_rwsem);
->> +	if (!pdev->tsm)
->> +		return NULL;
->> +
->> +	tsm_dev = pdev->tsm->tsm_dev;
->> +	ops = tsm_dev->pci_ops;
->> +	if (!ops->viommu_get_ops)
->> +		return NULL;
->> +	if (!try_module_get(ops->owner))
->> +		return ERR_PTR(-ENODEV);
->> +	return tsm_dev;
->> +}
 >
 > [Severity: High]
-> Does this code need to take a kobject reference on the device via
-> get_device(&tsm_dev->dev)?
+> This adds the context drain wait loop when the PCI device is destroyed, but
+> what happens when the TSM provider device is unbound and calls
+> pci_tsm_unregister() first?
 >
-> The tsm_dev pointer is returned and stored in viommu->tsm_dev for the
-> lifetime of the vIOMMU, relying solely on the module pin. 
+> Looking at pci_tsm_unregister() in drivers/pci/tsm.c, it directly calls
+> __pci_tsm_destroy(pdev, tsm_dev) bypassing this new wait loop:
 >
-> The doc comment for tsm_get_device() states that backends must not unregister
-> their TSM independently of module unload. However, in the Linux device model,
-> a module pin only prevents module removal; it does not prevent a PCI device
-> from being unbound via sysfs (unbind or remove) or hardware hot-unplug.
+> drivers/pci/tsm.c:pci_tsm_unregister() {
+>     ...
+> 	for_each_pci_dev_reverse(pdev)
+> 		__pci_tsm_destroy(pdev, tsm_dev);
+> }
 >
-> If the device is unbound, the driver core forces the driver remove callback
-> to run, which calls tsm_unregister().
+> If contexts are active, __pci_tsm_destroy() skips clearing pdev->tsm
+> because pci_tsm_disconnect() will return -EBUSY:
 >
-
-An additional device reference is not strictly needed for the current
-CCA backend. arm-cca-host registers the TSM device, and the vIOMMU pins
-that module. Sysfs unbind is disabled, and the SMCCC device has no
-hot-unplug path, so the TSM remains registered while the vIOMMU exists.
-
-
-But, taking a device reference makes it explicit that the vIOMMU owns a
-reference to the TSM device until it is destroyed. I'll add this in the
-next revision.
-
+> drivers/pci/tsm.c:__pci_tsm_destroy() {
+>     ...
+> 	if (is_link_tsm(tsm_dev) && is_pci_tsm_pf0(pdev)) {
+> 		if (pci_tsm_disconnect(pdev))
+> 			pci_warn(pdev, "TSM connection is still in use\n");
+> 	} else {
+>     ...
+> }
 >
->> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
->> index f791359861020..2fce341ff9231 100644
->> --- a/drivers/virt/coco/tsm-core.c
->> +++ b/drivers/virt/coco/tsm-core.c
->
-> [ ... ]
->
->> @@ -16,6 +26,29 @@ static const struct class tsm_class = {
->>  };
->>  static DEFINE_IDA(tsm_ida);
->>  
->> +/**
->> + * tsm_get_device() - Pin the TSM attached to a device
->> + * @dev: device whose TSM is to be pinned
->> + *
->> + * A successful lookup pins the backend module. Backends providing vIOMMU
->> + * operations must not unregister their TSM independently of module unload.
->> + * Return: NULL if no vIOMMU-capable TSM is attached, an error if the module
->> + * cannot be pinned, or the TSM device associated with the pinned backend.
->> + */
->> +struct tsm_dev *tsm_get_device(struct device *dev)
->> +{
->> +	if (!dev_is_pci(dev))
->> +		return NULL;
->> +	return pci_tsm_get_device(to_pci_dev(dev));
->> +}
->> +EXPORT_SYMBOL_GPL(tsm_get_device);
->> +
->> +void tsm_put_device(struct tsm_dev *tsm_dev)
->> +{
->> +	module_put(tsm_dev->pci_ops->owner);
->> +}
->
-> [Severity: High]
-> Can this dereference freed memory?
->
-> When tsm_unregister() is called during an unbind or hot-unplug event, it
-> invokes put_device(&tsm_dev->dev). Because no extra reference was held when
-> acquiring the device in pci_tsm_get_device(), the reference count drops to zero
-> and the tsm_dev object is freed via kfree().
->
-> Later, when the vIOMMU is destroyed, iommufd_viommu_destroy() calls
-> tsm_put_device(viommu->tsm_dev). This dereferences the freed memory to access
-> tsm_dev->pci_ops->owner, resulting in a use-after-free crash.
+> tsm_unregister() then drops its reference, and the provider frees the
+> underlying pci_tsm memory. Later, when the PCI core calls this modified
+> pci_tsm_destroy(), won't it dereference the already freed pdev->tsm and
+> pdev->tsm->tsm_dev pointers here?
 >
 
-This path is not reachable with the current CCA backend: sysfs unbind is
-disabled, the SMCCC device has no hot-unplug path, and the module pin
-prevents unload.
+With this series, vdevices hold a reference to their parent vIOMMU,
+which pins arm-cca-host. sysfs unbind is disabled, and the SMCCC
+provider device has no hot-unplug path.
 
 -aneesh
