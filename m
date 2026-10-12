@@ -1,124 +1,187 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2BB488D92
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 17:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791827697; cv=none; b=SRJVmPIkGQMcxWY/i0pgCBi48yXZHBXKkfYFcFDYkV9+QwyNHjknaU4lcJREWdivmiQdJMjy6aFwlvZvzCPIdDyEzuQtCEvEAqYJFa5/9Oaap+VwnGivyURdahgvye57521He1kjgTu2PSsz0kzisk07b9MD9LCeTSCVHBPjQ6Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791827697; c=relaxed/simple;
-	bh=FWRRxx6zY6F2irCAkFFw/Nvcl0T4Mr3IRI0IXDHJ8xU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h2FyR6hSwnLYUUgm/lsgFthv+X/6eKhi5kzkt68v60UNl+MRdE0WzphtRHWBMkf2eXnGmGNNuHNXXQ+yKgM5ZdKH+2QCr4Ulud7gx6RtSTmJx5sDr1cc3eQIRE/m7ShnUbeefSzM2t8YptT094KjoNlw/QasTe0zBwXs62qyjug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MrWDo0XS; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4BD4C224E
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 17:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791827740; cv=pass; b=UkM0/wYEkp1pq+cUrA5KsygHN4CSGU+nck7ZkxArJ0e4uE9Iqi4m8edV9ga/P9kkFHqpDVKVJfmpo4rjWSB7aSGHb9Dj9XU9x2XcUB7Hpg3KkDmzm2FpiZAJwWbCWMdJyLH3FHWpOLQZ40SY6tthmx/F/epC4nfmmwWNxObNvv0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791827740; c=relaxed/simple;
+	bh=kZdS4dF4wn+JWIPITemwpdYnrEbvaGpLaLJey0JUXyM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kDdCyRfP3ej19TvrXeJOfk4QiiMYhLuCLOuG63fK8DBF44K+P+jMDocGo4vVyOtbgY49TbV2qwfOncaspud5pq7yl6rp6tOjYrps9piQliqVVw5UUQLWA83CP0jeJ0bT7z6HRgag9n7KkFQYXxJeYYht9lZfUZ3VSpjrnJW1R5w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GHKyta1K; arc=pass smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MrWDo0XS"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso28357355e9.0
-        for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 10:54:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GHKyta1K"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c31a34de844so321052166b.3
+        for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 10:55:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791827737; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LuX5V/eUchWfeT53upE5OmhKt7c2hhwaRMQOnUNzc/RF82Y46o+8wtgiYGfpB4sgjM
+         T72mcNTnNlvMbv9yQNEc1uekZ5VCLxckAsAuhzhDtETT2y3KjJmFw2jCN+xlyMS4FUD8
+         2DtqngILXDV2k6WvTN8lcaZUQMll2VndGoc+DHpfRLYPXOq74QwnfRTWj0ApusFD3fe/
+         sk3pgovZ3h5UMY7tpb3L0kJY1TUIIakd4SKguU8MGL8RxnFRczjinsiLr3HRpV3AoAmA
+         hZHjpKNZZyM5Bivo/M8pNFSWZX8ITVrlsbRiLg5DtgFW8bPzRqIsWBgNgQc3Iwyo+eXL
+         fzfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sxQuVKRIInAc/Z3AzZWZwMxHNHQeTzSvMjD6+JaMyKw=;
+        fh=a/Vmxmk6sk6axRmMc551zH6I8fKgLN9MNar4RINyRes=;
+        b=AskisVECevTnpoALjJkbkjOQRbJnYGqs+D1+N50Jo3O6FIRka/ObIb6gD0ghGvzM3E
+         YGIIu52SnSyZfDWYDOEtSCbY7futve1apxVU+x+rAJob3gJnLA9hHxIu5GfQonNsoSm/
+         +ZkuIEwkh+MDSpm701dyNSg5+177EGASPAXez0eMbkqmSmdkILfa60D1KU2jfAy0OZhP
+         P/OyGohzfEvMZwfThbLq6PvhKnZxW7BDDR4u5TIxYGWUnNgCaB/ccpH20Yikx3zyFg1V
+         9NOTPQSQRXQoiR8tcdJOUDJCkkd1CpSD8NUimdPbocLASg0HuZ92mlxFDBvz+K/mmb5H
+         cNAg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791827694; x=1792432494; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7ypEpjY8mvLe8TMwZ/eo1EKEIbLHoE0Uzn9acxsMI+c=;
-        b=MrWDo0XSzrBtZ3TJDCbv+50Q9oxG0Jd3wDvlwJ1LxKaIc9axgfxS0dJZrSw8K6hUST
-         X+ft+U7m61a8QSIDllE2DJYU06kCmqqcHUg8SSRDsXebJ5527VhEJGXOOuUWxJ8Lp9Gj
-         w5w/Qv2AD8ENvrMh1e5fpBYi+Jx3sFH2i02lqYPRhn4NcNDTi8fK0kuDh6dI/HU9HRHA
-         9AENw+EdRkRfqE+/4PbknILQmOr4MDO9wgrbrOIAfOkRcGQ5sVTUXjAWRQbNi5L4hiDK
-         z3vad5UautDGyZspo5wNgEOa0pSBFk6u6pDNQQUI5S1pRqiBJDuVBIx5RTgdoKN5GQJB
-         0Hxw==
+        d=gmail.com; s=20251104; t=1791827737; x=1792432537; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sxQuVKRIInAc/Z3AzZWZwMxHNHQeTzSvMjD6+JaMyKw=;
+        b=GHKyta1KB7OgCgTeHQrL/oU1bIKSfCsf8dw2QJJNtpBPStZR1hCWtutsTGGdqW1gFy
+         gvKL8WGpEq/FV6SmgTrMuavVuX3sLOE87upuvZWDrLID2udZynICgXcWHKl3zk9u83JP
+         6pynoTt8fvkpPiwLAsLZbuV8V6NIHe0c2YZrZRmBvoc7FG9UDLFrrUHtcitYXJRP9fgi
+         TKwusRUDwsWBvk1YVXrS1z41YOEfURYdedKCZoaOI2Lex2/JdMAem9o3wDe0fdwJ8qZ6
+         /VarK5yOYNIH/9GXi/Ty9yNaEpxK/2xR7yzEUigfTDZcibEmvN/Eap9a9lMbhLJxT9S0
+         051Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791827694; x=1792432494;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7ypEpjY8mvLe8TMwZ/eo1EKEIbLHoE0Uzn9acxsMI+c=;
-        b=P6cMRcghBit04W9AyPggoa3ekIQUGpOg77XA3aO9+kByIKjvQewM5iEateKpDvxoJD
-         MbgsjMiWgmKoX6vKjeG69TV4jQrHWnNbXwS/RBFcWsTrzN/xXnksX0Yll5Q/seXYOPnS
-         /rx/e3LBYs4Ytkg+tscqO+bp1hbwDDyNexvoKBhrZCsp3i7btD+6DztfIuNR0tm8Kll/
-         E0Xo1MuptuiwCFTNbruyAuRlHDZGQLPFKue8rbm9lGNaOd1EUIFBMHYOV5/ooYKI6lok
-         e5O+b4GBqEqrdaSZ83SC5cQ2gSL8YykeQD4am0FmfZwEtFwAfUnDTwY8KSYOS6ifUmcq
-         nc0w==
-X-Gm-Message-State: AFq9FYKKNATONHNW8aC3/oDbvav+19oOAwIQorBwulz9o/LD7zp8aMvf
-	9jqpS2+YxaswKep8konQL/mtZIxyrPPLezNP5KsAXBZnkU7QQQ1b2/+0
-X-Gm-Gg: AYBFou0l5HKB4qM9gV2anhJbYnukWqNCsr82Z4F49D61K34r1OY6IrNcW5nYXzEovpM
-	pz8Aj7VDhQiwAepN/5n0HDpeqYxuCophxuaitke5u6EXXMZPGf8+vdIE5MJvOWLeU/JXJ7icCJC
-	stEEy++nNjt4McC4GvJlkD2u25kW/uDTfegc/OAennDDjXOhfca02ewWymszuSX3e3pA4wKIxol
-	U2HfVdri74Lq7iE81HPXYJ+e2q0I4syFBlBAcA0aiaO2e/BE1+qb/xibzh9vFSuCnsjAU9ICM36
-	F2I8qf/qsfsjSTRxRLur6cuC6u2JXF2tvXZqdIK8fZvRdpSH31ODtNme7ltUax0MQkJ0hgMCKcC
-	avy9gKFeRHGAL0SLMo6TNUC53h+pjrE/Xty++lyXGdMUKDKHpXvSbhRCWkWowahrm9bn6q9Z+wB
-	qpaWgANrjvM0lu9UBdJkVSK35UWbQIhMhhXq4K9gBrmav8eSI3ywYbq/7EhZOcjUy46tNm+ZE3r
-	jN4YktZ6nAn1n1o3h27nyWYFro1NwhzZJNdBhNGHcJ/7lmbtCLCkM6WYmcp4zDpCF63PXSu
-X-Received: by 2002:a05:600d:644f:20b0:4a1:88da:800f with SMTP id 5b1f17b1804b1-4a18dcc1377mr159038565e9.9.1791827694338;
-        Mon, 12 Oct 2026 10:54:54 -0700 (PDT)
-Received: from voyt-laptop-dell ([2a00:fbc:ef3c:5801:aaab:bea6:6711:8153])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc7299sm518416f8f.53.2026.10.12.10.54.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 10:54:53 -0700 (PDT)
-From: Dmitry Voytik <voytikd@gmail.com>
-To: Kiryl Shutsemau <kas@kernel.org>,
-	Chao Gao <chao.gao@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-coco@lists.linux.dev,
-	x86@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dmitry Voytik <voytikd@gmail.com>
-Subject: [PATCH v2] coco/tdx-host: add Kconfig description
-Date: Mon, 12 Oct 2026 19:53:48 +0200
-Message-ID: <20261012175348.1256363-1-voytikd@gmail.com>
-X-Mailer: git-send-email 2.56.0
+        d=1e100.net; s=20260707; t=1791827737; x=1792432537;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sxQuVKRIInAc/Z3AzZWZwMxHNHQeTzSvMjD6+JaMyKw=;
+        b=aPE7e7Z74urfOIVrBaAi5s/5YYb9Us8Npvr8Y/4eqierD9b7TPg2Ol/PkuIyrO3TFZ
+         qN3xbQTggoIuIIN6gNJSZRUwo+vVYl8HNAEjNHqeCc0rbkbbKEJTidiDuCZ5WzvFidDo
+         eqfube/LN8mILwO+6F9YdjHUQdot5HPa6d9i7/m1DyHK3GO8chGXB6CdXZNC8r6qEVGz
+         qjgHLNPvd1DOgwUf37Hd/RlGmpkxvj1fiGrU38LDqi8zcy4JKjopTDowWRwBapcdzprO
+         VqfSLUVlbovJ22w1PM6Hyoc8rt9ugiCOWwqAURSrmXll+T+e4kzeXLmzdhi2wlwZbPRp
+         PWFQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx9dMo5gOCEkI5ef9Vvv0IOIp/iJ1g7PMkTVDcZ4XQmEINFQOeGEy7C5AMRQkuiKTHwkyPSVgee6U1I@lists.linux.dev
+X-Gm-Message-State: AFq9FYI6pNw1cjUyrjNO2bDqJ1ICIGLfAg0/D18u/RLbew3Xq0nazgG9
+	MI4f23Fvw04rLna4uZWvS50lnskE9+SfxrOt4Cp0afsvftDDGe0m0+705SHrhA3YsgKp8miCI3C
+	lRs0gmf13IPyLEoMTbnGT9IIrIfxDvdU=
+X-Gm-Gg: AYBFou0d/6u50phOeC88DiAi6f35cS6YUfrqEj+0arsqwrXYIIhs14n9xDYHgUgKB7J
+	4cYd3VIvXLvFO/zeEnsWBSO5X4/wSe6mpTfyuWrAbM7RDj4MHbPmzgtjVMPrijenPHckIh6EKUu
+	mnGq7fvtINJfx3yTfzYHxBud1ooCXdgOWh1L6su2TguOnfZvhHdyidpwPaLwMxND7UwAh5dxC6y
+	SUoeUALf3mrxriGRcyHvo7k6MuE0YDZBeTjk8v7O8EvE2z/h/maxB88pZgFdzwpPDKqZVcSpjXP
+	LkTS7keWvdnK8Zi95WAkMqFkwJgEiQVZB47WaCo7aTqwcbaxOq3o0ECjzKJwO6NtnJU2YfVRgUu
+	l0LrH7EEnLSXZgHrr13qHmh+fK6DaK+JvgsoguOpdXHUXNqsEg2WAJ26pSgmKJx0qjNgs
+X-Received: by 2002:a17:907:c0d:b0:c2e:3ed7:7db4 with SMTP id
+ a640c23a62f3a-c31aa00dc1bmr971765166b.23.1791827736975; Mon, 12 Oct 2026
+ 10:55:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261003223237.513456-1-voytikd@gmail.com> <aszHlWi_aLIh8r9F@thinkstation>
+In-Reply-To: <aszHlWi_aLIh8r9F@thinkstation>
+From: Dmitry Voytik <voytikd@gmail.com>
+Date: Mon, 12 Oct 2026 19:55:10 +0200
+X-Gm-Features: AclHuK8QxOWUKD8tjoKoD_vULn_acAenrN-17lB0n0Wf19SoI_dhhDRr9qFGuro
+Message-ID: <CAAX90H0PGW_PF53FpWYExaQPKmDdrAP+_b89gq5+a0wK=AicMg@mail.gmail.com>
+Subject: Re: [PATCH] coco/tdx-host: add Kconfig description
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Chao Gao <chao.gao@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix the issue when the driver always gets compiled as a module.
-How to reproduce the issue:
-	make mrproper
-	make defconfig
-	./scripts/config \
-	  -e CMA \
-	  -e ALLOC \
-	  -e KVM \
-	  -e KVM_INTEL \
-	  -e KVM_INTEL_TDX \
-	  -e INTEL_TDX_HOST \
-	  -e TDX_HOST_SERVICES \
-	  --refresh
-	make olddefconfig
-	make mod2yesconfig
-	grep '=m$' .config
+Hi Kiryl,
 
-	returns only this driver as module:
-	  CONFIG_TDX_HOST_SERVICES=m
+Thanks for the review!
 
-Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
----
-v2:
- * changed per Kiryl's suggestion:
-   https://lore.kernel.org/lkml/aszHlWi_aLIh8r9F@thinkstation/
-v1:
- *https://lore.kernel.org/lkml/20261003223237.513456-1-voytikd@gmail.com/
----
----
- drivers/virt/coco/tdx-host/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Oct 12, 2026 at 1:42=E2=80=AFPM Kiryl Shutsemau <kas@kernel.org> wr=
+ote:
+>
+> On Sun, Oct 04, 2026 at 12:32:37AM +0200, Dmitry Voytik wrote:
+> > Fix the issue when the driver always gets compiled as a module.
+> > How to reproduce the issue:
+> >       make mrproper
+> >       make defconfig
+> >
+> >       ./scripts/config \
+> >         -e CMA \
+> >         -e ALLOC \
+> >         -e KVM \
+> >         -e KVM_INTEL \
+> >         -e KVM_INTEL_TDX \
+> >         -e INTEL_TDX_HOST \
+> >         -e TDX_HOST_SERVICES \
+> >         --refresh
+> >       make olddefconfig
+> >       make mod2yesconfig
+> >       grep '=3Dm$' .config
+> >
+> >       returns only this driver as module:
+> >         CONFIG_TDX_HOST_SERVICES=3Dm
+> >
+> > "make menuconfig" doesn't let switch from =3Dm to =3Dy either.
+> >
+> > Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
+> > ---
+> >  drivers/virt/coco/tdx-host/Kconfig | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx=
+-host/Kconfig
+> > index 57d0c01a4357..5a13ec6f51e8 100644
+> > --- a/drivers/virt/coco/tdx-host/Kconfig
+> > +++ b/drivers/virt/coco/tdx-host/Kconfig
+> > @@ -1,6 +1,10 @@
+> >  config TDX_HOST_SERVICES
+> > -     tristate
+> > +     tristate "TDX host user interface driver"
+> >       depends on INTEL_TDX_HOST
+> >       select FW_LOADER
+> >       select FW_UPLOAD
+> >       default m
+> > +     help
+> > +       See INTEL_TDX_HOST for details.
+> > +
+> > +       If unsure, say N.
+>
+> I would rather keep it hidden and make it follow KVM_INTEL instead:
+>
+> config TDX_HOST_SERVICES
+>         tristate
+>         depends on INTEL_TDX_HOST
+>         select FW_LOADER
+>         select FW_UPLOAD
+>         default KVM_INTEL
+>
+> INTEL_TDX_HOST depends on KVM_INTEL, so this gives =3Dm with kvm-intel as=
+ a
+> module and =3Dy with it built in, which covers your mod2yesconfig case.
+>
+> Does it work for you?
 
-diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-index 57d0c01a4357..fe018e00822b 100644
---- a/drivers/virt/coco/tdx-host/Kconfig
-+++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -3,4 +3,4 @@ config TDX_HOST_SERVICES
- 	depends on INTEL_TDX_HOST
- 	select FW_LOADER
- 	select FW_UPLOAD
--	default m
-+	default KVM_INTEL
--- 
-2.56.0
+Sure, I've retested and sent a v2.
 
+I also rechecked that it still can be built as =3Dm:
+./scripts/config \
+ -e CMA \
+ -e ALLOC \
+ -e KVM \
+ -m KVM_INTEL \
+ -e KVM_INTEL_TDX \
+ -e INTEL_TDX_HOST \
+ -m TDX_HOST_SERVICES \
+ --refresh
+I did this because sashiko produced a false warning that it can't be
+built as =3Dm.
+
+Thanks!
+
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
