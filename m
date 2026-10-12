@@ -1,77 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7E3399350
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 10:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A6B44F549
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 11:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791800150; cv=none; b=DBhXP8gV8r1kt2ZfjKn/sNJqT+yoism1iIBbe8R6hgGCPoRRowQHeUHU/v0kL5iNhtClpRISct5DxC31PFItaiTB5T0Ng/GIVwyvz3gNmt27yoovzQ82IQhDgshpIGszZUWap9G4kDoyWlWADHlW/n1GrbRsr3iSLuZQUaloVOM=
+	t=1791805380; cv=none; b=ciPegOQ2m5Sf2e6OBxqJoEhKxmz1wczV+PLoBa3INtd3zkm0eW+7OLCv3HSHTSVDwMwqQJ18ouIY1QTYz+eOWZQbaLfqriuznYAxA7RNPMvr7LE1bsh4PUd3EsQOR8bhoP2zJilVeUCT/erHZI6Ur7MDGfMs5mOgjWs+pW3u61I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791800150; c=relaxed/simple;
-	bh=c2+opAs7689Xtm7az6pn1Q3umq8nZMHupOBrT/9OA1w=;
+	s=arc-20240116; t=1791805380; c=relaxed/simple;
+	bh=KV4/MIaxjxvl/mfkomvVLh4IYnI2BQ2FQLL4/zF1OZQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mrrLXP5vLVgreiOrXw+JWIgwQDVGL5h1jsnClo5P3cGteElzBlbcDseJC/FDsM2wAbWct1dmpVcggxMTe4Hz3fnZY5VwrlI6MDmu7G/0n4wxWLdJfLWb5r6ftDpKVO6dRyEEBQ3mZ0WBGlGoHWbv0BcYyTEwKoI86XBqu0fd9VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMAn2EW7; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=HwrhME8Y4r5ZRZqxT3pUTznjLv82hDiJPfnANMn7s237lHulcUtbENkjtAk9SjZIhwIP4QcrKQgwqYN/HAxSqFkOj85jQc/qOfRNoheezcWQQsuxAA9pFfzf3r3yQav5JmU/skqbm3ir+KQRaGfGrxEUxSCV+ZnmyzDDDhixU2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NcBMTxOo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMAn2EW7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287FA1F0089C;
-	Mon, 12 Oct 2026 10:15:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NcBMTxOo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A371F0089B
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 11:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791800138;
-	bh=wXbaD+hQMnQX0eRYI2JyeZvdwCRWWe83EhQFaLQYbmw=;
+	s=k20260515; t=1791805376;
+	bh=5fWTotOXdxMB1fdZYWBlyYnTKfDeGXR3zegL+SWwZxw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EMAn2EW7w+8NKOsXHFUr61YoUrTd+uc6qArrUsRty2myyjXVQvnPR70IMpgLwWVn4
-	 +FAMLSMpe9+5kiqF5cyHXdpyq8dzlO/XjBu4g3ol/8FL2B6E2EzPgNlhGYHWFdvpTm
-	 Pel0R+7UJeil2q1yKlt7r8fxllnsFrUu6enU+TTR7tMfn4BCdbupGCrbmW8Q6qp8Aa
-	 dS4OARo0M4NIuxIs6XtnTEf2f+23d5YCf2zekQyPzxB5aqZKy0Nf485HFVOCAmv/ZC
-	 Gf6B+dHQZPrS8B31mSjZK+zNdnTWh7h/EsSvzwTi2W5l/T1ASYAL4u0sZ2yzRRMBQT
-	 BuDtFx+ZjVYZQ==
+	b=NcBMTxOoNuN5lMbRYeObWkI4+/y2kgoHlB7Cy4rp0Azh0kcaI9DlYseknut9ojBAU
+	 b3b+hzx2eZ+TGppR60MByPoStKkFu1PBoWWVihPv0aLHfC3cjG95vfNlByb6eXhrUi
+	 7++f4fyTeyG9kC26PtTaCgj41aVC2SBT80DZ+76RGl+tp4TxDynKF8NRaBeKgjs1AK
+	 0Ig9kkm6ukfAQLn+/U7lAw6hDk4rhkYmzifLjfPgjvEM8qfFd1ohID1YUe5f6FVQwO
+	 1eNCn105cPJXQnnuhT4AhSHGqMTT4n9FB/Jh5HWzvETSCuLKa35Pm3GoMGWYriOoE1
+	 vNZ50XIQcx1hA==
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 7F8B2198003A;
-	Mon, 12 Oct 2026 06:15:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 12 Oct 2026 06:15:35 -0400
-X-ME-Sender: <xms:Q7PMakamMHPY94WudpNYO3M0iZZB_q9VtkMW1v8enMosCFlm2EshVg>
-    <xme:Q7PMarlbRqCCz9RBt4NVyAuxbSDspzotNeF28EKJwTiUPTOIcbNAIRPhPSYNdO1m6
-    Ng1X03vnq794TmDver30gatuZlqd0FS_PhrWMOMVLftcuHP3KKdEIIb>
-X-ME-Received: <xmr:Q7PMamGquXW72XXK-8OCYjTt0YR2dSwiA1Z_lLbsPwFsBHlpcqIS24Dk1sw>
-X-ME-Proxy-Cause: dmFkZTFJUuTgkVW20IYinJ69Kh1eak227WB3MS+CRH0dVNTMUQmd305n5KufqVIrrUYxpF
-    TabuSs1h6on93mgtG/nOyKmZlDFwvtLSLnfh0rl7Ja6zaGON2aEATDiKI03rPAOG506JL4
-    efZKMf5w98MqQ32AZ6kmVMGYhbtMAbl7zhXLEv1JmHTYg9gAJllSHIXopuf5MKVCr1WSMV
-    8dRZ7vOrd1vfTeREzff5ToxCenkqsJKuKHOT82v5bDCRxBvwWa9vAUVIYWkRr49wUJH91O
-    RmVvOORx5/dqj0xH3pgHelgtL6GgiNyiN32Bym5/9jaxy7q9SaYnx97z640p3HVfC1XodZ
-    XyjHygbMvr7rg5UZS5u2k3ZNrHpqvMM5kocn5zyJfBndpqDSYIM+/0l6bfUe78d3UbAH6J
-    g7BHxOvXbU50HmsXUNbTFvdOWbdWDkqOlK/vY2ncvR9AcHzw+tVaw0C8Ih0mATguBF0EFp
-    7FBj6J6UtXBfDwP/VhjBrKx6GTWY5/mFpc8whuers2yGcTyqHC0kc+zL4+x2DYqLWcQ2Pb
-    QY9t7VQyrnQNc8sepcH5MUk3bPEu295fjA891IMwYMJbjOi93d+MHEwvXh7Qa7ELEqyky6
-    uH0jJQTE80PXJmIbrH9U5ifx6EATUHp5X4UEgm1XfyHxxkCjD8Tyu/8TAzaw
-X-ME-Proxy: <xmx:Q7PMaqMTGA20vq0SCuvJSpCAnZhGbC_4f8Q9O0-_6vnNWtOiKaIjcA>
-    <xmx:RLPMag9unIqr3nhERYormH0Wpd7ltwem3RSD6OCusZ9ixI4ryOdMmA>
-    <xmx:RLPMah4sDTkiPvFezMtWy_mm-eCt0MBJJmI-7U_YQ0Gs6jooTaDrYQ>
-    <xmx:RLPMaqTv02zoxaOiIBHe7CkCbYMHDoKcQhCxq7phyIXnEKF-DWWfDA>
-    <xmx:RLPMamNjIvK35lz-rVVjZCiDrJqlDXgKDTK9XAvYPr0V-8p7HLyQ5q6->
+	by mailfauth.ams.internal (Postfix) with ESMTP id 2FE4F198003A;
+	Mon, 12 Oct 2026 07:42:54 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 12 Oct 2026 07:42:55 -0400
+X-ME-Sender: <xms:vcfMaiCvTyfdTem2aCTdRR2fQHh2fmWWdWpclGh4Qo3RbfV5Aw2ncQ>
+    <xme:vcfMakEgVtzACRrXXG_gkXwYahjFz0QAWdf7uVopJYporAN_8br61BK5kSPd4rYMC
+    DY59tasWZP6s0MDkqMmW6QFcrS_WjILdf25lEs2ZdxGifw56N9-wQgb>
+X-ME-Received: <xmr:vcfMalMsPWZnoZA4jTaxTIr0EZ-0X8nTssFkoAaw0OKOh1237etfFdXFla8>
+X-ME-Proxy-Cause: dmFkZTFn0qRlGtejrvSmFoeFSa9WhtjXZQ5i4Fb9PhPmjj4k3K+OZ0pehOpB/bFOKjg4jc
+    CfFj88JdJguPIbqmtpkWLW99EuflPx74ldu3tiD9XSu7qCMOi7iygh2zECXFc8XAtIoy8x
+    QPQsWQmGbCBXCpZo652nD2bZ/plxf/uJYOQQyqHfgItaDIwapusOqgZ3W2uDwHMxTzKYzg
+    qZQLzD5GIiFrxdVPpGcRAq2itikQkPfQhvekCLb1KmYgI/VQpTpri7tgpKupHPsEBaurff
+    e9fuWvjPnSUBcO6kERYEjyVFV+F/YGaG2syeF1kyEuCsmU5h7DjwIx6yGwDgJ/X0o0j/Sb
+    iZFfVIAZ4m5cH4Upaz2ppy/PyTIlciXuKLzPDwF772Sd1Sw3TNCTkOAQe1ctBQYZMb4eZB
+    31N6lUTYY/vr+Uyc/MggZ4yOB+XE6Q2Qf8GaWHJBWlbbj6bsr7wJKSuN2L59o7jSra2yI1
+    u9W4/wkajjVLUgFr7OpqPEoZ10FV+fnSd69sl7MMUDvkcBMxXYyKbTBO1d0qv3X9S8JEP0
+    yLGZq0IkRTvIWePOmV1iaP30F7Gwe3EaimqEX2FQxoi+SscqXMfSYxdb+AZ6lulfl796xt
+    Es1zntiFChjaraJ7k/TfIlB7SOCE6fg3wDlYesdgVuf8wkWHzsoKvzOfaesw
+X-ME-Proxy: <xmx:vcfMatjQFQjc-IVZxdZ4cE5-hFIHubHuhTKKObbzygU9Ar7Fufwr7w>
+    <xmx:vcfMat2DXfYPfXaonnXMgbz3s-Vi81Z6ACIeaYvXhefLJI0rG1bjNA>
+    <xmx:vcfMainxi_-dOAJaCK-CPUte-gUH7vf4OvjXjOWBrorEj3RJP8Y-pw>
+    <xmx:vcfMakugCN_SAuzCPpkm2rMPrc8Ejya-VdNzHNydIrRZCZnAQfTG1w>
+    <xmx:vcfMaq3tOVcze-ZHetV07OyuAo6JoFtnASWa1IaiJElqJg26r4-kWT4z>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 12 Oct 2026 06:15:31 -0400 (EDT)
-Date: Mon, 12 Oct 2026 11:15:29 +0100
+ 12 Oct 2026 07:42:53 -0400 (EDT)
+Date: Mon, 12 Oct 2026 12:42:52 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Tony Lindgren <tony.lindgren@linux.intel.com>, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, 
-	kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com, 
-	adrian.hunter@intel.com, kishen.maloor@intel.com, peter.fang@intel.com, 
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
-	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-Subject: Re: [PATCH v3 6/6] x86/virt/tdx: Support DPAMT when adding memory
- for the extensions
-Message-ID: <asyy0Y4ZWqHvgQ4u@thinkstation>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-6-db52cb05b918@linux.intel.com>
- <asR64ovVXEmTVgg6@tlindgre-MOBL1>
- <asceeI8LD5ltEOje@yilunxu-OptiPlex-7050>
- <asjrTLfebkjDzB9F@thinkstation>
- <asmzGnpjrDKmFLLP@yilunxu-OptiPlex-7050>
+To: Dmitry Voytik <voytikd@gmail.com>
+Cc: Chao Gao <chao.gao@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] coco/tdx-host: add Kconfig description
+Message-ID: <aszHlWi_aLIh8r9F@thinkstation>
+References: <20261003223237.513456-1-voytikd@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -80,81 +70,67 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <asmzGnpjrDKmFLLP@yilunxu-OptiPlex-7050>
+In-Reply-To: <20261003223237.513456-1-voytikd@gmail.com>
 
-On Sat, Oct 10, 2026 at 11:38:02AM +0800, Xu Yilun wrote:
-> On Fri, Oct 09, 2026 at 02:28:34PM +0100, Kiryl Shutsemau wrote:
-> > On Thu, Oct 08, 2026 at 12:39:20PM +0800, Xu Yilun wrote:
-> > > On Tue, Oct 06, 2026 at 07:36:50AM +0300, Tony Lindgren wrote:
-> > > > On Tue, Oct 06, 2026 at 01:41:50AM +0800, Xu Yilun wrote:
-> > > > > The TDX module uses Physical Address Metadata Table (PAMT) to track some
-> > > > > state for each page of physical memory that it might use. 3 levels of
-> > > > > PAMTs are used to track pages of different sizes - 1GB, 2MB and 4KB.
-> > > > > Dynamic PAMT (DPAMT) allows saving memory by allocating 4KB PAMT
-> > > > > dynamically, while the 1GB and 2MB levels remain allocated on TDX module
-> > > > > initialization. The kernel has helpers to install 4K DPAMT.
-> > > > > 
-> > > > > Although the memory for the extensions is tens of megabytes and the host
-> > > > > allocates it in a large chunk, the TDX module accepts it at 4K
-> > > > > granularity. Thus the host has to install 4K DPAMT for each page of it.
-> > > > > 
-> > > > > Call tdx_pamt_get() for each page before adding it to TDX module.
-> > > > > Normally, these operations should not fail, and if they do,
-> > > > > intentionally keep the error handling as simple as before - leak all
-> > > > > pages, including the installed 4K DPAMT metadata.
-> > > > > 
-> > > > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > > > > ---
-> > > > > v3:
-> > > > >  - New patch
-> > > > > ---
-> > > > >  arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
-> > > > >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > index 5d5f9da1ab02..27a7039ee443 100644
-> > > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > @@ -1330,8 +1330,15 @@ static __init int tdx_ext_mem_setup(void)
-> > > > >  		struct page *chunk = page + added_pages;
-> > > > >  		unsigned int i;
-> > > > >  
-> > > > > -		for (i = 0; i < chunk_pages; i++)
-> > > > > +		for (i = 0; i < chunk_pages; i++) {
-> > > > > +			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
-> > > > > +			if (ret) {
-> > > > > +				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
-> > > > > +				goto out_free_hpa_list;
-> > > > > +			}
-> > > > > +
-> > > > >  			hpa_list->phys[i] = page_to_phys(chunk + i);
-> > > > > +		}
-> > > > >  
-> > > > >  		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-> > > > >  		if (ret) {
-> > > > > 
-> > > > 
-> > > > How about just fold this change in into patch 3/6?
-> > > 
-> > > I think patch 3/6 is already quite heavy. Is it good that I put this
-> > > patch right after patch 3/6?
-> > 
-> > But that breaks bisectability, no? Even placed right after 3/6, that
-> > commit fails TDX module init on a machine with DPAMT and extensions
-> > whenever the module asks for a non-zero pool.
+On Sun, Oct 04, 2026 at 12:32:37AM +0200, Dmitry Voytik wrote:
+> Fix the issue when the driver always gets compiled as a module.
+> How to reproduce the issue:
+> 	make mrproper
+> 	make defconfig
 > 
-> It will not. Any patch for extension-backed features should be applied
-> after this series. So the pool will always be zero until something like:
+> 	./scripts/config \
+> 	  -e CMA \
+> 	  -e ALLOC \
+> 	  -e KVM \
+> 	  -e KVM_INTEL \
+> 	  -e KVM_INTEL_TDX \
+> 	  -e INTEL_TDX_HOST \
+> 	  -e TDX_HOST_SERVICES \
+> 	  --refresh
+> 	make olddefconfig
+> 	make mod2yesconfig
+> 	grep '=m$' .config
 > 
->  /* List all kernel-supported add-on features0 bits here */
-> -#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (0)
-> +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (TDX_FEATURES0_QUOTE)
+> 	returns only this driver as module:
+> 	  CONFIG_TDX_HOST_SERVICES=m
+> 
+> "make menuconfig" doesn't let switch from =m to =y either.
+> 
+> Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
+> ---
+>  drivers/virt/coco/tdx-host/Kconfig | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+> index 57d0c01a4357..5a13ec6f51e8 100644
+> --- a/drivers/virt/coco/tdx-host/Kconfig
+> +++ b/drivers/virt/coco/tdx-host/Kconfig
+> @@ -1,6 +1,10 @@
+>  config TDX_HOST_SERVICES
+> -	tristate
+> +	tristate "TDX host user interface driver"
+>  	depends on INTEL_TDX_HOST
+>  	select FW_LOADER
+>  	select FW_UPLOAD
+>  	default m
+> +	help
+> +	  See INTEL_TDX_HOST for details.
+> +
+> +	  If unsure, say N.
 
-Okay, fair enough. Feel free to use my
+I would rather keep it hidden and make it follow KVM_INTEL instead:
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+config TDX_HOST_SERVICES
+        tristate
+        depends on INTEL_TDX_HOST
+        select FW_LOADER
+        select FW_UPLOAD
+        default KVM_INTEL
 
-on 3/6 and 6/6.
+INTEL_TDX_HOST depends on KVM_INTEL, so this gives =m with kvm-intel as a
+module and =y with it built in, which covers your mod2yesconfig case.
+
+Does it work for you?
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
