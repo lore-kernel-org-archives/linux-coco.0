@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA3F4779A7
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 09:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3DA47884C
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 09:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798635; cv=none; b=M73zcHIKRR/GmowJ89AJhuI48mAxVh4Od1IeH+VUbXAi2sXXXDgoDqmYPr6GZ35Lf3qguwlCK3BjfQ7N0Va1PkUP8USo0TMm8qMTrgIjBIS3KgSNNJXfgaS2K8l/lFWgprwoLefBDchUvioACl2OhBtLZ2VcOn4eSqnrdKW5aSo=
+	t=1791798635; cv=none; b=Rxrx2FtH7mjuhNQJj0xWiad6o1OoH8LHHdP1sUKnkqQx3EW30Q/y6V/ZgDoyWBuDWZ0KjbYR8dm+Bv6RDEWw9j3jShDzDZT8kstzdjlGNmo9RblJyRtui/V0ASOYVR39+B+kOunzpQuLDFf20sIww7xqoE8U8awz8zJovjG5Xfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791798635; c=relaxed/simple;
-	bh=AH5Cz67aP06c7TXXn3b6GDiO+yXdUN7fpo8/F44sEj0=;
+	bh=Du4a/1wEKRh4jX5nYMvYrge7s6dIxnigtge2cRzPIUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooXs01KOzJ60ICJgqGyaR9SXJ1lgteyA7oE8A77CU33kiUYi05kmvqNqS0V/HBsFbaV/4IpP6OMsFgAQuRyICVcy3pV7EbFziF+NtOKD5w8RZdB0YX9THUys+6/Ep3Dkx+24Ncw9ROvw0pBKCQTOV6zUwAGq8neueg0w4WnjVTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KK6FXTdF; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=ec3nKPQdH84DZJ++TUzWYPFLqqZ32XQvUURnWPGisxYJZybjiDLSTT03nB0TmwTQw8N0Se40pxf0Xrypm5q6YNCN6DZh+NiVLFkQg3un6DqZ296antNQkKfuzEAQYin9xfdWYCtTxISdoCPDt8G+KIIpE9/HbjRHywc2RWN/kUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q6P+kk/s; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KK6FXTdF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q6P+kk/s"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791798628; x=1823334628;
+  t=1791798630; x=1823334630;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AH5Cz67aP06c7TXXn3b6GDiO+yXdUN7fpo8/F44sEj0=;
-  b=KK6FXTdFKb8zNWYH7+uxo7MPtjc2xPH+dAQSJ/mIz7sR6uQd1y/l3F56
-   j3LsPPkpG9lSqL/LJJ2OoWN7btCibX9JxZblDkV3S70kjIsb4KQFmKCGX
-   Bc5s0Hi3XV3OAFRdjwXnPLhnW6Rx7qGyTNNOo3nsLu8DHqXAYk+9Js4W1
-   fRmCti6uXL+1tGoKnyLxzsHt6eUKoWVTxGwIRJ+cCQ4qZJ/mKlL3Agnp+
-   Jdx1ZWoDDmeZO4rKSoR5vRqYwSNf5Jp+j7r7+A/oaUa4OWTMrgWfG+iAK
-   tW1zdaJjxsgAnOS5cujTT8sTZVQXOnEwkQKah4g4dyaTz/R4EcR6TRiRK
-   Q==;
-X-CSE-ConnectionGUID: 3qnDoW6yRU+TOrb51CCJSg==
-X-CSE-MsgGUID: Mx/AjcSxSbq7suMODup16A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="388022"
+  bh=Du4a/1wEKRh4jX5nYMvYrge7s6dIxnigtge2cRzPIUk=;
+  b=Q6P+kk/sw/yiLSdZ0Y3qYw+JHOZAf4/vb26qPTLYBVDL0qWy0m7M40DQ
+   HBPxE02+H4rlsSI9f9UJ++2TOvGgQOa5RErFYXPMNvgFpFUj6+eijZ612
+   eBhe8i6XM7W7LebLZSyYrtQ7m5c8tjYQFpxvzg/WLG2ime3uxpCX6FwYX
+   jRaTZaZREv+5+ma89nu35gBRsiMzpM4iAsJglzDC3KPgX2yOTKsCjobtD
+   0SZweuANlg6by3teCbmvMlnjUo3AaCbdg4NI1/31euVhmFlDbqqUpckPX
+   cXgxKQQrzP+WnkeamsyESdnOMSCptE9gJWZxCWpNvxLvok7Aem+H7EO1F
+   A==;
+X-CSE-ConnectionGUID: KONAVJ99Sbev0UsQtKGejA==
+X-CSE-MsgGUID: KrNO2aYZQ06hX3IKytHg9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="388029"
 X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
-   d="scan'208";a="388022"
+   d="scan'208";a="388029"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:23 -0700
-X-CSE-ConnectionGUID: iLHm1itbQwGR2ygGlDRQkA==
-X-CSE-MsgGUID: S0M93ycoQX60RnecMl9ILg==
+X-CSE-ConnectionGUID: luV174TpQNCZpGgjxsSGrg==
+X-CSE-MsgGUID: TwX8WCSZRYeZQJQvb1c05g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
-   d="scan'208";a="776850"
+   d="scan'208";a="776857"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:23 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:24 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -60,9 +60,9 @@ Cc: yilun.xu@linux.intel.com,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH v4 05/10] x86/virt/tdx: Convert the td_ctrl metadata reader
-Date: Mon, 12 Oct 2026 02:47:32 -0700
-Message-ID: <20261012094754.27702-6-chao.gao@intel.com>
+Subject: [PATCH v4 06/10] x86/virt/tdx: Convert the handoff metadata reader
+Date: Mon, 12 Oct 2026 02:47:33 -0700
+Message-ID: <20261012094754.27702-7-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261012094754.27702-1-chao.gao@intel.com>
 References: <20261012094754.27702-1-chao.gao@intel.com>
@@ -77,10 +77,8 @@ Content-Transfer-Encoding: 8bit
 Continue converting the metadata readers to the table-driven helper.
 
 Add a table that pairs each field ID with the 'struct
-tdx_sys_info_td_ctrl' member that holds its value, and read all fields by
+tdx_sys_info_handoff' member that holds its value, and read all fields by
 walking that table.
-
-Annotate the table as __initconst as it is referenced only during init.
 
 AI was used under supervision to review code and workshop logs
 
@@ -91,79 +89,73 @@ v4:
  - Collect tags [Rick]
  - Drop per-class macros [Nikolay, Dave]
 ---
- arch/x86/virt/vmx/tdx/tdx.c                 |  6 ++++++
- arch/x86/virt/vmx/tdx/tdx.h                 |  5 +++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 17 +----------------
- 3 files changed, 12 insertions(+), 16 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c                 |  6 +++++-
+ arch/x86/virt/vmx/tdx/tdx.h                 |  3 +++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 13 -------------
+ 3 files changed, 8 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 8dcd8b6ca3a2..bd0c8359eb55 100644
+index bd0c8359eb55..ebf9d4d721e1 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -461,6 +461,12 @@ static const struct field_mapping dpamt_mappings[] __initconst = {
- 		  tdmr, pamt_page_bitmap_entry_bits),
+@@ -467,6 +467,10 @@ static const struct field_mapping td_ctrl_mappings[] __initconst = {
+ 	FIELD_MAP(TDX_FIELD_TDVPS_BASE_SIZE,	td_ctrl, tdvps_base_size),
  };
  
-+static const struct field_mapping td_ctrl_mappings[] __initconst = {
-+	FIELD_MAP(TDX_FIELD_TDR_BASE_SIZE,	td_ctrl, tdr_base_size),
-+	FIELD_MAP(TDX_FIELD_TDCS_BASE_SIZE,	td_ctrl, tdcs_base_size),
-+	FIELD_MAP(TDX_FIELD_TDVPS_BASE_SIZE,	td_ctrl, tdvps_base_size),
++static const struct field_mapping handoff_mappings[] = {
++	FIELD_MAP(TDX_FIELD_MODULE_HV, handoff, module_hv),
 +};
 +
  #include "tdx_global_metadata.c"
  
  static __init int check_features(struct tdx_sys_info *sysinfo)
+@@ -1394,7 +1398,7 @@ int tdx_module_shutdown(void)
+ 	int ret;
+ 	int cpu;
+ 
+-	ret = get_tdx_sys_info_handoff(&handoff);
++	ret = read_sys_metadata_table(handoff_mappings, &handoff);
+ 	/*
+ 	 * Handoff information is required for proper
+ 	 * shutdown. Refuse to shut down without it.
 diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 4faf07925dc0..8bd8928c1802 100644
+index 8bd8928c1802..720e301f599e 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.h
 +++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -73,6 +73,11 @@
- #define TDX_FIELD_PAMT_1G_ENTRY_SIZE		0x9100000100000012ULL
- #define TDX_FIELD_PAMT_PAGE_BITMAP_ENTRY_BITS	0x9100000000000013ULL
+@@ -78,6 +78,9 @@
+ #define TDX_FIELD_TDCS_BASE_SIZE		0x9800000100000100ULL
+ #define TDX_FIELD_TDVPS_BASE_SIZE		0x9800000100000200ULL
  
-+/* Class "TD Control Structures" */
-+#define TDX_FIELD_TDR_BASE_SIZE			0x9800000100000000ULL
-+#define TDX_FIELD_TDCS_BASE_SIZE		0x9800000100000100ULL
-+#define TDX_FIELD_TDVPS_BASE_SIZE		0x9800000100000200ULL
++/* Class "TDX Module Handoff" */
++#define TDX_FIELD_MODULE_HV			0x8900000100000000ULL
 +
  /* TDX page types */
  #define	PT_NDA		0x0
  #define	PT_RSVD		0x1
 diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 0d47ac3335f7..6025421874cd 100644
+index 6025421874cd..f1aeccd08027 100644
 --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
 +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -7,21 +7,6 @@
-  * Include this file to other C file instead.
-  */
+@@ -40,19 +40,6 @@ static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_
+ 	return ret;
+ }
  
--static __init int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
+-static int get_tdx_sys_info_handoff(struct tdx_sys_info_handoff *sysinfo_handoff)
 -{
--	int ret = 0;
+-	int ret;
 -	u64 val;
 -
--	if (!ret && !(ret = read_sys_metadata_field(0x9800000100000000, &val)))
--		sysinfo_td_ctrl->tdr_base_size = val;
--	if (!ret && !(ret = read_sys_metadata_field(0x9800000100000100, &val)))
--		sysinfo_td_ctrl->tdcs_base_size = val;
--	if (!ret && !(ret = read_sys_metadata_field(0x9800000100000200, &val)))
--		sysinfo_td_ctrl->tdvps_base_size = val;
+-	ret = read_sys_metadata_field(0x8900000100000000, &val);
+-	if (ret)
+-		return ret;
 -
--	return ret;
+-	sysinfo_handoff->module_hv = val;
+-	return 0;
 -}
 -
- static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf)
+ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
  {
  	int ret = 0;
-@@ -81,7 +66,7 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 
- 	ret = ret ?: read_sys_metadata_table(features_mappings, &sysinfo->features);
- 	ret = ret ?: read_sys_metadata_table(tdmr_mappings, &sysinfo->tdmr);
--	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
-+	ret = ret ?: read_sys_metadata_table(td_ctrl_mappings, &sysinfo->td_ctrl);
- 	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
- 
- 	/*
 -- 
 2.52.0
 
