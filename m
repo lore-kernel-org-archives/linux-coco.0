@@ -1,146 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C6A426692
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 19:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD0947F2CD
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 19:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791832421; cv=none; b=IElEcY0XyK8Vevqxx3aFkZ/EQNHRMCYZ2X/RBnUYO18XsOrmTPvDl+hMm7VgDyF4lT0Ev5yRJ4VYzYaBapaI9a8Z0qc3jAv3e8qMqoGGp0KED8JfPUR3CAOfsb9UCJq6O2FaYnnAqqWBR38V4aWqYdY3MdlalxyKe2QzPDo4rdE=
+	t=1791832910; cv=none; b=I2GIGcmFTBG0gJw+WBxBr2mhYV6SX3kIuPLyx6+jMDfQhizwK+8B5EPuQnqMO5sJD0HCIKdz8vhzoSDV02cJba8r/Yjf+aZrRuD+p+UdM7qMzeQAwoOlWpgh2PgRxlkcfJx0aH2WlBF8+XJixrNz6u6hZzQ0zzow697yrqeTQSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791832421; c=relaxed/simple;
-	bh=+qmz+yBeXRlBRx+OdP1RU/IGoFJLfquctyGFdtp+Fp0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nZs6nxrZ2r9iCeUzVT61pW1vvnou+mb/Q5HKhH+rCBk/gcmKzfLQGj9SkO27sifk6aSa13ElosXhpuqvzfoud7PzL+NOYNaqxjHbndl7yN29epa+3Jwd1Jw2Fm1oH2GGxqhkrnHwkl9QnwwELBIX6l3c39Ka2A4xGcl/jPDZERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vr9MD9aq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791832910; c=relaxed/simple;
+	bh=6DwsFQ3xewZ6W6NJBGeZH/qAhtWLndOqe4ZccqIyQec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ONua0Mo0gxWWh1azyiT4siO0pYW26vPOHym/ZQdxVC8odLILRp+/mgyh/uzMNpYe5lpsiNcsXEEy+xRjEljpYWqyfC9zO+G1SrteDjZKNCZiR+RIWP1YSZfg105cOXFUvhsC8JunQVVCX2/bMWNl/qJ70lgmGqetvX/Iw6c6ffA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kkpn6LVT; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vr9MD9aq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24261F008A1
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 19:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791832419;
-	bh=Aps8kHLqi/8jFYidGtO0vryj1o6o4s/CXu0xm5bD3hI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Vr9MD9aq/0c/K8dttGgHbcaFVyWghRXbaJ6aaaKBVDfEno5glVgugPNXPq3k06LIU
-	 SkfY5+HUu7AUNsjPrjRHtb/ZVvXSHEv6wp5MO3yXaaICa/8Amvv6ic3izHhBfbRoyy
-	 Gs6xiftz0Ep5iYn537eYMMrYpxj5DIoN/YPplNJQkwRDEhgorXpfM0nTTY33HFt9p3
-	 Cso4oUrpq4qCfUfPBsNgwp89s2hB+mjjkU6UTC5rPWUoHDacxWmW7YkKAlrixK5Nr1
-	 ahgRCzp979VYn7+1R9S36QMyLpexKe6JWyc5rL3pa0aueoALBqmuLvV/Qi3iBg3s2E
-	 3ArL9oQFRqGBQ==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba35c0df4fso1754185e87.0
-        for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 12:13:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxROf/xoLJ9bJ7csH9dIsf6kJEiJjWUwyNDFtQLnFvMy8yyLZdhNvMef6QRQ3e8gA70BBqa8mSKfmTZ@lists.linux.dev
-X-Gm-Message-State: AFq9FYJIXny+JBX6JHeYi+7h75MwS/iaX1/8zEYyORJ2VPJ1BR7+4666
-	U9uSXmg7iuBVx+2Vvz93Tm3DvEh4sPtWLJgrgjwmI39Bk/wvsitX0eA5nAglQ/01CGVyWmkl568
-	5CXsS1qtR6skx1aAE9Bmjce3GX2pQVuk=
-X-Received: by 2002:a05:6512:3042:b0:5b8:f125:f48 with SMTP id
- 2adb3069b0e04-5bcde8e2d0cmr3421626e87.57.1791832418176; Mon, 12 Oct 2026
- 12:13:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kkpn6LVT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791832908; x=1823368908;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6DwsFQ3xewZ6W6NJBGeZH/qAhtWLndOqe4ZccqIyQec=;
+  b=kkpn6LVTtunuZEgvXLzP3lTEsxujVwLvvWZTJBn63veurbrq/xNnTrHH
+   9F/8owo+PVLDiXYdl7XLH8vCHzfkDyAu3+N2uvv5TratHDLO9MBZTOyjt
+   mgIjFibta0pU/DXQkdFCOAzmOLdvNNQsD7L8esgPLbKpLd66sJFuXiaZa
+   EFal6xf9vncGos3J++6L5t4MreTEtYyD3VKgx1sr/wfTh99TjIZUL4XEz
+   jpCxEaYW1H8zgiQjcQCjc94O8nJJ7z1c89I3ShLdbMOe53n60UF+Lrruw
+   Wh8SvnaO6ESCoUcdj2D7oT1Y1tiHErk3VFXGM0bgdL+8rYalZcLKkS1HX
+   A==;
+X-CSE-ConnectionGUID: QP3uXFx4Qc6AwOKM9nvJ2Q==
+X-CSE-MsgGUID: HvNf0oRYTaK8DO9vmeo3gQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="657294"
+X-IronPort-AV: E=Sophos;i="6.27,154,1787036400"; 
+   d="scan'208";a="657294"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 12:21:48 -0700
+X-CSE-ConnectionGUID: txnXQ4HYSPyd0XLg+xqFJw==
+X-CSE-MsgGUID: ixB9ow7+TM+7U4MIpIbK2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,154,1787036400"; 
+   d="scan'208";a="889273"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.179])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 12:21:44 -0700
+Date: Mon, 12 Oct 2026 22:21:41 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ankit Agrawal <ankita@nvidia.com>
+Cc: linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dave@stgolabs.net, jic23@kernel.org,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, jgg@nvidia.com, aneesh.kumar@kernel.org,
+	aik@amd.com, yilun.xu@linux.intel.com, iweiny@kernel.org,
+	ming.li@zohomail.com, icheng@nvidia.com, bhelgaas@google.com,
+	smadhavan@nvidia.com, ilpo.jarvinen@linux.intel.com,
+	Smita.KoralahalliChannabasappa@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [RFC PATCH 3/4] PCI/TSM: Derive the coherent-range IPA from CXL
+Message-ID: <as0zRXh5f5kjULVI@ashevche-desk.local>
+References: <20261005070252.84810-1-ankita@nvidia.com>
+ <20261005070252.84810-4-ankita@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
- <20261002061507.1600269-8-suzuki.poulose@arm.com> <ar-PiBQGye4_hQa6@arm.com>
-In-Reply-To: <ar-PiBQGye4_hQa6@arm.com>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Mon, 12 Oct 2026 21:11:34 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gqSsA=tdKuQB1uExYas8F0BaxUm+eh8xaxxP6YAFB6cg@mail.gmail.com>
-X-Gm-Features: AclHuK92lB5NiS5iBnplzk_ORuBnuUMmcADY6EqE6mt-4e6s6zZBLocPPGyqu5E
-Message-ID: <CAJZ5v0gqSsA=tdKuQB1uExYas8F0BaxUm+eh8xaxxP6YAFB6cg@mail.gmail.com>
-Subject: Re: [PATCH v22 07/10] kernel: hibernate: Add an arch hook for
- preventing hiberation
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, maz@kernel.org, will@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, 
-	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, 
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, 
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com, 
-	Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>, linux-pm@vger.kernel.org, 
-	Sudeep Holla <sudeep.holla@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261005070252.84810-4-ankita@nvidia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Oct 2, 2026 at 1:03=E2=80=AFPM Catalin Marinas <catalin.marinas@arm=
-.com> wrote:
->
-> On Fri, Oct 02, 2026 at 07:15:03AM +0100, Suzuki K Poulose wrote:
-> > Add a hook to allow arch code disable hibernation. On arm64, with an RM=
-M active,
-> > there could be pages that are delegated to the "Realm" security state. =
-Any
-> > access to them are fatal (e.g., hibernate save image or restoring an im=
-age to
-> > a delegated page). pKVM host also has its restrictions on enabling hibe=
-rnation.
-> >
-> > Add a weak arch hook to let the architectures have a say.
-> >
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: Pavel Machek <pavel@kernel.org>
-> > Cc: linux-pm@vger.kernel.org
-> > Cc: Sudeep Holla <sudeep.holla@kernel.org>
-> > Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->
-> Nit: the subject prefix for kernel/power/ usually is
->
->         PM: hibernate: ....
->
-> I can fix it locally, no need to respin (and probably the wrap the long
-> lines in the commit log, we tend to keep them shorter).
->
-> > ---
-> >  include/linux/suspend.h  | 1 +
-> >  kernel/power/hibernate.c | 8 +++++++-
-> >  2 files changed, 8 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-> > index b02876f1ae38a..a3815027773c5 100644
-> > --- a/include/linux/suspend.h
-> > +++ b/include/linux/suspend.h
-> > @@ -401,6 +401,7 @@ int hibernate_quiet_exec(int (*func)(void *data), v=
-oid *data);
-> >  int hibernate_resume_nonboot_cpu_disable(void);
-> >  int arch_hibernation_header_save(void *addr, unsigned int max_size);
-> >  int arch_hibernation_header_restore(void *addr);
-> > +bool arch_hibernation_available(void);
-> >
-> >  #else /* CONFIG_HIBERNATION */
-> >  static inline void register_nosave_region(unsigned long b, unsigned lo=
-ng e) {}
-> > diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-> > index d2479c69d71a4..9d9d53828542f 100644
-> > --- a/kernel/power/hibernate.c
-> > +++ b/kernel/power/hibernate.c
-> > @@ -106,11 +106,17 @@ bool hibernation_in_progress(void)
-> >       return !atomic_read(&hibernate_atomic);
-> >  }
-> >
-> > +__weak bool arch_hibernation_available(void)
-> > +{
-> > +     return true;
-> > +}
-> > +
-> >  bool hibernation_available(void)
-> >  {
-> >       return nohibernate =3D=3D 0 &&
-> >               !security_locked_down(LOCKDOWN_HIBERNATION) &&
-> > -             !secretmem_active() && !cxl_mem_active();
-> > +             !secretmem_active() && !cxl_mem_active() &&
-> > +             arch_hibernation_available();
->
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->
-> Raphael, any objection to this patch going in through the arm64 tree? It
-> matches the style of other __weak functions in this file.
+On Mon, Oct 05, 2026 at 09:02:51AM +0200, Ankit Agrawal wrote:
+> The DevIf report range with range ID 0xffff describes the device's
+> coherent (CXL) memory window and unlike every other reported range
+> carries no BAR number. Recognize
+> PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT and recover that window's
+> address from the CXL side of the device instead of treating it as a
+> BAR-relative offset.
+> 
+> pci_tsm_coherent_range() resolves the window from pdev->coh_resource[],
+> snapshotted once with the committed CXL HDM decoders range. The
+> range to IPA conversion is applied onto range_base/range_len using
+> pdev->coh_resource[]. The ascending BAR order checks stay on the BAR
+> path only. The coherent range is required to be the last report entry
+> and is not part of the BAR sequence.
+> 
+> An HDM decoded window lives in the CXL Fixed Memory Window and is not
+> part of a BAR. So by construction, no pci_dev resource contains it. So
+> the function pci_tsm_coh_resource_contains() validates the range against
+> pdev->coh_resource[] instead; the same known-good snapshot
+> pci_tsm_coherent_range() already trusts.
 
-No objection, and feel free to add an ACK from me to this one.
+> Assisted-by: Claude:sonnet-5
 
-Thanks!
+Assisted-by: LLM
+
+...
+
+> +static bool pci_tsm_coh_resource_contains(struct pci_dev *pdev,
+> +					  const struct resource *res)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
+
+	for (int i = 0...)
+
+> +		struct resource *coh_res = &pdev->coh_resource[i];
+
+		pci_resource_n()
+
+> +		if ((coh_res->flags & IORESOURCE_MEM) &&
+> +		    resource_contains(coh_res, res))
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+
+...
+
+> +			for (j = 0; j < PCI_NUM_RESOURCES; j++)
+> +				if (resource_contains(pci_resource_n(pdev, j), res))
+> +					break;
+
+pci_dev_for_each_resource()
+
+...
+
+> +static int pci_tsm_coherent_range(struct pci_dev *pdev, u64 *out_base,
+> +				  u64 *out_size)
+
+Instead of the last two you can use struct range.
+
+> +{
+> +	for (int i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
+> +		struct resource *res = &pdev->coh_resource[i];
+
+		pci_resource_n()
+
+> +		if (!(res->flags & IORESOURCE_MEM))
+> +			continue;
+
+		resource_type()
+
+> +		*out_base = res->start;
+> +		*out_size = resource_size(res);
+> +		return 0;
+> +	}
+> +
+> +	return -ENODEV;
+> +}
+
+...
+
+> +			if (pci_tsm_coherent_range(pdev, &range_base,
+> +						   &range_len)) {
+
+I would leave it on a single line.
+
+> +				pci_dbg(pdev, "No CXL region or committed HDM decoder for coherent reporting range\n");
+> +				return NULL;
+> +			}
+
+
+...
+
+> +		range_off = coherent ? tsm_offset :
+> +					tsm_offset - reporting_bar_base;
+
+Indentation is broken. I think it's better to read when it's a single line.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
