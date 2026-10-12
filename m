@@ -1,142 +1,283 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AE437DEBB
-	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 13:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82A649B21E
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 15:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791810960; cv=none; b=U0HRTqKoCisIfBghKrmzkCGP7WRp4DDeJU+TGCuU07lFcBm/FKFyBmb8mSUXBiO63wthfmH2NYRccORMzWY/yaVFT3mnSpHIVdX+/lP3nVcv6o4jt3sZWY5nkGrYxIrvIWtMZNuCBs0lknRmQCn5TyX19/pwLvf/1LKikFW1bDM=
+	t=1791818782; cv=none; b=LgLy0/4kXCautSkK4ylERPgHDSZUzbDUhbzkW3BSyMnVy+FAwh3Y46iTrvumJPzn+pCQgfo1U7XgxFart2c9zM2UsGMxze7N7vm0YNDLBGopHz0+ObSWOC1rltRjDpAVg95R1KkolgUzCa1xJyoFiyoCHE5wjJd9SrbfCNft/to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791810960; c=relaxed/simple;
-	bh=xPyYERiI4Q6AfUdAOldljcoGfq2AnvPTXQYmen3edCk=;
+	s=arc-20240116; t=1791818782; c=relaxed/simple;
+	bh=r4xS8qfNNip730dRIttM9p9vhzXPPetzgmX8Jzhtz04=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=elkbiPsyiF0uABCp0La1b6rMCzggU3jvXjCBOGi5zpM3NMk9xvZaa9Vk0CEl+NoHz6VjS9MlUZhAttGH5NuhU41AFNtdR7RBBsOm4ZA97+W+kzbs4bNIkC6z1qhbCXiLEr3YGYL3ta7a1KpPEM8K4/GsraSSs0qI36hzwyn7SIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gnOshCTh; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=bcVyPupMOgoebF6zefzpFr4+yANwTIu150XCn7FyDf/o64hXXTDcg0Ruy3Q0tZrqsy+tGFgXnygsYOkaTP/MWp12NVKPuJpm/ILoQn5miTYWNHscFcgM8vdEnUgWYKZTLKNhF2j8MNR7NAnlhA8Yv2JaYRbxoioJIwi7k1wxEj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XVPwI8XA; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gnOshCTh"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ab2395f104so1468320a91.2
-        for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 06:15:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XVPwI8XA"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ab27eb38d6so1987360a91.2
+        for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 08:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791810959; x=1792415759; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gHHQ3heGxmvzhSaG+FW3OED46/i9POKwWnKdCTyUaS8=;
-        b=gnOshCThhW9q20pG7/hmy6udXt39l2+JgKJWhNe4MpB+52HPZD+WuWphTm/A+r2v/o
-         Jt6HpqZQwiMARHcrjTv4Kh0TVV1nDHKo1erUVHXPlvdKGja1QU9tYkqQIUMyiMaJ8Ydy
-         2bx+9oQ659f7G0MQI0UtE7GazKzGRjPpApXDGDHYRnoR5XAMqVVa+tN/ZZJwvVgwJQQD
-         nShqemnby6gwYimD0QPI/p7LIqsfv8SuxE4tywIQJZ93H2n1U6P2dzJM4PWu3DIap7EA
-         o8sXJcG9Thcrgxhsl/p2JKhPjA34D03ju0wi5EQhQXuKT7tuFCzhK3SIbzYIw1Gj+LKp
-         G0Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791810959; x=1792415759;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1791818777; x=1792423577; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gHHQ3heGxmvzhSaG+FW3OED46/i9POKwWnKdCTyUaS8=;
-        b=hz8UvqXTU+Trd3orXRzWhkuJ+UVMN66/yRRkNOXMkzbJMiLK9s19YlMVH/BL3vBOju
-         wnhLmZSNbGocBl5T12ulZd6+Ry0GyREn41Y0L2TRLDBqOyQT5kN0JFX/1NxePMjVm1Al
-         ShvUTHnQ6kbbJ65uEx3S725PM8BAko0pKkV/UQjRwqQ1D/2OI0MKdkzYTQyh7tqad9wR
-         c5eEXT/akKBmIkLz8ntKX4VwoUk6fT3gmGEHFP+9dueu+UTUid0ct2+k8u3fXglfXmER
-         8f3aMQUm8LAK/hlOK/RHPdEQqsfSas+zrnQM4RYN9jWKpPoet9ZkPSaEUotNP/mLFl9e
-         HEtA==
-X-Forwarded-Encrypted: i=1; AKwUvBzScTdnGFNpMgIuSqqGSHpBfxZIHG0BdHT2+WHSMMC1sFOAEIakJHEfNFoj7MyQ1Si+EB5+f7rHUbsr@lists.linux.dev
-X-Gm-Message-State: AFq9FYK7xHB7ixywMIko5BG6tzcV26CDIQ70XXcOkkO5GJaYAkWPCO9n
-	M3gDKSh6xYlY2YuFRbg5ZI8+61u/uIw6nfSI3xzyRAFALJeW8KUn29uJUomXYlI2u8FdImmsHuB
-	deTUlYQ==
-X-Received: from pjbbl14.prod.google.com ([2002:a17:90b:98e:b0:3a6:7ee4:e327])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5444:b0:3aa:fc22:8aa7
- with SMTP id 98e67ed59e1d1-3ab3ac72e81mr7467432a91.53.1791810958601; Mon, 12
- Oct 2026 06:15:58 -0700 (PDT)
-Date: Mon, 12 Oct 2026 06:15:57 -0700
-In-Reply-To: <asmjItCkW74Z6AV1@yzhao56-desk.sh.intel.com>
+        bh=FuORvPXGU1IelcH358psfnrLkQ757pvSe+rshYdO0wU=;
+        b=XVPwI8XAdbH7b0JFbVSESOsXX4uUMzSuXm8AyNUBO5B5vSdp4zPPKlfDA3vv7rNHM6
+         +bo7GgHKXvKXCSyD8UvQF1xmj+0sHsn8nvrTBW2Wql0y1Rsxf2CVM7NyJs7fvAFUuqvr
+         n0ZxXXX7lYvIrlN1UwkLhVmy74sUbrlSQJJlFRQoIuLyjtLS85N8iBTvwqNfeZ7TVgOz
+         4L/uQhIgkh0BybhvHhNki+PttLdM2r0+ni6WaORGmThEWhCboiApes9qYWR0/DmxEJVN
+         CRodsz079qWJBukwpBF4rXvrvQaPlb8BZVD0N+sySDsZ9bd18H6boceJnSNbAxCWU4QJ
+         0oXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791818777; x=1792423577;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FuORvPXGU1IelcH358psfnrLkQ757pvSe+rshYdO0wU=;
+        b=l9oUB8PW8z9Zod8EHImU5T6Lfu6B/iz8b8WX/DFiZo7VeTpy20R0NjGPawiz2MRXB3
+         tWvguOQ10ltZ24Gw5tVWiZrWZQA83mcoB4HK03Z9fuFzI+qRAjV/35SBGGai0bfBN/nn
+         2IK6/+FjxlE8YH8b+Ci99n45GLOaxMQtPeoV1WBGLlmVZ1vrS3CUrnf5bWW3Besw9A3I
+         rCGmMd2qugZakmD37csY3rUxlFFfd0OZJ05GjIZzwON2rEL+MyBm/E0KKysb8s6791JQ
+         SJWTQXNOV99rTPVQnDXu+vPBvfUn4JcbPdxPeZX5VFMBkU72o58+gXZP6ESn37XiAvgr
+         jhkg==
+X-Forwarded-Encrypted: i=1; AKwUvBw2j4SnFswoaLxQ7olRNDRbZNfbNvxDQ1nqHf4OWgjBHgxOJ7dp3+f+RH1M/lZWZV3RT0BsOYO3Sn9C@lists.linux.dev
+X-Gm-Message-State: AFq9FYKyGwC+aN4gIeLMEqhwA3ZDZOJgt8MLzT+s+5vQxSthrbAZWqoq
+	TgLR9dm9uBKrlQ8S1MbxEi6PfAi4dlCQre036jwAthFvbvXFEXZY6MIBZQ/PAsM7x4wv0aslsF0
+	zBKcJQw==
+X-Received: from pjbrs15.prod.google.com ([2002:a17:90b:2b8f:b0:3a8:434e:45b0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:da8b:b0:3ac:1c76:61a9
+ with SMTP id 98e67ed59e1d1-3ac1c767e0fmr1361340a91.13.1791818776719; Mon, 12
+ Oct 2026 08:26:16 -0700 (PDT)
+Date: Mon, 12 Oct 2026 08:26:16 -0700
+In-Reply-To: <f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260930001127.3170009-1-seanjc@google.com> <3c0ee89f560b0235f293b32019327186785aa795.camel@intel.com>
- <arxd78Pn6WWL6TGq@google.com> <asdOF41hqDpycXKU@yzhao56-desk.sh.intel.com>
- <aslVXBSovWuAsNtN@google.com> <asmjItCkW74Z6AV1@yzhao56-desk.sh.intel.com>
-Message-ID: <aszdjZCNWdIiXniC@google.com>
-Subject: Re: [PATCH v2 0/3] KVM: TDX: Syntehsize SHUTDOWN on unhandled EPT Violation
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-13-15ad654a50db@google.com> <f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com>
+Message-ID: <asz8GKNO9aQANr5E@google.com>
+Subject: Re: [PATCH v14 13/22] KVM: selftests: Support guest_memfd in-place conversion
 From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "jthoughton@google.com" <jthoughton@google.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"sashiko-bot@kernel.org" <sashiko-bot@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Sat, Oct 10, 2026, Yan Zhao wrote:
-> On Fri, Oct 09, 2026 at 01:58:04PM -0700, Sean Christopherson wrote:
-> > On Thu, Oct 08, 2026, Yan Zhao wrote:
-> > > On Tue, Sep 29, 2026 at 05:55:11PM -0700, Sean Christopherson wrote:
-> > > > On Wed, Sep 30, 2026, Rick P Edgecombe wrote:
-> > > > > On Tue, 2026-09-29 at 17:11 -0700, Sean Christopherson wrote:
-> > > > > > Signal SHUTDOWN instead of -EIO if the guest accesses an unacce=
-pted page and
-> > > > > > has disabled EPT Violation #VEs on such accesses.=C2=A0 Returni=
-ng -EIO is all but
-> > > > > > guaranteed to mislead the VMM into thinking KVM (or the VMM) me=
-ssed up, and
-> > > > > > will likely result in the VM being terminated instead of reboot=
-ed.
-> > > Hmm, it's by design in my previous implementation to terminate a VM w=
-hen the
-> > > guest accesses an unaccepted page and has disabled EPT Violation #VEs=
- on such
-> > > accesses, according to the TDX module spec:
-> > >=20
-> > > "This happens if the TD is configured to TD-exit (instead of a #VE) o=
-n an EPT
-> > >  violation due to accessing a PENDING page. It normally indicates an =
-error
-> > >  condition; the host VMM may decide to tear the TD down."
-> > >=20
-> > > So, for the initial implementation, we chose to invoke kvm_vm_dead() =
-and print
-> > > out the exact reason as a hint to the system admin.
-> >=20
-> > kvm_vm_dead() should only be used when KVM *needs* to prevent userspace=
- from
-> > running the VM.
-> Ok. But my previous intention was to kill the VM regardless of whether th=
-e
-> userspace handles KVM_EXIT_SHUTDOWN or not.
-> Did I use it correctly?
+On Tue, Aug 18, 2026, Xiaoyao Li wrote:
+> On 7/23/2026 7:13 AM, Lisa Wang wrote:
+> > diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+> > index 4a48c4b42095..e547ea341ff7 100644
+> > --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> > +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> > @@ -484,8 +484,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+> >   	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+> >   						 nr_extra_pages);
+> >   	struct userspace_mem_region *slot0;
+> > +	u64 gmem_flags = 0;
+> >   	struct kvm_vm *vm;
+> > -	int i, flags;
+> > +	int flags = 0;
 
-No.  Returning -EIO kills not only what KVM sees as the VM, it often kills =
-what
-the end user, i.e. the customer in our case, see as the VM.
+Don't make unnecessary changes.  It's not just a "nice to have" thing, e.g. in
+this case this results in extra conflicts with other changes.
 
-> I'm asking because you added the Fixes tag and "Cc: stable@vger.kernel.or=
-g" for
-> patches 1/2 as well.
->=20
-> > > (Previously, reboot was also not supported for a TDX guest).
-> >=20
-> > But QEMU isn't KVM.  While QEMU is the de facto reference VMM, it's imp=
-ortant to
-> > keep in mind that it's not the only VMM (and that's not just about Goog=
-le's VMM,
-> > there are plenty of other non-QEMU VMMs that are used in production env=
-ironments).
-> Hmm. That was the reason for me to choose forcefully killing the VM insid=
-e KVM,
-> since for the initial implementation, I didn't want to bother updating ev=
-ery
-> VMM :)
+> > +	int i;
+> >   	kvm_set_files_rlimit(nr_runnable_vcpus);
+> > @@ -495,14 +497,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+> >   	vm = ____vm_create(shape);
+> >   	/*
+> > -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+> > -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+> > +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+> > +	 * initialize it as shared if in-place conversion is support, so the
+> > +	 * selftest framework can populate it exactly like other memory
+> > +	 * providers.
+> >   	 */
 
-Why would any VMM need to be updated?  VMMs already need to handle KVM_EXIT=
-_SHUTDOWN
-for TDX VMs.
+Leave the existing comment as is.  The new comment should be anchored to the code
+below.
+
+> > -	flags = 0;
+> > -	if (is_guest_memfd_required(shape))
+> > +	if (is_guest_memfd_required(shape)) {
+> >   		flags |= KVM_MEM_GUEST_MEMFD;
+> > +		if (kvm_has_gmem_attributes)
+> > +			gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED |
+> > +				      GUEST_MEMFD_FLAG_MMAP;
+> > +	}
+> > -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+> > +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags,
+> > +		   -1, 0, gmem_flags);
+> >   	for (i = 0; i < NR_MEM_REGIONS; i++)
+> >   		vm->memslots[i] = 0;
+> 
+> IMO, this diff belongs to the gmem in-place series.
+
+Yep, you're 100% right.  I pushed this to "coco" for now...
+
+diff --git tools/testing/selftests/kvm/lib/kvm_util.c tools/testing/selftests/kvm/lib/kvm_util.c
+index 3f559f207408..0c67d964a9aa 100644
+--- tools/testing/selftests/kvm/lib/kvm_util.c
++++ tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -494,6 +494,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+        u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+                                                 nr_extra_pages);
+        struct userspace_mem_region *slot0;
++       u64 gmem_flags = 0;
+        struct kvm_vm *vm;
+        int i, flags;
+ 
+@@ -509,10 +510,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+         * for CoCo VMs that require GUEST_MEMFD backed private memory.
+         */
+        flags = 0;
+-       if (is_guest_memfd_required(shape))
++       if (is_guest_memfd_required(shape)) {
+                flags |= KVM_MEM_GUEST_MEMFD;
+ 
+-       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
++               /*
++                * Allow mmap() and initialize the gmem instance as SHARED if
++                * in-place conversions are supported, so that the memory can
++                * be populated/initialized like any other memory region.
++                */
++               if (kvm_has_gmem_attributes)
++                       gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED |
++                                     GUEST_MEMFD_FLAG_MMAP;
++       }
++
++       vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
+        for (i = 0; i < NR_MEM_REGIONS; i++)
+                vm->memslots[i] = 0;
+
+but the entire in-place conversion series may need to be dropped because there's
+a potential deadlock, and I don't see an obviously non-awful way to fix it.
+
+[ 2260.466972] ======================================================
+[ 2260.473150] WARNING: possible circular locking dependency detected
+[ 2260.479329] 7.3.0-smp--ce115a0096358-seanjc-soink #75 Tainted: G     U     O       
+[ 2260.486981] ------------------------------------------------------
+[ 2260.493161] sev_snp_vmsa_pu/24505 is trying to acquire lock:
+[ 2260.498821] ffffffffc01f7900 (sev_cmd_mutex){+.+.}-{4:4}, at: sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.508387] 
+               but task is already holding lock:
+[ 2260.514213] ffff93c9dd1cf070 (mapping.invalidate_lock#4){++++}-{4:4}, at: kvm_gmem_populate+0x18c/0x300 [kvm]
+[ 2260.524275] 
+               which lock already depends on the new lock.
+
+[ 2260.532446] 
+               the existing dependency chain (in reverse order) is:
+[ 2260.539917] 
+               -> #2 (mapping.invalidate_lock#4){++++}-{4:4}:
+[ 2260.546878]        down_read+0x3d/0x160
+[ 2260.550716]        kvm_gmem_fault_user_mapping+0x43/0x180 [kvm]
+[ 2260.556663]        __do_fault+0x3f/0x110
+[ 2260.560588]        do_pte_missing+0x515/0x1000
+[ 2260.565035]        handle_mm_fault+0x7f2/0x1290
+[ 2260.569567]        do_user_addr_fault+0x47d/0x6c0
+[ 2260.574271]        exc_page_fault+0x67/0xa0
+[ 2260.578458]        asm_exc_page_fault+0x26/0x30
+[ 2260.582991] 
+               -> #1 (&mm->mmap_lock){++++}-{4:4}:
+[ 2260.588997]        __might_fault+0x59/0x80
+[ 2260.593096]        _copy_to_user+0x23/0x60
+[ 2260.597197]        sev_ioctl_do_platform_status+0x50/0x80 [ccp]
+[ 2260.603116]        sev_ioctl+0x220/0x2b0 [ccp]
+[ 2260.607560]        __se_sys_ioctl+0x6d/0xb0
+[ 2260.611749]        do_syscall_64+0xfe/0x460
+[ 2260.615933]        entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.621506] 
+               -> #0 (sev_cmd_mutex){+.+.}-{4:4}:
+[ 2260.627426]        __lock_acquire+0x160d/0x2940
+[ 2260.631957]        lock_acquire+0xf1/0x300
+[ 2260.636050]        __mutex_lock+0x8f/0xdf0
+[ 2260.640147]        sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.645982]        sev_gmem_post_populate+0x189/0x230 [kvm_amd]
+[ 2260.651901]        kvm_gmem_populate+0x1ed/0x300 [kvm]
+[ 2260.657066]        snp_launch_update+0x1a7/0x250 [kvm_amd]
+[ 2260.662551]        sev_mem_enc_ioctl+0x371/0x3d0 [kvm_amd]
+[ 2260.668036]        kvm_vm_ioctl+0x52c/0x580 [kvm]
+[ 2260.672761]        __se_sys_ioctl+0x6d/0xb0
+[ 2260.676946]        do_syscall_64+0xfe/0x460
+[ 2260.681133]        entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.686706] 
+               other info that might help us debug this:
+
+[ 2260.694695] Chain exists of:
+                 sev_cmd_mutex --> &mm->mmap_lock --> mapping.invalidate_lock#4
+
+[ 2260.706077]  Possible unsafe locking scenario:
+
+[ 2260.711993]        CPU0                    CPU1
+[ 2260.716520]        ----                    ----
+[ 2260.721052]   lock(mapping.invalidate_lock#4);
+[ 2260.725498]                                lock(&mm->mmap_lock);
+[ 2260.731503]                                lock(mapping.invalidate_lock#4);
+[ 2260.738463]   lock(sev_cmd_mutex);
+[ 2260.741868] 
+                *** DEADLOCK ***
+
+[ 2260.747778] locks held by sev_snp_vmsa_pu/24505: 3, last CPU#35:
+[ 2260.753785]  #0: ffff93c9d54bd3a8 (&kvm->lock){+.+.}-{4:4}, at: sev_mem_enc_ioctl+0x73/0x3d0 [kvm_amd]
+[ 2260.763083]  #1: ffff93c9d54bc0a0 (&kvm->slots_lock){+.+.}-{4:4}, at: snp_launch_update+0x145/0x250 [kvm_amd]
+[ 2260.772991]  #2: ffff93c9dd1cf070 (mapping.invalidate_lock#4){++++}-{4:4}, at: kvm_gmem_populate+0x18c/0x300 [kvm]
+[ 2260.783356] 
+               stack backtrace:
+[ 2260.787718] CPU: 35 UID: 0 PID: 24505 Comm: sev_snp_vmsa_pu Tainted: G     U     O        7.3.0-smp--ce115a0096358-seanjc-soink #75 PREEMPT 
+[ 2260.800310] Tainted: [U]=USER, [O]=OOT_MODULE
+[ 2260.804668] Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.86.0-102 01/25/2026
+[ 2260.818127] Call Trace:
+[ 2260.820579]  <TASK>
+[ 2260.822687]  dump_stack_lvl+0x54/0x70
+[ 2260.826351]  print_circular_bug+0x2e4/0x300
+[ 2260.830537]  check_noncircular+0xf5/0x120
+[ 2260.834553]  __lock_acquire+0x160d/0x2940
+[ 2260.838565]  ? __lock_acquire+0x65e/0x2940
+[ 2260.842664]  ? rcu_is_watching+0x11/0x40
+[ 2260.846587]  ? trace_sched_exit_tp+0x25/0xb0
+[ 2260.850861]  lock_acquire+0xf1/0x300
+[ 2260.854440]  ? sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.859928]  ? lock_is_held_type+0xc7/0x120
+[ 2260.864112]  ? sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.869599]  __mutex_lock+0x8f/0xdf0
+[ 2260.873178]  ? sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.878663]  ? pfn_valid+0x89/0x220
+[ 2260.882155]  ? pfn_valid+0x1fb/0x220
+[ 2260.885736]  ? lookup_address+0x49/0x70
+[ 2260.889577]  sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.894890]  sev_gmem_post_populate+0x189/0x230 [kvm_amd]
+[ 2260.900289]  kvm_gmem_populate+0x1ed/0x300 [kvm]
+[ 2260.904938]  ? snp_bind_asid+0xd0/0xd0 [kvm_amd]
+[ 2260.909561]  snp_launch_update+0x1a7/0x250 [kvm_amd]
+[ 2260.914528]  sev_mem_enc_ioctl+0x371/0x3d0 [kvm_amd]
+[ 2260.919493]  kvm_vm_ioctl+0x52c/0x580 [kvm]
+[ 2260.923706]  ? kvm_gmem_ioctl+0x192/0x1e0 [kvm]
+[ 2260.928266]  __se_sys_ioctl+0x6d/0xb0
+[ 2260.931930]  do_syscall_64+0xfe/0x460
+[ 2260.935595]  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.940822]  ? trace_irq_disable+0x25/0xc0
+[ 2260.944921]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.949972] RIP: 0033:0x474bdb
+[ 2260.953031] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
+[ 2260.971770] RSP: 002b:00007ffd188ac3f0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[ 2260.979337] RAX: ffffffffffffffda RBX: 0000000028691b30 RCX: 0000000000474bdb
+[ 2260.986468] RDX: 00007ffd188ac4a0 RSI: 00000000c008aeba RDI: 0000000000000007
+[ 2260.993600] RBP: 0000000000135000 R08: 00000000004d50b8 R09: 00000000004e1b78
+[ 2261.000734] R10: 0000000000000002 R11: 0000000000000246 R12: 00007ffd188ac4c0
+[ 2261.007867] R13: 0000000000137000 R14: 0000000028693db0 R15: 0000000000137000
+[ 2261.015001]  </TASK>
