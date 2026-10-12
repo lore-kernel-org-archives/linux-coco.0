@@ -1,136 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0BD45D921;
-	Mon, 12 Oct 2026 09:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2625D474266
+	for <linux-coco@lists.linux.dev>; Mon, 12 Oct 2026 09:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791796504; cv=none; b=REjcrLSEZ5ts++oqoQisSGkM7wgmwsXpZcoti32foEKAGdMx6GanCJxZDTyGWQSWwcmElxl3cibs4UiPoq8EcYVfOel87ySGFhsCiqOUBQExSiq2iNDER45nSiRuqVMTAORyC99WAE/7B+WPTO9VwDay89wwtMGZvUQ4Jja/61I=
+	t=1791798625; cv=none; b=EQ0CbMDP3FhpgFTqweAadUq+vHAqDVYiHGo2ORoHD1MxvclzH90M8TthDMz+k8JajLqL8l7uUdlqTnWiu7fFp5FJ3Jfwce2D+3bnoVrxz7Konn0xSUAtRpDtYjzhKBNaVmYq/HuAEMf2cqsn3LfOmp0ut95i0Oa56/LkntFqPCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791796504; c=relaxed/simple;
-	bh=wa/y7uAKyiAHBNtIYD1dmzBcK/WRQvA5lG8dWR2sAmI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YKqxHWeilr/KxcOFS91fmpReDZUnObzyagg5EQCqE5bDGA2+goFxgm7g5ABx/paWmTP71cgMijbk0kKN0K+5oNjKWXh/Bw2Tikt7d/+U7KJeKlRjWYNWeR8W+vJSNa3YdGT5h90M/3xpBNF6MPMaNa6tvFhyyq1M3m4JFfknn0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UIcx3XSK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791798625; c=relaxed/simple;
+	bh=RzLWHjemQgbwtVJ+gZtIzOuwMdap2fNgwJ8Dkzq7gnI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t74Vra6PDiyoRVn9WwU6bZMPBH78rrqvOIJTX/0ZjHib04UIkiQu+MoUmdA74DZ/jti7Wr/tRgfKGgOXBIWb2N0+2YIBbmEzT2BGTyPNld8frT30r3jXRVjasNyj2Jv/Hy3Rqd5nl71XhYYMteK/B232EGpuuUhIFy4NojFph1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DI2jfzOR; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIcx3XSK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71BFA1F0089C;
-	Mon, 12 Oct 2026 09:15:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791796503;
-	bh=dJfud/jMsdkOXHAbu78ikuLmB6vnTo/8gDUfonWvO84=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=UIcx3XSK40mYNy5nI/NyJ98yCPrLiu1xI/Ss2K7xZBBsrO53Ou001C3KtsENUp53y
-	 Dx9Q7NT+qraEAT/j2uYG/7Ex98D8Zfi6CsWiaklCSHoGrA9eTlDafiJrTzo9mZ5moS
-	 KVyNPdez6g2ePXwZ2OhudbLrrWgcPvuaCPXJN1duWnWm+alUdbAHHODq3f0WPnBwzl
-	 juC4B9vjrvN7lWHykshR1GQXtJsm5fxLhkHqrmx5fPJULQXnKe8lkie7E83UfsUC5W
-	 rmhddJZ2eKjkv3ZD8Kdg2J++psYi5pz/b8OLUq4YlYmAqn/sPLpCqW/5R6O9KaOKCI
-	 RTW5U/lLDfDbQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: sashiko-reviews@lists.linux.dev, linux-coco@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v7 09/16] tsm: Remove the device from lookup before PCI
- teardown
-In-Reply-To: <sashiko-outbox-163673@kernel.org>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-10-aneesh.kumar@kernel.org>
- <sashiko-outbox-163673@kernel.org>
-Date: Mon, 12 Oct 2026 14:44:58 +0530
-Message-ID: <yq5a33ub5lgt.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DI2jfzOR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791798621; x=1823334621;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=RzLWHjemQgbwtVJ+gZtIzOuwMdap2fNgwJ8Dkzq7gnI=;
+  b=DI2jfzORYRbfMbzKmVYWVKdD0hENKO5raHks1bOe7vw3rw1Nu1exSLkO
+   rUpH9/hWxBE7LN2Ccdu3DhfmyLgt75RqhJB1tyPYfVpbJ77QpLWgjk80Y
+   vD2GxPNT5+0HYcj+T+1keBLeDj6JfOj5n1r4+F8ewNkWgzev8GfQTpqB7
+   5g4PvlwIBKzjLAq6RaA/eoPgJVQZvSOZh0m9C+V3x3xI/28DYY9Dhan+P
+   YsoZ1BhnONOLhf7ciIQ2S2Xsh2FB+K1pdFMfLVOBXUgz5jtU9KT0IHbpl
+   pmPmmF3vOoeA390IDr/8fP6vZjTVnsC65vxfL6bk2qD2EjKfx9x91GkDN
+   Q==;
+X-CSE-ConnectionGUID: 7tv8r/drRJ+Xh2CKhHOqDw==
+X-CSE-MsgGUID: sHA8TxrmRB2G+KYP4SgUFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="387986"
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="387986"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:20 -0700
+X-CSE-ConnectionGUID: sCJeaolgQ3m6hFPrjsSrjA==
+X-CSE-MsgGUID: 4ppjaFv/T9GfsF3+3DNzyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="776818"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:20 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: yilun.xu@linux.intel.com,
+	chao.gao@intel.com,
+	binbin.wu@linux.intel.com,
+	tony.lindgren@linux.intel.com,
+	rick.p.edgecombe@intel.com,
+	nik.borisov@suse.com,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: [PATCH v4 01/10] x86/virt/tdx: Add a helper to read a table of metadata fields
+Date: Mon, 12 Oct 2026 02:47:28 -0700
+Message-ID: <20261012094754.27702-2-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261012094754.27702-1-chao.gao@intel.com>
+References: <20261012094754.27702-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-sashiko-bot@kernel.org writes:
+The metadata field readers get_tdx_sys_info_<class>() in
+tdx_global_metadata.c were generated by an out-of-tree script. That has
+not worked out: the JSON file they were generated from is neither stable
+nor authoritative enough [1].  The goal now is to maintain the readers by
+hand and to establish one standard way of adding a metadata field.
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] tsm: race in tsm_register() error path leads to UAF and NULL pointer deref
-> --
->
-> commit f9b77b7469552ae6078c3a47333908a88eec2474
-> Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->
-> tsm: Remove the device from lookup before PCI teardown
->
-> This commit modifies the teardown flow to remove the TSM device from
-> lookup before tearing down the PCI state. It also adjusts the setup
-> flow in tsm_register() to handle PCI registration failures differently.
->
->> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
->> --- a/drivers/virt/coco/tsm-core.c
->> +++ b/drivers/virt/coco/tsm-core.c
->> @@ -56,26 +56,25 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
-> [ ... ]
->> -static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
->> -						 struct pci_tsm_ops *pci_ops)
->> +static int tsm_register_pci(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
->>  {
-> [ ... ]
->>  	tsm_dev->pci_ops = pci_ops;
->>  	rc = pci_tsm_register(tsm_dev);
->>  	if (rc) {
->> +		tsm_dev->pci_ops = NULL;
->
-> [Severity: Medium]
-> Does this unprotected write to tsm_dev->pci_ops introduce a race condition?
->
-> If pci_tsm_register() returns an error early (e.g. if a driver incorrectly 
-> provides both link_ops and devsec_ops, returning -EINVAL before acquiring 
-> pci_tsm_rwsem), a concurrent userspace write to the connect sysfs attribute 
-> might trigger connect_store().
->
-> If connect_store() evaluates is_link_tsm() concurrently, this lockless 
-> assignment to NULL on the error path could cause the compiler to reload the 
-> pointer after the NULL check. Could this lead to a NULL pointer dereference 
-> when accessing ->link_ops.probe?
->
->>  		dev_err(tsm_dev->dev.parent,
->>  			"PCI/TSM registration failure: %d\n", rc);
->> -		device_unregister(&tsm_dev->dev);
->> -		return ERR_PTR(rc);
->> +		return rc;
->>  	}
-> [ ... ]
->> @@ -96,15 +95,22 @@ struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
->>  	if (rc)
->>  		return ERR_PTR(rc);
->>  
->> -	return tsm_register_pci_or_reset(no_free_ptr(tsm_dev), pci_ops);
->> +	rc = tsm_register_pci(tsm_dev, pci_ops);
->> +	if (rc) {
->> +		device_del(dev);
->
-> [Severity: Medium]
-> Can this error path lead to a use-after-free if PCI registration fails?
->
-> Since device_add() is called prior to tsm_register_pci() in tsm_register(), 
-> the device is already exposed via class_find_device(). If a concurrent 
-> connect_store() finds the device and proceeds to pci_tsm_connect() before 
-> this error path cleans it up, it will attach the PCI context to tsm_dev.
->
-> When this error path calls device_del() and returns, the __free(put_tsm_dev) 
-> guard at the top of tsm_register() will drop the primary reference to 
-> tsm_dev, freeing its memory.
->
-> Because the attached PCI context stores the pointer without taking an 
-> additional device reference, wouldn't this leave a dangling pointer in the 
-> PCI context, resulting in a use-after-free on subsequent accesses?
->
->> +		return ERR_PTR(rc);
->> +	}
->> +	return no_free_ptr(tsm_dev);
->>  }
+Take get_tdx_sys_info_version() as an example:
 
+      if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
+              sysinfo_version->minor_version = val;
+      if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
+              sysinfo_version->major_version = val;
+      if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
+              sysinfo_version->update_version = val;
 
-I think this problem already exists upstream. We should delay
-device_add() until PCI/TSM registration succeeds. The kobject event
-should also be emitted after device_add(). I will add the fix as a
-separate patch.
+Two patterns stand out: the read-check-store sequence repeats once per
+field, and the error of each read is chained into the reads that follow.
+Neither is common in hand-written code.
 
--aneesh
+Prepare to eliminate both with a loop that reads each field, stores the
+value into its structure member, and returns on the first error.
+
+Add 'struct field_mapping' to describe one field as its ID plus the offset
+and size of the member that receives its value. Add FIELD_MAP() to
+build such an entry from a field ID, a structure type and a member name.
+Add __read_sys_metadata_table() helper to read every field in a table.
+Annotate that helper __maybe_unused as there is no caller right now.
+
+Following changes will convert the existing readers to use the new helper.
+
+AI was used under supervision to review code and workshop logs. It
+suggested adding read_sys_metadata_table() macro, which avoids repeating
+the table name when passing both the table and its size.
+
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Link: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [1]
+---
+v4:
+ - Collect tags [Nikolay, Rick]
+ - Rename TDX_SYSINFO_MAP() to FIELD_MAP() to keep table entries short
+ - Builds the full structure name from its tdx_sys_info_ suffix [Yilun]
+
+v3:
+ - Pass the field ID to TDX_SYSINFO_MAP() instead of pasting the
+   TDX_MD_FIELD_ID_ prefix onto a suffix inside the macro [Rick]
+ - Say that this patch only prepares to eliminate the two patterns. [Rick]
+ - Define @offset in struct field_mapping as size_t [Binbin]
+---
+ arch/x86/virt/vmx/tdx/tdx.c | 42 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 96ced0494b68..65a6aae6fab0 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -395,6 +395,48 @@ static int read_sys_metadata_field(u64 field_id, u64 *data)
+ 	return 0;
+ }
+ 
++/*
++ * Map a TDX global metadata field to a structure member.
++ * @field_id: The TDX global metadata field ID.
++ * @size: The size of the structure member.
++ * @offset: The member's offset within its containing structure.
++ */
++struct field_mapping {
++	u64 field_id;
++	size_t size;
++	size_t offset;
++};
++
++/* Read each metadata field listed in @mappings[] into @data. */
++static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *mappings,
++						    int num_mappings, void *data)
++{
++	int i, ret;
++	u64 val;
++
++	for (i = 0; i < num_mappings; i++) {
++		ret = read_sys_metadata_field(mappings[i].field_id, &val);
++		if (ret)
++			return ret;
++		memcpy((char *)data + mappings[i].offset, &val, mappings[i].size);
++	}
++
++	return 0;
++}
++
++#define read_sys_metadata_table(_mappings, _data)	\
++	__read_sys_metadata_table(_mappings, ARRAY_SIZE(_mappings), _data)
++
++#define __FIELD_MAP(_field, _type, _member)			\
++{								\
++	.field_id	= _field,				\
++	.offset		= offsetof(_type, _member),		\
++	.size		= sizeof_field(_type, _member),		\
++}
++
++#define FIELD_MAP(_field, _type, _member)	\
++	__FIELD_MAP(_field, struct tdx_sys_info_##_type, _member)
++
+ #include "tdx_global_metadata.c"
+ 
+ static __init int check_features(struct tdx_sys_info *sysinfo)
+-- 
+2.52.0
+
