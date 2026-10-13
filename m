@@ -1,132 +1,171 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB4950B8A3
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 13:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9928B3C4574;
+	Tue, 13 Oct 2026 13:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791898627; cv=none; b=KcY7gZ7Kg69ZH5VfnHS2EU63j48GkpVDkRi99X7eI5T3Jc/XmREKvdEP/FksFzYQDekrquIcZ9kjHq6Tvrchi23bKqdgq0k2lLdRgjw4RDxpSFsQHqeYyNta6wTrTy8V9sz14RIK4LkRDDeZ800GCcEvcYA1IXDT41PaxGMyLKg=
+	t=1791899247; cv=none; b=eLQrmnodaiCDamP+RDb2QosbjTWb5IXgg//FY9tcFin91G5IrDb4d46LiLiNRXvhA9He5U6IfhCkL1SIQ+AKPN1ofrTJmUR8NVzKddwl2u45biBOevt2qCQQv46Vb0ybfcq+kpKSm7CsqvKgxTn6BROJzY6PVyBanL9mFe4RhsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791898627; c=relaxed/simple;
-	bh=/hCU9eM+EAM+gbO2WZ1UL5JdVd2fGYoXa+LQjApjQ9A=;
+	s=arc-20240116; t=1791899247; c=relaxed/simple;
+	bh=Hd6B3HmdeeY+37Ck7A9VvJD6apYnPKGi0/9MCJajo2w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aDuSnoXU/VSdTwGG6Eijcp1BFe2TBKxED2wbpudqfs7ItLJQhhYieh62eJ8BMiIimXsY6VAsZoSBE1LZxiqzsx2p6vcAksIb9VBxqJemn7RHVDejfP87y2oHrqWWUM7dzZdDrwrq3MZAZvRN4zGWJcbJOUReHCBj3It+r7N105Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=LvZyvlb9; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sm2FfxW8WTmPC88TzRt16EymArlGAVhac6Atj2vQfArI9k/sw8EXAdVF7TUCAJfE89vgvupE7rVP51E/Pnq9BGyRS7pKXdYZp+gtr26VREXQqx09qmQG6/MgIgwhL/8Ygo1F+QgpAbZ5IukvrAgr/t6mUx9tTw2QXw2dt9ZUIUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S32sFMdJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="LvZyvlb9"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-93e5f819884so191058885a.2
-        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 06:37:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1791898625; x=1792503425; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/hCU9eM+EAM+gbO2WZ1UL5JdVd2fGYoXa+LQjApjQ9A=;
-        b=LvZyvlb9PSFviPlxnpfxkIB+UNhUumWgaAuuHgcHukTud061BULKvojmJYKxzuOT0t
-         H3MXh+HhwKcj1FqxWWd8csUvV1+reYLW5gE7pkRB0HA8xFZl1DEWTZAqEy34J7oRAJM0
-         YgUz3G8aqVrg4juoFDkr8aV6fA6BFpIcL571Pmb5/v68VcpKZJq4NKbgGHzLO3ON5Skw
-         95RneTeNoP5NpQqeRKOYAAhCe/HQU9iGc+gAr3cEpnIusvxdQWhBjCe7tnx6G/A3/WZg
-         iO3I2aCGId4nXt2OPYUe439JGU6iBMYPVxgwCMp2jpaU+Z8O0qpB+7HU3593Nbaxm8Nl
-         10mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791898625; x=1792503425;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=/hCU9eM+EAM+gbO2WZ1UL5JdVd2fGYoXa+LQjApjQ9A=;
-        b=Oybs7dFkH0IAEr6ix0VjWX2NfK9unKU1M5QiBtcXss8svmbkQGZT4M9oecoNEO3VXw
-         +BApB92wxGxjfs8J1t98DbE2TH+75J2ezxb4KyYzxoSALjqFfCkS1rs1ISualsMLrsT7
-         u8P50wFs5b4FjLMKghXEg1qnZln7cL757IadcxFMRTpJwoRUZXoaGLRZKfTMvgQ1wczZ
-         KRtcz/36IFmGT2SauplDww0yZ4iepi8cTeDhszrlsDxK4dSHwTF72OEw2LGU+9Ux7p8z
-         NS1BV68xrJwLdPgZywjVGh3tCIc5JEmWBIexJgOi6Kt3bUmIwOK+SG5xTvq8S6/ExlDJ
-         ReRw==
-X-Forwarded-Encrypted: i=1; AKwUvBy8sFg3Gaf2H9ZfCheKPcpiJXl9EfdYVnDHPaGvQICrvYyzxii8BM3E6i+n67lxYAAkn8Lf2WwdYA0E@lists.linux.dev
-X-Gm-Message-State: AFq9FYKLmlabIBn3j8I3LpfUmy4mBswy5iU4v2pWmYQBDqs2RqtjZuxE
-	eyTNHbqqZ5KmFbJbmwbCvgi83fooyK1y5C+3sLrdyi9YVyIR+mIoyHK2Vngxdrxq23o=
-X-Gm-Gg: AYBFou08ybtr/EmODOP7X/xazELyU5R2eCnnxnG+M3F22VwtYXSx8ayU0dc8k5l6ajK
-	Ft1hKVNmj6yE0dbT/gzsztWhTBLyiswJ0R4+6h+7peSYJfhYiekz3yDSEQHMLvBi+bbplTVlxol
-	jy+qqSc0nkRgplwbVMvQI4xPUlD/8eUmKj0FI+cqxpJvhJ/YKeClJ3jHv0I2KRZDADkRO2cGkTQ
-	GcjIutO8sZGg9nBhaKVGmj8RiRchRpwkzlxbuIrxIMH8IHkhgMl7slbloP3lOMVhv1iiXIb60z3
-	TKGrr3TSgQ25yZxicE+1mGK653bj3FS29X57S/JXPM+dFUpNkUl/ET9XEKz09gpAP9pR4Kn5d7o
-	Fn759n9VPtM4/SGbaOXHOjSTUhLAkW3JAUaeFVNXGJY+f2ThyzBXG2NF16rVnKlVprN++U8Xo0N
-	uvaDKgRjI68XVh7vsDZqsgZ2IlZC4jpOueQdCbr3ifIsiWOO/6NTZF737+hDeQLfj8jogFbunVy
-	4NUDJNLlldfmnz13stOpFUZ3B6cuZEfOUY7uqNdEf8l4W7c2zgIATVCLrPHNiHcFuI=
-X-Received: by 2002:a05:620a:1a03:b0:93c:ba44:673d with SMTP id af79cd13be357-93ebd1b7173mr2238297585a.23.1791898624601;
-        Tue, 13 Oct 2026 06:37:04 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef50295a7sm238844085a.23.2026.10.13.06.37.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 06:37:03 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xGcgh-00000009eSN-12xH;
-	Tue, 13 Oct 2026 10:37:03 -0300
-Date: Tue, 13 Oct 2026 10:37:03 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: GONG Ruiqi <gongruiqi1@huawei.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Roberto Sassu <roberto.sassu@huaweicloud.com>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Dan Williams <djbw@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sami Mujawar <sami.mujawar@arm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>
-Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
-Message-ID: <20261013133703.GJ14213@ziepe.ca>
-References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
- <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
- <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
- <ar5tOUor0bp3MtQ6@e129823.arm.com>
- <9e74ff9d-e8a3-425e-bf7c-f973d06e6cdf@huawei.com>
- <as3uzQ7L6tJ-Lu-Q@e129823.arm.com>
- <1451a49c-f37a-486f-ac47-e2ff86fef28a@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S32sFMdJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E541F000FF;
+	Tue, 13 Oct 2026 13:47:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791899246;
+	bh=ufMZp4Qc9d80hvvRB3vNUruXIvuXEMAYVkTpkYEJ0aU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=S32sFMdJ2NY/boJZiq7qHgwrDvnfacP5JNU8mgaJyQiC/aJSf/o6u1yYss44okWo+
+	 Sjga82Sb2QOdchZ1LbH0ux4IvEmSVJYxDuqsW2hn+bGfVieTjBjqpSHEZOrRJigUno
+	 Px/tm8jUDyk1sC2fW1OcOVHLHHQvxIxtYjd1Q9Yv72c3MLoEPN+IRXDvhqPnrpGeFv
+	 wDS7604PLG+GDAQq4ZB6hDi1UaV9y9t8Kh+H+s/ulOnRB0aWSsvTUCvQRS756SbO3C
+	 aRc+OXw5d+p7xFNvkD8MgBaeVjQN7uppe/zdzAtPLcpNJmMMBmFatZswffJxTVZJ3G
+	 jQSn9tSa+g88w==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 01726198003A;
+	Tue, 13 Oct 2026 09:47:11 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 13 Oct 2026 09:47:21 -0400
+X-ME-Sender: <xms:XzbOan8Y8kGba8pRx5mgpWDM4YXW1EMocY6hBF154p4NE_F875UjkA>
+    <xme:XzbOasWum8CcjS-iK132ufVMOimRtEOpWN8JV7dRfEX1h1Dp_3dY_DtQtcao6Ny_a
+    yYaAPEJ0M59QTbNoSdl3ZanKVC4FYisPINrKzr_mvgREULtKWqsDGvx>
+X-ME-Received: <xmr:XzbOap0ub0Qc1GVOIpPOLwa49EH1LI7JGZhO_dy3oWX53Pt7ElSMpyHzD84>
+X-ME-Proxy-Cause: dmFkZTE4j+cS9gh3PxGqMjY7PyaLxMVg3dj8MlDzlM7GN7gdgiVxP0yJ//GkJN0wCahlMx
+    5JdZXyer7uBv1S7r9zKudGJTVsIfvIDNMUthTv4zHTDadaydFl5J3WM5oOjG7bueTu1P/y
+    ErJcoDmdDlf2mbevwhHQ61prG/aGc64Y1+ArTq02T6BN55y6XBoncRB7eE5H2SYOX4r3El
+    YrSBfcjthcbdK9TH5Jj2U1yRZNxzXvJ0LVkfeDISJaGmLMzoC8igk5XBTY+38fhiHSyGiL
+    +cnpmehXA2/flj223aR6gM8IWtENoV0RxoyPyt9udox5uLVBfm0KgCcO5tiVN9eCvh/5JM
+    aTKNqGwu/2rDhCkM1c+ix5JpPW+GGwuxufWlSR9jnyihSU+e9+lhP2kVKcTNhuePk4D7h4
+    2Q/OqvXjwTCM/tEN3XsDlSmc1l8yzmlZPtSQ3+C0mMNsQsEFPswQDCtfmGg67K80Az+PVL
+    LRd83YGI28XR3lRflIQMmdCsHVNKROP4bmpOl8lfPNG/peUSuiL9LZu5QLVVUe3NoZwPGs
+    g7i+lcpjCaoYEqyEbFS/GsC8fY2i0+IyggX935VBX1nvot5c71LozqkHm+PSwQtEOzOylc
+    ws01IE6e2mhHKHvxbwqIw1oJJoQYx5BwXuQtZfTdhwj1Ef1bu0vOINgdPZAw
+X-ME-Proxy: <xmx:XzbOavjAdgGfkkFd30Sl97e4fKs0AXQI0rmS1xtCq9gumhdIOAyBRQ>
+    <xmx:XzbOamTbl7FUwBPXlrXZ5UPMDMEsm-qJQemClGWaBNm7JvXRJNgTWQ>
+    <xmx:XzbOahFtiScMJxuiSy8_Pg59KzrCRLfao8Sx9nm0MSTSvPdPM-8nyw>
+    <xmx:XzbOau_9QagkSr9Gcvi2fyeWTN6rOk-E4VNxPyjkfdaOI5zuhHPpVw>
+    <xmx:XzbOanGVoJjyM8cI1RPfiSHx1bWBKrDdsr6nob_WZdZmjMxe9r7CI-pk>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Oct 2026 09:47:09 -0400 (EDT)
+Date: Tue, 13 Oct 2026 14:47:08 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, 	Andrew Morton <akpm@linux-foundation.org>,
+ Baoquan He <baoquan.he@linux.dev>, 	Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ 	Pratyush Yadav <pratyush@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ 	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+ 	Marc Zyngier <maz@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ 	Robin Murphy <robin.murphy@arm.com>,
+ Steven Price <steven.price@arm.com>,
+ 	Sumit Semwal <sumit.semwal@linaro.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ 	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+ 	Russell King <linux@armlinux.org.uk>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ 	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
+ 	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
+ 	"T.J. Mercier" <tjmercier@google.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ 	Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ 	Christophe Leroy <chleroy@kernel.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>,
+ 	Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ 	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, 	Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ 	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>,
+ 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ 	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, 	Long Li <longli@microsoft.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ 	Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ 	Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, 	linux-media@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [RFC PATCH v8 02/14] mm: Zero memory during shared memory
+ transitions
+Message-ID: <as4q9FlxUy9EFJZK@thinkstation>
+References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
+ <20260924100529.1398790-3-aneesh.kumar@kernel.org>
+ <arZkEugXwCtKHH64@thinkstation>
+ <yq5azewiqj39.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1451a49c-f37a-486f-ac47-e2ff86fef28a@huawei.com>
+In-Reply-To: <yq5azewiqj39.fsf@kernel.org>
 
-On Tue, Oct 13, 2026 at 09:05:37PM +0800, GONG Ruiqi wrote:
-> I'd rather not base our work on Jiri's patch at this stage: it is
-> a pre-RFC draft of the new attestation subsystem, whose design is
-> itself still in progress. Building upon it instead of current
-> mainline would be quite risky — we would be rebasing on a moving
-> target, and merging would be blocked until the whole framework
-> lands, which is realistically far off.
+On Tue, Oct 13, 2026 at 10:42:58AM +0530, Aneesh Kumar K.V wrote:
+> Kiryl Shutsemau <kas@kernel.org> writes:
+> 
+> > On Thu, Sep 24, 2026 at 03:35:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> >> index f904a636d449..1f1f39082391 100644
+> >> --- a/arch/x86/coco/tdx/tdx.c
+> >> +++ b/arch/x86/coco/tdx/tdx.c
+> >> @@ -978,6 +978,9 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+> >>  static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+> >>  					 bool enc)
+> >>  {
+> >> +	if (!enc)
+> >> +		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
+> >> +
+> >>  	/*
+> >>  	 * Only handle shared->private conversion here.
+> >>  	 * See the comment in tdx_early_init().
+> >
+> > This doesn't make sense to me.
+> >
+> > On TDX the memset zeroes a page that is about to be dropped.
+> > MapGPA(shared) makes the VMM back the GPA with different memory, and
+> > what the guest reads afterwards through the shared mapping is whatever
+> > the host has there.
+> >
+> 
+> Does TDX require the guest contents to be preserved when pages are
+> converted to shared?
 
-I'm going to be strongly against any work to try and put a ROT
-multiplexor into IMA. This is architecturally the wrong direction and
-is clearly very a short term project that will expose uABI that will
-be difficult to unwind later.
+No.
 
-If you want this to go faster please work with Jiri.
+From the host perspective, the private page is withdrawn from the TD.
+Its contents are encrypted with the TD's key and do not carry over. Then
+the host inserts some page (maybe the same one) as shared.
 
-> I'd suggest we develop the proposal on current mainline, and
-> switch to the new attestation subsystem once it lands. As I
-> understand it, for us that is mostly just a matter of switching
-> to a different set of APIs.
+So the memset() in the prepare callback zeroes a page the guest is about
+to lose, and it does nothing to what the caller sees. With the
+post-conversion memset() gone from dma_direct_alloc(),
+dma_alloc_coherent() in a TDX guest returns whatever the host has at
+that GPA.
 
-It isn't, one activity is moving the policy and ROT multiplexer into a
-shared subsystem, the other is building a ROT multiplexer into IMA for
-only IMA to use.
+TDX needs the same ordering as CCA: zero in
+tdx_enc_status_change_finish() after tdx_enc_status_changed(). No flag
+is needed for that.
 
-Jaon
+But, again, shared memory is under host control and you cannot assume it
+will stay zeroed.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
