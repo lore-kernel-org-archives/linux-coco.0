@@ -1,69 +1,40 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC6D4F4D0E
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 12:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AE1280CD5
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 13:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791893603; cv=none; b=jkRGaVmsevdWP0uPte2lWNGvhHk5a5kT58/Tb2nAm5629X202tpZC/cwYSyB8Z/tbQ0o41+a10cWz6A8uAinYu8mznP8eogq1zf8GAYXUFhGbpfEqti4dYUiAolZqDgdj7mtrxJ7nQMciSTw4iroJM19DtXY+W1k+GXKbqILkKs=
+	t=1791896748; cv=none; b=AC+t1mwAa0zGdM6bQK1JF1Xs8QlPbhJ6cb5n4/eT57xbHS/U3/5t9tS/OhcXzGbDB1cPG/rV1Pmxxivmk4nw8+pX/HlQUxSptW1KXaDT71KdKV6bDiKs3wq4QKMG7d0pmwRkYTVAXD+68UyURZlwkQDHy978sff94tXrQ5kHGtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791893603; c=relaxed/simple;
-	bh=GmewS9MX/pMt0TQtYhdFbnW64zOueYVprrsOA812m8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lz0o0vyD94hH88lCcvrhkg+HLM/iEl2kMMshSUK1AvPGW11JvROyaZdNbOIbaomiXmUqGZ1KuM5+R/Tz79jdZUpvtagoaTFdV9Zlbh4sgkuoifaUV5owoeSnoBfVpPg1lGSPm83okAJ4OKS5KUu/aHhoZcxZkcBpxSkD7oeW2zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Exhk/EZv; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1791896748; c=relaxed/simple;
+	bh=XLVDDsJ9SkLDOPsRoHBlkN1g12Muht7f6+awpZoSXhM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bhfQhN9xikyVLan1IQ50lV+T3JTVSQ0tDsHdnRh8bNnJb0Rit2JEFfM1oegD5H9H/pvd9q8VoCfjkQaI0KDykjbxuVOF27d631MWwxSLh7wijGbsxNL1BzdHDK3RTixve5O89wGVsEplrw+Kc3Aw5qjmWjBs52pb6Bn5ThTOR+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6F7V5ju2; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Exhk/EZv"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48bbb06e746so1689332f8f.3
-        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 05:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791893600; x=1792498400; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=edUU9Hn3hyFtM1ngJWHa9pnhQIwExXlb5OPfjcFEs1c=;
-        b=Exhk/EZvJYJlgmOTL3Q/eCCB/ol6gk0Kt1xqnd69PQMn9R126cBQv62ZSHm0ml1ovH
-         xBfgTHax165T782NM7GLEePeVlrt8vs39vOdLiP+jfQ2RB9sX0JI1cVLjOB1Qt4YtK64
-         7/NqySaDt1RlUdjT7JzXGlhOoaOD+6m/SNGdTKDO7OcA/jDiIjDwP5GhBR2nN/pdxz7E
-         oSZSvXb4qZB2P+ftPDCSq3EGq62yUuDF0IGygQzM4Bf7Uw8APWv+d7PDf+JhcUxNKrNM
-         xZVf/5bqJtqk4DD4CXYKrDRBwDb5XxNDXmI4QdA1w8KKSZ93jtbNPuW1S2PzxbKpwnGC
-         niMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791893600; x=1792498400;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=edUU9Hn3hyFtM1ngJWHa9pnhQIwExXlb5OPfjcFEs1c=;
-        b=y5nlTUOtnHrUgzl/PVVQWUm5S2UA406KK0CQTh3JztX3Hy+HPJqb8RC7kWMIe8LQJH
-         ETMSH6vtmb6446aVQIq2lA/ZJo9g/FaUUFQaeIfGyQADIuHkia3bJN3ywcSXnMCfW+Ck
-         SDj0XnTI1YrT7HwbvBqfBCEn9G/bit2splPU3TF8g3WL2NaSnMU9uumR+0FSeeSEbe+I
-         xkXWYzE+1uI03jCVjjFV/KIBacEhbCy4Mx6LQLcJER3Jt3sQ84QplJMix8EoHu8l3CtS
-         aNOR+CSYxUAGLDH5Ern+1aeIL1HByhMsgoTR+va3ED51Hk1LJZNPgRobpomHgOt5BZjE
-         VIDA==
-X-Forwarded-Encrypted: i=1; AKwUvBy2OXGHgivTjomek98l68/LKKvCwaLQp7TvNTntH00zPk3oV3SC+uBxqGtD+tqCbcWIv8OagxC72QKt@lists.linux.dev
-X-Gm-Message-State: AFq9FYJh1+JcGeJaytBfbCo8HgeRQcy0So/NLGyLkuu5bqEEFWljXxw5
-	3ivsnLj0M34UvwRXZQpxfDVQbIZ3sXTpCYjCOPiRhKPqAes5HhCn29sxnUHMhCPsA8CcFvUTk4d
-	rhl4Iztw=
-X-Gm-Gg: AYBFou1QNJS4LUBgIeqhrBaA4fII07wf9UxkI6RyIG+8EH5sqiqpj+bLrXKZ6CAPQ1A
-	ZcZVeDNeCL+kAyMsxe424tpKtPVm3rmUQCXjtNl76Vbd17JS38WL2g3Bl4B3GCitscLXLdwKN9k
-	xJ9Fdqz9M74CzYEgJWhzeTW6upvdTbWDZF36FDUTQ2ZbibGbqL8bIXiNHgYYWBQbzx92EF76h4N
-	vvVGBieK/gBxcYvM1ZVd6NkRyTy6xhyJxXoYpZJYu0WnnZz8R5KRKe5MDvVqavtR53BXBnBcaRB
-	6rrkrHwziauJEiKVQZ++bMUzdh/IBy17fI0wDaeBfyW7PugM1zoC0hpmSfuPK3o+1PO2uC3WI73
-	6NzaT+lmdMAZxMV+bh4fdWxIlHTIOPc04rRySrI93gstdqOJ7hRkJEmf8X+f30YKqF7DudczpOP
-	o8DoOzZsNO1sp+XX4ww+DKO8HAWTB9h0jPW4YnmpIJ36ppxTBMLkXnKaKMqZpWXnK4sQwhjyhTK
-	gopE2pQ3rouPn5YsrSPyzo=
-X-Received: by 2002:a05:6000:491c:b0:488:8751:e78e with SMTP id ffacd0b85a97d-48dba9bdd09mr25645157f8f.16.1791893599634;
-        Tue, 13 Oct 2026 05:13:19 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab5991sm5087349f8f.29.2026.10.13.05.13.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 05:13:19 -0700 (PDT)
-Message-ID: <69fb13b5-857c-4819-bc8a-b87d1e7a1e28@suse.com>
-Date: Tue, 13 Oct 2026 15:13:17 +0300
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6F7V5ju2"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=wYQuXQ0KfHa17CDRJUy3J57K/iJLMTM6lvkW2CcSDiQ=;
+	b=6F7V5ju2QgWQ9eZjW3MED7pvYgSKl/itfkouUmXO5AnPvg4CViMZ+cJbrkHhH87RerZ3E2r8M
+	GCZPwWzNbKZLEmW98TNci7+YUNiTmHaBGjPkmvgfhRB6SvQAAfJuoDmaTpgxKg9SY9c6ir2ICg/
+	saTm5ZL2eP+7OY3gxwfW1xg=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4j3vQQ6Q24zKm4b;
+	Tue, 13 Oct 2026 20:53:18 +0800 (CST)
+Received: from kwepemo100015.china.huawei.com (unknown [7.202.195.69])
+	by mail.maildlp.com (Postfix) with ESMTPS id 17A474055B;
+	Tue, 13 Oct 2026 21:05:40 +0800 (CST)
+Received: from [10.67.111.244] (10.67.111.244) by
+ kwepemo100015.china.huawei.com (7.202.195.69) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 13 Oct 2026 21:05:39 +0800
+Message-ID: <1451a49c-f37a-486f-ac47-e2ff86fef28a@huawei.com>
+Date: Tue, 13 Oct 2026 21:05:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,148 +42,110 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] x86/tdx: Use TDVMCALLs directly for earlyprintk
-To: Vishal Verma <vishal.l.verma@intel.com>, x86@kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+CC: Roberto Sassu <roberto.sassu@huaweicloud.com>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, Eric Snowberg
+	<eric.snowberg@oracle.com>, <linux-integrity@vger.kernel.org>,
+	<linux-security-module@vger.kernel.org>, Dan Williams <djbw@kernel.org>, Mimi
+ Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>, Dmitry
+ Kasatkin <dmitry.kasatkin@gmail.com>, Paul Moore <paul@paul-moore.com>, James
+ Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Suzuki
+ Poulose <suzuki.poulose@arm.com>, Steven Price <steven.price@arm.com>, Sami
+ Mujawar <sami.mujawar@arm.com>, Aneesh Kumar K.V <aneesh.kumar@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>
+References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
+ <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
+ <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
+ <ar5tOUor0bp3MtQ6@e129823.arm.com>
+ <9e74ff9d-e8a3-425e-bf7c-f973d06e6cdf@huawei.com>
+ <as3uzQ7L6tJ-Lu-Q@e129823.arm.com>
 Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: GONG Ruiqi <gongruiqi1@huawei.com>
+In-Reply-To: <as3uzQ7L6tJ-Lu-Q@e129823.arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo100015.china.huawei.com (7.202.195.69)
 
+On 10/13/2026 4:41 PM, Yeoreum Yun wrote:
+>> On 10/1/2026 10:24 PM, Yeoreum Yun wrote:
+>>> Hi Roberto,
+>>>
+>>>> On Thu, 2026-10-01 at 13:27 +0200, Roberto Sassu wrote:
+>>>>> On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
+>>>>>> Confidential computing guests without a TPM can use TSM measurement
+>>>>>> registers to record IMA measurement digests instead of TPM PCRs.
+>>>>
+>>>> + Gong Ruiqi, of course.
+>>>>
+>>>> Roberto
+>>
+>> Hi Roberto,
+>>
+>> [...]Thank you for involving me!
+>>
+>>>>
+>>>>> Hi Yeoreum
+>>>>>
+>>>>> a similar patch set has been sent to the linux-integrity mailing list:
+>>>>>
+>>>>> https://lore.kernel.org/linux-integrity/20250630125928.765285-1-gongruiqi1@huawei.com/
+>>>>>
+>>>>> Could you please work with Gong Ruiqi to have a unified proposal?
+>>>>>
+>>>>> Thanks
+>>>>>
+>>>>> Roberto
+>>>>>
+>>>
+>>> Thanks for letting me know and I think the proposal is almost the same
+>>> with the different terminology only.
+>>>
+>>> @Gong, what do you think?
+>>
+>> Hi Yeoreum,
+>>
+>> Nice to see this topic picked up again — I'm glad the IMA RoT framework
+>> series I posted last year is still of interest.
+>>
+>> Yes, I'd be happy to work with you on a unified proposal. It's been a
+>> while since I last worked on that series, so I'll first revisit my
+>> previous patch set, and then follow up with you to discuss the code details.
+>>
+>> Looking forward to working with you.
+>>
+>> BR,
+>> Ruiqi
+> 
+> Hi Ruiqi :)
+> 
+> Thanks for replying and I'm happy with you too.
+> However, I think we need to rework based on the Jiri's patch [0].
+> 
+> Any thought?
 
+Hi Yeoreum,
 
-On 6.10.26 г. 1:50 ч., Vishal Verma wrote:
-> Background
-> ==========
-> 
-> TDX guests have early_printk support, but it is through a roundabout way
-> using a #VE exception as a functional mechanism. The exception handler
-> has to use TDG.VP.VEINFO.GET to find out what faulted, and then issue
-> the TDVMCALL. Simplify this by using a TDVMCALL from the guest which can
-> directly perform the port I/O.
-> 
-> Patch details
-> =============
-> 
-> Patch 1 is a cleanup that moves the port I/O direction constants to
-> arch/x86/include/asm/shared/tdx.h.
-> 
-> Patch 2: Add a new earlyprintk=tdx option, which calls the new
-> tdx_serial_in() / tdx_serial_out() helpers to perform the port I/O
-> directly using TDVMCALLs.
-> 
-> The serial earlyprintk path is left as is - TD guests using this will
-> still take a #VE exception, and the exception handler will perform the
-> I/O.
-> 
-> Testing
-> =======
-> 
-> Added a counter for the number of COM1 port I/O #VEs handled:
-> 
->    no earlyprintk     -  ~63000
->    earlyprintk=ttyS0  -  ~61000
->    earlyprintk=tdx    -  ~35000
-> 
-> The new tdx option nearly halves the number of #VEs handled.
-> 
-> Additionally, ran the usual suite of CI testing, which covers KVM self
-> tests, KVM unit tests, and Avocado KVM tests without any regressions.
-> 
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
-> Changes in v4:
-> - Rename the tdx_inb()/tdx_outb() helpers directly to the serial
->    accessors with __noendbr annotations, and remove the config ifdefs
->    from early_printk.c. (Kiryl)
-> - Rebase to v7.3-rc6
-> - Link to v3: https://patch.msgid.link/20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com
-> 
-> Changes in v3:
-> - Drop the ttySN and baudrate option parsing for earlyprintk=tdx (Dave Hansen)
-> - Link to v2: https://patch.msgid.link/20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com
-> 
-> Changes in v2:
-> - Rebase to v7.3-rc4
-> - Move the TDX hypercall helpers into coco/tdx/tdx.c (Kiryl)
-> - Add a new earlyprintk=tdx option that implements the direct TDVMCALL
->    path (Dave Hansen)
-> - Link to v1: https://patch.msgid.link/20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com
-> 
-> ---
-> Vishal Verma (2):
->        x86/tdx: Move port I/O definitions to a shared header
->        x86/early_printk: Add earlyprintk=tdx to drive the UART with TDVMCALLs
-> 
->   Documentation/admin-guide/kernel-parameters.txt |  8 ++++++
->   arch/x86/include/asm/shared/tdx.h               |  6 ++++
->   arch/x86/include/asm/tdx.h                      |  4 +++
->   arch/x86/boot/compressed/tdx.c                  |  4 +--
->   arch/x86/coco/tdx/tdx.c                         | 37 +++++++++++++++++++++----
->   arch/x86/kernel/early_printk.c                  | 20 +++++++++++++
->   6 files changed, 71 insertions(+), 8 deletions(-)
-> ---
-> base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
-> change-id: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
-> 
-> Best regards,
-> --
-> Vishal Verma <vishal.l.verma@intel.com>
-> 
-> 
+I'd rather not base our work on Jiri's patch at this stage: it is
+a pre-RFC draft of the new attestation subsystem, whose design is
+itself still in progress. Building upon it instead of current
+mainline would be quite risky — we would be rebasing on a moving
+target, and merging would be blocked until the whole framework
+lands, which is realistically far off.
 
-For the whole series :
+I'd suggest we develop the proposal on current mainline, and
+switch to the new attestation subsystem once it lands. As I
+understand it, for us that is mostly just a matter of switching
+to a different set of APIs.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+BR,
+Ruiqi
 
+> 
+> Link: [0] https://github.com/jpirko/linux_mlxsw/tree/wip_attestation_pre_rfc_draft1 
+> 
+> 
 
