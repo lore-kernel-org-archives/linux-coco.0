@@ -1,151 +1,183 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010011.outbound.protection.outlook.com [52.101.85.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389193D2FEC;
-	Tue, 13 Oct 2026 11:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791892799; cv=fail; b=nLKZviFvAneBHa2n5hUFihxd8wGa/2Z6ZPltPyTUaENn8yE/TI0PPFsqInu0yWwRyhHVhQi2Ws+P510LD1HrY+4R+yup9bv7aiRt816Tmn7lNoul3PUUOjVmEDob8qMXaeJPpIRwKTQWj7PMKsrrzjOTVvwUaTVq4YhhKF/E9po=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791892799; c=relaxed/simple;
-	bh=EUZthlkzqVbM+WqBd5lZCiINVtDI3tcT/6Y/kadOokk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EIkzx1mKdfXFn31CVcCbY3fihnqQKgoPxi11etFGxkVMPDCY3Lg54v7BsQBpBUiP2mGnKFUrsZKFvwPrKs9J0EjYGmJW0cb/tG/6PPMUlfkQxS/PMadp8N3invgIoYsmRBe1uZ46rR0RL3wVgbD210EiIPgExknvVZnXngvh1RU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mun6b0zG; arc=fail smtp.client-ip=52.101.85.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7C1503BCC
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 12:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791893421; cv=none; b=XjoECMOceyJIxw88lpPTuy8OoDe7CNoM/vhSuWlu1LeQJ4qyrGCR7KYjGesn71PVXq9RQXdt5Rkap01d72kZXkqanb7uL8GxFcNem4odT6ls0PwUXAUAnMBrm12anXG9xXVix2YAKmajQtIZ27hwOxG3Fh2iZhGpuBSmJt+w2I8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791893421; c=relaxed/simple;
+	bh=QQ9cUlAL5GrQVE7+llWDMD+TIOINbzuGmvLlY3iiW78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tp/Tg1wIylrVdx8mowb+bOVcYOdSRsk6aRFZJKW9S2U0m2v9iX5+Vy5ureUndOYxJ/Ak/bwhVMEh8S7plaQ6ZMTZLD2/DNkc/j6iapPz7H6x8Bzye96JCxQzNNVDcXEhgDN4m16t1cYbXM7H6jqsO+Mt200sQCJZ9FmavYmmKJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Y8fAvGJ6; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mun6b0zG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Aab9p5gJzp6L3EDPyyLJQ9OjDFXefz2OoLlFUii2wM81EdOUf9rPENJrCVxIh8iTKdQAy3gNz8jhxpgPfoa5nJEMhtgNCAzqXzNmwblnoDT8DB4tAZqRKVCZeicMQdxatY8NghRY5C86iIwHAGnODWLjC95LlXUPwilNhVyZRn2RoWJvaDDWO0TYWZAaMJhHLG6RDvLuJ53beilhsbR1mzSL8HrnZxqeH1I99PvQZPKviHqCkQSXlOSp2LqdpdJXEFm5bbHMzIwds0lNDgTE1BcXhnJNS9sF1DlReBVzKfiGp0x/cIQF70N/6ndAnM+F8K9cIzkt+wdwWGPQA0/iaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WzJ8Bp+V2nX4aPQsVJG65DNXcLk8TsfMzZvmatgUCSY=;
- b=ftTDzibayX4QxhFrD/3uw0HMh7wnIayhL307mtUcrJfXZo+ornHcbBtpPgevlMkACozOT3BJn871VXO4gue2aVie+rYAmlCzNrwnNjTb8txU0k7u0DeUwQh4/7Vn2Nvodn3Ek+K8AhbqZ7T9M1ZxBxAF6yUZBBiy0pSwM7kpraGA+KAw8IwKPXeWFKGuPwca2OCeu2tfZjswEJ0B82VZLLbDx1IDFHByqEW0qZyTYPXX6pOIMFbPw5iv6afJeg6QkIHQ2qBiRlkcYqH5RmmXoY8ggdIrC6f/rFuNMJHzue3A97Lkt3ln0EGFZaiMdpasKlEfovChZp+9o2x+JRgS5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WzJ8Bp+V2nX4aPQsVJG65DNXcLk8TsfMzZvmatgUCSY=;
- b=mun6b0zGUxH+jq2MQfOd7WoK+UhXtd1eyTjcB8GQFljVuhR3JIa4m31qh9kye7UX6D424flwb+6XFK/UNhHcC2CDoSg82uVYyxkWotfXfQm3hJePvEMYQjbgE6P2YR+Nw+Hv+fCIJaJ1dWxYABLIPKRklT68VhRbaVBmWWdHcANkEAqJqrFRXVYG1oSCkkxXY+pf4XqaG0DmIXWbVB4wNq7HDHbj1F7u8dLspRPdhq+IE5Fmpx34RFYt8ywuz7I/mu1DPhW/1YTtP6tyDZkAXw+L1p0lINL5uaZD3Veatv35tGAB25Y7dmhtCZsURxc1DcrYiOxHbkfoytoCWcGUwg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by DS4PR12MB9705.namprd12.prod.outlook.com
- (2603:10b6:8:277::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 11:59:54 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
- 11:59:54 +0000
-Date: Tue, 13 Oct 2026 08:59:53 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v7 16/16] PCI/TSM: wait for vdevice contexts before
- removing a DSM
-Message-ID: <20261013115953.GP13920@nvidia.com>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-17-aneesh.kumar@kernel.org>
- <sashiko-outbox-163687@kernel.org>
- <yq5atsmr44r6.fsf@kernel.org>
- <20261012130739.GM13920@nvidia.com>
- <yq5aecduq6i1.fsf@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aecduq6i1.fsf@kernel.org>
-X-ClientProxiedBy: YT1PR01CA0057.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:2e::26) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Y8fAvGJ6"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48af4d4e61fso2039551f8f.2
+        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 05:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1791893418; x=1792498218; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/UW4M9bzPF+18n4TtRgobPgbeKOcHx2cqh4rjh+zCS4=;
+        b=Y8fAvGJ6B4h0ayBXifsIGFqBxbQo1hZ9ZQm0GBMVsuC7p0z2SzUJH72Vo5Ed/5VaJB
+         dWXxR7Uh31KbwgL1hl9ypHWgUHKtGnjPpFH5tCgQXXmxAVAY7tNV5gMEEp9+f/fU8R5h
+         IOLApsS3e2kS49SVG2i5QEXSa8vQOkE3jabM+nt/Y8KU1x1VrsPLP2ejG/yKVo8zmueq
+         05a4pM9L1KWDgEwDyUAvLR7G3jeLf8JtlEiFCZEmxsSKJWnAstFgOuTthwO2AJ4cZ3xF
+         VrRa86Ua4nHCzrubS2YfKJqqfIFQGHsUwQtd8T/Jto9W+3Jm1iiJFbNFbXI1eIZ4Ff4a
+         wo5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791893418; x=1792498218;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/UW4M9bzPF+18n4TtRgobPgbeKOcHx2cqh4rjh+zCS4=;
+        b=Ypt9sspQccQBKoMG8Byx8VzNKnAqODOq+FO0O8HhEUhVxKaXe+pU5ufDxgVcrj1CaZ
+         apTOUw6mQGh4WNOXZKvrfeEQuQN0gj98HeYnbC6eJrdoPWUFsA1mtFVSsn+wyPRwH+gb
+         prG2lvwPmrZwJexmosVkEm/72gCZGijAadZ5uQuQh63ZT4r1IkS5UfYJYcqij9aNgElj
+         LY89fCEq3XsP5N86oFShqakmyyj2tAm3fVq/EMabe5F1HdlEb+4rWntBjsgUQWg9+otl
+         7hSSYxI0on9LKIjpRVglY+qJcPeFGyIcfe4GmxAQF75gjkdeVKakq0ZJgMICy3LPoe4r
+         zrvg==
+X-Forwarded-Encrypted: i=1; AKwUvBxSqflo3Ag/kMcPXVnt/IEC93YzNHP4Y6jP9lqHasKk10Gs5gCmwt5NhId8LQn/Fz6htGKcPvDQI11C@lists.linux.dev
+X-Gm-Message-State: AFq9FYJsa86wkBHgFzfENvsFGP3idtj4gtfoV79rlPlpujqDA3PEa1NX
+	Kvaja5KZT8sVunGj+Fm51N1IhO6Yl9i7LYyAGDgomUqcWzn4qHYIsa+RPxQaiKAHSEs=
+X-Gm-Gg: AYBFou2b0Hz4eEQycWkjIxIT1sjM+BTIZKF8o8/uBxVL6rnrqemX/+j4nUNdg9c1sor
+	Yvbi6EuYs4AKjS6ZW1WvHyaPVnl3dzRw0mcfGhVKGiWnYmg9dw9JCctpuL95b4+kQ8crv0dGbIi
+	mR2PWQDk3K/VWOR666sBX1OVHgA5qf1VJFwcWiGkv+Ym+xfcR9lsWVli8pA1+80gXyTZm9KeVwa
+	U6d44MLpFhUZkmDX4cWsh0OJFEVP5ql0kAKh8fxX1AanIMW/1RLG4TPfo+hC5GlwuULKHCawFs/
+	cIYvCP9WdLNU+e9FS/uAFrivfCjPN4FCojbwog9g85ryt/mya+GPluAHJpbhJPY750xHoHIN4Bw
+	XHl35pm6An+ROYJ08LLvlXjNiy8ohVUpJhrHU7lH1y6b2I9S963w/iRbeoAhFSicTN2WAroZBOt
+	UpcjBNh79XLP0wUiE4Gq7Uv2/JTGngH1h9OemiKB99an4CRsbY5KtvIUF2Qkr1BLN/gLXjZWZJY
+	OKHBwB733bZ0+ZpZJAqTP4=
+X-Received: by 2002:a05:6000:27c6:b0:48b:11a5:d42 with SMTP id ffacd0b85a97d-48dbacfc1demr14920520f8f.30.1791893418151;
+        Tue, 13 Oct 2026 05:10:18 -0700 (PDT)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaaa3fsm4847473f8f.10.2026.10.13.05.10.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 05:10:17 -0700 (PDT)
+Message-ID: <00a4b474-eb13-4caa-90c6-b9cabb1ec621@suse.com>
+Date: Tue, 13 Oct 2026 15:10:13 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DS4PR12MB9705:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81673fce-b2b1-4cc8-f59f-08df29217ead
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|6133799003|18002099003|22082099003|10067099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	XPlWggt1C4cQqDUmMN4fcRFTyomHsYF+xNYuiBXPXJfnbfe9vOl59wkP5X8jwKrJtzncgy0FORePy20utJUXJBHCoZiMJHiFIFgEnwza/X7agylRxtr2j/gubbdofOBkVLJHK+e+U790gcl5JPV0h8NZsDtNNLjwDimfXdCn53K3RprALjX4H3T6VqEr7c4w0sg0a5bTPy+34YciAt0ggt/eLWRTkffX9lyp05UEHCM6qRXUo1CyxWp79Em2AIId7C8ysSMX1Q+Jdp/3hUYtKJX0cZ5eFzB+iXrx5adO8h9CJF3q6s5iQk/SuURGY1W5tMVcfEmq4TYluHODzsBa8zUZBTjhbn1/DMiwtpA+fLdNzn0/jpm1EFk+kZ4ybgBoOhZAN20XtUM2HtYndDVGkNn+oM/0CmbtvQv0QZkouW/cbZsTh/Zm7/lfPvuxbuWWfpWKm4mAS/VBgUtBUg/MYzJE1P+oCvrjOHceP79VSI8Vw4iiApd82DfMmmY30As6JSJmDcQ4cOfolXnXlMH27sqVfIlsZcNu8B48ScGTGb+E27/Hbpy1fZ6y+1+zjtb3j+YlOQMQUIADNVGlfE+MEk/junjaD5F8pCOVo4GcMISS6YTdNYQQ7EWjdOatC4IHXxwv6Ab1v49+6qeBy53vQK6Ji2DwsSMpISjW38W1oUM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(6133799003)(18002099003)(22082099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?u2nyL2mDrfEktMshJXzv2Sfzkl6HWghkgyWh/rk8APhlQ34Hor2kbRMI7dsH?=
- =?us-ascii?Q?LJYpqOiSOWqIiu8I5+Dya4dYeLZHZGJrEBgy/pmZyo41DcNk08N2r8V4LIjF?=
- =?us-ascii?Q?s/0piOJ56/et/YODC18Ki0lNRSaAtAorYDSrnpYQLKUSmm9K3zFfhaK7S5wp?=
- =?us-ascii?Q?esLAJqH52TwkJBJ/ay8gEBpyr093qUenpC6+OntYSZftB4NeM9ySMeEmniEF?=
- =?us-ascii?Q?q//NiuzZYnlLVi0Kasr4am8QmarBIy+s7tfii4ZiiH2OlrL0LUk00X4bx6Nb?=
- =?us-ascii?Q?tRupAk+05woSvdmNBEj3OYhRxiRXBfYuo3BIkzdrvhLbgBjY1vBCNzpoGDJY?=
- =?us-ascii?Q?z01PHLylNpIU8ljrBAGbqZt+dhoqhc7zVhyzkS6DANLQbKA29WHlPXgb8or+?=
- =?us-ascii?Q?EzX4VBx+q2nUhRr7AIylwCa4mznxLVHxq4MbK2U5QmFqW4ORntdb1dEqK9Yl?=
- =?us-ascii?Q?KQuEAmGD1owIbjucCVNr/zXdDO7GeUrIe2AJQmIDmFvwLhrh4DC9E3kJld3M?=
- =?us-ascii?Q?0vjgAm7LEhDW50HrDhzalX7eKFrrm2mWM0/CgNw9TlQISramdLyRmC6LBZbI?=
- =?us-ascii?Q?VsUCzLeOeTCxkfJGiZt63Jg1flayOImnGawA5Wl6aE0TH7oGcIoL0krzmJFU?=
- =?us-ascii?Q?lLXuQKUW7CxzXxlYlTKG0hdRiq01KL458O34JgyjnFxfXMUimUKfq3REAXOU?=
- =?us-ascii?Q?BH7AooU2yUpV2s9flm3aWuLCOU37shp/cEIbZpz/N30Hjkhcbq+rJxVYsVeA?=
- =?us-ascii?Q?6xZTHOw6jxv9nQQD5FjASpuk13Tv8B1pgCl3wbWo9BMjpoe66AKqL/FvLGs9?=
- =?us-ascii?Q?yC8b3Pnd8+YPRgwYvZqrg6glw5SKu0aTuVB1Do/Lh3nAtArKMbdTnT5NEwHD?=
- =?us-ascii?Q?Ff1gj+mCrU685PldTcsjpORrGCvrzr3RicY4lC/H9bFdD6Jh1Ky0F6K7Vi9a?=
- =?us-ascii?Q?fFGw8BO9XRPupmlARnj1y9pW/w4BZlGbHs1tdEI6z2U+28QW42t1xGS8y5sh?=
- =?us-ascii?Q?Ay4MFyjow6eyVIkWrGeS3lurkzYETbT5hUXnnhc1A+PxGRmHS+OrjSwxUGg8?=
- =?us-ascii?Q?zDYCBhSltXxxyqt6EJ2Y80PTTXRM/JwPcTT/zLrDqqNp0BOS6atub9Ox1W+N?=
- =?us-ascii?Q?s1dV9FtOK8/z8TjecUTOgfY0bi0yvwgz6PvL+c4fMCm9C7rCGAhIdu0uCsWR?=
- =?us-ascii?Q?Q91+V9n4xUlp8iBaclR/G1d9sgx6a1J01Yg5l6jjEE9AiG9P7/8mM22qyTFk?=
- =?us-ascii?Q?zPQ/Cq2+jfmRTCg87oZMwRHeDvl8nNAQ97cahTt8scUSaHEFQp6NtaMlWzjS?=
- =?us-ascii?Q?I3thlZoabyYGC2xXjXE7eVkUgrPRYYP4r3V89EULNpDB2N1tEf+dqRZ3igQl?=
- =?us-ascii?Q?CXCrXq5yeYmC3eNfrLm68QfxQvHa+xtYb8sOBQhfKwx8+GQpKU2IGioDBSd0?=
- =?us-ascii?Q?X14H9B7ZNOdwh/lg7pLIik4/N689LSiZ8jhLWvQoTnRrbiDpWAA5zDHt8Q9N?=
- =?us-ascii?Q?+HOtPTgwJOUC1I2B3IL/WvqhhKbg0OSVsgTYBT3WIK0aH/ItjsTzB8p77S/g?=
- =?us-ascii?Q?N69f1W1wGr4Vvlt6N1BNwwBIEgllOlGW9ww4HSOrm8QFR7kd8gKZyEo37ylv?=
- =?us-ascii?Q?0pak1KCYS30w9r8DYaoAvyJy6lnsHAjjwk9ZCBax70jPE3C/A6m0UnyJUijb?=
- =?us-ascii?Q?xNKmW96sTlPY4QxbQlCs2O4wvLy5Zm+c3TPECjBWLPPdMOLD?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81673fce-b2b1-4cc8-f59f-08df29217ead
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 11:59:54.6873
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W2WfcX+C6ijNj60wg8GOPhLp+Da3DSEHWXbzqxINd3sAPVWbqUdAs0I46IOGCDed
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9705
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
+ operations
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ aik@amd.com, aneesh.kumar@kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, yilun.xu@linux.intel.com, chao.gao@intel.com,
+ vishal.l.verma@intel.com, xiaoyao.li@intel.com, kevin.tian@intel.com,
+ chao.p.peng@intel.com
+References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
+ <20260924041032.1096569-7-zhenzhong.duan@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260924041032.1096569-7-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 13, 2026 at 03:14:54PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@nvidia.com> writes:
+
+
+On 24.09.26 г. 7:10 ч., Zhenzhong Duan wrote:
+> Introduce support for binding and unbinding the Trust Device Interface
+> (TDI) using the TDCM_OP_BIND and TDCM_OP_UNBIND commands.
 > 
-> > On Mon, Oct 12, 2026 at 03:31:17PM +0530, Aneesh Kumar K.V wrote:
-> >
-> >> With this series, vdevices hold a reference to their parent vIOMMU,
-> >> which pins arm-cca-host. sysfs unbind is disabled, and the SMCCC
-> >> provider device has no hot-unplug path.
-> >
-> > It probably needs some logic like vfio has to prevent unregister from
-> > completing if there are active users. The module pin should prevent it
-> > from ever triggering, but as a safety precaution.
-> >
+> Executing TDCM_OP_BIND transitions the TDI state to a locked state
+> (TDI_STATE_CONFIG_LOCKED). Add a sanity check following the bind operation
+> to verify this state transition succeeded before finalizing device locking.
 > 
-> Are you suggesting that tsm_unregister() should return an error or wait,
-> as device removal does? Returning an error would be much easier to
-> implement by adding an unregistering flag to tsm_dev, set under
-> pci_tsm_rwsem after checking all pf0->context_users counters.
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-I didn't check it closely but the usual flow is for 'unregister' to
-wait until everything is done using it, possibly with a shootdown
-mechanism.
+<snip>
 
-I'm not sure we can implement a sane shootdown for iommufd's
-consumption of the tsm, but we can at least do the wait.
+>   	struct tdx_devsec *tdevsec __free(kfree) = kzalloc(sizeof(*tdevsec), GFP_KERNEL);
+> @@ -174,6 +233,19 @@ static struct pci_tsm *tdx_devsec_lock(struct tsm_dev *tsm_dev, struct pci_dev *
+>   	if (!tdx_is_dev_teeio_support(tdevsec))
+>   		return ERR_PTR(-EOPNOTSUPP);
+>   
+> +	struct tdx_devsec *tdevsec_bind __free(tdx_tdi_unbind_dev) = tdx_tdi_bind_dev(tdevsec);
+> +	if (IS_ERR(tdevsec_bind))
+> +		return ERR_CAST(tdevsec_bind);
+> +
+> +	ret = tdx_tdi_read_state(tdevsec, &state);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	if (state != TDI_STATE_CONFIG_LOCKED)
+> +		return ERR_PTR(-EIO);
 
-Jason
+While this does seem correct, it's not really following the spec or I'm being too rigid, namely:
+
+Since TDI can change the state any time, TD can't fully rely on the Known RUN state in any scenario. However, TD can rely on the Known
+RUN state after TDG.TDI.START as a confirmation of the Interface Start.
+
+But here we still haven't done a START, just a BIND, no ?
+
+ From the Guest perspective, querying the INTERFACE_STATE is a correct way for TD to query the TDI status. If the call status
+is TDX_SUCCESS then the TDI is BOUND. Other statuses indicate that the TDI is UNBOUND:
+TDX_TDIMT_NOT_PRESENT or TDX_TDI_INVALID_METADATA mean the TDI is UNBOUND and the TDI control structure
+has been removed or reassigned.
+TDX_TDI_INVALID_STATE means TDI is UNBOUND or in the ERROR state (TDI in TDISP ERROR state is considered
+UNBOUND from TD's perspective).
+
+IIUC it should be sufficient to check whether tdx_tdi_read_state didn't return an error and that would imply the interface is BOUND?
+
+
+<snip>
+
