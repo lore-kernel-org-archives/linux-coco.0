@@ -1,68 +1,69 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7C1503BCC
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 12:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC6D4F4D0E
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 12:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791893421; cv=none; b=XjoECMOceyJIxw88lpPTuy8OoDe7CNoM/vhSuWlu1LeQJ4qyrGCR7KYjGesn71PVXq9RQXdt5Rkap01d72kZXkqanb7uL8GxFcNem4odT6ls0PwUXAUAnMBrm12anXG9xXVix2YAKmajQtIZ27hwOxG3Fh2iZhGpuBSmJt+w2I8=
+	t=1791893603; cv=none; b=jkRGaVmsevdWP0uPte2lWNGvhHk5a5kT58/Tb2nAm5629X202tpZC/cwYSyB8Z/tbQ0o41+a10cWz6A8uAinYu8mznP8eogq1zf8GAYXUFhGbpfEqti4dYUiAolZqDgdj7mtrxJ7nQMciSTw4iroJM19DtXY+W1k+GXKbqILkKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791893421; c=relaxed/simple;
-	bh=QQ9cUlAL5GrQVE7+llWDMD+TIOINbzuGmvLlY3iiW78=;
+	s=arc-20240116; t=1791893603; c=relaxed/simple;
+	bh=GmewS9MX/pMt0TQtYhdFbnW64zOueYVprrsOA812m8Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tp/Tg1wIylrVdx8mowb+bOVcYOdSRsk6aRFZJKW9S2U0m2v9iX5+Vy5ureUndOYxJ/Ak/bwhVMEh8S7plaQ6ZMTZLD2/DNkc/j6iapPz7H6x8Bzye96JCxQzNNVDcXEhgDN4m16t1cYbXM7H6jqsO+Mt200sQCJZ9FmavYmmKJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Y8fAvGJ6; arc=none smtp.client-ip=209.85.221.46
+	 In-Reply-To:Content-Type; b=Lz0o0vyD94hH88lCcvrhkg+HLM/iEl2kMMshSUK1AvPGW11JvROyaZdNbOIbaomiXmUqGZ1KuM5+R/Tz79jdZUpvtagoaTFdV9Zlbh4sgkuoifaUV5owoeSnoBfVpPg1lGSPm83okAJ4OKS5KUu/aHhoZcxZkcBpxSkD7oeW2zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Exhk/EZv; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Y8fAvGJ6"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48af4d4e61fso2039551f8f.2
-        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 05:10:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Exhk/EZv"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48bbb06e746so1689332f8f.3
+        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 05:13:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791893418; x=1792498218; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1791893600; x=1792498400; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=/UW4M9bzPF+18n4TtRgobPgbeKOcHx2cqh4rjh+zCS4=;
-        b=Y8fAvGJ6B4h0ayBXifsIGFqBxbQo1hZ9ZQm0GBMVsuC7p0z2SzUJH72Vo5Ed/5VaJB
-         dWXxR7Uh31KbwgL1hl9ypHWgUHKtGnjPpFH5tCgQXXmxAVAY7tNV5gMEEp9+f/fU8R5h
-         IOLApsS3e2kS49SVG2i5QEXSa8vQOkE3jabM+nt/Y8KU1x1VrsPLP2ejG/yKVo8zmueq
-         05a4pM9L1KWDgEwDyUAvLR7G3jeLf8JtlEiFCZEmxsSKJWnAstFgOuTthwO2AJ4cZ3xF
-         VrRa86Ua4nHCzrubS2YfKJqqfIFQGHsUwQtd8T/Jto9W+3Jm1iiJFbNFbXI1eIZ4Ff4a
-         wo5Q==
+        bh=edUU9Hn3hyFtM1ngJWHa9pnhQIwExXlb5OPfjcFEs1c=;
+        b=Exhk/EZvJYJlgmOTL3Q/eCCB/ol6gk0Kt1xqnd69PQMn9R126cBQv62ZSHm0ml1ovH
+         xBfgTHax165T782NM7GLEePeVlrt8vs39vOdLiP+jfQ2RB9sX0JI1cVLjOB1Qt4YtK64
+         7/NqySaDt1RlUdjT7JzXGlhOoaOD+6m/SNGdTKDO7OcA/jDiIjDwP5GhBR2nN/pdxz7E
+         oSZSvXb4qZB2P+ftPDCSq3EGq62yUuDF0IGygQzM4Bf7Uw8APWv+d7PDf+JhcUxNKrNM
+         xZVf/5bqJtqk4DD4CXYKrDRBwDb5XxNDXmI4QdA1w8KKSZ93jtbNPuW1S2PzxbKpwnGC
+         niMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791893418; x=1792498218;
+        d=1e100.net; s=20260707; t=1791893600; x=1792498400;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=/UW4M9bzPF+18n4TtRgobPgbeKOcHx2cqh4rjh+zCS4=;
-        b=Ypt9sspQccQBKoMG8Byx8VzNKnAqODOq+FO0O8HhEUhVxKaXe+pU5ufDxgVcrj1CaZ
-         apTOUw6mQGh4WNOXZKvrfeEQuQN0gj98HeYnbC6eJrdoPWUFsA1mtFVSsn+wyPRwH+gb
-         prG2lvwPmrZwJexmosVkEm/72gCZGijAadZ5uQuQh63ZT4r1IkS5UfYJYcqij9aNgElj
-         LY89fCEq3XsP5N86oFShqakmyyj2tAm3fVq/EMabe5F1HdlEb+4rWntBjsgUQWg9+otl
-         7hSSYxI0on9LKIjpRVglY+qJcPeFGyIcfe4GmxAQF75gjkdeVKakq0ZJgMICy3LPoe4r
-         zrvg==
-X-Forwarded-Encrypted: i=1; AKwUvBxSqflo3Ag/kMcPXVnt/IEC93YzNHP4Y6jP9lqHasKk10Gs5gCmwt5NhId8LQn/Fz6htGKcPvDQI11C@lists.linux.dev
-X-Gm-Message-State: AFq9FYJsa86wkBHgFzfENvsFGP3idtj4gtfoV79rlPlpujqDA3PEa1NX
-	Kvaja5KZT8sVunGj+Fm51N1IhO6Yl9i7LYyAGDgomUqcWzn4qHYIsa+RPxQaiKAHSEs=
-X-Gm-Gg: AYBFou2b0Hz4eEQycWkjIxIT1sjM+BTIZKF8o8/uBxVL6rnrqemX/+j4nUNdg9c1sor
-	Yvbi6EuYs4AKjS6ZW1WvHyaPVnl3dzRw0mcfGhVKGiWnYmg9dw9JCctpuL95b4+kQ8crv0dGbIi
-	mR2PWQDk3K/VWOR666sBX1OVHgA5qf1VJFwcWiGkv+Ym+xfcR9lsWVli8pA1+80gXyTZm9KeVwa
-	U6d44MLpFhUZkmDX4cWsh0OJFEVP5ql0kAKh8fxX1AanIMW/1RLG4TPfo+hC5GlwuULKHCawFs/
-	cIYvCP9WdLNU+e9FS/uAFrivfCjPN4FCojbwog9g85ryt/mya+GPluAHJpbhJPY750xHoHIN4Bw
-	XHl35pm6An+ROYJ08LLvlXjNiy8ohVUpJhrHU7lH1y6b2I9S963w/iRbeoAhFSicTN2WAroZBOt
-	UpcjBNh79XLP0wUiE4Gq7Uv2/JTGngH1h9OemiKB99an4CRsbY5KtvIUF2Qkr1BLN/gLXjZWZJY
-	OKHBwB733bZ0+ZpZJAqTP4=
-X-Received: by 2002:a05:6000:27c6:b0:48b:11a5:d42 with SMTP id ffacd0b85a97d-48dbacfc1demr14920520f8f.30.1791893418151;
-        Tue, 13 Oct 2026 05:10:18 -0700 (PDT)
+        bh=edUU9Hn3hyFtM1ngJWHa9pnhQIwExXlb5OPfjcFEs1c=;
+        b=y5nlTUOtnHrUgzl/PVVQWUm5S2UA406KK0CQTh3JztX3Hy+HPJqb8RC7kWMIe8LQJH
+         ETMSH6vtmb6446aVQIq2lA/ZJo9g/FaUUFQaeIfGyQADIuHkia3bJN3ywcSXnMCfW+Ck
+         SDj0XnTI1YrT7HwbvBqfBCEn9G/bit2splPU3TF8g3WL2NaSnMU9uumR+0FSeeSEbe+I
+         xkXWYzE+1uI03jCVjjFV/KIBacEhbCy4Mx6LQLcJER3Jt3sQ84QplJMix8EoHu8l3CtS
+         aNOR+CSYxUAGLDH5Ern+1aeIL1HByhMsgoTR+va3ED51Hk1LJZNPgRobpomHgOt5BZjE
+         VIDA==
+X-Forwarded-Encrypted: i=1; AKwUvBy2OXGHgivTjomek98l68/LKKvCwaLQp7TvNTntH00zPk3oV3SC+uBxqGtD+tqCbcWIv8OagxC72QKt@lists.linux.dev
+X-Gm-Message-State: AFq9FYJh1+JcGeJaytBfbCo8HgeRQcy0So/NLGyLkuu5bqEEFWljXxw5
+	3ivsnLj0M34UvwRXZQpxfDVQbIZ3sXTpCYjCOPiRhKPqAes5HhCn29sxnUHMhCPsA8CcFvUTk4d
+	rhl4Iztw=
+X-Gm-Gg: AYBFou1QNJS4LUBgIeqhrBaA4fII07wf9UxkI6RyIG+8EH5sqiqpj+bLrXKZ6CAPQ1A
+	ZcZVeDNeCL+kAyMsxe424tpKtPVm3rmUQCXjtNl76Vbd17JS38WL2g3Bl4B3GCitscLXLdwKN9k
+	xJ9Fdqz9M74CzYEgJWhzeTW6upvdTbWDZF36FDUTQ2ZbibGbqL8bIXiNHgYYWBQbzx92EF76h4N
+	vvVGBieK/gBxcYvM1ZVd6NkRyTy6xhyJxXoYpZJYu0WnnZz8R5KRKe5MDvVqavtR53BXBnBcaRB
+	6rrkrHwziauJEiKVQZ++bMUzdh/IBy17fI0wDaeBfyW7PugM1zoC0hpmSfuPK3o+1PO2uC3WI73
+	6NzaT+lmdMAZxMV+bh4fdWxIlHTIOPc04rRySrI93gstdqOJ7hRkJEmf8X+f30YKqF7DudczpOP
+	o8DoOzZsNO1sp+XX4ww+DKO8HAWTB9h0jPW4YnmpIJ36ppxTBMLkXnKaKMqZpWXnK4sQwhjyhTK
+	gopE2pQ3rouPn5YsrSPyzo=
+X-Received: by 2002:a05:6000:491c:b0:488:8751:e78e with SMTP id ffacd0b85a97d-48dba9bdd09mr25645157f8f.16.1791893599634;
+        Tue, 13 Oct 2026 05:13:19 -0700 (PDT)
 Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaaa3fsm4847473f8f.10.2026.10.13.05.10.16
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab5991sm5087349f8f.29.2026.10.13.05.13.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 05:10:17 -0700 (PDT)
-Message-ID: <00a4b474-eb13-4caa-90c6-b9cabb1ec621@suse.com>
-Date: Tue, 13 Oct 2026 15:10:13 +0300
+        Tue, 13 Oct 2026 05:13:19 -0700 (PDT)
+Message-ID: <69fb13b5-857c-4819-bc8a-b87d1e7a1e28@suse.com>
+Date: Tue, 13 Oct 2026 15:13:17 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,19 +71,15 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
- operations
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
- aik@amd.com, aneesh.kumar@kernel.org, seanjc@google.com,
- pbonzini@redhat.com, yilun.xu@linux.intel.com, chao.gao@intel.com,
- vishal.l.verma@intel.com, xiaoyao.li@intel.com, kevin.tian@intel.com,
- chao.p.peng@intel.com
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-7-zhenzhong.duan@intel.com>
+Subject: Re: [PATCH v4 0/2] x86/tdx: Use TDVMCALLs directly for earlyprintk
+To: Vishal Verma <vishal.l.verma@intel.com>, x86@kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -128,56 +125,94 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20260924041032.1096569-7-zhenzhong.duan@intel.com>
+In-Reply-To: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-On 24.09.26 г. 7:10 ч., Zhenzhong Duan wrote:
-> Introduce support for binding and unbinding the Trust Device Interface
-> (TDI) using the TDCM_OP_BIND and TDCM_OP_UNBIND commands.
+On 6.10.26 г. 1:50 ч., Vishal Verma wrote:
+> Background
+> ==========
 > 
-> Executing TDCM_OP_BIND transitions the TDI state to a locked state
-> (TDI_STATE_CONFIG_LOCKED). Add a sanity check following the bind operation
-> to verify this state transition succeeded before finalizing device locking.
+> TDX guests have early_printk support, but it is through a roundabout way
+> using a #VE exception as a functional mechanism. The exception handler
+> has to use TDG.VP.VEINFO.GET to find out what faulted, and then issue
+> the TDVMCALL. Simplify this by using a TDVMCALL from the guest which can
+> directly perform the port I/O.
 > 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Patch details
+> =============
+> 
+> Patch 1 is a cleanup that moves the port I/O direction constants to
+> arch/x86/include/asm/shared/tdx.h.
+> 
+> Patch 2: Add a new earlyprintk=tdx option, which calls the new
+> tdx_serial_in() / tdx_serial_out() helpers to perform the port I/O
+> directly using TDVMCALLs.
+> 
+> The serial earlyprintk path is left as is - TD guests using this will
+> still take a #VE exception, and the exception handler will perform the
+> I/O.
+> 
+> Testing
+> =======
+> 
+> Added a counter for the number of COM1 port I/O #VEs handled:
+> 
+>    no earlyprintk     -  ~63000
+>    earlyprintk=ttyS0  -  ~61000
+>    earlyprintk=tdx    -  ~35000
+> 
+> The new tdx option nearly halves the number of #VEs handled.
+> 
+> Additionally, ran the usual suite of CI testing, which covers KVM self
+> tests, KVM unit tests, and Avocado KVM tests without any regressions.
+> 
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+> Changes in v4:
+> - Rename the tdx_inb()/tdx_outb() helpers directly to the serial
+>    accessors with __noendbr annotations, and remove the config ifdefs
+>    from early_printk.c. (Kiryl)
+> - Rebase to v7.3-rc6
+> - Link to v3: https://patch.msgid.link/20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com
+> 
+> Changes in v3:
+> - Drop the ttySN and baudrate option parsing for earlyprintk=tdx (Dave Hansen)
+> - Link to v2: https://patch.msgid.link/20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com
+> 
+> Changes in v2:
+> - Rebase to v7.3-rc4
+> - Move the TDX hypercall helpers into coco/tdx/tdx.c (Kiryl)
+> - Add a new earlyprintk=tdx option that implements the direct TDVMCALL
+>    path (Dave Hansen)
+> - Link to v1: https://patch.msgid.link/20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com
+> 
+> ---
+> Vishal Verma (2):
+>        x86/tdx: Move port I/O definitions to a shared header
+>        x86/early_printk: Add earlyprintk=tdx to drive the UART with TDVMCALLs
+> 
+>   Documentation/admin-guide/kernel-parameters.txt |  8 ++++++
+>   arch/x86/include/asm/shared/tdx.h               |  6 ++++
+>   arch/x86/include/asm/tdx.h                      |  4 +++
+>   arch/x86/boot/compressed/tdx.c                  |  4 +--
+>   arch/x86/coco/tdx/tdx.c                         | 37 +++++++++++++++++++++----
+>   arch/x86/kernel/early_printk.c                  | 20 +++++++++++++
+>   6 files changed, 71 insertions(+), 8 deletions(-)
+> ---
+> base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
+> change-id: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
+> 
+> Best regards,
+> --
+> Vishal Verma <vishal.l.verma@intel.com>
+> 
+> 
 
-<snip>
+For the whole series :
 
->   	struct tdx_devsec *tdevsec __free(kfree) = kzalloc(sizeof(*tdevsec), GFP_KERNEL);
-> @@ -174,6 +233,19 @@ static struct pci_tsm *tdx_devsec_lock(struct tsm_dev *tsm_dev, struct pci_dev *
->   	if (!tdx_is_dev_teeio_support(tdevsec))
->   		return ERR_PTR(-EOPNOTSUPP);
->   
-> +	struct tdx_devsec *tdevsec_bind __free(tdx_tdi_unbind_dev) = tdx_tdi_bind_dev(tdevsec);
-> +	if (IS_ERR(tdevsec_bind))
-> +		return ERR_CAST(tdevsec_bind);
-> +
-> +	ret = tdx_tdi_read_state(tdevsec, &state);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	if (state != TDI_STATE_CONFIG_LOCKED)
-> +		return ERR_PTR(-EIO);
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 
-While this does seem correct, it's not really following the spec or I'm being too rigid, namely:
-
-Since TDI can change the state any time, TD can't fully rely on the Known RUN state in any scenario. However, TD can rely on the Known
-RUN state after TDG.TDI.START as a confirmation of the Interface Start.
-
-But here we still haven't done a START, just a BIND, no ?
-
- From the Guest perspective, querying the INTERFACE_STATE is a correct way for TD to query the TDI status. If the call status
-is TDX_SUCCESS then the TDI is BOUND. Other statuses indicate that the TDI is UNBOUND:
-TDX_TDIMT_NOT_PRESENT or TDX_TDI_INVALID_METADATA mean the TDI is UNBOUND and the TDI control structure
-has been removed or reassigned.
-TDX_TDI_INVALID_STATE means TDI is UNBOUND or in the ERROR state (TDI in TDISP ERROR state is considered
-UNBOUND from TD's perspective).
-
-IIUC it should be sufficient to check whether tdx_tdi_read_state didn't return an error and that would imply the interface is BOUND?
-
-
-<snip>
 
