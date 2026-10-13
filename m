@@ -1,131 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD80339890A;
-	Tue, 13 Oct 2026 06:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9155923392D
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 07:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791874007; cv=none; b=bbJCcZHMYKrLPT8ud1jplQL3GAx0EIqT4Zy+VvTtm9URrtNqr/QGmaQ6uPxPrd3cl7SXeK+UWfSg4OkXvsQ1cm9Z22sEGdIQfn2Rjpdu352SX8XjBKVLATIt3fLahNVJA0i0wGqpeVbUt5tEREIJpvYKmKH/J/wkGYhR4mlCOpw=
+	t=1791874864; cv=none; b=ChUvHX1p1k853fZtsuhUG6CgaNK/ZE8GIP7QyDJ5N3P4+pwwLXSAH5bE01TEFUu7TmwPFk/xCP6lkq6dJ+XLdoW9AsKth697m08fsTeVQZ5ykdCxfYqSJaEn0dAi16tHsvsHUDRGC2ltzUDBBt5MNqQZ0NORI/3ZJ+4l2ljC94Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791874007; c=relaxed/simple;
-	bh=pH93kqBmOwBI52TYN3NXCYhYrkC2g7AYW458mWnIn8c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=m1OpTVuWz1o/Osm8bOF37Vaa1sNJjm9DOQ8u3q9bvCHyhrxJh03LiN2XKDZRgQHGulMA8gsL+ZLeCD3vpmcMpZVmNJe8jbmPg379la54JgKnS/UImO3Tz7exViZ17nQeoBT1A8JQeSBWtuoetO26hwKjnkNZIEbfDm+zD/PEwXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJwA7B9U; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791874864; c=relaxed/simple;
+	bh=nHwSERJsT6WQQkrnp27DBccwlr2EGr/h0ZD74kUAGC8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c1YmJ2GUz28bVjsEMC5E7kkKPUjfgX/MpgR2nQzmZ5dHHXFu/5mEQ9m5Y/ibbuq1z0XKQI0QFeMcr+FimbeBAyFJwv9r6hgFV692vRhjP7M52FgrR+yc5Wx5MPH5IJooTEKZy+K4l1GESd8G92ufC22SVBhBn32PLLnWBnDOOHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7siIriO; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJwA7B9U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52B91F000FF;
-	Tue, 13 Oct 2026 06:46:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791874006;
-	bh=2JJcHZm2wlX4VUk8I+EW0Bm36MPCTKsLvSSStPnKLN0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=kJwA7B9UiFHkL/DnvAVg/frvpkp4oL/S9lgGhHVKRZzRt5WsKpMe/3OMvBVw+Fluf
-	 A5YhHmVw1ksQsazXm8wt2EoWcot4gQsM/J+/Ah9xOtXFeGKWFsz0/H8bbJz0UiDZ5a
-	 A6TgRhf/rHEVy54YT+pySEx7GNZbrgBDYwnOSjRbgj/FCtAZV+1zRqRYabFA7/QBSz
-	 A1fKwzqL/jhxJsO3UgLFvvC/q7z1YTi8J05eee5nu2E8hvv2/3llFwjtzP7Yedrm30
-	 KD7tN4ClcHEWon5AWGuTfrEb/SuYs1hEJyxcJnRACCOyDQ6xvE54dI4E4HwHbUZ4M+
-	 4kQGg/V6uNXFA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: sashiko-reviews@lists.linux.dev, linux-coco@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Cc: media-ci@linuxtv.org, kvmarm@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	Oliver Upton <oupton@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: Re: [RFC PATCH v8 08/14] swiotlb: Align shared IO TLB pools to the
- shared granule size
-In-Reply-To: <20260924102254.60C431F00893@smtp.kernel.org>
-References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
- <20260924100529.1398790-9-aneesh.kumar@kernel.org>
- <20260924102254.60C431F00893@smtp.kernel.org>
-Date: Tue, 13 Oct 2026 12:16:39 +0530
-Message-ID: <yq5ao6cyqer4.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7siIriO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791874863; x=1823410863;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=nHwSERJsT6WQQkrnp27DBccwlr2EGr/h0ZD74kUAGC8=;
+  b=I7siIriOMgygrG+J3SR9ESPU8SpFEzXQLIhFib31+gXalvPjRCGtTcHt
+   Bc3vgDbxuputZH6H+oNAx4UcdfjCPUDRLu7+0V70+LWfeGIvf4c1F6SIh
+   84vTmwuxfrXXefa8hhYoBKfdgmHWsQjwBQyWNFCaUewVxf7p7Y+UamjwD
+   LJmmnwp4oaSlgoslhEREorsiZ23IYEyXV5sEdpbeySFLzsC+waeuz9Qp9
+   KtbGrQiyIiVHetSKbnS7PRIWNyKGeA9eJNsmC+zBiKZXgHbt3idcCaeIX
+   zr1eu1QaeOs5qQTdvMguh9NItxQDRn1Dv+AQTDs0I3U5M/gpXnsXSSMtz
+   w==;
+X-CSE-ConnectionGUID: rAbbv3NwQ3yCBpSnguUefQ==
+X-CSE-MsgGUID: aBoaux5qS+ONwWnfBsAo4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="485840"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="485840"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 00:01:02 -0700
+X-CSE-ConnectionGUID: 6KC7tvomQmKzCZESbFkwbw==
+X-CSE-MsgGUID: 1bYSzrRgSU24r03BSXEcSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="989803"
+Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 00:00:58 -0700
+Message-ID: <a34b1dba-a2fc-4152-b766-adb1558e5490@linux.intel.com>
+Date: Tue, 13 Oct 2026 15:00:56 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/10] x86/virt/tdx: Add a helper to read a table of
+ metadata fields
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, yilun.xu@linux.intel.com,
+ tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
+ nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
+References: <20261012094754.27702-1-chao.gao@intel.com>
+ <20261012094754.27702-2-chao.gao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20261012094754.27702-2-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-sashiko-bot@kernel.org writes:
+On 10/12/2026 5:47 PM, Chao Gao wrote:
+> The metadata field readers get_tdx_sys_info_<class>() in
+> tdx_global_metadata.c were generated by an out-of-tree script. That has
+> not worked out: the JSON file they were generated from is neither stable
+> nor authoritative enough [1].  The goal now is to maintain the readers by
+> hand and to establish one standard way of adding a metadata field.
+> 
+> Take get_tdx_sys_info_version() as an example:
+> 
+>       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
+>               sysinfo_version->minor_version = val;
+>       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
+>               sysinfo_version->major_version = val;
+>       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
+>               sysinfo_version->update_version = val;
+> 
+> Two patterns stand out: the read-check-store sequence repeats once per
+> field, and the error of each read is chained into the reads that follow.
+> Neither is common in hand-written code.
+> 
+> Prepare to eliminate both with a loop that reads each field, stores the
+> value into its structure member, and returns on the first error.
+> 
+> Add 'struct field_mapping' to describe one field as its ID plus the offset
+> and size of the member that receives its value. Add FIELD_MAP() to
+> build such an entry from a field ID, a structure type and a member name.
+> Add __read_sys_metadata_table() helper to read every field in a table.
+> Annotate that helper __maybe_unused as there is no caller right now.
+> 
+> Following changes will convert the existing readers to use the new helper.
+> 
+> AI was used under supervision to review code and workshop logs. It
+> suggested adding read_sys_metadata_table() macro, which avoids repeating
+> the table name when passing both the table and its size.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Link: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [1]
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] mm: infinite loop in swiotlb_init_late() when remap fails
-> --
->
-> commit 9e7f1b72520615870ee21508117e4c5c7e0eb684
-> Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->
-> swiotlb: Align shared IO TLB pools to the shared granule size
->     
-> This commit aligns and sizes the early memblock pool to the common CoCo
-> shared granule, leaving the slot count unchanged. It replaces the default
-> and dynamic pool set_memory calls with helpers to keep alignment validation
-> and architecture dispatch centralized. Pages are intentionally leaked if
-> their private state cannot be restored safely.
->
->> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
->> index ded7016a46a71..394db93b7eb96 100644
->> --- a/kernel/dma/swiotlb.c
->> +++ b/kernel/dma/swiotlb.c
->
-> [ ... ]
->
->> @@ -578,7 +578,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
->>  		swiotlb_adjust_nareas(num_possible_cpus());
->>  
->>  retry:
->> -	order = get_order(nslabs << IO_TLB_SHIFT);
->> +	order = get_order(ALIGN(nslabs << IO_TLB_SHIFT, cc_shared_granule_size()));
->>  	nslabs = SLABS_PER_PAGE << order;
->
-> [Severity: Medium]
-> If remap() fails later in this function, nslabs is halved and the code jumps
-> back to the retry label to try a smaller allocation:
->
-> kernel/dma/swiotlb.c:swiotlb_init_late() {
->     ...
-> 	if (remap)
-> 		rc = remap(vstart, nslabs);
-> 	if (rc) {
-> 		free_pages((unsigned long)vstart, order);
->
-> 		nslabs = ALIGN(nslabs >> 1, IO_TLB_SEGSIZE);
-> 		if (nslabs < IO_TLB_MIN_SLABS)
-> 			return rc;
-> 		retried = true;
-> 		goto retry;
-> 	}
->     ...
-> }
->
-> Does the new ALIGN macro at the retry label risk inflating the halved size
-> back to its original value if cc_shared_granule_size() is >= 2MB?
->
-> If so, this would restore nslabs to its original failing value, overriding
-> the shrinking mechanism and creating an infinite loop.
->
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-We don't expect cc_shared_granule_size() > 2MB. But i can also add a
-check. 
-
-modified    kernel/dma/swiotlb.c
-@@ -719,8 +719,13 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- 		free_pages((unsigned long)vstart, order);
- 
- 		nslabs = ALIGN(nslabs >> 1, IO_TLB_SEGSIZE);
--		if (nslabs < IO_TLB_MIN_SLABS)
--			return rc;
-+		if (nslabs <= IO_TLB_MIN_SLABS)
-+			return rc;
-+
-+		/* Avoid infinite loop */
-+		if (WARN_ON(nslabs < (cc_shared_granule_size() >> IO_TLB_SHIFT)))
-+			return rc;
-+
- 		retried = true;
- 		goto retry;
- 	}
