@@ -1,130 +1,92 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809473B4432
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 08:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B653A16AE
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 08:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791880919; cv=none; b=q8bDgZq1aIHWupFEZAJ+riKFwOh2z7k+fnDS1zHScGp/uc7xYojh/8h7CU0yrUmsgFa0h9cGlET3rw+Pme1hwe7O06Jq1RcljVor3ZRZ65ILUWI7h/UnDAyiTrpzVpTdvyK0y6EZW0XZ4azMzyumCySt0ol6v9N7QS/0l8yoqgY=
+	t=1791881117; cv=none; b=Mm1/ZFAB808NRsW2QwrnF9EbxMbkSAi9m4beYFkMkctQl2tU7ThocqZ+bLMReTNqg/KmFf9/yA4VaIkSVok+szlyQQ8JdZUvSEGWQjsKT4s0IWNwcZ2sCnmVUodEWMUx891lbcy7kucs4CYNL/g6fbaSHREJ9o4ylinxOh5cbo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791880919; c=relaxed/simple;
-	bh=NI8CmL/lnRoC7aE++YpF7fiq+bAGnCCUDMqbYkmDDew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d9qE2MB/BKcUNEOTb9d3trvcJ4HdHL5zmtUeFCaf6a38paFmur5W7S5R41fGidvurWilGzxQWoU2BDFGG4DjEHGlsS/+3ky7MxW5Ar+PrTrbDnNiwm5vq0a7cYjk4uH0k8v64xIplUZLWegDcsCPZ3QP4+fsfDh6FJhn7ZHRHqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bZqkt7Lf; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791881117; c=relaxed/simple;
+	bh=tQXLYDsoOTxPoOoTErhqB6NtmbOKy3IOT/1n2Ddr5kc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m6SHUnKx1RF/HrFJgD/0gYlV2naY/e1oENjiS4baWWiGA4T0zclDfV1xlJG+Ct3T0PuElzrdlLgFurJpUVkve0WohONdEQqO4+p0rOLB3dBKigEiYAyzFONq3XDodDK1739BWO4tdmBLKsfDK5CLgjISPEPuV+6tDk/1FPxOCQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dbAQZ2Dr; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bZqkt7Lf"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FDCC169C;
-	Tue, 13 Oct 2026 01:41:52 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 702B53F66F;
-	Tue, 13 Oct 2026 01:41:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791880915; bh=NI8CmL/lnRoC7aE++YpF7fiq+bAGnCCUDMqbYkmDDew=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bZqkt7LfHhgrP+LpLkfSWkgVJSZiTZFy4lKziZu5iR37k9EFAy02+ty8P4ISH7oZJ
-	 KekFmta7QOPeZeaIU4GpQdPFpSIaN4Jm43CjCrlwnAe9zBdYufWXPGSmiCV/ITKyn4
-	 5OZk62xDJBVPfh1/7axdbnw2G3tJM7jWkrMYzZEU=
-Date: Tue, 13 Oct 2026 09:41:49 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: GONG Ruiqi <gongruiqi1@huawei.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Roberto Sassu <roberto.sassu@huaweicloud.com>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Dan Williams <djbw@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Suzuki Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sami Mujawar <sami.mujawar@arm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>
-Subject: Re: [PATCH RFC 0/3] security: ima: support TSM measurement registers
-Message-ID: <as3uzQ7L6tJ-Lu-Q@e129823.arm.com>
-References: <20260930-ima_tgx_integration_v2-v1-0-722c35370548@arm.com>
- <ebe68f6463f8ece8a5cd8ce70bba292ec4f64a41.camel@huaweicloud.com>
- <c4fe5315d70fc162f1e5648e3fccb1676710d5e6.camel@huaweicloud.com>
- <ar5tOUor0bp3MtQ6@e129823.arm.com>
- <9e74ff9d-e8a3-425e-bf7c-f973d06e6cdf@huawei.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dbAQZ2Dr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791881116; x=1823417116;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tQXLYDsoOTxPoOoTErhqB6NtmbOKy3IOT/1n2Ddr5kc=;
+  b=dbAQZ2Drh7D6MiPgIgA+wqpVjMokTCHNao4TRddzfdPAVSdLjEJjGugZ
+   /dZRO9u+S3XmGV61Ni8MktXvJvtpUU8R73LI7iW/3v3XxcPsWUCfOm8HO
+   f0xEvos5bUK+FaUu8hNsUrEgSC3csGGtXtJvO0jBpoMZiVEU5zAl4eWM4
+   hDVCw/h3ZWD7iBWunOXtCVlc8qh3XxqoNP42ylPfADkqdWBd6uAM5cVe0
+   hQRFZSIbU7YzrbQ+tuGnzoDzA3v4Rw3By4ybtY1yU+aHNjbR/UocRPTAl
+   4HdqemRsuKHP80PbvSrCR9lq1ZS7SvnSZhEtgO037oLNCXzWOionwYNpB
+   g==;
+X-CSE-ConnectionGUID: e5dTRA+uTV2tRYhvo6Mg6g==
+X-CSE-MsgGUID: XThvEro2QV20FazTfXt+3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="702556"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="702556"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 01:45:15 -0700
+X-CSE-ConnectionGUID: J4HmsmcfQAKmE40yBRkjqw==
+X-CSE-MsgGUID: QP+D3cC/SEaS/cAi9HeXVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="1434297"
+Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 01:45:12 -0700
+Message-ID: <6045f9e7-9376-4460-968d-e8b77428d69f@linux.intel.com>
+Date: Tue, 13 Oct 2026 16:45:09 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9e74ff9d-e8a3-425e-bf7c-f973d06e6cdf@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/10] x86/virt/tdx: Convert the features metadata
+ reader
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, yilun.xu@linux.intel.com,
+ tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
+ nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
+References: <20261012094754.27702-1-chao.gao@intel.com>
+ <20261012094754.27702-4-chao.gao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20261012094754.27702-4-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> On 10/1/2026 10:24 PM, Yeoreum Yun wrote:
-> > Hi Roberto,
-> > 
-> >> On Thu, 2026-10-01 at 13:27 +0200, Roberto Sassu wrote:
-> >>> On Wed, 2026-09-30 at 14:43 +0100, Yeoreum Yun wrote:
-> >>>> Confidential computing guests without a TPM can use TSM measurement
-> >>>> registers to record IMA measurement digests instead of TPM PCRs.
-> >>
-> >> + Gong Ruiqi, of course.
-> >>
-> >> Roberto
+On 10/12/2026 5:47 PM, Chao Gao wrote:
+> Continue converting the metadata readers to the table-driven helper.
 > 
-> Hi Roberto,
+> Add a table that pairs each field ID with the 'struct
+> tdx_sys_info_features' member that holds its value, and read all fields by
+> walking that table.
 > 
-> Thank you for involving me!
+> Even though the structure has only one field, add a table anyway for
+> symmetry with the other classes. Adding a field later then becomes a
+> one-line change.
 > 
-> >>
-> >>> Hi Yeoreum
-> >>>
-> >>> a similar patch set has been sent to the linux-integrity mailing list:
-> >>>
-> >>> https://lore.kernel.org/linux-integrity/20250630125928.765285-1-gongruiqi1@huawei.com/
-> >>>
-> >>> Could you please work with Gong Ruiqi to have a unified proposal?
-> >>>
-> >>> Thanks
-> >>>
-> >>> Roberto
-> >>>
-> > 
-> > Thanks for letting me know and I think the proposal is almost the same
-> > with the different terminology only.
-> > 
-> > @Gong, what do you think?
+> Annotate the table as __initconst as it is referenced only during init.
 > 
-> Hi Yeoreum,
+> AI was used under supervision to review code and workshop logs.
 > 
-> Nice to see this topic picked up again — I'm glad the IMA RoT framework
-> series I posted last year is still of interest.
-> 
-> Yes, I'd be happy to work with you on a unified proposal. It's been a
-> while since I last worked on that series, so I'll first revisit my
-> previous patch set, and then follow up with you to discuss the code details.
-> 
-> Looking forward to working with you.
-> 
-> BR,
-> Ruiqi
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-Hi Ruiqi :)
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-Thanks for replying and I'm happy with you too.
-However, I think we need to rework based on the Jiri's patch [0].
-
-Any thought?
-
-Link: [0] https://github.com/jpirko/linux_mlxsw/tree/wip_attestation_pre_rfc_draft1 
-
-
--- 
-Sincerely,
-Yeoreum Yun
