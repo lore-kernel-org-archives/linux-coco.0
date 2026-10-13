@@ -1,118 +1,91 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADD03A8755
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 10:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE44C3B14B8
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 10:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791886600; cv=none; b=F72xdjoIEFtDut4nKwWrIvdod8UY9X8+GgE8QwNp0z46P/AqMPTIJA/cItaV9PoEpGnJCj6w0frV5hLWqPsLORW1S31kqsNh6lhWkxlT4C7mXsZjY0ZT1xcBFVQ8Phptkj+KVUlinK4M2AumqhghlNW2PPuDgLYoKJwSqGDRbe4=
+	t=1791886723; cv=none; b=XWY6bT3nPDgRaubJTAT+iuRFjJoli/h52jfECS+6ZPN+xGubikNtlvOt5Z2Ar3ltDVACVnslCkB8UAdcpeahM5JFzWFG9+khPNl2hWf7Czcp3mv6oWHgowdIODBRcJ3jH06jZmK9rpTe4DxgNLSg+t2VvkVO5hMpXwdzm9g0EKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791886600; c=relaxed/simple;
-	bh=ekZQ0q+xdtGkn4NuaxVpvPPHaMamSLGnT/jXWIganUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A9QWrEFuIpn3PXmfYknsPmyQM+BZ5pIj90ARRo7fwm2KIw3YKEUQiqVEmH5+vYI5ubkEsggAgCkf/VuwOsYtIMyZjMd2RXa/WnA4ml063JUBj2JrYQVidCxGOL6zN7aRJSb1J9HnIZ+jdEJZuZ8cIwanUFqPN1Ltn64+TB27Dck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FL9Egaw1; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1791886723; c=relaxed/simple;
+	bh=lKt1qElPyYS2iInFY1JoDCNqs5vMC6nGwRBDANiHges=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rRMTj8Sg+F0As5i5BW1GKuqprxdHKOaj8pmncB1vFhiMgZR+R1j2/SFNKCr8fgy2MSLIMfnDV/ADcFmNPT/W+JwKMDmFZdNG+gWPZJ4Z99Br4LwQSkfLHB7mPl7H8ZqoGEnlt/ssWlMq0QrvQrEU3uIbhix3M/564+MviZvMoiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S1JfAlgf; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FL9Egaw1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S1JfAlgf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791886598; x=1823422598;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ekZQ0q+xdtGkn4NuaxVpvPPHaMamSLGnT/jXWIganUg=;
-  b=FL9Egaw13+Z9uEg6bJ7PdBkyEqZp0JzBU/UCZxw9R+JJZaJ4/nz33d59
-   5YXGehwXJV3tUXdxKhsKQxOo12L3V/7R9uvGZDrgtHP/2RwUtjHKyuRy1
-   Z3hKuKVK90QgB+1Nx0jXlAcZNzwWfcO1lzGpbEdgd2BvpcBGnZLFEoipd
-   VL+OiGkM7iPZgCkjWlkQYvnqVRlH3ipWD/pU64j6GDEkrwBPiVQDilLdS
-   ItxckH8bvwLgV5Y0e8ZKWik871PpQt0BQUvRCg+nmp+XkIBObuSKdSTw+
-   +LMyRIPD1hY4BOxnMCfDg1oppMqpI5IM47MkEZRxzSFmXUoNdhubJV3fu
-   Q==;
-X-CSE-ConnectionGUID: SUgnmsRpSEu746pRBBJvGQ==
-X-CSE-MsgGUID: AmHhrvTYQsmL1NhKiclFXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="507550"
+  t=1791886722; x=1823422722;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lKt1qElPyYS2iInFY1JoDCNqs5vMC6nGwRBDANiHges=;
+  b=S1JfAlgfl+pZ/0I+rq0oK1skMB6nrajLPpy9BdAMQuUqfCcr3lIemMNq
+   XoQhCcOz1pUJXmi3VLj2niYmCGaY2NP5SyFsnQ1yXQlWszSue26/wZa1t
+   Y0Rm5ofW5pPRPGE8+l59SyjSBANh0Qw2fhEmCGoPL9TeMdeyZS4astLRx
+   acKDCUgSOZWue+Wa9TdpMaeJCBrC8ZoPl0+FgEbBeIpHxAr8nWKxRJ6sM
+   9lqCZRz3S7b3XKRVkb1VnQy9XYtTHi0pUGQoZMln8rwBM6q5dm74UfXmR
+   j5eAhJncvSqKuHDAdKisW6z6Jwk2N7dyXMYLMaq0bLK9PWj1GUG4F3jcx
+   g==;
+X-CSE-ConnectionGUID: f2xTtQRWQYuz0kFxvKj7Nw==
+X-CSE-MsgGUID: WO4BRaO+SLSkGnDMYLfOsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="617014"
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="507550"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:16:37 -0700
-X-CSE-ConnectionGUID: J91pIag2Q5+QTWnZtNGMMw==
-X-CSE-MsgGUID: ifDbk/LoRWGR7DQlwV4PeA==
+   d="scan'208";a="617014"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:18:41 -0700
+X-CSE-ConnectionGUID: DEY0xYCFTUiLwKHN8s/pKA==
+X-CSE-MsgGUID: 3D02l4zsQ8aQNraV1GeqZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1099593"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa001.jf.intel.com with ESMTP; 13 Oct 2026 03:16:33 -0700
-Date: Tue, 13 Oct 2026 18:12:40 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>
-Subject: Re: [PATCH v3 5/6] x86/virt/tdx: Re-initialize the extensions on
- runtime TDX module update
-Message-ID: <as4EGEMR2fQqnPMA@yilunxu-OptiPlex-7050>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-5-db52cb05b918@linux.intel.com>
- <98326b43a055030bfa4671df5c00a78dfc16322a.camel@intel.com>
+   d="scan'208";a="1574262"
+Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:18:38 -0700
+Message-ID: <d87f51ac-d485-4b99-a573-d0c9fcf2058a@linux.intel.com>
+Date: Tue, 13 Oct 2026 18:18:35 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <98326b43a055030bfa4671df5c00a78dfc16322a.camel@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/10] x86/virt/tdx: Remove tdx_global_metadata.c
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, yilun.xu@linux.intel.com,
+ tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
+ nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
+References: <20261012094754.27702-1-chao.gao@intel.com>
+ <20261012094754.27702-9-chao.gao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20261012094754.27702-9-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 09, 2026 at 07:20:05PM +0000, Edgecombe, Rick P wrote:
-> On Tue, 2026-10-06 at 01:41 +0800, Xu Yilun wrote:
-> > Runtime TDX module update introduces a mechanism to update the module
-> > firmware while preserving and restoring TDX operations. The extensions
-> > functionalities should also be re-initialized as part of the restoration
-> > process.
-> > 
-> > The TDX architecture supports an update flow which allows updated
-> > extensions to consume more memory than their original boot-time
-> > requirement. So the arch defines the extensions re-initialization flow
-> > the same as boot-up initialization: the host queries TDX module how much
-> > additional memory needed, allocates it, adds it to the module via
-> > TDH.EXT.MEM.ADD, then re-initializes the extensions via TDH.EXT.INIT.
-> > 
-> > Linux runs the updates in stop_machine() context, which prevents memory
-> > allocation. So for Linux, a compatible update must not install updated
-> > extensions that require additional memory.
-> > 
-> > Given that the memory for the extensions must not increase, the
-> > re-initialization skips the memory adding steps. It is simplified as:
-> > 
-> >   - Check if the extensions are supported via TDX_FEATURES0_EXT. If not,
-> >     skip the extensions re-initialization.
-> > 
-> >   - Re-initialize the extensions via TDH.EXT.INIT. The SEAMCALL leaf
-> >     will fail if the updated extensions require more memory, which
-> >     indicates the update image is not compatible.
-> > 
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+On 10/12/2026 5:47 PM, Chao Gao wrote:
+> tdx_global_metadata.c held the script-generated metadata readers,
+> deliberately kept in their own file so that generated code stayed separate
+> from hand-written code. It cannot be compiled on its own because it lacks
+> the low-level SEAMCALL wrappers, so tdx.c #includes it directly.
 > 
-> Reviewed-by: Rick Edgecombe <rick.p.edgecome@intel.com>
-                                             ^
-AI said you are edgecombe not edgecome. :)
+> Including one C file into another is unusual, and now that the readers are
+> maintained by hand there is nothing left to isolate. get_tdx_sys_info() is
+> the only function still in the file.
+> 
+> Move get_tdx_sys_info() verbatim into tdx.c and delete
+> tdx_global_metadata.c along with its #include.
+> 
+> AI was used under supervision to review code and workshop logs.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-I fixed them inplace.
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
