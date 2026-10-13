@@ -1,159 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08536409285
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 05:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050C849DB83;
+	Tue, 13 Oct 2026 06:11:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791868832; cv=none; b=SwL83y4nICSJ3lM0PZo7XFKoCTcUiBF/veH6snWUza1rKc3zefC9nOYvp0JPyBQKoVv9kNsNrskRZYY86ChQnslUZ/pXVZrA4s8WnddxGiBejd6RQ5DOABDoB5I8fW+gIxa4kBoTndYO/N7E1ttdKMRm5lXV95GeoEK94rmw1uE=
+	t=1791871893; cv=none; b=inQbnw54mIiUpHcS4M7fjyB6c5QuxNffflhsD+oQkbIyYP3LSEyFDOEaiO2GZxGNM0jYFhlYv1xVudSTcTCWWIsYC5urg/v8iZZXYVjhsfjc4rQ7aV3tAS7N3JWZfBOnS9ICcJ2S+5eoWMmaLDjFF30rSpzIc8ocUHANNcjKjUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791868832; c=relaxed/simple;
-	bh=bJ4qCk+aRfvG+x9NsAdPUiJUDZbzFtJqi4KD93nq8tc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L2dJiHOsWd4CUX8nUISLLT4RdaTVyqge1MoJSKKiU0zUBvO/KGuPsZHchxoE/usLP3iwMJS1JopjFRyPz8jTWEWRFvvKzXM2zcRJCRmuKqAXqjrmk9KoeywpAmp9Qo1h5rqLzNW1zT5gJwTPQUXrdMGOrDc1Dt6VMbBPAbKVDoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l9VSsCkc; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791871893; c=relaxed/simple;
+	bh=LiJbY3k5up5aLOd7Bcg4qH560hdJKOEuwg8jCmB5OzI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mc6TsvYbk21zFFyd+7HdBb2MaHYbyNPqGE/vNicC9+IyAQnrvGjesZEX8+FLKgaJq3QULBXckgfLRiIczWcmI+fPb1wixexj/swzt7vXwK+I3YSkOXtrKjUDeDCz9aHaFemthg+tGZD/EMk1WM4QjNY6b0Qu4nmDTKK2y+bqtMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YALk6qqK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l9VSsCkc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791868831; x=1823404831;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bJ4qCk+aRfvG+x9NsAdPUiJUDZbzFtJqi4KD93nq8tc=;
-  b=l9VSsCkctTuZzuAnDcN5UkZKd9soUnxVlKZS8UF99g0OeyJPC5gqDbgW
-   79i75MWAF1BjFzRUlYEHXY9y78wInPbICprHZGEMMYMRE9tNGk/CZKLXm
-   Rd3ctARkAAKT1KW/OT8dSDM2yOnZtPxcdH3Tv9xt435TwzKIMmJ9G/tNU
-   qPDZtRiYD20j//I18yceq3U+GiXn6qWZ57yk1+HRYjR0mb3EXrXyKCEg2
-   w+Z1S/0fzvikI15VgSb2NABkzE35eiihlxrdzUVxzK7+m1JCQiN/nvXxy
-   r4cCvK0VNm9ZDZoTNjCS7Qpl4C3/vz8/KR7xc8/aEAk4iPSeWO54HTPVM
-   A==;
-X-CSE-ConnectionGUID: /RB6tHUEQ9SNF7MAR4qIRA==
-X-CSE-MsgGUID: RP6e6dliQXaS8rZIbfbkVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="592678"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="592678"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 22:20:30 -0700
-X-CSE-ConnectionGUID: eOYLd4auQRqemWzCmuisWA==
-X-CSE-MsgGUID: R0lyd1DoSDSZM5apUZeS4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="2911501"
-Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 22:20:26 -0700
-Message-ID: <a578b2ff-52a4-4959-832d-a84b24ccb80e@linux.intel.com>
-Date: Tue, 13 Oct 2026 13:20:24 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YALk6qqK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB561F000FF;
+	Tue, 13 Oct 2026 06:11:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791871890;
+	bh=XNxt7wwex7pUWDMg9V+3M/jTcecLEnREYVs82yyM9aI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=YALk6qqKtPdpcsxHCEb6uvpb2E11q490MxJK0iGJMqeSZ3yQudydI0b2f/myBLVIM
+	 C6BF8rcCphjTDwvNOShHrnWejq1NYMLJri+gXA9wNepU0ucFeHZLUf7Bna2ZGGNY8R
+	 h2x+hPM80NwNThLC6pSawUKDuhzNukpeE6VlTzW8siz/raPskdFnhHFTz+ldkR9Qz+
+	 IuEh/gK1V3bV9FlML/ekBHhNT3VyWXZCp1Jxb1+yyVO1Gza/+2hJbY8so2bCazACHz
+	 dLLzWrNKLPyG5KWe20GdJcSSQuRMm64KgoruGc7/kEA1SIDtL+vy2ruCUIzISQlWNu
+	 dURRJrJm5hlpA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: sashiko-reviews@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
+	linux-coco@lists.linux.dev
+Cc: Marc Zyngier <maz@kernel.org>, dri-devel@lists.freedesktop.org,
+	media-ci@linuxtv.org, kvmarm@lists.linux.dev,
+	Oliver Upton <oupton@kernel.org>
+Subject: Re: [RFC PATCH v8 06/14] dma-pool: Allocate CoCo atomic pools using
+ CoCo shared memory allocator
+In-Reply-To: <20260924101945.95D7F1F000FF@smtp.kernel.org>
+References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
+ <20260924100529.1398790-7-aneesh.kumar@kernel.org>
+ <20260924101945.95D7F1F000FF@smtp.kernel.org>
+Date: Tue, 13 Oct 2026 11:41:25 +0530
+Message-ID: <yq5aqzhuqgdu.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
-To: seanjc@google.com, Changyuan Lyu <changyuanl@google.com>,
- rick.p.edgecombe@intel.com
-Cc: binbin.wu@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, isaku.yamahata@intel.com, kas@kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- tglx@kernel.org, x86@kernel.org, xiaoyao.li@intel.com,
- Binbin Wu <binbin.wu@linux.intel.com>
-References: <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
- <20260224212939.2081828-1-changyuanl@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260224212939.2081828-1-changyuanl@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 2/25/2026 5:29 AM, Changyuan Lyu wrote:
+sashiko-bot@kernel.org writes:
 
-[...]
-
-> -----------------------
-> 
->>From 18b967b718911c09872c3717d8ab083fa59c4a70 Mon Sep 17 00:00:00 2001
-> From: Changyuan Lyu <changyuanl@google.com>
-> Date: Fri, 20 Feb 2026 09:55:28 -0800
-> Subject: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
-> 
-> Set the KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag in the kvm_cpuid_entry2
-> structures returned by KVM_TDX_CAPABILITIES if the CPUID is indexed.
-> This ensures consistency with the CPUID entries returned by
-> KVM_GET_SUPPORTED_CPUID.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Changyuan Lyu <changyuanl@google.com>
-
-
-Hi Sean,
-
-When I was preparing the v5 of the TDX CPUID patch series, the internal sashiko
-reported a issue:
-  > @@ -2359,6 +2359,15 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
-  >  		if (!entry)
-  >  			continue;
-  >  
-  > +		/*
-  > +		 * Reject entries whose index doesn't match the expected one.
-  > +		 * This catches userspace passing a CPUID entry with the
-  > +		 * KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag cleared when the index
-  > +		 * is significant.
-  > +		 */
-  > +		if (entry->index != tmp.index)
-  > +			return -EINVAL;
-  
-  [Severity: Medium]
-  Does this unconditional check inadvertently break userspace VMMs that provide
-  valid CPUID entries but leave the index field uninitialized for
-  non-significant leaves?
-  
-  Since kvm_find_cpuid_entry2() ignores the index field when
-  KVM_CPUID_FLAG_SIGNIFCANT_INDEX is cleared, VMMs are not architecturally
-  required to zero the index for non-significant leaves. This check forces
-  the index to be exactly 0 (since tmp.index is normalized to 0) even for
-  leaves that do not have architecturally significant subleaves.
-
-
-I think the issue is valid, so it needs to know whether the entry
-is a subleaf or not. I think it's more reliable to do it via the information
-reported by the TDX module. i.e. my patch set will rely on this patch to set
-KVM_CPUID_FLAG_SIGNIFCANT_INDEX for entries that are indexed.
-
-Will you apply this patch?
-Or I can include this patch in my patch set. Also, 0x23 is still missing in
-cpuid_function_is_indexed(), I can add a patch to add 0x23 as well.
-
-
-> ---
->  arch/x86/kvm/vmx/tdx.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 2d7a4d52ccfb4..1c039eab2f3d8 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -167,6 +167,7 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-> 
->  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
->  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
-> +	entry->flags = 0;
->  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
->  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
->  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
-> @@ -174,6 +175,9 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-> 
->  	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
->  		entry->index = 0;
-> +	else
-> +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-> +
-> 
->  	/*
->  	 * The TDX module doesn't allow configuring the guest phys addr bits
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] dma-pool: atomic_pool_expand() falsely returns success on failure
 > --
-> 2.53.0.414.gf7e9f6c205-goog
+>
+> commit 7de8bc3a8ea9e2bbef83e09d72fa88999ce898b9
+> Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>
+> dma-pool: Allocate CoCo atomic pools using CoCo shared memory allocator
+>
+> This commit modifies atomic DMA pools to use the CoCo shared memory allocator.
+> It prevents allocation fallback below the required shared granule size, and
+> uses the cc_make_shared() helper to transition the backing allocations in a
+> sleepable context.
+>
+>> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+>> index 70b7f64b17ab5..f059312c15aa5 100644
+>> --- a/kernel/dma/pool.c
+>> +++ b/kernel/dma/pool.c
+> [ ... ]
+>> @@ -85,6 +85,9 @@ static bool cma_in_zone(gfp_t gfp)
+>>  static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+>>  			      gfp_t gfp)
+>>  {
+>> +	struct cc_shared_layout layout;
+>> +	unsigned long attrs = 0;
+>> +	unsigned int min_order = 0;
+>>  	unsigned int order;
+>>  	struct page *page = NULL;
+>>  	bool leak_pages = false;
+>> @@ -92,6 +95,17 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+>>  	int ret = -ENOMEM;
+>>  	pgprot_t prot __maybe_unused;
+>>  
+>> +	if (dma_pool->cc_shared) {
+>> +		ret = cc_shared_calc_layout(pool_size, &layout);
+>> +		if (ret)
+>> +			goto out;
+>
+> [Severity: High]
+> If cc_shared_calc_layout() succeeds, it returns 0 and overwrites the initial
+> ret = -ENOMEM. Could this cause the function to falsely return 0 (success) on
+> subsequent failures?
+>
+> For instance, if page allocation fails below, the function jumps to out and
+> returns the current value of ret:
+>
+>     if (!page)
+>         goto out;
+>
+> Similarly, if remapping fails later in the function:
+>
+>     addr = dma_common_contiguous_remap(...)
+>     if (!addr)
+>         goto free_page;
+>
+> In both cases, ret will be 0 instead of -ENOMEM. Would it be better to reset
+> ret back to -ENOMEM when these failures occur, or use a separate variable
+> for the cc_shared_calc_layout() return value?
+>
 
+Fixed as
+
+modified    kernel/dma/pool.c
+@@ -96,9 +96,11 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+ 	pgprot_t prot __maybe_unused;
+ 
+ 	if (dma_pool->cc_shared) {
+-		ret = cc_shared_calc_layout(pool_size, &layout);
+-		if (ret)
+-			goto out;
++		int err;
++
++		err = cc_shared_calc_layout(pool_size, &layout);
++		if (err)
++			return err;
+ 		pool_size = layout.shared_size;
+ 		min_order = get_order(layout.alignment);
+ 		if (min_order > MAX_PAGE_ORDER)
+
+
+-aneesh
