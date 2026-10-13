@@ -1,159 +1,186 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A0451CF7A
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 14:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C7E47CC67
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 15:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791902066; cv=none; b=RJe6MV/gUyn49up0v66RmsuHMpyFclKi3+ctEO+/hvwCyZYd7K3virE5VOpagEAf5H5Z+VjkoCTPfREWrE/4FZp3KMv+7GggbNu8phhZ7MYY8kq3u0QoJhbhtNNleBI1PsfmSdJ7VXJc3Fnu+Lma7tJy+ColGkmF7i7mLNNjO3E=
+	t=1791905612; cv=none; b=W8fqfa6Y7qJkihR/9Lt3LFy3Fz938m47QNudIqC5s8cf7EA+eKdz2wGByOZRnvGD55FrYw1SB53pCehPcF7rC7fHr5zDSUbnOGk7weS9q/5BbA+BPrfGFy7AGXd4+lbLlM3DAPagn4wNvnFCdOm/7yl9kILn/vr5H+kQujgNkpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791902066; c=relaxed/simple;
-	bh=epQdanmIbBSQQyUyr4wJmA1U07a04RykgIxTcxuNy0o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uOXnefJPLDZ4A0z9gFy0MGu2UfU2APB/D3E3Nh4eCQPvn3IaqtBViM8VfJ5LGVWowHHapMehZBRoUBJaiCogediqSO1mT9yniORHJNhMZg2xAuoRcInQxbxdGygC+JU3frwOU1eIATNdlvvQUhDmVoLapyYkYxfzTe4wHr8zRsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aNysHwlt; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1791905612; c=relaxed/simple;
+	bh=M/Z6BSJlgL/L9aE/tWq/2GIxmVEo2nKwJ+b1XudSKMs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hDQ+S3xSyyCuPvZUkow32MS/TOf6mVDzmUjo2vWLTUvd4HzS2w6uTcxuAMRrDQYF3dFiMUHvggbMlvoxZEylbAe1xs6W35tnH4iNRD7WtrrYHNXlQTDqLWmMrxeSDVnPxMfA9J4PaUou/svGal28MBpcEVZsYvx7l7Awoj6TL80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGVGFAu8; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aNysHwlt"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a1880e1bf1so28503635e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 07:34:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791902063; x=1792506863; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wXreF/I8cRdQC4jDdNM5mdo3jIec5dd48MtOjybNLvg=;
-        b=aNysHwltWWrm369B0uafyXD4Yq+urOrn3LKXJy7gzyzwELngZwtF+F+M7FnHE+n3Ce
-         QHl3ccQjjoojjj5nB+dLqJy6WctaZY52r0oKs6zqc+9/QPjuRvGMJ9b2SfaS01GPYlF9
-         JAgDBxXUPOsVbo2yW0g6wPDd2rk3Z/KYJJb1N8nnvU3XEfOSpXRk6dsGb1WNVSdIyBEH
-         kk0+dRX34JJPFGTunE5uHQmwpe+HoZK76LCG7lJ3Xc2eD4o3ktiJQrz229TMfMymqV7L
-         NUGLF5vQNvXXdwlNyvBX83R/uM9B2nTp1Z8JHogSAFTbSvyPv5sgrq+h6agEFSafk9r0
-         gFNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791902063; x=1792506863;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=wXreF/I8cRdQC4jDdNM5mdo3jIec5dd48MtOjybNLvg=;
-        b=VlfL42se8o/fLxX2eNceDDRvZzLAdQDEvVjSdMkenKqHjQDLL+97CocAh5dGxkisfL
-         FvET3qlPp6a/rNO7hjWDrZE9mM1k+3VsyISeXCYPeKhoUsi4m1dhMiwunxJftBUjhkTN
-         pRw/LZyxIapGp3mpTgeRa42Lbu64lfFKEtnNS1aN90D62yiUYf7IBLO/Wis7x+ZC5AfB
-         TwQG/cmAxupZz7Te8AIsllyzINQb4HkkmAYBHwWQoBG3XhijRCylOMR/I5ay2xgAUunk
-         KOtBKD/dwLpNBX45bRz5ffmi2/nGqH2VtxbmOYezKlINM4BbXCGxP3RdzyVIJYX1/Lwy
-         Mz/w==
-X-Forwarded-Encrypted: i=1; AKwUvBwLPZypoPBQ9K7HRoBL8oz6OA7XC1KSkEiGoPU/GYOMhoOcBNAf0SRH6YUBPKcu7eb1juWZkGcKHpsT@lists.linux.dev
-X-Gm-Message-State: AFq9FYK3UHjIbj117wVgtOKN3HYaOylrXnGxAhLNHGHl2eqr4PYGNZut
-	sa636pliT8viyLBPzsU/rRjsiF0RUh2TXfLxhSmjjwvP8cs6k+PRuN0lZCPgvu+O60s=
-X-Gm-Gg: AYBFou0QggYER07dmtK2bP1vHCLIL13tYeAKKKa0CZBjpDGwcJnEYV1Kdov6PIXAfWV
-	3S8XTH3+smlQgX5V+4TZQvEzNbX4mAfaFk76j8eRSbt3PZ9AwZVhodNOXY9ttqXJERTTGFLfIHX
-	U2a2wHlQxY+GDcrcnTD7yucCXMHqXDZ6eN+TXCr8TIPICunWVvS+pyZG2FfmNUjNr5KqJLUELMT
-	cV0kCSen1LS3eOUsLHaNoRvqG9UeExTOwGu99bKWj+Ax6Ymcy75pNl8Fu7Mc9Cc83RbS/XgFEdn
-	Lds+mefznThe4KigL+CC5/4zFBBlT6b0L4LA8s6vpe7tX4mNfhTl4GF6bNDnBvRvP42QjU3nTy1
-	Y2ethASGXyPrN6zFpoSq+5XnAOsk1NUhV6ty+WwPg/bVOhyjoA85E99xo0IKXgIMczcNfWAPg2G
-	OGe0lk12lwW9L21mpH+BP91sziTVLwPmFM5TEy6n+Z+5qVDdBvMS0rR+cx4wiK9L42ki96OMyw4
-	S2BOU7Qu2TE6Q5xVFEoVhzD
-X-Received: by 2002:a05:600c:870e:b0:4a1:6dca:51e3 with SMTP id 5b1f17b1804b1-4a18e4487ccmr250131675e9.3.1791902061229;
-        Tue, 13 Oct 2026 07:34:21 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18c1e33d2sm519463945e9.0.2026.10.13.07.34.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 07:34:19 -0700 (PDT)
-Message-ID: <54846068-d545-4591-b850-2980ce57f40e@suse.com>
-Date: Tue, 13 Oct 2026 17:34:16 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGVGFAu8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791905610; x=1823441610;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=M/Z6BSJlgL/L9aE/tWq/2GIxmVEo2nKwJ+b1XudSKMs=;
+  b=HGVGFAu8siSMUG24bc5HgUnA4DpdHHlu6ev3Tfeg8QUD4rTS1qijTA2l
+   yrT2Tpdr2/YBu9gYFwZUlW8zkBVK1rWxHd2F5zmU6dRJMznZaRa+xKAhr
+   UUvU389kyr7uNOXrxGj9k0aBZLQV9iTCk0wbNDtA2tbrvg2giRyCjXoMe
+   DzaAAaaW9AMuxghTwxzs/jzLIX3qQYsbkCypVXydQSLvVutaFZZTPG2ez
+   5wO6BXyM/osmNbpAJfpkxHH/3Q6BtGeBqVam+aXC2jVbaEA5+XbOO2KDq
+   0RUyCtM5RQ4gWXi0TAEJXzaaeWEqsl+tGgVzljdasrYc7lUREjq2uEx73
+   Q==;
+X-CSE-ConnectionGUID: Q+wg9psURC2yMvktIjzCSA==
+X-CSE-MsgGUID: EVLfm0C6QJ24n6+ZDr9FiA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="643363"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="643363"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 08:33:28 -0700
+X-CSE-ConnectionGUID: Eg9g7xNbSS+kqrZRuC1dBg==
+X-CSE-MsgGUID: eI4y4nYoTESqWQ0lu6H3RA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="1388077"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
+  by fmviesa001.fm.intel.com with ESMTP; 13 Oct 2026 08:33:24 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH v4 0/6] Enable TDX module extensions
+Date: Tue, 13 Oct 2026 23:28:50 +0800
+Message-Id: <20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/15] x86/tdx: Add TDCM hypercall wrapper for TDX
- Connect
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
- aik@amd.com, aneesh.kumar@kernel.org, seanjc@google.com,
- pbonzini@redhat.com, yilun.xu@linux.intel.com, chao.gao@intel.com,
- vishal.l.verma@intel.com, xiaoyao.li@intel.com, kevin.tian@intel.com,
- chao.p.peng@intel.com
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-3-zhenzhong.duan@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260924041032.1096569-3-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADJOzmoC/2WPQW6DMBBFr4K87qCxjQFn1XtUWdh4KJYAt8Ygo
+ oi7xyFdVMpq9DX6T+/f2ULR08IuxZ1F2vziw5xD9VGwbjDzN4F3OTOBokbNa0huhym4dSSgPYE
+ zXEvspeywYrn0E6n3+wn8uubcxzBBGiKZ/xjF81Vt2XCJjQYONz+uc7mvn6Of1730c6Kx7ML0h
+ 4z0u2a19OIyaxaC/J18uhTKtoILVymntW2arq1IGidRGaEVaaqVU9QLZE+dwS8pxNs5d5Mn7Kn
+ EEd+WbRIQnFWis6is5u2b2/U4jge1CmnkQQEAAA==
+X-Change-ID: 20260916-tdx-module-ext-da1930f33c04
+To: x86@kernel.org, linux-coco@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+Cc: Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, 
+ kvm@vger.kernel.org, yilun.xu@intel.com, yilun.xu@linux.intel.com, 
+ xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
+ chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4414;
+ i=yilun.xu@linux.intel.com; h=from:subject:message-id;
+ bh=M/Z6BSJlgL/L9aE/tWq/2GIxmVEo2nKwJ+b1XudSKMs=;
+ b=owGbwMvMwCH2Zztz45IFPbcYT6slMWSd8wvbPY03SPrRtykCVwN3zInese/A5UvBv77y/ZB//
+ WPaiwl1tzo6WRjEOBgMxRRZFnjMcprSPotp66ed12DmsDKBDBGWqczMKc3Tqyh1yMwrSc3RS87P
+ ZeDiFICpKixiZDhfrPTjo8CzJ8IqhyfHRW2dml9//3Gwur/0/55fLd+LnjcwMvTrXWOd4fxL3/3
+ Fbf1i69A5n7/IMK+89bxN2d5oU+yPpYwA
+X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
+ fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
 
+Hi,
 
+There is no open issue remain from v3. Most of the changes are small
+nits and minor tweaks to the changelog. Most patches have collected 2+
+Reviewed-by tags, but patch 4 (the last patch in v3) only has 1 RB so
+still need more review from TDX developers/reviewers.
 
-On 24.09.26 г. 7:10 ч., Zhenzhong Duan wrote:
-> TDX Connect is a TDX feature that enables secure device assignment,
-> allowing a TDX guest to directly interact with TEE-IO capable devices.
-> 
-> The TEE-IO Device Control and Management (TDCM) hypercall
-> (TDG.VP.VMCALL<TDCM>, defined in TDX GHCI v2.0 specification) is the
-> primary interface through which a TDX guest issues device management
-> commands to the host. The host processes these commands and returns
-> responses via a shared memory buffer.
+== Changes ==
 
-This patch contradicts what's going in patch 5. Because you make it 
-sound as if TDCM is yet another leaf of VP.VMCALL, but then in patch 5 
-you introduce the polling code to read the result. And there is not 
-enough information in the changelogs to understand why this added 
-complexity is needed. Isn't TDCM handled synchronously by the VMM as the 
-rest of the tdcalls, is it perhaps handled by TDX NRX module?
+Tony pointed out that the DPAMT support should be merged into patch 3
+which adds memory for the extensions. Yilun answered patch 3 is already
+quite heavy for review, so better move the DPAMT support to patch 4.
+Tony then suggested adding a note to the changelog that patch 3 can't
+work with DPAMT without patch 4. We've agreed on that.
 
-> 
-> Abstract the underlying leaf call and pass the shared buffer physical
-> address as a decrypted mapping. Add a runtime page alignment check
-> for the buffer to enforce correct usage.
+Rick pointed out that copying the sysinfo_ext.memory_pool_required_pages
+to a dedicated local var is redundant, except that the long name is hard
+to fit in 80 columns. Rename the field to ext.required_pages and delete
+the local var.
 
-<snip>
+Other changes:
+  - Patch 1: Cut the redundant opening words in the 1st paragraph (Rick)
+  - Patch 2: Add explanation why kernel enables add-on features solely on
+	     available support in the changelog. (Rick)
+  - Patch 5: Specify what TDH.EXT.INIT is doing in the changelog (Rick)
+
+v3: https://lore.kernel.org/r/20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com
+
+v2: https://lore.kernel.org/all/20260915102658.713079-1-yilun.xu@linux.intel.com/
+
+v1: https://lore.kernel.org/all/20260821032920.256225-1-yilun.xu@linux.intel.com/
+
+Quoting v2: https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+Quoting v1: https://lore.kernel.org/all/20260522034128.3144354-1-yilun.xu@linux.intel.com/
+
+== Overview ==
+
+To date, SEAMCALL execution must either complete quickly to avoid
+stalling the host, or yield quickly at pre-defined interrupt
+checkpoints. This is acceptable for the existing SEAMCALL leafs,
+which perform simple, bounded operations.
+
+However, some new features such as attestation and TD migration require
+higher level security protocols inside the TDX module, which cannot fit
+within that constraint. TDX solves this by making those operations
+inherently preemptible and resumable like OS tasks. TDX provides a
+separate SEAMCALL execution environment - the TDX module extensions -
+for those operations.
+
+This capability allows for higher-level SEAMCALL ABI design - like
+"create a DICE-based attestation quote". Several new features, such as
+DICE-based attestation, TDISP and TD migration, use SEAMCALL leafs
+backed by the TDX module extensions.
+
+The TDX module extensions need memory for their execution environment
+to serve these SEAMCALL leafs, so they need extra setup steps during TDX
+module initialization. The bulk of this series implements these setup
+steps.
+
+At runtime, the host invokes these SEAMCALL leafs just as normal ones -
+if interrupted, simply re-invoke the leaf to resume.
+
+For more information on TDX module extensions, please refer to [1].
+
+[1] https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+== Branch stack ==
+
+This is based on tip x86/tdx. You can find the full branch stack at [2].
+The DICE part is in the full branch as an example for extensions. But it
+does not include the other DICE feedbacks.
+
+The full branch contains:
+
+  This series: Patch 1~7: This series, including this cover-letter.
+  Use case:    Patch 8~N: The old DICE part as an example.
+
+[2] https://github.com/intel-staging/tdx/tree/tdx-module-ext
+
+---
+Xu Yilun (6):
+      x86/virt/tdx: Move TDH.SYS.CONFIG operations into a wrapper
+      x86/virt/tdx: Configure add-on features on TDX module init
+      x86/virt/tdx: Add extra memory to TDX module for the extensions
+      x86/virt/tdx: Support DPAMT when adding memory for the extensions
+      x86/virt/tdx: Make TDX module initialize the extensions
+      x86/virt/tdx: Re-initialize the extensions on runtime TDX module update
+
+ arch/x86/include/asm/tdx.h                  |   1 +
+ arch/x86/include/asm/tdx_global_metadata.h  |   4 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 250 ++++++++++++++++++++++++++--
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  14 ++
+ 5 files changed, 257 insertions(+), 14 deletions(-)
+---
+base-commit: 5b8212d45d99b77c84e3ad305a295e9e65d5ef20
+change-id: 20260916-tdx-module-ext-da1930f33c04
+
+Best regards,
+-- 
+Xu Yilun <yilun.xu@linux.intel.com>
+
