@@ -1,156 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15C947DF8E;
-	Tue, 13 Oct 2026 05:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08536409285
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 05:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791868397; cv=none; b=eIyFgs34TYtglL9ejnvy/3CiA6vwnI8Qf912wd89lD4J8K+3G24Uo7xgeF6rWg4jESDAA4cfY7qNXrruFJjlfol0l6nAIWRIJGh7YHe6YvGq/9oYbXct/WhtzZONOLpzZSjw6HLshhhMCvw1+XTe2rrkCNnOj7VEjDchOWxLEA8=
+	t=1791868832; cv=none; b=SwL83y4nICSJ3lM0PZo7XFKoCTcUiBF/veH6snWUza1rKc3zefC9nOYvp0JPyBQKoVv9kNsNrskRZYY86ChQnslUZ/pXVZrA4s8WnddxGiBejd6RQ5DOABDoB5I8fW+gIxa4kBoTndYO/N7E1ttdKMRm5lXV95GeoEK94rmw1uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791868397; c=relaxed/simple;
-	bh=p8Zz7IgMclgStUHo6Bn7GZa81f1lXxrvkXQTVNRaFjQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ewieIm42vfT0BuKw+NZm17VjAUONeMAlF6djAiag15cJg4cTLFpoKGrenlOaZZHIfDh4S5RaD8KCosnllXbnzsn40i+JhMmDKPyWKx5d/r6ejjV3lXek4v3ZUw61HQT9cakuNm4UZDTj+ZC0rHvGkI2+ELSGO6H/syoVdDMkmvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VzCrDEQb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791868832; c=relaxed/simple;
+	bh=bJ4qCk+aRfvG+x9NsAdPUiJUDZbzFtJqi4KD93nq8tc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L2dJiHOsWd4CUX8nUISLLT4RdaTVyqge1MoJSKKiU0zUBvO/KGuPsZHchxoE/usLP3iwMJS1JopjFRyPz8jTWEWRFvvKzXM2zcRJCRmuKqAXqjrmk9KoeywpAmp9Qo1h5rqLzNW1zT5gJwTPQUXrdMGOrDc1Dt6VMbBPAbKVDoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l9VSsCkc; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VzCrDEQb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E989C1F000FF;
-	Tue, 13 Oct 2026 05:13:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791868395;
-	bh=GJNXTxAKDlJNxNUfVhfSQZRthKiPsKwpUGRTdAWw5nk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VzCrDEQbQkLh3MKfOcrVWwIP8JEXomYf5WXOVtkxPNomqYwc62kenfaWt4EtjgLr1
-	 56jB5oIiN8pzQZeIE3LFciZow2fKaUlTkUhbRzOM+dcbTemWxjNlaDACdigHCayE87
-	 aOYeG7A0j8blwTWF/PhrjdF/yqcwVCBZgEXlTLggA50DrIt7DidbhXOeZDYqd2wlwf
-	 5VM61psLu8x0NOTS6zsnpsRtNRWIIa6D/I6cZXFg4QLjCBQLZUYg8H0fnCR6pdxExb
-	 Rlsmno4/IPgxywaV4sYkjL4r0KtaTtxGQIturB/lLm5ZpL/LuERHtKpU8HslKH1Kgj
-	 Tp4Z6gqmgQAbg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v8 02/14] mm: Zero memory during shared memory
- transitions
-In-Reply-To: <arZkEugXwCtKHH64@thinkstation>
-References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
- <20260924100529.1398790-3-aneesh.kumar@kernel.org>
- <arZkEugXwCtKHH64@thinkstation>
-Date: Tue, 13 Oct 2026 10:42:58 +0530
-Message-ID: <yq5azewiqj39.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l9VSsCkc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791868831; x=1823404831;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=bJ4qCk+aRfvG+x9NsAdPUiJUDZbzFtJqi4KD93nq8tc=;
+  b=l9VSsCkctTuZzuAnDcN5UkZKd9soUnxVlKZS8UF99g0OeyJPC5gqDbgW
+   79i75MWAF1BjFzRUlYEHXY9y78wInPbICprHZGEMMYMRE9tNGk/CZKLXm
+   Rd3ctARkAAKT1KW/OT8dSDM2yOnZtPxcdH3Tv9xt435TwzKIMmJ9G/tNU
+   qPDZtRiYD20j//I18yceq3U+GiXn6qWZ57yk1+HRYjR0mb3EXrXyKCEg2
+   w+Z1S/0fzvikI15VgSb2NABkzE35eiihlxrdzUVxzK7+m1JCQiN/nvXxy
+   r4cCvK0VNm9ZDZoTNjCS7Qpl4C3/vz8/KR7xc8/aEAk4iPSeWO54HTPVM
+   A==;
+X-CSE-ConnectionGUID: /RB6tHUEQ9SNF7MAR4qIRA==
+X-CSE-MsgGUID: RP6e6dliQXaS8rZIbfbkVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="592678"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="592678"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 22:20:30 -0700
+X-CSE-ConnectionGUID: eOYLd4auQRqemWzCmuisWA==
+X-CSE-MsgGUID: R0lyd1DoSDSZM5apUZeS4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="2911501"
+Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 22:20:26 -0700
+Message-ID: <a578b2ff-52a4-4959-832d-a84b24ccb80e@linux.intel.com>
+Date: Tue, 13 Oct 2026 13:20:24 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
+To: seanjc@google.com, Changyuan Lyu <changyuanl@google.com>,
+ rick.p.edgecombe@intel.com
+Cc: binbin.wu@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ hpa@zytor.com, isaku.yamahata@intel.com, kas@kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
+ tglx@kernel.org, x86@kernel.org, xiaoyao.li@intel.com,
+ Binbin Wu <binbin.wu@linux.intel.com>
+References: <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
+ <20260224212939.2081828-1-changyuanl@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260224212939.2081828-1-changyuanl@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Kiryl Shutsemau <kas@kernel.org> writes:
+On 2/25/2026 5:29 AM, Changyuan Lyu wrote:
 
-> On Thu, Sep 24, 2026 at 03:35:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
->> index f904a636d449..1f1f39082391 100644
->> --- a/arch/x86/coco/tdx/tdx.c
->> +++ b/arch/x86/coco/tdx/tdx.c
->> @@ -978,6 +978,9 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
->>  static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
->>  					 bool enc)
->>  {
->> +	if (!enc)
->> +		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
->> +
->>  	/*
->>  	 * Only handle shared->private conversion here.
->>  	 * See the comment in tdx_early_init().
->
-> This doesn't make sense to me.
->
-> On TDX the memset zeroes a page that is about to be dropped.
-> MapGPA(shared) makes the VMM back the GPA with different memory, and
-> what the guest reads afterwards through the shared mapping is whatever
-> the host has there.
->
+[...]
 
-Does TDX require the guest contents to be preserved when pages are
-converted to shared?
+> -----------------------
+> 
+>>From 18b967b718911c09872c3717d8ab083fa59c4a70 Mon Sep 17 00:00:00 2001
+> From: Changyuan Lyu <changyuanl@google.com>
+> Date: Fri, 20 Feb 2026 09:55:28 -0800
+> Subject: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
+> 
+> Set the KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag in the kvm_cpuid_entry2
+> structures returned by KVM_TDX_CAPABILITIES if the CPUID is indexed.
+> This ensures consistency with the CPUID entries returned by
+> KVM_GET_SUPPORTED_CPUID.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Changyuan Lyu <changyuanl@google.com>
 
-The memset() is done here because CoCo shared-memory allocations now
-ignore __GFP_ZERO and instead always zero the memory explicitly. For
-CoCo architectures such as CCA, this must be done after the memory is
-converted to shared because shared memory uses a different encryption
-context.
 
-The full patch avoids zeroing the memory twice. If __GFP_ZERO is used
-for a CoCo shared-page allocation, the page is first zeroed during
-allocation, then converted to shared, and must be zeroed again. I only
-changed Arm CCA  in this series because I was unsure whether the other
-architectures required similar changes. Therefore, every CoCo
-architecture other than CCA currently performs the memset() before
-conversion, while CCA performs it afterward.
+Hi Sean,
 
-If the host expects to see the guest contents from before the conversion
-to shared, we will have to pass the allocation flags down to these
-helpers and perform the memset() only when __GFP_ZERO was requested,
-along the lines of:
+When I was preparing the v5 of the TDX CPUID patch series, the internal sashiko
+reported a issue:
+  > @@ -2359,6 +2359,15 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
+  >  		if (!entry)
+  >  			continue;
+  >  
+  > +		/*
+  > +		 * Reject entries whose index doesn't match the expected one.
+  > +		 * This catches userspace passing a CPUID entry with the
+  > +		 * KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag cleared when the index
+  > +		 * is significant.
+  > +		 */
+  > +		if (entry->index != tmp.index)
+  > +			return -EINVAL;
+  
+  [Severity: Medium]
+  Does this unconditional check inadvertently break userspace VMMs that provide
+  valid CPUID entries but leave the index field uninitialized for
+  non-significant leaves?
+  
+  Since kvm_find_cpuid_entry2() ignores the index field when
+  KVM_CPUID_FLAG_SIGNIFCANT_INDEX is cleared, VMMs are not architecturally
+  required to zero the index for non-significant leaves. This check forces
+  the index to be exactly 0 (since tmp.index is normalized to 0) even for
+  leaves that do not have architecturally significant subleaves.
 
-https://lore.kernel.org/all/yq5aa4p82sqt.fsf@kernel.org
 
-To keep the changes minimal, the current approach always performs the
-memset() rather than passing down a flag.
+I think the issue is valid, so it needs to know whether the entry
+is a subleaf or not. I think it's more reliable to do it via the information
+reported by the TDX module. i.e. my patch set will rely on this patch to set
+KVM_CPUID_FLAG_SIGNIFCANT_INDEX for entries that are indexed.
 
--aneesh
+Will you apply this patch?
+Or I can include this patch in my patch set. Also, 0x23 is still missing in
+cpuid_function_is_indexed(), I can add a patch to add 0x23 as well.
+
+
+> ---
+>  arch/x86/kvm/vmx/tdx.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 2d7a4d52ccfb4..1c039eab2f3d8 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -167,6 +167,7 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+> 
+>  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
+>  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
+> +	entry->flags = 0;
+>  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
+>  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
+>  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+> @@ -174,6 +175,9 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+> 
+>  	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
+>  		entry->index = 0;
+> +	else
+> +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
+> +
+> 
+>  	/*
+>  	 * The TDX module doesn't allow configuring the guest phys addr bits
+> --
+> 2.53.0.414.gf7e9f6c205-goog
+
