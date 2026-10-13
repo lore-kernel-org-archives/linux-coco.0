@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9155923392D
-	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 07:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285B73AFCEC
+	for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 08:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791874864; cv=none; b=ChUvHX1p1k853fZtsuhUG6CgaNK/ZE8GIP7QyDJ5N3P4+pwwLXSAH5bE01TEFUu7TmwPFk/xCP6lkq6dJ+XLdoW9AsKth697m08fsTeVQZ5ykdCxfYqSJaEn0dAi16tHsvsHUDRGC2ltzUDBBt5MNqQZ0NORI/3ZJ+4l2ljC94Y=
+	t=1791879766; cv=none; b=cPo7Mq4lc0CFWSMLYQdltSf5HjvFf6QnFXqwnG4kT2vsWX4UejhmJEL3LvsdjIC2M/DF9gV6UMOa/5rkPhxWvT7Q/wgPLT3SDvDnwzgj93iaf+bdiVSlftzhiUkC6epAZnRq33xX1T1jHj3O8soK2e8d0nCS7P3ifYjQU7KYHWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791874864; c=relaxed/simple;
-	bh=nHwSERJsT6WQQkrnp27DBccwlr2EGr/h0ZD74kUAGC8=;
+	s=arc-20240116; t=1791879766; c=relaxed/simple;
+	bh=EcllwwrgWX5qQbtycXy8ggAxO0r07QpA+QAmAJhH8cM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c1YmJ2GUz28bVjsEMC5E7kkKPUjfgX/MpgR2nQzmZ5dHHXFu/5mEQ9m5Y/ibbuq1z0XKQI0QFeMcr+FimbeBAyFJwv9r6hgFV692vRhjP7M52FgrR+yc5Wx5MPH5IJooTEKZy+K4l1GESd8G92ufC22SVBhBn32PLLnWBnDOOHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7siIriO; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:Content-Type; b=THslDc+Rf0WDbmghak42CTcwMyRZgAL11EXOuG+PKQFLdD2D6J4gv5P/vafvSnQ06qtrOOpJ+w1BAFLQzJfe5owF26THTORdDDdn/pJ66MPZrMCZ6CIMFhqDgIGTfW2IdNnFBZ4iDIac4o2tGL5Wt7fSuK2L+0uHUQ8oIqJWVPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jSs7qeIv; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7siIriO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jSs7qeIv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791874863; x=1823410863;
+  t=1791879764; x=1823415764;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=nHwSERJsT6WQQkrnp27DBccwlr2EGr/h0ZD74kUAGC8=;
-  b=I7siIriOMgygrG+J3SR9ESPU8SpFEzXQLIhFib31+gXalvPjRCGtTcHt
-   Bc3vgDbxuputZH6H+oNAx4UcdfjCPUDRLu7+0V70+LWfeGIvf4c1F6SIh
-   84vTmwuxfrXXefa8hhYoBKfdgmHWsQjwBQyWNFCaUewVxf7p7Y+UamjwD
-   LJmmnwp4oaSlgoslhEREorsiZ23IYEyXV5sEdpbeySFLzsC+waeuz9Qp9
-   KtbGrQiyIiVHetSKbnS7PRIWNyKGeA9eJNsmC+zBiKZXgHbt3idcCaeIX
-   zr1eu1QaeOs5qQTdvMguh9NItxQDRn1Dv+AQTDs0I3U5M/gpXnsXSSMtz
+  bh=EcllwwrgWX5qQbtycXy8ggAxO0r07QpA+QAmAJhH8cM=;
+  b=jSs7qeIveTyHvhNuBDrVRMHxNlGsXAEUH7hTiGI8gtmVfCbpop+jKwUv
+   fUCHrzj5nW+Nk01ilOH8gzR83SBWedFqjjFFfDyivHmD5P0Noy0VtYrSo
+   i8yvp46+pdopmG8mngmHtqe7UKxgGE0Vhszi7UN8eoHwcZcER2EPRyDAv
+   Pwn3E0EtmUViIhgLlRNbDQFmL1sgc5lOwOxDTPuV/BRW3Y6vjEtML3L1e
+   QcoSvOwCW74GtilqkL76o6i9kFMTdovr2owkb0coJivqy2QYj+AjuTGX1
+   hoEnKUiFc8gSHp7Lt84XTWBsDCCI3CanYIbq/1rxzcjJjHn7oGxj5WcJH
    w==;
-X-CSE-ConnectionGUID: rAbbv3NwQ3yCBpSnguUefQ==
-X-CSE-MsgGUID: aBoaux5qS+ONwWnfBsAo4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="485840"
+X-CSE-ConnectionGUID: 8Vqks5NyQjSF0uZwA9YBhg==
+X-CSE-MsgGUID: TFkWf2iRT++3Fzf2jUM9Eg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="476759"
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="485840"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 00:01:02 -0700
-X-CSE-ConnectionGUID: 6KC7tvomQmKzCZESbFkwbw==
-X-CSE-MsgGUID: 1bYSzrRgSU24r03BSXEcSQ==
+   d="scan'208";a="476759"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 01:22:43 -0700
+X-CSE-ConnectionGUID: +A8xw8nST0WqGmTW8cLykQ==
+X-CSE-MsgGUID: CmoL8L7XScmpWxOv/a4e8w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="989803"
+   d="scan'208";a="1286873"
 Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 00:00:58 -0700
-Message-ID: <a34b1dba-a2fc-4152-b766-adb1558e5490@linux.intel.com>
-Date: Tue, 13 Oct 2026 15:00:56 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 01:22:39 -0700
+Message-ID: <f7e1e51c-e353-49ad-8ad5-9a5689f46f79@linux.intel.com>
+Date: Tue, 13 Oct 2026 16:22:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/10] x86/virt/tdx: Add a helper to read a table of
- metadata fields
+Subject: Re: [PATCH v4 02/10] x86/virt/tdx: Convert the version metadata
+ reader
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  kvm@vger.kernel.org, yilun.xu@linux.intel.com,
@@ -63,52 +63,51 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
 References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-2-chao.gao@intel.com>
+ <20261012094754.27702-3-chao.gao@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261012094754.27702-2-chao.gao@intel.com>
+In-Reply-To: <20261012094754.27702-3-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/12/2026 5:47 PM, Chao Gao wrote:
-> The metadata field readers get_tdx_sys_info_<class>() in
-> tdx_global_metadata.c were generated by an out-of-tree script. That has
-> not worked out: the JSON file they were generated from is neither stable
-> nor authoritative enough [1].  The goal now is to maintain the readers by
-> hand and to establish one standard way of adding a metadata field.
+> With the helper to read a table of metadata fields in place, the
+> existing metadata readers can be standardized on it.
 > 
-> Take get_tdx_sys_info_version() as an example:
+> Convert the version metadata reader: add a table that pairs each field ID
+> with the 'struct tdx_sys_info_version' member that holds its value, and
+> read all version fields by walking that table.
 > 
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
->               sysinfo_version->minor_version = val;
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
->               sysinfo_version->major_version = val;
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
->               sysinfo_version->update_version = val;
+> Name the field IDs for readability, so the table entries don't carry raw
+> hex literals.
 > 
-> Two patterns stand out: the read-check-store sequence repeats once per
-> field, and the error of each read is chained into the reads that follow.
-> Neither is common in hand-written code.
-> 
-> Prepare to eliminate both with a loop that reads each field, stores the
-> value into its structure member, and returns on the first error.
-> 
-> Add 'struct field_mapping' to describe one field as its ID plus the offset
-> and size of the member that receives its value. Add FIELD_MAP() to
-> build such an entry from a field ID, a structure type and a member name.
-> Add __read_sys_metadata_table() helper to read every field in a table.
-> Annotate that helper __maybe_unused as there is no caller right now.
-> 
-> Following changes will convert the existing readers to use the new helper.
-> 
-> AI was used under supervision to review code and workshop logs. It
-> suggested adding read_sys_metadata_table() macro, which avoids repeating
-> the table name when passing both the table and its size.
+> AI was used under supervision to review code and workshop logs.
 > 
 > Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Link: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [1]
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+One nit below.
+
+[...]
+
+> @@ -437,6 +437,12 @@ static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *
+>  #define FIELD_MAP(_field, _type, _member)	\
+>  	__FIELD_MAP(_field, struct tdx_sys_info_##_type, _member)
+>  
+> +static const struct field_mapping version_mappings[] = {
+> +	FIELD_MAP(TDX_FIELD_MINOR_VERSION,	version, minor_version),
+> +	FIELD_MAP(TDX_FIELD_MAJOR_VERSION,	version, major_version),
+> +	FIELD_MAP(TDX_FIELD_UPDATE_VERSION,	version, update_version),
+> +};
+
+Nit:
+I personally prefer the version provided in
+https://lore.kernel.org/kvm/ar-e8WzRS7IUKWgH@intel.com
+The full types keep the code greppable and __FIELD_MAP() could be dropped.
+
+Also, it is a bit weird that FIELD_MAP() use _type as the name for the second
+input, but the shortened one is not really a type.
+
 
