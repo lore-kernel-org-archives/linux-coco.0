@@ -1,380 +1,143 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012036.outbound.protection.outlook.com [40.107.200.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A574DA539
-	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 19:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F393E6DE7
+	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 21:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792007622; cv=pass; b=sIwCl0zH0V+Pzu4ARL7EiCVsyyPooQ1ZuNv9XjovpvAmFd/A3IsXSyeIjWwonq6MApDuMBIGfoGW6ww/ahVcXgPIrMn1K12T5gh/Pl88yOLcngQnBH22vXSeU4Z02jpvh89238UCtRecltnBAf2vI+5gWUTbGdfgG08fuNtcMR4=
+	t=1792012461; cv=fail; b=Ys5PTkFjQQqMDgvPWXENa5TakkGC78Iw3cSJZWFbUsXbBseKlWNzc3/11c+jlZiIhYCjS4AqwGbsw7AanIxxD3CThyGjmRCAQTsVaar/AWgGhIKLxIgtwyK0xGrYbv/59VM+tGAVVA/EEcgNL30oSEeINkrLE/0NaZB56/yxeXY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792007622; c=relaxed/simple;
-	bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XfHUUI+O08P3r3N5R1uwe+CikS7RcEioXBCZYwGRHBApdFDvjbFQ7ZM3MYaB9kgmqaP13U5iaBK/GuLPOcnqGnumrpY5Ud7M+N02SfA/zPblfHVu+SfJaWVgD6i7y6otXyMPg7tCgRAosnfmRrEmJuVIQJDbZDTmzsdezyD/264=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vYLtKyDU; arc=pass smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1792012461; c=relaxed/simple;
+	bh=XHSb9bRGV2Tv6eVRIw4aphKuR1ZjkZz8dVsORjQUuUU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eYqHDPogegyt6JgjjmkCjBsP3RT7yTNcFhhsdPEQr/hbbJh5XORX00gYjasFVbwgEpkAxSY+h9R8zcMhQxQgYOLziuTS/zYQ8+0wVEjbC4czLRSvpERBkRJ3jj+bemkoQtlE/3sFn/tX2guOhik9HT0sbG9v/35kzXKLq6jL+dA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xxS9y4bD; arc=fail smtp.client-ip=40.107.200.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vYLtKyDU"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93ece7a73b9so572696085a.3
-        for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 12:53:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792007618; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nociE1QW0Je1TQ5V4Pwfa6RqxuMk369HImpQCXIcLaXGQQ0/aAOlRNq90q0tRTYK6G
-         bm21/ihUIToIzbNZG/IGkuFbsCQBGkc3B/F+x8/qTeSptfMbRWl0FeyKJyZGY4QQul6o
-         LOoYg1oEzEdPBtbRMREgaG9bHVIdeS0y29cYLL9lKhN/rbCj1BHQgCETeSqyzSzs+hdC
-         LDieZV9fnvjOZM94+TIoxYmamrjzCk/+Pv99Wm1p9T2rGo0r/eOeZ5Qx4goK2kYnlikF
-         z20KCroEM5KisGd95rFW0skv/EXw3QsC8rg8kM6swoGU/7QwaBP+O7u8tO7wwFdfDL01
-         lw1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
-        fh=9EdVobwB8NIhVG94XZ7AY8TYBFzFOYizCfVNdDU92jE=;
-        b=rBNRsgxX/WydhHGy3lCuZlemqOvx6GKuQHjonJPwMgnDuVboau75fKdug3P9B6JZrX
-         4D5nGLR3Q/wU7hkK0ltPj73gwZAJsHpJ9qmF27irhaZmzYxh9LkyDGHEntX4logolV9J
-         pySVCZNW/gtdnI8VZ7q5kB9rQ9+EXGMrVarZBgtxb81+F69LB05a1J7e61+z62Jp+2XS
-         5OzJ0KaPHM03hNO/7Nd40XgCywKCB7HSMI/XcdNJwZyVDyK/6YhWbd1tjXEgD43sAoY+
-         qp8pD4k6guiU2aaJl7d2jNhGo0/xRl/Cbuc1lhPpqcepC+UGDI9V9WqyaMpbBvLGWtuc
-         f3Fg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792007618; x=1792612418; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
-        b=vYLtKyDUEtqub0r7xU8xmogA9Yv399QlK33KQ68E7S02tos5/7u6n2WCKAGd/E/nhn
-         +7Jz+POkmoTDudgNxnXJk2mYVusC6/Izqkx1qVQNAMh0p+WujlWCY3pep1LW/3wjJEkC
-         Sfq1XPoZRylCzixWJt3aamm6ghFy9u3Ddn4qpRHOOFQrqadE4XmCPHI5vPtG2UVT1/aw
-         QJYp5oO7kTO4La8EDDe2RvqH7/gqvpKu+j+sAAUmMX3F7LDSDRHWr9N+SOGhKGnD9K1a
-         F6B4f7oSm8NMS1GpbS1hethjK2+PgO6EJDuYb6FyXECEoih7D0adF1KPyoi4GExfsHGQ
-         GAQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792007618; x=1792612418;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
-        b=QOdG7XPHuF4rJfLIq1DLqMCCJESvw55aw3vKCijygEnsX6qYq3tahuSPNDcVKPWML3
-         KeqMGWRSAWktsiBOD/lR4j8yfQW+7Y2+rVbF3mO3oh7XRuEe5OhO9ZVEjVNrkcD8hfDH
-         EUhcqeS7hh3edPK7YsJcJn60Z7UWeKks5Mids3DXy+4xm8dEoUKaD9bBgm2o/SzjTmtU
-         JdawNRQHIioPLwzHkNcD2Ggrw9SUdyBxvR5Lo9C6XMWacjbgnPUFbnrxeW7BYovUM0mI
-         eoXtC5zyWYAVwGG3zptbsbsC/utPGruvrOkG0bXstIEj3Qr3rGBTLZYNbblSJQMy2+fi
-         QPjw==
-X-Forwarded-Encrypted: i=1; AKwUvBwU6W6deX5yWinNaAM82lVXRZZ+3dZQdTq0GxO7h6Y+pVrVTLfzW0WSlbCnkmieaVNJ2I3ct7xj9/Kl@lists.linux.dev
-X-Gm-Message-State: AFq9FYKvQHTiZWNrsetdaxgpK00D6s9OMh79AZND/KJNIE75NFOFBYYu
-	5SJpOJPjUWaVVfNtLVQJ8yRxuKpTvPrM431DBnYA5I9GjTVOqbwtwQh4qfEg6VsZD4LpEiOXmOl
-	OKnPNFgd1eSdo7jslcPV7rWeba0dfUAxD1vP6HySk3IA+bVzzBeFsiQwJ
-X-Gm-Gg: AYBFou0POb94EU5mHccoRuSB0EXtanRAL1wRbx7tRHNU2cqcDKkbA2P9fSkNM2EfKpt
-	N1YECjfDFeoXez7pcs4mW+zbq5gw+++HT87KSK6cCSAXy45hilNOvZhJfjqQw90yR0PmEqyzmSI
-	f5LFiORkOxHE9bhhqXuJTzhACmladASYGt62sDIgEptkxLkVcDCduuUI3gg5Myz94CoX40e1/9V
-	nxIQN1kyuJMK6YUe8OY83Mclj625H5BzAHddZ8xWo03NgIB5lvz4C6kxKZpmtCekiSjBAJKUp7S
-	PGgpVm5MowGwE3vjPJNh/rae1zwM04w0E1q82jQkHyZ8JYHoXW+mZ53QV16r0gFejZfw7sBS1Rg
-	MKB3h62oNRD9vpvhkkCN/NwCTE5qPOENllbumXvpXHCA=
-X-Received: by 2002:a05:620a:a2cf:10b0:93e:c12c:f142 with SMTP id
- af79cd13be357-93ec12d0865mr1898747285a.76.1792007617714; Wed, 14 Oct 2026
- 12:53:37 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 14 Oct 2026 12:53:36 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 14 Oct 2026 12:53:36 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <yq5a7bjky8wj.fsf@kernel.org>
-References: <20261010072504.536230-1-aneesh.kumar@kernel.org>
- <CAEvNRgFC6U4er0QhcwVOqWyz657WWWtidkNu0hKS5go4A3cP4g@mail.gmail.com> <yq5a7bjky8wj.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xxS9y4bD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DVee9Sb1ogMjPO18Vj3bGPb8PLlRO9uYibwcfHcqJBo4BsLaQs0keqGwNrvlGadsyA5N3dBI0vYFS2BS0ysOARwcr2GGgzN4i1lhAeVBzwksvi0Xv7+2r01i+XJtzW2gu9xstmE71nV0NJMKhLFln/Ggjt/2E6DvLce/9f3R9y90c/nS4qTl+vprVBDbFGocusOba1qYNdkYFlgRmDGo30TmoNsoFCevsjWMlrzBiZGpmqcIKbVCumd8mkRPrSRwxodlnsLcExyutoNSFH7gXnH2wqNETX3ftpBVHhnOa0AgNcfN6vAxvIRFoPPWDjajRr2g8Z2r/0LXSwMM07AO+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/K6elI9S1x7K/b2SSqm3h4VV9Io2Dqs8l6kPq/S+wqE=;
+ b=U3uthCTS++DJR0z2ae6Hak4P2XIqcWKthsEtbNjcrebGh70mUtitS4jvPHi10UaC3VfNKvbp3iqPiu+ULpMz9BR+7Ob99iBl3kXj3NLziTNaBYS7+7MM8ArWopSL7nKbX5Bu5yqm0/Y1Ubj0wyQNDHf8uol7h8KSKecK3uGZd2bq9f+WGTFFLNoRqHt+qp+ZaZqn5ELx+geZIf6mBovevStBBtCZ+DVfXF0jO89z/SElpPpPrKvmF6z7/UmXsr1OzGDdnbViWSmX+v+SNOiYKpTG6Wym9ocxnOSyo6ibKRrodcnnLP1uIxAx5DQrmNELBcpZ14/QoJQVqkN7FeG7bg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/K6elI9S1x7K/b2SSqm3h4VV9Io2Dqs8l6kPq/S+wqE=;
+ b=xxS9y4bDVmakc8k++qjZW+xbDDesSndv3/P4VUQ+AHizbWZ534M/HlP1Dkpqq+URu+pSVVVi9j3HS6f87DFT21/LOLAaKvJhMGX7BfHrew69D8ZxA1aqD/Iax7EcEHXB5J6D9g8ACdM7M2sy+eL0sID/iSqsFXEs3HDBmky2XFk=
+Received: from CH2PR18CA0036.namprd18.prod.outlook.com (2603:10b6:610:55::16)
+ by CH3PR12MB9123.namprd12.prod.outlook.com (2603:10b6:610:1a4::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
+ 2026 21:14:15 +0000
+Received: from DS4PEPF000001C4.namprd21.prod.outlook.com
+ (2603:10b6:610:55:cafe::d) by CH2PR18CA0036.outlook.office365.com
+ (2603:10b6:610:55::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Wed, 14
+ Oct 2026 21:14:15 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS4PEPF000001C4.mail.protection.outlook.com (10.167.23.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.3 via Frontend Transport; Wed, 14 Oct 2026 21:14:14 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 14 Oct
+ 2026 16:14:07 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<nikunj@amd.com>, <darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH v2 0/2] x86/sev: Fix RMPOPT enablement on non-RMPOPT configs
+Date: Wed, 14 Oct 2026 21:14:01 +0000
+Message-ID: <cover.1792011434.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 14 Oct 2026 12:53:36 -0700
-X-Gm-Features: AclHuK-WbMkUylbHFNMeinh59E-dHthPA1VhGiwdfTYkoCCF9XbdzoNbemMEawg
-Message-ID: <CAEvNRgGfjHhVCxHhew8AMKhXrX6XDrbrw5zpQM9LaODhJHRYYg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 0/6] KVM/VFIO: guest_memfd support for device MMIO resources
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>, David Woodhouse <dwmw2@infradead.org>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, Will Deacon <will@kernel.org>, 
-	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Steven Price <steven.price@arm.com>, Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, john.starks@microsoft.com, jacob.pan@linux.microsoft.com, 
-	gourry@gourry.net, vannapurve@google.com, fvdl@google.com, tabba@google.com, 
-	dave.jiang@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS4PEPF000001C4:EE_|CH3PR12MB9123:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0228706a-aacd-4009-f983-08df2a3819dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|82310400026|23010399003|36860700016|921020|56012099006|11063799006|261009223027099003|18002099003|10067099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	Z8GQfOtGTLoCS640DDQxqWbvShK2UUN4aB3Ma4rEbgFIf2tfudNAUq8ETohSdtWe+UuJJKIA1+SuYf8AhhN0mcvoiHt2GEy9EnwP1aY9tVrTJSAeXJEbiXf06DJ6hgZVVWHXXyIp4BkFY69iZ62juBXnd0ul2cV6790wGGpOYIECKXWP+03lyt2YfIPmSITXSr6ydK7g5zv8BBhh1N2sCURpjNzhhA2FkjZHtKAHFIC05rESLgAnlyt05hGrnJ4n+OGRtTDvhzjxLbuBMCSsS0U6dh4bBjMIt8/axKAyULma4+YlFtjoIq0gKxhindwtC9ATgovPYvahpI+ikRJykclSeql6W6VejjpEv8fJC5Y1OSSsWkUHOLVen0WPgh5gNcQ+0Q7ElXhDLYdrsd/vNpAd3TzlXOYsvXfcWsbre0MrUcJS1l8pYS34PVBPOZ/MTCzU6t6NDr3yGhZwqaCSi1+AEEIL3gJTHe6uL9+h+dgmaxVQ67S8FaMkGqI1iGKwTMvoISZSwvD9vsBmwIuCDmqBUt0XrNABjICQskqK/a0O93PY42YafVBpR3fDpCyVEyPIpKjj+ZjuyTG9H1BP/6/dfSBpPIbjRCCJPUhXIGm3jP221DpGLWeHRfJWUMUIEOU/TR3hX3USyfI59Vv/38JRDqSGA8PgtS+RTlZKIkrRemdaMt7gHR9lVThSFPicS6IY8Pb7QTs1tH+lnsYd35S3hq+Mswm/WyPTvnXZ7zt9EYmczqmeudnG5LXhil3H
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(82310400026)(23010399003)(36860700016)(921020)(56012099006)(11063799006)(261009223027099003)(18002099003)(10067099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	qTz+5bYN7q9G92gX6531JaKUfvx5bZUQ4AMlpUJNsr3ImFsbhOEieiTKg9a6OO9lZqZxuLdHYtotA5QzgG9FBE1PDzLySXMz4+gEhVAScCY+cOCFFYMymgtv8BaPrcxnax7Or9pAcQ/Mb82xBaH8AhE3b+XdbDf7zF2D6mg8ZEjYCKKq8vL9RYeruSsk5BmKGCya1BB4qt8E2Y04iWR5ll2datggSZq26u1Xew7R8mMMoUoZLszXUJXAw2XdXjTQHOnale6Imesww2YzNaRBIgetYy+7kI9vKn3ZUtsYHmnJWKRRum0FdCDxSF/kNohSLleMeQslNq6YdRQWBku6lmhXHMAZEMKd+aagHPQDrTmgPY2Q6h9xDzN3rnsSNzyGO5vFJI9I5Pp6jlVQoc3tK7RyROxAZvTW9ZNniBKwWc2LWY9UwkgeystJymNTMKd0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 21:14:14.9963
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0228706a-aacd-4009-f983-08df2a3819dd
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS4PEPF000001C4.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9123
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-> Ackerley Tng <ackerleytng@google.com> writes:
->
->> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
->>
->>> This series adds a guest_memfd device-resource framework for exposing PCI
->>> BAR memory to guests. The intended use is confidential device assignment,
->>> where KVM needs to coordinate private device mappings with shared access
->>> through VFIO. The Arm CCA backend is provided separately; these patches
->>> contain the guest_memfd, VFIO and IOMMUFD interfaces it uses.
->>>
->>
->> Thank you Aneesh!
->>
->> I definitely like this since it builds upon [1], the model where
->> guest_memfd coordinates zapping during conversions for the
->> provider. Please see comparison with the alternative at [2].
->>
->>>
->>> [...snip...]
->>>
->>
->> I have questions:
->>
->>> Userspace creates a device-backed guest_memfd using the ordinary VFIO
->>> device fd as resource_fd, with GUEST_MEMFD_FLAG_USE_RESOURCE,
->>> GUEST_MEMFD_FLAG_DEVICE
->>
->> With the model described at [1][2][3], I was thinking that the VFIO fd
->> would be the resource fd. I'm hoping that there wouldn't be a need for
->> GUEST_MEMFD_FLAG_DEVICE.
->>
->> The plan [3] was for resource fd to represent just the resource but not
->> provide any way to access the underlying resource, so that after
->> .attach(), guest_memfd's fd should be the way userspace would access the
->> underlying resource.
->>
->> For tmpfs, the example in [1], fsmount() returns an fd that has no
->> .mmap/.read/.write ops, which fits the plan above perfectly. It tells
->> guest_memfd about the resource, but does not give userspace access to
->> the resource.
->>
->> In VFIO's case, vfio_device_fops does implement .mmap()/.read/.write,
->> and I don't think there's a better existing fd that represents a single
->> device.
->>
->
-> With VFIO, after attachment we can reject new mmap() calls by checking
-> the attachment status in vfio_pci_core_mmap(). During attachment, we can
-> reject the operation if the VFIO fd already has an mmap. But I guess
-> read(), write(), and VFIO_DEVICE_IOEVENTFD should still operate through
-> the VFIO fd, or are you suggesting that all of them operate through
-> guest_memfd?
->
-> I am not sure we want to move the ioeventfd ioctl out of VFIO. If it
-> remains there, userspace needs write access to shared BAR regions via
-> vfio fd, so it would make sense to continue allowing read() and write()
-> as well. If we allow read() and write(), should we also allow mmap()?
->
-> I agree that keeping userspace mappings(mmap) under guest_memfd rather
-> than VFIO simplifies conversion. The conversion then becomes:
->
-> unmap_mapping_pages(inode->i_mapping, start, nr_pages, true); //unmap user mapping
-> kvm_gmem_invalidate_start(inode, start, start + nr_pages, KVM_FILTER_SHARED); // stage2 unmap
->
->
-> Both are now under guest_memfd control, so no VFIO callback is needed.
->
+Two fixes for the RMPOPT series, both for configurations where the
+RMPOPT CPUID bit is advertised but RMPOPT is not actually usable:
 
-+1, yes!
+Patch 1 clears X86_FEATURE_RMPOPT when the platform advertises segmented
+RMP but the firmware has it disabled (contiguous RMP) - otherwise the
+RMPOPT initcall programs RMPOPT_BASE and issues RMPOPT, which #GP.
 
->>
->>> and GUEST_MEMFD_FLAG_INIT_SHARED. Eligible BAR
->>> intervals are registered as guest_memfd memslots. File offsets use the
->>> existing VFIO region-offset namespace, allowing one guest_memfd to cover
->>> multiple BAR intervals. Device-backed guest_memfd rejects mmap and
->>> fallocate; shared guest faults obtain bare BAR PFNs from the provider
->>> instead of resolving the memslot HVA or allocating folios.
->>>
->>
->> The model I have in mind is kind of opposite from above. Instead of the
->> guest_memfd rejecting mmap(), I'm thinking that the VFIO fd should be
->> the one that rejects mmap(), read() and write() once guest_memfd
->> attaches to it.
->>
->> If userspace needed to mmap() the VFIO fd, it should instead mmap() the
->> guest_memfd fd. guest_memfd doesn't support read() and write() now, but
->> support can be added. The read/write for guest_memfd just forwards to
->> vfio if the offset range is shared and blocks if the range is
->> private.
->>
->> For mmap(), for regular memory, mmap() is always allowed, but faulting
->> dependsd on shared/private status. It would be nice if the same logic
->> could apply to guest_memfds that wrap VFIO.
->>
->> I prefer the userspace accesses to go through guest_memfd to VFIO so
->> that the shared/private-ness can be enforced from guest_memfd.
->>
->
-> Sure, I can implement this. I guess read(), write(), and ioeventfd will
-> continue to go through the VFIO fd?
->
+Patch 2 gates rmpopt_init() on X86_FEATURE_SEV_SNP as well, so the RMPOPT
+workqueue setup and the "optimizations enabled" message only happen on an
+SNP host - e.g. not when SNP is disabled in the BIOS.
 
-If you agree to having mmap() go through guest_memfd, then read() and
-write() should also go through guest_memfd imo. I think it makes sense
-since guest_memfd gates accesses based on shared/private status.
+v2:
+ - Patch 1: expand the commit message to spell out the CPUID-advertise vs
+   firmware-enable distinction and how the configuration arises; drop the
+   trailing sentence; add Tom's Reviewed-by.
+ - Patch 2: rather than moving the announcement to snp_enable_rmpopt(),
+   gate rmpopt_init() on X86_FEATURE_SEV_SNP and keep the message there
+   (Tom).
 
-guest_memfd already had plans to support write() [4], so I think
-supporting read() should be fine too.
+Ashish Kalra (2):
+  x86/sev: Clear RMPOPT when segmented RMP is disabled by firmware
+  x86/sev: Only announce RMPOPT optimizations when SNP is enabled
 
-[4] https://lore.kernel.org/all/20251020161352.69257-1-kalyazin@amazon.com/
+ arch/x86/virt/svm/sev.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 
-I'm not super familiar with ioeventfd, let me know if this makes sense:
-ioeventfd is a kind of config, like mmap() is a config, but faulting is
-where the actual access can happen.
+base-commit: 250ee734115bca1c1f7a38d838909aa83cce87ae
+-- 
+2.43.0
 
-guest_memfd always allows mmap(), but only allows faults on shared
-offset ranges.
-
-If userspace sets up some link between a private range and some eventfd,
-I think that's ok, since it's not actually doing accesses. When the
-signalling actually happens, then guest_memfd needs to gate that.
-
-Going by that, I think if the ioeventfd ioctls are just setting up
-links/mapping, then it can go through the VFIO fd.
-
-Between going via the VFIO fd and guest_memfd, I think if "everything is
-wrapped by guest_memfd" a simpler mental model to go with, then maybe we
-could just go with swapping the entire f_ops with guest_memfd's
-intercepted version?
-
-
-IIUC during the LPC discussion some people were suggesting creating a
-brand-new only-for-guest-memfd resource fd and not relying on existing
-mount fds or VFIO fds. What do you think of that? Instead of using the
-existing VFIO fd, would it be better to create a new for-gmem-to-wrap
-VFIO fd? I didn't like the idea of needing to create a new kind of fd
-for every resource guest_memfd needs to wrap.
-
->>
->>
->> Is GUEST_MEMFD_FLAG_DEVICE there because GUEST_MEMFD_FLAG_USE_RESOURCE
->> tells guest_memfd to look up
->> resource_inode->i_sb->s_op->gmem_provider_ops but for VFIO,
->> gmem_provider_ops can't be stored in super_operations? If that's the
->> only reason, that's a very good reason to store gmem_provider_ops in
->> file_operations for gmem_provider_ops to serve different kinds resources
->> and include VFIO.
->>
->
-> I can use the same approach for VFIO. I kept the current implementation
-> simpler by using a registration framework on the VFIO side.
->
-> I can switch to gmem_provider_ops if we are comfortable adding the
-> device-specific callbacks to guest_memfd_provider_operations. Since the
-
-Yes please, gmem_provider_ops in my RFC was just a minimal set, we can
-expand that as providers require.
-
-Imo we should have either gmem_provider_ops in some ops
-(super_operations or file_operations or elsewhere), or a registration
-model for all of gmem_provider_ops, but not a mixture of global vs
-registration.
-
-> VFIO core supports multiple backend drivers, such as vfio-pci, the
-> superblock operations would essentially forward the calls to the
-> appropriate backend driver. That is a VFIO-specific detail that
-> guest_memfd can ignore.
->
->>
->> I also noticed the need to guest_memfd_register_device_fops, so that
->> guest_memfd knows the device supports being attached to?
->>
->> What do you think of this: we have a common attach function for all VFIO
->> fds in file_operations that would look up the struct vfio_device to
->> determine if guest_memfd can attach to the vfio device? Actually, which
->> devices would not support attaching? Wouldn't all devices support
->> attaching? I'm thinking that using a device that is all-shared via
->> guest_memfd should be no different from using the device directly. All
->> operations should flow through to the device.
->>
->
->>
->> Regarding conversions, I would like to check: with Confidential IO, are
->> conversions at runtime actually necessary?
->>
->
-> They occur at runtime after the guest starts, but are infrequent. The
-> entire region starts shared. The guest validates the interface report and
-> requests that the BAR regions be mapped private. They remain private until
-> the host converts them back to shared during the TDISP unlock operation.
->
-
-I see, so infrequent == once ever? Could the guest want to, at runtime,
-switch some BARs between shared/private? I wonder if the spec supports
-runtime conversions.
-
->>
->> Is the only "conversion" the one when the guest accepts a device? If so,
->> maybe that "conversion" can be implemented by replacing memslots.
->>
->> Pre-accept, mmap() the vfio fd directly, set it up in memslots.
->>
->> Post-accept, remove the old memslot, wrap the vfio fd with guest_memfd,
->> set up the guest_memfd statically with shared/private ranges as the TDI
->> report requested and never allow conversions, replace the pre-accept
->> memslot.
->>
->
-> Is there a reason to use two different flows here? Why can't we always
-> use guest_memfd?
-
-I was hoping blocking conversion could make the implementation simpler
-if we never need to convert at runtime. It might be easier to merge if
-we trim the features. :) It's also nice to have consistency with regular
-guest RAM though.
-
-> We could attach the device at startup and use
-> guest_memfd before acceptance, while the BAR is mapped shared. We would
-> not need mmap() unless userspace requires it for another reason; the VM
-> fault handler could fault in those PFNs.
->
-
-Did you mean to just block mmap() access completely from userspace on a
-gmem-wrapped-vfio-fd?
-
-If the CoCo guest and device allows some BAR to be shared, I was
-assuming that's because the host might need to take some action on those
-ranges. If so, then mmap() would be one way to access those ranges (in
-addition to read()/write()). I think we should still support faulting
-into userspace page tables for shared ranges from a
-gmem-wrapped-vfio-fd, and ideally follow the same model as regular
-guest_memfd where mmap() is always allowed, but not faulting for
-CoCo-private offset ranges.
-
-> During device acceptance, we convert those BARs to private. On CCA, we
-> also create the stage2 mappings at that point, since private BAR regions
-> do not support fault handling.
->
-
-I see, thanks for explaining! This is one thing different private BARs,
-that private BARs cannot be faulted into stage 2 at runtime.
-
-With Confidential IO, private BARs don't support fault handling, do
-shared BARs support fault handling?
-
->>
->>> IOMMUFD resolves and pins the device's existing vDEVICE for the VM and
->>> serializes MMIO conversion through its MMIO mutex. VFIO supplies BAR PFNs,
->>> checks eligible ranges and excludes independent dma-buf exports while a
-
-Thanks for excluding dma-buf exports, this is important, we can't let
-dma-buf exports be a backdoor to access guest-private memory.
-
->>> guest_memfd provider is attached. VFIO host mmap faults, read/write and
->>> ioeventfd accesses check the requested range's guest_memfd attributes.
->>> Conversion revokes cached host mappings and shared guest mappings before
->>> installing private mappings. Other shared intervals remain accessible.
->>>
->>>
->>> [...snip...]
->>>
->>
->> [1] https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
->> [2] https://lore.kernel.org/all/CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com/
->> [3] https://lpc.events/event/20/contributions/2551/attachments/2047/4693/lpc-2026-gmem-other-backends.pdf
->
-> -aneesh
