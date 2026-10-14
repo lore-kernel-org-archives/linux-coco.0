@@ -1,68 +1,50 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C652F53C3B4
-	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 14:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC21537F8C7
+	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 15:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791986485; cv=none; b=J8j1o46ZAgkd1FFMMhwMuBuvUT8cJP7twCOZUdSJpV7IjhofpslusXQC0x/qGAUhBJkPllUCAb0k+pipZeT69FgXsuJALHeVl19FMLwoGACh9PJy7ZXcc9/XXdnsmX2tGkd4r17WtKkpv2vNXqxFNe+pux/J+v4+zdAbKMTijL4=
+	t=1791993575; cv=none; b=IGjjiRupQdWn8U4Uft09keJIX+biJvM5yHp3KExeyMiZyCJMvYWnK5emdfHSs8+YJliKfYCSNbRTY/79sFciDJ50t4G7GwnFNAzSuchPRsXFKT9052IHoCoDq1ujO22X9ICJv6ifLjOvvElwX5zlz8IMY2bhKWsB2k2HXIxlOAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791986485; c=relaxed/simple;
-	bh=RPKjO7r7COV1kj1mEX8DiND3M9FxBEUt2xywURu28N4=;
+	s=arc-20240116; t=1791993575; c=relaxed/simple;
+	bh=WUMo5RJUrn77m2nX4zEX68U+Ul+lscPwev0cXcLqpO8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MyfXtnuGcGTe4lgVla9dxS1HXm9VBkE1Ny2Zy1yTnMVVegnE6oKmeje8ASWsvJD//YgeYIdnvmJNHOk8+3y9GOS4l8z89a4v2TstdHpsLeNXvjusTAuoVONXWmLTkZrc+ES1+Omvd+WAHfnXiypc/u3aQZ8Tp5ID2W4kQxfq0zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AhaqfoxG; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=Rj5nkFF1ImVcdAdeJg0CJR4X7XO7Xi5j1E1uyX9TlhVWJa3lCq35dL9oQQ7yXPkBBunrKOyCWevlqsKvGKUq7DLC0Zgv37q8d/NenwNzFXA1RlLjjkBlfWLn6aJmVRVY/PBsTaAve0yOCy9Ppf8DOMQpORcDT1i46CpWYT7n2Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T5zHrduP; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AhaqfoxG"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4956869750eso29122155e9.2
-        for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 07:01:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791986475; x=1792591275; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Bl4WvKQr9UWYn7bOh5TWEroVL/3JGDO8W7v/2+U1gfA=;
-        b=AhaqfoxG2AfHxk9BPajmEEPkozzc5hUti5CR6ArvYmaZaa8BER9fBCY5fV/el5vyi4
-         xu38Bqcm1lfpVUm1/Od9cI/S7rLV33eNAra98hup8CXAV0cbkdDFOwLLxC2uewAoAM9n
-         SzMSDdynm1xNqgQwWFn2wLQxaiJnH/mYRp5jB2xJlyLusqY/PRD/lEFJLACnwUxy+h7H
-         Ys4g7AvZeyMJnSX6mO8R2O3MDUnE5VZ7DDmmBvSX8CKlHcrYYMYfb49REWT3QasjNIAo
-         Yxf2Zpff5TiV+fdpfLNFsMq4BvGnLRHepMwfYBqsixr+T1+QMvCNNei0CwBaIe0y/HAn
-         o6dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791986475; x=1792591275;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Bl4WvKQr9UWYn7bOh5TWEroVL/3JGDO8W7v/2+U1gfA=;
-        b=kzkUsoEoRQoRjzQ+Wpo1tQCJk9KNoNQu/r1/h8Ie8Em7nUxbnGGE166iZQijmbOgXR
-         5L0i/9FwfIo/OR/yh00Z8ZlH4gxd05tV2bd1+iUP1x+JvQEMwNKYQYfKy+zKMqTlNvuG
-         g0XJrHFX7XaQVZKWkdgGUtUWeu8MeTg0Di9xtg/QryX+op7LLcAzGmIZfE4TlKCbok94
-         snaLndQHSZrPWhOyQi17ngdCide3Q9r5mRxOtJDJgxKRWrbaQ7uj9XDOfj1LUzXkLpIC
-         9ClQovW0dWsp37m2XCT8Y25fssXau8JU9aNL7CoOM3RNfXTJoEKdZKiv2hSopKeMxkov
-         zf5w==
-X-Forwarded-Encrypted: i=1; AKwUvBy9di209I5gCt5Stah7DC979J23gRkIJHOe1G7FwRok/0JHz8JFW2g8LVehKIMaIEKV1cQZRcM5FvUu@lists.linux.dev
-X-Gm-Message-State: AFq9FYJvoMSoP2bF1eBnAd0HgUgIqPDUIWWZ1nr+PcdWm3/ndosSbROX
-	wr0pvLy5WzW7gLbIV+RBrEQsaRy2KW3nbaKXI+419xVaXTW4BdZPbg+mJkhTcINFxEY=
-X-Gm-Gg: AYBFou3t7T3Mb2g+0li/3xZMCD/h1KdJbyrYdMWSuGU5QHV4ei/YfsdSyJbW8xa9LSc
-	6wlCf6IGXA/+qnZozugTNuJ1B8O7/7jvW3orczIEzfg0yx/oQ53l2H6Bxxco6B+QjTOV6+cQy/0
-	yK1ax3KsOgLfn+U00RJU2Wvi8nxmokEOvqjKjU15g1aV1XZ5nlEEvSBjwc9DDsdwPHX2G/2yzhr
-	iRptlh+YJPAsab099jBi1GOMFFWy6rHgXoAr6S5tUReyZLR9U8h2TJid1B0LGDvZKcfmrMlBglh
-	4BTYzfXkzDRCKNDpiMSxNumhxJxCGv3wDbd7hMTOwhE5jII7yKGvdCst/PxFJxDkZVrWHv3KKlG
-	va1hFIynHcqalXwRWLVeMtJnal1v+E9IpvKLtXDOV5I16T8rn5Ews8W6E0Wsil7GEu9tghXHNJk
-	eC/8Y2CvYHg6pR5CN2l7lA9tfxNSYiy48B9S7vzUv1JABuyd7GlUIhQIZtkm0UCTXHBVp36jNam
-	d4v/nEoOBKLtK/rdG2VELs=
-X-Received: by 2002:a05:600c:8184:b0:4a0:1c17:4fb2 with SMTP id 5b1f17b1804b1-4a18e4d854cmr283701345e9.31.1791986474223;
-        Wed, 14 Oct 2026 07:01:14 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd07c276sm1997515e9.13.2026.10.14.07.01.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Oct 2026 07:01:10 -0700 (PDT)
-Message-ID: <7605d698-b08c-4fcb-b86b-3f79927fb0d5@suse.com>
-Date: Wed, 14 Oct 2026 17:01:08 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T5zHrduP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791993574; x=1823529574;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WUMo5RJUrn77m2nX4zEX68U+Ul+lscPwev0cXcLqpO8=;
+  b=T5zHrduPsSxxocAP7ZvZUUImLBPJzA4IIJDBk4zTkn/A2XF9wwWxNFM3
+   DmbSGGXPvSNqKeRPzoJuGsVcDxr0GLM82CO5GtddP72bwbQZqkJx+r+Us
+   QC5fQM/UXKW0W7YQxwCJXgZVq9BLlq9SmPvLhBVSpNhe5u7brUukanP/t
+   ef/JajG4kl47RlJJzGQfpJA1uBhY82wj84OVkzFQE/YsJXaRKuSb6JsQs
+   Y8jx7+FzPdorUptlUjwxLLVW/sTrYosvgUN8gA1aEAs9P0xFBq0hz65uu
+   xBgr+Q7yZSqEGTHpSkAohJF6JisY6F0uf3ONavVsrD5OK1cci9sBtO4rm
+   g==;
+X-CSE-ConnectionGUID: FnjqrzJZSCuJa9E4vAYKVQ==
+X-CSE-MsgGUID: VmXMGJIGTUepavq+2dxXaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="844968"
+X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
+   d="scan'208";a="844968"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 08:59:33 -0700
+X-CSE-ConnectionGUID: UafhCUUaRrCB88B2XL5vaw==
+X-CSE-MsgGUID: wLbJRdF5Qs2oOZwrJxweCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
+   d="scan'208";a="1797720"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.110.30]) ([10.125.110.30])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 08:59:32 -0700
+Message-ID: <c74922f6-7d74-43c1-9780-ce09eeb02b44@intel.com>
+Date: Wed, 14 Oct 2026 08:59:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,193 +52,112 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/4] PCI/TSM: Create MMIO descriptors via TDISP Report
-To: Ankit Agrawal <ankita@nvidia.com>, linux-cxl@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: dave@stgolabs.net, jic23@kernel.org, dave.jiang@intel.com,
- alison.schofield@intel.com, vishal.l.verma@intel.com, jgg@nvidia.com,
- aneesh.kumar@kernel.org, aik@amd.com, yilun.xu@linux.intel.com,
- iweiny@kernel.org, ming.li@zohomail.com, icheng@nvidia.com,
- bhelgaas@google.com, smadhavan@nvidia.com, ilpo.jarvinen@linux.intel.com,
- Smita.KoralahalliChannabasappa@amd.com, andriy.shevchenko@linux.intel.com,
- linux-coco@lists.linux.dev
-References: <20261005070252.84810-1-ankita@nvidia.com>
- <20261005070252.84810-2-ankita@nvidia.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH v4 1/6] x86/virt/tdx: Move TDH.SYS.CONFIG operations into
+ a wrapper
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org,
+ yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
+ adrian.hunter@intel.com, kishen.maloor@intel.com,
+ tony.lindgren@linux.intel.com, peter.fang@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com,
+ artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
+References: <20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com>
+ <20261013-tdx-module-ext-v4-1-de5ffac65470@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20261005070252.84810-2-ankita@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20261013-tdx-module-ext-v4-1-de5ffac65470@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 10/13/26 08:28, Xu Yilun wrote:
+> SEAMCALL wrappers are introduced to avoid broad SEAMCALL access by
+> exposing only a selection of SEAMCALL leafs, but also to abstract the
+> SEAMCALL register ABIs. The abstraction improves readability and reuse
+> for SEAMCALL leafs that are called multiple times.
+> 
+> Some SEAMCALL leafs are not explicitly wrapped because the level of TDX
+> ABI details needed to perform the call is low enough to flow well with
+> the calling code.
+> 
+> For some of the currently unwrapped SEAMCALL leafs, the TDX architecture
+> has evolved the ABI to introduce new leaf versions. The host can select
+> the version to call based on what is supported by the loaded TDX module.
+> When future kernel implements this version selection, more ABI details
+> will leak into the surrounding caller code, which decreases the
+> readability of the caller logic. To keep the ABI details contained, move
+> the SEAMCALL leaf that will need version selection into a wrapper.
+> 
+> When defining the wrapper, the cleanest separation would be to have
+> kernel data types for the SEAMCALL wrapper arguments, and have them
+> marshaled into SEAMCALL leaf ABI types (often u64s) inside the wrapper.
+> This works for many SEAMCALL leafs but becomes cumbersome when the
+> register ABI type is a physical address which points to a buffer for an
+> in-memory ABI. If the SEAMCALL wrapper only accepts kernel data types,
+> it may need duplicate buffer allocation and copies to match the
+> in-memory ABI. Another solution is to define a named helper structure
+> that mirrors the in-memory ABI, populate it in a separate flow, then
+> pass it to the SEAMCALL wrapper. struct seamldr_params is an existing
+> example of this pattern.
+> 
+> TDH.SYS.CONFIG requires a list of TDMR information in the form of a PA
+> array. The PA array is the in-memory ABI. Create a structure for the PA
+> array, use it as the argument when creating the wrapper for
+> TDH.SYS.CONFIG.
+> 
+> For readability, adjust a bit of the existing PA array size calculation:
+> use the new PA array structure's element type instead of hardcoding u64.
+> 
+> AI was used under supervision to review code and workshop logs.
 
+I'm wondering if this is a case of AI gone wild. There's a *LOT* of info
+there, but I'm not seeing the thing I really want to see: Why is it
+worth creating this helper _now_?
 
-On 5.10.26 г. 10:02 ч., Ankit Agrawal wrote:
-> After pci_tsm_bind() and pci_tsm_lock() the low level TSM driver is
-> expected to populate the TDISP GET_DEVICE_INTERFACE_REPORT response
-> payload for the device.
-> 
-> Add pci_tsm_mmio_alloc()/pci_tsm_mmio_free() to parse that report into
-> a set of encrypted MMIO ranges, and pci_tsm_mmio_setup()/
-> pci_tsm_mmio_teardown() to mark those ranges as encrypted in iomem via
-> a new encrypted_iomem_resource tree (IORES_DESC_ENCRYPTED). With those
-> descriptors the TSM driver can use pci_tsm_mmio_setup() to inform
-> ioremap() how to map the device per the device expectations. The VM
-> is expected to validate the interface with the relying party before
-> accepting the device for operation.
-> 
-> pci_tsm_mmio_alloc() also recovers the obfuscated starting address for
-> each encrypted MMIO range, since the VM is never disclosed the HPA
-> that correlates to the GPA of the device's MMIO. The obfuscated
-> address is BAR aligned.
-> 
-> Based on an original patch by Aneesh Kumar K.V [1], and cherry-picked
-> from Dan Williams' upstream commit [2]. Major functional differences
-> from Dan's posting is due to the lack of evidence-store infrastructure
-> yet (device_evidence / DEVICE_EVIDENCE_TYPE_REPORT). The
-> pci_tsm_mmio_alloc() takes the raw report bytes directly from the caller
-> instead of pulling them from a device evidence store.
-> 
-> Link: https://lore.kernel.org/linux-coco/20251117140007.122062-8-aneesh.kumar@kernel.org/ [1]
-> Link: https://lore.kernel.org/all/20260705220819.2472765-15-djbw@kernel.org/ [2]
-> 
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> Assisted-by: Claude:sonnet-5
-> ---
->   drivers/pci/tsm.c       | 236 ++++++++++++++++++++++++++++++++++++++++
->   include/linux/ioport.h  |   2 +
->   include/linux/pci-tsm.h |  33 ++++++
->   kernel/resource.c       |   8 ++
->   4 files changed, 279 insertions(+)
-> 
-> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-> index 5fdcd7f2e820..c8cfe89b6224 100644
-> --- a/drivers/pci/tsm.c
-> +++ b/drivers/pci/tsm.c
-> @@ -9,11 +9,16 @@
->   #define dev_fmt(fmt) "PCI/TSM: " fmt
->   
->   #include <linux/bitfield.h>
-> +#include <linux/overflow.h>
->   #include <linux/pci.h>
->   #include <linux/pci-doe.h>
->   #include <linux/pci-tsm.h>
-> +#include <linux/range.h>
-> +#include <linux/sizes.h>
-> +#include <linux/slab.h>
->   #include <linux/sysfs.h>
->   #include <linux/tsm.h>
-> +#include <linux/unaligned.h>
->   #include <linux/xarray.h>
->   #include "pci.h"
->   
-> @@ -898,3 +903,234 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
->   		       resp, resp_sz);
->   }
->   EXPORT_SYMBOL_GPL(pci_tsm_doe_transfer);
-> +
-> +static void mmio_teardown(struct pci_tsm_mmio *mmio, int nr)
-> +{
-> +	while (nr--) {
-> +		struct resource *res = pci_tsm_mmio_resource(mmio, nr);
-> +
-> +		/*
-> +		 * Entries past the point where pci_tsm_mmio_setup() stopped
-> +		 * (or that were never run through setup() at all, e.g. a
-> +		 * caller that only wants the resolved range from
-> +		 * pci_tsm_mmio_alloc()) were never insert_resource()'d, so
-> +		 * res->parent is NULL. remove_resource() dereferences
-> +		 * res->parent unconditionally.
-> +		 */
-> +		if (res->parent)
-> +			remove_resource(res);
-> +	}
-> +}
-> +
-> +/**
-> + * pci_tsm_mmio_setup() - mark device MMIO as encrypted in iomem
-> + * @pdev: device owner of MMIO resources
-> + * @mmio: container of an array of resources to mark encrypted
-> + */
-> +int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
-> +{
-> +	int i;
-> +
-> +	device_lock_assert(&pdev->dev);
-> +	if (pdev->dev.driver)
-> +		return -EBUSY;
-> +
-> +	for (i = 0; i < mmio->nr; i++) {
-> +		struct resource *res = pci_tsm_mmio_resource(mmio, i);
-> +		int j;
-> +
-> +		if (resource_size(res) == 0 || !(res->flags & IORESOURCE_MEM))
-> +			break;
-> +
-> +		/* Only require the caller to set the range, init remainder */
-> +		*res = DEFINE_RES_NAMED_DESC(res->start, resource_size(res),
-> +					     pci_name(pdev), IORESOURCE_MEM,
-> +					     IORES_DESC_ENCRYPTED);
-> +
-> +		for (j = 0; j < PCI_NUM_RESOURCES; j++)
-> +			if (resource_contains(pci_resource_n(pdev, j), res))
-> +				break;
-> +
-> +		/* Request is outside of device MMIO */
-> +		if (j >= PCI_NUM_RESOURCES)
-> +			break;
-> +
-> +		if (insert_resource(&encrypted_iomem_resource, res) != 0)
-> +			break;
-> +	}
-> +
-> +	if (i >= mmio->nr)
-> +		return 0;
-
-Shouldn't this check be if (i == mmio->nr -1 ) i.e all descriptors have 
-been initialized, given the for loop condition i can ever be at most 
-mmio->nr - 1 i.e the actual index of a descriptor?
-
-<snip>
+Also, the move to tdmr_info_pa_array seems 100% orthogonal to me. Why is
+it here?
