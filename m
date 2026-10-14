@@ -1,68 +1,68 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D74414438
-	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 06:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734EE1DDC38
+	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 06:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791959252; cv=none; b=EJE9+GyEIYgxLqO0V1JNt/gZ/Xlak5SgEKSfK95UkN8izEm8N0HZn5sBY1MEBF6XAiiyjs+uy+ZoqfbtR87S+C8+krPPomnBgP7XQHAad2GK/mA8Toai5J72Ry4qrxTFXO27zDUs+SOhu6ivuwfZ1sYlW4iIIvJ8/1acSAT7z40=
+	t=1791959532; cv=none; b=H3FYFYrJ/EeQA7iRDlnMq2jSYCUcDDaL8IVh7APDKGOqREc6MjYveY6uU9Q/55qt12yxPZZ0vSaIyFGKe4FhFY6bo5UhrCjtGc09/YRsqUCuX13uJkCjNbGLw3CdAyGTYge4nwFnZjFtXjgCgkFVl0ornXXRS6OVMJ9LwOdzQWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791959252; c=relaxed/simple;
-	bh=ymRKRwWEolm17glJS8skH7f5fDFclMzxXYAshHo32BM=;
+	s=arc-20240116; t=1791959532; c=relaxed/simple;
+	bh=oQ3FpNfn9xeObVL8FMjjs394GlbWXXbUtCNpJzPWfeE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=seneHhg+Qfl1ifwE77uQ6FhrTRSOKCzqOrM6g1KtYXn5PN1KEYdSdSw1yN7Xg5Bey0pxjwyAD5Ebzi1Q270BXFdCxfVI++kNWCxTllzGkq7KP7pBqGV7axui3CjzY8BPGNTImbNOJGBDpYo17xdRn06VAO7lH27i4w4+TVBopPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YPGq6ENc; arc=none smtp.client-ip=209.85.128.46
+	 In-Reply-To:Content-Type; b=pF4oMab3y9nTTNqLGE1doP8LedXExi1m4Zr7SdfJCFIcvZohV4QtnjfYESnnphJ23L8JyyE7K+RPngxBH2eUnVAGljO2mrYugaPrRAmZW/pxDaFF7cqr2tGs3mPzycvWrlYGhHSCTKM8uu+qdUhoBNuooD6VLso2ROZd4XsQAq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZTBbd3E6; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YPGq6ENc"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a1ad2e2391so10595555e9.0
-        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 23:27:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZTBbd3E6"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso47968575e9.0
+        for <linux-coco@lists.linux.dev>; Tue, 13 Oct 2026 23:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791959247; x=1792564047; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1791959529; x=1792564329; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=p/b7jAuRdElkm76Qs8iHwa7PyYm8EqE5Ut+YVV4k7T8=;
-        b=YPGq6ENcHmd5akwBrhb4NUwJMHq+Yj+J4eIune+cmDRiH4s9YbNzBG8lAIo1urRPwZ
-         9zzqnjQ7Pin7i0bbPVcuhOChx8lXAI7T4cq/+1V2hw4hdc3AE+otfD9V2NiMweB0Adf+
-         ZntaCEOnTCr6uDfxWapm3kKWWrcn7DGOG8UKyZa7pwgkgDPis2PoZ3j2v6QFV8p2sbL6
-         9CwRg7Fr52zPUa9OSasNaVmoyQ8X+OcD+2CjM+9iWXNrkbURtoyb3uFri0ABxK1vB92v
-         KRJEBleXzZiVsRs24bWec6lGVZdX7LW2Cc+qlyeO5avi+OCU3BEpM+q3HrkbBftnXr7G
-         W4xQ==
+        bh=1SKNAlUg9TrD1fwVGl6kQ8Emen5GvKQjxZqh6aLHjF8=;
+        b=ZTBbd3E6LUkSOBVzsCi+JeOd/1eHlewndPIOc0/RWAY085fFFp5JmhjK5Vn9Lp4gVM
+         nfHMuDeZJZHVJx9GpWJTmOVAeYPY2RQmGP9sfP2DTNBNJJUH5XCgMT3HsIEwKxfh9azV
+         N2Xllgsq2upj9FWHddkBtR9gMih+aQ1VxzdhBNPPhzMUH6Ul06VykOoc6Z7V+GLOc/zJ
+         WIE5eD9nwdT/baT4DDGdosKIsYmpvR0qMUM5VVFDagD9Zi+/pirvIAbSZAQwRel8Y3Tx
+         PqkGk/fVI+TbAJXDzUvLwyzDrq9eh6HkChhWpjl/c76XKUKrl8tcWSpJYmRXu2NqZyiw
+         PetA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791959247; x=1792564047;
+        d=1e100.net; s=20260707; t=1791959529; x=1792564329;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=p/b7jAuRdElkm76Qs8iHwa7PyYm8EqE5Ut+YVV4k7T8=;
-        b=VIl2uze1mhJMygjTmIRAg8hgwEaoSzSJyty9yfqyi8ME8rmwWy0Jqy7k/+yryuTTF9
-         VR+S4gRsmp7fyfSskkh0iaWvdNDK+Z7se3HtPzBRdBIsSwKmkW0W99k+XUD7FL66rfD2
-         lmJKdpMjlKZFMWk3gjbXuoZn6gAvzkA7pHv90Ln+v6O0QiVqoQsPMcm0W3mVvHb3Sccp
-         q5OEsnPaYa7tWWICTNWHurthE08yJ15NVaMqjcoZ9eR2FBizU1yTI0CiC2mXE+fjw8c3
-         4Hei1DVkn7+uWC+qxqKoARKz6TZ/9NZUj75b3/qMb5xte1Ru9uB5h+MCS0w64Xe6Zm2e
-         C3Fg==
-X-Forwarded-Encrypted: i=1; AKwUvBzy1TPWPz8J3ZtaEW7B1T60Fxm90EcIBZTKTJbjN8ZNUXAF26WHNMxm7y8JUp9+0i804xAb8wHJtrtO@lists.linux.dev
-X-Gm-Message-State: AFq9FYL6brug6cBlp4PjRtB7HGDhJ2kAngfSHPWDuDRHDgr/dhmc7ik8
-	mfpKGDai4GUQSft+SXyA1Dy8vEAUYIcPLaIzzcyRLjeLMFz8wntdnqaCYX3Paf0uf1E=
-X-Gm-Gg: AYBFou1pvqD9piCsXENeCSvLuUSmK4bwbFVvVNk8/mrwNtzgD0DehxctER4DyXv/TOr
-	8nHWxSHlWCXunURAQxA8gsqIIucEuowBO5tgWFvo0O8y4bttR87Empl2OjHDShPx4r+DDD5jIWW
-	6VWrEIwc5umjTQxpn47wAzZpVDBaAtYZ1zzj6FW1Szs8Qe/2upb5CA4Qy2ETYWvHNr9R8Bb2diM
-	iFMWZR2mObgH7xM8B0s56nJflyYMEtqTo7QcaZ86IgV5dDaE7KzxQVvBXHIMLkuq8om9MZa1Kv9
-	miWDqdcvbmhOpYrzMAcSLIKVCOs/LJFaO2jLw6NgRhxwV81LVe7+XE7QPObHBxnsB/NerT+RxOE
-	KJVJvNxK3Y9vcdPLeYg3Q3v+wXUCCWWywkjEGIX7VBoYN9VxSJ2bot1vk7eAQj/eI+NXF+mKAKv
-	bKpApmMR6tTKb0cAfnJrcH48kZfj0wmKD5+4/NMjtKG+kd/69ewY7lYepV2eobYkAiht0x3HEKt
-	bRocM3yDj65zc0fhlSoQW8=
-X-Received: by 2002:a05:600c:c16f:b0:49f:ed8c:6cad with SMTP id 5b1f17b1804b1-4a18e4ca869mr265070395e9.19.1791959247476;
-        Tue, 13 Oct 2026 23:27:27 -0700 (PDT)
+        bh=1SKNAlUg9TrD1fwVGl6kQ8Emen5GvKQjxZqh6aLHjF8=;
+        b=QwJ5IlEpYA24E3wmuhfek4SHNP/yPMVA9ZkuCWF90XOhH+ltNBo5brThGlYmNBdBC8
+         qILdFCcCHV2mddzz/ZzdEzw3r70EOIe92UQL1t0Cs8TTrmxxg08PRmU/b5ufEZM8jF27
+         t1vuFFthGnO6BrpNCp8L3/8SENKEH5cKbzJmeatUaUApoh9jbkFzXA3kNpYrJM6gIs5b
+         XsVCVtbtjlWBEGjCttBVu51OYR4gdMah8cU+CR0q1x8pQ4gbsmPqd0uphHrCyZdLIVGz
+         58PeB0L9/FLfqh4qc+Wa1YC6Mar2tFCMrCC5WPCOrTq8Pdkkp1UgYWnR4iHbwtDodujl
+         GstA==
+X-Forwarded-Encrypted: i=1; AKwUvBzThg2X+3D0wQML5oCOM1RiZ5t3VF0aiGgGTq/ytzeyJCGHxoJXzADVHau7e0L5+fT38P2pwT0KKbeW@lists.linux.dev
+X-Gm-Message-State: AFq9FYIm1hyvpRBMoNQOqvZIQJ5PdJ6XVxYA0BpwckI3Y69999DuXJFy
+	iHPqmYI1yMOSp7U0o8IU7u23uG2s7RHbtPU7zeTAlMnFqF9sNNwlzf2VXinUtvj0VwM=
+X-Gm-Gg: AYBFou0JFbWbe3XtKeB3APCE4qOZGSleB4SeXn0/p4OLQQs5ma6j706mIpNQ3p3N0i1
+	uX5A2+P2lf16NArNOVMi+Sx41dvWLBW+xZ0xaZ5zVZPO+qZnOOe6tyD/6lRUINXtJlE80dlVEbS
+	DgE0J9VXraT8QuiidTyiDc9ONnXAb+1VF9ep0Cg+3aQdCaLSfrDeexJ/95OtPszO93iw2AMy1QG
+	iWYXeYD+u5th/0VTOYLLu+wc9SlHbFzzAUA1Uwn4lx+RcH8sx2rf6oN1D/ANKgucDPhMjpJWHUW
+	IA9LdrLdcuMMzE3aJ/haLlpTE4UrfVxozTI932zxOF5c/m1zCy2az3VHcvrm7AMCgWsKWErOmpT
+	5bUF+qBR14mZBmv8gGU20pkXMpceB1vm5mkxvD0Beok8ACkavxoZq0IHht64rAHsyXVtfU4Qg3Y
+	6cXTPJjDx3l63bT3XO9LNVYs9JZc9i727i/IM7N2dPwemN1jSbT9BtuHQGYTgiFN5X+k8HoKNZo
+	xGZRAz1ELn/DRuYVhLbovY=
+X-Received: by 2002:a05:600c:58d3:b0:4a1:9388:7f40 with SMTP id 5b1f17b1804b1-4a193888295mr178393265e9.4.1791959528597;
+        Tue, 13 Oct 2026 23:32:08 -0700 (PDT)
 Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0514ab1sm12518966f8f.0.2026.10.13.23.27.25
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de7773d02sm4224045f8f.13.2026.10.13.23.32.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 23:27:26 -0700 (PDT)
-Message-ID: <c5105600-e7e6-4727-8a25-141955bc433c@suse.com>
-Date: Wed, 14 Oct 2026 09:27:24 +0300
+        Tue, 13 Oct 2026 23:32:07 -0700 (PDT)
+Message-ID: <2b73666e-d923-4042-b719-b9bdeca783c8@suse.com>
+Date: Wed, 14 Oct 2026 09:32:06 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,8 +70,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/15] x86/tdx: Add TDCM hypercall wrapper for TDX
- Connect
+Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
+ operations
 To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
  "x86@kernel.org" <x86@kernel.org>,
  "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
@@ -91,9 +91,9 @@ Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
  <vishal.l.verma@intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
  "Tian, Kevin" <kevin.tian@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
 References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-3-zhenzhong.duan@intel.com>
- <54846068-d545-4591-b850-2980ce57f40e@suse.com>
- <IA3PR11MB91362D1D89BF53AE630A9567929D2@IA3PR11MB9136.namprd11.prod.outlook.com>
+ <20260924041032.1096569-7-zhenzhong.duan@intel.com>
+ <00a4b474-eb13-4caa-90c6-b9cabb1ec621@suse.com>
+ <IA3PR11MB9136F32FBA9D830C48EBA968929D2@IA3PR11MB9136.namprd11.prod.outlook.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -139,64 +139,102 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <IA3PR11MB91362D1D89BF53AE630A9567929D2@IA3PR11MB9136.namprd11.prod.outlook.com>
+In-Reply-To: <IA3PR11MB9136F32FBA9D830C48EBA968929D2@IA3PR11MB9136.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-On 14.10.26 г. 9:19 ч., Duan, Zhenzhong wrote:
+On 14.10.26 г. 6:06 ч., Duan, Zhenzhong wrote:
 > 
 > 
 >> -----Original Message-----
 >> From: Nikolay Borisov <nik.borisov@suse.com>
->> Subject: Re: [RFC PATCH 02/15] x86/tdx: Add TDCM hypercall wrapper for TDX
->> Connect
+>> Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
+>> operations
 >>
 >>
 >>
 >> On 24.09.26 г. 7:10 ч., Zhenzhong Duan wrote:
->>> TDX Connect is a TDX feature that enables secure device assignment,
->>> allowing a TDX guest to directly interact with TEE-IO capable devices.
+>>> Introduce support for binding and unbinding the Trust Device Interface
+>>> (TDI) using the TDCM_OP_BIND and TDCM_OP_UNBIND commands.
 >>>
->>> The TEE-IO Device Control and Management (TDCM) hypercall
->>> (TDG.VP.VMCALL<TDCM>, defined in TDX GHCI v2.0 specification) is the
->>> primary interface through which a TDX guest issues device management
->>> commands to the host. The host processes these commands and returns
->>> responses via a shared memory buffer.
+>>> Executing TDCM_OP_BIND transitions the TDI state to a locked state
+>>> (TDI_STATE_CONFIG_LOCKED). Add a sanity check following the bind operation
+>>> to verify this state transition succeeded before finalizing device locking.
+>>>
+>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 >>
->> This patch contradicts what's going in patch 5. Because you make it
->> sound as if TDCM is yet another leaf of VP.VMCALL, but then in patch 5
->> you introduce the polling code to read the result. And there is not
->> enough information in the changelogs to understand why this added
->> complexity is needed. Isn't TDCM handled synchronously by the VMM as the
->> rest of the tdcalls, is it perhaps handled by TDX NRX module?
+>> <snip>
+>>
+>>>    	struct tdx_devsec *tdevsec __free(kfree) = kzalloc(sizeof(*tdevsec),
+>> GFP_KERNEL);
+>>> @@ -174,6 +233,19 @@ static struct pci_tsm *tdx_devsec_lock(struct tsm_dev
+>> *tsm_dev, struct pci_dev *
+>>>    	if (!tdx_is_dev_teeio_support(tdevsec))
+>>>    		return ERR_PTR(-EOPNOTSUPP);
+>>>
+>>> +	struct tdx_devsec *tdevsec_bind __free(tdx_tdi_unbind_dev) =
+>> tdx_tdi_bind_dev(tdevsec);
+>>> +	if (IS_ERR(tdevsec_bind))
+>>> +		return ERR_CAST(tdevsec_bind);
+>>> +
+>>> +	ret = tdx_tdi_read_state(tdevsec, &state);
+>>> +	if (ret)
+>>> +		return ERR_PTR(ret);
+>>> +
+>>> +	if (state != TDI_STATE_CONFIG_LOCKED)
+>>> +		return ERR_PTR(-EIO);
+>>
+>> While this does seem correct, it's not really following the spec or I'm being too
+>> rigid, namely:
+>>
+>> Since TDI can change the state any time, TD can't fully rely on the Known RUN
+>> state in any scenario. However, TD can rely on the Known
+>> RUN state after TDG.TDI.START as a confirmation of the Interface Start.
 > 
-> TDG.VP.VMCALL<TDCM> is the leaf used to submit a TDCM request. The VMM’s
-> return from that VMCALL acknowledges the request; it does not
-> necessarily mean the device-management operation has completed. GHCI
-> defines asynchronous completion for potentially long-running operations.
+> About TDI changing state any time, do you mean host changes TDI state,
+> e.g., through TDH.TDI.STOP? Or you mean TDI device goes into TDISP error state
+> due to hw error? Can't they happen even after TDG.TDI.START?
 
-But this is essentially an implementation detail, and currently we don't 
-have the host implementation. In that case this choice must be spelled out.
-
-> 
-> GHCI describes polling the shared status and event notification as
-> completion mechanisms. This series uses polling with a timeout; it does
-> not use event notification. TDCM is not implemented by the NRX module,
-> although some host-side operations initiated by TDCM may use NRX
-> internally.
-
-Right, those operation falls within the TDX connect spec. And TDCM is 
-just a subset of the VP.VMCALL interface used for tdx connect 
-management, in that sense it's not a "separate entity" i.e a discrete 
-module but just a collection of functionality, implemented in the VMM?
+I've taken this verbatim from the latest TDX connect spec, I'd assume 
+what it refers to is the TDI/device getting into error state because the 
+DSM deemed so because of whatever reason. I believe there is an inherent 
+TOCTOU race here, because you can at best get a momentary snapshot of 
+the state but the DSM, which is inherently an independent entry could 
+for whatever reason decide to enter in error state (highly unlikely, but 
+still possible!)
 
 > 
-> I’ll clarify the submission-versus-completion distinction in this
-> patch’s changelog and explain the polling choice in patch 5.
+>>
+>> But here we still haven't done a START, just a BIND, no ?
 > 
-> Thanks
+> Yes
+> 
+
+<snip>
+
+> 
+> I understand this as a best-effort sanity check, not a guarantee that
+> the interface will remain in this state.
+> 
+> For example, suppose the host creates the TDI but incorrectly reports
+> BIND complete without completing TDH.TDI.BIND. In the module
+> implementation I’m looking at, TDG.TDI.RD(INTERFACE_STATE) returns the
+> stored TDISP state without requiring the internal TDI state to be BOUND.
+> A successful read could therefore return CONFIG_UNLOCKED.
+> 
+> At this point we have bound the interface but have not started it, so
+> CONFIG_LOCKED is the state we expect. Checking it catches that
+> inconsistency; checking only the TDCALL return code would not. This is
+> still a snapshot, not proof against a subsequent state change.
+
+Makes sense, IIUC it states the same thing I stated above i.e a 
+snapshot, so perhaps this check could be carved in a different patch 
+with the changelog containing this reasoning?
+
+> 
+> BRs,
 > Zhenzhong
 > 
 
