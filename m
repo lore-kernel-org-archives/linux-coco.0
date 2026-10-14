@@ -1,254 +1,380 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010049.outbound.protection.outlook.com [52.101.201.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A6E421227
-	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 19:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A574DA539
+	for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 19:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792006415; cv=fail; b=htwXA+vTUHyoRU6iYjd5W00HsTkxNYvmBh++ldtp9pFoFJztV0DVV/yZUCfqffHpopgZkRl6mDA1Vsdnb97tZPY1biF3CNkL9mJm4K0t3PFIkfAWnfLBwVuUey46SonZCLkDXvyzyJc99wklRUjCIqcI5F6a4QoW32RhnBYyf+0=
+	t=1792007622; cv=pass; b=sIwCl0zH0V+Pzu4ARL7EiCVsyyPooQ1ZuNv9XjovpvAmFd/A3IsXSyeIjWwonq6MApDuMBIGfoGW6ww/ahVcXgPIrMn1K12T5gh/Pl88yOLcngQnBH22vXSeU4Z02jpvh89238UCtRecltnBAf2vI+5gWUTbGdfgG08fuNtcMR4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792006415; c=relaxed/simple;
-	bh=8gVHgDm1ycbyat5G7Ovw3fG0SiRNLIHLaqEWT+9Ska4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qNsSNReUeIIwiFI2UIAUaB8D3i4WKAiJuBtk37JxUg2hYD0tfUpVb4oAXCZL692MhIgvktN/8CclkpTwj8isQnGsjPDb4grdH5Y8ytSh6U3ip9RVbPT55jC37lhqJQCyc+datDGgZtLmeUoQHG+z2GUKhP6NMZ+t4xOQihaFgqk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lw1GCEv6; arc=fail smtp.client-ip=52.101.201.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1792007622; c=relaxed/simple;
+	bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XfHUUI+O08P3r3N5R1uwe+CikS7RcEioXBCZYwGRHBApdFDvjbFQ7ZM3MYaB9kgmqaP13U5iaBK/GuLPOcnqGnumrpY5Ud7M+N02SfA/zPblfHVu+SfJaWVgD6i7y6otXyMPg7tCgRAosnfmRrEmJuVIQJDbZDTmzsdezyD/264=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vYLtKyDU; arc=pass smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lw1GCEv6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B/OHLYcgcTwF9TdH5bVyn3vTllDG3qeZzIlFkluMYi7Zfm6xUaSFIb/+gi9sxDj2zWRWoG8sT7HacaiyAX3qXQ53+jDPUXtiqfap1flrKRSYHmwpK5rlrb0dwOEXU1Gc4rrYn+I1Q++6XIACiVr7kmTVFKfC4tZ4iW8oaG85oJXzmLlLITOpCGmfowvIxn2XYMpoyQfEpZl8806faIOfk+vuKVzrRSdMMm/SBFwL7HFxjlh2FykudijQJbZqTK7xloEe8sFt075IydXPrB0owHU5djs+3nXEUZzgKQ7wjwUB406zTDTd8g9caE3wrd93WBhvXpMRCgcIDsjvT9VvbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dlIUr+jKklOP5V0YF0Qbm88nubKrpkEpZrHG4Hzm/h0=;
- b=WYip3WU+Hc2dfw18aiy+pfJf9DrymUpwF/dkunOgkY//6AH8hkxMtBshR9v4muAAdUSvjukoZ+Mv30bkuiJuKVc5sPy36ES5wbu3i/Nu52aBUHe1VZDH20BZtcSuGvWW45RmBjt0xoBHV5FeA/WvP2eXxrFHHw4KorLLUHHl6wXnmmKEBwkQTqvmjrylksdW6V0w92w9rl3kL/nmAIj4IpE5gWQjymqUykJ1rYW2ixkpzZV1cu8yKZZdnqNDrDxWBxLeZ0VuRBB46bUdg+PlHLngatE091ikGR/vE4gp7MIKrQ9uwBQDA2KrE2Y/32AgSEwHNWorDFwfR8pCB1FcZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dlIUr+jKklOP5V0YF0Qbm88nubKrpkEpZrHG4Hzm/h0=;
- b=lw1GCEv6dqBRBXWkUYQsnFqMkNTTirhAs1M5DBlgOOMoSzfUfwHBGtzmFxgEFvtWzI+Oyf9uEkD7pWlFoPxixN4oSyknYhLofGR4MftkMkUd0zc3d9WPyuGV8YN2kwf5fyw5KNJcTibHFiIzw44KZMG1e9OjdqAEGD4puJ6tzG4=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by DM4PR12MB9069.namprd12.prod.outlook.com (2603:10b6:8:b8::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Wed, 14 Oct
- 2026 19:33:30 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%4]) with mapi id 15.21.0496.021; Wed, 14 Oct 2026
- 19:33:29 +0000
-Message-ID: <9f16cbfe-7864-4733-b4d3-4da03d731d7a@amd.com>
-Date: Wed, 14 Oct 2026 14:33:18 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/sev: Only announce RMPOPT optimizations when SNP
- is enabled
-To: Tom Lendacky <thomas.lendacky@amd.com>, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1791905953.git.ashish.kalra@amd.com>
- <11df35266257afcad3825a8e89c965bb0cf7cf34.1791905953.git.ashish.kalra@amd.com>
- <a66f932d-4ca2-402d-9f76-628ef53a1107@amd.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <a66f932d-4ca2-402d-9f76-628ef53a1107@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CY5PR18CA0046.namprd18.prod.outlook.com
- (2603:10b6:930:13::8) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vYLtKyDU"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93ece7a73b9so572696085a.3
+        for <linux-coco@lists.linux.dev>; Wed, 14 Oct 2026 12:53:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792007618; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nociE1QW0Je1TQ5V4Pwfa6RqxuMk369HImpQCXIcLaXGQQ0/aAOlRNq90q0tRTYK6G
+         bm21/ihUIToIzbNZG/IGkuFbsCQBGkc3B/F+x8/qTeSptfMbRWl0FeyKJyZGY4QQul6o
+         LOoYg1oEzEdPBtbRMREgaG9bHVIdeS0y29cYLL9lKhN/rbCj1BHQgCETeSqyzSzs+hdC
+         LDieZV9fnvjOZM94+TIoxYmamrjzCk/+Pv99Wm1p9T2rGo0r/eOeZ5Qx4goK2kYnlikF
+         z20KCroEM5KisGd95rFW0skv/EXw3QsC8rg8kM6swoGU/7QwaBP+O7u8tO7wwFdfDL01
+         lw1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
+        fh=9EdVobwB8NIhVG94XZ7AY8TYBFzFOYizCfVNdDU92jE=;
+        b=rBNRsgxX/WydhHGy3lCuZlemqOvx6GKuQHjonJPwMgnDuVboau75fKdug3P9B6JZrX
+         4D5nGLR3Q/wU7hkK0ltPj73gwZAJsHpJ9qmF27irhaZmzYxh9LkyDGHEntX4logolV9J
+         pySVCZNW/gtdnI8VZ7q5kB9rQ9+EXGMrVarZBgtxb81+F69LB05a1J7e61+z62Jp+2XS
+         5OzJ0KaPHM03hNO/7Nd40XgCywKCB7HSMI/XcdNJwZyVDyK/6YhWbd1tjXEgD43sAoY+
+         qp8pD4k6guiU2aaJl7d2jNhGo0/xRl/Cbuc1lhPpqcepC+UGDI9V9WqyaMpbBvLGWtuc
+         f3Fg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792007618; x=1792612418; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
+        b=vYLtKyDUEtqub0r7xU8xmogA9Yv399QlK33KQ68E7S02tos5/7u6n2WCKAGd/E/nhn
+         +7Jz+POkmoTDudgNxnXJk2mYVusC6/Izqkx1qVQNAMh0p+WujlWCY3pep1LW/3wjJEkC
+         Sfq1XPoZRylCzixWJt3aamm6ghFy9u3Ddn4qpRHOOFQrqadE4XmCPHI5vPtG2UVT1/aw
+         QJYp5oO7kTO4La8EDDe2RvqH7/gqvpKu+j+sAAUmMX3F7LDSDRHWr9N+SOGhKGnD9K1a
+         F6B4f7oSm8NMS1GpbS1hethjK2+PgO6EJDuYb6FyXECEoih7D0adF1KPyoi4GExfsHGQ
+         GAQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792007618; x=1792612418;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b3ueYwo9fjE03GJnGTWoxYYbVKoqoGXBaT55QOht5OU=;
+        b=QOdG7XPHuF4rJfLIq1DLqMCCJESvw55aw3vKCijygEnsX6qYq3tahuSPNDcVKPWML3
+         KeqMGWRSAWktsiBOD/lR4j8yfQW+7Y2+rVbF3mO3oh7XRuEe5OhO9ZVEjVNrkcD8hfDH
+         EUhcqeS7hh3edPK7YsJcJn60Z7UWeKks5Mids3DXy+4xm8dEoUKaD9bBgm2o/SzjTmtU
+         JdawNRQHIioPLwzHkNcD2Ggrw9SUdyBxvR5Lo9C6XMWacjbgnPUFbnrxeW7BYovUM0mI
+         eoXtC5zyWYAVwGG3zptbsbsC/utPGruvrOkG0bXstIEj3Qr3rGBTLZYNbblSJQMy2+fi
+         QPjw==
+X-Forwarded-Encrypted: i=1; AKwUvBwU6W6deX5yWinNaAM82lVXRZZ+3dZQdTq0GxO7h6Y+pVrVTLfzW0WSlbCnkmieaVNJ2I3ct7xj9/Kl@lists.linux.dev
+X-Gm-Message-State: AFq9FYKvQHTiZWNrsetdaxgpK00D6s9OMh79AZND/KJNIE75NFOFBYYu
+	5SJpOJPjUWaVVfNtLVQJ8yRxuKpTvPrM431DBnYA5I9GjTVOqbwtwQh4qfEg6VsZD4LpEiOXmOl
+	OKnPNFgd1eSdo7jslcPV7rWeba0dfUAxD1vP6HySk3IA+bVzzBeFsiQwJ
+X-Gm-Gg: AYBFou0POb94EU5mHccoRuSB0EXtanRAL1wRbx7tRHNU2cqcDKkbA2P9fSkNM2EfKpt
+	N1YECjfDFeoXez7pcs4mW+zbq5gw+++HT87KSK6cCSAXy45hilNOvZhJfjqQw90yR0PmEqyzmSI
+	f5LFiORkOxHE9bhhqXuJTzhACmladASYGt62sDIgEptkxLkVcDCduuUI3gg5Myz94CoX40e1/9V
+	nxIQN1kyuJMK6YUe8OY83Mclj625H5BzAHddZ8xWo03NgIB5lvz4C6kxKZpmtCekiSjBAJKUp7S
+	PGgpVm5MowGwE3vjPJNh/rae1zwM04w0E1q82jQkHyZ8JYHoXW+mZ53QV16r0gFejZfw7sBS1Rg
+	MKB3h62oNRD9vpvhkkCN/NwCTE5qPOENllbumXvpXHCA=
+X-Received: by 2002:a05:620a:a2cf:10b0:93e:c12c:f142 with SMTP id
+ af79cd13be357-93ec12d0865mr1898747285a.76.1792007617714; Wed, 14 Oct 2026
+ 12:53:37 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 14 Oct 2026 12:53:36 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 14 Oct 2026 12:53:36 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <yq5a7bjky8wj.fsf@kernel.org>
+References: <20261010072504.536230-1-aneesh.kumar@kernel.org>
+ <CAEvNRgFC6U4er0QhcwVOqWyz657WWWtidkNu0hKS5go4A3cP4g@mail.gmail.com> <yq5a7bjky8wj.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|DM4PR12MB9069:EE_
-X-MS-Office365-Filtering-Correlation-Id: 772719cf-1564-4a7a-3a06-08df2a2a05ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|18002099003|22082099003|6133799003|10067099003|4143699003|11063799006|261009223027099003|921020|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	Cjw9wSaocTTeGonGcmP1+LbQH25pjFmoYFKpxU58fckY6Hvd0pja9XIZGPS/yL+1wjhdN6Y4m+hVuL5+yjwpXCJ0mWUB3ffnG8ckxITyWxbhI+9o4Zn/psl7GQ+4+5kpCKiW0ZUQppmyTw9FUFnfLoie1rrelDTahzrgD8uL69TSrSKoLhn3uvoNewmroWzYIa27xb4JT1XWvfFksjlyExBQqP2enRzZbPPGoqQnhCCabHOvgWh6kO+ZSFKb4SfOkuZCKCRPyG0l7geRoV5b8J/LgPZ0TrzElEvfQzOwjbtV1aihCZrll6LOkpUCU5TVKN8W7rJUBFQBocDoCMJIA2f/miMM6Row91QMfh0r+L/YFUqePTu9a20//iSY31hJaLBW7SDWk87FD7uS0/mr+ykg1Fm4JGYy/qKwLuOh7MWs79JzgYLGyIYYO1TTCwAJfdaO3cLcZOCH6m2yLJLYT/q2UUNmTZiDxhCnbxRDOaJmpsN1z4ECpLUDeFcy2RHLr+D+GIE+cQLgRKxLQ2q2QhEi1gp3WuZ6N61ASRMyqglc+a0oxHhV/rXAR1evNAcP9JMtqUp8lJeUaSJoqpqWxHTCIeC1NLF8Z0KKZl2iHw478kbhzmmhMCLMQpgUX1MjQ+9gWu9HYWe54AtRyZiN6cVelt2g5akvvJyRnHqGIxPK+8+aYHZytOD1XRw36Ii3XJ+oEYLwp+SuznTzsR/lWQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(18002099003)(22082099003)(6133799003)(10067099003)(4143699003)(11063799006)(261009223027099003)(921020)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUdnMGdnL0NvQ0R2ZHAzK1FOYnE5OHBKWGo0SmU4QWtvV052K3pwVmpFZkVq?=
- =?utf-8?B?RnNRTzVEZDl6R04rUVRYdW9GK1hWT21tY0dTb2REYnQwZlNFcVIra3RrZGcw?=
- =?utf-8?B?QkJMNEZGOTNLdFFocUxxbjNpaFFmQm9YdG9FbHJwcjF4cC9wZDVLV1lxRS8x?=
- =?utf-8?B?MWFVdHlPK2ZWTzFoWWtSc0xqWjhMU3FiY3VNWmliQytxNnhDaStvaDFSYnAw?=
- =?utf-8?B?MEhzblJMRHE4UGFKWTd3c005TjE2OXQzQlRiVXZNcXFiVk5PajVYQS9WRnNF?=
- =?utf-8?B?NUVmazdvM2NUbVZoQ2Eyc1lsL0xBVWxjSVFsT2RmZHo0eUVZTSsxdlZjYmFH?=
- =?utf-8?B?QlkvSDdyTndhU0NLbDhFSHB4S0NQS1FDV0Y4VU93aXJrU2Y5cEd5Y0l6UW44?=
- =?utf-8?B?ck0rSExhZ2U3MHVia05nU2ZoVVpoTUNSL2lmZWlCMGpPMldmTjF1YjAyVSts?=
- =?utf-8?B?eVdLUDNUTndFaW9RZzJwVlV5OHJuUk1XZVp3OG1ZNWxPcFhPUk9PekY0RU9x?=
- =?utf-8?B?cERJcVQyRzVGSmhFMFRvdnVXMmI5aDFRY0lTZElxZ2tVWmxyRnpsaE53RnVL?=
- =?utf-8?B?NDZPQXpweDNmakdXRWZsOXU4cnYwbnB1d0prSkZhbnhMWmUvRlR0d2Rka0Yy?=
- =?utf-8?B?WTcwOHJjVDlGdG9TYkEyQm5BdDZBK1NGY3FZRm9UM1djU2h3ZnJ4bDRRSXJz?=
- =?utf-8?B?a2NSZm1PQTJOdmFFYjI4MTQ2SFd0K2daWnhodzFWM3B1QjFUK0hBQmFBWE1T?=
- =?utf-8?B?ZU13MDIyL3RHdnVWRWVDMHdVMmo2YTJWUUh6NUp5eE0wWWtnM3pKcG5VSUVw?=
- =?utf-8?B?dk9nRllxS0UzZlBMS0dNYVc3RGRqTkVqVHRtRkxJUFluS1hyRUlCNWdOWHJ4?=
- =?utf-8?B?Z1c0VjVzOGRaWUc5UUVwMmcvdVZUUzFLUFR0MWVwU2d5L0o2eE9LbDA4TFRX?=
- =?utf-8?B?ellvSHZyT1NyTTlwem54THYwWUhCZC9VN1l5NGhhTFd5YTVjNHJpRmZISnh2?=
- =?utf-8?B?Y0ZoYXVFdnE0YXFaNzN3K2JEVi8vYXZPbE9kVGxianUzNHRjc3dEbW1nS2lt?=
- =?utf-8?B?YWFxQlNoakZ5RGpjRnR1RzNua0ZPTjcxeW9UOGIzYWRaYzlySGhLOGNObzl4?=
- =?utf-8?B?bnRldVJ1RWhWdGhZZS80VGttOGlHTjltQlU4N0xsYjQ1ZDNXTU5FRGRkUDJx?=
- =?utf-8?B?UnJpK0lNd1Q1enZZK1N3aDZ5MHZ5Q3NNVDlISUQ2OTVpOTR2eGVzZ2RoNXg4?=
- =?utf-8?B?Qk1MM1ViSllhems3YlBiRlZERmwvbU1YdVFjbmhmRzRVbHJ4aEpwQmt1czlZ?=
- =?utf-8?B?cVY0NUQ5UG9ZczJYOTA2Q0I5ZGtvMzVheDRaakZhc3NqNlc2NmRTVWdXdzl0?=
- =?utf-8?B?UlU0Vlpyc0FBZVdUZURPanI3aGtiNXMwd3BIcFdsZlczZ2p2Ly9EbDJrcTVp?=
- =?utf-8?B?UzZHSG1HM3MvZUQ3eFJIaHVITDlIN1YvSEF4NFF6aUFCekpERnd3WGF1dTRT?=
- =?utf-8?B?TTd4cFcyR0ZTaWUyR2dJY1lIdG56aUhsZ0lmWGQwOERMR1p4aHhyUk5FeFJN?=
- =?utf-8?B?bC9naXM1SjEyYklJS0FpK0o1MUVqK2ZQb2pOckw2TVIxdFdDWXVNNEZ6b3Jh?=
- =?utf-8?B?cWdsNERWWUpCcUZsUWZIUHBycWdEWk0rbERDQnFLZ0o0L0xXcGdsQTRRTktF?=
- =?utf-8?B?aHgzOFJFMDdqa211a1JPZmE3UERkTWFTUkxOYm9lajRzTXRYOVhiWFU3emlK?=
- =?utf-8?B?aTczNXpWenZQOERxZVV1ajFnVGZhc2JDM2NiOWsyNFNGSnJlR1Nyby9NQ0Ji?=
- =?utf-8?B?QlRHM1ZhdnpEa085SVJFWk1vR292Q1lWdjRuREJnTnE2K3pjcHJaMXZWdUFF?=
- =?utf-8?B?QThDYjJlaDJ0Z3VVN1RkUE5ZdFUzYSt6cHlhMXNwRWFQZ0hhNFRtYjFFaFh2?=
- =?utf-8?B?bWJDb1AybXVlTFpBV0hQV3JsM2JUNzNMWm1hT3ZIV051eHY4YnErVFhYSFUr?=
- =?utf-8?B?QWRvQXA0K1JscHhHYVg2dzlFN1BidTZ0Yi9GOGdEWVZLT1pLWjh3S0hMck92?=
- =?utf-8?B?RlJWU1dzZDBQYzNOcjhxR2RkVFZrdXR5UW5kRGdxS2dudWt3QVBMUzk1NWhT?=
- =?utf-8?B?NEpJeXJOZ1FTUEhwOFZGN016MlVidHMwWTJwT25KSjZJTjdXRjFTS05TRmJq?=
- =?utf-8?B?NUVwR0FGNnFYOW5iN0pScVJHVysvdDdTaThzeHFTMjN3WW1FbGJyaWJqUlBK?=
- =?utf-8?B?Q05aeDFmRVBCc25WT25NZWZDdTFvNGRwa1EyaWZFODFXa08vQjBQVTJKbVJr?=
- =?utf-8?Q?hCP0z6RJzZon4abvdc?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 772719cf-1564-4a7a-3a06-08df2a2a05ce
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 19:33:28.9641
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2GMeg354a0nWpz4SDjYDT4TP0h/wZhAamU7VY6auIcZ+wXYTtsz6IAUlk6R2KMEvYq+PQswXZ1zhcyEZalxYbA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9069
+Date: Wed, 14 Oct 2026 12:53:36 -0700
+X-Gm-Features: AclHuK-WbMkUylbHFNMeinh59E-dHthPA1VhGiwdfTYkoCCF9XbdzoNbemMEawg
+Message-ID: <CAEvNRgGfjHhVCxHhew8AMKhXrX6XDrbrw5zpQM9LaODhJHRYYg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/6] KVM/VFIO: guest_memfd support for device MMIO resources
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Cc: Alex Williamson <alex@shazbot.org>, David Woodhouse <dwmw2@infradead.org>, 
+	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Kevin Tian <kevin.tian@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, Will Deacon <will@kernel.org>, 
+	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Steven Price <steven.price@arm.com>, Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, john.starks@microsoft.com, jacob.pan@linux.microsoft.com, 
+	gourry@gourry.net, vannapurve@google.com, fvdl@google.com, tabba@google.com, 
+	dave.jiang@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
 
-On 10/14/2026 8:24 AM, Tom Lendacky wrote:
-> On 10/13/26 10:44, Ashish Kalra wrote:
->> From: Ashish Kalra <ashish.kalra@amd.com>
+> Ackerley Tng <ackerleytng@google.com> writes:
+>
+>> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
 >>
->> rmpopt_init() prints "RMPOPT optimizations enabled" gated only on
->> X86_FEATURE_RMPOPT, which is a CPUID bit advertised independently of
->> whether SNP is active.  On a system where SNP is disabled in the BIOS the
->> message is still printed at boot even though RMPOPT is never actually used
->> (snp_enable_rmpopt() bails out on !CC_ATTR_HOST_SEV_SNP), which is
->> misleading.
+>>> This series adds a guest_memfd device-resource framework for exposing PCI
+>>> BAR memory to guests. The intended use is confidential device assignment,
+>>> where KVM needs to coordinate private device mappings with shared access
+>>> through VFIO. The Arm CCA backend is provided separately; these patches
+>>> contain the guest_memfd, VFIO and IOMMUFD interfaces it uses.
+>>>
 >>
->> rmpopt_init() is only the software setup (workqueue and the delayed work);
->> the capability that matters for the message - an active SNP host - is
->> checked in snp_enable_rmpopt().  Move the announcement there, as a
->> pr_info_once(), so it is emitted only when RMPOPT is actually enabled on an
->> SNP host.
+>> Thank you Aneesh!
 >>
->> Fixes: c6c6f156d192 ("x86/sev: Perform RMP optimizations asynchronously")
->> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
->> ---
+>> I definitely like this since it builds upon [1], the model where
+>> guest_memfd coordinates zapping during conversions for the
+>> provider. Please see comparison with the alternative at [2].
 >>
->> Note: in the posted series the pr_info_once() lived in
->> snp_enable_rmpopt() (SNP-gated); when applied, c6c6f156d192 moved it to
->> rmpopt_init() (feature-only-gated) as a plain pr_info().  This restores the
->> original placement.
->>  arch/x86/virt/svm/sev.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> [...snip...]
+>>>
 >>
->> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
->> index 43e4945e6cdf..6f5f4ee821d0 100644
->> --- a/arch/x86/virt/svm/sev.c
->> +++ b/arch/x86/virt/svm/sev.c
->> @@ -656,8 +656,6 @@ static int __init rmpopt_init(void)
-> 
-> Should the check at the start of rmpopt_init() just be
-> 
-> if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP) ||
->     !cpu_feature_enabled(X86_FEATURE_RMPOPT))
-> 
-> so that you don't even bother setting up the workqueue, etc.?
-> 
+>> I have questions:
+>>
+>>> Userspace creates a device-backed guest_memfd using the ordinary VFIO
+>>> device fd as resource_fd, with GUEST_MEMFD_FLAG_USE_RESOURCE,
+>>> GUEST_MEMFD_FLAG_DEVICE
+>>
+>> With the model described at [1][2][3], I was thinking that the VFIO fd
+>> would be the resource fd. I'm hoping that there wouldn't be a need for
+>> GUEST_MEMFD_FLAG_DEVICE.
+>>
+>> The plan [3] was for resource fd to represent just the resource but not
+>> provide any way to access the underlying resource, so that after
+>> .attach(), guest_memfd's fd should be the way userspace would access the
+>> underlying resource.
+>>
+>> For tmpfs, the example in [1], fsmount() returns an fd that has no
+>> .mmap/.read/.write ops, which fits the plan above perfectly. It tells
+>> guest_memfd about the resource, but does not give userspace access to
+>> the resource.
+>>
+>> In VFIO's case, vfio_device_fops does implement .mmap()/.read/.write,
+>> and I don't think there's a better existing fd that represents a single
+>> device.
+>>
+>
+> With VFIO, after attachment we can reject new mmap() calls by checking
+> the attachment status in vfio_pci_core_mmap(). During attachment, we can
+> reject the operation if the VFIO fd already has an mmap. But I guess
+> read(), write(), and VFIO_DEVICE_IOEVENTFD should still operate through
+> the VFIO fd, or are you suggesting that all of them operate through
+> guest_memfd?
+>
+> I am not sure we want to move the ioeventfd ioctl out of VFIO. If it
+> remains there, userspace needs write access to shared BAR regions via
+> vfio fd, so it would make sense to continue allowing read() and write()
+> as well. If we allow read() and write(), should we also allow mmap()?
+>
+> I agree that keeping userspace mappings(mmap) under guest_memfd rather
+> than VFIO simplifies conversion. The conversion then becomes:
+>
+> unmap_mapping_pages(inode->i_mapping, start, nr_pages, true); //unmap user mapping
+> kvm_gmem_invalidate_start(inode, start, start + nr_pages, KVM_FILTER_SHARED); // stage2 unmap
+>
+>
+> Both are now under guest_memfd control, so no VFIO callback is needed.
+>
 
-Thanks, that's cleaner, and gating on X86_FEATURE_SEV_SNP avoids the workqueue setup entirely on a non-SNP host. 
++1, yes!
 
-Will add this and post a v2, keeping the pr_info() in rmpopt_init().
+>>
+>>> and GUEST_MEMFD_FLAG_INIT_SHARED. Eligible BAR
+>>> intervals are registered as guest_memfd memslots. File offsets use the
+>>> existing VFIO region-offset namespace, allowing one guest_memfd to cover
+>>> multiple BAR intervals. Device-backed guest_memfd rejects mmap and
+>>> fallocate; shared guest faults obtain bare BAR PFNs from the provider
+>>> instead of resolving the memslot HVA or allocating folios.
+>>>
+>>
+>> The model I have in mind is kind of opposite from above. Instead of the
+>> guest_memfd rejecting mmap(), I'm thinking that the VFIO fd should be
+>> the one that rejects mmap(), read() and write() once guest_memfd
+>> attaches to it.
+>>
+>> If userspace needed to mmap() the VFIO fd, it should instead mmap() the
+>> guest_memfd fd. guest_memfd doesn't support read() and write() now, but
+>> support can be added. The read/write for guest_memfd just forwards to
+>> vfio if the offset range is shared and blocks if the range is
+>> private.
+>>
+>> For mmap(), for regular memory, mmap() is always allowed, but faulting
+>> dependsd on shared/private status. It would be nice if the same logic
+>> could apply to guest_memfds that wrap VFIO.
+>>
+>> I prefer the userspace accesses to go through guest_memfd to VFIO so
+>> that the shared/private-ness can be enforced from guest_memfd.
+>>
+>
+> Sure, I can implement this. I guess read(), write(), and ioeventfd will
+> continue to go through the VFIO fd?
+>
 
-Thanks,
-Ashish
+If you agree to having mmap() go through guest_memfd, then read() and
+write() should also go through guest_memfd imo. I think it makes sense
+since guest_memfd gates accesses based on shared/private status.
 
-> Thanks,
-> Tom
-> 
->>  	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
->>  		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
->>  
->> -	pr_info("RMPOPT optimizations enabled\n");
->> -
->>  	rmpopt_soft_init = true;
->>  
->>  	return 0;
->> @@ -690,6 +688,8 @@ void snp_enable_rmpopt(void)
->>  
->>  	mod_delayed_work(rmpopt_wq, &rmpopt_delayed_work,
->>  			 msecs_to_jiffies(RMPOPT_WORK_TIMEOUT));
->> +
->> +	pr_info_once("RMPOPT optimizations enabled\n");
->>  }
->>  EXPORT_SYMBOL_FOR_MODULES(snp_enable_rmpopt, "ccp,kvm-amd");
->>  
-> 
+guest_memfd already had plans to support write() [4], so I think
+supporting read() should be fine too.
+
+[4] https://lore.kernel.org/all/20251020161352.69257-1-kalyazin@amazon.com/
+
+
+I'm not super familiar with ioeventfd, let me know if this makes sense:
+ioeventfd is a kind of config, like mmap() is a config, but faulting is
+where the actual access can happen.
+
+guest_memfd always allows mmap(), but only allows faults on shared
+offset ranges.
+
+If userspace sets up some link between a private range and some eventfd,
+I think that's ok, since it's not actually doing accesses. When the
+signalling actually happens, then guest_memfd needs to gate that.
+
+Going by that, I think if the ioeventfd ioctls are just setting up
+links/mapping, then it can go through the VFIO fd.
+
+Between going via the VFIO fd and guest_memfd, I think if "everything is
+wrapped by guest_memfd" a simpler mental model to go with, then maybe we
+could just go with swapping the entire f_ops with guest_memfd's
+intercepted version?
+
+
+IIUC during the LPC discussion some people were suggesting creating a
+brand-new only-for-guest-memfd resource fd and not relying on existing
+mount fds or VFIO fds. What do you think of that? Instead of using the
+existing VFIO fd, would it be better to create a new for-gmem-to-wrap
+VFIO fd? I didn't like the idea of needing to create a new kind of fd
+for every resource guest_memfd needs to wrap.
+
+>>
+>>
+>> Is GUEST_MEMFD_FLAG_DEVICE there because GUEST_MEMFD_FLAG_USE_RESOURCE
+>> tells guest_memfd to look up
+>> resource_inode->i_sb->s_op->gmem_provider_ops but for VFIO,
+>> gmem_provider_ops can't be stored in super_operations? If that's the
+>> only reason, that's a very good reason to store gmem_provider_ops in
+>> file_operations for gmem_provider_ops to serve different kinds resources
+>> and include VFIO.
+>>
+>
+> I can use the same approach for VFIO. I kept the current implementation
+> simpler by using a registration framework on the VFIO side.
+>
+> I can switch to gmem_provider_ops if we are comfortable adding the
+> device-specific callbacks to guest_memfd_provider_operations. Since the
+
+Yes please, gmem_provider_ops in my RFC was just a minimal set, we can
+expand that as providers require.
+
+Imo we should have either gmem_provider_ops in some ops
+(super_operations or file_operations or elsewhere), or a registration
+model for all of gmem_provider_ops, but not a mixture of global vs
+registration.
+
+> VFIO core supports multiple backend drivers, such as vfio-pci, the
+> superblock operations would essentially forward the calls to the
+> appropriate backend driver. That is a VFIO-specific detail that
+> guest_memfd can ignore.
+>
+>>
+>> I also noticed the need to guest_memfd_register_device_fops, so that
+>> guest_memfd knows the device supports being attached to?
+>>
+>> What do you think of this: we have a common attach function for all VFIO
+>> fds in file_operations that would look up the struct vfio_device to
+>> determine if guest_memfd can attach to the vfio device? Actually, which
+>> devices would not support attaching? Wouldn't all devices support
+>> attaching? I'm thinking that using a device that is all-shared via
+>> guest_memfd should be no different from using the device directly. All
+>> operations should flow through to the device.
+>>
+>
+>>
+>> Regarding conversions, I would like to check: with Confidential IO, are
+>> conversions at runtime actually necessary?
+>>
+>
+> They occur at runtime after the guest starts, but are infrequent. The
+> entire region starts shared. The guest validates the interface report and
+> requests that the BAR regions be mapped private. They remain private until
+> the host converts them back to shared during the TDISP unlock operation.
+>
+
+I see, so infrequent == once ever? Could the guest want to, at runtime,
+switch some BARs between shared/private? I wonder if the spec supports
+runtime conversions.
+
+>>
+>> Is the only "conversion" the one when the guest accepts a device? If so,
+>> maybe that "conversion" can be implemented by replacing memslots.
+>>
+>> Pre-accept, mmap() the vfio fd directly, set it up in memslots.
+>>
+>> Post-accept, remove the old memslot, wrap the vfio fd with guest_memfd,
+>> set up the guest_memfd statically with shared/private ranges as the TDI
+>> report requested and never allow conversions, replace the pre-accept
+>> memslot.
+>>
+>
+> Is there a reason to use two different flows here? Why can't we always
+> use guest_memfd?
+
+I was hoping blocking conversion could make the implementation simpler
+if we never need to convert at runtime. It might be easier to merge if
+we trim the features. :) It's also nice to have consistency with regular
+guest RAM though.
+
+> We could attach the device at startup and use
+> guest_memfd before acceptance, while the BAR is mapped shared. We would
+> not need mmap() unless userspace requires it for another reason; the VM
+> fault handler could fault in those PFNs.
+>
+
+Did you mean to just block mmap() access completely from userspace on a
+gmem-wrapped-vfio-fd?
+
+If the CoCo guest and device allows some BAR to be shared, I was
+assuming that's because the host might need to take some action on those
+ranges. If so, then mmap() would be one way to access those ranges (in
+addition to read()/write()). I think we should still support faulting
+into userspace page tables for shared ranges from a
+gmem-wrapped-vfio-fd, and ideally follow the same model as regular
+guest_memfd where mmap() is always allowed, but not faulting for
+CoCo-private offset ranges.
+
+> During device acceptance, we convert those BARs to private. On CCA, we
+> also create the stage2 mappings at that point, since private BAR regions
+> do not support fault handling.
+>
+
+I see, thanks for explaining! This is one thing different private BARs,
+that private BARs cannot be faulted into stage 2 at runtime.
+
+With Confidential IO, private BARs don't support fault handling, do
+shared BARs support fault handling?
+
+>>
+>>> IOMMUFD resolves and pins the device's existing vDEVICE for the VM and
+>>> serializes MMIO conversion through its MMIO mutex. VFIO supplies BAR PFNs,
+>>> checks eligible ranges and excludes independent dma-buf exports while a
+
+Thanks for excluding dma-buf exports, this is important, we can't let
+dma-buf exports be a backdoor to access guest-private memory.
+
+>>> guest_memfd provider is attached. VFIO host mmap faults, read/write and
+>>> ioeventfd accesses check the requested range's guest_memfd attributes.
+>>> Conversion revokes cached host mappings and shared guest mappings before
+>>> installing private mappings. Other shared intervals remain accessible.
+>>>
+>>>
+>>> [...snip...]
+>>>
+>>
+>> [1] https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
+>> [2] https://lore.kernel.org/all/CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com/
+>> [3] https://lpc.events/event/20/contributions/2551/attachments/2047/4693/lpc-2026-gmem-other-backends.pdf
+>
+> -aneesh
