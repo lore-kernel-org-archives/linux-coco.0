@@ -1,198 +1,360 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5A23D410E
-	for <linux-coco@lists.linux.dev>; Thu, 15 Oct 2026 14:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792075586; cv=fail; b=fou9fU8hEiA13NhBNLl0D+cwZ1paa7vBb2l0RMVqFCyjeQf77/RVtyt400W3yWlPzZma/44JgP943dAnlOz5e28c0vSkk8zi0shK/mTOMvf9P6ykO0rgCe9yAIJ84TXF/UD1UBaJ2SIx0OqQkdHE8RL40OttqdEIcb5mdRZZ17E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792075586; c=relaxed/simple;
-	bh=KsJEdRgWlV7guI+23QOfTlFpEMtat12HKtslrX5W8Tc=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Wh/fOWObbG4NclUxHm1HJTKCFtUPfz7x3fL/MFn6FI42jkd2RhfNVVwf6hlAdw9uGxgV4TqLV9FRaU0jdIfmjSMqts1XyOC4V4grAsAks+DyQIrHfVyG//JeC9ze1RLEEpN8YgeS+NwVJ7NC0c/Ph+bTXzDiwRYB/0EV9vD5vcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KXnldm3l; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07D13B8D75
+	for <linux-coco@lists.linux.dev>; Thu, 15 Oct 2026 14:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792075866; cv=none; b=SuBs6U8k8lFUH0o7azUj7r+Lg77vq6YI1/A+474+dFjvZLQooM4OI/NlYt/re2gKPJ1rf0SShkojt+5Cc842EAK9CCvnl53dq+SBfU4LQEUw+lDlB2oc8YEnnFGl8rvFIUM0xh2KXByWJfYyV7ORSVbmdqifcZoHjHJQcD7TN2g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792075866; c=relaxed/simple;
+	bh=30pkOtZgf9ME4AwuW1ixELazskhl9vK+QR4jNkkbEPw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rdWqqPbjQmCx9b+Yo3BTXVPwOn74n0u1UH4fQVzY3LoaGcWBCUTCkKFLeElrVS1ccVBmn4MI1KZKR36VGPcta/ehX5bXQx5+kA7mSSceY+I8WPcsrPWMNeUdsQXJ0CsV2UnR/HskTgTn72ue0dHwCYkapfgriAMuerj/Q8C8FCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=bt8kLR3b; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KXnldm3l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792075585; x=1823611585;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=KsJEdRgWlV7guI+23QOfTlFpEMtat12HKtslrX5W8Tc=;
-  b=KXnldm3lcDFE85fcnWzmcf6wYceQWTGpveUJEYrvI0ayQ5AYws4iQTl3
-   n9wDiQIfdCzETxsmLJc5SKBz/yt2/Xvrn+5IzpiDoIc66+0D/cCX/K7xI
-   wQahwy5QCtJWUBMTty/Y8nuvq7fRSOt9iKczGRxSxC4qyi/l31YAHCnye
-   FBqPfeXaSQneKd8XBmThJrNXmhzuNwzra/EbxgbXFR4JJhAKRBaOM2sLd
-   jn8f/WtXOuF8Wm15LAqlfMdFu8Xl2NJBJUhgD+lm+B1zGf+MiQFJWLOI5
-   yvSu3pLFaMSsdHZi0JzyQ4aP0bOUdGVHO5j166GDQucdMcQe0L4ao0IJF
-   g==;
-X-CSE-ConnectionGUID: 67iUSreJQTCA7bKKXvuD0Q==
-X-CSE-MsgGUID: xzNCAHaZSV+OLoqaZ9ZkUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="880256"
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="880256"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 07:46:23 -0700
-X-CSE-ConnectionGUID: jhOxyVdxSNWHIMVDwkQhpQ==
-X-CSE-MsgGUID: MPnc3KAtR7O1I50IAXzXdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="1624150"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 07:46:23 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 15 Oct 2026 07:46:22 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 15 Oct 2026 07:46:22 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.24) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 15 Oct 2026 07:46:22 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NtTccqdE36JRUS5JC0qJy0nG7esZPa5wmeIhyYKqyOtnAhhT1LeGWrbYJnw+6M39hy3Z4GmCFxEmq6Vrl7opNqbmnRi6thB4/DICwpwcH9rmPPzhNBeoKyXtrkdoArqzlozerP/VV9qWmspylFESPxywNX8l92iE2RgBNI7oILfnO0/zX3bCJMFTKLQOecGoGPmlwjvtWYTMR/BVDgT3kNLdwwz6BwF8Qm+Rxirhb53NElDpkFbd85G83cvVEwDKAPT1ZldFa/hFO6FgyeCTb/9Pm6vmooN5n0dlmzWVwwECk2/SOE/cvtCeUo7P/JKSUw71shyyh/HC4xSmfa83Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dLd+0Xhfk8XyV0aFuoiaHsApX1sAivxsInPwQB/Z+sA=;
- b=mcohhlIB86mUiX9cbmMhDjlYdWmK9wt5BB139vKShodqLsiquidFO5Cl75nYl6EK06e8NLiFGdwh8tI0AZSbRGVwsGxj4nR3vCGed2d5Cb6eNUw7k3fDox2A3oaJz5VNhY8odU+bqSfc0ZI+XYNwYXPEQl9OE4mFyxbaf96mNNW0GVQHY7VNJusqO8RO/4B+Q8kWna6+NcBNIXnqNQMucUonSYDD4zdz8F2prCUp6YanagLTiwGTlKNSGD3zqWFZ3Ug1Um4XVabZc9Pb+0O/rL0kLfLUxgwMINFThdyEsTwTbbMSQPM4BTl2UpillXBPoKO2Fk9hRUArdTXwLkqLUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20)
- by LVXPR11MB9780.namprd11.prod.outlook.com (2603:10b6:408:387::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Thu, 15 Oct
- 2026 14:46:19 +0000
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc]) by SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc%6]) with mapi id 15.21.0496.021; Thu, 15 Oct 2026
- 14:46:19 +0000
-Message-ID: <b3f44e74-dbb6-428d-a746-618b7288df5c@intel.com>
-Date: Thu, 15 Oct 2026 07:46:15 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/18] x86/resctrl: Register
- RESCTRL_GLOBAL_ENABLE_PER_CPU when PLZA is available
-To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>,
-	<ben.horgan@arm.com>
-CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <fenghuay@nvidia.com>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>, <rppt@kernel.org>,
-	<dapeng1.mi@linux.intel.com>, <elver@google.com>, <enelsonmoore@gmail.com>,
-	<jlayton@kernel.org>, <kuba@kernel.org>, <ebiggers@kernel.org>,
-	<seanjc@google.com>, <ewanhai-oc@zhaoxin.com>, <binbin.wu@linux.intel.com>,
-	<peterz@infradead.org>, <ashish.kalra@amd.com>, <superm1@kernel.org>,
-	<chang.seok.bae@intel.com>, <prathyushi.nangia@amd.com>,
-	<kim.phillips@amd.com>, <ackerleytng@google.com>,
-	<elena.reshetova@intel.com>, <naveen@kernel.org>, <darwi@linutronix.de>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>, <eranian@google.com>,
-	<peternewman@google.com>
-References: <cover.1790867441.git.babu.moger@amd.com>
- <05717f15f11f9e11f6b2a2737f4ed2f01fd9733b.1790867441.git.babu.moger@amd.com>
-From: Reinette Chatre <reinette.chatre@intel.com>
-Content-Language: en-US
-In-Reply-To: <05717f15f11f9e11f6b2a2737f4ed2f01fd9733b.1790867441.git.babu.moger@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0139.namprd03.prod.outlook.com
- (2603:10b6:303:8c::24) To SJ2PR11MB8370.namprd11.prod.outlook.com
- (2603:10b6:a03:540::20)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="bt8kLR3b"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b1aa29e06bso3754611a12.2
+        for <linux-coco@lists.linux.dev>; Thu, 15 Oct 2026 07:51:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1792075860; x=1792680660; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wJJUWKqlF+gd3ZMu1go4tClyLr+/3z2AgdparxQCI4I=;
+        b=bt8kLR3bmc9crok7z5BE3vcTEj7qhwarF091seUlCCJZaEZq+19AgGbS/FuSKcHwXv
+         +uWniRCA/sJtS1RYEsuUW7WMxZtcKS0DJ2oG3dxH7nZjLzdoVfZhx47pkq9CGRepMdEr
+         +xPatcrP4nfscic14LqNjncVRjP9ByUZCePRXzXFbbCKO848qd2D5YrLkNF1ZxjkdJi6
+         0biNlNMyfrGVvao78/6F/sdMhZg8n9G/KFg5uQJwdbxLiKEae0CwQ/Gs0Y/1bB0k923C
+         SRe4MrWH2JnwoKKfuBSdEHxxCEyM8VtNRopkEzH0TtAsK/GVVUkV3kk40uYjh+HV/JuK
+         NAAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792075860; x=1792680660;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wJJUWKqlF+gd3ZMu1go4tClyLr+/3z2AgdparxQCI4I=;
+        b=J/uEcwQXN/AEQ+aPQpART1UxpjcvnfCxmM0KklKj3d7zmcmnrx1TelcXal7peQseBb
+         eYHee502ZNFyOWeXBnvQ+KXu3Y0PbiMou9x7LdG00shQpWqTyR9ExF5KwVLG+LQGe3Ez
+         2o7ag/iP4cSkMIismIjsoXacoNVsoVOMVg55ZBb+zGS3teo35GzZm23BzIBLFtFm+f2l
+         q/1brBv+vG+TKktq+FHH7jwxBuJ7ozc9MYqBUUcSFkR12cAPha6Fosn7fO7zZTbP0fuO
+         SV7LTMQ1T/XhQcqDJ/k6y2+Ga4YGDvyGkt8ZSF7vGmPLVz4JJpmdeJ4d2oJ3Un4QLrZM
+         KY7w==
+X-Gm-Message-State: AFq9FYJuJfDaYJGGIRKzXmeqqCurWKl9wxUFVEQPqFZCQKtlKhA73mU1
+	t2B2HAZFrGdyUTvUMI7m4pe4agsGMSzjovsBuvzC7X71RLkunRCLZt/WHvOwO7HLTluesgD8ZeR
+	n6WI6
+X-Gm-Gg: AYBFou3pdIfy/BQ2AusKYqAwU/MA49aVtM+G2clI8Ynohva2xzVDHgY6wA5xSFHd7Cz
+	BC4zhmyQgobQ6Ishvq9mRKUPf4lfFic2duLrVhGYHv13L+SgTfebi26DmT5uucuy3TsRiqCw2SP
+	XiDGm8VzcQ0MOA3i/M02Ec2tlfy6PK7X/DdveFoGku8sIH6HrIuYLIkXaIx2tOWLNRt734CHwyD
+	BNeLdZlCPYfW1tK5ppS1dujUdTAQjoaAGeV+riSMwiJaK2teQOQsxA6Wisj+vGuCtX7o2joAZz7
+	1wdrxEHmFRBK9w2BGjV41oRSElovE4JbtSrQrFDZfZbguklk/E4MRh3xjzIY92n1Wm6buPofifI
+	IlWjAwPLqOd/wWlmn7y+qWQaWrIM2Cc9e2BTPVsY2iG5/z08my/VitymQALVxgWd6YaKjeU+RMo
+	1UnN16OrrV/ulxMRalzqM7SDDp64ouInUnoAzw3t9HD2GhIBmS49hA+9xubiwUWbYmL56ilKLIX
+	sA7euzyoQ==
+X-Received: by 2002:a05:6402:27c8:b0:6ac:94cf:9f1d with SMTP id 4fb4d7f45d1cf-6b1e49eb8bcmr7444996a12.21.1792075859704;
+        Thu, 15 Oct 2026 07:50:59 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b203862c4esm2665322a12.16.2026.10.15.07.50.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 07:50:59 -0700 (PDT)
+From: Jiri Pirko <jiri@resnulli.us>
+To: linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	x86@kernel.org,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	jgg@ziepe.ca,
+	david.quigley@intel.com,
+	lukas@wunner.de,
+	ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com,
+	cedric.xing@intel.com,
+	sameo@meta.com,
+	drdeeglaze@gmail.com,
+	James.Bottomley@HansenPartnership.com,
+	aik@amd.com,
+	jpiotrowski@nvidia.com,
+	qinkun@google.com,
+	pgonda@google.com,
+	jic23@kernel.org,
+	alistair.francis@wdc.com,
+	ankita@nvidia.com,
+	suzuki.poulose@arm.com,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	peter.fang@intel.com
+Subject: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX support
+Date: Thu, 15 Oct 2026 16:50:33 +0200
+Message-ID: <20261015145053.3664509-1-jiri@resnulli.us>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB8370:EE_|LVXPR11MB9780:EE_
-X-MS-Office365-Filtering-Correlation-Id: f469a17b-9f8d-48dd-a0e9-08df2acb12ef
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|366016|261009223027099003|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: W/Q7uHL1Dl9KPf9IgnR3CjjubJYzWSxv4yGWheSYif9120itWkVWt+VKC1i1fv36nyS3NcNNlXLVbhkM1ss4i1+z9dGGNMhL4hfddRCJg23PaarL+0JsW1sYxTTlAYK8Q0yscObf/Y/l2ddSJz5Yv2djSWCrhTU0ngXzvnLDKpCr7k3uvrYn6Kk3vZolLD3Ftt4wfur//sa1V5eCoebHJONc8rkcxP0ODVNw/1mPiiE3UX3DhmApBpVa5lV/mbCCg44MzyDL5DHdqmNQCAzKWe5FNRwNd/Z8hG6h2KJ5uDb4QVdZpZ9lOBlmmnjqap+OKeq9XtUAg9CQA2aic/U9uaKJu8MsLl4763X4/5WS8llkwok5w3N3Ouwe+VzUWaeRGGOjoBWBRv/+0DgfVjTc9dpbKC0XGfAPlDPzG1lO7xDSXYvZl0FP+8WjMUf6R+OQNk40ORZ3w11qFc5Czb90I/S+KuoZ+SmxfgoexxvRp0Ktwt6a0NCxR7CQQjVxCdO0FbbMvvvcs7XOmRn6zsg8yizGDC7Ysgea7SW8pjMCKVrbbU4CYrwMcUTOPMCTQxUgZ9SGTLqGMXvpY8WZmMnddR06XOF0uvHoEieDsALgTiro2K2Nnlh8U3/UwK1p2dYhLqU+DoSs4MGwuR6hbjM8dY6B3FsnnBSWWdxPFwWdbws=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(366016)(261009223027099003)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q0lRYmFSRWgzR0JDdU1IUGVORU1YWWo0RCtTd1l6TDFwV2g4M0tGV0xrbmo2?=
- =?utf-8?B?SGs3U25xWkNnR2hqakhTL0JOTllDWW9sMGZ2T0Z6Y1EzNjJjT204WWNyamVS?=
- =?utf-8?B?UFBCb1VTK1kyMmdzVWVRL2NYWENEWjE2QzM1S2NEOUxXejJZM250ZDRaS0pX?=
- =?utf-8?B?b1RCajdFM1VsUjZRYlpSTVhBLzhLM1lNeTFDY1JlMm42ZXVDVlZsVjRtRHkx?=
- =?utf-8?B?NzBtN24xTWNSY3YxQWpJaGg5andtUDFGL0MxWVNsbExJdHhFZ1JZL3ZKcUps?=
- =?utf-8?B?Vkl4eTFGZkhiMC90azRwMllrRDYzaGxQS0FZNGM5aDl3WnJjS1NDdGdJQUxP?=
- =?utf-8?B?czFvc3hBS3BSMkFxK2VWYWt0MGwveU42THlLaTZBODlybjhKNSswM25YK282?=
- =?utf-8?B?ZHczSXdmSG51WUFITXhZRmhSWGwxbk9mSFhNdnNWLzYyYmxwWmRjMjRUQ0lw?=
- =?utf-8?B?RjFQL2RkSGV2aWlBNjJWL1YyZ3lRUEZEa2VNQlErT0R2eFVIMWFMZ3NNTytr?=
- =?utf-8?B?aVB0ODg4Z2J3clVGZFVrUCtKb01XMTcvODBjcm13dG4zc3JKWUN6WElTTEVj?=
- =?utf-8?B?QzhEeTY4UnV4MFBlUUtLUVdrckRrU210MTZxOUQ2MmtqUVpjMDNxa0ZMQXNJ?=
- =?utf-8?B?bDhTY0VZQlVuMEZybnlwQndDL2RGQWxkWDJQOFhEb3RLUi8zRUdqYytUc0pQ?=
- =?utf-8?B?RFRnMWl5SUhNWFRLNlBLMVVhY3lDUVNwZUVrb05ZeGxIRlRsalVwcnduY3Zj?=
- =?utf-8?B?bG1SMXhHZnk5bFJjOE03dmdTMzNXajAwdEpqYTYwWStPRE80VnFGZ21Ja0Vs?=
- =?utf-8?B?eUpxSUlsT0UxeVMyU1dQeVlkVkYwTzVDK0o4V2UxQ0NxcEk0SDI0RGZyQ0Jn?=
- =?utf-8?B?dmtMUGMxanJ0VzkvRHE2cURzWituSXFaRXJ0eVBpV1lXU3JBZktCOEZ2Z0Qx?=
- =?utf-8?B?amExYWk3UUFXdVpNUi9SZDdoUXJ2eWdKMGlEZFNKd2ZLWDAyMWFVMmJneDdz?=
- =?utf-8?B?ZGZZYU1sNXN3bWZsNm5DZXBwenJwMDBuNlQreDF4ZnlKVlRpS3daNDQ3d2FV?=
- =?utf-8?B?Tmx4MEZER1VESGJrK2tPMDZIaGJvSzgzN0k3VGwzeEhET3ExNkQ4Z0tXbzBO?=
- =?utf-8?B?UUZmS2pjc0ZINDZQanY3aGJRMnZyakdkdm9LV1B5WUlHN2diSXhCUTFGN2Jl?=
- =?utf-8?B?OS9Tbzg3cUR6TW9nZktoU1RuVk1Tb2ZnUkwrOHVJUFFjbUE4Q244VFNpTEtt?=
- =?utf-8?B?cDg1TkFQNFIvd0tja0FPa2J0eW1tRDNyS21Wak1Tc3d6dWlkeDdBcXFtdGVs?=
- =?utf-8?B?VW5mODgyQ0VoYzI3bVl4emVKMVlZSzBwU0hLRXpaVVdRWkNLL3E2ZFBBb3dz?=
- =?utf-8?B?T3IwSTNYZ2lsejNsbXZhYmZhWjRWVmJhemE4a3JXL09JRzRQd1pEdUplK0M3?=
- =?utf-8?B?NUNnR2RkRXVNS2t4R2h5K3Zxc2pEU0o4TFkvY1VXbjJLL29YZ0NFSXgwSzBz?=
- =?utf-8?B?UmsxZWZ4NGVKMWkwQWdxN0R3b0VTdGZNanNSZ0VkZmJCcVRVMzAxVko0Nk9H?=
- =?utf-8?B?Snd5RGF5OU9RZXdlVElaeFRIc2hmK2JEdEp6RWtIWXhZNW9QdmZ3K3llbkFn?=
- =?utf-8?B?ZnRKK2t5T2FHNWprQm80dlYrN2tuRVErOUtEMGFYbXh3R2t5RTg1RzE1cmhC?=
- =?utf-8?B?bURsamh4WVlUNXlTbWJxczhpaEJFV2RoTUdKVkJucjhBSEpBWnEzQk1saE4w?=
- =?utf-8?B?Wm4yYkpxN1Vlak4xZXJ3b1ZnVkZyWVBEQys0QSsrWXJiWkdBY3ovckllV283?=
- =?utf-8?B?OWR5dFBOSHVZZjRxaC9HZXlEVXE1Q2o3L3oyMS9taXpQdER1bkRLVFdqVlFM?=
- =?utf-8?B?VDU3Zm5uVUJ2UC9aVUlHMDNrTFk2aVhtQW9MdDh0emxJR0U5bUtBL3ptTTkw?=
- =?utf-8?B?M0NMd3A1Qm1OdzVrYzJKL3piOSs0Zkg2cUlnTXAreThsaEJyWnpOQjRDTGpO?=
- =?utf-8?B?aFdCb2o0cVhRc0g0K3IrWjB3VlN0T09uNzBpUnBMZkJZUlBETU5Fb0VRdGEw?=
- =?utf-8?B?RU1pbTFYeXM1MENkVWRkVE40NDhhY2hwWVBFUFdGOHFNMGNVUUZOQ1B6c1pG?=
- =?utf-8?B?aEFZMGZtaE1XN0VpWXNEMFg3RGxkc1hTcGJYdE0yT21KSjJZbjV0TmtURVkw?=
- =?utf-8?B?cWkvNEoyRWtUaEJqUHc5WlFyWGlNbmhscCs0WlFwRXA1b0RwQWFGclFYSjhk?=
- =?utf-8?B?LzN1MmwwdVlKbTFtL1N5clpmYlhKVUJjOS91dk5PR1pxS0s5Ui9BYURaYXQx?=
- =?utf-8?B?UExRZzFwWTdjelROQ29PalNCUjRranFvOC8ya1ZPRVBqTXA5WktnL1I4OFM5?=
- =?utf-8?Q?2Ztps92GbTMpg8r0=3D?=
-X-Exchange-RoutingPolicyChecked: 4W8rWeQ9VhmQO4XKcwHcC56HhT4huD+j7xpi7cIdTlv/npWsEpZ8CAcAWbIMXflx9rXL0ED/SwIWvey5d+HUZkK92inXjYBbQaeAF1TYdJa/VOg1ftr89C8bBrodEN0EzUrzcMuGRL+Tpub0FnDQQB5cgXGNXucqHd9FaeMj8Bmq4wDjL58kNfnLY/MkiEcyGZ1LyRz7i7EbVFX3Tpm1ZTcGWNYs7AgCHkazh0fUBQbXp7ZrMAVJZiXjXixvm1/Zx2jORm7bIoXyvEQS6Vcdiqkq4ct0oprP4JOLHkMziZzLvXTT/vBGZQH3M/QuQIJe22dCE+0QoKruNhwTLVJK3w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f469a17b-9f8d-48dd-a0e9-08df2acb12ef
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8370.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 14:46:19.5917
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f9utDxf2io67nRo8yGmukHNLt7CEpvjrxsVP60R6XeA8W60gDco9iUuuGrCQRpeJtwmJsxtexkGkX7OHtNtnPLInFBVCakjBiCIsu6hDgUA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVXPR11MB9780
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-Hi Babu,
+From: Jiri Pirko <jiri@nvidia.com>
 
-On 10/1/26 8:10 AM, Babu Moger wrote:
-> PLZA (Privilege Level Zero Association) provides the global per-CPU kernel
-> mode, RESCTRL_GLOBAL_ENABLE_PER_CPU, allowing kernel work to use allocation
-> and monitoring associations that differ from user tasks.
-> 
-> Add x86 support for this kernel mode and make it available through the
+Linux has several attestation interfaces tied to individual technologies.
+That makes evidence retrieval, measurement registers, device state and
+kernel consumers provider-specific.
 
-nit: This patch does not add any support, it just registers the mode
-with resctrl fs (as the subject already indicates). Didn't patch #5 already
-claim to add support?
+This series introduces a common attestation subsystem. Its goal is to
+support platform, TEE and device providers through one model, including
+TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
+This first series implements the common subsystem and a TDX provider.
+Existing native TDX tsm_mr and tsm_report interfaces remain independent.
 
-> resctrl kernel-mode infrastructure.
-> 
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> ---
+Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
+Compared with sysfs or configfs, CTLV executes one validated request
+atomically instead of assembling a transaction through several files.
+Compared with netlink, an opened device fd directly identifies authority
+and lifetime, can be delegated normally, and owns its event queue. CTLV
+also provides:
 
-Reinette
+  - generated kernel metadata, UAPI constants and documentation;
+  - strict type, bounds, nesting and required-field validation;
+  - runtime operation and schema introspection;
+  - family inheritance and extension points;
+  - fragmented queries with generation checks;
+  - per-fd event subscription, overflow reporting and removal notification;
+  - large input and output blobs.
+
+The attestation family exposes capabilities, evidence, measurement-register
+topology and operations, an append-only MR journal and journal
+notifications. This first ABI contains the paths exercised by TDX. Extended
+evidence classes, dynamic registers, record payloads, verdict recording and
+device-security transitions follow with providers that need them and are out
+of scope of this initial patchset. The broader direction is illustrated here:
+
+https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
+
+That branch also contains additional providers (test and sim),
+attestation core extensions, libctlv and ctlvctl. With the tools
+and kernel specifications, an attestation device can be used as follows:
+
+  # Discover CTLV devices and their family chains.
+  ctlvctl --spec-dir Documentation/ctlv/specs list
+
+  # Inspect the root-family lineage and attestation capabilities.
+  ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
+  ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
+
+  # List the measurement registers of the attestation device.
+  ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
+
+  # Read RTMR0 (MR 1).
+  ctlvctl --spec-dir Documentation/ctlv/specs \
+          query ctlv0 mr-read mr.id=1
+
+  # Extend RTMR0 with 48 zero bytes (SHA-384).
+  digest=$(printf '%096d' 0)
+  ctlvctl --spec-dir Documentation/ctlv/specs \
+          exec ctlv0 mr-extend --json \
+          '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
+
+  # Retrieve the RTMR0 journal.
+  ctlvctl --spec-dir Documentation/ctlv/specs \
+          query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
+
+The 20 patches are organized as follows:
+
+  1-13    add CTLV, its generator and documentation
+  14-17   add the base attestation family and implementation
+  18-20   expose the native TDX service and add the TDX family
+
+Note to reviewers: Please focus on the overall design, UAPI and internal
+attestation-provider API. The internal CTLV and attestation implementations
+remain rough around the edges.
+
+Jiri Pirko (20):
+  ctlv: Add the schema language and generator
+  ctlv: Add the UAPI wire format and family API
+  ctlv: Add the root family specification and generated files
+  Documentation: ctlv: Add userspace ABI
+  ctlv: Prepare message input handling
+  ctlv: Prepare blob descriptor validation
+  ctlv: Prepare schema validation
+  ctlv: Prepare message output handling
+  ctlv: Prepare VA blob handling
+  ctlv: Prepare event queue support
+  ctlv: Prepare runtime introspection
+  ctlv: Add device and operation dispatch
+  Documentation: ctlv: Describe how to write a family
+  attestation: Add the base family specification and generated files
+  attestation: Prepare provider and instance core
+  attestation: Prepare measurement register journal
+  attestation: Add CTLV operation handling
+  tdx-guest: Expose the native attestation service API
+  attestation: Add the TDX family specification and generated files
+  attestation: Add the TDX family implementation
+
+ .../ctlv/abi/ctlv-attestation-tdx.yaml        |   22 +
+ Documentation/ctlv/abi/ctlv-attestation.yaml  |  184 ++
+ Documentation/ctlv/abi/ctlv.yaml              |  186 ++
+ Documentation/ctlv/abi/families.registry.yaml |    9 +
+ Documentation/ctlv/ctlv-registry-schema.yaml  |   38 +
+ Documentation/ctlv/ctlv-schema.yaml           |  359 ++++
+ Documentation/ctlv/families.yaml              |   15 +
+ .../ctlv/generated-files-schema.yaml          |   64 +
+ Documentation/ctlv/generated-files.yaml       |   31 +
+ .../ctlv/specs/ctlv-attestation-tdx.yaml      |   30 +
+ .../ctlv/specs/ctlv-attestation.yaml          |  347 ++++
+ Documentation/ctlv/specs/ctlv.yaml            |  379 ++++
+ Documentation/driver-api/attestation.rst      |   64 +
+ Documentation/driver-api/ctlv.rst             |  422 +++++
+ Documentation/driver-api/index.rst            |    2 +
+ Documentation/userspace-api/ctlv.rst          |  507 ++++++
+ Documentation/userspace-api/index.rst         |    1 +
+ .../userspace-api/ioctl/ioctl-number.rst      |    2 +
+ Documentation/virt/coco/tdx-guest.rst         |   18 +
+ MAINTAINERS                                   |   26 +
+ drivers/Kconfig                               |    4 +
+ drivers/Makefile                              |    2 +
+ drivers/attestation/Kconfig                   |   26 +
+ drivers/attestation/Makefile                  |   10 +
+ drivers/attestation/core/core.c               |  354 ++++
+ drivers/attestation/core/ctlv.c               |  520 ++++++
+ drivers/attestation/core/events.c             |   65 +
+ drivers/attestation/core/internal.h           |  108 ++
+ drivers/attestation/core/mr.c                 |  376 ++++
+ .../generated/ctlv_attestation_gen.c          |  234 +++
+ .../generated/ctlv_attestation_gen.h          |  198 +++
+ .../generated/ctlv_attestation_tdx_gen.c      |   61 +
+ .../generated/ctlv_attestation_tdx_gen.h      |   66 +
+ drivers/attestation/providers/tdx.c           |  277 +++
+ drivers/ctlv/Kconfig                          |   12 +
+ drivers/ctlv/Makefile                         |    5 +
+ drivers/ctlv/blob.c                           |  355 ++++
+ drivers/ctlv/blob.h                           |   15 +
+ drivers/ctlv/blob_desc.c                      |  102 ++
+ drivers/ctlv/blob_desc.h                      |   29 +
+ drivers/ctlv/builder.c                        |  374 ++++
+ drivers/ctlv/builder.h                        |   14 +
+ drivers/ctlv/core.c                           | 1517 +++++++++++++++++
+ drivers/ctlv/ctlv_gen.c                       |  229 +++
+ drivers/ctlv/device.h                         |   55 +
+ drivers/ctlv/event.c                          |  713 ++++++++
+ drivers/ctlv/event.h                          |   69 +
+ drivers/ctlv/internal.h                       |   81 +
+ drivers/ctlv/introspection.c                  |  512 ++++++
+ drivers/ctlv/message.c                        |  403 +++++
+ drivers/ctlv/message.h                        |   92 +
+ drivers/ctlv/schema.c                         | 1047 ++++++++++++
+ drivers/ctlv/schema.h                         |   50 +
+ drivers/virt/coco/tdx-guest/tdx-guest.c       |  258 ++-
+ include/linux/attestation.h                   |  138 ++
+ include/linux/ctlv.h                          |  249 +++
+ include/linux/ctlv_family.h                   |  551 ++++++
+ include/linux/ctlv_gen.h                      |  137 ++
+ include/linux/tdx-guest.h                     |   75 +
+ include/uapi/linux/ctlv.h                     |  183 ++
+ include/uapi/linux/ctlv_attestation_gen.h     |  252 +++
+ include/uapi/linux/ctlv_attestation_tdx_gen.h |   44 +
+ include/uapi/linux/ctlv_families_gen.h        |   17 +
+ include/uapi/linux/ctlv_gen.h                 |  271 +++
+ tools/ctlv/Makefile                           |   59 +
+ tools/ctlv/ctlv-regen.sh                      |   55 +
+ tools/ctlv/ctlvgen/__init__.py                |    1 +
+ tools/ctlv/ctlvgen/cli.py                     |  172 ++
+ tools/ctlv/ctlvgen/lib/__init__.py            |    1 +
+ tools/ctlv/ctlvgen/lib/cgen.py                |  825 +++++++++
+ tools/ctlv/ctlvgen/lib/compat.py              |  821 +++++++++
+ tools/ctlv/ctlvgen/lib/errors.py              |   14 +
+ tools/ctlv/ctlvgen/lib/gen_family.py          |  347 ++++
+ tools/ctlv/ctlvgen/lib/gen_kernel.py          |  517 ++++++
+ tools/ctlv/ctlvgen/lib/gen_uapi.py            |  223 +++
+ tools/ctlv/ctlvgen/lib/outputs.py             |  329 ++++
+ tools/ctlv/ctlvgen/lib/semantics.py           |  893 ++++++++++
+ tools/ctlv/ctlvgen/lib/sizes.py               |  238 +++
+ tools/ctlv/ctlvgen/lib/spec.py                |  583 +++++++
+ tools/ctlv/ctlvgen/lib/tree.py                |   71 +
+ tools/ctlv/ctlvgen/lib/yamlload.py            |   83 +
+ tools/ctlv/pyproject.toml                     |   22 +
+ tools/ctlv/requirements.txt                   |    2 +
+ 83 files changed, 18084 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/ctlv/abi/ctlv-attestation-tdx.yaml
+ create mode 100644 Documentation/ctlv/abi/ctlv-attestation.yaml
+ create mode 100644 Documentation/ctlv/abi/ctlv.yaml
+ create mode 100644 Documentation/ctlv/abi/families.registry.yaml
+ create mode 100644 Documentation/ctlv/ctlv-registry-schema.yaml
+ create mode 100644 Documentation/ctlv/ctlv-schema.yaml
+ create mode 100644 Documentation/ctlv/families.yaml
+ create mode 100644 Documentation/ctlv/generated-files-schema.yaml
+ create mode 100644 Documentation/ctlv/generated-files.yaml
+ create mode 100644 Documentation/ctlv/specs/ctlv-attestation-tdx.yaml
+ create mode 100644 Documentation/ctlv/specs/ctlv-attestation.yaml
+ create mode 100644 Documentation/ctlv/specs/ctlv.yaml
+ create mode 100644 Documentation/driver-api/attestation.rst
+ create mode 100644 Documentation/driver-api/ctlv.rst
+ create mode 100644 Documentation/userspace-api/ctlv.rst
+ create mode 100644 drivers/attestation/Kconfig
+ create mode 100644 drivers/attestation/Makefile
+ create mode 100644 drivers/attestation/core/core.c
+ create mode 100644 drivers/attestation/core/ctlv.c
+ create mode 100644 drivers/attestation/core/events.c
+ create mode 100644 drivers/attestation/core/internal.h
+ create mode 100644 drivers/attestation/core/mr.c
+ create mode 100644 drivers/attestation/generated/ctlv_attestation_gen.c
+ create mode 100644 drivers/attestation/generated/ctlv_attestation_gen.h
+ create mode 100644 drivers/attestation/generated/ctlv_attestation_tdx_gen.c
+ create mode 100644 drivers/attestation/generated/ctlv_attestation_tdx_gen.h
+ create mode 100644 drivers/attestation/providers/tdx.c
+ create mode 100644 drivers/ctlv/Kconfig
+ create mode 100644 drivers/ctlv/Makefile
+ create mode 100644 drivers/ctlv/blob.c
+ create mode 100644 drivers/ctlv/blob.h
+ create mode 100644 drivers/ctlv/blob_desc.c
+ create mode 100644 drivers/ctlv/blob_desc.h
+ create mode 100644 drivers/ctlv/builder.c
+ create mode 100644 drivers/ctlv/builder.h
+ create mode 100644 drivers/ctlv/core.c
+ create mode 100644 drivers/ctlv/ctlv_gen.c
+ create mode 100644 drivers/ctlv/device.h
+ create mode 100644 drivers/ctlv/event.c
+ create mode 100644 drivers/ctlv/event.h
+ create mode 100644 drivers/ctlv/internal.h
+ create mode 100644 drivers/ctlv/introspection.c
+ create mode 100644 drivers/ctlv/message.c
+ create mode 100644 drivers/ctlv/message.h
+ create mode 100644 drivers/ctlv/schema.c
+ create mode 100644 drivers/ctlv/schema.h
+ create mode 100644 include/linux/attestation.h
+ create mode 100644 include/linux/ctlv.h
+ create mode 100644 include/linux/ctlv_family.h
+ create mode 100644 include/linux/ctlv_gen.h
+ create mode 100644 include/linux/tdx-guest.h
+ create mode 100644 include/uapi/linux/ctlv.h
+ create mode 100644 include/uapi/linux/ctlv_attestation_gen.h
+ create mode 100644 include/uapi/linux/ctlv_attestation_tdx_gen.h
+ create mode 100644 include/uapi/linux/ctlv_families_gen.h
+ create mode 100644 include/uapi/linux/ctlv_gen.h
+ create mode 100644 tools/ctlv/Makefile
+ create mode 100755 tools/ctlv/ctlv-regen.sh
+ create mode 100644 tools/ctlv/ctlvgen/__init__.py
+ create mode 100755 tools/ctlv/ctlvgen/cli.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/__init__.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/cgen.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/compat.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/errors.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/gen_family.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/gen_kernel.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/gen_uapi.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/outputs.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/semantics.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/sizes.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/spec.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/tree.py
+ create mode 100644 tools/ctlv/ctlvgen/lib/yamlload.py
+ create mode 100644 tools/ctlv/pyproject.toml
+ create mode 100644 tools/ctlv/requirements.txt
+
+-- 
+2.56.0
+
