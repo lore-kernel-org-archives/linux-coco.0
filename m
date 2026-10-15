@@ -1,118 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978F2D781B;
-	Thu, 15 Oct 2026 07:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F6348E0DE;
+	Thu, 15 Oct 2026 08:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792049785; cv=none; b=Q4d1A0ig+G8hw/bjphfRCTollviputiC9am4qkkCkPPaJVhgbvenVvKunIAM3OUZccptiOfv3U56Eh8XyHaTAsZJbngjDzlT8xXErMGbPdHsEXxbQ5lk6FwnDCpFewz2HXhvVVpg0h0cEYMT7NJbAcVa8a2+I8GiSdXA7Fr7yKg=
+	t=1792053348; cv=none; b=JrkQ/TGovqjfTw2BHlKZiWnAKmuYr3EIjG1yauor48259Z9ovBVNChBGf6C4EO3KHSxy8Ew5lp0SAVYhG+N/tc7LdNBsWLj1tpL2osY9U7hC9dB5CwTfaySj0oXGJNvgLhzhnoMlIluW6oOyk0pbgmrDgyg0kEcAj71327LboSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792049785; c=relaxed/simple;
-	bh=i9FyIRQePbLqa9/r+2hlmQCarOIya8dUltNguuB4KIk=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=X6u2FPhZ+T9bMGJDUhUuVSRAdnuLZBk6UodKWp5efQzfJKPbsoaoorFLA10cBzGqrGpPYr6bIVpsjtB2Y7dCYJOFNWg1hVcvyW9QnRq8z3mZwuju7nw5DrhJq6ml1tGwEJPetR1Lj/rWy5Dg/fzy47IMTvh1ge1V5hcfWTherT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+rtfN2z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792053348; c=relaxed/simple;
+	bh=jsAyffWac3S0pjRkbN+9fHBRvD+lojAJez5nsr6g6FI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oyTQU2a3D85+1VwP40UWZ5qs1iT1t/qKUf8/Ew3wuS8gu0SlgnEQLN1iAOxKKFUkIunCOu992PA7V4XwvsGttx92lr0BmtZjiKq/vM6Y65kN/u7ze2HnaMNKjxWjp8y0pmwQwyc07shDLWT0VDNTb88cGxKE6qmH2+RsSW0On4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QvRJk11d; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+rtfN2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06711F000C4;
-	Thu, 15 Oct 2026 07:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792049783;
-	bh=z4UeIwHQOxwYBLcVKwKbKO8z42PA/RkSXPeAr/0bJgM=;
-	h=Date:From:To:Subject;
-	b=b+rtfN2zttH776LAB46ZgXtroe3AHZU0pSdQoy+9dHyrLMGtejkPfBgo4WD63m3du
-	 fqYb2ysCRjxBTjuReLhQIDABshYxKcPf4sB2gDFqPWBJQNKEc97/HekCVltcprZonk
-	 XUO3WGFt7WGFHWbkx1hUv11Ah++luCQ5sLR7/FUzRyRLzXbsPPWUZm9busgd0btI0Q
-	 lbInucuL9M19T9lxQFavWqS4+XfBdSt9HwzOiPPIrDF8cUL2FQmNgkctjg/s/Q8OVE
-	 St88lIYUnFEBLn0VGPNjbbU383u2vEOphDu2O3eHzumM8VlDFfMGXaOnK5/IfYgx/4
-	 4WpLKICCWP+xw==
-Message-ID: <dbabaf78-cb48-409b-a7a2-3eb60ec06889@kernel.org>
-Date: Thu, 15 Oct 2026 09:36:10 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QvRJk11d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792053345; x=1823589345;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jsAyffWac3S0pjRkbN+9fHBRvD+lojAJez5nsr6g6FI=;
+  b=QvRJk11dywpf9MXcufZTXtWPafFj1SrhrE79WJsCxrWjnh04xRI3ec9x
+   cGuAIY8L0fhk3VTwYgWa5Otunx+EZquvI+2RuAmBx4l22ZXQf9lkoNwYv
+   X/3X5heHIqveVDC2+FPtUiAVmK2c3JvVzyX/IzDxUMJkJu/KvI8XuN4NK
+   LJTEJdtydrHHGloC0wgkSvKBLRFoZtZy8g8/4qeer3STEXske+mQHjGky
+   WeyPIwfflePXM8Pa4x28krrbXjqNKkTa0W6XquLps9PboHWE0u/dOlU5P
+   VIPsQkoCRbE+Rgwsq06oD6iBMPQ5xPeBmA8Lu+pVAVr4MX34o0ud2vSJ4
+   A==;
+X-CSE-ConnectionGUID: 3+1q7xudT4urutsWzxr3Bg==
+X-CSE-MsgGUID: lWKkq/LeRkiyHwNygAGmbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="803654"
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="803654"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 01:35:44 -0700
+X-CSE-ConnectionGUID: rKUolCNlT4WsZ8d+hbkpnw==
+X-CSE-MsgGUID: xIyRtnMWREKJj3Y09eEkeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="1525166"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa007.jf.intel.com with ESMTP; 15 Oct 2026 01:35:42 -0700
+Date: Thu, 15 Oct 2026 16:31:31 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
+ capable IOMMUs
+Message-ID: <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050>
+References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
+ <20261015010705.1973284-5-baolu.lu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-10-15
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015010705.1973284-5-baolu.lu@linux.intel.com>
 
-Hi,
+On Thu, Oct 15, 2026 at 09:07:05AM +0800, Lu Baolu wrote:
+> Assigning a device to a TD for private memory access requires that DMA
+> from that device be translated by structures the TDX module controls.
+> An Intel IOMMU that implements the trusted DMA extension provides a
+> parallel set of translation and invalidation resources for this purpose.
+> These become usable only after the TDX module has placed the IOMMU into
+> TDX mode, at which point the trusted resources belong exclusively to the
 
-Late reminder. Our next guest_memfd upstream call is scheduled for today,
-Thursday, 2026-10-15 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+I think at this point we first need to reason about the connection between
+IOMMU TDX mode and the PCIe link encryption. The device private memory
+access can be placed in cover-letter as the big picture of TDISP.
 
-We have a couple of things to discuss on our agenda:
+I can see we may need to touch a bit about trusted DMA translation at
+this phase, because the TDH.IOMMU.SETUP requires the VMM to provide 2
+contiguous Invalidation Queue buffers, which leaks the trusted DMA
+internals a bit. But I feel this should not be a first topic.
 
- - 7.4 in-place conversion plans (SNP, CCP fixes)
- - guest_memfd link ioctl
- - Current state of "multiple providers" after LPC
+> TDX module, while the host retains control of the regular translation
+> path. The transition is performed by TDH.IOMMU.SETUP, which takes the
+> register base address of the target IOMMU together with a parameter
+> page describing memory the host has allocated for the TDX module to
+> manage trusted DMA on that unit.
+> 
+> Perform this initialization from the tdx-host driver by walking every
+> IOMMU unit through dmar_tdxcs_iommu_init() and initialize the ones whose
+> IOMMU implements the extension.
+> 
+> For each such unit the driver builds the IOMMU_MT parameter layout that
+> TDH.IOMMU.SETUP expects: two contiguous buffers for the trusted
+> invalidation queue, followed by the number of metadata pages the TDX
+> module reports in its global metadata. The pages are allocated on the
+> NUMA node of the IOMMU. The root page is passed to the TDX module, which
+> returns an identifier naming the initialized IOMMU. That identifier and
+> the pages backing it are tracked so the state can be released later.
+> 
+> Releasing the state is the reverse: TDH.IOMMU.CLEAR tears down the
+> trusted DMA resources established by TDH.IOMMU.SETUP, after which the
+> metadata pages can be freed and the VT-d driver told to lift the domain
+> ID restriction applied during initialization. If TDH.IOMMU.CLEAR fails
+> the pages are not freed, as the TDX module may still hold references to
+> them.
+> 
+> Rename tdx-host.c to main.c and build the module from a tdx-host-y
+> object list instead. New functionality can then be added as separate
+> source files instead of putting everything in a single file.
+> 
+> The code is built only when its dependencies are present, gated by
+> CONFIG_TDX_CONNECT.
+> 
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+> ---
+>  drivers/virt/coco/tdx-host/Kconfig            |   6 +
+>  drivers/virt/coco/tdx-host/Makefile           |   3 +
+>  drivers/virt/coco/tdx-host/private.h          |  33 +++
+>  drivers/virt/coco/tdx-host/iommu.c            | 255 ++++++++++++++++++
+>  .../virt/coco/tdx-host/{tdx-host.c => main.c} |  21 +-
+>  5 files changed, 317 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/virt/coco/tdx-host/private.h
+>  create mode 100644 drivers/virt/coco/tdx-host/iommu.c
+>  rename drivers/virt/coco/tdx-host/{tdx-host.c => main.c} (92%)
+> 
+> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+> index 57d0c01a4357..62d91d4b41fa 100644
+> --- a/drivers/virt/coco/tdx-host/Kconfig
+> +++ b/drivers/virt/coco/tdx-host/Kconfig
+> @@ -4,3 +4,9 @@ config TDX_HOST_SERVICES
+>  	select FW_LOADER
+>  	select FW_UPLOAD
+>  	default m
+> +
+> +config TDX_CONNECT
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+Maybe we don't need the configuration. Now we turn on all TDX features
+that Linux knows about all the time.
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
+Architecturally, TDX Connect is an default-off feature. But Linux enables
+it regardlessly. It is questionable we then have a configuration that
+disable the driver that supports the feature.
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+> +	def_bool y
+> +	depends on TDX_HOST_SERVICES
+> +	depends on PCI_TSM
+> +	depends on INTEL_IOMMU
 
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+[..]
 
--- 
-Cheers,
+> +static int tdx_iommu_setup(struct dmar_drhd_unit *drhd)
+> +{
+> +	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
+> +	unsigned int mt_page_count = tdx_sysinfo->tdx_connect.iommu_mt_page_count;
+> +	struct tdx_iommu_state *state;
+> +	u64 r, tdx_iommu_id;
+> +	int ret;
+> +
+> +	struct tdx_iommu_state *iommu_state __free(kfree) = kzalloc_obj(*iommu_state);
+> +	if (!iommu_state)
+> +		return -ENOMEM;
+> +
+> +	struct tdx_iommu_pages *iommu_mt __free(free_mt_pages) =
+> +			tdx_iommu_alloc_mt_pages(drhd, mt_page_count);
+> +	if (!iommu_mt)
+> +		return -ENOMEM;
+> +
+> +	r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt->root, &tdx_iommu_id);
+> +	/* TDX Extension is not supported on this IOMMU. Nothing to do. */
+> +	if ((r & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_INVALID)
+> +		return -EOPNOTSUPP;
 
-David
+Enable all IOMMUs regardless brings this problem. We need to try on
+every IOMMU, check the TDX error code to see if it is not supported (then
+skip) or failed. It's also sad to me that -EOPNOTSUPP is defined as the
+API between tdx-host and intel iommu driver.
+
+An alternative could be, bringing up one IOMMU when an associated
+device requests link encryption. Then a no-tdx-support iommu fails the
+encryption request naturally.
+
+Open to discussion.
