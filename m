@@ -1,109 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F6327057D;
-	Thu, 15 Oct 2026 06:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978F2D781B;
+	Thu, 15 Oct 2026 07:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792047116; cv=none; b=FsEjpOaUxRqYxVEMzgFIDpqQ+XQBHT5rKMGLXwP8iVObOCuNcciXzWNUYQd5yELObwcK/A6FsX7kcQSV2QgTCdCW0vA6XFtrGRVhXsu4c23gj1TdqTsyg6olt+xFa+gOTI6yTHQvQAanHntF6v2TpY9/h8HfX/qSLKtR3Bnj9Jg=
+	t=1792049785; cv=none; b=Q4d1A0ig+G8hw/bjphfRCTollviputiC9am4qkkCkPPaJVhgbvenVvKunIAM3OUZccptiOfv3U56Eh8XyHaTAsZJbngjDzlT8xXErMGbPdHsEXxbQ5lk6FwnDCpFewz2HXhvVVpg0h0cEYMT7NJbAcVa8a2+I8GiSdXA7Fr7yKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792047116; c=relaxed/simple;
-	bh=4PIg90yopjQlPLry9vxHjabFyBihfeVNSbu+pE0Te6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EXUfc35oEhRYU/3HIC9k9P4gm2n8dDFKgHqZ8vvapU1/sSBXa/tgXMnqoP55+mp2Yr1vWk8Yoaw8dFZ5v94KAMc+uTP0B9UqDWAw/3QThWg60xsrzFAy3hB34XZXJBKE1DCao3jFNU9uf7m0ZFOtCigpO0ehxSxMRztVkmja8LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OK3jaju0; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1792049785; c=relaxed/simple;
+	bh=i9FyIRQePbLqa9/r+2hlmQCarOIya8dUltNguuB4KIk=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=X6u2FPhZ+T9bMGJDUhUuVSRAdnuLZBk6UodKWp5efQzfJKPbsoaoorFLA10cBzGqrGpPYr6bIVpsjtB2Y7dCYJOFNWg1hVcvyW9QnRq8z3mZwuju7nw5DrhJq6ml1tGwEJPetR1Lj/rWy5Dg/fzy47IMTvh1ge1V5hcfWTherT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+rtfN2z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OK3jaju0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792047115; x=1823583115;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4PIg90yopjQlPLry9vxHjabFyBihfeVNSbu+pE0Te6I=;
-  b=OK3jaju0K6G5rCOiQul7OyLCFDqhKtsnWHWqRy7OA7aWCiS/UZswYvUp
-   A/E70eFOdvo+g7nOyT4gMPFzpqa+RYAYHEFnBcja2rer+5XwBzhypjdZ5
-   aKJnHRc40QowDmHRDus1n3TSKLK9Kzfev0scsYGLeBRYk+muCt1sIGEeV
-   Mfc6BgzCB17EruPu1FiO0aRju7KaU7ZcyzlIVZgq92zPPnzxoO32sXYNN
-   7C0SFnrmpzFFmelRXsnq499KJ7bHYoiMUwXsYCexOIEVGs2pJBfaruHEq
-   b9rRmwmTuRrptVFWhT6FnSGortzwxbRVd8PgsusjUa8mqEDGLteJDsy/S
-   g==;
-X-CSE-ConnectionGUID: H8dEWe7iTzu8KGffsgpvEw==
-X-CSE-MsgGUID: 0+dif5RnRF+iUB6coakGZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="682335"
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="682335"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 23:51:55 -0700
-X-CSE-ConnectionGUID: 3xj7wT0gQaGztgVlW+zTew==
-X-CSE-MsgGUID: qXIQBGKDTIuWxDpR+XHv1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="1938384"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa007.fm.intel.com with ESMTP; 14 Oct 2026 23:51:52 -0700
-Date: Thu, 15 Oct 2026 14:47:42 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] x86/virt/tdx: Read global metadata for trusted
- IOMMU
-Message-ID: <atB3DiLtGTlilVTN@yilunxu-OptiPlex-7050>
-References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
- <20261015010705.1973284-3-baolu.lu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+rtfN2z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06711F000C4;
+	Thu, 15 Oct 2026 07:36:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792049783;
+	bh=z4UeIwHQOxwYBLcVKwKbKO8z42PA/RkSXPeAr/0bJgM=;
+	h=Date:From:To:Subject;
+	b=b+rtfN2zttH776LAB46ZgXtroe3AHZU0pSdQoy+9dHyrLMGtejkPfBgo4WD63m3du
+	 fqYb2ysCRjxBTjuReLhQIDABshYxKcPf4sB2gDFqPWBJQNKEc97/HekCVltcprZonk
+	 XUO3WGFt7WGFHWbkx1hUv11Ah++luCQ5sLR7/FUzRyRLzXbsPPWUZm9busgd0btI0Q
+	 lbInucuL9M19T9lxQFavWqS4+XfBdSt9HwzOiPPIrDF8cUL2FQmNgkctjg/s/Q8OVE
+	 St88lIYUnFEBLn0VGPNjbbU383u2vEOphDu2O3eHzumM8VlDFfMGXaOnK5/IfYgx/4
+	 4WpLKICCWP+xw==
+Message-ID: <dbabaf78-cb48-409b-a7a2-3eb60ec06889@kernel.org>
+Date: Thu, 15 Oct 2026 09:36:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015010705.1973284-3-baolu.lu@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-10-15
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 15, 2026 at 09:07:03AM +0800, Lu Baolu wrote:
-> Add support for reading the global metadata of the trusted IOMMU.
-> 
-> The trusted IOMMU feature is optionally enumerated via TDX_FEATURES0.
+Hi,
 
-The feature name is not trusted IOMMU, the name in the spec is
-TDX_CONNECT, but I believe people want a name with technical meaning,
-maybe TDX TDISP? Open question for all reviewers.
+Late reminder. Our next guest_memfd upstream call is scheduled for today,
+Thursday, 2026-10-15 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-> Check this feature bit before reading the metadata to avoid causing
-> the entire TDX initialization to fail on platforms that do not support
-> it.
-> 
-> The read value represents the number of pages required for the IOMMU
-> metadata. The host will allocate this count of pages and provide them to
-> the TDX module when it configures the IOMMU to operate in Secure TDX mode
-> via the TDH.IOMMU.SETUP SEAMCALL.
-> 
-> Thanks to Xu Yilun for the initial draft.
-> 
-> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-> ---
->  arch/x86/include/asm/tdx.h                  |  1 +
->  arch/x86/include/asm/tdx_global_metadata.h  |  5 +++++
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 20 ++++++++++++++++++++
->  3 files changed, 26 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 8b5411d3eb67..9c9168822274 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -35,6 +35,7 @@
->  
->  /* Bit definitions of TDX_FEATURES0 metadata field */
->  #define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
-> +#define TDX_FEATURES0_TDXCONNECT	BIT_ULL(6)
+We have a couple of things to discuss on our agenda:
 
-TDX_FEATURES0_TDX_CONNECT?
+ - 7.4 in-place conversion plans (SNP, CCP fixes)
+ - guest_memfd link ioctl
+ - Current state of "multiple providers" after LPC
 
-My actual point is that the name XX_TDX_CONNECT is good here.
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
+
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+-- 
+Cheers,
+
+David
