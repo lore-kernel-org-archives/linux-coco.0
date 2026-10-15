@@ -1,99 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354A151DAE8
-	for <linux-coco@lists.linux.dev>; Thu, 15 Oct 2026 13:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897B451DAE9
+	for <linux-coco@lists.linux.dev>; Thu, 15 Oct 2026 13:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792072024; cv=none; b=VnAx81Gde36PQsnsXUmVoZzcooPODok8QIbCfiEYBPLbcCZZuOs8XiLhcwNUJxxPSFQEW1Z8OHd2VW64Mt497xN5T+9fBimXwnF4thC8lxkznxGPDbHPkkBxk9cJ8qP3TdwAgka9dU8xdJCcQDktohanyzGh89v/9RxBYofcEvQ=
+	t=1792072736; cv=none; b=BdGCfjzPo+i3L6OKSeR71no1nubRFJgYse8K0zRAF1JT5f7O4o4es94AKDLbY2CpaAMYnYnBuwvfcT4ZDG10/O/4b/mb2e+BbgHtfmQhRL/wV+jGeifUQNE/NCx5Rj/0CshMNPdfqyurc2ToBYSlkkwhjvQhNbhgZrxYw7Odw1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792072024; c=relaxed/simple;
-	bh=MlgDolm+PjZn9ICMc1uArJE74lf/vWV2uq+Y9/jZ/Tw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aTpG8AOaUf5xRE2wv6OWIEGTNaaRV6J/Y7ISZNGCzvWjHOAci+i3Gw/n+OgVprMcnNqYZy/QGcmxKhUyHcG6AL17t8pHFmqhdYrFze4Is0RSqU7RyixIqdtSSrarsEu51dbxyJm8s/+2qIhSUhAYTaxtBRh44GDg9cNOQNyufSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=exHgMk2P; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1792072736; c=relaxed/simple;
+	bh=Fmr8PvRAaAoeaJUzhHvHl4m0oLOfVqb5pwowBeNSOdg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u7Uh3oxyStgmtvtqn7jmNiwi+de/8WnH6w5NKToxQ25ecEID5rJaH1mi9OD3yfFUvkZQOTQifEnoH6Z1MFU7v6O1J6/2F8pSFUm5IMIt6Fww0nRuq0pbFOWG7hWaUctQSrN0t0PiJO/FmxbAMXXoPYUxzTgJIMIlnje1ReacBQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HlCBtEUq; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="exHgMk2P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792072022; x=1823608022;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MlgDolm+PjZn9ICMc1uArJE74lf/vWV2uq+Y9/jZ/Tw=;
-  b=exHgMk2P8i8tOUJSItPNLw9iGPmkHpqyGfEADBubpVflfo9pWlRdkxHp
-   rxJzkUtQHPZvC22HqkTiYA9Lhc2ksgVUxeqSByq/2OciGeR15iMvY4djO
-   CAaLPaxTVvjQdWWEznZ+u4TJ3dmWo/fiMR9OeJ8+YGwmS+wwTiwv/k11t
-   JrODUZjjTbiQ+qLv1tTWRWi6LedcpOWm+7UU9kXk97w3YiPSgsCrFC2WG
-   JTDCzQPrYqprNe10HNL4bc78KlfrveRRjyg+wjJv15njSBW0KI/p/bDTn
-   Dina4O7LEh/vyR68Nhvn7mM4RauA+BQgFTuzBNLyPMOihdNEVh6/16/zq
-   Q==;
-X-CSE-ConnectionGUID: +YycNOJ/RHiR+J5AGRDOqw==
-X-CSE-MsgGUID: 8y9c5lH9R3u21a+t3Y9HqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="841851"
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="841851"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 06:47:01 -0700
-X-CSE-ConnectionGUID: jpak3QI9QCaxoS/+Fi3fAQ==
-X-CSE-MsgGUID: xJggO6zRTgKtxKMXZ6jpxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="1665926"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa003.jf.intel.com with ESMTP; 15 Oct 2026 06:46:57 -0700
-Date: Thu, 15 Oct 2026 21:42:46 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, dave.hansen@linux.intel.com,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-	dave.hansen@intel.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	jgg@nvidia.com, nicolinc@nvidia.com, aik@amd.com,
-	aneesh.kumar@kernel.org, seanjc@google.com, pbonzini@redhat.com,
-	chao.gao@intel.com, vishal.l.verma@intel.com, xiaoyao.li@intel.com,
-	kevin.tian@intel.com, chao.p.peng@intel.com
-Subject: Re: [RFC PATCH 04/15] virt: tdx-guest: Support devsec TSM for secure
- devices
-Message-ID: <atDYVoLFgxyncF3c@yilunxu-OptiPlex-7050>
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-5-zhenzhong.duan@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HlCBtEUq"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e61a48d5b7so50092225ad.1
+        for <linux-coco@lists.linux.dev>; Thu, 15 Oct 2026 06:58:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792072735; x=1792677535; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uMSSECwkd6GBn6Q0rd3u20QgElhwSrNALm0yFALuhrI=;
+        b=HlCBtEUqgkgOBy3JczG16ChfuHw9XkeYoXV/Y8HtTmmO2C/I8EhhBXFP6SIuNLtb+R
+         AEz9vWnCD6mhtaEcprb+UPMkdxhUxmtQ10DbG/F199L1ZrgTYrWOaqjn1kaUcqxC2kej
+         0xqZ6faPYmFWsG+GD479YzYs95x+gCfZokc2FMvmv6sxIGoqe1xtzYQQDE3thWmi+FTH
+         +Ts+1mliWQCbXxIXStUnks0CHD48/aGJX+dCDdf7EE6h1rb06yc+l/ABMK4Hr8Igdtnz
+         SpJ9ed9BkhvLC7Y0TlWQvzORQHL9g2qC3UVKtb8qh6+/bIqMqD4ewImwDlpZggXRZEhl
+         AZrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792072735; x=1792677535;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uMSSECwkd6GBn6Q0rd3u20QgElhwSrNALm0yFALuhrI=;
+        b=jgDqJ95wmSbjBkAjEBc+KcqY+toLEs+sDEwbr4XrpizJtjglyH1U2+J5iecep+LwfI
+         N0Tq7x5sErbkohqa1ZJop1jQR1D0cs6PUQwAQiXCy0u5lH4tBhBMbrftaAjDs96i3V8i
+         nFayXl+QceKEj7Iw3VNtvaYZIDf43ZKTrSZNk+K32os+Y1BPNaxfqGp1plok5xJrKLvl
+         bLaVwrPb8eW/YVesCuilljE17c/Ji9V8Bls48B6r5KgRg0yVRsUfvwW/7AvyXmW2mofT
+         juX+gm0ijxwe66XvkoaPjlQg2EY14fijy18VqvotBtvAJs57bEWV4UQlTSwjAxRwwMht
+         yX7w==
+X-Forwarded-Encrypted: i=1; AKwUvBynKPFOVk01zV6e4LtlySpJxkCm+B4mf+F8YBfMBGXWu6maF2ULpRht66tVBAjtsTImVydBOrxJOZ3X@lists.linux.dev
+X-Gm-Message-State: AFq9FYK+9Htminqu/zB4LOvCoEWWZwFrcYbcuGeh/aZMAr0PuKI/IA0M
+	TuEorjkWTSADIiKpa5e5wOxU7QRP4gAL30MDMbBiEcpoV1+edcyvJtzg9LgsFpv7Kv2NIVZKGG3
+	yklhj/w==
+X-Received: from pllq21.prod.google.com ([2002:a17:902:7895:b0:2e2:c8c0:e8eb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2348:b0:2e9:3295:11d1
+ with SMTP id d9443c01a7336-2e97758f920mr460105ad.39.1792072733289; Thu, 15
+ Oct 2026 06:58:53 -0700 (PDT)
+Date: Thu, 15 Oct 2026 06:58:52 -0700
+In-Reply-To: <asmwyCYDyaLwfmCV@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924041032.1096569-5-zhenzhong.duan@intel.com>
+Mime-Version: 1.0
+References: <20260930001127.3170009-1-seanjc@google.com> <20260930001127.3170009-3-seanjc@google.com>
+ <asmwyCYDyaLwfmCV@yzhao56-desk.sh.intel.com>
+Message-ID: <atDcHCtdPNAJGHeI@google.com>
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Synthesize SHUTDOWN instead of returning
+ -EIO on unhandled EPT violation
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Sashiko Bot <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-> diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
-> index dbbdc14383b1..2e9407f8bc70 100644
-> --- a/drivers/virt/coco/tdx-guest/Kconfig
-> +++ b/drivers/virt/coco/tdx-guest/Kconfig
-> @@ -10,3 +10,18 @@ config TDX_GUEST_DRIVER
->  
->  	  To compile this driver as module, choose M here. The module will
->  	  be called tdx-guest.
-> +
-> +config TDX_CONNECT_GUEST
+On Sat, Oct 10, 2026, Yan Zhao wrote:
+> On Tue, Sep 29, 2026 at 05:11:26PM -0700, Sean Christopherson wrote:
+> > Exit to userspace with KVM_EXIT_SHUTDOWN instead of returning -EIO from
+> > KVM_RUN if KVM encounters an EPT Violation due to a guest access to a
+> > pending page.  Returning -EIO implies KVM is buggy, and most VMMs will
+> > respond by completely terminating the VM, versus rebooting the VM in
+> > response to KVM_EXIT_SHUTDOWN.  I.e. give the VMM the option of trying to
+> > keep the VM (from the end user's perspective) alive.
+> > 
+> > Ideally, KVM would probably exit with KVM_EXIT_MEMORY_FAULT, but KVM would
+> > need to extend run->memory_fault so that userspace knows the fault can't be
+> > handled.  This scenario specifically occurs when the guest has deliberately
+> > disabled #VEs on unaccepted memory for security purposes, i.e. the guest
+> > literally disabled the mechanism that tells it it screwed up.  But, because
+> > this is fatal, and the whole point is to NOT try to fixup the fault,
+> > jumping through hoops to return MEMORY_FAULT instead of SHUTDOWN doesn't
+> > make a whole lot of sense.
+> > 
+> > Don't bother bouncing through KVM_REQ_TRIPLE_FAULT as
+> > tdx_handle_ept_violation() is a top-level exit handler, i.e. there is no
+> > need to worry about failing to actually exit to userspace.
+> > 
+> > Fixes: e6a85781f783 ("KVM: TDX: Detect unexpected SEPT violations due to pending SPTEs")
+> > Cc: stable@vger.kernel.org
+> > Cc: James Houghton <jthoughton@google.com>
+> > Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> > Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> > Cc: Yan Zhao <yan.y.zhao@intel.com>
+> > Cc: Binbin Wu <binbin.wu@linux.intel.com>
+> > Cc: Ackerley Tng <ackerleytng@google.com>
+> > Cc: Vishal Annapurve <vannapurve@google.com>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/vmx/tdx.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index 29d4751f37fb..e3723f1222fc 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -1939,8 +1939,8 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+> >  		if (tdx_is_sept_violation_unexpected_pending(vcpu)) {
+> >  			pr_warn("Guest access before accepting 0x%llx on vCPU %d\n",
+> >  				gpa, vcpu->vcpu_id);
+> > -			kvm_vm_dead(vcpu->kvm);
+> > -			return -EIO;
+> > +			kvm_prepare_shutdown_exit(vcpu);
+> Would it be better to exit with the reason KVM_EXIT_SYSTEM_EVENT and type
+> KVM_SYSTEM_EVENT_SHUTDOWN or KVM_SYSTEM_EVENT_TDX_FATAL?
 
-I asked the similar question on host side series On host, we enable all
-tdx-module-supported features regardless. Then why should we make the
-driver support configurable, any good reason to switch the driver off?
+No.  KVM_SYSTEM_EVENT_SHUTDOWN is an explicit call from the guest to do a clean
+shutdown (used by arm64 and RISC-V).  KVM_SYSTEM_EVENT_TDX_FATAL similarly exists
+to relay explicit calls from the guest.  Ditto for KVM_SYSTEM_EVENT_CRASH and
+KVM_SYSTEM_EVENT_SEV_TERM (which obviously is a poor fit for TDX, just pointing
+out that it's another guest-initiated event).
 
-> +	bool "Intel TDX Connect Guest Support"
-> +	depends on TDX_GUEST_DRIVER
-> +	depends on PCI_TSM
-> +	default y
-> +	help
-> +	  Support Trust Device Interface (TDI) feature enumeration,
-> +	  validation, and activation within an Intel TDX guest.
-> +
-> +	  This option enables the guest kernel to establish secure,
-> +	  isolated connections with trusted devices assigned to the TD,
-> +	  validating MMIO maps and authorizing DMA remapping tables.
-> +
-> +	  If unsure, say Y.
+KVM_EXIT_SHUTDOWN isn't a perfect fit, but IMO it's the closest approximation,
+e.g. it's a rough equivalent of what happens if a #VE couldn't be handled because
+the stack is invalid.  And more importantly, because we're retroactively fixing
+code, KVM_EXIT_SHUTDOWN has the best chance of being handled appropriately by all
+VMMs.
+
+> By defining a specific flag (e.g., KVM_SYSTEM_EVENT_FLAG_TDX_UNEXPECTED_PENDING),
+> we can stuff necessary info like gpa, vcpu->vcpu_id into data, so both pr_warn()
+> and pr_warn_ratelimited() can be dropped.
+
+Well, IMO, the printk can be dropped no matter what. :-)  But I don't care _that_
+much so I'm ok keeping the ratelimited version.
+
+vcpu_id is redundant, the exit is tied to a specific vCPU.  And as I said elsewhere,
+practically speaking the GPA is all but guaranteed to be useless outside of
+interactive debug sessions.
