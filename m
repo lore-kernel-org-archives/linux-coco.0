@@ -1,494 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01220221DAE;
-	Thu, 15 Oct 2026 01:19:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33373B3880
+	for <linux-coco@lists.linux.dev>; Thu, 15 Oct 2026 03:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792027198; cv=none; b=Bz1RWN0mCdKNuAeENhehVzUxOTrr2+BcpiO6TkoRvMVq2WNiZ0nE0OmC+zaKsBZBm+SYAYzaVW0p/2f9wT7gA/L+SdQz6xtgcETg2TmAvlyCvNmjp3Iau2wcHWo74xfm/N3WtLe8adr7mVjExuSs0GhQKrMCFo1nXax+h0ytSYA=
+	t=1792035086; cv=none; b=r0RZkH5MZe1B/dada0aZbmhK5DtjzpPBWlMEukBaSKxvTMgn9L6wplSc6KEaisaPZ3eKJaamBomU7GCoF0KXvHBJSHthIu8sx892yJJX0IHzGCukpcI9yWhy+e9agMES0duQF0s5qG2Pbeup6jBMtPuXMwEB+jjnjWhba3OLFdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792027198; c=relaxed/simple;
-	bh=HPrbl+lT5yD2UVYKphnxQ83FYkQzjZQ9ECFf/U33iRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNYCOwvrnL8+2DvBzouGBtemKgAZVFiPBBPKcCPvfhNZRet8RJXGbis1Y6KOeIU0MRZqPFgZATozqEB6bc7AuMbyw/rfbqu+UBmZOP28fEKiYuM07Z5+L/rnW1bCO5WP9jiy8ia357nRmHax60K35yCR2raf9kNVcpcd1M56No8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Man+5uNf; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1792035086; c=relaxed/simple;
+	bh=04c5bitre1jwMNdFPu2a2/rAKLw7zw6NjctxHNPYtpo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GWp3fMYT0demTGMTtzYByqUHlJ0d40ab6RPex1D5GyzdSCfUlu8xNX0YQ4U8k+dm+WnxmL1yKF58b71I9KCIQukoEkRfonbRJzpZaDIwEsfC25PrAf33U9i+t4ZDcCP6QagPnz5Sa30d4pxCz7HsA5wmPTmt98do1dzPe/mWxcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HV5tDE2a; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Man+5uNf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HV5tDE2a"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792027196; x=1823563196;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=HPrbl+lT5yD2UVYKphnxQ83FYkQzjZQ9ECFf/U33iRQ=;
-  b=Man+5uNfVl/ipBIEnbw/XBlMSE92sxUTXIuRzyelyU8qGm3jnB3DiWQj
-   +crH4yHX3iub793ZZXvVarSCktDUoWg26EB39/O4cb/zLYkJ/CjmBC//S
-   FYcqY8uFLeRZhFL6RSVbIk6fQ+qsb7Vv68H9WltQfVF3g9yHTVCu3rqop
-   L1Del0lSlTMpFE3wEvNfwftvixm+SUG7JdIBUTrjkcZZ/GIRSLjZ8FPik
-   acT6GxzwfVoSDFtDiDfT34QnTcZGVKvS5dEQoTWJRBZK36j2Zdm+el/tq
-   +LeiF9NHKuQM28yxOBHPUDHKEl3E9KZZQRdrNQPP7MFVib10pzQ0pLcIC
-   g==;
-X-CSE-ConnectionGUID: 3i82/XjpQW6xUow2Ik98Kw==
-X-CSE-MsgGUID: JwYQwbftRW2oWjwhQanmgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="789221"
-X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
-   d="scan'208";a="789221"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 18:19:56 -0700
-X-CSE-ConnectionGUID: XMcZigJfSpGSuw8JqxfggA==
-X-CSE-MsgGUID: aoMPD6+gSc+gMxOLAXfP/g==
+  t=1792035084; x=1823571084;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=04c5bitre1jwMNdFPu2a2/rAKLw7zw6NjctxHNPYtpo=;
+  b=HV5tDE2aBLNvHzV8+qrpyKeqGY1hlxNTPvxt9IIXaMgXMj+xQ2Xv/IzH
+   AqroE3gLgRZfuMltFDOxZ8MjlgFegLJbHfVZ4h7SavX3vxvDJGyxMDyCJ
+   pmDx7pU6KMhDNu7Rc6C9cJcK57vkp7oFKEXqNIVpsnShdMsWFZNlXwALs
+   2TyFH4Btv3OCW7yUNkOMpNFJkmMIKEzV5NQSVvj60aGd9q496RsLyDbZL
+   uJhUfI1krpicrGqYsZ90R1PuTI9YLSdk+cNJsXM2eHeHQl4/4BA4Ut5XU
+   RNWJCqkgKQqV1a5DXR5lXyGUAcDpIfsVmO6pgwls7fRCIGQklhbJ9bgHP
+   A==;
+X-CSE-ConnectionGUID: ZAAQgi3NQ7e/mysvr+ZuIA==
+X-CSE-MsgGUID: JH8L6bIjR9OVWraCgjbQXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="693001"
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="693001"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 20:31:24 -0700
+X-CSE-ConnectionGUID: 4CszLugyRkmKKw6eZoRe3A==
+X-CSE-MsgGUID: tJmg9RiPRYmMMEy275mgjg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
-   d="scan'208";a="1595603"
-Received: from allen-box.sh.intel.com ([10.239.48.101])
-  by fmviesa004.fm.intel.com with ESMTP; 14 Oct 2026 18:19:51 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: iommu@lists.linux.dev,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="2025226"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa010.jf.intel.com with ESMTP; 14 Oct 2026 20:31:07 -0700
+Date: Thu, 15 Oct 2026 11:26:59 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	yilun.xu@linux.intel.com,
-	xiaoyao.li@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all capable IOMMUs
-Date: Thu, 15 Oct 2026 09:07:05 +0800
-Message-ID: <20261015010705.1973284-5-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
-References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
+	Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org,
+	yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, peter.fang@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
+	nik.borisov@suse.com
+Subject: Re: [PATCH v4 1/6] x86/virt/tdx: Move TDH.SYS.CONFIG operations into
+ a wrapper
+Message-ID: <atBIA+hCnDGXDbsb@yilunxu-OptiPlex-7050>
+References: <20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com>
+ <20261013-tdx-module-ext-v4-1-de5ffac65470@linux.intel.com>
+ <c74922f6-7d74-43c1-9780-ce09eeb02b44@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c74922f6-7d74-43c1-9780-ce09eeb02b44@intel.com>
 
-Assigning a device to a TD for private memory access requires that DMA
-from that device be translated by structures the TDX module controls.
-An Intel IOMMU that implements the trusted DMA extension provides a
-parallel set of translation and invalidation resources for this purpose.
-These become usable only after the TDX module has placed the IOMMU into
-TDX mode, at which point the trusted resources belong exclusively to the
-TDX module, while the host retains control of the regular translation
-path. The transition is performed by TDH.IOMMU.SETUP, which takes the
-register base address of the target IOMMU together with a parameter
-page describing memory the host has allocated for the TDX module to
-manage trusted DMA on that unit.
+On Wed, Oct 14, 2026 at 08:59:32AM -0700, Dave Hansen wrote:
+> On 10/13/26 08:28, Xu Yilun wrote:
+> > SEAMCALL wrappers are introduced to avoid broad SEAMCALL access by
+> > exposing only a selection of SEAMCALL leafs, but also to abstract the
+> > SEAMCALL register ABIs. The abstraction improves readability and reuse
+> > for SEAMCALL leafs that are called multiple times.
+> > 
+> > Some SEAMCALL leafs are not explicitly wrapped because the level of TDX
+> > ABI details needed to perform the call is low enough to flow well with
+> > the calling code.
+> > 
+> > For some of the currently unwrapped SEAMCALL leafs, the TDX architecture
+> > has evolved the ABI to introduce new leaf versions. The host can select
+> > the version to call based on what is supported by the loaded TDX module.
+> > When future kernel implements this version selection, more ABI details
+> > will leak into the surrounding caller code, which decreases the
+> > readability of the caller logic. To keep the ABI details contained, move
+> > the SEAMCALL leaf that will need version selection into a wrapper.
+> > 
+> > When defining the wrapper, the cleanest separation would be to have
+> > kernel data types for the SEAMCALL wrapper arguments, and have them
+> > marshaled into SEAMCALL leaf ABI types (often u64s) inside the wrapper.
+> > This works for many SEAMCALL leafs but becomes cumbersome when the
+> > register ABI type is a physical address which points to a buffer for an
+> > in-memory ABI. If the SEAMCALL wrapper only accepts kernel data types,
+> > it may need duplicate buffer allocation and copies to match the
+> > in-memory ABI. Another solution is to define a named helper structure
+> > that mirrors the in-memory ABI, populate it in a separate flow, then
+> > pass it to the SEAMCALL wrapper. struct seamldr_params is an existing
+> > example of this pattern.
+> > 
+> > TDH.SYS.CONFIG requires a list of TDMR information in the form of a PA
+> > array. The PA array is the in-memory ABI. Create a structure for the PA
+> > array, use it as the argument when creating the wrapper for
+> > TDH.SYS.CONFIG.
+> > 
+> > For readability, adjust a bit of the existing PA array size calculation:
+> > use the new PA array structure's element type instead of hardcoding u64.
+> > 
+> > AI was used under supervision to review code and workshop logs.
+> 
+> I'm wondering if this is a case of AI gone wild. There's a *LOT* of info
+> there, but I'm not seeing the thing I really want to see: Why is it
+> worth creating this helper _now_?
 
-Perform this initialization from the tdx-host driver by walking every
-IOMMU unit through dmar_tdxcs_iommu_init() and initialize the ones whose
-IOMMU implements the extension.
+The leaf version of TDH.SYS.CONFIG will be selected based on what
+features are supported by the loaded TDX module. We think this is a
+lower level knowledge than the surrounding code. So does the existing
+r8 tweak for DPAMT.
 
-For each such unit the driver builds the IOMMU_MT parameter layout that
-TDH.IOMMU.SETUP expects: two contiguous buffers for the trusted
-invalidation queue, followed by the number of metadata pages the TDX
-module reports in its global metadata. The pages are allocated on the
-NUMA node of the IOMMU. The root page is passed to the TDX module, which
-returns an identifier naming the initialized IOMMU. That identifier and
-the pages backing it are tracked so the state can be released later.
+We have r8 tweak now, and in next patch, we will set "leaf version=1" as
+a second case. So we think it's time to make a lower level abstraction
+for these selection logic.
 
-Releasing the state is the reverse: TDH.IOMMU.CLEAR tears down the
-trusted DMA resources established by TDH.IOMMU.SETUP, after which the
-metadata pages can be freed and the VT-d driver told to lift the domain
-ID restriction applied during initialization. If TDH.IOMMU.CLEAR fails
-the pages are not freed, as the TDX module may still hold references to
-them.
+Some early discussion:
+https://lore.kernel.org/lkml/2d138a8acb685385016e0bb0535e7213952e44e5.camel@intel.com/
 
-Rename tdx-host.c to main.c and build the module from a tdx-host-y
-object list instead. New functionality can then be added as separate
-source files instead of putting everything in a single file.
+> 
+> Also, the move to tdmr_info_pa_array seems 100% orthogonal to me. Why is
+> it here?
 
-The code is built only when its dependencies are present, gated by
-CONFIG_TDX_CONNECT.
+The change is motivated by the wrapping. Now the type of tdmr_pa_array
+is u64 *, which is a local detail of config_tdx_module(). Once we have a
+wrapper, it would look like:
 
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- drivers/virt/coco/tdx-host/Kconfig            |   6 +
- drivers/virt/coco/tdx-host/Makefile           |   3 +
- drivers/virt/coco/tdx-host/private.h          |  33 +++
- drivers/virt/coco/tdx-host/iommu.c            | 255 ++++++++++++++++++
- .../virt/coco/tdx-host/{tdx-host.c => main.c} |  21 +-
- 5 files changed, 317 insertions(+), 1 deletion(-)
- create mode 100644 drivers/virt/coco/tdx-host/private.h
- create mode 100644 drivers/virt/coco/tdx-host/iommu.c
- rename drivers/virt/coco/tdx-host/{tdx-host.c => main.c} (92%)
+  int tdx_sys_config(u64 *tdmr_pa_array, unsigned int nr_tdmr_pa,
+		     u64 global_keyid)
 
-diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-index 57d0c01a4357..62d91d4b41fa 100644
---- a/drivers/virt/coco/tdx-host/Kconfig
-+++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -4,3 +4,9 @@ config TDX_HOST_SERVICES
- 	select FW_LOADER
- 	select FW_UPLOAD
- 	default m
-+
-+config TDX_CONNECT
-+	def_bool y
-+	depends on TDX_HOST_SERVICES
-+	depends on PCI_TSM
-+	depends on INTEL_IOMMU
-diff --git a/drivers/virt/coco/tdx-host/Makefile b/drivers/virt/coco/tdx-host/Makefile
-index e61e749a8dff..67bfe5a6e290 100644
---- a/drivers/virt/coco/tdx-host/Makefile
-+++ b/drivers/virt/coco/tdx-host/Makefile
-@@ -1 +1,4 @@
- obj-$(CONFIG_TDX_HOST_SERVICES) += tdx-host.o
-+
-+tdx-host-y := main.o
-+tdx-host-$(CONFIG_TDX_CONNECT) += iommu.o
-diff --git a/drivers/virt/coco/tdx-host/private.h b/drivers/virt/coco/tdx-host/private.h
-new file mode 100644
-index 000000000000..131c1782cbc1
---- /dev/null
-+++ b/drivers/virt/coco/tdx-host/private.h
-@@ -0,0 +1,33 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2026 Intel Corporation */
-+#ifndef __TDX_HOST_PRIVATE_H
-+#define __TDX_HOST_PRIVATE_H
-+
-+#include <linux/dmar.h>
-+
-+/*
-+ * Represents a list of pages for TDX module defined IOMMU_MT object.
-+ * Typically it uses a "root page" as the medium to exchange a list of
-+ * data pages between host and TDX module.
-+ */
-+struct tdx_iommu_pages {
-+	u64 *root;
-+	void **pages;
-+	unsigned int nr_entries;
-+};
-+
-+struct tdx_iommu_state {
-+	struct dmar_drhd_unit *drhd;
-+	u64 tdx_iommu_id;
-+	struct tdx_iommu_pages *mt_pages;
-+};
-+
-+#ifdef CONFIG_TDX_CONNECT
-+int tdx_iommu_enable_all(struct device *dev);
-+#else
-+static inline int tdx_iommu_enable_all(struct device *dev)
-+{
-+	return -EINVAL;
-+}
-+#endif /* CONFIG_TDX_CONNECT */
-+#endif /* __TDX_HOST_PRIVATE_H */
-diff --git a/drivers/virt/coco/tdx-host/iommu.c b/drivers/virt/coco/tdx-host/iommu.c
-new file mode 100644
-index 000000000000..a80e57bf26a1
---- /dev/null
-+++ b/drivers/virt/coco/tdx-host/iommu.c
-@@ -0,0 +1,255 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * TDX IOMMU Extensions support
-+ *
-+ * Copyright (C) 2026 Intel Corporation
-+ */
-+#define pr_fmt(fmt) "tdx-host: " fmt
-+
-+#include <linux/pci.h>
-+#include <asm/vmx.h>
-+#include <asm/tdx.h>
-+
-+#include "private.h"
-+
-+/* These describe the trusted invalidation queue buffers. */
-+#define IQ_BUFFERS_NUM		2
-+#define IQ_BUFFER_PAGES		2
-+#define IQ_BUFFER_SIZE		SZ_8K
-+
-+/* The IOMMU_MT root page holds one u64 entry per metadata page. */
-+#define MT_ROOT_SIZE		SZ_4K
-+#define MT_MAX_ENTRIES		(MT_ROOT_SIZE / sizeof(u64))
-+
-+static void *tdx_iommu_alloc_pages(int node, size_t size)
-+{
-+	struct folio *folio;
-+
-+	if (node == NUMA_NO_NODE)
-+		node = numa_mem_id();
-+
-+	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, get_order(size), node);
-+	if (!folio)
-+		return NULL;
-+
-+	return folio_address(folio);
-+}
-+
-+static void tdx_iommu_free_pages(void *virt)
-+{
-+	if (!virt)
-+		return;
-+
-+	folio_put(virt_to_folio(virt));
-+}
-+
-+static void free_mt_pages(struct tdx_iommu_pages *array)
-+{
-+	unsigned int i;
-+
-+	if (!array)
-+		return;
-+
-+	for (i = 0; i < array->nr_entries; i++)
-+		tdx_iommu_free_pages(array->pages[i]);
-+
-+	tdx_iommu_free_pages(array->root);
-+	kfree(array->pages);
-+	kfree(array);
-+}
-+
-+DEFINE_FREE(free_mt_pages, struct tdx_iommu_pages *, free_mt_pages(_T))
-+
-+static void **alloc_mt_pages(unsigned int nr_entries, int node)
-+{
-+	unsigned int i;
-+	void **pages;
-+	void *vaddr;
-+
-+	pages = kzalloc_objs(*pages, nr_entries);
-+	if (!pages)
-+		return NULL;
-+
-+	/* Allocate two contiguous buffers for the invalidation queue. */
-+	pages[0] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
-+	if (!pages[0])
-+		goto free_pages;
-+
-+	pages[1] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
-+	if (!pages[1])
-+		goto free_pages;
-+
-+	/* Allocate the required number of pages for the IOMMU metadata. */
-+	for (i = IQ_BUFFERS_NUM; i < nr_entries; i++) {
-+		vaddr = tdx_iommu_alloc_pages(node, SZ_4K);
-+		if (!vaddr)
-+			goto free_pages;
-+		pages[i] = vaddr;
-+	}
-+
-+	return pages;
-+
-+free_pages:
-+	for (i = 0; i < nr_entries; i++)
-+		tdx_iommu_free_pages(pages[i]);
-+	kfree(pages);
-+
-+	return NULL;
-+}
-+
-+static void populate_mt_pages(struct tdx_iommu_pages *array)
-+{
-+	unsigned int nr_entries = array->nr_entries;
-+	void **pages = array->pages;
-+	u64 *entries = array->root;
-+	unsigned int i;
-+
-+	/*
-+	 * Populate the parameter for the TDH_IOMMU_SETUP SEAMCALL according to
-+	 * the format defined in "Table 3.35: Structure of IOMMU_MT Parameter"
-+	 * of the ABI reference specification.
-+	 */
-+	for (i = 0; i < nr_entries; i++) {
-+		entries[i] = __pa(pages[i]);
-+		if (i < IQ_BUFFERS_NUM)
-+			entries[i] |= IQ_BUFFER_PAGES;
-+	}
-+}
-+
-+static struct tdx_iommu_pages *
-+tdx_iommu_alloc_mt_pages(struct dmar_drhd_unit *drhd, unsigned int nr_mt_pages)
-+{
-+	unsigned int nr_entries = nr_mt_pages + IQ_BUFFERS_NUM;
-+	struct tdx_iommu_pages *array;
-+
-+	if (!nr_mt_pages || nr_mt_pages > MT_MAX_ENTRIES - IQ_BUFFERS_NUM)
-+		return NULL;
-+
-+	array = kzalloc_obj(*array);
-+	if (!array)
-+		return NULL;
-+
-+	array->root = tdx_iommu_alloc_pages(drhd->node, MT_ROOT_SIZE);
-+	if (!array->root)
-+		goto free_array;
-+
-+	array->nr_entries = nr_entries;
-+	array->pages = alloc_mt_pages(nr_entries, drhd->node);
-+	if (!array->pages)
-+		goto free_root;
-+
-+	populate_mt_pages(array);
-+
-+	return array;
-+
-+free_root:
-+	tdx_iommu_free_pages(array->root);
-+free_array:
-+	kfree(array);
-+	return NULL;
-+}
-+
-+static DEFINE_XARRAY(tdx_iommu_xa);
-+
-+static int tdx_iommu_clear(struct tdx_iommu_state *iommu_state)
-+{
-+	u64 r;
-+
-+	if (!iommu_state->mt_pages)
-+		return 0;
-+
-+	r = tdh_iommu_clear(iommu_state->tdx_iommu_id);
-+	if (r) {
-+		pr_err("TDH.IOMMU.CLEAR failed, regbase 0x%llx tdx_iommu_id 0x%llx status 0x%llx\n",
-+		       iommu_state->drhd->reg_base_addr, iommu_state->tdx_iommu_id, r);
-+		return -EFAULT;
-+	}
-+
-+	free_mt_pages(iommu_state->mt_pages);
-+	iommu_state->mt_pages = NULL;
-+	iommu_state->tdx_iommu_id = 0;
-+
-+	return 0;
-+}
-+
-+static int tdx_iommu_setup(struct dmar_drhd_unit *drhd)
-+{
-+	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-+	unsigned int mt_page_count = tdx_sysinfo->tdx_connect.iommu_mt_page_count;
-+	struct tdx_iommu_state *state;
-+	u64 r, tdx_iommu_id;
-+	int ret;
-+
-+	struct tdx_iommu_state *iommu_state __free(kfree) = kzalloc_obj(*iommu_state);
-+	if (!iommu_state)
-+		return -ENOMEM;
-+
-+	struct tdx_iommu_pages *iommu_mt __free(free_mt_pages) =
-+			tdx_iommu_alloc_mt_pages(drhd, mt_page_count);
-+	if (!iommu_mt)
-+		return -ENOMEM;
-+
-+	r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt->root, &tdx_iommu_id);
-+	/* TDX Extension is not supported on this IOMMU. Nothing to do. */
-+	if ((r & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_INVALID)
-+		return -EOPNOTSUPP;
-+	if (r) {
-+		pr_err("TDH.IOMMU.SETUP failed, regbase 0x%llx status 0x%llx\n",
-+		       drhd->reg_base_addr, r);
-+		return -EFAULT;
-+	}
-+
-+	state = no_free_ptr(iommu_state);
-+	state->drhd = drhd;
-+	state->tdx_iommu_id = tdx_iommu_id;
-+	state->mt_pages = no_free_ptr(iommu_mt);
-+	ret = xa_insert(&tdx_iommu_xa, (unsigned long)tdx_iommu_id, state, GFP_KERNEL);
-+	if (ret) {
-+		WARN_ON(tdx_iommu_clear(state));
-+		kfree(state);
-+		return ret;
-+	}
-+
-+	pr_info("Trusted DMA for TEE initialized, regbase 0x%llx\n",
-+		drhd->reg_base_addr);
-+
-+	return 0;
-+}
-+
-+static void tdx_iommu_disable_all(void)
-+{
-+	struct tdx_iommu_state *iommu_state;
-+	unsigned long tdx_iommu_id;
-+
-+	xa_for_each(&tdx_iommu_xa, tdx_iommu_id, iommu_state) {
-+		/*
-+		 * Clear failed: the IOMMU remains in Secure TDX Mode. Keep
-+		 * the entry and leave drhd->tdx_mode set so the host stays
-+		 * confined to the lower half of the DID space.
-+		 */
-+		if (tdx_iommu_clear(iommu_state))
-+			continue;
-+
-+		xa_erase(&tdx_iommu_xa, tdx_iommu_id);
-+		dmar_tdxcs_iommu_release(iommu_state->drhd);
-+		kfree(iommu_state);
-+	}
-+}
-+
-+static void tdx_iommu_disable_all_action(void *unused)
-+{
-+	tdx_iommu_disable_all();
-+}
-+
-+int tdx_iommu_enable_all(struct device *dev)
-+{
-+	int ret;
-+
-+	ret = dmar_tdxcs_iommu_init_all(tdx_iommu_setup);
-+	if (ret) {
-+		tdx_iommu_disable_all();
-+		return ret;
-+	}
-+
-+	return devm_add_action_or_reset(dev, tdx_iommu_disable_all_action, NULL);
-+}
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/main.c
-similarity index 92%
-rename from drivers/virt/coco/tdx-host/tdx-host.c
-rename to drivers/virt/coco/tdx-host/main.c
-index e8ed8dfa526e..018bdc475715 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/main.c
-@@ -14,6 +14,8 @@
- #include <asm/seamldr.h>
- #include <asm/tdx.h>
- 
-+#include "private.h"
-+
- static const struct x86_cpu_id tdx_host_ids[] = {
- 	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
- 	{}
-@@ -202,9 +204,26 @@ static int seamldr_init(struct device *dev)
- 	return devm_add_action_or_reset(dev, seamldr_deinit, tdx_fwl);
- }
- 
-+static int tdx_connect_init(struct device *dev)
-+{
-+	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-+
-+	if (!IS_ENABLED(CONFIG_TDX_CONNECT) || !tdx_sysinfo ||
-+	    !(tdx_sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT))
-+		return 0;
-+
-+	return tdx_iommu_enable_all(dev);
-+}
-+
- static int tdx_host_probe(struct faux_device *fdev)
- {
--	return seamldr_init(&fdev->dev);
-+	int ret;
-+
-+	ret = seamldr_init(&fdev->dev);
-+	if (ret)
-+		return ret;
-+
-+	return tdx_connect_init(&fdev->dev);
- }
- 
- static const struct faux_device_ops tdx_host_ops = {
--- 
-2.43.0
+"u64 *" would become a vague argument type.
 
+Is it better to split the wrapper & the new struct into 2 patches, the
+new struct first, then the wrapper?
