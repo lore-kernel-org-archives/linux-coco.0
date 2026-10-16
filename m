@@ -1,79 +1,71 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010041.outbound.protection.outlook.com [52.101.46.41])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011054.outbound.protection.outlook.com [40.93.194.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867A936F908
-	for <linux-coco@lists.linux.dev>; Fri, 16 Oct 2026 22:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C9B3D3CED
+	for <linux-coco@lists.linux.dev>; Fri, 16 Oct 2026 23:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792189289; cv=fail; b=C+vBNIU1xD1E3A43vDZAePu32kNAFJTIo47UNRnmN9MGwT51PMjO2a1b3T7j22bwk12//G9x/3C53pnUPbVttrYCxmy89dmSk/aKrtPnKG5Q65wIUaVJzApsFyHhilhW4DQOP6ItjelucehWhPBHp4nnBn1g/oWK0fWwxNP6UT4=
+	t=1792194241; cv=fail; b=HMYXgmgPMt4ynF0ZyYjzew4RJzbjimA7jyYsA1hYYJmj4KMJ74qH5sxlIU5s7fJmUSH6bZ9+MhYPv+IKIOxt8axp19KWM6lWb8aZHLwRMEQuLuK2zH9oSjMXPMCmDUuRXynYI5RiFoC0zaX4acVbT9HmknjTzsYgZURKyapbmV0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792189289; c=relaxed/simple;
-	bh=e0qJtFxuX2KlBvLOTzerGsWLSNqSDIPcDUH01GbOUHY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=P/oQTUSMbonN50KWrfZ2qHpXGMPxDn+ZOy13zVwKhbP4ot4/p4oF7L9DjKAPBdVGMBScNOcopCC4XuYhCep61OPuna1WAN0wlyVpXuCcw09ysZRkOkuWgr1UuSeVw0zk6s9PrACZQ4KstqxxUyHO1aKR99fm1oI7ipuvdcmXhvY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=c0HkQym5; arc=fail smtp.client-ip=52.101.46.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1792194241; c=relaxed/simple;
+	bh=/nn8x0lzdQHmDX0oGmBnvidyd6qV6hWlksD7A7upm4s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=X2+yFKg+wVhwJ+7wIqOxZuU+hqmbZrLs0m5LItpyXj9om0w3PZCzlUMzClSWbeQ2hcmyKU7cAycWEMPWvw/x71ZAFtvqZKbNrf7w4Q6/sQTLULARYNVOmllbeJtvgJmLsjwhczG7lLwODfxtoAH0xtwn7/Y9dJmaOwsAE+HgwT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=d2z4fQLh; arc=fail smtp.client-ip=40.93.194.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="c0HkQym5"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="d2z4fQLh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bhE9XjkMdfdwawr04D+5EQZGDaGa9thALv3Gml55vY2I4/koQKEZeaRdw9iDcDMJYC9dmuzoy1MSBhwe3CsfM7mOQ/K/Gk9PVxMgZkWtS+CwWu7erubU84yKoYXfPMv+TcB9b21bLVi6ExF9mhNtyTVFlrmrMAR6TQQVrhRucA87NGD0ypba7fPPLwsQkgESuwMyYG6NHMtWbbMK9w703Q6MF05nkHO8z7oBMwrdjD6ZR4/+aYmy65+c9A1BnMMF7nf9j+++3yZFiZxCekjajiR+whNFeQQzAwPr2rS5A4DVP3VSrk6nKcceqbCg4dq1s3RxJx3YQJ639Vm4S8ND2w==
+ b=v7NMGQyzylyVx57pDae5BbrOJxkwXadRUZIj/kmzge7rxI5+OqTQsMGrn0YMFG3sLzcUUIdUuyM+sS7Hvf6k5FR5H76bGkak8tEj4nZRq5tslh4cnp5m1Ynl5UAHs9xH9j0+rSR/VwLviw5DLEW18WavnRgAJ9OOrHuY7QvQ/7ivsy+IoRki3CHZIr7XU8OcG9p2LsrjsgsL/q5q2TE4ZMgoNfBU1QiwpOvnlSDSUcIeXchWPT3fj8s5cdssFJisI1L04jt+qA+YueuUdRRUQK03f9mwhsRJjNdJWE/CgI7rjj63JZiS2xd/bg8Q8MT3D+uRXcI3/zKzivTqmgkfmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TXD8c2eg/o+C0VBRi3hVhJigZCjLvKpwofHKBWfbQCU=;
- b=ubaViCi31QdvwP8xNmsNvnMjrkpOuKbW1ly8q1xDT2Bw4xOPRtabTctcANH90qIwRC/Hm/8VP4WUWPN5jgC/oo0GdGrFYoqatpqdARYsFznOmGBdTriGS8uTfn/n+FxnqLBSTsHNb6nYTYfS23QmECEYm7Q7nXFBUslm0y6JDsarKQ5vqrIdzG98BalYaCPcol91vHoxTx8S99eh+uaYChmh2aan1KacktkXeD2fE1HsBXyX0h/goxiHn5Gt7QtElM2DeKA1cQ8Mun+C9uaeypzevPZpXaQ0wb3HUj8mo7xSV1Hy9EtGAnLS82pVl+iLQ3fxXNZ8T2oIDMSyYVTcIA==
+ bh=NAWjvz1ExE6t4FXF2EvzjI2aEQMCzbMfc93MLaenuqI=;
+ b=JApploNOkIIb4VG2CYlvtRhOlJIvNlLZZvrxae/CScTzbmhs7ANI3yNiSTX2QWY97RyAI9wKMRaWEYfNkCYypkVqREQfViVSM0hJQE/aOpEweP5+Mv7Km5N/lItmww2fTXNoUZtgn4TvBAz4Ma2Z+stzEQhIfGZpoDtTguC72UWLfUGE7rJ25iGZTrATSEGUM6y1GV2HKP/MyjuyS7IiNgtd5kRs7YQ+BLdpF1N/x+WcdeUzsEFr0Dpev2sTE9A14Q+zDMGadV3ZBRx6v6zCJEqbgFh1fBM9zXb14Vo8aUK2G5gsHoeBLCyfVcAbwIdh3jMRM6/wekRLlL/knEcKTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TXD8c2eg/o+C0VBRi3hVhJigZCjLvKpwofHKBWfbQCU=;
- b=c0HkQym5X3o73AFlz35j8gBH+aGCstPUT5M8BFemZmdU0pUzjVNIJrzmhwfTp6yBrKR0jWUmKgmt36W5wE9kfRC/mdxUPqUozJ97pVkYf3vn+y303cu2u7dkGuAeWrhKl7xN2Uc0msHh960J7mMDE7LhcSNkBLz78cua6vJ2JPc=
+ bh=NAWjvz1ExE6t4FXF2EvzjI2aEQMCzbMfc93MLaenuqI=;
+ b=d2z4fQLhQ6suQ6trgkfHG+ZJPHvu00CrQi4o+d9aYclNaKuOniUmxxYvS0Oa+gshtbhcyEYTt7WYxUkCPUeCoMe+JYNWM4PLdkEhtKG6GX2ONR7EUMDwVz9m5Txk8j8jbSJxtF3wOgTmgUhQwRBGjEjHgBgLJQyybQ+PpP9p8zzgCko1uBds3xLCRYKit8sLi8o18RQ21m/Y7njU7LEP68G9RdxvhcXXxKYeiF9/Ip5TUbQREqMYZb6ezwhP9pRRrn69a1xYbCkt1eYd6z8a+f0Ba5VCcFYXJu4Ot5iGPVAwlbeUDYh5jQgRavcYUEGNDzLPejnSBL9rqCdhAaT5IA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by PH8PR12MB999273.namprd12.prod.outlook.com (2603:10b6:510:425::5) with
- Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LY0PR12MB325698.namprd12.prod.outlook.com
+ (2603:10b6:408:3bb::14) by SJ2PR12MB9115.namprd12.prod.outlook.com
+ (2603:10b6:a03:55c::21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Fri, 16 Oct
- 2026 22:21:24 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
- 22:21:24 +0000
-Message-ID: <7cd528b5-3378-4973-8e5d-15dde78c25da@amd.com>
-Date: Fri, 16 Oct 2026 17:21:14 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 12/18] fs/resctrl: Add CPU hotplug support for kernel
- mode associations
-To: Reinette Chatre <reinette.chatre@intel.com>,
- Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, bp@alien8.de,
- ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <553a9ab0695fcb7a0c1e68737582663d6fb3c080.1790867441.git.babu.moger@amd.com>
- <6b9b241f-b459-41e2-a65a-2ae0b478b2c2@intel.com>
-Content-Language: en-US
-From: "Moger, Babu" <bmoger@amd.com>
-In-Reply-To: <6b9b241f-b459-41e2-a65a-2ae0b478b2c2@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0154.namprd13.prod.outlook.com
- (2603:10b6:806:28::9) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+ 2026 23:43:55 +0000
+Received: from LY0PR12MB325698.namprd12.prod.outlook.com
+ ([fe80::b65f:1548:5b35:e2b5]) by LY0PR12MB325698.namprd12.prod.outlook.com
+ ([fe80::b65f:1548:5b35:e2b5%5]) with mapi id 15.21.0522.016; Fri, 16 Oct 2026
+ 23:43:55 +0000
+Date: Fri, 16 Oct 2026 20:43:54 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <20261016234354.GA664420@nvidia.com>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015145053.3664509-1-jiri@resnulli.us>
+X-ClientProxiedBy: YT4PR01CA0252.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10f::24) To LY0PR12MB325698.namprd12.prod.outlook.com
+ (2603:10b6:408:3bb::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -81,236 +73,117 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|PH8PR12MB999273:EE_
-X-MS-Office365-Filtering-Correlation-Id: f80e0698-d157-448f-07bc-08df2bd3d023
+X-MS-TrafficTypeDiagnostic: LY0PR12MB325698:EE_|SJ2PR12MB9115:EE_
+X-MS-Office365-Filtering-Correlation-Id: cfd1f139-8584-4640-a026-08df2bdf5757
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|6133799003|18002099003|10067099003|22082099003|4143699003|11063799006|261009223027099003|56012099006;
+	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|6133799003|10067099003|18002099003|22082099003|3023799007|5023799004|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	zRKLop81/Tfopo366CPVybwAtH0evU0BvmlNEJ60lySj2G+XkIGL5tA2pnHtYIBFcSUZwYisk1BnxFQ1bxOef9YQPp2+DDwPRoirDu47+00SK3hnaa3pZPEhTxIiv/SnLiP90ptFi0ji6G0YF3szAVr2pozagFbnMq2gUpvQXzRZfE7ylr2KwS1XY/fIHWfrbEiXjVLBHVr/2NTYCZSfEHLetm3RBXKymM9C/EF0axbcUGooelbzTI1NnvIx54O6MRdoVGZBQgSWmGCWtBB65O8Ej1oK9NIYJigs0/Zg5+yBYqKHX0517ABTK/lQ7ZQ12zA07rl0DvIBWwnrqh8n18nrTQxrfIAkQ9qmnLYi9VHLV7W9ILXQvKkwJ5QS9kz7nzBoCQrCP1s4pqTxxO9imCV9S/DLJR6B8Lrk3R70mEQid+9zuRLkJE6dFC7J/zCRG243FcHcDxzFd3nGWDE/Wkjs0Zq9nfn5YLzRgO1rI/dH9Y70Bac3TKilmvYj6kovFQebG0PEDEE2DbsTuCMOgXzzKNIn6hjYxOaLeUTh8UEYIaaeDq822eYmMFrf5OgPX63HI1FXQyWcUgxKEh6aD16JVTgxNge9NHMJP8FfWOeKfwl49reKnBdzSxSfK8c24A7v2CDQWFlgFKRkW76vLUPS6YqBGaaiev0xGw0eYTY=
+	6cc57foRuhQvv6IP8X2C29HhhKODh21YUg2i3ykY/eWt0AN73lrQ+FmMCFOVRPZXIUektDix1/EBNo4lle48KBOO1RDvOZIZkp7nQDPK/801Qp/qNes0FCt0keTstB/KTNJyWvx8NuMfGryrMqveBgzshVdckcjBfmJxVCKKXtsW+Z/dqk8vifj0+WIE60pDTIpq3rQuadpVYCm82BFzg1QbceHQEsHARKjesiWkjbdlZvBs4AAoYJnCzNzwfLOQeDPuKoCf6K5ORun5c8CzSdTup486Ed2Ck9vgYmTn+TDfS1wv26orIJRmN9uNY3ToTRIqz/uMPs7088zxPxm1xleUYu1x2H++Wm9LmKrZPc4BII6bJmGuw/OPttdSMojctM78Pm5E2ncH3VawlKMCXkAg3vQnLou/PHZZG/AR8JbY2EBAnE70I8cjXmsakhM/O6k6hmOgaVDxB0DFZrOuupXtjkvMSMfnHVpmX+Ti+AzSVerkM+2LrR5y2xT/QwQSWXGsUfp+GXeZqC4RRiWwrLXZw+QH5j8RtYJtmAMRox+UgZxFK+CZhl5+NgDiFM0gRj3Cb8jXAtBCFTPlmJ45xR6lYukMDLhdZ654+jC3H3N9mEqeZYgyMgWF8bGZVeIyXT1iKbx9kxicior2qoiTz5f0dfiRyekXmnLuV9KcCQo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(6133799003)(18002099003)(10067099003)(22082099003)(4143699003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LY0PR12MB325698.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(6133799003)(10067099003)(18002099003)(22082099003)(3023799007)(5023799004)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a2IvNkVkQ3FYUC95eEdsK2hDZGkwa3lYbE5ram02ajBUQmo0a1J3UDhOd3hR?=
- =?utf-8?B?WE1lRy9qdW5mNXJnV3l0aGxvUnhtMHI5bkV4Qlp5amVvSnZpVllwb0FBWVNi?=
- =?utf-8?B?UlpudFhWa0drYnE0anVkbXZrT3hKdVJvNzVRWTF1dmUxT29SeUJNclI3ZVo1?=
- =?utf-8?B?SGNxUktRTXlSM042TlpKTTFEUzk4ZWtNQmdHdHg4Qm9JNHZsQXg3a0QyZlJ0?=
- =?utf-8?B?a2pDUlBhUHppVW5yNHNNMUVacnBxQ2RqWXIrNm5zSXJkSGdtOTNYOGdqMlUw?=
- =?utf-8?B?VmU1OXhqeWdrUjlKMEVKU0FmQ2lzdlBWKzZBSTVabUdKM0Q5VkhwVnFyOTVk?=
- =?utf-8?B?SDRWcnZZSWtaZFFsRE02SFE4QlZhRmNEb2hqUndKTlBqUjlzUTlJOW1xbzJT?=
- =?utf-8?B?RVJZN2tUTDFtQWl2d0FYSzFIMUZyd0Z3ZzNoMG1SeU5YY0k2b0hKUDVldGNj?=
- =?utf-8?B?c2ZObXpQYVFVeHBmci8vQThESUlndUFlcllUekVSOWdXRWxOd21jN3FqM0dR?=
- =?utf-8?B?SjdZc2Jabkt1Nkx6QnVOSk5ROTVodTRSSjNYVUY1cXpIazlhSXF4cjZrNHFX?=
- =?utf-8?B?MFN2cmtCUGUrYlR5UkYreENoMXhuRlh2WFEvbUZKcFgxRDVkcHAyUktVemF5?=
- =?utf-8?B?WE1zME9tVGhYMGxzdzQyeFA1aS9Fc3lWcTd4L0xMVXFqc3dVWEsxUzNWYlJV?=
- =?utf-8?B?TVNBNHRWZktyK0Z1aFJPNDFwYlk5Y2FDTldIaHNJbCtoQ282M3ovZkU1Skho?=
- =?utf-8?B?amdkcWJtK0NaSG5aSWZTalpUMnlDeTVvMUV0dmJ3ZDg3MUZWTkhYc2RiU1Zw?=
- =?utf-8?B?SmlSOU9wRGJwYWE1U3hzblhvdWVRa3NZWHVaK3B2M28ydWovRDBZYmo4WEQ0?=
- =?utf-8?B?WTZKTUlaUWpWSkRNZXdxTUdPMkpPd01BZEMzb2RkRGFQM2VvaUNnb1VRY0tn?=
- =?utf-8?B?WXRNYklEUDZUVVEvYWo1VmNsS3pBem5Vc3docWh6M3RKU3lIN2ZBM3pzQzAy?=
- =?utf-8?B?WWhMaUxtbEhXUXFTTlN2aFVRalZKTCtjSEZqOHp0VlVyTkxTYTNQRDM4TVBs?=
- =?utf-8?B?bUtuV3E1eE1iVUFqa2ptTXJFSzFpcHVCN2Fad1FUemFSTTdzTnhkTWQ3Um5U?=
- =?utf-8?B?eUpKSWw5WWhQM2ZFL3dyQ0k3Z3ZNVnZOcTMxUVUxVE0yb1lDK2dmSm9OZGlk?=
- =?utf-8?B?bGFoVCtqV1Y1WnVzcUJPbXFJMU5PSWt2MmI4R1pnMTcvRnUzenVmVDI4dkgr?=
- =?utf-8?B?MUE0NnFiQWdNNHJsbkp6SnRyVjEvcHZCVFR2QWtWYVlaQmF3UzhuV1VSUkk5?=
- =?utf-8?B?eUZtc1c1OVpMWDMyMDNCM2E4eTQzZjNnVEVaSiszRmJjNFYwRHlUdkFmeFdh?=
- =?utf-8?B?NXUrNUNCL2NOQ1JQcFNMMVk0SWxWb0pSWFlxMWEwSnllZTBVbTdyYUM4Q3JQ?=
- =?utf-8?B?Q01jNSszR2FBYWlUQnlrQTczcXlDQnMrbTdxdWw0amczb29IMHVPSnpuNjR1?=
- =?utf-8?B?U2FSTXlETmlTdk9zamFtNU5INEwzYU5ZOHFpYXdxMkZIWS9ZbEo4NjF3OTVR?=
- =?utf-8?B?bkFYeHZNc3BvL25aSXhoZ0ZFM2laT3p1MVgvTWRkZXljTHZ0eGpsUVRlclRM?=
- =?utf-8?B?SFpJY3pidXFkenIwZVZTY0UzYnBHZUl0U3g3czJSQkR6M1hLQ0hZYzhFb0F1?=
- =?utf-8?B?UnFwUUl3QmlGRzc2bXdQRHI1aGxVNzF3UTlRRmFyRllFZHl5TnFrL3BUZkpE?=
- =?utf-8?B?aTcvUWllNE1BdW1JaXQzVHk1eGROMTVjdzhFUEdCWFdiN3JQUlZ6MCtLUk5B?=
- =?utf-8?B?SmY4VnNQRDRBWTJHSFowQ0dtM1R0TUlFVDNpWUdhV05pSjRTWE45NHA0T3Vq?=
- =?utf-8?B?cHNlaGpDS0FqOGRKR1NSZDlWNUY4QUF6cXhsZnluL01NbEZoTW9LYnp2UlBn?=
- =?utf-8?B?WGhnREZWZC9aQUo0YkhMQ3daYkZKNCtUOTJLMmVnL3I5aUxpQmsyWmsvY0hH?=
- =?utf-8?B?Z05hRWxYUGhUczRUeWh6REpIUURqT2RGbEZ5VzRjVTFVRWxTTDg2NC9GMlR1?=
- =?utf-8?B?UVlBWUF1MzhUaFNRQ1p5VTY3TWUxRHUrRGZoOGVZcWtRUzRDYXArR0FLUnlV?=
- =?utf-8?B?ODA3b0pFYlBwNnhNSXAwVVRSTTh4YXNNblBkSng3UEk2WnFDQ1Z1OFJLK09w?=
- =?utf-8?B?SHdmbXFzcVo3KzlwYjllNXByVlJJcTJTTW1XcEx5RUduclJldGxRVUpmL1JV?=
- =?utf-8?B?V1F2ejdQSkhKWU9BbnkyR3U3Zk1tS1o1YzFYa0NZdUFPQ3pzU3NMOXhhQVFy?=
- =?utf-8?Q?k+F4BvU2UhFlNE1Stm?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f80e0698-d157-448f-07bc-08df2bd3d023
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+	=?us-ascii?Q?spU70kwkUZRR6anIlDvkCIFUsKMs0dUFSRGiovupMmxdITdkEuQhWFgoMiW2?=
+ =?us-ascii?Q?QgoSlGz3wPJNcNH5bm5k6agD+BMd7/dtEuaf5YpaZqOYcgpAm1Isb7tlta3Z?=
+ =?us-ascii?Q?DpFwl1ts3EFA3yEfGXRjJyAkkcAhq9KnufNpMqEgthjb6FxyroYDXlpVH6FO?=
+ =?us-ascii?Q?JD3S62OBaId/iQYp+hlhTWXH+PWFbV2LADh3k3D07q4oeHj7DlQYvT+WRZ8/?=
+ =?us-ascii?Q?hkKz2rCpPNCuAsKw/zq34niJQXvr6YO3ZOopkiVIY4QzB4pQx9wGUI60aCFP?=
+ =?us-ascii?Q?0vi2puTOIsPdH40Woun/xPvn9MImTwB0P4+K3G6WlFMMCxOObWgKhTQ6NalO?=
+ =?us-ascii?Q?ed4EQwFhQdEhcJKrVO8nrsT+8FOi7gcZbU0CX7JGuzQNxEbnE8xriwnC2UDn?=
+ =?us-ascii?Q?whBZc7u5jXGbAOJchS8rPg9K0mIOsjrCObXHuvx2rkmaq2MNYxbHUQKSCiwL?=
+ =?us-ascii?Q?/YAB+mtwfJwd7GiY5mgOt7yeXbMxVpA5Ur3mpo1ieEEfH2l/OWVatZecakIg?=
+ =?us-ascii?Q?mvJY9/cDebBSy2lvArL97XQC2Vikch8YWSMFrdNpJZs1VlmbAFoV8nuNtf+G?=
+ =?us-ascii?Q?epaGl+xsbjTnjppHnsfW2az3zwLOxlTVoQhhpuF/J9nhWmB+4lHqsvAPQDkm?=
+ =?us-ascii?Q?g7ycOHis+Trd6ddQYUp+tIdHpk62k9M56M7gRg6kHh8ATtVv9O/K8AfTYHZM?=
+ =?us-ascii?Q?t+5yoVxodR2l+D6Kg1YQ6AejtcuHLL2O4lc534WFPQT/UhvJ8RZsu8U1vJYw?=
+ =?us-ascii?Q?Y1g7+noJwl3CeedNls4+YCx4Ehc2Vv/zwUQG7E89eIAcfp064dDzsh0y/9Vn?=
+ =?us-ascii?Q?Dfiu3RU+2FDRr1U5iwfSDCUZaNtQrslcXD85qAdZqOCfjmmjFRZYedw9TGaJ?=
+ =?us-ascii?Q?YRjB+fgwx8YI0risFXtTJgI5U0KxqvowtNoGscuK5Io2kChK0wnNwi79aHzH?=
+ =?us-ascii?Q?AJHnqAOUsPl7r5Q5d0IGoCgO51uevyRkJMZuZ9tnR6TrhfC5pvxH2QK67+BJ?=
+ =?us-ascii?Q?x+BMKOsMr6oFbMH/Cc3eVK3J7iRnzciSp/8H5KNEv1Z5GkR5A/mr8FHHmsZr?=
+ =?us-ascii?Q?MR/l7YPoVm2w91VhXewjLTEDF9HPyHWcwkDgVkG/vePkABThdhzvi1npSANE?=
+ =?us-ascii?Q?E3jl0LgTwvwH4+RPwpkyT4qHGjMlnrjRBxQp0t+Y9933O1aHy0w76UeeDk8B?=
+ =?us-ascii?Q?OJGVRGBhbE79ZGm6sGh5oYRDPrD6HSm/v89WSmyR8nt3BbtGIJVMCJyIe/8g?=
+ =?us-ascii?Q?7ZfrjQbFgxzIsJrV08X+3lSWfxXCbEnhuFB4TZq8bmqlPWiWsYMId2p2U1Id?=
+ =?us-ascii?Q?V/f8YHMeVF+GWuAVl33Uh9rY0EpEFaeu0ezLCScKamfVAbjFiScmaDBcwocW?=
+ =?us-ascii?Q?Fwrd0QijGEoSQVIwArBuvyAkZ9FIGLPSo2oRt48nPcvJBaoLYXPKdpZyWU83?=
+ =?us-ascii?Q?BL5/MmbM+wFjdDFcyKJZSOK0AJQgd6Y8s8Wn0+0jqitYqfxLfleX4I9lUdo8?=
+ =?us-ascii?Q?t8wD3GzUTCjJJlXu24v3XbyuPpf/MFFpfP1XNErvCmyQ/vxeg+3JBzFH+kLA?=
+ =?us-ascii?Q?77E6hqwHN98GyizYcNeK4nEnHkquxPz1COS8TJMzs4ouR+sOPS7I+5kdWe7W?=
+ =?us-ascii?Q?/nxLYIEnMWXaN4pUO4LGIo/zKOUuMFUJQQZffmeti2SMbaDkvaBpRqssScmh?=
+ =?us-ascii?Q?BiwsLDMqWWyHXk4/ez5o5EPDSq387aLHueyuzbZRkKoYzAwH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfd1f139-8584-4640-a026-08df2bdf5757
+X-MS-Exchange-CrossTenant-AuthSource: LY0PR12MB325698.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 22:21:24.0953
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 23:43:55.4878
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0xmrbotRXyGNy7ou9sIf0DFjh/MYbI6Kr7cctlb8VKrm2r+SJxz2fDerDZrBlHg4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB999273
+X-MS-Exchange-CrossTenant-UserPrincipalName: GzpLRXto55xFTWs62fXN3ixu67f/6DgT89HKBlacElwt0OBK/KzxkrM/8kVrQsVf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9115
 
-Hi Reinette,
-
-
-On 10/15/2026 10:33 AM, Reinette Chatre wrote:
-> Hi Babu,
+On Thu, Oct 15, 2026 at 04:50:33PM +0200, Jiri Pirko wrote:
+> From: Jiri Pirko <jiri@nvidia.com>
 > 
-> On 10/1/26 8:10 AM, Babu Moger wrote:
->> Kernel mode allocation and monitoring associations are maintained on a
+> Linux has several attestation interfaces tied to individual technologies.
+> That makes evidence retrieval, measurement registers, device state and
+> kernel consumers provider-specific.
 > 
-> wrt "Kernel mode", this is specific to only the "global per-CPU kernel mode", no?
+> This series introduces a common attestation subsystem. Its goal is to
+> support platform, TEE and device providers through one model, including
+> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
+> This first series implements the common subsystem and a TDX provider.
+> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
 
-Yes.
-> 
->> per-CPU basis. Extend the kernel mode infrastructure to integrate with
->> CPU hotplug handling, allowing kernel mode state to be managed as CPUs
->> enter or leave the online set.
->>
->> Introduce resctrl_kmode_global_online_cpu() and
->> resctrl_kmode_global_offline_cpu(), and hook them into the existing
->> resctrl_online_cpu() and resctrl_offline_cpu() paths.
-> 
-> Above just narrates the diff. Please check all changelogs to match
-> tip changelog expectations. So far they are light on context/problem/solution
-> and many miss an answer to "why".
-> 
-> It deserves a mention in the changelog that the active kernel mode is automatically
-> enabled on a new online CPU followed by why this is done. This is a big design decision
-> that will be user visible but I missed where this is highlighted and motivated.
-> 
-> Changelog should help reader to understand the patch. In this series the changelogs
-> provide little help.
+To add some more colour on where this came from for others..
 
-Will rephrase:
+About 3 months ago we started looking simultaneously how to support
+roots of trust (ROT) HW in place of TPM and how to respond to the
+feedback on the netlink proposal for the TSM SPDM.
 
-"The global per-CPU kernel mode enables kernel work to use different
-allocation and monitoring associations than the originating user task.
-The mode is enabled and disabled on a per-CPU basis.
+We began talking about generalizing tsm_mr to handle more than just
+"tsm" into a broader set of roots of trust, including TPM. In this way
+it could act as a multiplexor for any measurement user in the kernel,
+like IMA for example. I see others have independently come to a
+similar conclusion that IMA needs ROT agility, but I also know that
+DRTM needs the same ROT agility too.
 
-A newly online CPU inherits the active kernel mode configuration to
-ensure consistent kernel mode behavior across the system. Likewise,
-kernel mode state is cleaned up when a CPU goes offline.
+Bringing in the SPDM side, the netlink TLV uAPI fits nicely and can
+expose all the structured binary data it has. SPDM is also effectively
+a ROT without any measurement registers.
 
-Integrate kernel mode handling with CPU hotplug to apply the active
-kernel mode configuration to newly online CPUs and remove it from CPUs
-that leave the online set."
+Combining the two needs together it seemed apparent that TSM is a bad
+name for this expanded purpose so we start calling this attestation
+subsystem. "root of trust" subsystem would be another way to look at
+it.
 
+The general notion is any root of trust can come with a single driver
+and expose a bunch of different uAPIs. The modern most capable one
+would be the CTLV based ioctl interface through a char dev, but in
+cases like TDX the legacy uAPIs will also remain supported.
 
-> 
->> Signed-off-by: Babu Moger <babu.moger@amd.com>
->> ---
-> ...
-> 
->> ---
->>   fs/resctrl/rdtgroup.c | 57 +++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 57 insertions(+)
->>
->> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
->> index 0e638dc654c1..f5c7790f7970 100644
->> --- a/fs/resctrl/rdtgroup.c
->> +++ b/fs/resctrl/rdtgroup.c
->> @@ -410,6 +410,17 @@ static int rdtgroup_kmode_cpus_show(struct kernfs_open_file *of,
->>   	return ret;
->>   }
->>   
->> +static void resctrl_configure_kmode_global(const struct cpumask *mask,
->> +					   struct rdtgroup *rdtgrp,
->> +					   bool enable)
->> +{
->> +	resctrl_arch_configure_kmode_global(mask, rdtgrp->closid,
->> +					    resctrl_kmode.ctrl == KMODE_ASSIGN,
->> +					    rdtgrp->mon.rmid,
->> +					    resctrl_kmode.mon == KMODE_ASSIGN,
->> +					    enable);
->> +}
->> +
->>   /*
->>    * Update the PGR_ASSOC MSR on all cpus in @cpu_mask,
->>    *
->> @@ -1114,6 +1125,48 @@ static int resctrl_kernel_mode_show(struct kernfs_open_file *of,
->>   	return 0;
->>   }
->>   
->> +/*
->> + * resctrl_kmode_global_online_cpu() - Program kernel mode association for @cpu
->> + * @cpu: CPU that has just been brought online
->> + *
->> + * When global_enable_per_cpu is active, @cpu joins that association and is
-> 
-> Please consistently use the enum name in comments and code to help grep find
-> how/where it is used in the code.
+In this way I view it as a further evolution of the tsm report and tsm
+mr components in a way that lets us harmonize the uAPI and avoid
+hardcoding things in userspace. Though the name has changed so this
+linage is not quite as apparent.
 
-Sure.
+For example the end goal is for systemd report to be able to
+dynamically enumerate all the ROTs in the system, include them in the
+report, and generate signatures. Without necessarily requiring ROT
+specific code.
 
-> 
->> + * programmed on.
-> 
-> What does "is programmed on" mean? CPU is already online.
-> 
+This applies to SPDM as well, ultimately every SPDM user in the kernel
+should be able to get an attestation subystem cdev and flow through
+the same uAPI channels that PCIe TSM uses, also into systemd for
+measuring and logging.
 
-* When %RESCTRL_GLOBAL_ENABLE_PER_CPU is active, @cpu joins the active
-* association and is programmed with its kernel mode configuration.
+I'm looking at something like 7-10 ROT drivers just for the current
+set of NVIDIA ARM servers. Probably another ~5 for NVDIA non-ARM
+servers. Then a couple more down the road. It is alot of variety and
+today all this HW is largely unavailable through Linux.
 
-
->> + */
->> +static void resctrl_kmode_global_online_cpu(unsigned int cpu)
->> +{
->> +	struct rdtgroup *rdtgrp = resctrl_kmode.rdtgrp;
->> +
->> +	if (resctrl_kmode.kmode_cur != RESCTRL_GLOBAL_ENABLE_PER_CPU || !rdtgrp)
->> +		return;
->> +
->> +	cpumask_set_cpu(cpu, &rdtgrp->kmode_cpu_mask);
->> +
->> +	resctrl_configure_kmode_global(cpumask_of(cpu), rdtgrp, true);
-> 
-> Shouldn't CPU be added to mask *after* it has been configured? I understand that
-> configuration cannot fail but having the order set makes it easier to make changes
-> later.
-
-Will change the order.
-
-> 
->> +}
->> +
->> +/*
->> + * resctrl_kmode_global_offline_cpu() - Clear kernel mode association for @cpu
->> + * @cpu: CPU being taken offline.
->> + *
->> + * When global_enable_per_cpu is active and @cpu is in kmode_cpu_mask, the
->> + * association is disabled on @cpu and @cpu is removed from that mask. A CPU
->> + * outside the mask is left unchanged.
->> + */
->> +static void resctrl_kmode_global_offline_cpu(unsigned int cpu)
->> +{
->> +	struct rdtgroup *rdtgrp = resctrl_kmode.rdtgrp;
->> +
->> +	if (resctrl_kmode.kmode_cur != RESCTRL_GLOBAL_ENABLE_PER_CPU || !rdtgrp)
->> +		return;
->> +
->> +	if (!cpumask_test_cpu(cpu, &rdtgrp->kmode_cpu_mask))
->> +		return;
->> +
->> +	cpumask_clear_cpu(cpu, &rdtgrp->kmode_cpu_mask);
->> +
->> +	resctrl_configure_kmode_global(cpumask_of(cpu), rdtgrp, false);
->> +}
->> +
->>   void *rdt_kn_parent_priv(struct kernfs_node *kn)
->>   {
->>   	/*
->> @@ -4896,6 +4949,7 @@ void resctrl_online_cpu(unsigned int cpu)
->>   	mutex_lock(&rdtgroup_mutex);
->>   	/* The CPU is set in default rdtgroup after online. */
->>   	cpumask_set_cpu(cpu, &rdtgroup_default.cpu_mask);
->> +	resctrl_kmode_global_online_cpu(cpu);
->>   	mutex_unlock(&rdtgroup_mutex);
->>   }
->>   
->> @@ -4939,6 +4993,9 @@ void resctrl_offline_cpu(unsigned int cpu)
->>   		}
->>   	}
->>   
->> +	/* Clear any active kernel mode association on this CPU. */
-> 
-> Above comment can be dropped, it just duplicates the function comment.
-
-Sure.
-Thanks
-Babu
-
+Jason
