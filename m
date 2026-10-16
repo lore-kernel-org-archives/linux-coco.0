@@ -1,132 +1,336 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012054.outbound.protection.outlook.com [52.101.53.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABC44DAF89
-	for <linux-coco@lists.linux.dev>; Fri, 16 Oct 2026 14:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792162728; cv=none; b=OkPE6EE35C+mpUso9PAt6f1SxlbgRs4HEh4F2d6z4wmv+p9VvOQM9kxqHFrHj6eNUEL6VTgFzDwfPPre3zH6L77jrKzOYFb6aSxT6vG3yaQYVzaItLHz2Y3DgpgoJmHI+OsAFIhRSjzHtvZOu7pkXRRfOuCOw660HDFDMV9ulFQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792162728; c=relaxed/simple;
-	bh=Gs6UDVs85lAeYcbz5natlQddcSkvTtyPzng7JiqW+ac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H0WKoe4CYzR/ILllsIJGSlizU4zpCzgtPAxsXhmN19ry09pdrFRHxdcMZ1X6jZHZpDzlVgcifoJZ9ZZYsX7v49ISyc3YRrq0wc5fwB9dC14oFUp+u9wJFwZn+lEttkhTrzBcKucQg9Qe329imGr5OLr1n+J63mF4kA6Qfy7gT5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=PNEmVOB9; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F69497B71
+	for <linux-coco@lists.linux.dev>; Fri, 16 Oct 2026 15:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792163437; cv=fail; b=KwK3Zky3H2CVIwREoItNjvXyC2D0+4+NsoN4WxTsp/3xOirppvSbQh9xAmMOEOZMUd/SQCJ8kRuqDt2g+xAuIf05YFKt0+uAzTVnfFH9PrShKWF6FCM3F6NB3ywmE2CBqY3lm38RfSqb3/cSDUDrDAHA7O2BVJjXL90AsKhvqfw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792163437; c=relaxed/simple;
+	bh=RazDnH+YyyEutkjGuC4WhnKhyc9e4MrGKg8a0D+Hn74=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IeTQiAId+ovH1n+Wt5pHJq92unogP4A2Wp9rMl8rxFXWT28iihCz+mtYpy9s0JOqi22Obg5xuREWkawrx2cqmaw6hqotZH1631fcHZbsLkxJqz0LXvAJAsJXEbR7R95zJr4VRU7aWrJ70atkM6beL/Oia3QMvSFQ8JpbsbVsHBk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QFWp0Nvy; arc=fail smtp.client-ip=52.101.53.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="PNEmVOB9"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93e515769d3so2974285a.3
-        for <linux-coco@lists.linux.dev>; Fri, 16 Oct 2026 07:58:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792162725; x=1792767525; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q4TOl9JQUahFIQiKudG6oBPl46TqBGSAJ68OWGmu91g=;
-        b=PNEmVOB9Rg6QcEvX6/gWhD6UCBPSE32cake3aVtH1b8DaeVTJx18/sEL2ZpNTDcQ1E
-         tjG6gh9rWPGqpcfiUy9XX8TEp3NNAH9d11k4gP+2z7ADpKirEb3UPEF8f5tRIF8l0Pv2
-         bNd038QKkbiMcnJVm4fMDs2whaTSR6C0K7Foqll40q42bC5dQBWosRsnfmaE4DrWMsVd
-         pAOTCEZUfzJ8h2so04HvAV8S2gTnpSLeg32iBK+U6VqVZGMwBQ9HDunxA2ZnVBw175NN
-         8SaXkf6fma69TDmuDLXCC10yqEdQGvf7Is1Y4IoTFi1G2gvp9BaEbNXbmsi3J3X4LJmN
-         j43g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792162725; x=1792767525;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q4TOl9JQUahFIQiKudG6oBPl46TqBGSAJ68OWGmu91g=;
-        b=GGP1extW7OtyoNV/U7twTGylLPZLx5t4cAlJIGroOnXFk/OOV8vT/tcFea+9NmbU8j
-         JaHodJFtaNcHmKBl1N6IvdLOCtGWhiEykzWt4D5Bx3bvR+DjgAEiTUrpyYhxUYOc1G+9
-         ThfFoI+WRq7Q/XkNH8F+CaX2EvxdgytKGwiwJ1efhdMa5vciGMJvA+D3f6K5Jo4BhFAl
-         MWMnDHm8YLiDYVKYZtGjJlAz98uwdujU05mums/87Yv1uDTm5atj3SiytzhrBx5m/VuH
-         edmccXe3D0rXy5N32smjVS1/mLnbuteqRTbXCrIeIsHKMjQ2B/KZ9L9tFA2gvFLe3bgT
-         Jb8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzUTqf0jkNBYd19ti2nLVar8XQI/I/MalVPGqEHXiv0ZzwOX/PxSDqNiVoe3z9AUPlKdYUFpUMNZ2JX@lists.linux.dev
-X-Gm-Message-State: AFq9FYJO2NB79s7AGF81i7hi0gUumoy6IdLIOeoiMHhT4Z5sUN4Hj6n7
-	hMVMngQlhKTkjledxhYN6bROjwSTsfXEmzoYVo/CcGsa14jY2Rhf5UlQa1w8XgwWhTI=
-X-Gm-Gg: AYBFou2BiYr7hFso+BsJKx7OfJFd5CwZafvKqOVo3V2X1pUQqjUSkaa9qfWF0m2ZMex
-	n9O3A82JQOeOTmtgr9O2G+HiocrP8J6BMPTTyuVZCSLE9ydg3BsD673SBbUbbI+ktOcHaPSGM4x
-	t449cbKKaYVwYt5YyzZflzMBW6/G0qy1M6dBaFjtGVKHq3j/OsOJOSFATMiSXrfbF0Cv6pGgL7t
-	4YmWx3Iv8u9nrHUwwlroAzcF0NQ0V3jaEYwLrfxavv6kCbhg70guL9g37EHjIgHegOeec4pw6Kz
-	A5aYqyt5JQ7XWtUWakvWGrlAv/bx90ymY/DRlrJiShqiaHbC/nf12A/q/QHoIMEFlO675mjG0Yp
-	G+VSS1vnrI1HP5jPWrcmFxgEeUv8Rl54ENxZhUs/pzolII0smufIlLmVL+xJdtgx8zfZEdQMXb7
-	BMxxXUvXMRA2UAhw+LBIvMDlwwfOF48u3eBHNRm3oruxjH2R77xP4L52WyEWSVuhZvpi05Pk4DB
-	JGrPE3ySpf80W/0Bk6et9JhLTRmO1b9UZtqwbxwXfBVmXa9zvyYYzn1
-X-Received: by 2002:a05:620a:7113:b0:93e:96cb:3083 with SMTP id af79cd13be357-93f29d38660mr12133885a.33.1792162725326;
-        Fri, 16 Oct 2026 07:58:45 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f1a197bd2sm231474285a.29.2026.10.16.07.58.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 07:58:44 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xHjON-00000001tP5-3WxW;
-	Fri, 16 Oct 2026 11:58:43 -0300
-Date: Fri, 16 Oct 2026 11:58:43 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, iommu@lists.linux.dev,
-	x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
- capable IOMMUs
-Message-ID: <20261016145843.GF14213@ziepe.ca>
-References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
- <20261015010705.1973284-5-baolu.lu@linux.intel.com>
- <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050>
- <20261015173707.GV14213@ziepe.ca>
- <5ca5f1c4-4c3c-47f1-b79c-c1fe06b20ee4@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QFWp0Nvy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Id1V/ab9jk6wywlU1iMKPkpTHpJK/jXpm4eOuN8xy5YxLjbQIaWeQHJnuFkwpOx7RPkx3kLYl+Zn6fKAOJgJaJFtcWXg2uGJ21wmQ1Nj0ixhgwGxpeLVglrkYU43ANcV22OoQdcqSmREzZBxWwMkNpK2rqydlhJTLWDfGtOTTyD+/PVxedhhfhQVBEg6iwBZ+skkNnnr6gx40K6tkIXNcBX81orK+tqnmDWPp5k2gDNxslA9WuYJHtnIhkEjWD+kj0Lm6nMY6yq1Ogqzt3lnwRFar+Zf/FskeYHKZ9ObRKokfUkm4b/dDXTQ5Suu1xVAtNRxydxxo/CbyCEY2htzGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sOSjKi7Z2hzhxBLWZiKG4wajBjMBYBtkycbtY4YCri8=;
+ b=gKRJDSsYfe40icoVDE2owyTUpNKCJO/2Kvvd3qEWJ1+aSq3MXyL+m8b1PT0ImyJCBTpfvaGqJjT0G2EByhcEi9JOFNIqet8obgBwFnRIN7V+xz8HIyvO4Iv9qXyDbdrsEBbFJKrwiFuLAqI8Yv+4K33Lgr8BELL4vQcJmZ+SfpBZLQhdeQbaGVhFWDF3gpu9c/bpycfmXyj6vmB/k5zVAZssIU2Wha5hjy81c3Pt7lyx0Uo546yAIwHVf92kUOj3Oozy+IdZ59kQQGdGZGei9ral//mBG1aP9G4voyRfggCgOjh5HJMmZ4egsyUxnSi4YhtgC3ZrGUguzrkYeL1sEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sOSjKi7Z2hzhxBLWZiKG4wajBjMBYBtkycbtY4YCri8=;
+ b=QFWp0NvyfQL5C2qTBwU2QiuHB91NBLWJcyJinV/3IEvr7iI92YUktwysw1mso1un0SGL5VtEY7qjXdMWVxNRp4wCPajEMSmBdyCu5viTgD6AnB/d6+8fhpun63lyN4rcIZPnGGkOJwqphL3Lcze8XHVK3g9dqlBU2dR0nmms4go=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
+ by DS0PR12MB7876.namprd12.prod.outlook.com (2603:10b6:8:148::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Fri, 16 Oct
+ 2026 15:10:24 +0000
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
+ 15:10:24 +0000
+Message-ID: <351da689-6f30-4f56-8f3b-ea62cc501d7e@amd.com>
+Date: Fri, 16 Oct 2026 10:10:10 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/18] fs/resctrl: Introduce kernel mode states for
+ resctrl
+To: Reinette Chatre <reinette.chatre@intel.com>,
+ Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, bp@alien8.de,
+ ben.horgan@arm.com
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
+ x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+ fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
+ elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
+ kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
+ ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
+ ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
+ prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
+ elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
+ peternewman@google.com
+References: <cover.1790867441.git.babu.moger@amd.com>
+ <d98872b26051bfad280f72da3bcddea1e978b37c.1790867441.git.babu.moger@amd.com>
+ <b2c67318-b52d-440d-bf40-fde40b47ae07@intel.com>
+Content-Language: en-US
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <b2c67318-b52d-440d-bf40-fde40b47ae07@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0006.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::11) To BL1PR12MB5320.namprd12.prod.outlook.com
+ (2603:10b6:208:314::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5ca5f1c4-4c3c-47f1-b79c-c1fe06b20ee4@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|DS0PR12MB7876:EE_
+X-MS-Office365-Filtering-Correlation-Id: f01a5024-81ef-48e9-434b-08df2b979a5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|7416014|6133799003|22082099003|10067099003|18002099003|4143699003|261009223027099003|56012099006|5023799004|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	B7jHLf7PRS3NN/GPU4Ghu+10vxwwZP5hQCcrL2+CN7VxepZ/FU+ksiNy5zIn2Op2nnDxeCB4VGZpQkArBQiWWqzYdl4Bur6s6wPM8KkEcttfiOy5GdR5OMFRpzogp/LcKPgVuc0Zq+BfpzCLGgwb0G6CkP0QJOMficGU48MXiSccQs2XlNh7SmyBEAPx4iM0vnbGAZ0BfZ/P04N9yLjsENOTxTiyCsjjMZOdrJvEdCNoxDqsTCJQbPLOM0/NRnmtNvDy/x+4EWktKdGoUyoLuSu+bsHwvmrn/QsTY3cvgvGFF8A9ePA0ewgEDLgEqyJ/J5OvSB5w3HH/Zug2PoPxQrFGFeifSr2lywxFTsSnYwWag5wexXfwj0SG/LfgYwVNX2w1KiE3iSDYGLXq1By27z5O8H4iXHDMN1jh+Sv+lzumWXpHcrPky8nlyjg8iBobpnp8RKN7WUqKBdNP/Urynw2WT/pH5+m8y2lUUZBaqfIQ7EN5ZK0+b57zlbAR7sKGbh2K5Y8bnb2VfLBnB/mo/uEm56Hh8fWaOs51v3Og3TMNwqZkKd0360Oe/KBdakTBN5GcjzCYxheWYdfsQrM23Wgxot87Olx6q7G1QpDPxXC5ITVdac+GlCkrfrFfIXqQ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(7416014)(6133799003)(22082099003)(10067099003)(18002099003)(4143699003)(261009223027099003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aGxwQThxZVRVRFdSTGpoaXNPWU1EZWpHZ0VrbEN1K1ltVHh2TFU1Mk92ZS9H?=
+ =?utf-8?B?WW9RNHVqb3BQajdjU0l3YXpBcXNnKzNKSHlnVHh6TFI1WnZ2MkZJWlErRlk4?=
+ =?utf-8?B?NWV5RjVHTFBvU3d3cmF4SDBSOGllQnB3WUo4R1VtaWxsNS9GU1NYSGFPc3Jl?=
+ =?utf-8?B?eUc3TE1tK2d4WWpDazVZa2JhV0g3VFphRFZQbkRZaEpKSlNoanFvL08ya0dG?=
+ =?utf-8?B?cDZ6TlRNNkphRkE1cDZWcmhTNUpWMXQvMDVtY3JLUVdxUnJJWGx5MHBzYytQ?=
+ =?utf-8?B?b3lrZjZhQjNhaUFsajdvQkpSYVN1WkpUeTNHNnRUVVo0Y1haZjNtUVQ1dXhQ?=
+ =?utf-8?B?WWQzd29vTTRaZENRa0p3SlZvazBrTDh1eEFoSENaeEd2Q2JZWFRWNUhZWS82?=
+ =?utf-8?B?QlRqbGdxUjZkbXNxQ3JaT2YyWVZieHNOcllPWllqdDRUQmRnTW9Jbm11eTlv?=
+ =?utf-8?B?RGl2QUtQN2oyZWZSUHNuQWVaKzJDUmRqcU1UeEpXSTBBRlNWV0lVMkg1MUhU?=
+ =?utf-8?B?ZjhFUDJvdGVmaGdQWDhHYm84TVFOS0JsNVNpbnpaQXQvNnNwcWVuSmFnQURP?=
+ =?utf-8?B?MW1oUktIUHgvQ21GaC9JQkticDhaZHNzNS9mNm5jUnZRQ3dGb2dwREtkd3l5?=
+ =?utf-8?B?Wm9EanJUV2N5Rld3RHZnd0txY1dFZlBoL0F1UThYYkloa2NOaFEzUENCVnNZ?=
+ =?utf-8?B?RDBXeExZdTVBL1hPTnVjdWRPc0dnK2tVcUtzL2pHZDYvWWdNajhzOUx0bnBR?=
+ =?utf-8?B?Vk55YWdiN3lUek5TZk9HcksrYytpb3cybUgvbEt2eDlaM3BEYTZYMlFBZUZS?=
+ =?utf-8?B?TUFDS3NnejA4ZHVLcXY4aVYwTTlHUG9qMkdXc3ZLdEdHQzVqclkycnJxZlM2?=
+ =?utf-8?B?UmpOUitxTG5RaFJJY0hyUHdLZnRwYldhZXo5WTY0c2tOL2wvT2xYMklVb2xP?=
+ =?utf-8?B?WjlETU9FWHNJVEl5OEpEL01hZEpNRUswZ0NKdEJ2YzBGZGNqWkpvZzZpVkM4?=
+ =?utf-8?B?ZEg5TzZjY21ObDY5aThzeGVFQ0xPUU5aaGJ0dG10aTVCTzQvTGl1MEJjQWpH?=
+ =?utf-8?B?ZmRpR3ZUc0JnZzAydzE0N2M4S0lNYno0aFh5bUx6Q2JoTnhkNkVMZ2ZkSUtX?=
+ =?utf-8?B?YjRYYXd2d2JOazE2eUcwWG02N0N3WnhpTFlyQ1F0cDJneGJBN1MvdTQ2N0lB?=
+ =?utf-8?B?ckJMWldhakUxMmxVaTVLcWJBeWQwVGxmRXJzdE9tTnd0U29rci9CSHVTczhu?=
+ =?utf-8?B?Ri90eExOYkJ3OWF5QmhtU0lhcDRLZVc3UldBcWI5MzJxUXQ2Rkc3R1dvVHNZ?=
+ =?utf-8?B?ckxoUDU4eFNJVTh3RjcxQldvV1NMbFVWM0JLRHo5Y21oS0JQK3pSWWN4eThh?=
+ =?utf-8?B?L2dNOWtsTlBBU2Y1dmJaODZJdGljZW1ERnJUQ2tTSVVXcUtzeFFHVGRaRUs0?=
+ =?utf-8?B?L3BxcVdDM1Jja1FhdjZIYURneFdKUEVpQWxxTElVS2NIcXZMalpiSnRUdzVy?=
+ =?utf-8?B?M0R4NGJ3ZE8yakZxK2w1dS9nR0pRdkM4cFAxZG1WQnJFRmxPc3lTVGFjY3Bp?=
+ =?utf-8?B?RXBDYk1sVmJTTXJ2VXhJVkRNK1pQVXVYV085NktQV04xQlBpc05MVVBtcEFI?=
+ =?utf-8?B?SGJJU1R4U3dXSHExOHB3S25aTER5YXdNOXdOcmRJWGpDY2dJRXZib3huYjQw?=
+ =?utf-8?B?OVkyNGZEa3NheVVMSFFOR3c1SWNuc0kzcGRPWXlvejBHMVk0UjRyMjN0TmxZ?=
+ =?utf-8?B?Y3FNVDlOL3RmT1dHa3lQcGZwbXNXZHgzdGQ5YVg4RWRCQ0I0cTI3cG1wYWVD?=
+ =?utf-8?B?bEJTa3pld2RTcktFNVpnSWtDUXZOYjlBdWFHNFBkOE9HTmYyVWZlc1JndFdx?=
+ =?utf-8?B?bzRoN0dvejV6ZUhTNHFxMnBRK2hyWDRpaUQxZ0xzTXY2MXZjT0JWb2s4eGgz?=
+ =?utf-8?B?bDRBZUlRRERJTURPUWplWUE3ak8rTjMyV1I3WGpTK2pUR3dTWTFQMEVYSFh0?=
+ =?utf-8?B?UkU2T25iRlcrU1JnVEtWbVorUUVRenF6MGhXODdJSUhRSEZvOStWKzNyWklr?=
+ =?utf-8?B?Ti96VlpnUFVuV2VEcFZsaUhaeWIzRWh2K2R2QU8ydkptQzFDdkFjQXBpbU5W?=
+ =?utf-8?B?aXVQVHQzdGQ5WURJUXp6a01pSlFEUDVCcWJpb0FvY3pDd1ZKNjd2K1c2V016?=
+ =?utf-8?B?c1FweTA1S045YUE5OUNFOTFxSjRwTC9zc05jTEp3YkV0R3VTN3p1ZXpMd2Ra?=
+ =?utf-8?B?MXExaG9lV2lCSkREYUgvMDJWMCsyT0t6SGlYRG9jck9iVCs3ZTMyUWpxVXhv?=
+ =?utf-8?Q?CD0b/uCFcNVXXL70Jo?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f01a5024-81ef-48e9-434b-08df2b979a5f
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 15:10:24.1290
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jGjCNn0IJvKTATmXHc7273Zgbv7XF/BaORkK1ATL+qovwi3YyoBGIdUAF5S9O8mT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7876
 
-On Fri, Oct 16, 2026 at 03:03:23PM +0800, Baolu Lu wrote:
-> On 10/16/2026 1:37 AM, Jason Gunthorpe wrote:
-> > On Thu, Oct 15, 2026 at 04:31:31PM +0800, Xu Yilun wrote:
-> > 
-> > > An alternative could be, bringing up one IOMMU when an associated
-> > > device requests link encryption. Then a no-tdx-support iommu fails the
-> > > encryption request naturally.
-> > That is what ARM is planning to do. I think it is reasonable to
-> > trigger creation of the secure iommu when the TSM is connected to TDX.
-> > 
-> > Fail connect if the iommu could not be created.
+Hi Reinette,
+
+On 10/15/2026 9:37 AM, Reinette Chatre wrote:
+> Hi Babu,
 > 
-> Yes, agreed. The Intel iommu driver could use per-device interfaces,
-> just as ARM is planning. There are some differences, though.
+> nit: "for resctrl" in subject is redundant.
+
+ok.
+
 > 
-> ARM's interaction with the iommu driver in viommu_init() appears to
-> consist of two steps:
+> On 10/1/26 8:10 AM, Babu Moger wrote:
+>> The filesystem tracks supported kernel modes, the active mode, and the
+>> control and monitoring association for the assigned group.
 > 
->  - arm_smmu_get_realm_params(dev, &params): get and validate the
->    physical iommu information from the arm-smmu-v3 driver;
->  - cca_psmmu_get(&params): activate the physical smmu for Realm use.
-
-Okay, I haven't looked, not sure what is in cca_psmmu_get() yet
-
-> So the Intel iommu driver will probably end up with interfaces like:
->
->  - dmar_tdxcs_iommu_init(struct device *dev, ...);
->  - dmar_tdxcs_iommu_release(struct device *dev, ...);
+> Please let the context describe the context at the time of the patch, not how
+> things will work after entire series is applied.
 > 
-> These would be called from the connect and disconnect callbacks of
-> the TDX link ops:
+> Please use consistent terminology, this series switches between "assigned group"
+> and "backing group" to refer to the same group.
 
-It seems OK
+Will use the "backing group". That seems more clearer.
 
-It sounds like you will have a one time init of the secure iommu at
-the time the first PCI device wants to use the TSM? It seems like no
-problem.
+> 
+> Please use the changelog to guide the reader to understand the architecture
+> and how things fit together. Many changelogs are very cryptic without explanation
+> of what the patch does and why.
+> 
+Ack.
 
-Jason
+>>
+>> Introduce struct resctrl_kmode_cfg and initialize the default configuration
+>> from the platform's capabilities.
+> 
+> Please check all changelogs to ensure they all are able to provide an
+> answer to "why". More specifically, please consider:
+> 	https://lore.kernel.org/lkml/20250911165433.GBaML-yTUZHkywuJIe@fat_crate.local/
+> 
+
+Ack
+
+>>
+>> Signed-off-by: Babu Moger <babu.moger@amd.com>
+>> ---
+> ...
+> 
+>> ---
+>>   fs/resctrl/internal.h | 29 +++++++++++++++++++++++++++++
+>>   fs/resctrl/rdtgroup.c | 25 +++++++++++++++++++++++++
+>>   2 files changed, 54 insertions(+)
+>>
+>> diff --git a/fs/resctrl/internal.h b/fs/resctrl/internal.h
+>> index e62a277dee85..98f04a2a762b 100644
+>> --- a/fs/resctrl/internal.h
+>> +++ b/fs/resctrl/internal.h
+>> @@ -314,6 +314,35 @@ struct mbm_state {
+>>   	u32	prev_bw;
+>>   };
+>>   
+>> +/**
+>> + * enum kmode_state - Control or monitoring association
+> 
+> What does "control or monitoring association" mean? This is becoming
+> an overloaded term used to mean different things and becoming confusing.
+> For comparison, earlier patch introduced *another*
+> "control and monitoring association" enum:
+> 
+> 	enum resctrl_kernel_mode - Kernel mode control and monitoring association
+
+Sure.
+
+> 
+>> + * @KMODE_INHERIT: Inherit from the user-space task.
+>> + * @KMODE_ASSIGN: Use the backing group's CLOSID or RMID.
+>> + */
+>> +enum kmode_state {
+>> +	KMODE_INHERIT,
+>> +	KMODE_ASSIGN
+>> +};
+>> +
+>> +/**
+>> + * struct resctrl_kmode_cfg - Kernel mode configuration
+>> + * @kmode_sup:	Bitmap of supported kernel modes.
+>> + * @kmode_cur:	Currently selected kernel mode.
+> 
+> Adding this comment during a second pass ... please consider later motivations
+> about naming of these fields. This field is introduced as "kmode_cur" but when
+> considering the language used in rest of series "active" seems more appropriate.
+> 
+> @kmode_sup could also just be @supported (the "kmode" is redundant).
+
+Sure. Will change kmode_cur to "current".
+
+
+> 
+>> + * @ctrl:	Control association for %RESCTRL_GLOBAL_ENABLE_PER_CPU.
+>> + *		Kept while %RESCTRL_INHERIT_USER is selected.
+> 
+> The "Kept while ..." does not seem to match implementation. Looks like
+> resctrl_kmode_switch() always resets it to KMODE_ASSIGN?
+
+Yes. Will remove the line.
+
+> 
+> At this point the reader is left to decipher the architecture via cryptic
+> changelogs and inaccurate comments. It is very difficult to parse.
+> 
+>> + * @mon:	Monitoring association for %RESCTRL_GLOBAL_ENABLE_PER_CPU.
+>> + *		Kept while %RESCTRL_INHERIT_USER is selected.
+> 
+> Similar comment about "Kept ..."
+
+Yes. Will remove the text.
+
+> 
+>> + * @rdtgrp:	Resource group backing %RESCTRL_GLOBAL_ENABLE_PER_CPU.
+>> + *		%NULL while that mode is not selected.
+>> + */
+>> +struct resctrl_kmode_cfg {
+>> +	DECLARE_BITMAP(kmode_sup, RESCTRL_NUM_KERNEL_MODES);
+>> +	enum resctrl_kernel_mode	kmode_cur;
+>> +	enum kmode_state		ctrl;
+>> +	enum kmode_state		mon;
+>> +	struct rdtgroup			*rdtgrp;
+>> +};
+>> +
+>>   extern struct mutex rdtgroup_mutex;
+>>   
+>>   static inline const char *rdt_kn_name(const struct kernfs_node *kn)
+>> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+>> index 68be9b903ac6..7c39792be1fa 100644
+>> --- a/fs/resctrl/rdtgroup.c
+>> +++ b/fs/resctrl/rdtgroup.c
+>> @@ -76,6 +76,9 @@ static void rdtgroup_destroy_root(void);
+>>   
+>>   struct dentry *debugfs_resctrl;
+>>   
+>> +/* Kernel mode for this system. */
+>> +static struct resctrl_kmode_cfg resctrl_kmode;
+>> +
+>>   /*
+>>    * Memory bandwidth monitoring event to use for the default CTRL_MON group
+>>    * and each new CTRL_MON group created by the user.  Only relevant when
+>> @@ -2297,6 +2300,26 @@ static void io_alloc_init(void)
+>>   	}
+>>   }
+>>   
+>> +/*
+>> + * Set RESCTRL_INHERIT_USER as the default when the platform supports
+>> + * allocation or monitoring. Otherwise leave kernel mode unsupported.
+> 
+> This (and why) would be useful to describe in changelog.
+
+Ack.
+
+> 
+>> + */
+>> +static void resctrl_kmode_init(void)
+>> +{
+>> +	if (!resctrl_arch_alloc_capable() && !resctrl_arch_mon_capable())
+>> +		return;
+>> +
+> 
+> This check seems unnecessary? resctrl_kmode_init() will only be called
+> on a system that is capable of allocation or monitoring.
+> The planned AET changes will change this behavior see
+> https://lore.kernel.org/lkml/20260928221509.68002-16-tony.luck@intel.com/
+> but in that case it still seems as though initializing the kernel mode as
+> below always needs to be done.
+> 
+> That begs the question why is resctrl_kmode_init() needed at all? Why not use
+> a static initializer?
+
+Sure. Will do.
+
+> 
+> I find resctrl_kmode_init() to be potentially confusing since it does *not*
+> actually initialize resctrl_kmode. This is only possible to see two patches
+> later where get_rdt_resources() is changed so that x86 sets its supported
+> modes and this runs *before* resctrl_kmode_init().
+> 
+> If anyone decides one day "this initialization code is missing a bitmap_zero()"
+> then it will break PLZA.
+
+Sounds good. Will remove resctrl_kmode_init() and statically initialize 
+resctrl_kmode.
+
+Thanks
+Babu
+
+
