@@ -1,271 +1,207 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E333E4C73
-	for <linux-coco@lists.linux.dev>; Sat, 17 Oct 2026 18:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792260981; cv=pass; b=c9L4l+1RzRJMDUzbwvFesdPxg+U16TO8YD8UNxW5NQ4r8xbbkTcdUPcihjuJH5mDWuoE0AC9p/z2pPEksKO7evTB2m5fd4Wb7cf6baRKsx+l5Cvg/+wLq2C2Kg8UUNEQGf5aboTC9HHTlDHofKC+zWKdG8XuE9J/K7Mu0xWe5Ik=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792260981; c=relaxed/simple;
-	bh=gcTSzRaGTbutrkt9X+KlfCvLxA9mYQLFAjncxzTeeQ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IVQfz+nH62A+yqbdMple09JFbYb+YsTBBdKZ2DiKDMFNXBaBZi851uVvxIlWX+Bm/2sM7GOM2IZYJoYDGF5GJCZb+08mll5xoM9ia7Na24k1xDdjlfhhjgvP7PgaS+EfEs/rqLNv3fGPUZq5lMvooKPf6BcIFiWFaAEVQNcXAB0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qs9eN2oh; arc=pass smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA43B3DA7FF
+	for <linux-coco@lists.linux.dev>; Sat, 17 Oct 2026 18:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792262338; cv=none; b=tzmO8iBy2XWFkFkkt/H0imYJKO04H36L2BZq94O7M7InNiF3lfZdf3VCsL5gWd9YgsdzR96hiEwemZlXZLbVGT8Oekm48KOXxn0WDrAFeMOOTSmeun4iL1GamsztjcELg+Zjlv/Vyu7UXK7uBooPrfuf9rRHYRGNU5j0zXdB8bE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792262338; c=relaxed/simple;
+	bh=i4/JSD98fkMP4EtaU0o0G/p/k04D/Fo6vmn6XJIipJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nSMkUu4N8iiVJ9U9jG/Ksq2sb/cGG/CmD5ReLe5vQMZp5cCmxUkTB5RHdBRJRYvmYi9d1CBdqk4gXmnR88yTTjm3x5OP5sLwYMJ93/a81QfRAnwbzHBQi9A5glkkH/7IxJdYtjwARbhHdPqcAvfvuO+IrdX9q73aO0xIn9Acp8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VEGmSRr/; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qs9eN2oh"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e946155442so6774365ad.3
-        for <linux-coco@lists.linux.dev>; Sat, 17 Oct 2026 11:16:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792260978; cv=none;
-        d=google.com; s=arc-20260327;
-        b=R7DurwgphVQy7/4s9yhaOl52F4hPUjvgzBe05uNmfuYZmmt6u9CHw+n2PajL7ripUb
-         CLWrsBoiZQDH1ioHzRUEq/QFinhI3CjW44rspBZpBjUuXy9puEka7GNCEdAaBOhVuvct
-         U+mnkTo0I/I2RdtVh2bK3figZQGpEI0sej3Wyv73tmYzlGAijB0QnIe23wCEayW3BYfr
-         zzDpS0cZ7vEqX15keR3ENd7DW9mM9dJcnmtNKmQ9SNfwU8SuLTDjCFa6rkod2gQHy0JU
-         l94oxWo/fN73eV3Fpy4Hpc7ENcigu4+M+GTys5b05I3mCz5A70ha3qEULGM5afQjO5B6
-         88KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gcTSzRaGTbutrkt9X+KlfCvLxA9mYQLFAjncxzTeeQ8=;
-        fh=6SKsw5YOJDMvlrjCXfeUK67k7h0fFMoGojYZLX3zj28=;
-        b=Dx3VwjCipwLNM/mN1TX2DmK6ojmMoeiz89H3rLGjMOFNNsKFWMw4/CGw7TX514rr9Z
-         aIjAzxgn9PMFfjd4UUuoVef1niGNH9FHE58RcsYDd0X27qON0F73vrKOSmNLlmrkvmBV
-         1bzwQD2lhLi8OHprpGc642eTP2c3Wr+4qu4VeSllsNuV6NaOUq+P8TFL0bvUpD3b2BGz
-         hjsvk0Z2B9aG1tDbwGqU/e8JibNrM1CdabJjfByJHLH21mQ971gkjDBkDlohy8KaLccb
-         ra6Xnid+9uUGiyJJA39z9gdpNNyFMgA+O+oeGJVw/Njjm6EJkuyyBHJatUGHZlqn1kWO
-         9gTg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="VEGmSRr/"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a0286c981dso10110125e9.2
+        for <linux-coco@lists.linux.dev>; Sat, 17 Oct 2026 11:38:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792260978; x=1792865778; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gcTSzRaGTbutrkt9X+KlfCvLxA9mYQLFAjncxzTeeQ8=;
-        b=Qs9eN2ohE16uxUq5vJHMb6NhMSZkEtVF+lZg7Q/eDgKWqjrk9jUXtL+0XtETpTJs2d
-         y9or/Ytcul4z5NQnznR95LDfIBXmx5VfZEc3rRyy3pDVuMro03tq4UTn5ApLG+knRzho
-         BilcBb2lJkUxVfShDFcwioW/RDpMGm6r0PklTjCujhZOWqkgs2Ijczm9e/L1eLEjaSZt
-         +TBwjXBMRhvIpOSWgVMYzotTFC1yh3EDDk6Qzn8UnvuQtJlUV7Kmq4iAx0eCZ0tyzsxj
-         UTbgLSsXBgR1HBf8Zbz0qOguCkEXZCPsRVyxx5YKPD0q4FSHb8D6NXy3iPYg/nahoLMp
-         GEYA==
+        d=suse.com; s=google; t=1792262334; x=1792867134; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=PTaBaJhyHT4J2O0wNH3BcAK19fYP6FDKgZiZPkF2z48=;
+        b=VEGmSRr/cNcBxxh4lXIet5MXGsGbPyoN8DFY3Wcvxx9mKsBi0q2EAAvLXcfiydt1l6
+         5TyKw/g/86BoQ9h7AKqKxFY+zFbrdqblxvkGsll7CPYkcuUiE6bPPs2dz+d5aGpyb0E9
+         6BhKFCk+9HFhdHjTn6H9B8PUHLnoMUYU/GfBFM6LsldGml4XmR5GyZACn3SA5FabL2O2
+         2QD3G4MvBIW/Xr7YvBVLiAiZbKKgpjMWN9fl07yexb4dRpP1NuwGttwGfBTZW8ZC/XLw
+         Xp9Fhcthai2XyG3F14kFOwBZkw1ZELmxjoIMammfjvp/Kn0y/+jv/KlqaCUKRiQXZmUt
+         Y0+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792260978; x=1792865778;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gcTSzRaGTbutrkt9X+KlfCvLxA9mYQLFAjncxzTeeQ8=;
-        b=XrvxMeFj9emeT5+hQx7/pzlIK/Al6gBaX52/wULT7/y1+c+Ddb/Hul/2aUxb61OE5b
-         6ko/yLnwRHixHBCxKFFqeLicBmBneAjhBxyrtXDGtGfU62jpeC7UfpijaOnw9WviXDxm
-         jT89aaDfKiKnJKwbN71RHWIvro2+or9/l7t4bNDwUH1JI/A9UbDv6vK/GmBVnMrHGur6
-         aFGoC6f4AZHqCjyOlP/qljVn/KyKZT79y+0VcbDu9CKYvJ+xktykV4j4ldkahX0WgiWb
-         dPYqXfG4uIa8mz5VbgRBGFIVnqupygYe76PR3FcmLerArDLmuzJlTY3BI2DPVGSwYVbf
-         nGSA==
-X-Forwarded-Encrypted: i=1; AKwUvByEhmAySw8pPI8Yblvl7/dBLgT+6rGF/lARsA2R76IbL/nax9WH9cYuDeB5+/jkbd4Tl9yEJMQ2crET@lists.linux.dev
-X-Gm-Message-State: AFq9FYLe8nji9C2T0SDJBGDazPNtJqk0VR8Fif7JqnW1koLVkIej5nYJ
-	DRYLhZVNVEMciZSU5NafKljsslS5atJQDFMWdb37ZhQejcpnL8RKrWTt3SDVNhV7NUKKGIvqcSh
-	A1XBLD8wqLyZS7NDdfpm16RN6GwwZTck=
-X-Gm-Gg: AYBFou2o1w2B+U47clL8toJqRzUs88+xLfPozG0aZudpLoS4ANDnrp1gGxPK9k6INin
-	I+1hfAMuCgPgp6fOHVN2m+BvcUlh421FIQGcbEjoqJ7gSWMgPqn0hnF/u4uCJWwll7/ljwpup+U
-	cA+mtfpDJJyhuZBx10gWq6U2f+eIHNle+++nZuDX0zwl6IXh7PISObYv4WazpMafQHBq8hdcRbM
-	MaNFZm4/jMt8CIHER1vkFHVWPUngrvQGoQPwvpl1PopAHETKOojKEwejI5RmFlr39c7OHr2uSAF
-	ompGnLDnPkc7SNKMX+qJkPtZTOejYYQk104U/Kmj0jk0utECh55lO2RF0W10PvQKN69jZ7wrwyN
-	s4HR+LTWqv3i0R4VZSg==
-X-Received: by 2002:a17:903:f84:b0:2e8:1f8a:9113 with SMTP id
- d9443c01a7336-2e9a6f58265mr30097085ad.40.1792260978190; Sat, 17 Oct 2026
- 11:16:18 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792262334; x=1792867134;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=PTaBaJhyHT4J2O0wNH3BcAK19fYP6FDKgZiZPkF2z48=;
+        b=NffQIB+OnByCclASInnIJdcVA2dYoQzo5jwLyP45ktMSRPO3D6rWQzFwQx3Ky0PEF/
+         9jGGZmxgqeNrB8Xgf/B6wIS3hFS66hAT46mIDT5Ugx7phTBh8D2c986J8EV3xhVWqE1t
+         XaoA4OxdkKvtAucvh9zRjoaYzhy0RfL+HrYsOdab1xAoiVFq2lsfRSdeQIT4Xxbkl8I2
+         EPBzF07+1ODrjcZsZViyHrv0z0MtdvFeafV2yRJ+r4NJ83BHkx2NMcjRnKQKciN/9jZD
+         ep+7bmSrPXOs2jj4yqDBWHmPv/QO2RuJAYxxTxwzN575T/vFrS+L8jOlQes2aPwic7xd
+         uUTg==
+X-Forwarded-Encrypted: i=1; AKwUvByN0Fay6xoFYq9po6pTQAnOtMwLRVUFuxuETwAZxnlhw36u3zzNq4DFAuW4/rrk01oT9Gc0329D33Gi@lists.linux.dev
+X-Gm-Message-State: AFq9FYJdv9VjAg+IBWzdsFEH9QC1mf+CQaN7elexBcqSfK/nDOsEz7F4
+	D9/oFKzQGwjhLEvZa7gxZ/SHRpcXtZs4m1kSUaF73awP717I3e9wZ4NrzEKBIepRkE0=
+X-Gm-Gg: AYBFou021gL3L6VPvJGmrWlgXQMev1nyrqk3CtLCQqKaZuNhzT2S1gqvcwNyx41BI8t
+	LWdy2BfgYfVC8pY8Ge0T7/G39a1R3F+ExwcBUbcy+d1ULi5I6XpRFS7i/jrz1inR0ZRbiPCoNlO
+	apJ+12WW74YVbbcWdqUvp+1/DSqJQOTYz40EiVjV7ZaJTPapElpyWDX7J6sZfme5ossr5XWtjGP
+	2HPiugID1PxW2CH4bXtveY0oPsiGBGcoy1QrA9k0AqTnfB5nc/oCHwDhbpJM4qEZDdbtvSLI7fy
+	IrLVLIGyCYck3SnL4Pc7cl12m3cr0YWKtZBEofzXKq4uD5ClZmRYWdjMVZg0+irf5F3bdjLxCBT
+	U0VPwnCvN0woiizB83yescwdbapWjKDWqFiZVA7kvS5CWqQeGWxtRQ+syn1TEB0k/DEPzJwB7fb
+	CG/e8iqwNfUrJ6PBneJxsFmfYx7LveI5vcQnvNmrJbZcdopFh4qIo3b71VFB8S8EzbuD9aNJbXu
+	sc/yI+TovwoO5uuVvIAf62U0vpUli180A==
+X-Received: by 2002:a05:600c:5250:b0:4a0:1c0e:b136 with SMTP id 5b1f17b1804b1-4a1d7616bfdmr68137185e9.29.1792262334073;
+        Sat, 17 Oct 2026 11:38:54 -0700 (PDT)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1cf04ffe9sm98606395e9.0.2026.10.17.11.38.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Oct 2026 11:38:52 -0700 (PDT)
+Message-ID: <8c892695-7ec5-4d93-a74b-487fe535c3f4@suse.com>
+Date: Sat, 17 Oct 2026 21:38:50 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261015145053.3664509-1-jiri@resnulli.us> <20261016234354.GA664420@nvidia.com>
-In-Reply-To: <20261016234354.GA664420@nvidia.com>
-From: Dionna Glaze <drdeeglaze@gmail.com>
-Date: Sat, 17 Oct 2026 11:16:07 -0700
-X-Gm-Features: AclHuK_VfiECrlJzL8WxJydqMRSqCDHROeCkJ1kn-iT7JVYpxgerlwtvN-75yu0
-Message-ID: <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX support
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, david.quigley@intel.com, 
-	lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
-	cedric.xing@intel.com, sameo@meta.com, James.Bottomley@hansenpartnership.com, 
-	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com, 
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, 
-	jarkko@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
+ operations
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ aik@amd.com, aneesh.kumar@kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, yilun.xu@linux.intel.com, chao.gao@intel.com,
+ vishal.l.verma@intel.com, xiaoyao.li@intel.com, kevin.tian@intel.com,
+ chao.p.peng@intel.com
+References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
+ <20260924041032.1096569-7-zhenzhong.duan@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260924041032.1096569-7-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 16, 2026 at 4:43=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Thu, Oct 15, 2026 at 04:50:33PM +0200, Jiri Pirko wrote:
-> > From: Jiri Pirko <jiri@nvidia.com>
-> >
-> > Linux has several attestation interfaces tied to individual technologie=
-s.
-> > That makes evidence retrieval, measurement registers, device state and
-> > kernel consumers provider-specific.
-> >
-> > This series introduces a common attestation subsystem. Its goal is to
-> > support platform, TEE and device providers through one model, including
-> > TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices=
-.
-> > This first series implements the common subsystem and a TDX provider.
-> > Existing native TDX tsm_mr and tsm_report interfaces remain independent=
-.
->
-> To add some more colour on where this came from for others..
->
 
-Forgive me for my following "I still don't get it" responses below.
 
-> About 3 months ago we started looking simultaneously how to support
-> roots of trust (ROT) HW in place of TPM and how to respond to the
-> feedback on the netlink proposal for the TSM SPDM.
+On 24.09.26 г. 7:10 ч., Zhenzhong Duan wrote:
+> Introduce support for binding and unbinding the Trust Device Interface
+> (TDI) using the TDCM_OP_BIND and TDCM_OP_UNBIND commands.
+> 
+> Executing TDCM_OP_BIND transitions the TDI state to a locked state
+> (TDI_STATE_CONFIG_LOCKED). Add a sanity check following the bind operation
+> to verify this state transition succeeded before finalizing device locking.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   drivers/virt/coco/tdx-guest/connect.c | 75 +++++++++++++++++++++++++++
+>   1 file changed, 75 insertions(+)
+> 
+> diff --git a/drivers/virt/coco/tdx-guest/connect.c b/drivers/virt/coco/tdx-guest/connect.c
+> index 1f52a187b30f..e36515fc43ef 100644
+> --- a/drivers/virt/coco/tdx-guest/connect.c
+> +++ b/drivers/virt/coco/tdx-guest/connect.c
+> @@ -159,8 +159,67 @@ static bool tdx_is_dev_teeio_support(struct tdx_devsec *tdevsec)
+>   	return !!rsp->is_supported;
+>   }
+>   
 
-Given that I was tagged on this thread and not that one, I'd
-appreciate a pointer to which you mean.
-Is it https://lwn.net/Articles/1079098/?
+<snip>
 
->
-> We began talking about generalizing tsm_mr to handle more than just
-> "tsm" into a broader set of roots of trust, including TPM. In this way
-> it could act as a multiplexor for any measurement user in the kernel,
-> like IMA for example. I see others have independently come to a
-> similar conclusion that IMA needs ROT agility, but I also know that
-> DRTM needs the same ROT agility too.
->
+> +
+>   static struct pci_tsm *tdx_devsec_lock(struct tsm_dev *tsm_dev, struct pci_dev *pdev)
+>   {
+> +	u8 state;
+>   	int ret;
+>   
+>   	struct tdx_devsec *tdevsec __free(kfree) = kzalloc(sizeof(*tdevsec), GFP_KERNEL);
+> @@ -174,6 +233,19 @@ static struct pci_tsm *tdx_devsec_lock(struct tsm_dev *tsm_dev, struct pci_dev *
+>   	if (!tdx_is_dev_teeio_support(tdevsec))
+>   		return ERR_PTR(-EOPNOTSUPP);
+>   
+> +	struct tdx_devsec *tdevsec_bind __free(tdx_tdi_unbind_dev) = tdx_tdi_bind_dev(tdevsec);
+> +	if (IS_ERR(tdevsec_bind))
+> +		return ERR_CAST(tdevsec_bind);
+> +
+> +	ret = tdx_tdi_read_state(tdevsec, &state);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	if (state != TDI_STATE_CONFIG_LOCKED)
+> +		return ERR_PTR(-EIO);
+> +
+> +	retain_and_null_ptr(tdevsec_bind);
+> +
+>   	return &no_free_ptr(tdevsec)->pci.base_tsm;
+>   }
+>   
+> @@ -181,6 +253,9 @@ static void tdx_devsec_unlock(struct pci_tsm *tsm)
+>   {
+>   	struct tdx_devsec *tdevsec = to_tdx_devsec(tsm);
+>   
+> +	if (WARN_ON(tdx_tdi_unbind_dev(tdevsec)))
+> +		return;
 
-+Jarkko
-The TPM driver is pretty entrenched and heavily used by different user
-space applications, so it seems really ambitious to bundle in TPM
-here.
-Consider that you have to do a lot of command interpretation to know
-whether a user is getting or extending a PCR value, or whether it's
-systemd doing an NVPCR thingamajig.
-I don't think you can intercept commands and translate to intent for
-any kind of extension to be correctly tracked by your MR journalling
-addition here.
-Can you explain a little more what your intent is?
+<Thinking out loud>
 
-> Bringing in the SPDM side, the netlink TLV uAPI fits nicely and can
-> expose all the structured binary data it has. SPDM is also effectively
-> a ROT without any measurement registers.
->
+So unlock involves calling TDCM_UNBIND which in turn might fail for any 
+number of reasons and yet we have no way of communicating that. So after 
+an unlock a TD might want to rebind and issue bind on a device which is 
+already bound because prior unbind failed. Is this something we should 
+be worried about ?
 
-I would push back on SPDM being a ROT because you're talking about
-different devices.
-If we're Linux running on the CPU, the ROT is TPM or one of the Coco
-things (SVSM vTPM, TDX attestation on MTMRs, ARM CCA attestation on
-REMs).
-If we're Linux running on a DPU, the expectation is Caliptra
-bootstrapped the device and a DICE boot chain got to a Linux
-environment without runtime extensions.
-There is nothing to communicate with over SPDM to learn your own
-measurements since the boot chain is available to the kernel.
-If this is changing, please fill me in.
+> +
+>   	kfree(tdevsec);
+>   }
+>   
 
-There is nothing that you communicate with over SPDM that acts as your
-_own_ root of trust, with one exception I can think of that I would
-call a platform security bug: a platform root of trust.
-If a PRoT holds back firmware from interconnects until it has verified
-the signature, and then the devices receiving the firmware do not also
-have their own secure boot, then there's a physical interposition
-attack surface.
-It won't be the CPU that communicates with the PRoT, it'll be the BMC
-(as far as I know from any architecture I've seen).
-The BMC can be running Linux, and be treating the PRoT as its ROT in
-older architectures that don't have Caliptra on the BMC itself.
-The CPU can talk to the BMC over a privileged veth device and use
-RedFish to get SPDM measurements, so there's no new device needed in
-the kernel for that communication.
-
-Are we talking about this BMC without an embedded root of trust (eROT)
-case to treat SPDM as a ROT?
-Any other SPDM communication would be for composite attestation by a
-lead attester that all gets bound under the ROT that the lead attester
-uses (presumably TPM).
-
-> Combining the two needs together it seemed apparent that TSM is a bad
-> name for this expanded purpose so we start calling this attestation
-> subsystem. "root of trust" subsystem would be another way to look at
-> it.
->
-
-I don't see how a trusted security module is a bad name for this.
-
-> The general notion is any root of trust can come with a single driver
-> and expose a bunch of different uAPIs. The modern most capable one
-> would be the CTLV based ioctl interface through a char dev, but in
-> cases like TDX the legacy uAPIs will also remain supported.
->
-
-What capabilities are you trying to enable, though? I'm not really
-getting the picture.
-If I was right about you referencing Alistair's patch series, then
-perhaps this is a clue?
-
->>This series is different to Lukas' original approach and the approach tak=
-en
->>in the previous RFCs and instead adds the PCI-CMA support as a TSM driver=
-.
->>This was described by Dan in [3] and [5]. The advantage here is that for =
-PCIe
->>we can leverage the TSM work for a lot of the features and provide usersp=
-ace
->>a consistient interface between PCI TSM and CMA.
->>
->> [..snip..]
->>
->>Other transport mode (such as ATA, SCSI, NVMe and MCTP) will
->>therefore need slightly different approaches, as TSM doesn't apply.
-
-I don't really know why TSM doesn't apply, and how this proposal does.
-
-> In this way I view it as a further evolution of the tsm report and tsm
-> mr components in a way that lets us harmonize the uAPI and avoid
-> hardcoding things in userspace. Though the name has changed so this
-> linage is not quite as apparent.
->
-
-I don't know why using a standard protocol in user space would be "hardcodi=
-ng",
-if we're leaving the SPDM message construction and interpretation to user s=
-pace.
-The TPM commands are standardized and left to user space to manage for exam=
-ple.
-
-> For example the end goal is for systemd report to be able to
-> dynamically enumerate all the ROTs in the system, include them in the
-> report, and generate signatures. Without necessarily requiring ROT
-> specific code.
->
-
-What other than TPM quotes and signed SPDM message transcripts are you
-trying to cover?
-
-> This applies to SPDM as well, ultimately every SPDM user in the kernel
-> should be able to get an attestation subystem cdev and flow through
-> the same uAPI channels that PCIe TSM uses, also into systemd for
-> measuring and logging.
->
-> I'm looking at something like 7-10 ROT drivers just for the current
-> set of NVIDIA ARM servers. Probably another ~5 for NVDIA non-ARM
-> servers. Then a couple more down the road. It is alot of variety and
-> today all this HW is largely unavailable through Linux.
->
-
-If there are NDA'd docs to get more info on these, I'd like to work on
-getting my eyes on them.
-Are there some doc numbers I can ask my hardware engineering rep to
-pull? They manage vendor engagement.
