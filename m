@@ -1,148 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.12
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792447300;
-	b=zXtJEIWA3H8Nz+rSbthwEVIOYxC+BSUuSpMuncL29wT7c2BiKwLIOiU5hpV5N2RWsfcP
-	 4yu0pfHKI6oWC30JK3ywovw9SoJ6Ui907s67jm4D0AHHmN80fmV2+uuj45PCJNxD9wB4a
-	 E99xV3a6gt+AhK9G9a5gyML+EcuM20kRbkEWD12aJPAkMbVhKwMyq9orlMOO4qcpoNfDz
-	 +0n92LggIga/hKDicBiAzq7kNiAWsHHfVkQd0GqvNtwnHGELuV3g+y3042R2kasl1lvMo
-	 b/3Z8fQZQDIAfxkHBxwwqyZc5IVnQuUQKZ3EbLvWR0nFCkN+D4LWvkIrU4K2CG4Y27w==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.24
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792450629;
+	b=LzMIagbQ05tdTX5U3qLjLlBmD/RIvR3Nyx3EO2vyPserH78uWL2HoQO2kpDa3bfDV38B
+	 8BQDjJdqAhMrIXp1+FpMuB7TLj2bT/9vz0Ho/BXER6sncbs03wK+N7H8PAy4Y8IejR2jv
+	 xiwL5Lq2yKbJcpSLlgwAWRhBEn9b74tDCpykEwGClDaS2rHzgTLn2V+q37HM4zRaQ4S6Z
+	 fhrv1bns80/1HZHHTnaxzTTMteaB9pmqAFJhPAzkJL5Rr3BN39SbEhx9tTQmBhhAW0Ysa
+	 bx1CTrio6R2jhrxCTSUjwPAv1Xw/SMzturMR9LNiJPPGijyZh8KxA5OiFftcbVnojyA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792447300;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792450629;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
 	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=Gc/5AYxvk93o1Hq5a5r3yz6a/GCN3fiRkLK/ShkpayM=;
-	b=JMgjq3KFzg4tFNB2AAIQCPhoQyYd3emBkkQ50lHgOhINADqBOPoPzLjmWMiADBH1fp6n
-	 bil5++a1wi2nfA3C3/Bzq2sn6agNn0Q2W1jLlSw32v0iKeYypixXjWReyWfFursByPIDE
-	 FWKbVufMz7tzH1lbSMbocuMt0fkaRV1NuNfvxVMWNp9wUUA8W1hn+DriboW8krlY8yNLx
-	 q1Nd7hx0YC844WXRJ3jwNcGjV47Ogg5IzL4o3/LHQl940oQaLfEqI3MRUVIwV4eEwA5RY
-	 OQFjFcgFKNeUJGbnEPY2litMekAR6mSboVMPMM2iOdt2t3+Rg1DYdC2B1pDBSZuIgVA==
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=HB9YdqYDzF2JFgvrnqNwMAmbEjVBHUn0Bou8pSLV8ak=;
+	b=dsUYz66jnFNgEBlnoC+aO0LLzTm+RlEKYpnnqK86NrEQDpYInWkh673E+AEGyrftyN+o
+	 ZIq5bJKYXr9HzNAH21Tjj1pVyRnyXys+N48lgUA0eMnspiLB1DDNnMayyPkAjKWypk7f2
+	 fO63NnaGQyVzvlSxbmBBq4/jww0ApBIIr9BbBfLHfu5dm1xt5aC4LKu1u9rxvGfO8o7R4
+	 UhUbSOJ1yv7d6SN3wwZuGTnmlOj6Ueow45Pu7boGv19ysw2dOadI2+cteQknR2Pa8YaRD
+	 kRobS/5yxVVggTJGAtHa5trL0xD7GDoAqlNoqPlrzZugjJvwlr2H24V7wn83UwiXRUg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZicPEksU;
-	arc=fail smtp.remote-ip=192.198.163.12
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=iPJKdc5j;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.24
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012024.outbound.protection.outlook.com [40.93.195.24])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F4A606A319
-	for <linux-coco@lists.linux.dev>; Mon, 19 Oct 2026 22:01:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7F4A606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A412606A319
+	for <linux-coco@lists.linux.dev>; Mon, 19 Oct 2026 22:57:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A412606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZicPEksU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792447299; x=1823983299;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=2lSWiP2R3DDA3oApsjmO6p3GYCSszD9ZKcPzeMG2kGo=;
-  b=ZicPEksUAIf025d0SUwnf8/H3Wp8C1jsUnp/aqYzwly9Lh71sUrWYf/t
-   Y2HUKi2eGMTkXUYB/xdcHHcm0IiWUQ1hOT8N96CpaFEx6KFahgxdt1XS1
-   8wYHpcsD7cQ2tselai9dClwtv8QtZeSjVc+nXT9vPQGO9sEUAzQGvWt5e
-   X97E6X9z+sDSvL7dWZCTtLlzIOkPLPyzHvqZx1RfnuZPI/N9Ud9dn0tXS
-   uozVLa7ZUttuxXvz1XE47D69CO+BwhjY6TFSpYtqTXVl93NSs2ZGcOO09
-   5jzLePQfE6i7cjz5h4XxP/iHHhjbmqZLCkjC2NMKqjJP3mTppTeZMOrQH
-   g==;
-X-CSE-ConnectionGUID: lE52RADJTt+eE+TuzklrvA==
-X-CSE-MsgGUID: 0ARCjZgFT8y7S7yHvg/ebQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1047643"
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="1047643"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 15:01:37 -0700
-X-CSE-ConnectionGUID: 2czgYWrQQ4eYqlQz3vFi6g==
-X-CSE-MsgGUID: P8A6pJ+0TaOtv1dMDDbbmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="3020697"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 15:01:35 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 15:01:35 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 19 Oct 2026 15:01:35 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.63) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 15:01:33 -0700
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=iPJKdc5j
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZGvtvd4bFI+txc9KGn9kLDC8ZEavqQUapJLjXrxzXyVOrGL/LytFdZVPWC/p+Sp0whOY75TKXrgUIaKlmd+DjhAntFzYk9DKJhyv97hFfcbVHs2p8aou9qHCvEr5+GX/KI3CHqBsDG/zkk6A+e8zACLL+1ncjKkYoPgsJleMm6Q8rF0sa7mTe6roQZ+mGmtxSb1prnM+VGNdHrs0eReYzMtdbqupejmfWDPUt/U7RZYD6+VLOECVD/ay/lKIRyItNF5jH4wU16Le7dgjp/X33VGskeTJ3e6ylj3zXOdsG/ne8u0f+SHe//TEz5BG65vGpMBnbfzpfPX5zrBOMOg1ug==
+ b=PgcZFCdSFogb+AxVUVMd5Q9fchwnpmweIJ3cX2Zn12n4lVOY3k1vzXqwE16hRjNf3KjfLEe7LEXu7748qKaRX+vTq4FCvASHyU8kQiA8nsyrGKVk5+4tmVXoTs6sccgGOYGK+ZzZ0vV7iuyCdpMycRYJBhoQQyrKlZT82vxC6asNFjkXthnAGFTmkJ+IdhQJnY3iJ7VXKkjc8giVDNquhJ6SZ9wlICEckwyTr366FCeYs/k42hKPrdx3N5Hi0O50J+TdN2+hFqrPjNsfIEtjVj1Ob26OxASbiWjYsY5PELoby7M4bjCBabnwZF5nD4GImLHjTV5wp0GW95F+s+OwRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gc/5AYxvk93o1Hq5a5r3yz6a/GCN3fiRkLK/ShkpayM=;
- b=UZcdZAtFB9XrMIHD2WzM27TGAK8nsYzpfYJTa9s4BKqGoGY8q1/6uNFAmi55rKLFXnM+/dTDJZx3xRDg909nei4kPEfUm+n+GWJmQgklJLJj7tRaUnXE2ZKWMejz0dsK8UO4hKEi8FqcDq5ZYb6EJK93ds+TxgtsmEjxmn7ZM7BczhDcn2FEZaWqeS0/NCerGyd5Tb9DI3F8J4GE2rJRlUdLKspqrJDrd6LzXEn2M3wmUowW5w5cw1Z8Evqq3O0UXQeMzg5s7g+kwbFeYjhJPO/D+ZQZ+9d6UdrgCVCQxzwI6azZR4ezW7BpPuL+f/uiHs/IjGnS46y9biQ4nDcWJA==
+ bh=HB9YdqYDzF2JFgvrnqNwMAmbEjVBHUn0Bou8pSLV8ak=;
+ b=pHzzB+YlbzkftvJz/+FpCL93HANPXB3sp9tO98Y7+oqVKX1EAD5sr4OQCg0cfNSilX0s0hxk8WS8t0NK2kweMu1HGZ43sEbi4Jm3Wd6DVSEymHwe+4lMtHT18WDOQitjj2Le0wfrfj9NkXSjipNTPxC8VuKCW/WLTGLYtKoNXcO2hbsQf8yGz7P+1wt/qrhF54fdt1V5vrm6XmPcvPXstowJtEaSEFVrpJQ84aVgBviH3/khiu0Qf6M68nCFUqsoLED3tnFL7tKikxz9EyeKP0oejTmoI/GEdM3ppINcNWLCiDWJ37KpHuiEdol2NTUzWTb2H59jZgt/AQrCPvz6UA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HB9YdqYDzF2JFgvrnqNwMAmbEjVBHUn0Bou8pSLV8ak=;
+ b=iPJKdc5j0fJB8TAj9nem13tCkBXmnDfNv+P7LBMog8FKADiR5oa+03Fab79cd2DuclF74tkPn2U0kGvlCZjA/ZfhKtpRYUIA3t9O5/LxgDP7ExAtJwAtRMB/Kk2PhozFYWtMFRzVBal9kKz7yCIBGnUdwmkASUlFYWpQ9MouW6vWqawXXhA404wMVqaBwFXPsofPay+5q9KOysdSwtG36wOICEpGF13A7GZhJl/RnpLS7MPZfyDHPcpt6iGa/x2oc2lAwzBOizzw8wZSY9fQ7pyKgNalZZMQ0zK+zvKw8AxntK+FgXg8CtkzPSrJkKfdfPHoONmNiwJ9XwVuKHOmUA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20)
- by SJ0PR11MB4941.namprd11.prod.outlook.com (2603:10b6:a03:2d2::9) with
- Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by DS5PPFFF21E27DC.namprd12.prod.outlook.com
+ (2603:10b6:f:fc00::66b) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 22:01:29 +0000
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc]) by SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 22:01:29 +0000
-Message-ID: <e65c5f31-266a-4411-b7d4-873086451065@intel.com>
-Date: Mon, 19 Oct 2026 15:01:25 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 15/18] fs/resctrl: Reject mode changes for groups
- backing kernel mode
-To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>,
-	<ben.horgan@arm.com>
-CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <fenghuay@nvidia.com>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>, <rppt@kernel.org>,
-	<dapeng1.mi@linux.intel.com>, <elver@google.com>, <enelsonmoore@gmail.com>,
-	<jlayton@kernel.org>, <kuba@kernel.org>, <ebiggers@kernel.org>,
-	<seanjc@google.com>, <ewanhai-oc@zhaoxin.com>, <binbin.wu@linux.intel.com>,
-	<peterz@infradead.org>, <ashish.kalra@amd.com>, <superm1@kernel.org>,
-	<chang.seok.bae@intel.com>, <prathyushi.nangia@amd.com>,
-	<kim.phillips@amd.com>, <ackerleytng@google.com>,
-	<elena.reshetova@intel.com>, <naveen@kernel.org>, <darwi@linutronix.de>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>, <eranian@google.com>,
-	<peternewman@google.com>
-References: <cover.1790867441.git.babu.moger@amd.com>
- <d0392cc08e4bf28998a4815943525a0461003801.1790867441.git.babu.moger@amd.com>
- <bf296951-e4bf-41f9-b12d-3c20930cbd21@intel.com>
- <592ae38c-3e73-4940-9720-d23f396f83a3@amd.com>
-From: Reinette Chatre <reinette.chatre@intel.com>
-Content-Language: en-US
-In-Reply-To: <592ae38c-3e73-4940-9720-d23f396f83a3@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+ 2026 22:57:00 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 22:57:00 +0000
+Date: Mon, 19 Oct 2026 19:56:58 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Dionna Glaze <drdeeglaze@gmail.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Jarkko Sakkinen <jarkko@kernel.org>,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	roberto.sassu@huawei.com, zohar@linux.ibm.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <20261019225658.GS13920@nvidia.com>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261016234354.GA664420@nvidia.com>
+ <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
+ <20261017203407.GM13920@nvidia.com>
+ <atPgqROZZxnihYfC@kernel.org>
+ <20261017231007.GP13920@nvidia.com>
+ <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+ <atX9fugGUsI0hGcA@FV6GYCPJ69>
+ <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR04CA0048.namprd04.prod.outlook.com
- (2603:10b6:303:6a::23) To SJ2PR11MB8370.namprd11.prod.outlook.com
- (2603:10b6:a03:540::20)
+In-Reply-To: <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+X-ClientProxiedBy: BN9PR03CA0934.namprd03.prod.outlook.com
+ (2603:10b6:408:108::9) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -153,221 +116,108 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB8370:EE_|SJ0PR11MB4941:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab6c06f2-2c12-48e4-e607-08df2e2c8727
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DS5PPFFF21E27DC:EE_
+X-MS-Office365-Filtering-Correlation-Id: a80fe9c5-036b-4427-de91-08df2e344883
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|18002099003|22082099003|10067099003|3023799007|260925021911599003|4143699003|260925021311599003|260925022911599003|261009223027099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: /2v95RIVXTjcCJCQxl6uRs4GwsiCyjGU7JU/GPUxI1u4/nHcJDD5wxgynhtVld/cIxl6gvWpHUnfj+6eaaSCMqXtnAtfkHw8Wjr80nktHsoiBusWyIO97QU90x0QcEb14EJBytMLtX2QYX//C7LAVIbXBSekA+tL1aCZcXVpk7t+SF+C+pdMPyTrT/Aq3XguudviOviSW5AWaNQPpvXEpgDnqINyWaQrQ0CHmAgVahDt8Mv3ZbqWDB9xbvYn47NJeExFETToRHm/ALh0V9kkybDPk8CqC6ZTBCTBa+tar1QLOj9eoB5BA/4iqqaLvcIjs5zJ0yi1RvInidzjaXAUb7GIK7x02Q45QaxHAQv6Us57H7NrU9e2siWkL+NysZcEhCySk0hZtyIrXiLiUkHqswBsxDP0EmXiaNayO9b0hyh/T0sDNsTkt9W2Jsv+dFBKWVLL3bRlZb3YDclHFkyBxh+4bTLo13GkcIBH/oMTu5Ba8YDnjJEbe91QSBmOeh7KCbCnd5+/vwoOx06ScH/Y66smdGT4w7Ks5NORU6JbhBgnSPkfMjpUtLvJXhzgf6VDv9pU4XAzlcWZrMzv+fIZmutnSgkKG/a1ZtWSJT1bB5w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(10067099003)(3023799007)(260925021911599003)(4143699003)(260925021311599003)(260925022911599003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|18002099003|22082099003|10067099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	dmxTYJy1uYrJn4nd0I4CAeHSYUch49DkhCFYnE5+syIJXm+qgIn3H4pQVtu43tEDNKQ8shbTtPN/G1jHJ6cy/BCiORmRtkxAKOa38zY5ih4Sz3EaMqcfnP34D1yxYKEuoOyxn+H9uwcUovBbprdGTr18YUQ9XrH9bw6vZH0fRrBN6pXIRFfblDQCRmpyQrsa3th4e4M7HFRIFBD7X16+LQoeONC1Z3fo2mC1wbWCL6OXaBvRrqsnJFnelUUtQDEat6e8UqTSn5HvmhAXp0+IolE/4RdH4Wp7O5NJFge6Y9FrghDKDpBpox/RJox8uXkwPo22Oj+mKLWOJ6jssK9dG2a3JBOM2TGmd7kyad/sfZLfTj1B1Q8upRr86e22K6RncqLgK3P6dW2/3jdnbOuOfkxzqJUsGqbb0pCjPaPxNF6WXZcnGr4l8j8gldPWWw31N5/DOvdBYqviOszH6IRDZSFJ5ictnZ75tWb8vEsLNn/HrXtZ/OZnShI0ETBkTTBOSWEAPUzfQOOuXVVM0eYiyhI7vj/wFWnNOm8u5EN6m4pnym0iZLwj0lienIlniZImAqqCM2xiktlJVytx/RP0LQPYgS6H82/IdpBrueUw/WF7/YjTN69reSKowmZ45F8Tz9GyPMsO3MisV45GC6R0RCxETKcwhkU6gv85VnG93lY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(18002099003)(22082099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VXQ5eHdkaSs1SHBTa294NHFhZkRlUUdaUnJjNHg2ZHhJQmlLUjBFV1BJZms4?=
- =?utf-8?B?Y29NR0h5TWlQQU1Xek9Zb1F2TUEwUEpCaGhxdWtKTGN1aS9FeUZDbDJvZUY1?=
- =?utf-8?B?WXZtUmJIQ291Y1Zqc1NNRUVLSzRqYWxSVnlRR0VLYmNZOEJYeHl6TDBpSU1t?=
- =?utf-8?B?b1lOcVh6cDU0OG1ta2dKL3dKNzFMeDVqTkg0K25mMGNuVC95R2ZBMHdaVVkz?=
- =?utf-8?B?MEg0eXdML1hsTHEveER5ZHZjZ0VQWFNzdUFSeTc0V2dnandvZGNrYXVaMFM1?=
- =?utf-8?B?MjY0WkM5YWRNV0ZxN0hRN3JlcmlXa1VEenhDZnpGV1Bwd3Q1K0NhOHp5WENU?=
- =?utf-8?B?QVhaWitPYUJLL0NhVnJpNmcwNEoyRnNodXlXbjJ5N3ZUSHRZdTA0VmRFVFM4?=
- =?utf-8?B?UTFWeStqYmY4cW1WRHk3K2JabE1ibWt2dGJlTC8wZjdYVWZJNGg3bUJOMmVG?=
- =?utf-8?B?R25SMTVFM3A0Q2h6ZkUzMlFwS0xSYXdtR0p5c3FpYWYzdG4vRjhhTkgrS1cw?=
- =?utf-8?B?NEtlTHl1QVVzTzZXMkNHN0RvV2gva3FGVTNMNWxGRXJNR1ZHSllmSVRmUWxh?=
- =?utf-8?B?S25Hamg2a2hGeVZlRUxGVEJlSVRLUVAzZ2dZS2thdXgwd3QvMi9lWThzdldV?=
- =?utf-8?B?U05VTERTcnRnUzNMSXVyUi9Fa2xzcW1CcnVlUWYveWYwRTlJRWZDWjFHNlZF?=
- =?utf-8?B?RmxtOW96MG5BUW5teHZUcEhZSVpUZEE5ZW03alpCUmRJanRBd2lzVjF4WWpT?=
- =?utf-8?B?cjJ5UDNmb3FWUkRFRzFIaUZucU5ITWZoS2tpcy9xMWo5OFpXeUVMeTJ4MGJm?=
- =?utf-8?B?ekIxdCt3SXFsTVRCMzRoTk11NGhLY3BtQ21rd1ptL3dRbFhpR2dVN1NWK25T?=
- =?utf-8?B?V3dyUGxmcnJsZ21lVCtGald3c3ZSeGhXUTAwSkt3a0NMWnpwWXRZTjhXREN4?=
- =?utf-8?B?aUpFZ2ppdjhMZkt5ZmlwT1Q3ZkRLajFTcFgvS1RLMS85a29lNmQveEZGRmV3?=
- =?utf-8?B?U3dYVmdON3dvcWpaRk5LaWdRa3V2aHBybWFtZXk4SDJZYjEwV2hDMkE5UWVW?=
- =?utf-8?B?OGYvNkdXcjVKZGMxblpEK0JIZE11Rzl3dm5UY2xNc0N0SGVpNjJ4S3pRSjMx?=
- =?utf-8?B?NENEOVcxQ01OM0FNN1JxS0JPdDcwSWwzREhla0J4ZUdsMW81QnhmUFcyS0xq?=
- =?utf-8?B?YjBlMmt2RHd5d3FCclczd0FYRVhwWHgvSzV6b3R4THpEYS94QTJUbzkzY3p5?=
- =?utf-8?B?RFFSRnR6UmFyRFIrNW1HUDIzbkR4OGdOK0t3YzdNWlhrVjJtekZVaWJaZU0x?=
- =?utf-8?B?bGJhaHBNSTVwSHc1ZURFYkRqdVFJYStBK09KdmRmcUdYcUVYKzR0dnNrT0hG?=
- =?utf-8?B?VzFpQjdEcVdJc1NjU1lyQ3owQVBVdlozQ0lNNmhVbm9QelNsYWgyVVBWZ21w?=
- =?utf-8?B?cmV6cUFMZVNlbk5TZWFsVG9jNmFmcVZMUEFaZHBwNGx6UGl0ZGFNNEdIWmE0?=
- =?utf-8?B?eDBxVU5vTi9YN1FKZFZ1ZHlkNlk2dUw4WUY4dnAyQ2R3Ykdsd09zKzVEWno0?=
- =?utf-8?B?cTZubWpyeU1XQjRXRzhhV1JIQkJLSzZpWTU5WnJaWVQ3ZlJQN2ZOZmFLZXlE?=
- =?utf-8?B?U0JqaXk3UVVqcXFDbzdxeHhkWCtPRGJMRTVTNjdXY2JXR3lPM01zMktHTERY?=
- =?utf-8?B?dWxTV2RCVHQ2Ri9rVzFGcmpwbXNEaDN5L0hqRXlaUGx4Y0ZIU3BnTEpJY0JM?=
- =?utf-8?B?Y09aQm9IRmdpbWRVZnJTNld6OFFtMFFrTS9ocnZYUjFNMXV3WXRHQXkyUkdG?=
- =?utf-8?B?SldtQWxCeGhGMG8vbzFZcnErbHZnbWRxVENGSUM2N21RaENOYkZza3c1Sk03?=
- =?utf-8?B?SC83a0g5dXROVjRiTURrYnFzYWRpUXpPV0FLYWdLMktYTTVwSytYSmNJSnVE?=
- =?utf-8?B?QzdLZTFWRzQzSExhUmM0bHF1V2sydkhRTWxGMXNTK2Y3MHd2dFBKK1dmWEZD?=
- =?utf-8?B?MHhYTHZqSkJGcEtabkExQXFXS2pDTTFCWGtoSlNkWmUwN2ZRckwwd0ZjbDYr?=
- =?utf-8?B?NFV0cDRLZ2JRZTNaMExYSXMrNmxrVG1IWEZvY0xOVDJFMkh5aE5tVGUwWmlE?=
- =?utf-8?B?VWMxUGpoWWUyR3QvQXFOUHFkamJ4K1h3dFFvWi9kaEt4eTlOc0wvQU9vd2Rt?=
- =?utf-8?B?dEJYUFRtVEZDY2pWUnFCVElGWjJnb0xOMWo4L25wVERhVDZrSGwrNGRFQjAz?=
- =?utf-8?B?ZXZBdVJtUnhVbDk2RlJnNERYUDBudSt0aUp4UUlUUmg3MU9EaVV4ekdhd3c1?=
- =?utf-8?B?Wk1yQVdQRk5jWTloOWpjVXA3WXRXakp5azNqZG9Va2JYNWlUT3dyUFJaRlds?=
- =?utf-8?Q?BldQJqhudv91qV8k=3D?=
-X-Exchange-RoutingPolicyChecked: oGMt1jZzh3N0SnXL/omepq5o0TJa8e3koug0hSyattOHBxnE7/7OfQfI77d5ham7ZXhefO7ue5sq0XclM0FwhjHiVbjR7okhzgS/7569Hc6q/llOJhvTxIH804SZ5uTODqQso5zkle20Blvxh9mftMPUmeC9kQhRRtXroDrPmswsPZyfmKBOgYHVwlSRwpc4PbknE4l36jArCci9mhEl3e2uNXj0eGuxT7FFj8w+5fnCYTUrSN1UPavuSVzJWjFOUv4005EOIFKE1PBF/L3g6hmsA37vBPTyifzmM6fQqc0cme8b4r4sUwt0oBBxv6zeqpf/xINlrS+StlCE2vndtg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab6c06f2-2c12-48e4-e607-08df2e2c8727
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8370.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cGpjNWJKeGhEeVlpT1Q2WXN6aXExRE9EUmVpeUVheDlCUzdxNlNmWldZOW5z?=
+ =?utf-8?B?R3lpQjRJbDBUclRuOVR0Qk92dkhPYXN3a0tQdnJUM0RobzBrSDJEZXc3alhY?=
+ =?utf-8?B?elFJT2xSMGYrVFQ4bnBXKzU0eldSN1NNZGhZQkExWktYWHc4TVZWMEcxMDNZ?=
+ =?utf-8?B?d0IyUU9TamI4ZUc2c2dzNW9WWUpPeVRIZngzcU5qeFdKSjFubmx1cW1PVS9x?=
+ =?utf-8?B?R1c1anA0SGhYWjJERldFUURZTWZ1RVhDVjQvVmxUVHRDZ0VVYW1EU3BNcWZM?=
+ =?utf-8?B?VWEwWDR3T3Ara0NkbHVTcnpMRkpmTE1tajNhQ3dwOE5VZjg1a3FNSm5tOE1L?=
+ =?utf-8?B?UWdwQWdRSTduelJsSHZadVhTYXZhL0tMOHBFeld3YWdsZTdZZzkyVlFrbVhp?=
+ =?utf-8?B?UEQxWXR3N0JtdHN0RllPRlFjRkJobFZIZU15bnpHMmlONldtOFVvZ1ZBOFdK?=
+ =?utf-8?B?eERjWnNkL01qWkE0WUFscUFBUC9rbUlJQnZZQnYwYUY3ZFcwRU5wSWxOT1B3?=
+ =?utf-8?B?MUNkVGZod2loUjU5UFBrRHBCM3ZOeWs3V0RSLzIzQ3Nrbm1Cc2E2NWg3UjRy?=
+ =?utf-8?B?OGFnU0x4MnVPY2I4VmZUc3NZQjkvNXJQY21IY1EyWk9xK0M5S095Z1RTK2Na?=
+ =?utf-8?B?RkVtNWRrSnN1T09Pc09HbDU5UG8rd25YTXZVSzBWREVsbEFpL2N0dzd2eFA3?=
+ =?utf-8?B?M2ZnMWpDUk54Q0RTZUdGSjJvZ1E5bXNwNnFtZ2FnSHkyUVR1ZWZyTnhtTHhi?=
+ =?utf-8?B?NDZSckwrekdrV3YraDU0TW95MUtTSmcxSGtWTk81QUVGRjR0RFBBQmpYSTJH?=
+ =?utf-8?B?dHZyL0lFTWk0eXdYYXNkeGVxM0dBUHo1VG9kTWdXRmdhOTdiYUlKQk9ldHRK?=
+ =?utf-8?B?RU9ndGo4emZEQnJsMDRtR0tLalhTVWk2VEcrcEorQUVneXF3TlRrUFVyVkxX?=
+ =?utf-8?B?cmtxQzNiZ2kyTGxEbWtWdHUxeTJwQllMdnl3U0E2YVBxVTJSeWJuZUtsUnJN?=
+ =?utf-8?B?ZTNlU1RQbWJ2ejhxcytsbVlrLzkrV04wSXpjWmIzcElNRHBxSDIzcXhHT3ha?=
+ =?utf-8?B?R1lScjgvaUEvNUlpTlloVFZIWU1jZmtLRk84OUk3VXlISDB3czRTc1pZblA2?=
+ =?utf-8?B?UHpmQUhrYnlnbmV2OEdVaXUzUmFUTjc1Mk5kUHRmUDcvRDg3MTkwd1c1SmJM?=
+ =?utf-8?B?Uit0UjZCRkdWOHExMkVFWXhaeGp1ZGZUN0EvdTkxUlNWYTVtMXR6VkpJaTl3?=
+ =?utf-8?B?clNFemVVZXM0TThVY2NMMXpCK3pITjhoenB5cGNSR0FLaWFFNnhTdzNmeVh5?=
+ =?utf-8?B?dnE1d1lRMEV5TndUL21QTWgxaW5CY3FIZ0UwUWlSVmYxdFRDT2YzbkZCNmcr?=
+ =?utf-8?B?Uzdxb3pucGZXaE1yWTJUaEJKMVlWS1FSM09yYzJuSjhDVmY4ZkhYei85YjRr?=
+ =?utf-8?B?d1dRQkhRWXJlRDgraXJIbTRma1pyK3BSN3EwajRBNVF6Qk9UMUVLOE9nMm5h?=
+ =?utf-8?B?MExCOUVwKzlDVlBTM3d4TWdUNk5sYzVHai9WZVBjbmRhRE9wL29vZGpsR1Zl?=
+ =?utf-8?B?UExKVlNSbmsvcnZzZ3dzNHBsQkxkUkdMeW5SYm9XMmpXRFhYV2l3TTdHeE9V?=
+ =?utf-8?B?VzNFUWZYdTd1eFV4MXN6dUo3cTdOQUZTb1N0eU84M2NKQmNVL1JPVTJmeUsz?=
+ =?utf-8?B?VUI5ditqb0Zrd0E2cEFjeUFNb2R0M0U4OUd4K2svUjVBSHp4a3ZZMEFVL2R5?=
+ =?utf-8?B?Tll3UEIrU1Zwd1NuVEVrbUJsZ0tybFY0dWZyeTRsVU9ZRllhK0RhcVJ0NXhi?=
+ =?utf-8?B?SFFYcDJLbHJTc004cW5nVE5OZTdBcXJQbjN4enpMSWdrdUFjb0pWYzU4bUQ5?=
+ =?utf-8?B?UGRaNEZSM2ptdHhmTEhiY05DYzJ5U1Z1TWRESXprT3BNVTgrT2pDdjEvQVE0?=
+ =?utf-8?B?VURCVGd6aFRmRkFMVWJBNWlacm0rVzdhaitPT1JBL2cxZjY2a3NRaHJ0OEwv?=
+ =?utf-8?B?U1hoZUJXMkp4SGozeVVRK3d4R1JWdWRhVHlTTUg0WHJtMXRaZEF1WkorbGJq?=
+ =?utf-8?B?LytOV3JiNTJxZkQ5WkhoMXlxRzRmcXBXc1JHd0taUlZ6Smw2SUI0aHB3T0NU?=
+ =?utf-8?B?SHBpUjNjSy83TnhVSVlCWTZ3Zmc2WjJBbHltaDkwVm1IWjRZYk9ycTRaZ09G?=
+ =?utf-8?B?MWt2SkpPNE8zVWcxQ01qYzlwcmFaN0xQemR3WC9GRXNMWkVVT1A5TUtQKzk4?=
+ =?utf-8?B?OHgvMmF5YU1IMW9McmRnY1RKMEwwU3dpQWVqMjNMUitvc0tzZFBISnR0c1NO?=
+ =?utf-8?Q?tV6mo+VU2UAyNKsu9o?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a80fe9c5-036b-4427-de91-08df2e344883
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 22:01:29.2796
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 22:57:00.0793
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8TVTylIY1cz2F6W3ewQlAjPgGo1wYY8c9WSPooVtHWhIqQtKIuo8c5DsWtdzTAOr3KClbZzeN5UsHcXtgDtKWuavt1fw9FjYFBulBEHyU/M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4941
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5btIAh3KnB/4kgtatPI5DmJx8v2Al8g9N0KD4S1txnxhK9oqELzXgbXONPr2uPWX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFFF21E27DC
 
-Hi Babu,
-
-On 10/19/26 10:43 AM, Babu Moger wrote:
-> On 10/15/26 10:49, Reinette Chatre wrote:
->> On 10/1/26 8:10 AM, Babu Moger wrote:
->>> Prevent mode changes for a resource group that backs the active kernel
->>> mode. Also prevent mode changes to the parent control group of a backing
->>> monitor group, and prevent a backing monitor group from being moved to a
->>> different parent. These restrictions ensure that the active kernel-mode
->>> association remains valid and consistent.
->>
->> "These restrictions ensure that the active kernel-mode association remains
->> valid and consistent." could this be more specific?
->>
->> This patch does two things:
->> - prevent user from switching the mode of the resource group backing the
->>    global per-CPU kernel mode. Why? The reason for this is never given and
->>    there is only a hint in the *code* of the *next* patch that requires the
->>    resource group to be shareable. The next changelog does not mention
->>    this requirement either.
->>    This is important to highlight since a resource group backing the global
->>    kernel mode would have all its resource allocations shared by kernel work
->>    done on behalf of *all* tasks. This makes it a clear requirement for this
->>    group to be shareable and for its mode to never change.
->>    This highlights that there is an ordering issue with the patches since this
->>    series establishes the requirement after it enforces the requirement.
+On Mon, Oct 19, 2026 at 09:10:31AM -0700, Dionna Glaze wrote:
+> On Mon, Oct 19, 2026 at 5:08 AM Jiri Pirko <jiri@resnulli.us> wrote:
+> >
+> > Yeah, I was thinking about this and went back and forth. In the end, the
+> > only reason for leaving it unbounded is to allow multiple independent
+> > users of the same register. For example, IMA and systemd could share a
+> > TDX RTMR. The systemd side would read the journal through the
+> > attestation device and the IMA side through securityfs, but both are
+> > views of the same journal. If one side truncated it, the other could no
+> > longer replay the RTMR. Isn't this the valid usecase? Do you see how to
+> > resolve this?
+> >
 > 
-> This check is only exercised when userspace attempts to activate the kernel mode, which is introduced in the next patch.  I can merge this change in the next patch.
-
-The next patch is already quite large. I would instead suggest that the
-changelog of next patch includes why a resource group backing the global
-kernel mode is required to be shareable. This patch can then follow after
-that to ensure that the mode of a resource group backing kernel mode cannot
-change.
-
+> Bright minds have spent a significant amount of time working on this.
 > 
->> - prevent a monitor group backing global kernel mode from being moved to
->>    another control group. Why should this be prevented? Could the global
->>    kernel mode not just be reconfigured, just like when user space
->>    provides it a new group? This is a design decision that is never motivated.
-> 
-> [1] There is no specific reason for preventing it. I just did not
-> consider it a use case. Also, changing the parent of a backing
-> monitor group affects both groups because the kernel resource
-> allocation is moved from one group to another.
-> 
-> If there is a valid use case for supporting this, we could allow it
-> and update the kernel mode association accordingly. What do you
-> think?
+> +Roberto Sassu, +Mimi Zohar
+> IMA logs and systemd logs are both system level concerns that are
+> relevant to the OS construction, not individual users,
+> so I would just say to reroute IMA to use ctlv using a kernel config
+> setting, then make systemd the new system manager of the holistic log.
+> The securityfs log contents can simply say, "log managed by ctlv" in
+> this setting, in the form of the template identifier.
+> For policy violations, only the 0... extend needs to go to ctlv.
+> IMA can still keep its violation log as a ring buffer when it's not a
+> 1-to-1 violation to extension
+> https://www.youtube.com/watch?v=gyYUYbdiN_4
 
-Up to you, but please make these design decisions explicit. Do not hide them
-behind hand waving like "These restrictions ensure that the active kernel-mode
-association remains valid and consistent.". If you choose to delay this support
-until your customers ask for it then please change the message to something
-that highlights this. For example, "Cannot move a group that backs kernel mode"
-can be something like "Moving the MON group that backs global_enable_per_cpu kernel
-mode is not supported."
+I think for now we should not include a new dynamic log here, the uAPI
+around this Jiri drafted can remain a future step. I don't want to
+open complicated discussions about new functionality at this
+stage. The whole CTLV idea in general is a big enough thing to bite
+off for this series.
 
->>> Signed-off-by: Babu Moger <babu.moger@amd.com>
->>> ---
->>> v6: New patch to fix sashiko feedback.
->>>      https://sashiko.dev/#/patchset/cover.1787772750.git.babu.moger%40amd.com
->>> ---
->>>   fs/resctrl/internal.h |  2 ++
->>>   fs/resctrl/rdtgroup.c | 35 +++++++++++++++++++++++++++++++++++
->>>   2 files changed, 37 insertions(+)
->>>
->>> diff --git a/fs/resctrl/internal.h b/fs/resctrl/internal.h
->>> index 6b8d14c4bd83..84238e9e8e15 100644
->>> --- a/fs/resctrl/internal.h
->>> +++ b/fs/resctrl/internal.h
->>> @@ -462,6 +462,8 @@ ssize_t resctrl_mbm_assign_mode_write(struct kernfs_open_file *of, char *buf,
->>>   void resctrl_bmec_files_show(struct rdt_resource *r, struct kernfs_node *l3_mon_kn,
->>>                    bool show);
->>>   +bool rdtgroup_has_kmode_global(struct rdtgroup *rdtgrp);
->>
->> Does not look like this is needed, can this function just be static within fs/resctrl/rdtgroup.c?
-> 
-> 
-> Yes. The only issue is the build dependency. Since the function is
-> declared static, it needs a caller in the same patch. One option is
-> to merge this change with the next patch, which is where the
-> function is first used.
+What is important at this point is for the static CCGL log for TDX to
+come out through this interface and be affiliated with the TDX
+driver.
 
-There is a caller in this patch, no?
+With only 4 measurement registers in CCA and TDX we probably have to
+do *something* but it should be well consulted and not buried in this
+big thing..
 
- 
->>
->>> +
->>>   int resctrl_num_mbm_cntrs_show(struct kernfs_open_file *of, struct seq_file *s, void *v);
->>>     int resctrl_available_mbm_cntrs_show(struct kernfs_open_file *of, struct seq_file *s,
->>> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
->>> index 98451b417fe3..dcf9f26540d6 100644
->>> --- a/fs/resctrl/rdtgroup.c
->>> +++ b/fs/resctrl/rdtgroup.c
->>> @@ -1738,6 +1738,27 @@ static bool rdtgroup_mode_test_exclusive(struct rdtgroup *rdtgrp)
->>>       return true;
->>>   }
->>>   +/* True when @rdtgrp or one of its monitor groups backs the kernel mode. */
->>> +bool rdtgroup_has_kmode_global(struct rdtgroup *rdtgrp)
->>> +{
->>> +    struct rdtgroup *child;
->>> +
->>> +    if (!resctrl_kmode.rdtgrp)
->>> +        return false;
->>> +
->>> +    if (resctrl_kmode.rdtgrp == rdtgrp)
->>> +        return true;
->>> +
->>> +    if (rdtgrp->type != RDTCTRL_GROUP)
->>> +        return false;
->>> +
->>> +    list_for_each_entry(child, &rdtgrp->mon.crdtgrp_list, mon.crdtgrp_list)
->>> +        if (child == resctrl_kmode.rdtgrp)
->>> +            return true;
->>> +
->>> +    return false;
->>> +}
->>> +
->>>   /*
->>>    * rdtgroup_mode_write - Modify the resource group's mode
->>>    */
->>> @@ -1778,6 +1799,12 @@ static ssize_t rdtgroup_mode_write(struct kernfs_open_file *of,
->>>           goto out;
->>>       }
->>>   +    if (rdtgroup_has_kmode_global(rdtgrp)) {
-
-Above calls rdtgroup_has_kmode_global().
-
->>> +        rdt_last_cmd_puts("Cannot change mode for kernel-mode assigned group\n");
->>
->> The messages to user space also switch back and forth between kernel mode and kernel-mode.
-> 
-> Will change to  "kernel mode".
-> 
->>
->>> +        ret = -EINVAL;
->>> +        goto out;
->>> +    }
->>> +
->>>       if (!strcmp(buf, "shareable")) {
->>>           if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP) {
->>>               ret = rdtgroup_locksetup_exit(rdtgrp);
->>> @@ -4697,6 +4724,14 @@ static int rdtgroup_rename(struct kernfs_node *kn,
->>>           goto out;
->>>       }
->>>   +    /* Reject moving to different parent if group backs kernel-mode */
->>
->> Comment states the obvious. Could it instead state *why* this is rejected?
-> 
-> Same reason as in [1].
-
-ok ... but could the comment be changed to reflect this design choice instead
-of stating what is obvious just by looking at the code?
-
-Reinette
+Jason
