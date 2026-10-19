@@ -1,79 +1,358 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.26
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792424879;
+	b=X3fJcv5saJMDfg6xgYdJe4dTkjE4ayIbWwdWGwyIIlFr6l3Re3eJGAFXCaus2NDKUf1p
+	 uTsq3LsOI4F3sYtpuUW4Bu0lHQeQ+Vd2FbLiLEs2ya+G5t/ZyqyUEIIdUahH7tdUMHXm0
+	 94IESyL+TVzASG6ArSnbUvb2vadrjFY+g+yhK+krJzZqw0kiMrrh883Ek/nS5K09VyiVC
+	 vS90D5Ce+AAmCS3LfeZwX7CzmmkP9JTi0wWws2t68roYqayMNlxykRN1/6EZl67iX8Kfq
+	 NfUuf2O2CcZYpkO30JH1LXOE5ydTg3EWmTaWsw/A/GdwGpWCWSjBOllKPw3Ib8Vb14g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792424879;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=8PGE3p0sonSO4wIR8xXkFH5hBIV11o+vX3deO4y8bgM=;
+	b=VCBfcT4RVO7CRRbifqAFJc1xQJCQi31TqnTyxmaWhKjN03z4Cb3Hg2xDAx2mPJyh575P
+	 oZ4zQhMddB33iCWQ65Vuq5PvNsCTCRONdRZ62/l5976/ARROBllHlBQO2Ho/p7Qbh/SSa
+	 Hqnhj7eqp7bLWz3ApFpXAg0UyM3yPF6e6HFAzCt/IlmVkVHFXSUK7CqQw7JkGvKjHgkUb
+	 mUdrq3WyXbo0gB76e+0kTn+Gi+NIAep9ix819fIZ1QlAhV1SmdCujH5H2o0juDrody6+m
+	 DUStHPNuIb6vtP3ngJJ7/5+DF0KlHPYWXNJs8Tbspwee4mTrdF0wdgEQNZDUcn7GCcw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=VkOqPnoD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.26
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010026.outbound.protection.outlook.com [52.101.56.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D332E4E9C22;
-	Mon, 19 Oct 2026 12:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792413616; cv=none; b=rHNcA6vvE74BmwFdA39s3KKXEAD61y8Pyc8YJeK4mXewV/L058xvRT6lU6vEVH7KcagDHotZq7Lfkjtw6UWijKs7Sls6vYUJy5GsN65dcDdOUD9aRu57+MTmGpedEWvKu8/f/Or7BA8MHWCCtxnYOaPB8wjq+zm9SEqXh9i19DM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792413616; c=relaxed/simple;
-	bh=c2jJL8g1o78ZHcWn2hWaMeykmocZ1Jrl/60Jv1Ak2kc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ftmi7vwt1s7+DKRbqKfTDR9lE/FawDNsdhxGBAiBOz4HPsV5g4N7PdzG+ygTi1eNgtqSvu4w/Ca7NDbj/4BEzIqrigr3t6cpss7NPTs2qVU14NKzDlWzGqktRvIpO63CCSEVpq03hz5D0X/Lq9G8yKK1kvi6JLC20qw8beioqag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FceDrw6E; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9893606AAE6
+	for <linux-coco@lists.linux.dev>; Mon, 19 Oct 2026 15:47:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9893606AAE6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FceDrw6E"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5CCEA1F000C4;
-	Mon, 19 Oct 2026 12:40:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792413605;
-	bh=Lt3t+hZCkJKDCkgZ9RLSNhgjFT8G4p+7rBrqWmCeF2U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FceDrw6EYmp9Eq/4QZT7kFwc7TNvkJf1WpONqCkjTJr4Dy30SP0p/h7SJDNiQWGu6
-	 JLqqXK/UWY45KsWa70U6jZ6liJUYTWIL0dVD8ede5QlpUUHWLFPNQ9tWGpAQJoSvYM
-	 sukVJUiK40DNYCh29b08aiqM3bZZz8a2KTMmNoJhr7I0YU+wgWl9K3zIYvCKdMS4Pf
-	 n9Bodc4j+4WJtyPpGf/UDHxEdRX5L0JPNVx8TsQlG10Fiv66AZuqXPsG4PRvkNMZ89
-	 AA09rqznCRJo+XLcuFgR8NX3+8mtApm68Wlwh6/dVrWeadbCqLPWMhrxgNQA4GD68b
-	 dCgoCb+xaowDw==
-Date: Mon, 19 Oct 2026 15:40:02 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Dionna Glaze <drdeeglaze@gmail.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Jiri Pirko <jiri@resnulli.us>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <atYPohN7ztVVGko-@kernel.org>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261016234354.GA664420@nvidia.com>
- <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
- <20261017203407.GM13920@nvidia.com>
- <atPgqROZZxnihYfC@kernel.org>
- <20261017231007.GP13920@nvidia.com>
- <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
-Precedence: bulk
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=VkOqPnoD
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OaM3bU4wvWSl1+NcC3nwRZN2lRAWiFnva3oOJC3VmzQswy0ImUEZQ/cAc9mQg6Wu8xoIvyzHiqe5HrS606ms7WDp0bK9XAGn6gpxei17J30GSVJaWik7FX1NJm4NcCCKJh9aiOeTfwRX/HA0GYy/HClPQEQXeKAAAPTwtlObPcnKUOYDQUh2DfwmJNDRiVWNSP24V7Mgi89/PNwM8z5rPUp7LvWX5gsuSIQ9xSXaklOqD61vW2rlJAX8Byraj86yzblLHdpG2b37b49IeaHBBNYo5QvdwnPI9sFsZ8otxX1x9Q0r+rwfRlKUCkie0KJ9Q0tZFmdMWR1e40YCH2VYCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8PGE3p0sonSO4wIR8xXkFH5hBIV11o+vX3deO4y8bgM=;
+ b=WWb68Sw7bJYmnByW7BqWecMUrbaWJjyAr2ZvYmKuyOio1KoihEcNuAVdfx4HknmuuU+7ag39Nqtkdm8un5SrULD4n3BRqJMTQlndZWBhrLbIcgQjfUVWrt1ZARIUkHfkU+kK14CJ3rEN943/lKELlr/1lU+TdIAOojelmo5wfoSznK310fms4zocM3pCfITyUEmCJyhlCTyszUJASAZRBVcM4E5ehsj2yugtKk9fTBMB2bKTyXeqH/1qBEW+WzWF7YSHjJIh7Vjv3jKV8GalZSl1z8JM+jy9n060FJ1+M4XknR04rZygZnGZ43pBYS6/jbr6WWdqkQByEKxigxS5GA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8PGE3p0sonSO4wIR8xXkFH5hBIV11o+vX3deO4y8bgM=;
+ b=VkOqPnoDTYoR/t6fjwRUyY1k549HkBekgT5IDYY/xryr9YKGZmbjCOg6IaTwYx56G73L8v4jzxWzaIEnAwL9HsuTKSzxVB1cUFdzf2HevC6vS4Zj9aUhOv5uZgeuJWSK9bJfqJEzBHaQCagEmiR104kOA3glsvFOaAO3L/QGITQ=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
+ by AT6PR12MB932818.namprd12.prod.outlook.com (2603:10b6:170:116::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
+ 2026 15:47:52 +0000
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 15:47:52 +0000
+Message-ID: <cabf7da5-e5ba-4a49-9edf-f801f344ded6@amd.com>
+Date: Mon, 19 Oct 2026 10:47:49 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 13/18] fs/resctrl: Deactivate kernel mode associations
+ when a group is removed
+To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
+ bp@alien8.de, ben.horgan@arm.com
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
+ x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+ fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
+ elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
+ kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
+ ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
+ ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
+ prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
+ elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
+ peternewman@google.com
+References: <cover.1790867441.git.babu.moger@amd.com>
+ <e9a2b05b2322acf51e16571d07bc7ee297613b3c.1790867441.git.babu.moger@amd.com>
+ <08e1de88-cab0-4caa-87f2-94db0f698ba7@intel.com>
+Content-Language: en-US
+From: Babu Moger <babu.moger@amd.com>
+In-Reply-To: <08e1de88-cab0-4caa-87f2-94db0f698ba7@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN0PR03CA0015.namprd03.prod.outlook.com
+ (2603:10b6:408:e6::20) To BL1PR12MB5320.namprd12.prod.outlook.com
+ (2603:10b6:208:314::17)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
+List-Post: <mailto:linux-coco@lists.linux.dev>
+List-Help: <mailto:linux-coco+help@lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
+Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|AT6PR12MB932818:EE_
+X-MS-Office365-Filtering-Correlation-Id: a29a1f73-f166-45c1-f41e-08df2df855d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|4143699003|11063799006|56012099006|261009223027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	XeqRYou1d5UzSj9rWJ8C6sn1G2womXCMPPuZI9J+aoW+m6CEfQLFNMSu51sljZME+rD1XJwwf0Luo82K0NoNSLS0+L1u9s9tp2oYyzQfNmJ2pXlW5WwtSdttootsQHbvUd4QcDetDAUsFKLDAkNdsaB5zEfhFWhT1O4lISTzRp16PBF0K+U1dEM0B4eXzHFadSZl4wtX84FuO7GLIAFTSxMqS6V6NKi6d7RAlCkhW1WLpPJFZqn+O05Ts4BkrqjrJAy0RyiN4hGNwkDpsIHVbAajKojXnlSU9c/EisnRjP5R3rpWfV7PlBUDTF6FT0ZPeYj9t1JM8gPWhEMtUDqciRsFR+2K7rp5KJB/MHMdtLdEV/gw97VRnZ5Cfx7XBr1CgJVfryLXtyhvpchaU+LdBU/OT7+e0vVaGCaNSjduemELbcZTpjwo4Fa6vNoaACHUhAndpZ3NWHXlQ7DO/o74yRiAVevnrYksz+/jZxIaM8Tz+0GO4qw2pZv5fxH8qEEFxh45hRAgZwvoA7o/jjLdU+oWQWWAQnU+DEzqP3xd8WBeJx+vzYNgDWs/gbhuz/oXWD585lR1cH7j9Mutt1+TcKKO24qa4Cc4VjLBU4HQlpqeF/nv+dWVqTy7GBse2nWMLVrdkR94yrchwnK3hTMxWiFcDzrQjegDV28YWca/uEA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(4143699003)(11063799006)(56012099006)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZkJ0Sk9oRitYTGpQZ1dCb2JpbUxLN0VMZEx1SlIzeVB5Wmh4bDgrOHZqczQz?=
+ =?utf-8?B?c3pPNm9CMEE1Z3Q3UDNvNGtTOStHbUx6TlFaMUR0VE1vZWs3SXlyKzgzUFZr?=
+ =?utf-8?B?Y0x0UjFxNWZZWTMzQnVhak8xbEQrd2RrOS9rYUlhQzZJdVpFa200U3NLcGps?=
+ =?utf-8?B?eEVtSTBIaThJOWRGdk1jb1p4UWt3RExyT3ZpSmdVUTJLWmh4a2pDUjJ3OUo1?=
+ =?utf-8?B?REJVR0V5M3R5b2wra21SZ25oT1dhdWQ0SDlZd0djTG5XNWNPUStHdm9UN2Zu?=
+ =?utf-8?B?RUFaclFCQ0o2eHIrb2dVMlhEVTQ0Nmh2QUh6cExueWFvNGx0T3JuV2xGQloy?=
+ =?utf-8?B?VHJzdlRHdm1sTHkwbXcrODY0QTYrdSs3ZWtGdmY4WThSUzNIa3FjNUljMnVQ?=
+ =?utf-8?B?V2dvRktMbDZtMUswRHI1aTVMMTU4L1hJNWh3ekhCMDNoQXprSVBSZVpBUEZq?=
+ =?utf-8?B?cnZyVzdGVTgyQjZwTWdKMmtHNjhDSGRCMVl3ZHVvU3QzeXRUWjlEdXQ3Sndz?=
+ =?utf-8?B?eGE2OWlVNG9FVi8vZ2JpelVNTjVLa3lNZWJ6ZGdVbnpxWTZBS29vcTllTzlS?=
+ =?utf-8?B?UVpJMncrOVNTdTM2bGJaekJhVVpQZllQRnJ1dC8wL1NWRm9EMjM3Tk9DamtQ?=
+ =?utf-8?B?aFBFeHZiYWR0WXNOTkI1UXFEVkw4VFl1ZHFhL28rb0xkN2FXMWJGRDRpcWsz?=
+ =?utf-8?B?UkxsbThzZUpkd09XNitVNmVUOGJibkJsRFA3aUdoTm04ZjNrUDdZNzlUMTll?=
+ =?utf-8?B?elBQV3N1aDBiSjcvQngwSzkwVGlJZDZBQmdQaWJjOUxZUGJKcnlNb0lQN1V3?=
+ =?utf-8?B?MVoxbDh4dmp0UDFzSHBMZFRLbUJVbG1kV3BuaW5CTmw0UkQxcHpDeVVOYWln?=
+ =?utf-8?B?UCtjWDhRaFgyQ3YrR3hJaXBuT1h1bm5ZVGFOZDhibHE3OEN3eU80MnNTTjVw?=
+ =?utf-8?B?QmVXTXdGSWEzcDNhVzMrNGNSbno4cXdFUzJjSWl3QzhUVUNWbVYveWhXR2pn?=
+ =?utf-8?B?RnAvY1hLcnRURDlZTGd1dldmbmE4UHZjbk1JWmM0L3pERHd6a2llT3BlSll1?=
+ =?utf-8?B?WmZRVFl3OXB2T2NxSUoxWVRyY0lKcHZ0WDFOT0xKSjRYVXNSOWZNUHVkb1Nh?=
+ =?utf-8?B?L2k4bkJhVlErRXo2amJUcy96SXl4eGNodUt6QTBxWkFTZlJUdmpzeS9qWnZs?=
+ =?utf-8?B?alJVbVhuVnEyTEtBZloyVlFMeUZBOHozQ0t0Z1E2WTdDSUJZUVBzZFhTYTIw?=
+ =?utf-8?B?d2ZSeGlra1dleVM3R0l0Y1JhMjNYZjgybkZHQVVETjVVMEkyVXJLWkk4amd4?=
+ =?utf-8?B?cmJsUXU1WWRDSE5iSE5lbXBmODZNNmxscTkxeHoydXdWMzQyUW9BeVZ2K3lJ?=
+ =?utf-8?B?azlnTVYvTEhtMlJkRVhIMzVtMEJkVHp1cGEzaUJrUXRSY3h6VmhHd2tzWXp1?=
+ =?utf-8?B?NUtLbHIrL1djMGVIazhsa2g0cFRCWmgreHBjZklFUmdiOTQ2ang0RlBoZTJO?=
+ =?utf-8?B?Y1UzazNuOXZoSmZQNFVIUEh6Q1pvNjlFc0liZmtYYmc2Y092UVowYXNQeFJN?=
+ =?utf-8?B?cUNmclpvUkRFbFNwblUrT3I1ejBDSFlUOFV5NnJldElRMWMxRVdhZFhFZlQ0?=
+ =?utf-8?B?bVVvVnQ1a3hJVE5QU2F6WGJlN1V4OEQ1d21KWnFiNFAxdjQxZWtMOVc4TFFW?=
+ =?utf-8?B?WVdPVW1GM2lsalI3NE01TTd3ellLV1I3cHAvYklzeUxiN2RINnF0ZzA1eUha?=
+ =?utf-8?B?Y0JuZDYxOXEvdWNzZjRCTVg2M3JjZDl3b2ppaDArTm9rU01XcWswWjI1eXNP?=
+ =?utf-8?B?T20vTjNkbDlxb2JIN0RxdjJPOVVTbXpPNGV6QTBnNHhvS1lXblY2bldDRnBK?=
+ =?utf-8?B?MFZoUnBXT21aS1FGZFlOQjYyS3lkUXEvN3lPaHhNNmN0N3VqdDljamQzZys2?=
+ =?utf-8?B?OTkwNXRmbDQ4b2FDZkpWMlNtT09xMVpTcGtRNlJucEhWcHd4RythbnRGQkk0?=
+ =?utf-8?B?OHprc25Gb1o1UFNxeHFPNE1hNWhDems0aEhEZ3oxazFHRlZVdFhhZnJES0RD?=
+ =?utf-8?B?bXEyK1FjVmV5VDJwM2RYYlNrcDdKbVRtUzE2SW83R01kL3NBWkdGR24zN1ZT?=
+ =?utf-8?B?REZVVDA3OTZZOGdOS3ZjaDh2eExoc3JsMHUyQVArdjdBalVqZ05sQ3MxUXJj?=
+ =?utf-8?B?RC9oTzJqS3ZFWVBFVnFXYjE3RmNzYzcvRldmVi8zK3RhbkVhZVBkTUhNYmpE?=
+ =?utf-8?B?VTFZc1RwQklUTFZqWVlNd0VXamRXR1UvMS82bUZmTFhhaHFoSGs4WW9VV01y?=
+ =?utf-8?Q?rLCBFJevbk0XpKZ+VV?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a29a1f73-f166-45c1-f41e-08df2df855d4
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 15:47:52.6439
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IgC2H3GxOphT4AvOdAklk7pr4jTfZd+2Y9ASyZuJJCN6JK+l9bLcwhqetYnUH7gs
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AT6PR12MB932818
 
-On Sun, Oct 18, 2026 at 04:53:28PM -0700, Dionna Glaze wrote:
-> > On Sat, Oct 17, 2026 at 11:55:05PM +0300, Jarkko Sakkinen wrote:
-> > > I wish I had a better picture what is going on.
+Hi Reinette,
+
+On 10/15/26 10:43, Reinette Chatre wrote:
+> Hi Babu,
 > 
-> Me too. I've spent my Sunday with Claude trying to build some
-> understanding of all this stuff, and put together a static site about
-> this series.
+> On 10/1/26 8:10 AM, Babu Moger wrote:
+>> The active kernel mode association is backed by either a CTRL_MON or
+>> MON group.
+> 
+> This context does not reflect the code at this point in series but what
+> behavior will be after entire series is applied. It is also written as
+> general but specific to the global per-CPU kernel mode.
+> 
+>> When the backing group is removed, or when resctrl is unmounted, clear
+>> the programmed association and restore the default settings.
+> 
+> Please provide more context to user and help reader to understand what the
+> patch does without needing to decipher the patch.
 
-So I got the information I needed from Jason. If there is something that
-is scoped well that it does not take too much time to digest, feel free
-to contact me again on this topic (or anyone involved).
+"The global per-CPU kernel mode, RESCTRL_GLOBAL_ENABLE_PER_CPU, allows 
+kernel work to use allocation and monitoring associations that differ 
+from those of the originating user task. When the mode is active, 
+"info/kernel_mode" displays the backing mode. If the backing group is 
+removed, or resctrl is unmounted, the association becomes invalid.
 
-I.e. I can help if the problem is defined but figuring out what the
-problem is - that is out of my scope :-) Hope you understand this,
-and I'm saying this from polite/constructive point of view.
+Clear the programmed association and revert the kernel mode to the 
+default "inherit user" behavior. This ensures that kernel work continues 
+to use the allocation and monitoring associations of the originating 
+user task until a new kernel mode association is configured.
 
-Br, Jarkko
+Document this user-visible behavior in resctrl.rst."
+
+> 
+> For example, "restore the default settings" is a very vague way to
+> describe that removing the group backing the global per-CPU kernel mode
+> automatically switches the kernel mode to "inherit user". Please explain
+> at high level what the code does and why. As a hypothetical, why not
+> keep the kernel mode as "global per-CPU kernel mode" but switch the assigned
+> group to the default group? This would match most other similar resctrl behaviors,
+> no?
+
+My assuption, you are not asking me to change it to "global per-CPU 
+kernel mode" when the group is removed.
+
+> 
+> This is also user visible behavior that should be documented in resctrl.rst.
+
+Will add a line under "inherit_user" documentation.
+
+> 
+>> ---
+>>   fs/resctrl/rdtgroup.c | 44 +++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 44 insertions(+)
+>>
+>> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+>> index f5c7790f7970..0cdc868a55b1 100644
+>> --- a/fs/resctrl/rdtgroup.c
+>> +++ b/fs/resctrl/rdtgroup.c
+>> @@ -1167,6 +1167,36 @@ static void resctrl_kmode_global_offline_cpu(unsigned int cpu)
+>>   	resctrl_configure_kmode_global(cpumask_of(cpu), rdtgrp, false);
+>>   }
+>>   
+>> +/*
+>> + * Disable the association on @rdtgrp's kmode_cpu_mask, clear the mask, and
+>> + * hide the group's kmode_cpus files.
+> 
+> "hide the group's kmode_cpus files"? Does not match the code below.
+> Even so, the comments just narrate the function.
+
+Yea. Will remove  "hide the group's kmode_cpus files"  detail.
+
+> 
+>> + */
+>> +static void rdtgroup_kmode_global_deactivate(struct rdtgroup *rdtgrp)
+>> +{
+>> +	resctrl_configure_kmode_global(&rdtgrp->kmode_cpu_mask, rdtgrp, false);
+>> +	cpumask_clear(&rdtgrp->kmode_cpu_mask);
+>> +}
+>> +
+>> +/*
+>> + * rdtgroup_kmode_global_detach() - Detach @rdtgrp from the global per-CPU mode
+>> + * @rdtgrp: Resctrl group being removed or torn down.
+>> + *
+>> + * If @rdtgrp backs the active association, disable it, clear kernel mode
+>> + * state, and restore RESCTRL_INHERIT_USER.
+>> + */
+>> +static void rdtgroup_kmode_global_detach(struct rdtgroup *rdtgrp)
+>> +{
+>> +	if (resctrl_kmode.rdtgrp != rdtgrp)
+> 
+> Please do not use tests on resctrl_kmode.rdtgrp as synonym for
+> resctrl_kmode.active == RESCTRL_GLOBAL_ENABLE_PER_CPU.
+
+Not really. This was a check to make sure kernel mode is pointing to 
+correct group that is being removed.
+
+> 
+>> +		return;
+>> +
+>> +	rdtgroup_kmode_global_deactivate(rdtgrp);
+>> +
+>> +	resctrl_kmode.rdtgrp = NULL;
+>> +	resctrl_kmode.kmode_cur = RESCTRL_INHERIT_USER;
+>> +	resctrl_kmode.ctrl = KMODE_ASSIGN;
+>> +	resctrl_kmode.mon = KMODE_ASSIGN;
+>> +}
+> 
+> There seems to be some duplication between rdtgroup_kmode_global_detach() and
+> resctrl_kmode_switch(). Since the contract is already established that
+> disabling RESCTRL_GLOBAL_ENABLE_PER_CPU enables RESCTRL_INHERIT_USER, could this
+> reset to RESCTRL_INHERIT_USER not just be done in rdtgroup_kmode_global_deactivate()
+> without duplicating it in rdtgroup_kmode_global_detach() and resctrl_kmode_switch()?
+> 
+> With that done, it looks like rdtgroup_kmode_global_detach() could just be
+> dropped if rdtgroup_kmode_global_deactivate() gets the check to ensure the
+> group needs removing?
+> 
+
+Yea. I may have to re-organize few things. I can do everything with 
+rdtgroup_kmode_global_deactivate() and rdtgroup_kmode_global_activate().
+And remove both rdtgroup_kmode_global_detach() and  resctrl_kmode_switch().
+
+> 
+>> +
+>>   void *rdt_kn_parent_priv(struct kernfs_node *kn)
+>>   {
+>>   	/*
+>> @@ -3228,6 +3258,7 @@ static void free_all_child_rdtgrp(struct rdtgroup *rdtgrp)
+>>   
+>>   	head = &rdtgrp->mon.crdtgrp_list;
+>>   	list_for_each_entry_safe(sentry, stmp, head, mon.crdtgrp_list) {
+>> +		rdtgroup_kmode_global_detach(sentry);
+>>   		rdtgroup_unassign_cntrs(sentry);
+>>   		free_rmid(sentry->closid, sentry->mon.rmid);
+>>   		list_del(&sentry->mon.crdtgrp_list);
+>> @@ -3265,6 +3296,7 @@ static void rmdir_all_sub(void)
+>>   		cpumask_or(&rdtgroup_default.cpu_mask,
+>>   			   &rdtgroup_default.cpu_mask, &rdtgrp->cpu_mask);
+>>   
+>> +		rdtgroup_kmode_global_detach(rdtgrp);
+>>   		rdtgroup_unassign_cntrs(rdtgrp);
+>>   
+>>   		if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP ||
+>> @@ -3360,6 +3392,7 @@ static void resctrl_fs_teardown(void)
+>>   		return;
+>>   
+>>   	rmdir_all_sub();
+>> +	rdtgroup_kmode_global_detach(&rdtgroup_default);
+>>   	rdtgroup_unassign_cntrs(&rdtgroup_default);
+>>   	mon_put_kn_priv();
+>>   	rdt_pseudo_lock_release();
+>> @@ -4395,6 +4428,8 @@ static int rdtgroup_rmdir_mon(struct rdtgroup *rdtgrp, cpumask_var_t tmpmask)
+>>   	u32 closid, rmid;
+>>   	int cpu;
+>>   
+>> +	rdtgroup_kmode_global_detach(rdtgrp);
+>> +
+>>   	/* Give any tasks back to the parent group */
+>>   	rdt_move_group_tasks(rdtgrp, prdtgrp, tmpmask);
+>>   
+>> @@ -4442,9 +4477,18 @@ static int rdtgroup_ctrl_remove(struct rdtgroup *rdtgrp)
+>>   
+>>   static int rdtgroup_rmdir_ctrl(struct rdtgroup *rdtgrp, cpumask_var_t tmpmask)
+>>   {
+>> +	struct rdtgroup *sentry;
+>>   	u32 closid, rmid;
+>>   	int cpu;
+>>   
+>> +	/*
+>> +	 * A monitor group uses its parent's CLOSID. Detach a child that
+>> +	 * backs the association before that CLOSID is freed.
+> 
+> Why does this have to be done before the CLOSID is freed? The monitor groups
+> are cleared later from free_all_child_rdtgrp() that will call
+> rdtgroup_kmode_global_detach() for every monitor again.
+
+Yea. May not be required. Will remove.
+
+Thanks
+Babu
