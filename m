@@ -1,80 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792499222;
-	b=Gz7njvyO6SKATQf4pu6TWv0C5zke12E3qlBTN/iF+2lcbWF8kPxqbnZ9KQ3wmFzkNBS9
-	 XM38Dr73ozg2AS1nlm0lc4Do7Ah5sKIm3iAVURyRPCHFAzK1i9lZPibsAGeEdorkWVxm6
-	 6RErimWaSDKmtYlbWe9VAkXTXPupklc3wgGAS/chyfiwbUMb5tFE3x6DG1Owe3Q7HBuYy
-	 wj68LVhLteZLn0vdvu0R3Xmum4WQK88oy1oWgKll8+ZojPJqs7RQzhSyYwdPawNSkDapo
-	 CAxRGmrQzXtNMV3HDI8k6bxUkzWmy89LoN9+TxzACS/Th/y9Gm2biy9BK6V7ioz+TSA==
+	t=1792499340;
+	b=CotMb9Gt0T8q9wmUbvoQGZ7QXM5mw50wdL6lww/ZQFK6OMms8QoxN8AZ88muXbYBl/dU
+	 7ncge65YOOSqWcjsqOzDYhnUs9Au/LrCzPHJrPs817sJZoKZ4+tIycBr6z8s1e0LFu4lq
+	 E4I4nY78KtvvtUHkeA0r6Z31XVtB/lyc7GpIP/btz5SQ3bYR2mFTNG0MVVVeiWIAM3atE
+	 uE77mk+pBf0iwK102z+NK2CR6H6lLMG5/VnSgUmUurQDLVJxxJeyKPcy3ZhQSCNgi8T36
+	 9bg/dFSa16iHzDfbq6qajoLzcTj3rB/mVnmKeHiFqzgd8uzkXVwSmYDpRw/62HL0ccA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792499222;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792499340;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=r+JXJ7/RizMzNWpQZbCi3pXUDD6ZYso7OnyQ+kdiZlM=;
-	b=i9MEmXB7XCuQVJ7tUGOGF9agqrKiMiclBfvzOTYJL9w2DhTllhhHANwCMY4OPh9gJE8l
-	 hUfHg0eaqa6MwbuMdI3L5o9Tg5wJNKT94n5UZEycC8r/YR93mA/LFm0qZZA5YyyovA2ev
-	 oe7nEnGb4E4JrnLZj+WXFD0suZ3OdNE+WI5O7I2TTCRO2RBJOP30anmWSiOMxBvWPM4/N
-	 rBU2l2kZ4pB4C9c4UuWfvj5deCmhNcnutaCrwW7zRPKHuf9PoLRLQdy10mQdbKtwJQbA3
-	 beBhvTVVFg4CT2uyG1ckH6hFV6e9Iyxe0dd4TwL/2oC3S2Kw4pBtY7QDdzmMt7g94EA==
+	bh=5bLIqnhjUZD53MQ8mIyoL64maRPRtf//51viUHZYxfw=;
+	b=ZVvMdOEWZDNz3pDhVaAR1BAskAXznO8aglJV4C/5eM4IDXplqy1+IQilRch1wmOXFsL5
+	 6Xqs+0Q/9YzOrtN9tbJE+P6qbWlipG6/6xCiAuJODysNtvx5S4t4uStpRZIeA+IIfz4ZU
+	 +G3F4zX6suMysDEyYP9iBhrHtMGpJ6vSvUFJsX/qtBJmJWJwrvp33Oc2NONZ0NtIBuH4y
+	 85g4lZtGGqNQ4OOQgI+3H3UxCUCyeNLPQLEmZQA9LL38eUHm57+CnDXe+uMk9i1yOp4CP
+	 vT4Szmz+JeWBAhD2qPtGoWuITUFiX7kdnGAWbS9ww8LkpVsJOUf3L/Q52ghQoVPyIxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=resnulli.us;
 	spf=none smtp.mailfrom=resnulli.us;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	dkim=pass header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=X5sMCbeM;
+	arc=none smtp.remote-ip=209.85.221.54
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A545606A31F
-	for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 12:26:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A545606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C75606A31A
+	for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 12:28:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46C75606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1e477fe16so16069025e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 05:26:59 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=X5sMCbeM
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48df54150dfso2445181f8f.0
+        for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 05:28:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1792499217; x=1793104017; darn=lists.linux.dev;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1792499338; x=1793104138; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=r+JXJ7/RizMzNWpQZbCi3pXUDD6ZYso7OnyQ+kdiZlM=;
-        b=PWgmJBUUlBvCXTPxsfhZOWAmJJ/HYjIczFSPTi4UK3+Zo3qsJYsAHi890BsfcqrKyj
-         JRAyAD/zOE6xPFa2jJNPhGZnax6yEuxITCZJp/bgBm1RgbeDig3sTNguX9g3WwBUZpPR
-         u7zlEfYt7JraYBaDp+IEUrskGqXLYxWjQDTb6iymUguMIOSqoMhGjmHV2NWMh2FWRcjM
-         zscQ+x+a8LxYLrSrdRfQX1Gw6KeakNuqO1DCqYuSuaNRzIEnVixAtp5nV3ZtCfD3nNW5
-         OqT3N12YQmJIPIvWj0f78lRA6QVwJSBGhPn005YTb6UvZ8XqiTI056zQJjpYRcijW+B2
-         ZTwA==
+        bh=5bLIqnhjUZD53MQ8mIyoL64maRPRtf//51viUHZYxfw=;
+        b=X5sMCbeMM45B+AOxpO/Qks/x7FLtWInH8WwyWy7yUhNgS1Bk4ZUU1gykWd7Sl1w+ep
+         d4MAFP50gt0zyO3qilKOxApXAIOFL+FQO5i+Y1CLa3u8g9tsKywa+LHQ9B7LPCMtock4
+         jMC0qr9Bv6Vz0kVqCOEPjTYN9hy4DMQTB/iyG/6s1Dnlt5u7oypxV6notlj4Qb/dYRKA
+         zWct1oArb31Ccqm/kq+7N+IyAdaeGEORp1TqOkq3cPcs52A4/JjCH1UdQ9SF2EXQ+jkk
+         50KdAfWfKsL6vp9Zrok/CtMPbjYwI5wuUyydxeuYvxRi3p1aup1uRsHqkfRhdjwATYUU
+         W5Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792499217; x=1793104017;
+        d=1e100.net; s=20260707; t=1792499338; x=1793104138;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=r+JXJ7/RizMzNWpQZbCi3pXUDD6ZYso7OnyQ+kdiZlM=;
-        b=mh/1NneZoAbuywLJv29LHN6OLmBgtcKSjTsqzVaGpvCyFKr4IWe5+C0iY9D73BL1nF
-         qTxlNKDEpRcrfKtv/HmD3gokHzacbhmQeUoG5CB7nWYFdk8QLhp47CaeVqjCEBkMHqne
-         USgQk8AvBRHJHe/iYxvRLmbQsnRKXtzlMntgzZhjzs+J+ueK8ABZm1RavX9qvbUmUgal
-         3xLb66qg+oI8zzTu4+Q5XjwcD/FlKNJIHdq0lWFQiRQD34zkUCpQbOSg5uo8NC2tqrwZ
-         sQeZOVjtQKLwghalCBuur79mybs+H39VhBndmdtiRNZejBEt4YX9CmYh0vXsBLbfpkFC
-         k+4w==
-X-Gm-Message-State: AFq9FYI+YPHQB7JIt/48xiEchf6jZhDoDHglildQQHj761mxOOmVshWQ
-	FdoqX0pZRqWFV65yqnljs/xzsJcXaYQGikBBrCpETwuOMCOyGk87sAZTN6fgfzwbhAI=
-X-Gm-Gg: AYBFou0z4CZqJtAyK121d8mqX454O7Dg4Hct8jFbvlcKw3G/N2dQZ2WQVo3RGF9bYGv
-	Rmo1RftQd5Xgg/ruYvOpVt7DjzmK9agh3PjF5LBokgzfe/dMduSAH5mu/nThd8F6JoVJ7uDlpmV
-	sgngUdsnRHsOoh+7dfoWSQ/7nQLd4u8GdXdR1gbnGYi8qyYX8raqkrTKQc0x+4y9azxHDTfQYDt
-	MiCAxl3Nh+DbbAKxb+Z9Ou4CBSXLdiCh7lAPvflo1ORAbNixPiCzBsIAqAKaX2BbkLGGx5GGys7
-	NOac3j3lL0SKGWLzaMMSzjkPpRN9HtJz1RRxoj7gXSXrVNfo9tRX95NNR9t8xzJ5KNu5fGxVxa6
-	+t+JgYYAmW3heAwd/Uwc7fjb/veIPvaAhZUriWvxXX9aNKeq0gSQETPz/IJDE8+TRx3ouiRPJEF
-	mFQxuimjt3uGsAMRiMpoDWRe+9EeBeIMApxmBo8KrWil74vO/TWPrQh4v43hJG9dnYvpoXc3+9l
-	kyI
-X-Received: by 2002:a05:600c:34c5:b0:4a1:dc8e:edc1 with SMTP id 5b1f17b1804b1-4a1dc8eee6dmr208638065e9.0.1792499217319;
-        Tue, 20 Oct 2026 05:26:57 -0700 (PDT)
+        bh=5bLIqnhjUZD53MQ8mIyoL64maRPRtf//51viUHZYxfw=;
+        b=YgMmxipbB8WFZDdxgYSK+R/g5ewlqbwbiQi3nDRbGswtnrLylg28HB/HJoCZs/+J4Q
+         9+uyDQeY336Z2kQzpm2Uz0jxV9kTUk7gBbyMWovsazitueLv1OKsJN1cgKILowWnuicx
+         laGL2Df0hMnarLGf1bml4/R/KxBbVKDcBDf5flYQq6u8EUwsZgupOVLlWz+M2Ggd8fG3
+         TmUNfGy/HEQomd8JeP6kFqrfBmM9qBAQQjuklCO8zVejN67mD7sY/HVB4RbNiZxt273c
+         QxITurvBl4GPEKzzCF39wsYnCUzzUO+pahXjDWBCMcNZ4zFCiMO1U9Z76uXoMvxgFfxf
+         xpCw==
+X-Gm-Message-State: AFq9FYIsjptcg46sa4SWQBJe1/OxJAjHaudwXbAcARw6VjPC3WeRgolJ
+	VhqwXrsLcY7QFUJBODWRz8jmoXrMIaNMa28U77+62QjVFc/V/N4Xk/63tLxE6LGAYMA=
+X-Gm-Gg: AYBFou3J0SZgMXCsMgp2mcnr2XBZiv+oO+/+rFITAviARW/D0/2EyprUb7nD2GR7ON+
+	nIwnGZrqGk3Bz5qYymsCjVoug02UztuA5otqf+aZz3QPFsm2ONBTtzN+EMTkwD3iEbgBBOd3pMR
+	RO+dGr53FWb+ydOfdEMv/Eq++hDQDOPn8iufPsV8bjxZJ8ds8QyrYF612dt8Z9vTq/eIYFV3hRe
+	wJ/5111xW3Cg6PVYzmaUVV7BLQz12YIO16XdxIh5BFzBsG8rjbfBzxnuOldEOR+y7qDCFsFeFwd
+	jBOUCyy22QWf6EAPH/5vg5DHLVZe+mUZ+PTrT0lslQxj4xYuks/wbZCCkOFgGrOCiL+/PXqkJXe
+	8h015gZMIjvhfne2J/fpCTC4U3Xbe/J3qG9C2P12OGbOUlBOYkxrqiiPTgempqoDq9pJXoYUSNR
+	Thu6KUOaSmz1V7QZ3TPHrPg4i12+0SGTzsmog9dUHvErAKxDP6BK13uTQpS8Z4svhs5sqf1t9yl
+	ESD
+X-Received: by 2002:a05:6000:3108:b0:486:f907:ebec with SMTP id ffacd0b85a97d-48e07bc104dmr25850403f8f.31.1792499337690;
+        Tue, 20 Oct 2026 05:28:57 -0700 (PDT)
 Received: from localhost ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2ce1479sm69425855e9.14.2026.10.20.05.26.56
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d80fc6csm5636775f8f.14.2026.10.20.05.28.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 05:26:56 -0700 (PDT)
-Date: Tue, 20 Oct 2026 14:26:54 +0200
+        Tue, 20 Oct 2026 05:28:57 -0700 (PDT)
+Date: Tue, 20 Oct 2026 14:28:55 +0200
 From: Jiri Pirko <jiri@resnulli.us>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
@@ -86,11 +89,12 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
 	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
 	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
-Message-ID: <atddoIx-sA2eheSu@FV6GYCPJ69>
+Subject: Re: [PATCH RFC 03/20] ctlv: Add the root family specification and
+ generated files
+Message-ID: <atdeH3nA_gkLwPLM@FV6GYCPJ69>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-3-jiri@resnulli.us>
- <179245258504.58760.15790996354033644110.b4-review@b4>
+ <20261015145053.3664509-4-jiri@resnulli.us>
+ <179245258505.58760.6060356114682279013.b4-review@b4>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -102,171 +106,43 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179245258504.58760.15790996354033644110.b4-review@b4>
+In-Reply-To: <179245258505.58760.6060356114682279013.b4-review@b4>
 
 Tue, Oct 20, 2026 at 01:29:45AM +0200, jgg@nvidia.com wrote:
->> [ ... 159 lines skipped ... ]
->> +#define CTLV_NODE_SCHEMA_UNLIMITED 0
+>> [ ... 238 lines skipped ... ]
+>> --- /dev/null
+>> +++ b/Documentation/ctlv/families.yaml
+>> @@ -0,0 +1,13 @@
+>> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+>> +%YAML 1.2
+>> +---
+>> +# Append-only registry of CTLV family names, indexed by family ID: the entry at
+>> +# index N has family ID N, up to 65535. The root family owns ID 0 and heads the
+>> +# list, and every other entry comes after the entry of the family it inherits.
+>> +# An entry may be marked deprecated, but never reordered, removed, renamed or
+>> +# reused, its position being its wire identity. Every entry must have a
+>> +# specification in specs/<name>.yaml, and is added by the change that adds the
+>> +# implementation. Fixtures under tools/ctlv/tests/ are not registered.
 >> +
->> +#define __CTLV_NODE_SCHEMA(_attr, _kind, _occurrences, ...)	\
->> +	{ .attr_id = (_attr), .kind = (_kind),			\
->> +	  .max_occurrences = (_occurrences), __VA_ARGS__ }
+>> +families:
+>> +  - ctlv
 >
->This reads alot better without the extra macro layer. The point of
->this is to allow the codegen output to be concise it is worth being a
->bit more verbose here so the exact form is easier to see.
+>I see where you are coming from with this, but it is going to be
+>problematic from a global kernel perspective. Given CTLV is imagined
+>as a general tool for any subsystem we cannot control the tree that
+>things merge through. It will not be like netdev where there is one
+>authoritative tree with a linear history.
 >
->> +
->> +#define __CTLV_NODE_SCHEMA_CHILDREN(_first, _count, _required)	\
->> +	.first_child = (_first), .children_count = (_count),	\
->> +	.required_children_count = (_required)
->> +
->> +#define CTLV_NODE_SCHEMA_ROOT(_first, _count, _required)	\
->> +	__CTLV_NODE_SCHEMA(CTLV_ATTR_ROOT, CTLV_SCHEMA_NEST, 1,	\
->> +			   __CTLV_NODE_SCHEMA_CHILDREN(_first, _count, _required))
+>So if Bob and Jane maintainers both add their own subsystems by the
+>time it gets to Linus the IDs will get scrambled, and bisection will
+>be lost. 
 >
->For instance this is much more directly readable:
+>Either changes to this file must be strictly done in a single tree
+>with shared branches (which is going to be a bit hard process wise)
 >
->#define CTLV_NODE_SCHEMA_ROOT(_first, _count, _required) \
->	((struct ctlv_node_schema){                      \
->		.attr_id = CTLV_ATTR_ROOT,               \
->		.kind = CTLV_SCHEMA_NEST,                \
->		.max_occurrences = 1,                    \
->		.first_child = _first,                   \
->		.children_count = _count,                \
->		.required_children_count = _required,    \
->	})
->
->Even if it is longer, and and clangd can now jump to the struct members
->
->I also think each of these should have a one line comment explaining
->when it is used.
+>Or we need to put the ID #s here and have some simple process to
+>coordinate them during the development process. Since new families are
+>probably rare it shouldn't be a big deal
 
-Okay, makes sense.
-
-
->
->> [ ... 61 lines skipped ... ]
->> +#define __CTLV_STUB_SCHEMA(_family, _set, _node, _optional)	\
->> +	{ .family_id = (_family), .set_id = (_set),		\
->> +	  .node = (_node), .optional = (_optional) }
->
->Same here
-
-Ok.
-
-
->
->> +
->> +#define CTLV_STUB_SCHEMA(_family, _set, _node)			\
->> +	__CTLV_STUB_SCHEMA(_family, _set, _node, false)
->> +
->> +#define CTLV_STUB_SCHEMA_OPTIONAL(_family, _set, _node)		\
->> +	__CTLV_STUB_SCHEMA(_family, _set, _node, true)
->> +
->> +struct ctlv_schema_tree {
->> +	const struct ctlv_node_schema *node_schemas;
->> +	u32 node_schemas_count;
->> +	const struct ctlv_stub_schema *stub_schemas;
->> +	u32 stub_schemas_count;
->> +};
->
->I've been ponding for a while what 'stub' means in this context.
->
->AI suggested "extension_points would be a clearer name here." I guess
->because ctlv.rst calls it "Inheritance and extension points" ?
-
-Will think about rename. Pehaps better documentation&comments would be
-enough, IDK.
-
-
->
->> +
->> +#define CTLV_SCHEMA_TREE(_name) {				\
->> +	.node_schemas = _name##_node_schemas,			\
->> +	.node_schemas_count = ARRAY_SIZE(_name##_node_schemas),	\
->> +}
->
->It is helpful to put the struct on these macros ((struct X){})
->
->#define CTLV_SCHEMA_TREE(_name)                                         \
->	((struct ctlv_schema_tree){                                     \
->		.node_schemas = _name##_node_schemas,                   \
->		.node_schemas_count = ARRAY_SIZE(_name##_node_schemas), \
->	})
-
-okay.
-
-
->
->> [ ... 127 lines skipped ... ]
->> +typedef size_t (*ctlv_family_priv_size_fn)(void);
->> +typedef const void *(*ctlv_family_pre_init_fn)(const void *init_info);
->> +typedef int (*ctlv_family_init_fn)(struct ctlv_device *ctlvdev,
->> +				   const void *init_info, void *priv);
->> +typedef int (*ctlv_family_post_init_fn)(struct ctlv_device *ctlvdev,
->> +					void *priv);
->> +typedef void (*ctlv_family_pre_fini_fn)(struct ctlv_device *ctlvdev,
->> +					void *priv);
->> +typedef void (*ctlv_family_fini_fn)(struct ctlv_device *ctlvdev, void *priv);
->> +
->> +typedef int (*ctlv_stub_fill_fn)(void *priv, struct ctlv_op_ctx *ctx,
->> +				 const struct ctlv_cursor *request,
->> +				 struct ctlv_cursor *nest);
->> +
->> +struct ctlv_stub_ops {
->> +	u16 family_id;
->> +	u32 set_id;
->> +	ctlv_stub_fill_fn fill;
->> +};
->> +
->> +#define CTLV_STUB_OPS(_family, _set, _name) {			\
->> +	.family_id = (_family),					\
->> +	.set_id = (_set),					\
->> +	.fill = _name##_fill,					\
->> +}
->> +
->> +struct ctlv_family {
->> +	const struct ctlv_family_schema *schema;
->> +	const struct ctlv_family *parent;
->> +	const struct ctlv_op *ops;
->> +	u32 ops_count;
->> +	ctlv_op_pre_fn pre;
->> +	ctlv_op_post_fn post;
->> +	ctlv_family_priv_size_fn priv_size;
->> +	ctlv_family_pre_init_fn pre_init;
->> +	ctlv_family_init_fn init;
->> +	ctlv_family_post_init_fn post_init;
->> +	ctlv_family_pre_fini_fn pre_fini;
->> +	ctlv_family_fini_fn fini;
->> +	const struct ctlv_stub_ops *stub_ops;
->> +	u32 stub_ops_count;
->
->Having the function ops in a struct use typedefs instead of just
->coding the signature is unkernelly, I couldn't figure out what this
->was done, it seems there is no user of the typedef
-
-Right, will remove.
-
-
->
->> [ ... 182 lines skipped ... ]
->> +/* Implementation limits, not wire-field maxima: raising them is compatible. */
->> +
->> +/* Request roots, action replies, query reply fragments and event roots. */
->> +#define CTLV_MAX_INLINE_MESSAGE_LEN	0x100000	/* 1 MiB */
->> +/* Includes the error information root. */
->> +#define CTLV_MAX_ERROR_LEN		0x4000		/* 16 KiB */
->> +/* The root attr is at depth zero. */
->> +#define CTLV_MAX_NEST_DEPTH		32
->> +#define CTLV_DEFAULT_QUERY_REPLY_LEN	0x10000		/* 64 KiB */
->> +#define CTLV_MAX_EVENT_QUEUE_LEN	0x1000000	/* 16 MiB */
->
->If they are just random kernel limits I'm not sure they should be in
->this uapi header?
-
-True, will move to internal c/h
-
->
->-- 
->Jason
+Exactly. Collision is not very likely. Explicit ID or implicit, scramble
+would still happen. And in that case it is resolvable.
