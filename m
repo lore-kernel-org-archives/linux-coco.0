@@ -1,110 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792507581;
-	b=GROSkiRP6cpSqpHI4R/MzdXv0nGnfCOKUQkFT3/3QTFdEMZbBkmMzYPyxSXdOahoPOjc
-	 h0sRxxXArK6jTQMI1PHmzwqltMVawpSrf03Ccw8iR/2mZj8YHj9QzutwH3GVUIdlRRIqq
-	 jTNAxfbQcxmTEubLH2C/HouYwWR8fZ0VJ+6uZUuBjA0kFVRcEcup/LBpuItgelSWYUz1c
-	 kDiDUhmBfCPzEPCZWM91nyttR2gZnnniKmEjSIJzwjkZ8pqsRRQTJABXejkzkoAc510VZ
-	 B5p+830NmGIGup7zrntz+tdVkHnUxAdBk9cWM6HQp+Qv5AERw/vdL0NiY0rFGtwyw1g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792507581;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=hZ+rp8DZTuYx1R/E3Kb6JrTNjeerHjEkKjHKl7Dv+Yw=;
-	b=yelWpoFxWmeUKlDg5UGvXTRiViag3/JOBOF7B+LI+FdumLqZW3kK8DuzS+/ZM4lBwUjC
-	 Jma2NL969qjCoGbcnYTJN/IaxOUSbENMu1FuZjreE0sLnALxx8PwES5VRLHtx9/lXXBuF
-	 7yxoUZnHCemBg6d7Agco77OuLytkzSeJvx5KtpHZpPW5AT05Tph5c6n9Ao4BLOYeRVRBr
-	 kGstchw2qfvdpRjD97hxkzjqy14r7HsOWpUCpwSWQIdkjfkXraOfIaUo9j1nTpDfHa3Hj
-	 y+O4AkwELoy5Prby0NWrMVSpqR5CykBICDYdCp+AFdTqCsyaoqGLySSHZbVIL8xKeOg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=i4fmLzVk;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.53
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013053.outbound.protection.outlook.com [40.93.201.53])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792509803;
+	b=4hqshnVYx6sZpLbs4lw+E3h6S9vCjGYbs/UUf9sGkj7Dk7CZv7tDasJjIdin63fORT/T
+	 0e7Tlt+DgRS/NWIvGqJR/5l1m+CQShEKs2qgtCthFYuqVoUYWboyUm3okbt+0cScGnO75
+	 srnRPUZXIea8QbTPyb9KW+NKLJV1Ypqvg9GJpYEtDnfuSMwOvOFkxAavF8WYq2yPt2LAP
+	 Wdc9xEMJAJxMpx6+1Noy1t5lwarnffqqUnL7TkpOvwIZ4hyMRWqMDesDtyUa+RQndb62p
+	 2Xups4ifwsLIOqBOr2iDk+AiLXzra3bYAA1+1PQ7OCsO211l70//SVBnnlGf3bVqoTQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792509803;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:
+	 MIME-Version:User-Agent:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=LyHQMbJikx7xBSFYKoXIMj/0bcUbQtzrUPaXCrP3rzk=;
+	b=EqRUGr+0zeKlQAXXfAMA9wRXXbFqwCC41azcgAaW+UIAVW1HIIz/n2j3vhDCFK4LqiTo
+	 JNgvPhe+lA9/elpDkiE8WpYjSKkZYltQk3tmE6Ubiaw5JlFEI0pYSKqhToTeaxFbRQuGr
+	 6VIqLPsFHfEQkn7V+K6sji10+UoaOy479bf+ur3V8EkuUdbrgqfSnoXqUMimZ8JxPblS8
+	 NltRkSAmctPvBK3XWaM4eR0VmnTZkIuLASMr7xnnjpgA3LHSvnPHhkt3BYZoOYWQwuM82
+	 kQvbADLEwmhTBb01N9BTozC9YZhPup3BTsL1gN53Zn9R1ms8YkwDfsZn5TFzvCav26Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FfTQ7Vy5;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D917606A321
-	for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 14:46:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D917606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B84A606A322
+	for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 15:23:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B84A606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=i4fmLzVk
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RN07TzQJ9HdSjTkB0zlk27mirb7cGO+2tIt+jc9zijmwimBsAXiFghOjW4BdXWpQ12B/ZHiRB/oaOzRlmEQnX97M6Xp84gn0ivFnxE92VUS0HIBvcpd+j9tp+J11fLNZEW/bQCgzqSHtY7x8W3oj/3PT4MCLwW0+KmJ4STecn/gR3ccXdhd4J2ENKEqyhhI7T6UE4vFQDUW1AtlHmyhARjbkn3VmTNqNXO2vLFHbXEz+mQPqLXZ9MGj152zBxR09UOv4OkLR+GkjwM5Px30+Qq2F32p8adsTZIxgExpEh52b+07AG00YiBvc4fYMp7Q+Dhr0vWHy2eSlLcY0UT4YQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hZ+rp8DZTuYx1R/E3Kb6JrTNjeerHjEkKjHKl7Dv+Yw=;
- b=K6Iu9KXJmw4w1qNg47exb9ssi6wGntIXrQGbUFaLghZqUOTpTSzDOBxYrn3KLuNrn7smS3IyGrozOQPyRTi2yis9NguK150BSK7031VVnDeqhB69qkhIqOvk7ofqMfmFt98PIWyGJchxfy+dViFDXJuNjxmuFs9p6QTKuQBDA2qs8u6dqkXUtmUw2OaY0ApAzkkoBNsTGc2rPpZk1tSQFBAPQcYxuno8K2CezB3ah7H0KegJHXJPagBDGn5M4RIvsKkQ05Gmdgog/zSbaezq/p7xJ0ZVa1TbYmAeRIn8cx0OW2sgCNa9rfYkBSuSipUpAfjg4syxnE3Nyg09+Ca4Ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hZ+rp8DZTuYx1R/E3Kb6JrTNjeerHjEkKjHKl7Dv+Yw=;
- b=i4fmLzVkZKf9ymIZ8Ez3PQ77vTm3n/QIjSKFaDsonT8fgeb49jgaVlfIm2+hcB6HZ7NKwGVmZc/TyoHLDjhP8gl1JJ3RPISGWMiJHn/GjkgY6g8dEyQI6EBOVPWuEu2huf+ltmM1ktMkbMkHsXlQJHm+Ate4pI+rqcIJs4jHH0A=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by PH7PR12MB9127.namprd12.prod.outlook.com (2603:10b6:510:2f6::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Tue, 20 Oct
- 2026 14:46:13 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
- 14:46:13 +0000
-Message-ID: <298842df-a86e-4e9e-a867-1cfa6c10fc1e@amd.com>
-Date: Tue, 20 Oct 2026 09:46:09 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/18] fs/resctrl: Introduce
- resctrl_set_kmode_support() to register supported modes
-To: Reinette Chatre <reinette.chatre@intel.com>, "Moger, Babu"
- <bmoger@amd.com>, tony.luck@intel.com, bp@alien8.de, ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <50333925a56037a0ea82c49f25e76be6271d299a.1790867441.git.babu.moger@amd.com>
- <0b633c57-2938-42c9-a6ed-863d88d2be63@intel.com>
- <e2bff854-eda3-46c1-9ecc-c1aab1e7b33e@amd.com>
- <e9d9e870-18e8-4e6d-bf24-dd782837a11d@intel.com>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <e9d9e870-18e8-4e6d-bf24-dd782837a11d@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR20CA0001.namprd20.prod.outlook.com
- (2603:10b6:610:58::11) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FfTQ7Vy5
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69KDEKqA1400981;
+	Tue, 20 Oct 2026 15:22:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=LyHQMb
+	Jikx7xBSFYKoXIMj/0bcUbQtzrUPaXCrP3rzk=; b=FfTQ7Vy5O1tW33td2mLFln
+	OU4X/oa3JqFpxv2V5ONpQHtGO5H6tTa8DtnvpEwRn4XAaLpdr+EE4C83nMg4yFWb
+	TlbKN0k0h0mUQ8jYsz2MjVoUjmtXyYoPWBqq1EqnDmnB8lPx+z1ruCKYWH4rdBIU
+	QWzKJYHQS0xD7ZBALLB8a2IQE7Nba8jE5WDK/td81Vn88yTro1hIxVGSWQ8VxWXA
+	5k6I5uWaQEJeei+FAckNQc8KBfSHjo2m4pSb36B0y1MdDUblEWwePsq56XNtY0yy
+	mA9j91ek9xim3WZ/65S857PM/B/7zvFXwF1Ix/z7ykywXlwXOHZrUCLbu9dyRDfg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw583fr0-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 15:22:34 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69KDK1iG350728;
+	Tue, 20 Oct 2026 15:22:33 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hcnjh2ejb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 15:22:33 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69KFLkDu2949858
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Oct 2026 15:21:46 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F0F9C58054;
+	Tue, 20 Oct 2026 15:22:32 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1AFBD5805C;
+	Tue, 20 Oct 2026 15:22:30 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.185.52])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Oct 2026 15:22:29 +0000 (GMT)
+Message-ID: <aa00515a0f364fea0150cf1550a09d9400e4632f.camel@linux.ibm.com>
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Dionna Glaze <drdeeglaze@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+        Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+        x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+        rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+        James.Bottomley@hansenpartnership.com, aik@amd.com,
+        jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+        jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+        suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+        elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+        roberto.sassu@huawei.com
+In-Reply-To: <20261020140655.GV13920@nvidia.com>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+	 <20261016234354.GA664420@nvidia.com>
+	 <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
+	 <20261017203407.GM13920@nvidia.com> <atPgqROZZxnihYfC@kernel.org>
+	 <20261017231007.GP13920@nvidia.com>
+	 <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+	 <atX9fugGUsI0hGcA@FV6GYCPJ69>
+	 <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+	 <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
+	 <20261020140655.GV13920@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 11:22:29 -0400
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -114,103 +115,101 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|PH7PR12MB9127:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e8b3660-f0d5-4fbe-6686-08df2eb8e33f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|23010399003|56012099006|4143699003|11063799006|5023799004|261009223027099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	RY+/GzuMDl6VUfanusjfu1tjL272fDM9hJoVXzC2QYVE+QWWE/tmyZ1SfAnKqcx26CrSIeJv+MiYPbkPRZiVEtLThBSwLodP3FjGfdY30GAZxG1epl8xHzljLmDryT1JI3v439RnrEgM3dt5DEF2zgl9tx5X+r2gFM5HCjHFW42LLxgv1XIw5MisjbycLwmqsV9xgg0YVTpGbGRoKD0AsZgLgX6l7MF6P2XFojTK3InO+fiNEhE/bMSqyQGfCAgYrSCZbGBeOHDy30RXxPbkuhhGNs8qqDg7aqSPVuXlr12bg6rMM7clgnHgiHtWFAbXvr3aq9K1KzY/HbvQIHGpR3dXnDriBA7iUBMgTjGZ65zZp7v2MfseUCA6Cm8l++w8mLI97W/vw6hPJzYfJsXrR5mPnYAG/o1E0OmA0UKtAvG3Yo0XtxQI3ecUXtBpjtidpLza9IvnDCJMkNuDmfkwMoBJWAtgogRrm1V0opv11hwIo8oHNeYVyaQa22HIOW3i2+yhKCOzAIQvzYD0JnKPTSCEoORfqY3VvK6BQrt8POyEUlMP7pTARuHemrkFUIXM8kutsCOYSerlkt9dVMYsWEXNkz2p7zqD7yZv10mqdDO2T2UzOuID9CAdJ7pINB/ZBOIUXMorLxS3NUU4xIzAExyLSv0SOqp07/3BTt/B3yg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(23010399003)(56012099006)(4143699003)(11063799006)(5023799004)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eXZCQ2huWGtOT3ZyTExXZjh5dGE1QTYyMkpBZ2FDMUVuR2c5dWxNKzRmSFFZ?=
- =?utf-8?B?bDRmZ2Y2TG5XbVVpSlVNVUkwaWdna05DVUZVcnNlOU1wR0pLQjd1aUM3aVJm?=
- =?utf-8?B?a3BHaUVNdnJwMURJdlBHMVh2WVozUk1pbW93aWNGZThrZVk4bGhhb1pqM29Q?=
- =?utf-8?B?NGVjbEJRUDFUYnovYW5hamRGWU5TdEVVaEJqZ0RNVEY3QndCNEVBTmd3akFX?=
- =?utf-8?B?NXp1NStoZWdUTFV3Q0FaQklQaTJBbWJMNlYzb0g1TmsrTWUxdmMzZGpjbWNE?=
- =?utf-8?B?RnBEYzRPRVdPWDR3ZE5PR1UxTW5iK054SzdiR0NIYi9kYWZ3MHV3Z0xKYUVl?=
- =?utf-8?B?OG12Tm45RzcrcGVtL3VqRlVXZ05ldCtORHNCbEpaL3YxYXNOVTZ1dERqR3J3?=
- =?utf-8?B?K3ljSXJZMXhoTVhhQW1mZDdFVDlWakRqQW84WlVYWkJpbnh0RVgwY2ZyODFB?=
- =?utf-8?B?ZEsyTVdHQVU0NGwrVmt6a01oU20yS3BRUi8wbFZwNnBGWVFQVjJTL0lCdHpE?=
- =?utf-8?B?ZnNOUU1IM3ZyU2xrV2hyY1krTVVHUENpdkdiaFZNNFd3RXAwMHc1RlZlRDIx?=
- =?utf-8?B?KzJtcVBRYXk2UFhJdFYvbTdUZkFkNVVEbnFmaklhblJEZFdHZngyZU9MVUZ1?=
- =?utf-8?B?S3NzbFNmUms2aEp3UUZnRDkxVitiYmluWEV3M2kyTFYvdjYwV1N3ODI0VXJU?=
- =?utf-8?B?RVovMUhvOHVicnFrZDRsL3UxQUZPVGFycGFIRmlOK0ppdk5MQW01aHJMQnpa?=
- =?utf-8?B?NXVQWXRFZ0ZYZE5VTU1KemJodHJpQlhKU1pRdzZWbGVCTk9Vd3NNU2Y1MTNN?=
- =?utf-8?B?eUIvdmF5b2dwN3E4MmtQMEZTZWRZY0NWZFB3SmhhLzl2Y3pvVlYzWnhNVi9v?=
- =?utf-8?B?QkpzWC9pbGMrNEZzYW91dnhPazFJRWJ6VlZQQkM5L0Z2djdMdDMzcnVXZnNU?=
- =?utf-8?B?OG9zeTV0cVJLMThYK2p3RnQvV2E5Tmg4a2owMUFqdFo1YlZjcHE2T05nMVRK?=
- =?utf-8?B?K1dpRFNFODFGdXRyT1lKS1BjZ21wY08rZHVHb3NCSUV4MVdGTVNLVit1dWs5?=
- =?utf-8?B?Z1Y4ZXN6MTkzMnNuVk1zMi92TkdYUGRVcWtmeTNVMjRmY0luTVZxSDZoTWZQ?=
- =?utf-8?B?SURjb1FIL3dCWnhucFpqNUVLNk5XZUlwZUN4RTBUeE5UVkVDRWs4MUliVXRP?=
- =?utf-8?B?NFpyajNCQXNlZm8xdVR0bEZQV3p0RWJmbk5DQ2pCRFBLdWVCbUt3cjkzeE1j?=
- =?utf-8?B?VWtaQzNuWmkzSkllc2NGdWlSRTdYVjQzZXg1a1N4MVBzVEg4b2ZHWHlYQU1m?=
- =?utf-8?B?WXVuU1hhV2JiN0dCaEJvOFlNMGdpcWNWVStSZDh0TElZNXpZeDc2VWJFVHFX?=
- =?utf-8?B?RUNyeitaZzVvZFBRWFV0SFZzTEh0NG9rQ1BSY2hJNEh0RmUyeHNuYWFaZFVE?=
- =?utf-8?B?WXZ6MWFKSzBZNzhzaS94Mms1dlRLZytrUVdQYmd2YThISHltY09Samh6bDZM?=
- =?utf-8?B?WWk2dWJGenBJbzArVmlQTTYwUzlETnVub2lReE00S1M1UkpSTzcrV2Y1WkJ5?=
- =?utf-8?B?bVNEaDFVSE1iQklmOVcyUFozUVB6QnhSeG9pZUMyRzBUYndEQ3lZeU5sRU9n?=
- =?utf-8?B?MUljR0RDZnNVdEdna3lnckMvbmM4SURYV2dIVUJoVnpLM3o3WlZZck5ydlRq?=
- =?utf-8?B?ejVjOHVvb01UQm9weFZsOS9ZVHh4b0tSQ1h4SG1NNGJDVXYwTjFtaUNNdXRh?=
- =?utf-8?B?a1pMak1senl2ZEtER2ZyVWlOYkQ1N08yWm9nSkhIOTdqbzh4NGl3OVRtaCtr?=
- =?utf-8?B?dW1vQmFsd1IvWmlhZU02T0ZYV3EzLytEeUNWVCtrSTNZcXQzd2VoUUE5b2Jy?=
- =?utf-8?B?Zk1qbE4zc01jVmZUVmZJaXlUTVlrYVVTdVdVKzRJaFZxS3EzMUNKcFN3eHhN?=
- =?utf-8?B?ZFlPZVFCN2FyWVF4Ylp6VDFKWFFBSW5GbmtZWnlIVmJ6dEtJOWdoRE1GV1g3?=
- =?utf-8?B?ekhqYnordkhPUXVwc1pOQnZ5WjJFN2MyWFQxdFZYbDdjKzFXOGgwV0xvNGo1?=
- =?utf-8?B?MWFCcGs2emZTNU00aUg1ZUF2eXZWODRZcS8yWU5tMWwzUnpPSDVYT3RQWUZB?=
- =?utf-8?B?WmdCanA4R2JYY2IyT2lOT3RxU084bVk3VjRKb0xPZ2RvVm1keFB0MnlXNXFN?=
- =?utf-8?B?alZQU1N0aTNtRmkvSmpSKzA0KzN5eFpYVC95SVlHMVBsU1VVM0NsbFNLNkI2?=
- =?utf-8?B?VlJ3SEpZdWpQMXVzeVFOQXhBcTFabnRDMm9BRG0vb0NxVGY0dGZMdDNtTGh5?=
- =?utf-8?Q?a/4Ni5kzBHn9ksiXqY?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e8b3660-f0d5-4fbe-6686-08df2eb8e33f
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 14:46:13.2581
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 90AeMTmQfZjnsTVMrTOVPEMcPddqZVuZuoDs8z7WW88d3wyqMQfRwKKIBnZPvsVz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9127
+User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIwMDA2MCBTYWx0ZWRfXy+5R0tKb354o
+ J8BGXeAuPxh5pjl5jo5BRmfiDIpfcKZpe0k2MOPBtXBUzXGWS05C5UL3hvFB/25WuZSputgV4dT
+ xJUpEGNuzrQrc9R/B3GHKTKPuZqlgFg=
+X-Proofpoint-GUID: xv6GHz6zNLONi6YmOmB4pcqCAEDlm5mZ
+X-Proofpoint-ORIG-GUID: thjdnNims9VKADJbfk5fg0P1T2nPqtkL
+X-Authority-Analysis: v=2.4 cv=UOBIjyfy c=1 sm=1 tr=0 ts=6ad7873b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=Cc2t5CyIl5whlRMK8MMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIwMDA2MCBTYWx0ZWRfX8JlxZhTEPV2s
+ vT0JtiPCTq1/pMMvpW3NfmWghQTaE4RggoTVC+Z+EBpSpq60kk+zpnMIxVafbJoDPv5Q9fEajxV
+ 34FsnIoJ0Q05xe3bcjVlrAwwrosgHNR7yROBqfOD27g5BmMYWg7kcKOuYa4egReyLkY8ZI2yvi6
+ Cg4HxX6zy7F0GEhoOagcTF6hMKAYV06Y4atMeBw31an8GzpKM0hfC/cOBkveC9BHQMSwSHd9LIX
+ deZIbCoUHHbm8uNT0GuGat19zrjsh47VBoQ9fASnyvyYPFzbaYLEbbsQiApSjp2AzuJC+gsYS7M
+ TIwwItigRI4fqsu/6NO2QbbWi31iS3E85NsGX0NY1rw4u1S529CqvyH6x8jCX0VI6cn0dz+PIux
+ DqYz6lW1wyLJ/OFQc3thit/n0mtmPtXmsY7Go2XRPWNc0EJgpVNrYkr6/pLlh9mnsbe2r0wo2km
+ xEEDHNXrk/qZiBseLZw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-20_02,2026-10-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610200060
 
-Hi Reinette,
+On Tue, 2026-10-20 at 11:06 -0300, Jason Gunthorpe wrote:
+> On Tue, Oct 20, 2026 at 09:45:13AM -0400, Mimi Zohar wrote:
+> > On Mon, 2026-10-19 at 09:10 -0700, Dionna Glaze wrote:
+> > > On Mon, Oct 19, 2026 at 5:08=E2=80=AFAM Jiri Pirko <jiri@resnulli.us>=
+ wrote:
+> > > >=20
+> > > > Yeah, I was thinking about this and went back and forth. In the end=
+, the
+> > > > only reason for leaving it unbounded is to allow multiple independe=
+nt
+> > > > users of the same register. For example, IMA and systemd could shar=
+e a
+> > > > TDX RTMR. The systemd side would read the journal through the
+> > > > attestation device and the IMA side through securityfs, but both ar=
+e
+> > > > views of the same journal. If one side truncated it, the other coul=
+d no
+> > > > longer replay the RTMR. Isn't this the valid usecase? Do you see ho=
+w to
+> > > > resolve this?
+> > > >=20
+> > >=20
+> > > Bright minds have spent a significant amount of time working on this.
+> > >=20
+> > > +Roberto Sassu, +Mimi Zohar
+> >=20
+> > Dionna, thank you for including us in this discussion.
+> >=20
+> > Based on my questioning AI, it sounds like the purpose of this patch se=
+t is to
+> > introduce a vendor-agnostic common attestation subsystem framework that=
+ can act
+> > as an internal kernel multiplexor for any measurement consumer, like IM=
+A or
+> > DRTM. By providing a direct kernel-to-kernel call path, it allows measu=
+rements
+> > to be routed to different Roots of Trust (ROT)=E2=80=94such as physical=
+ motherboard
+> > TPMs, Intel TDX RTMRs, AMD SEV-SNP registers, and PCIe SPDM devices=E2=
+=80=94without
+> > hardcoding IMA to specific device drivers.
+>=20
+> Yeah, I would say that is the eventual goal, this patch series would
+> be the first small step along those lines
+>=20
+> > To support this framework, IMA requires a strict, atomic execution sequ=
+ence to
+> > maintain the Measure =E2=86=92 Extend =E2=86=92 Execute (Measure Before=
+ Use) guarantee. This
+> > initializes early during the late_initcall phase within the initramfs (=
+via
+> > dracut).
+> >=20
+> > If the new subsystem introduces a direct kernel-to-kernel multiplexing =
+call
+> > path, how will it ensure the mandatory synchronous wait behavior when e=
+xtending
+> > multiple hardware backends?
+>=20
+> Everything has this 'measure before use' requirement. Why would this
+> be hard? Just loop over all the configured measurement targets if
+> thats the plan? Maybe I'm missing something?
 
-On 10/19/26 11:19, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/16/26 8:27 AM, Moger, Babu wrote:
->> Hi Reinette,
->>
->> On 10/15/2026 9:40 AM, Reinette Chatre wrote:
->>> Hi Babu,
->>>
->>> On 10/1/26 8:10 AM, Babu Moger wrote:
->>>> The resctrl subsystem tracks kernel mode configuration. Architectures need
->>>
->>> resctrl tracks nothing at this point. This is preparatory work to enable resctrl
->>> to do so.
->>
->> Yes. That is correct. Hope this looks ok.
->>
->> Architectures may support different kernel modes that need to be
->> exposed to resctrl.
-> 
-> nit: "need to be exposed to user space via resctrl filesystem."?
+As long as the measurements aren't queued, but actually wait for the multip=
+le
+ROTs to complete, it isn't a problem.
 
-Sure.>
->>
->> Add resctrl_set_kmode_support() to allow an architecture to register
->> its supported kernel modes. This is preparatory infrastructure for
->> future kernel mode support in resctrl.
->>
-> 
-> Looks good, thank you.
->
-Thanks,
-Babu
-
+Mimi
