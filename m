@@ -1,110 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.28
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792523414;
-	b=KoSxERssUaxVy4YHQBU7neFjlXRWmVQPubt2Fo4LPzB22EZyxTKz9JaL0zK90lvSosaB
-	 oYiNImFKAVfaaa5Hbs+12pl2kwkQRI6SbQySYhar5HXDfAhAYPKMZpCtEe++RaGLU5n15
-	 LE6xGnuiAnzGC8WeMwmotNPkKO7fZ9ngSQLKlHtbzs45+VfaK/3Ln9t1oJQcqUZuRbRAq
-	 t3CZa4O3DlCjZiXnLcSM2A0eRQEJ8MxF5TM7KVuIzr8WaSj4vujczqUnW7dXpjr8zBsA1
-	 T52JOXvyz2/YAOtpyzQfDp2+oaW690aUERPZ9UY+/3aLJho15xPzO7EylrOe+VruNrg==
+	t=1792528125;
+	b=s43E5AX7+SoyZymHmHMu9fNTItVw1NZeV5hUXKLMbr1GMRZdKaq8p6u7rzBoLjRSt7+F
+	 moVJBHd5FXM75v9PLDx7PUgIoRRNOX+HNxG1KLtnvWmKGOzr9uqFFwIiDNOR3TcPRtSQP
+	 oEB4TYjqIkcIQLXFgqoGhcly1CgDBR34xPNK8chmvfSgiLvfJydwZ5aeD3GB81K8bl27M
+	 6VRzn1HeRC8HHvmiwDYZPgSWydsQ+iNJiaTKMFeI9lLR9Gu2ttQuQZI9S0sc4Uxa6S2Oq
+	 RAPiF6FJg5KeEXxjWeazq1GGk38Esks66qUpCRLsgXDKWpDbXAvmJ3FluZf9IIh9uuw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792523414;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792528125;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=P5MEcSz2Hh7W742EzaKx462f78/ns1c+MN6bdZqqygg=;
-	b=M6ygv5voug2NLLQ+OG1jw9EZX8V4hEKuU7ANzgqemQqg+q0ipm4J6cZD9mI6VfcOJLoe
-	 ydskdsxT22Ns3Sfhw/C4YocakM/Fo15xvew7dfxS89aKi+dxbMlA3NGgg78LmlmyupqTd
-	 JgiiO4O9od00vgDMOAbr1T41DrXgYrSHweRQJVyt80/7oaldTw6L0WeajJqguxhWZ+6Iv
-	 eWHk+WiEEvSgIvTqqcIBsTsorWW72Z/LgFWfI8DwZ74X0efi/yp2/kVrFmaA20qvlmltU
-	 JbY558NbNWlqi6mZmJiT0D6n5aUhXvMkD/JT7D1D4A4kyq1GKfNPCknALr7Di67BhJA==
+	bh=8sxb4PUvzOuL0fOoCIuwKf0L1MN/qQQBUKKJxyF1XOI=;
+	b=rm6dITjlLsNviCgE16ieE9RHafF9Hgax77l6HR1/H1zdFmHRCkvEh1geN7sgHouFBu+V
+	 BQ8hlMNSy8aQayomg/MSaMCt1WZ46hNEQWDpAGofuezh0BLDFcpRvlYPvSxWw6uJ63+re
+	 ekLSn78IWyTzk1dK+dpvgVrzc+5XxyqAqU6MLL2JFHKwY19QsyuCSDKZjvtHVvUg6qFdY
+	 1oi4o5pFwghe+/zjER6Vr7vRf4sYZGM2LJf/MIUBTHuL0qdtY6RGOFx472p9vmqxagwpL
+	 NOmQ/Btvzd+MLIe2V0LQUirMMPEoFGZ2rDEShMtj1p8Jdly+bVLXoPaC5WI/2lQ+eZQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OpMTQY6I;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.18
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012018.outbound.protection.outlook.com [52.101.53.18])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=I3C7o4H8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.28
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010028.outbound.protection.outlook.com [52.101.201.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37279606A31A
-	for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 19:10:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37279606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AAA606A31D
+	for <linux-coco@lists.linux.dev>; Tue, 20 Oct 2026 20:28:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9AAA606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OpMTQY6I
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=I3C7o4H8
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KDnrYcroJgHEHrccue3MF4/yLihZK8eFr+Va6zqb5owEurQjngQT2MWdyF0KY1HiNZ3CH7PMuwdfFwHo6osSE6nBh/XsdL8m3MHi6axoo09H8qIeJTdJslWKu0v3vZhoGMh1r8KU783pbcEiIMSJ79i1kNYgpVkg5A+2JSk7OS3AHjdQjhg9IEvscnGSAdf0LNhoOVlP6B+OLMmnMWjcXslSspsyH63hwZ4IxLYyFx1eFS1UGt+NxJDSGHyf+/4/Ek0SuIhefN273LbMNE+58ojfzhxHonxsfFaN9k3Qu5A2s5tHWJ/LU1tvJk86liY/JGA8tBVamhbONjoAJ+0NpA==
+ b=JHzXgwYpjTO8JvL2ZnZXxtk2JKMZq1xAO4uGAHsCFNkhlO0VrcdCNerC1dkYoEMFq8cTpbdxN72vp/zafrK7WmNBjDG7KUHMbQMaowBOitFJDrUlwxsOSLLT9SapxXf4mqvI9KIs+kPV9DKFhr4SDG72uPlsHwhMiSVPl4CqUy0rKmOD/h5G1z0u8rZTZst7AMtVPnbsDC2KjHC4ZoKQKgTRBPvV5b+z+8n/nfkReHDOIKQPaNTHfvwWPwpRE1le9fPrkX+Da6YkaqoY1fCrUFizy1Xf4ZZtNADexNZ2NyK+bBZ8FYxixvzPYEK8oTHnqye6TzvURAmeetnRXyEBKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P5MEcSz2Hh7W742EzaKx462f78/ns1c+MN6bdZqqygg=;
- b=LWHrxCJWtRg8JdNrLyTL4lqjdsBPUjJOSAlVdP+/Ukd7/6/pbfnCcBWN7dk7UJip6vS/zcJoaJGtNoFzIrS3ypZ62Brg3HC481m5xqhjKDB0JSJasn7z3GmhWcli3hyWhYmCgKZDm9TQPLOWcR5T3dIb1DKg5SQcy+TWOmQmUoM9FV74FuCxVhHB3L79aKL9vNSEsChhOcC6bB4Nqa0QSFhloUBpAlBnNSUMzvF+5Zl6msXUeNwBhqEvt4GzKUamUE13gsc1iqh5zFYpsebSDy3w/8u1uXPmDdE2d153CnmBtCzDL9GRRs4U17SXo01Y0hTU9FSGGUBkVkyFrRun3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=8sxb4PUvzOuL0fOoCIuwKf0L1MN/qQQBUKKJxyF1XOI=;
+ b=h9mqONLxXReUkjBmKneB+rz/yga2F5uQh5RHE/9W3+Y8m0HlF+32+V7PvX+chcgvtu1NkWUMiaNTStU1xGYtkA0p80c43Nq4HBtypAoHpwvAcCvK7W37yWms27amHYKmCO4BhcfbK9BdDMJn4JL6XrdFUlkk6Pjj8SZgjd/lXRy1KiMPhG4xVK320fHhmbSH7zVoF+bJEb0UUFPo9m6/V5z4RbFvWJgTdcfN9+azlF/IAw28W5ONcpGUEkcKKd1KvTCCv/ipPKLNf0lKVdZHU/4ufLfSRSlDEGI5E5ro1K3gxWOi7PwYN6UQMakeNtaH1ccTcK9p3H5uhoLxBDnnjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P5MEcSz2Hh7W742EzaKx462f78/ns1c+MN6bdZqqygg=;
- b=OpMTQY6IRBY3Au24VBdcdpTOPm4tA6fLi3f+dWsH/p9UZgi0HRZLPVlg47c9v9TJEK6XtiSeAzNMc9Y6COADSFiP+3ZrrFY9Tgv7jW1LHxosoYYviGjlo+724WZoujdDp6MazwHdPL7HDGOZld4oNztXQpGUq6ZaNTyHP3RGPYQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by FT1PR12MB798771.namprd12.prod.outlook.com (2603:10b6:170:1e::7) with
+ bh=8sxb4PUvzOuL0fOoCIuwKf0L1MN/qQQBUKKJxyF1XOI=;
+ b=I3C7o4H8qVLJvH36xUZoGekpdG5XR+Mrrfs9xgjPCoTTLLr00gBfHswgmrv/pQJoslMhdie0hRJ/k4u6KY8BenuAR2+esdcW3WiDrmDH+RzrUnrLgQ6aqZv3vColgc1wnK45FbJBFf0JlqUhqTzCHAa4NA+ZbQRQ/DDMuev5OHk=
+Received: from BN9PR03CA0929.namprd03.prod.outlook.com (2603:10b6:408:107::34)
+ by SA5PPF8ECEC29A9.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Tue, 20 Oct
- 2026 19:10:10 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
- 19:10:09 +0000
-Message-ID: <c100cb3c-7d48-4bb3-b25b-0fce88de0561@amd.com>
-Date: Tue, 20 Oct 2026 14:10:06 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 10/18] fs/resctrl: Add support for hidden resource
- group files
-To: Reinette Chatre <reinette.chatre@intel.com>, "Moger, Babu"
- <bmoger@amd.com>, tony.luck@intel.com, bp@alien8.de, ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <9e770ba6dff365f823e702430ec3872709bc92d4.1790867441.git.babu.moger@amd.com>
- <0ad861e2-1dce-4179-986c-872a33eff38a@intel.com>
- <89715865-895d-4771-a700-f1a8aaa385cc@amd.com>
- <8b10c05f-eb3c-4ce3-8580-1cb034ad4e18@intel.com>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <8b10c05f-eb3c-4ce3-8580-1cb034ad4e18@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR13CA0010.namprd13.prod.outlook.com
- (2603:10b6:610:b1::15) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
+ 2026 20:28:40 +0000
+Received: from BN2PEPF00004FBE.namprd04.prod.outlook.com
+ (2603:10b6:408:107:cafe::a9) by BN9PR03CA0929.outlook.office365.com
+ (2603:10b6:408:107::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Tue, 20
+ Oct 2026 20:28:40 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF00004FBE.mail.protection.outlook.com (10.167.243.184) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.546.15 via Frontend Transport; Tue, 20 Oct 2026 20:28:40 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 20 Oct
+ 2026 15:28:37 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>
+CC: <hpa@zytor.com>, <luto@kernel.org>, <peterz@infradead.org>,
+	<ardb@kernel.org>, <rppt@kernel.org>, <akpm@linux-foundation.org>,
+	<arnd@arndb.de>, <thomas.lendacky@amd.com>, <shivankg@amd.com>,
+	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH v2] x86/sev: Apply the RMP table e820 fixups before memblock is populated
+Date: Tue, 20 Oct 2026 20:28:18 +0000
+Message-ID: <20261020202818.368416-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -114,144 +107,201 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|FT1PR12MB798771:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e398faa-7c57-47ce-b98a-08df2eddc24f
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBE:EE_|SA5PPF8ECEC29A9:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59719039-afb2-412a-8fd4-08df2ee8ba55
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|7416014|366016|5023799004|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003|6133799003;
+	BCL:0;ARA:13230040|36860700016|1800799024|376014|7416014|23010399003|82310400026|56012099006|11063799006|261009223027099003|18002099003|6133799003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	ybt8mDolTdCh+IcInJcxzGIM2jyj/5c6Te+GXoN4IYRkcdcFMufpudZTGFb7fJGL1PYahmA4X+VTeyr7mM+fbo4mj6rt/G5r9ZWhdI3PGHrRGtrVuj478QB+EPM4abTp8JaGvklGn2ZjbYD6vQM90QEimsm+nW56TIw1LhrdRIUM54qrV6QQWDO/OhBq3NY4qmloQ1iKBVcjkwGGT2vC5LymeG/kFxqLA1oTYI6xGtNEBTKyZDUEvT+v/7RhlUlcY5bFK63apNGn6wQ9Sa2XabHdYYrOvjos9H/rzCJpzrfZtRjwLAhLwS071VOeiLvtFPVmVkSdlCDIal4ayCjiyPTWrt50pwtAZwcaDp0nQKHTK318jmu5W4Ea5aObtLsXQvPqYfDsT2kWHiGv1H7WPcIpsLMaUaadj+rhYeiHMouNGuQjCZXGuTFgqTK+dzBF7c6fMBrGq53M8OmXjYKMjIFe1d5FPTFGzjXKkAmUWog5w2IeXGWseWVdYuVsQgCZx1F3lVG5kywN2dM66oRCMYwJGVksHclgOISL9ASgrhSyittXUkLD3lqJYFG078+Vy/h3PMSkz5zmPwPOlI2kx8sWSNvLfq6svo8XM5R8o1BqyKeWVuRHiYHBZH3II4iJFpAYgW2CUqB1l2Z/uu+PrX0Pw45uQDIUiFHjDA8QV+4=
+	Uoia9SwxPCCIxgwmslnoZMbwk62yldPWm/3NIjcJ+RdU1qi+r1WlanIlxEilElZt3BeyIRmADa+8CNMX49hQ7/wJglgB5yY1ZmuGFTJmL04Ghb2T9ixGXMtY0n1x+SyA3hDyE+bq5wR+C++YDwLABchyce0l8pU/gq7VNYNCOErJ7e//vuBeauETGCJQYU4CWOmu8rwPrt6Z05vd7bBWTa3MF4UIlC3aaFpJtOlRIO9eI9/6duU/+y+y6eQwkwV0P7VQG45ATgKgiQGd2XrABM1AcZ0iMcaQQ/FuIRNGy+fSg34iSYkaEpXp+EC7GV+fbsJRFJrAkleyvjIvqNDYZXH/fRNlKCZmTXSiTwzGFA0zPAezqDsCupxu2tde0MbCZzN4UPsILIi1AGAJvhbkZr1B53Zsi8ipa++Renaht7m8s966S6pXZIi1uMnX2LbIVww2jaFGL9J2ltnGFmnpOx05dCV9Fc0/eCuiWAMjAX8dVXInmppF9myK8zrF5A791OHVDMNPMKjL9QwSP8FzwmZmYH2vdLrHZH01EBvzwMI70vo2Rc1g8sjOkZKyqEeDPqsiLQQkSDdZg3WYnJfSJVCL1sbcObvPC/dxWeYn1BBJxtett6y5/sHu0YoqeXKzQ/hvyMrd+e75OqPKSikNFFFevzFGm68BX2NynvC8l8jjNT+Q5TjGHzPsZ4q1H5OQreoXRpYyu4YPIlwynb8EBg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(7416014)(366016)(5023799004)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(7416014)(23010399003)(82310400026)(56012099006)(11063799006)(261009223027099003)(18002099003)(6133799003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MW9rNCtPUEQyTDBiaTJxaUdtYStLT0I4Mm5JWG5QVDN2U1QvOGZyY3J2eTVO?=
- =?utf-8?B?MVZYRHVIdVgxK1gwWVcrd1J3d1FqblA2M05GeE4zMTZKdGFzbW5yVzBZVlVB?=
- =?utf-8?B?ZUZQNndNY0RjK2FxRERYMWNLRkhSODF3TEN6UjBWT2RaeFE4WDVOOHFkbW5v?=
- =?utf-8?B?alBxUkdYcHpWZWdmOHhuRW8wb0IxSDRZeTM4eVhFcWZYSWpSUklDUC9qUjZQ?=
- =?utf-8?B?UW9kS0o1YkZoejVUY3VveHhMbGFWellYZkxlK2JFWXhma0ZLSnkrcktYeVhO?=
- =?utf-8?B?QnlWTFc1Y2dJQVE3WlVyRmxZUFhYdzc1cm9LMG8zWlRCeVlVaWdiZFA2dTRH?=
- =?utf-8?B?OWtCN201VVNyY0g1KzJSQmlMS0ExSG1xWTgyM0Y4ckMvaVZiNmtZUm9tTjNs?=
- =?utf-8?B?NHErcjJXRWtxazJpMnIvSVpGZzFGY1NqbTEweU9nbmxhcWVuT2IrTFlOUUFX?=
- =?utf-8?B?ZUVJRjVDYjVmQWMxZ0Y4V3ZFUGZ0eTZXTDh6YmFteXhOYWNYRytiYklGWDFU?=
- =?utf-8?B?NFQ5MUZtbHVFS01Gak4yczNucW5kWGZLUUJJQTRCazFGdEsyV2kvZW5ENmQy?=
- =?utf-8?B?SzhJMkl6bzRRQTFlVWdVTmZjZWNmTEh2elR2T0JPa2JtM013aHQrU0huaGNz?=
- =?utf-8?B?ajVIMkhSNnhEenZyRnBDZlJXK2NKaFBsUzRrZUU2ZFZFR3NJVG45SVljRUVI?=
- =?utf-8?B?M1BNSXovRGJqVDNON0REcHNUTHdFNEZIcHQvRENTU1o3bmFXamczd0ZRMjlq?=
- =?utf-8?B?eDJ6M1ZPN1k2YXowSzNUeENzek1iWW5XY2ludzdaN3QrRVBTVTRuVE5UK3B5?=
- =?utf-8?B?TnlJQmd0Rk82bTBUR0VPRGtSMkNoRmlyVmFyTlVOdlh2NzBQcmhWSjBneGta?=
- =?utf-8?B?cDUwZ0Z0ZGlJRG5TR2lIVk4vd0o5d0JYcS9TYXlyaGNrNTdTZGMrbDdiaVh1?=
- =?utf-8?B?WmZmVkVuNlI1QXBBZmZLWnpLYlUrMTlCR3RLVHU0OVBoMzJkdjlGdWdRZjdt?=
- =?utf-8?B?b3ZCY1dCUklSWUhsY3NQMk83SUVpRHdlZDJ3cStjMjRPMGs4NUY2b2VXN0lt?=
- =?utf-8?B?WU9BNDU4MENpQmlIVCtlSGVCRWFTWFhwU1QvVWhHMFptSElpNHBxSXJFRW9U?=
- =?utf-8?B?bTh0eVBybTVSMGQ5UEIyQktGMmpDNGRLaUswYXMyVm43eFdBMyszTzFONW00?=
- =?utf-8?B?aUdiOTQ4OVFleHdRWTZKN3RIa0Nra1pXVEhtRWd2MDJadXY1dlEyZTFEdkNR?=
- =?utf-8?B?ckZWMXlQaU9vNUgyVXRpZWhFZ1pnWlpDMllsanJDQU5uRXRPZ2dHY05FK3BE?=
- =?utf-8?B?Sm9aWFc3SHlUQ0t4dWJHT2pwdFZHQTAya1J0b2dldk43KzhXYjF6N3daVGtI?=
- =?utf-8?B?MVNLYXZHQi8wd1NCQjYrTFMvdG9sSEp2d0NIL0Uxb1N0MWtRdU9UZ1dxUE1w?=
- =?utf-8?B?SHRwZzlST00yOWlvSEhRK0dqUE1vTTRsZjNhRzNEUjVCUi9mS0IwbEZ4cytD?=
- =?utf-8?B?aitPUlFGTlh2emZTTDBBTXd5dnM0ei9aWW96OFhSbUh4a1RUWWQwaVhLYjVa?=
- =?utf-8?B?MFAxV3lGSU1TcnhRdDROZmR3bUR6M2laZjd0elFQc3lQSmxKOSthTTd6c0NI?=
- =?utf-8?B?d1NWdnpCYm1RMXZlWm1QaWN0MDkyQ3BFTDNsTktjUkhYbjJ4eTBlSEVUWWFa?=
- =?utf-8?B?ZTU2OGNlVDlVZW1qNTV3R3lORlZNQXN5OGo2QXdnUU50OWc5TzkyTHJscVNH?=
- =?utf-8?B?SXF0ZnlLYmVNYUV2WGZEK1dPOHI5K09ObERhcnhhRms4eGVXVnYxNjBEWXFO?=
- =?utf-8?B?Wk0rY29YUEZCaGJkMnhDbis4WmFmLzhEUW1KOUZtQU1BVFo3elQvZFVJazNo?=
- =?utf-8?B?aUZEQlRjdGlNYjRGNnErZzllUXZlZzQzSHZyWjFPQzEyNnJTb3VSRUpWWnE4?=
- =?utf-8?B?QzVCNHp4Qk1jVFdLc2VLOXBkSlowVkthZ3hYcndYVDFkekVJYWF1Nk8vdkor?=
- =?utf-8?B?aGNuRU9FWG8zdTlpWWRBSkFKRGUyUGRvcllOdU1qbHNOQ2Q2Y3lKRkJVa2Rj?=
- =?utf-8?B?dEZTUGdaZktTZy9CeStPdnVKSjZmamplVU1SQ25iU2ViOStCV1ZZdHVod2dO?=
- =?utf-8?B?NjZKbDVkaHc5MUQ2cUlYVm1OcXVybjdDTmhnTDdWQjloWFdUQmEzZk9nWmNY?=
- =?utf-8?B?eTBoNnNzV2xIQ3cwcWJKcVRPa24yd2R3OWhHWFdFbFptdDV3TWJzeGZrT1hL?=
- =?utf-8?B?WloweUdNZnVFTHMwdnBiVGdoN09BMmJaUTJlaXg1akx5aDRtVHZIcmtPNm9a?=
- =?utf-8?Q?74RLNfLpTx0NJognXL?=
+	c+Rkth4WvYMZnByJkMJyvpgh8Zf1MP3vElnGR+fEJ7GganNOjqHLhowoV1RQBxCMl79uHcgLPGxP1k3s2GrcGvqVVHXcPgtqwtR6GfLATJaXmT81gZNKmXc/JNFfBauIBlrMpBP+KY4fVKBPZk6BxGSok9jbYSx+5VB9oIDrr5qomjRfnrb4mDeqp0ICHIX55E2cfj0ALIdK1n54Iug7AaKHoeoU+gRU3HubVeJCNOWZPLKj9dPwUn7HJmm4X9LIWB+h1/YuCuRpnp3yFRWaCYiJu9t9rfc8RsdK6VvEt+XSCmjnO3kv2t5ZyzFZ8VdsjzNyhBgpCqsXGk5DpjA8DRA92zL2QVrHYpHZb6ZNTEN2pOEDcLT1vRuF7Ihh0f8/Bj1K/+i2VfNkvnPvAxJnVrWxbRP0mI6dTdhfB+qgCSSWZbA0ESH/MB4ndTuvytdT
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e398faa-7c57-47ce-b98a-08df2eddc24f
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 19:10:09.8266
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 20:28:40.2938
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59719039-afb2-412a-8fd4-08df2ee8ba55
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aLnq92i7ycuEXIG+GxFvvniSKBF7AAKEImjHcP/2vps52VTRl6UAEluTFxoFl5qP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FT1PR12MB798771
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF00004FBE.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF8ECEC29A9
 
-Hi Reinette,
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-On 10/19/26 11:22, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/16/26 1:53 PM, Moger, Babu wrote:
->> On 10/15/2026 10:27 AM, Reinette Chatre wrote:
->>> On 10/1/26 8:10 AM, Babu Moger wrote:
->>>> Some per-group resctrl files are only meaningful once a resource group
->>>> has an active kernel mode association.
->>>
->>> Could this elaborate more about how the files depend on the kernel mode
->>> and why they may not always be meaningful?
->>>
->>>>
->>>> Creating them only at activation would complicate group setup and
->>>
->>> Why would it complicate group setup and teardown? I think it would
->>> rather complicate mode activation and de-activation but since there is
->>> no detail about how this will complicate group setup it is difficult to
->>> compare. It is difficult to reason about a patch when the motivation is
->>> vague.
->>>
->>>> teardown, while exposing them on every group would show empty files
->>>
->>> "show empty files" - technically these files, as they are implemented,
->>> will not be empty but return errors
->>>
->>>> with no clear purpose.
->>>>
->>>> Add a hidden property to struct rftype to hide files at creation.
->>>
->>> Missing a "why".
->>> This can append to describe how this adds the foundational support in
->>> preparation for features to restore visibility when the feature's files
->>> need to be exposed to user space.
->>>
->>
->> Will rephrase the whole changelog:
->>
->> "Some per-group resctrl files are only applicable to resource groups
->> with an active kernel mode association. Accessing these files before a
->> kernel mode association is established would result in errors and does
->> not provide useful information.
-> 
-> What does "and does not provide useful information" refer to? Does this
-> mean that the errors are not useful?
+When the start and/or end of the RMP table is not 2MB aligned,
+snp_fixup_e820_tables() converts the 2MB chunk containing it from RAM to
+reserved in the e820 tables, so that it is never used by the kernel (or
+by a kexec-ed kernel) and SNP_INIT marks it HV-Fixed.
 
-Hmm..  One more attempt:
+The fixups are done from mem_encrypt_setup_arch(), which runs after
+max_pfn has been computed and after e820__memblock_setup() has populated
+memblock from the e820 table. The RAM part of those chunks therefore
+remains in memblock.memory. Commit 88a921aa3c6b ("x86/sev: Ensure that
+RMP table fixups are reserved") dealt with one consequence of that, the
+chunks still being allocatable, by additionally reserving them in
+memblock, but memblock still describes them as memory.
 
-"Some per-group resctrl files are only applicable when a resource group 
-has an active kernel mode association. Exposing these files before the 
-mode is activated is not useful because they have no meaningful 
-information to provide, while reporting errors on access offers little 
-value. Dynamically creating and removing the files as associations are 
-activated and deactivated would add complexity to the mode management path.
+That trips up the direct map setup. init_range_memory_mapping() maps the
+memblock.memory ranges, so the RAM part of a chunk gets mapped. When a
+subsequent, lower range is mapped, the trimming in phys_pmd_init() or
+phys_pud_init() consults e820 instead, finds no RAM in the 2MB (or 1GB)
+slot and clears the already populated entry. At boot this goes through
+set_pmd_safe()/set_pud_safe() and triggers:
 
-Add a hidden property to struct rftype so the files can be created with 
-the resource group and exposed only when applicable.
+  SEV-SNP: RMP table physical range [0x000000bf77900000 - 0x000000c037efffff]
+  SEV-SNP: Reserving start/end of RMP table on a 2MB boundary [0x000000bf77800000]
+  SEV-SNP: Reserving start/end of RMP table on a 2MB boundary [0x000000c037e00000]
+  ...
+  init_memory_mapping: [mem 0xbf60000000-0xbf778fffff]
+   [mem 0xbf60000000-0xbf777fffff] page 2M
+   [mem 0xbf77800000-0xbf778fffff] page 4k
+  init_memory_mapping: [mem 0xbf40000000-0xbf5fffffff] page 2M
+  WARNING: arch/x86/mm/init_64.c:89 at phys_pmd_init+0x389/0x4b0, CPU#0: swapper/0
+  Call Trace:
+   phys_pud_init
+   phys_p4d_init
+   __kernel_physical_mapping_init
+   init_memory_mapping
+   init_range_memory_mapping
+   init_mem_mapping
+   setup_arch
+   start_kernel
 
-This provides the infrastructure needed to control file visibility for 
-future kernel-mode-specific resctrl interfaces."
+and leaks the page table page that hung off the cleared entry.
 
-> 
->>
->> Creating and removing these files when a kernel mode is activated or
->> deactivated would add complexity to the mode management path. Add a
->> hidden property to struct rftype so files can be created with the
->> resource group and exposed only when they become applicable.
-> 
-> Please separate the problem and solution descriptions.
-> 
+None of the fixups depend on memblock: the RMP table is probed and
+CC_ATTR_HOST_SEV_SNP is set from early_cpu_init(), and the segmented RMP
+case only needs early_memremap(). They do depend on the e820 tables,
+which are only built in e820__memory_setup() (which also populates
+e820_table_kexec), so the fixups cannot run any earlier than that.
 
-Ack.
+Move them into a new mem_encrypt_fixup_e820() called from setup_arch()
+right after trim_bios_range(), before max_pfn is computed and memblock is
+populated, so that both are derived from the final e820 table, and
+finalize the table with e820__update_table(). mem_encrypt_setup_arch()
+keeps the SWIOTLB sizing, which needs the memblock-derived memory size and
+stays after e820__memblock_setup(). The memblock reservation is then no
+longer needed and is removed.
 
-Thanks
-Babu
+Fixes: 400fea4b9651 ("x86/sev: Add callback to apply RMP table fixups for kexec")
+Co-developed-by: Shivank Garg <shivankg@amd.com>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+---
+v2:
+ - Route the fixup through a new mem_encrypt_fixup_e820() wrapper instead of
+   calling snp_fixup_e820_tables() directly from setup_arch().  This keeps
+   the memory-encryption specifics out of setup.c (no <asm/sev.h> there) and
+   alongside mem_encrypt_setup_arch() in the mem_encrypt layer.  No
+   functional change.
+
+ arch/x86/include/asm/mem_encrypt.h |  2 ++
+ arch/x86/kernel/setup.c            |  1 +
+ arch/x86/mm/mem_encrypt.c          | 14 +++++++-------
+ arch/x86/virt/svm/sev.c            |  9 ++++-----
+ 4 files changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
+index ea6494628cb0..f357df65cdd2 100644
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -21,9 +21,11 @@ struct boot_params;
+ #ifdef CONFIG_X86_MEM_ENCRYPT
+ void __init mem_encrypt_init(void);
+ void __init mem_encrypt_setup_arch(void);
++void __init mem_encrypt_fixup_e820(void);
+ #else
+ static inline void mem_encrypt_init(void) { }
+ static inline void __init mem_encrypt_setup_arch(void) { }
++static inline void __init mem_encrypt_fixup_e820(void) { }
+ #endif
+ 
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index cda6adb9f69c..b16b5d8fc569 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1029,6 +1029,7 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	e820_add_kernel_range();
+ 	trim_bios_range();
++	mem_encrypt_fixup_e820();
+ #ifdef CONFIG_X86_32
+ 	if (ppro_with_ram_bug()) {
+ 		pr_info("Applying PPro RAM bug workaround: punching 256 kB hole at 1.75 GB physical.\n");
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index 95bae74fdab2..07146a63af11 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -99,18 +99,18 @@ void __init mem_encrypt_init(void)
+ 	print_mem_encrypt_feature_info();
+ }
+ 
++/* Fix up e820 for the RMP table before max_pfn and memblock use it. */
++void __init mem_encrypt_fixup_e820(void)
++{
++	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
++		snp_fixup_e820_tables();
++}
++
+ void __init mem_encrypt_setup_arch(void)
+ {
+ 	phys_addr_t total_mem = memblock_phys_mem_size();
+ 	unsigned long size;
+ 
+-	/*
+-	 * Do RMP table fixups after the e820 tables have been setup by
+-	 * e820__memory_setup().
+-	 */
+-	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+-		snp_fixup_e820_tables();
+-
+ 	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+ 		return;
+ 
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index bd70c4d0b774..73b359d3b743 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -207,8 +207,6 @@ static void __init __snp_fixup_e820_tables(u64 pa)
+ 		pr_info("Reserving start/end of RMP table on a 2MB boundary [0x%016llx]\n", pa);
+ 		e820__range_update(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
+ 		e820__range_update_table(e820_table_kexec, pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
+-		if (!memblock_is_region_reserved(pa, PMD_SIZE))
+-			memblock_reserve(pa, PMD_SIZE);
+ 	}
+ }
+ 
+@@ -261,11 +259,12 @@ static void __init fixup_e820_tables_for_contiguous_rmp(void)
+ 
+ void __init snp_fixup_e820_tables(void)
+ {
+-	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
++	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
+ 		fixup_e820_tables_for_segmented_rmp();
+-	} else {
++	else
+ 		fixup_e820_tables_for_contiguous_rmp();
+-	}
++
++	e820__update_table(e820_table);
+ }
+ 
+ static void clear_rmp(void)
+
+base-commit: 250ee734115bca1c1f7a38d838909aa83cce87ae
+-- 
+2.43.0
+
