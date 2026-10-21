@@ -1,111 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792586912;
-	b=kESK5EEHfwgKIJlPehNcIzfma4g1kEI9VQPhp6NL3KZCw/2kAmAjcQFXKqHECh13wXnP
-	 pR+7Oezw5bv8MXjOOWMwEMErtEaj9p/7jH8hKFjeT4RZ4S26tRMCk2/U6xMC99w0zEpzY
-	 GVE9DoQ7lCuFWQAdUaoJznSGhFW9D/nlMgANz3QIf+Gv4PaxbRhuUi7VEgRIGDNIs0VtG
-	 3vQKh5mrnqgGP5+oisNqpwJHfyrqZWQC3+x5FEZUIMsjpEZ+5SmzNY5iti9xvAlPagir1
-	 56VMWUzw/pB/tnLufdWniBkityYaGlRY6zSMqodkQmp/fhbbWLTW+YiUFGnE4iizxIg==
+	t=1792587896;
+	b=nAr4l5CK5snMT7i21kCZpuEgnojkgI7XZV25lXPKc5tNo0zvmm3N+QSgPaPobXL95NbA
+	 LA5LPBQyVYdFNVT+INNcbhqCDTD88mnWG3rQm7vx1I9D2LiK81GPHd9u71io10SiW9BBE
+	 oPGvbwK/ZUiX3Xb5iJFbdbRBpJnNo9xZlTo6GjmcBBeD0zTOZJti6HNgJuRVo6+JwWHYe
+	 5bi2qkpLlY0+tMsSd1O3Qq2K3zRKulXNabhRkLz8RKxH6XKgyNJDDHdd8dvVfiYbSLpPm
+	 pfmlqvt3WRmV2WWfHwowaHdT26GGKJlA9dIlqmdnM/PUPLFD70ab/TcJBHrgal61Qrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792586912;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Autocrypt:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=fB3c16dZ4D+sgSMKdvK0GZkHU/5aGTEdEdwnyDxGg40=;
-	b=xrAVPGfnBMB32k1XiJVX1I2R1Hj7sMv2EkxcO5RJ3bpuNsUS4NT0e51xExX+nj1PsKK3
-	 o/Onkd2wIwm+bh4hbac8HUVS1WIPpJGE/kd7wrzcjia49Ihl3HzzpcOxHBIoJTg6OGJvP
-	 O7Wsf/phjThFwRP6kjvZZKZ8QkDoOBrHQFn9NFq3UJKdOXycgyvAyc3HJj7qcfS/g71w2
-	 z3sV12ZDl5g/jgN4qqfocjIkhPEDK7AKjutpEtPeXGIibsPsqSDxSIo3iDARfLh5a08oV
-	 Q6rOImY30z0ySSPBaxdirtZZkzSZQa9pHEwQaF13uI46XDIB/5AIfMSnxPV3u/zrO3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792587896;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
+	b=HSHPbuxgtR/i8kZpnADDSL5yDZBDaKJvIvjt6gAGH5EWYtoHi3N1ot8tbRkKYAmYZJUY
+	 HGC+ECdtzG+w1Wcko0e2myt/nqlaQFzDkaGWP8umoNBWcV5kS0NGhwMAGx/vNtuKCZ+68
+	 EZ+HAnYWztcpkez2T40ymdCGf6g3a93hcl12lvxQx8PrDWfSf2JkFYmF3cEbxc075yG6T
+	 4Ey37lRu4ZHe+pcmwf6L9MVTZkN0LFDonxpkS0DL+PjRdMH/bPxrKaarhna20FDA2b9aL
+	 HTn7g0ZZhqTJ9lEL3qrobEYZb9qhw77Olzs5pvFXduWc/ZhtZjcZtwhqguOgLBqZ9BA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=HansenPartnership.com;
-	spf=pass smtp.mailfrom=HansenPartnership.com;
-	dkim=pass header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b="VQNvl/SE";
-	arc=none smtp.remote-ip=198.37.111.173
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=lF7AJXBV;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648AE606A31A
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 12:48:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 648AE606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BABD606A31A
+	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 13:04:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BABD606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=VQNvl/SE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1792586910;
-	bh=HZGAUyKGHPlO5/W6rSvUQbyUWcZMQLA57dSjwnEKhSc=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=VQNvl/SEXE0TKy6UkQmfLJOCRXEm8lR0KvLV5vByn8LQ38xa8T4PfOFbQva8XRlKG
-	 Oj+6wJpO3fl2IH5ndx6I32uU+ek4ZefFd+5ntdNueOsxT95SnQx5J3ODn1UtF44+PG
-	 fFZ3bEaO/QvGT266qqj3fKTfzwYBlk5PjQCAOmMY=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::8309])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 42CD61C0372;
-	Wed, 21 Oct 2026 08:48:29 -0400 (EDT)
-Message-ID: <2641f9f5141126af8a93763fcbdd2ffd5c4e520b.camel@HansenPartnership.com>
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Mimi Zohar <zohar@linux.ibm.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Dionna Glaze <drdeeglaze@gmail.com>, 
- Jiri Pirko <jiri@resnulli.us>, Jarkko Sakkinen <jarkko@kernel.org>,
- linux-coco@lists.linux.dev, 	linux-kernel@vger.kernel.org,
- linux-api@vger.kernel.org, x86@kernel.org, 	kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, david.quigley@intel.com, 	lukas@wunner.de,
- ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com, 
-	sameo@meta.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
- ankita@nvidia.com, 	suzuki.poulose@arm.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, 	elena.reshetova@intel.com,
- dave.hansen@linux.intel.com, 	sathyanarayanan.kuppuswamy@linux.intel.com,
- peter.fang@intel.com, 	roberto.sassu@huawei.com
-Date: Wed, 21 Oct 2026 08:48:28 -0400
-In-Reply-To: <ateSly15N5mLrM1m@e129823.arm.com>
-References: 
-	<CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
-	 <20261017203407.GM13920@nvidia.com> <atPgqROZZxnihYfC@kernel.org>
-	 <20261017231007.GP13920@nvidia.com>
-	 <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
-	 <atX9fugGUsI0hGcA@FV6GYCPJ69>
-	 <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
-	 <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
-	 <20261020140655.GV13920@nvidia.com>
-	 <aa00515a0f364fea0150cf1550a09d9400e4632f.camel@linux.ibm.com>
-	 <ateSly15N5mLrM1m@e129823.arm.com>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNE
- lecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn
- 1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHU
- RfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8
- X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvd
- HRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGw
- MGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAml2ZBI
- FCS3GUMIACgkQgUrkfCFIVNZKjQf/deRzlXZClKxTC/Ee2yEPqqS7mm/INUA49KdQQ5oIhSxkUBy0
- 9J4qjMIo5F8ZFkFTqikBqeL35LKu7O7rn8WETfX8Bxvos3HUsl3jHo34DES4MUFIpoQPgtiLRGwLb
- K0cVCAArR2u2qj4ABmTRrs1I1kvdjEw6gatOuXtEe/j5O2fvfzTq9GBr0Q3n2IAsFXi4hLlx6VPE8
- tyWUZ8BWJKtih3JAeUiXFvASL3McV0rV9RnU0VbjEQEhSE7PMYhWpnDC9AyBb0lXJllQRvC3NSkUB
- 8KVQgNNxRPss0WE/nBoZ4dFA42jTyzTz8lNylxZoAWV7WJb3QxVg4oCodRVrxxrQhSmFtZXMgQm90
- dG9tbGV5IDxqZWpiQGtlcm5lbC5vcmc+iQFVBBMBCAA/AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeA
- QIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mYBQkbNYS9AAoJEIFK5HwhSFTWBpwIAL5Bk3
- 5FB34U6iHmDzzgdCbxLTs43T/YQyJpcGIvopBvnI/fDY8oSG6Df64/O6B+1R+A8TDp6ZG5ysUWnCC
- 6GuIaEHemBYkitMPglR6+sGCMQY7O0mlsPvdssvKK1KI9Bno4VU6ogaF2qVzefSqg1Djmf/DcsxWP
- rI/jdJ8FB5AYR2rjIdDFc+zRdAJuavo1/anyY2wgpFh/3R8IOYAEfWV9nGgYkf9+tA4EIn1sxE0I3
- L5oW2N3mbyRrkzuBwO8ztMCwqEPk7moWzhokcZqMXiAIahaZdkashJC+s2X2RZSGCy+g+pvY5NN4B
- BVG5XwLgVBqbHMTcxE0fbmPqz+q6O0LEphbWVzIEJvdHRvbWxleSA8amVqYkBoYW5zZW5wYXJ0bmV
- yc2hpcC5jb20+iQFXBBMBCABBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmODZ5ACGwMFCRs1hL0F
- CwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQgUrkfCFIVNZu0Af/TzvL2/NdgAcw9uN3x60H8
- jc4QUq14VpxcFEFEMpcj1morkX/G93V+56HBBaXZj+yK8PhxIA/SIz+sU7C/0YvKuvzakP8ZX/7WJ
- e32SOUtjfr/VTaqjIBzNj6OxLvZpmNbBw7s6DwhhNpHOWqJ/1ml+PtDRDV71IB58yVqQjp1xlNKVl
- ZppcJ5908EJzsFnRIVjiQiDSKoppqB2BCibBbrWcln7CiWMyOC/cco6SIn6twH+f7+aivJ3xGcOE2
- a9gBKF5rNi9TBoX9oyPmshv/TDmnohsVrH7AYXlGYfZTk15SWEiROh1QX8/uD9wl/gcIv5EDUpT/F
- L2jzOsA5663bw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=lF7AJXBV
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a1dfd49525so5609855e9.0
+        for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 06:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1792587893; x=1793192693; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
+        b=lF7AJXBVYKv0DM7hLr+lnXrItG62PW23lojZdNbGSn04n6LDnC41NEDHJAF9xTgyGZ
+         FI+dwsM96egU6A3npJmh23h6CwiDbRM5bZaV2WxCB7jPi0lZndRgQ0rQTeCY3txxTjGl
+         SgxwtXiwSgO4tlssVar9emajbXAceZfDl8EMIuJ19Fus4DfJraR5bdLrxwl7xPUa1kys
+         3w/7VgTpvPZkOMbbNIFl0WNQ37RdKYxdlSpcdWCuGcOzZ0UznNIFAQVVap/kWyRIpBqG
+         L7WJnI7yFQhB6xZuyOs59KagMLHzI617HGjPpbR2reOz+T8ZerOQwI4ZuWsrbrZH7wMB
+         AALQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792587893; x=1793192693;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
+        b=lp330UG1l88+TH6l1+xRCcrkrCNg8HinCvdFPjt2XMWi9RJvRSmRI532IwqhQ1j0i+
+         o2AVdn0Lb5wgvL38+86d75qTB8z6OOSJXPr64pH4+twjvJOcnUB1hhxacP/SPlwOa7oG
+         agGp6CFV6ftAfYhNa+Gw/+5X60t4EQavdFPEdqmw6AbcBcYcrFxJZDnU7itVbKPhX7zQ
+         hZpmi8MAW/AxXV80CMPhvLwgKSD6XDqKiKZqAsAX9wGC+DynwvWYlWpfEKSw7RqzeGmt
+         vijBerPjBrNAnESwr18MNwmAd19LRtQ0IVvVI2ZwUqECfvUlaseTceuMvQ2DUqqVPrTc
+         8UzA==
+X-Gm-Message-State: AFq9FYL7K80eDFzIu6HDnTrLHoRRJeAbXfMA2vvqvN3e9x39lYwIo7mM
+	L2zvKmWCU2WzvKAxpaaBaLYMU/ITKYTHYTQoDwiw1+CcQiT8cFPzfUziK5GJu2Gd/WE=
+X-Gm-Gg: AYBFou0BNsxHST1oUak9X3iACn6qtS9OanLKfeKOVhYrahDWv/HmOprw1/cchhJueFU
+	rtDUogA0nlvUUJwlu8GqBxPCO6QonoPmlLjt/AG1R2NQz5/K+/vXKQva6lrWTPlLBl/yo56kbXT
+	css6m+VTkKpFx1w8v+98i6WNWudntlxQWL64SMQokp7GArFRH9ooodqLUBVswGnl8GtjGk08A7r
+	IZvgin6BelAHW+QhNfjzKuLrCxktq30mToJy/Yw3DixSUYyHVH4AhT7o0lzo8a0/6TEotBo5OTS
+	2mqpLjI9tQAB5bYmroRFHUz/JdJCSDvgfzpdlsluLiP4j3bwmZSdWZsarzBA9SFOoGFjkMtLNRM
+	SOaYHH1BgQazIsW96cVWMjjN2N8yIqtgdlYDg7j9oczCVWvszSILpAjWkP7ESYkF/J7ciQrFEV3
+	0l/yh2I+rSAEjXyTBA97ZQEr8CEmIMVPrvDZUhxDGKFrmEJwYpvfnQzbIfKQF+cIte9Xop0D1XZ
+	m6MMkEkUV9Szl6NYP5AkR3qbLaqX64ysn3aITIlbV4BCUntJoXyAzHrmGQBGdOTosKjtcL7OKbb
+	Co3TWdhHp7ZD
+X-Received: by 2002:a05:600c:3512:b0:4a1:e00b:a0ea with SMTP id 5b1f17b1804b1-4a1fd8a3fd3mr39461765e9.1.1792587893167;
+        Wed, 21 Oct 2026 06:04:53 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835c77sm5101952f8f.36.2026.10.21.06.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 06:04:52 -0700 (PDT)
+Date: Wed, 21 Oct 2026 15:04:49 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 15/20] attestation: Prepare provider and instance core
+Message-ID: <ati4arl9sf1Rgnob@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-16-jiri@resnulli.us>
+ <179245258506.58760.1633805100070716498.b4-review@b4>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -115,70 +104,30 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179245258506.58760.1633805100070716498.b4-review@b4>
 
-On Tue, 2026-10-20 at 17:11 +0100, Yeoreum Yun wrote:
-> > On Tue, 2026-10-20 at 11:06 -0300, Jason Gunthorpe wrote:
-> > > On Tue, Oct 20, 2026 at 09:45:13AM -0400, Mimi Zohar wrote:
-[...]
-> > > > To support this framework, IMA requires a strict, atomic
-> > > > execution sequence to maintain the Measure =E2=86=92 Extend =E2=86=
-=92 Execute
-> > > > (Measure Before Use) guarantee. This initializes early during
-> > > > the late_initcall phase within the initramfs (via dracut).
-> > > >=20
-> > > > If the new subsystem introduces a direct kernel-to-kernel
-> > > > multiplexing call path, how will it ensure the mandatory
-> > > > synchronous wait behavior when extending multiple hardware
-> > > > backends?
-> > >=20
-> > > Everything has this 'measure before use' requirement. Why would
-> > > this be hard? Just loop over all the configured measurement
-> > > targets if thats the plan? Maybe I'm missing something?
-> >=20
-> > As long as the measurements aren't queued, but actually wait for
-> > the multiple ROTs to complete, it isn't a problem.
+Tue, Oct 20, 2026 at 01:29:45AM +0200, jgg@nvidia.com wrote:
+>> [ ... 99 lines skipped ... ]
+>> +++ b/drivers/attestation/Kconfig
+>> @@ -0,0 +1,12 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only
+>> +menuconfig ATTESTATION
+>> +	tristate "Attestation"
+>> +	depends on CTLV
+>
+>ld.lld-21: error: undefined symbol: hash_digest_size
+>>>> referenced by ctlv.c
+>>>>               drivers/attestation/core/ctlv.o:(ctlv_attestation_mr_read_query) in archive vmlinux.a
+>>>> referenced by ctlv.c
+>
+>Needs a:
+>
+>+       select CRYPTO_HASH_INFO
 
-Just to be super precise about this, it's the extension of the
-measurement to the TPM that must be contemporaneous.  We have a few
-examples in UEFI where the TPM gets extended and then a bit later (when
-more stuff is ready) the log entry gets added.
+Ack
 
-Just on the waiting for ROTs to complete ... that's not accurate for a
-TPM: the ROT, which is effectively the initial measurement, completed
-long ago (in TPM terms this is the RTM - Root of Trust for
-Measurement).  The problem is actually a communication problem not a
-readiness one, see below.
-
-> But, I have a related concern about deferred probing of RoT devices.
->=20
-> For example, if TPM probing is deferred until after the attestation
-> subsystem has been initialized, how would the subsystem handle the
-> TPM becoming available later (This is reason for IMA_INIT_LATE_SYNC).
->=20
-> In particular, when I see breifly proviers/tdx.c and imange for TPM,
-> once if it's failed to get tpm_default_chip() in module_init(),
-> There is no way to retry and TPM seems not to be exported as RoT
-> device.
->=20
-> Am I missing something?
-
-Mimi already answered the main thrust of this, but there's a corollary:
-because of the early init requirements, the TPM driver must be
-available before the first non-EFI kernel measurement is made, which
-means TPM drivers can't be modules.
-
-The reason for the above in a UEFI system is because the
-ExitBootServices() call in the EFI stub kills the UEFI TPM driver, so
-there's no way of using the TPM between that call and the kernel
-initializing its own TPM driver.  I've often thought that if we could
-prevent that and have a separate callback to kill the UEFI TPM driver
-(or probably one before ExitBootServices to say please keep this driver
-and then another to say I'm done), we could effectively use that for
-early kernel measurements and then engineer a handover to the in-kernel
-driver and then not be too worried about when the in-kernel driver
-attaches.  Of course, doing all this would require a UEFI spec update,
-which means it's not a quick or easy thing.
-
-Regards,
-
-James
+>
+>-- 
+>Jason
