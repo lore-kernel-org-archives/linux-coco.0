@@ -1,99 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792590895;
-	b=gqXYZLrWsNyLs0MFhgwZck7zlmG5yxYwj1FRY+aF+anjlqpP5OWZVOt2lxDqSKUZCNj3
-	 qQox3umX8Zh3WRPWRmuX9rhxXS573F02Iqhhbb+ndLvISW/GxDLuClgkxUHOV8GU6DE29
-	 CvmKLlWBN2+Y4hgVDPBC2RwwPIe7Zn2Gsgfim08fMF+zRo89hGDUaVlmU7FHa+NFnSCUi
-	 I/yY5Er+PuWdQ5BJaQm9DCc/oZ6pSSQnZOvFIl87sJUJNVXsvVCEsmo1dS/TvanhgupEY
-	 QLUP9kDUrwtTF38EHKMR/MtGCgh9G+mIWWpZDNBwKpi44ovribc7nGhau+KIcHyFlDg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792590895;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=c8NANzTMJV28RCMd27ShXdH01N2IwKbSedeFEkSZyhI=;
-	b=bIbr1d+unmZgPspsiGQE3vqLHFO1oPddNxp++4W3U+AsxTdgECrrK12sP8rfphAY/CBW
-	 5YM+EjfwbmsYcDvx/OFb85itAuHFG4TqFOxN8HrshGga/rN6iQcfKOSMfML2g4cpgYiWK
-	 llFykIRQAgLEkQqoxPjovDirxkFdvwLwjpfWKbkqG0aaiG9FdKKRbkruMEQCzTwrvWDrp
-	 AvHN6Gvf0z6wuUjffl8+BnJUVyso5cO95U5ezpCVF5uXoC4PMXzB8ywliT0d7//x04WGP
-	 6h2W7PuacTk5dlyO7yYEjv5CFoBGNcMloAOSOh3o7zIsuUw5FJAUruselkcsOYxh+9g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=P2xy5FOB;
-	arc=none smtp.remote-ip=209.85.208.49
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.29
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792590946;
+	b=YOmN+plV++bUoS670f9PUf7zGu7atLTukmSSoHhBisitZhHYGYMjHSrvF7+kD4kkmu1S
+	 6jvTAiRZsaKRAly/Ta/tSuE/8XoOkCaOuupVl3axjXHlU/IbfT4wfPIxnzzHW9BZkpjmu
+	 YlQdsNjQW0WwecQhrdanUiITVMlnslV13axh6HdgGTGXiBXKza3+42za5nUAkfLz4R7i3
+	 7Ja6lH4nLH/TZVKOAmtYOl1IqGsdQoYpuXVnRSvQNup4f0CSFFxr9IOtFQGh2tzJ18N0a
+	 8iuug4zY2XstO+7Es1KQ2M2aKtXwgqJK/tWCOClqpRiR6oT3e9RAJxklVRZXyNKwICw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792590946;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=V1Y0x827KZ5gPGFfhEMzDA78Jbu/KjnnmWcX/SAyXpE=;
+	b=ohdltV1Q0pqeV1/I12if4Ltg9022M0DGIfYV8Xg9Abc3sA8ay2xGx31PCsQRt1TNKeoi
+	 RPO8pVWW0Pq4TVTKGV5EIvhD57qJ+hKWX0uT2QNnJDmCmEU5xjF+qjezI3j4HvRvtUJjY
+	 xmzCGhsp9G6cA9uMHCAWahZPljQyY2flqfmmz+qqcxls12ISpnT0tHCYLwfndlReD8zTD
+	 79Tjz36axWVACAcZbo5ZWDcWfejn4kmDox/y0xarRuSQ93GMp2sWl5CEsPezXzTcBxF0+
+	 8K0M7tV3kyEr/bSsBTX91aYXxdUgvWh/ooKNqirasBhRn6DBZLRDOxi4j/u/e875LZg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=e6bk9CVc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.29
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010029.outbound.protection.outlook.com [52.101.85.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8DF606A31B
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 13:54:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D8DF606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAED606A31D
+	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 13:55:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCAED606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=P2xy5FOB
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b1aa27963eso2558260a12.1
-        for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 06:54:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792590892; x=1793195692; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c8NANzTMJV28RCMd27ShXdH01N2IwKbSedeFEkSZyhI=;
-        b=P2xy5FOBIE0m1+t43E5Q04OPOOEdrOImxxpUhKTabV3C+PuFtNhrNtrIiqYsroZFeT
-         Tc7uC4TprnmlSsKl8ZybsBNH5ztHuhkSUFuXCQwW2xZaW1r8cyAzlkyDhnXR8xjsHbmW
-         jUK6vnfCJdZPtH8MUrX7aeXkhrgJp4kWBcvnpMSNvUJ0HyNEDnedlKVJMgiChanLhxff
-         DayUxhZoAewTP/Obnf5TkFlzMyiDE30a/0bTgHKmAGeLPqDbo03GEXw/nysFVyiQ7ChK
-         H+9mYs3Uz8479bbfTMN5vt1hEhEz7DQe+LNmszHIVr+GE8R/B150do7Qqpre+MZh2XHG
-         on7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792590892; x=1793195692;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c8NANzTMJV28RCMd27ShXdH01N2IwKbSedeFEkSZyhI=;
-        b=Vb2XefjEvkoNslzNz4qZ5R54iZivJjhK66Vc3okVQVAToFdGWsnOOIUffWkOtX7aUN
-         zbFoxrTYK/b7Adz50ZnPaEbPuOZNJ5KCtVOz3CZb+XfjDw2TXQRe6a+Pg3ARl2z3eP7F
-         Jp93VrEHDj8qhgzdPWFUTKCDTCDyDEoQBvFY/sFcoGOCVrb6Tnn+AmPzCcQu0wo7TkOq
-         hKDjIcL7+KpWr8i5+5cuubyciUzO4J+TEaRDlfrIvNp8cWU9KKR489uBeufI9h/GuEdQ
-         IeZAFoWBu7B5V/xiOFo/B33QFgxJKjtLgHmmXmQVMmMjHQpcbkGMSFeEDOqFuSXjC3Fi
-         dDMA==
-X-Gm-Message-State: AFq9FYLGhCvKAkvJ/8hrheH0wDY3Ws/xRsVQ/rNvddg1az5LGQekPIAM
-	+AJhQw8tsmDq1+W34EDPSf47v4JGWf+bSwFoCBNtWhxAKQx10XCVrseapHpJ2sfreo0=
-X-Gm-Gg: AYBFou3w4IKPOQCQH214ek5t8TuT3vJZkOyM7fGXc31qH2LuuDy/XaDTD6SBbFUfmkA
-	8LVpr077/XQvWaSb9XNdM7k/THIWdlH4aheO+jjFH9j4wxllKFLY3kvae01BXCkTqXWnqacVj/Z
-	BmAXkG0uWDA8S8TLv3o7+sZSllnikkeBZsFs/taS5zFPNcrb8gyNPfxKyl/Ka5N9mGZ/4uf3k8/
-	PBtna1tIRH28NfZPmU5EwNC/vk9zR4TUVbl2tkPrKRt15PHVdVmQldL9HBZ4FHW1fYdC7c8aDB8
-	V+CN602zlp1pRpLttFVfoLfbhVtCL2oaOGaRpmHZL9itWsLH3bquGck43XXZ2JNG9XjrT4P/MUw
-	ZCEnSpH+Wx6n0G1qoOgPVAlwHkRlca0dQmCg60sdGH3WeSzbqLYjUE1j4KUboiHV9ch6WwjeLDQ
-	p17ztGyCe5ud10iTmEsLekROnhGbtlW8gxMc14WS3CwutziTzZ4ELbjXKQp4tE7WKbgowcGn/W0
-	L7zdpvf35jCpJt0hTTKxGkzzsW16EePyuv1QODgUG+UOfvSHokbmHY94gA+8jbbwt4=
-X-Received: by 2002:a17:907:c30e:b0:c41:2ab8:aa3 with SMTP id a640c23a62f3a-c4606e91924mr434637166b.32.1792590892298;
-        Wed, 21 Oct 2026 06:54:52 -0700 (PDT)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c468a4ffcc5sm7387366b.26.2026.10.21.06.54.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 06:54:51 -0700 (PDT)
-Date: Wed, 21 Oct 2026 15:54:48 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
-Message-ID: <atjDlIBMg3dmXxHn@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-3-jiri@resnulli.us>
- <20261021000003.71f78d99@jic23-hlaptop>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=e6bk9CVc
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h6LU9sFLNofWGx0+G88GBRaeTSXF+N+z8qmKU/o0xE64DuSawMGsR+NhbT9fw95VvtY1zeNeMEOSsoZM3WkzvP9X71d0mh4YViE0xOM6R4Z4rx5hxwoNlpKt9jEIGAcNo6B74SH+ZIEamXuX6UNDPMsFo+E8oEGoz4b/gG4rpVWHnVZOQgGGC+ed8/2Lj6Het0zsmpwFaiCNYBzbXmP5sA0NH3bmmLEI+jPxokANYXfOngUdRYjK8I6Ylypqb4xIkHVCDiuCHpBcto05LRq5RuFPxTDGROjzFlgiA7zKpOvzfqWIn/6+RhMUSRJpOI0S3ci2/IjtYkHpHFQQGJo61Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V1Y0x827KZ5gPGFfhEMzDA78Jbu/KjnnmWcX/SAyXpE=;
+ b=UKyCkCulK2MY1bPuM8UNyQXUZa+AlxkcvwI3CDNesIKFHCYREqFkeBhVLsOxJ+nLLmyHhkmCk1JDySkLkurKZB+Pubns5HQsFm1xPUdfW8AzQMQSWnTh2FUSaqQXKF3dCT/rOa1Fdr6T3IrV5ulSSaCOJJxKi86yZFpo+QUScXks2Y930nMesLg+Nt4n5IGgzJC0mAbqYdqFh1564Z/K7EFp2MpKmjwmssEukkmh/rmuY6Y2aT2jK7UxqDhD3X1pVLo9Cs47sUHNNa7BCUOQlO+Tu8xblsX+/mx+16rMqSw4OZVEs+hwn1Zwyg4bZkW1NO+UkwAXeg0IqF6Xp6Dx+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V1Y0x827KZ5gPGFfhEMzDA78Jbu/KjnnmWcX/SAyXpE=;
+ b=e6bk9CVc0sRYZa5GghKu2FpZ7NSVvMemvlzVDxzIaqWECkR31fWI3OUOHZnFyribVGVSyo1REUXwWzJ7qHv3owlmGwNVeskJZwpIMK78LhmN21nCzvy6ic8dC/4RG+Npfu3bJjbfcno8C0MNurDl7V6wQs05mE/CDcWC++RzeVDLVFDL8yeoSCyNNWNIwm7pF+Tep9q4Uvw3I2gOZRQx78nn9+VwkZKdnro/0XJintF5SeK16LN53lITvCPAmUL5/QpiAD3o802CVIOwy3R4CHuikpxYiV5wGdSrdV5Vw6FjQmvOhJxflu/Zanvvpo+LLKcgM4RwYq3yMU+Fr9p0oA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by CH3PR12MB8073.namprd12.prod.outlook.com
+ (2603:10b6:610:126::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Wed, 21 Oct
+ 2026 13:55:36 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 13:55:36 +0000
+Date: Wed, 21 Oct 2026 10:55:35 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+	Dionna Glaze <drdeeglaze@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
+	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	roberto.sassu@huawei.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <20261021135535.GN3008132@nvidia.com>
+References: <atPgqROZZxnihYfC@kernel.org>
+ <20261017231007.GP13920@nvidia.com>
+ <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+ <atX9fugGUsI0hGcA@FV6GYCPJ69>
+ <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+ <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
+ <20261020140655.GV13920@nvidia.com>
+ <aa00515a0f364fea0150cf1550a09d9400e4632f.camel@linux.ibm.com>
+ <ateSly15N5mLrM1m@e129823.arm.com>
+ <2641f9f5141126af8a93763fcbdd2ffd5c4e520b.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2641f9f5141126af8a93763fcbdd2ffd5c4e520b.camel@HansenPartnership.com>
+X-ClientProxiedBy: YT4P288CA0073.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d0::10) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,134 +117,79 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021000003.71f78d99@jic23-hlaptop>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CH3PR12MB8073:EE_
+X-MS-Office365-Filtering-Correlation-Id: f14bc077-a680-4d6b-9fe5-08df2f7afba8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|23010399003|376014|1800799024|22082099003|18002099003|10067099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	D7HMXsxV0tC6+p5LFt24XFAukGeRIxRgxrTMe25C+7aoXIj0nRsvo6smbKpAj2WtlRX/Mw7KUKltmY2dhyGL/bNFladpqlToTGIJZH+VsWAHwbEkRv+OvOdTo86DOkAqgRhkPnijcQZhYLx2RUOhny9QyokU7hzj1r1T3CZnLrmC7GgYZ0uKQx2q6DiuJ7cMLBCG04lAZR7hJrqL204ym8ap7XXpQgVm0gcZWrupl/1/L6F4OrUiAYVGmi8+z3eZNr1UEI4GR8sveAZgYKXfDuKWQBCpTgnEtSDSOmAPbKQwGZOObdDgV3O0MEVs3+ZIEn9s8tgNwcjblbPuFQFxPTG6vpbfk+vXpXNVYmZsWlvSK5plDMN+/4IuKBb2+x3bV2cQMQnBl3f5iaZT2Q5LjN59w4LDn5H2Tzqbvxmhy+gUYf2nzyuILG821t9PTmqfgTt+Tc1RlbEtiI5izWD6Jgeex2kHQcluBBcvxpGkWm9n7j1UBrr0Hgg5/6fwgUh/QIrrXfWNT6hI6FmMLxYLmqUqwr0nOmlCFJ2VELiVDtibmAbKXzZv3lUaIQYFQ2nJxAbrkMwFfHNH31yIeNwuobMaau5JkQ4zsl07ZzqMq5AVKxxwb29QyuBiVLecnwY6+oONYoNrFWle3LT4muHuVy305Vg5jDWwKMjzbMcmF1U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(376014)(1800799024)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vRrrm3AAAkGd6HBwV4BSMGjsw7GLLSBJC9ry8wpB1aM2SWo9V4mNFWrK64tx?=
+ =?us-ascii?Q?+ehuZluGz10OslIjXr0dxdcvFy2Kk/Nv2xCeGQZtFFw5+8NNZNFyVLXuPpkz?=
+ =?us-ascii?Q?QS0d0m2NWSAOVHWQ+blbBWIaS9ASIugQmHtZfAaUr2gii4jyA77ttRhJQvdd?=
+ =?us-ascii?Q?i9rD/2JgpPmZpZkxJx0iNVOacHpRz/nuevTeONP7MMQAO2xQit6zDO6mKHvS?=
+ =?us-ascii?Q?7zCnTABXWIKoMWZDbkMn7LlHCDBH0fu/RUSN1kIMujxm5hRrYm5TlKKuK5IL?=
+ =?us-ascii?Q?ka41mKd7JmlKpy0VMglB6GOoGkC0KqAy1jBKPhpHL/25cYQ4AOIu2P8COggU?=
+ =?us-ascii?Q?L/nnKCwsBNaN4RQB8RmoFG6sDqTWxm0nsglmL6cl+EDHO9Gie7ZmTxx2Pyh4?=
+ =?us-ascii?Q?BOBsHC61i3ARRki4CSuRSVxhD9923HksARogS2o9i5fsrscW7HrEJkOuZ7pR?=
+ =?us-ascii?Q?uIDq4olEgmrz5V5ecunbV1qFoXwd8+vje8wocH3orJ/UoQJxtKmV2sVmQl3j?=
+ =?us-ascii?Q?xIXmTIyLW6CgPidwLPA9QPyfKjQYOz8IX+hia0xYb1rQPTF6XUcuQq3Fxr7i?=
+ =?us-ascii?Q?ebQqFNp/WTS2o5FcKX/zt/lQWzu1sqhb4Le+1UPMxM+cFWz5ZJF6eNRabh5y?=
+ =?us-ascii?Q?SK8sE5N2g96PDUlJqKNJmfI+S7IMuBXfzLhHzCPkjyAtN3E6Erp7AsduTinf?=
+ =?us-ascii?Q?/7nYAlAsrSi4oTmQBjxxjrJ6rIsYMf5dtAO0h+REhqeiZTytV82+pywZxACb?=
+ =?us-ascii?Q?9eYyJU1n/XqMPPzlMOOU2wxY5qvdSQDnE0rBXHHpgS0/H8Zc1bJwLg6RYvyx?=
+ =?us-ascii?Q?F9CxPeRiabSNclryfu5Q2Sx8MZ8txHencXhb0U1Qzx9aPZaulUBGErcjCGeZ?=
+ =?us-ascii?Q?BF2CkGVFu8M4zz0z0Q2Q99+RTSR7EOy+lN0vBlFejuCNQyckP88yDN6bZEYz?=
+ =?us-ascii?Q?jA9x+TpOgCxN220SkebqkWO10nTbddvNQjyEo3cOnoEy9wVpLgCVnaSsoiGy?=
+ =?us-ascii?Q?ghD367D5tZPKippP8CpE7tlvYxP5nJwJmxW/wscxMxSiOTEUWlpwM09EZia3?=
+ =?us-ascii?Q?qwW23HISECdPe0KvzsxWmrZnP+QrVWpwm1hz6VciLgs/9I7KpYpCxsNvZKhV?=
+ =?us-ascii?Q?RLOnJcn8F6cXbXZcu1djK8kB6FcaC5rGagDgqUyWDxw2DyXQ/PC59kF4V+wm?=
+ =?us-ascii?Q?/sl9vyaJfiuFc+RF5iVdnwUHwjZIU7P3DyqVAkm4OKN6QydAJZPz1XM4pN9p?=
+ =?us-ascii?Q?efrBtQnHzHSKJV8LLtbuFk27t6QCNh7oeb8RZyTXkkgT/9mdlayw3NsaIljj?=
+ =?us-ascii?Q?nTbb8NPCBvTGhiXsfEjkrAB31NfOanYk8rcNTLlnLtpcUUR8VNQ9V+369DMz?=
+ =?us-ascii?Q?LfC5lE7wHDIeHVPOUnNLvj3CmDz0YvDH+iZabSta0ki4zez4yXkpPzdx56Ik?=
+ =?us-ascii?Q?VLCWq8mVIQsQsSI7iZJXjh4+/Dxpea9CurD085KkMMbCs5X6j9CH+SP6FO6Q?=
+ =?us-ascii?Q?Mf5k224AjD3pzKBioF8Zi1P0uKX/MKNQhPQuSctl2EgEN8Bed9qawiTMUPRe?=
+ =?us-ascii?Q?C7J2ugxRiJ2Soo8RlVI9EwV7DeuRKGz8Taz1OevcZxNFRO8W5ND3UcaMv8HJ?=
+ =?us-ascii?Q?5g6fEZsGg19UWZYGjjWk+xrZ3rJMjPG389F2qn22ZhIuUdUCKui48QxrII6L?=
+ =?us-ascii?Q?MB2of9kwiDkhRL9kEYkPRhotGezTnsnEaODebPK2+3yZhFaG?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f14bc077-a680-4d6b-9fe5-08df2f7afba8
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 13:55:36.5515
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: W1jg0rKmE84u2PciMOKsFOqdbuxCGu13hpsfgJJ5LtKyjwewUKh0H+2aJ7BDKQD8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8073
 
-Wed, Oct 21, 2026 at 01:00:03AM +0200, jic23@kernel.org wrote:
->On Thu, 15 Oct 2026 16:50:35 +0200
->Jiri Pirko <jiri@resnulli.us> wrote:
->
->> From: Jiri Pirko <jiri@nvidia.com>
->> 
->> Define CTLV's common TLV transport, ioctl, event records, identifiers
->> and limits. Add the in-kernel API used by family implementations and
->> generated code.
->> 
->> Assisted-by: Cursor: GPT-5.6 Sol
->> Assisted-by: Cursor: Claude Opus 5.5
->> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
->Minor stuff only.  Some of it moaning about toys we don't get in uapi
->headers that make kernel code 'so elegant' :)
->
->> diff --git a/include/linux/ctlv_family.h b/include/linux/ctlv_family.h
->> new file mode 100644
->> index 000000000000..1ae4d3a536f7
->> --- /dev/null
->> +++ b/include/linux/ctlv_family.h
->
->FWIW I fully agree with Jason that sometimes it is worth burning
->some lines and even duplicating things a bit to avoid too many
->complex macros.  I didn't have anything to add to comments on this file
->at this point.  Will see how new version looks!
->
->
->> diff --git a/include/uapi/linux/ctlv.h b/include/uapi/linux/ctlv.h
->> new file mode 100644
->> index 000000000000..6bc0d1a296e6
->> --- /dev/null
->> +++ b/include/uapi/linux/ctlv.h
->> @@ -0,0 +1,183 @@
->> +/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
->> +/*
->> + * Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES
->> + *
->> + * CTLV transport UAPI: the TLV wire format, the op-execution ioctl, the event
->> + * record header and transport limits. Schema-free; a family's constants
->> + * are generated into <linux/<family>_gen.h>, the root family's into
->> + * <linux/ctlv_gen.h>.
->> + */
->> +#ifndef _UAPI_LINUX_CTLV_H
->> +#define _UAPI_LINUX_CTLV_H
->> +
->> +#include <linux/ioctl.h>
->> +#include <linux/types.h>
->> +
->> +/**
->> + * struct ctlv_attr - Attr header.
->> + * @len: this header plus its payload, excluding this attr's trailing padding
->> + * @flags: CTLV_ATTR_F_* bits
->> + * @attr_id: complete attr ID, or CTLV_ATTR_ROOT for a message root
->> + *
->> + * Attrs are aligned to CTLV_ALIGNTO, which is why @attr_id is __aligned_u64: a
->> + * 32-bit ABI would otherwise align this structure to four bytes. A nested
->> + * payload is the concatenation of CTLV_ALIGN(child.len) bytes per child, so
->> + * child padding counts inside the containing attr's @len while a leaf's own
->
->Whilst I get what you mean, leaf doesn't feel like a clear concept in this
->comment block.  Maybe 'this attrs own padding does not.' or something like that?
->
->> + * padding does not. Scalar payloads are native-endian. Within each request
->> + * root or nest, occurrences of one @attr_id are contiguous; different IDs
->> + * otherwise have no required order.
->> + */
->> +struct ctlv_attr {
->> +	__u32 len;
->> +	__u32 flags;
->> +	__aligned_u64 attr_id;
->> +};
->> +
->> +#define CTLV_ALIGNTO 8
->> +#define CTLV_ALIGN(_len) (((_len) + CTLV_ALIGNTO - 1) & ~(CTLV_ALIGNTO - 1))
->
->Could this use __ALIGN_KERNEL() from uapi/linux/const.h?
+On Wed, Oct 21, 2026 at 08:48:28AM -0400, James Bottomley wrote:
 
-Okay.
+> initializing its own TPM driver.  I've often thought that if we could
+> prevent that and have a separate callback to kill the UEFI TPM driver
+> (or probably one before ExitBootServices to say please keep this driver
+> and then another to say I'm done), we could effectively use that for
+> early kernel measurements and then engineer a handover to the in-kernel
+> driver and then not be too worried about when the in-kernel driver
+> attaches.  Of course, doing all this would require a UEFI spec update,
+> which means it's not a quick or easy thing.
 
+This is effectively what DRTM is for. My plan is for th launch to
+capture enough measurements as part of the launch so that kernel can
+run along far enough to naturally load the TPM/ROT driver. This is
+aligned with how ARM DRTM is sketched out where you can get to ACPI
+TPM discovery entirely on the secure launch data.
 
->
->
->> +
->> +/* Set exactly on root and nested attrs, clear on scalar attrs. */
->> +#define CTLV_ATTR_F_NESTED		(1U << 0)
->> +/* Query fragments: set on the root and each nest logically open at the end. */
->> +#define CTLV_ATTR_F_FRAG_MORE		(1U << 1)
->> +/*
->> + * A request attr, never the root, that a device whose schema does not declare
->> + * its ID skips whole instead of refusing the message. An ID that schema does
->> + * declare is held to it wherever it appears, so this asks to be forgiven what
->> + * this kernel has never heard of and nothing else.
->> + */
->> +#define CTLV_ATTR_F_IGNORE_IF_UNKNOWN	(1U << 2)
->
->Doesn't really matter but could use __BITUL() just to hammer home this are single
->bits. Places like pci_regs.h have started doing this for new things.
+I'm pretty against "early TPM" for DRTM, and I think non-DRTM flows
+should be similar and measure enough stuff prior to Exit Boot Services
+so that the kernel does not need early TPM.
 
-Sure.
-
-
->
->
->
->> +/* Implementation limits, not wire-field maxima: raising them is compatible. */
->> +
->> +/* Request roots, action replies, query reply fragments and event roots. */
->> +#define CTLV_MAX_INLINE_MESSAGE_LEN	0x100000	/* 1 MiB */
->> +/* Includes the error information root. */
->> +#define CTLV_MAX_ERROR_LEN		0x4000		/* 16 KiB */
->> +/* The root attr is at depth zero. */
->> +#define CTLV_MAX_NEST_DEPTH		32
->> +#define CTLV_DEFAULT_QUERY_REPLY_LEN	0x10000		/* 64 KiB */
->> +#define CTLV_MAX_EVENT_QUEUE_LEN	0x1000000	/* 16 MiB */
->
->Pity the linux/sizes.h header isn't in UAPI as result is we need
->those comments on what the sizes are.  Ah well, never mind.
-
-I already eliminated all of them. Some are kernel internal, some
-userspace internal, some I moved to introspection.
-
-
->
->> +
->> +#endif /* _UAPI_LINUX_CTLV_H */
->
+Jason
