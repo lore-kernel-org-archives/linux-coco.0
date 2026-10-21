@@ -1,99 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792589026;
-	b=wpqVdMKTzmJTekC+DQ7w0aveNun8M8k+IiJ5eFsRaV56CQsyEOWqg2cy6M7Nk2qBxOsu
-	 sJZVR9uZPu/+bj3bnZB7x2nCxnUg3x6NK8aEwfzKWhF8EMIP+EzLoBvwdHSYubSEXC8XJ
-	 kMsb1KlZXrLTrgLuVVldHbGsWHomyHUW12nG1WlMW13ien3IJw49SeuOjTQUbrHKMPUUQ
-	 dkCYxiHy9yAi3BF9YzR95iKHlwDaWw4XhznPPHf/4saFcueKg9xMZiZIgR7wG1Dl9Sari
-	 L9dfuRO8rNimFfvAQhM0UuiLJutCPWg/Gy3pxGsY/ML+znVjzj9IyTkSGldC7R+/ivg==
+	t=1792589754;
+	b=NFAC7Y2YaRfeQDaeoEqnz9Q9+4LfDO9POC7lcKdGgK8FVv8LSgbGgbpIrjDHQLasWeAL
+	 aTW5LX64cizxDm63t+ERqMW9WTDCAkaDb9Ru2uPTvVUiyuPsECMBeuHAf5t4vc+c4ibN7
+	 3xxOU5UrkmqgAp4bJYuh3YGMf5I/rrl+LGdEeYxYRP70ZN7Ju+ay3tO/utcivoQahWUMc
+	 w95OOVOAzKO3e5YasriJB0i7xCaGmntSdM1fn0p1IWYf4xUFvBsX7KA1BaEDjgwlHLNYP
+	 hfXG7wnl+no4TVjbx1ReeXKbSdIQdLLi4nyqS7hYUcsmqEP+LgehjBKkvUrthFX5ivA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792589026;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=ENEgiLYyZC1rCnAzeRub371bt2VgRo0VClTgBaXb9SQ=;
-	b=rXKnazxxEfZ/8YCrt9cGbs1bBZRFxqJveXJGOBnzXiezgizEeTlu3iPL3SN6lMMetkZV
-	 fQXgmk80pX0/k9cN5muWLsAPiSY0Wtp0SVT5Twx+umJ15FRK/lESy5y6It28uJP0WZ7AD
-	 ZG5r2NzZPZURNCW4JLTX4zf8NoaCHLPeqNV5U+CpnLKyLyYO/da+QhucHeM/xkYEca863
-	 Mn/T4Yry9Bs/M3Fr7eQwCPyUZAV82G1udx4fEXWpiFGuvevi+423Lh9erU8hACHkIa8yt
-	 dhOlUa7ICUgu+TOh5jGYsb45IZQkbN1HFwRAdkLNpCGAue0AxT/cc59xxcbcd00YbIw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792589754;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=TWEer91pURJKpMqcGr1P37YbC2QaRDdu+H8+zHCyteo=;
+	b=5sg4U3JLY0g2JC/ymkPHX9AG0X2ElpiHhu2OBChbJobwduOj2HlKWJKxwl7U4eumyqiX
+	 LPCX0ZA+MK6kZQ+4dqj6cizCTIp847vmjXEkCNmlwU+V3YsczZAsXjDFaadkTNfWFStyZ
+	 rQEnPYf8BwRBUWjJ49p/Mns8O9tNY2tin0aLV6u/WYp1x0l5lT2KCmb5Fxv8a2KNYg1LI
+	 aybhNkqt+C+EyD6VpLIljHsa7aSlXQpezhWT4+oK6GCzm7urM+FZhFNPC5RF7TrdzISnM
+	 iW/mQHWyEXh2kqbsHfVMjjHmV2vQcRuxHhErx2Na7AJRIiQKXJzmAKx3ADh3oTItPZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=d5eYwt4f;
-	arc=none smtp.remote-ip=209.85.167.44
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DB9606A31E
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 13:23:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5DB9606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nYXLNQ+m;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B518606A31A;
+	Wed, 21 Oct 2026 13:35:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B518606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=d5eYwt4f
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5ba357a1929so736983e87.0
-        for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 06:23:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792589023; x=1793193823; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ENEgiLYyZC1rCnAzeRub371bt2VgRo0VClTgBaXb9SQ=;
-        b=d5eYwt4fVm5GK2d5UvTdbjTTPGsdC0LzEN5pq3AzhGOPYaywu8UL9SCrOZUjEQFmzz
-         nyyvCRz3fi8PohxFBSwPH5+CNAyDJ74TwnwthoKXbRZwc2E7L9R1sj2VNkO0Ln46ocK9
-         povT+CK4C5BtedeBYO9d4MScX9lMoCxxwaLgKXglQ7h2Ap6sfQlmlj/58fSTI4Goda6s
-         TJLjmdxwY8WQikVCSF2PNwG2xi8Zmb0us1OaX7BSD9j3WxB99JJoDGhJ3n2tpkoSPcTP
-         rnra4qAO9rWeWpDo1TyoFCQz8ib9RpYTQ9vVJj4931HftXKZKG47ROHeoOIAaL0/5hld
-         +AQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792589023; x=1793193823;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ENEgiLYyZC1rCnAzeRub371bt2VgRo0VClTgBaXb9SQ=;
-        b=GK+lomw9E0rFkbN78cuyS3Uwv8EPvUd4zmuQoinMrhb2NZEAfC1GP4I6QUoylH06es
-         K3VqX3DIsHZAw9QoZGVGaFsm4cw8lpDlPJE4TD2+qgK+zS/Y2+tzRz1kcFgH0d9tUnky
-         +YPqvNMtIJa8v5RLHbRLILT6lcEKSnZ8OoOH5mvqbWSkxNU6CP4vXnRcUwcVFCy7Y74e
-         M18cy3H3Nrwh8vmKGEbMrFR6cCZHntvvAUhxvN/Ldi2A3caQ1QW6e2V/KrK48WCcjJpF
-         rxOYM4Fc1tBM5hDLX582mDA7Qwc4qX0lnUdtdi5fme5SZuap1fbImJN/RkOQkaYQOzHD
-         N2PA==
-X-Gm-Message-State: AFq9FYJrzT9EE55vOMcm4zX2JDo1LCWBnguTt4zsomHyGjh9mYpFC61o
-	VMkOCgs9VgtYOo8M/c6gjgAoXkjFfJInitG5ypBjdr5RM2FKOXxYBxE3Dptu5nf0vo8=
-X-Gm-Gg: AYBFou08jLF8jyccf4bk3StvMJhgqKNtAO3VqAMSpLkXbkSUBa8mbhFV35RN1Ris5MV
-	/Mkq0vOnYegKvVAlWLRcN1wC4dfSYB0vg1QhL7T/HM5IGdmY055uBQ2pNQ7XnHao7grlpqgewwX
-	1dccfxohoMCaCmQA/RB6YN7srEzq6DYZRQ0bIHNiCPAdPHj6atXb6LpfZO93emxDhl4p3jbL2Ea
-	s0Xkn5wx93OykjvU2avt5XmjDoiJkSh5cxUPvyXrwjf4gMnfbX7qXQMgb1GxTg9J3SIX/PxE7OG
-	7LKPNwKuE5IVS2uNoNdTdfJj1VJKeumVTEerY+mTVna6pcETYbvr54ted85lUEl7q64H9VV9+8i
-	zFkCpf/MhGQjl6YUwUHizedFjRx2Wb3rTxi20N5XSGKBr/k2JHTvTvRdSao7V9chrsD0fNqO4P9
-	wuxBXGjlv9eqDI24uWHKHXRHuUgYmUyReuh+Sydfa9GZF6Ss56B6ukMdLkysB97n1oBcVC4ElEt
-	xNVVAWO/XgbKMaxoCZWcvSIPsZi4ZGJbDVpdc5Mk1xSfEoe+zd+qeZHOim5IdqzMag=
-X-Received: by 2002:a05:6512:3c8e:b0:5be:55b6:7a92 with SMTP id 2adb3069b0e04-5bfa1c2d635mr792386e87.30.1792589022381;
-        Wed, 21 Oct 2026 06:23:42 -0700 (PDT)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ac4a4f5f04sm2718501fa.32.2026.10.21.06.23.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 06:23:41 -0700 (PDT)
-Date: Wed, 21 Oct 2026 15:23:38 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 01/20] ctlv: Add the schema language and generator
-Message-ID: <ati8DWgQb23dV4Dv@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-2-jiri@resnulli.us>
- <20261020233132.793b7e97@jic23-hlaptop>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nYXLNQ+m
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E59A616F8;
+	Wed, 21 Oct 2026 06:35:48 -0700 (PDT)
+Received: from [10.0.129.145] (Suzukis-MBP.cambridge.arm.com [10.0.129.145])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 15B443F7B4;
+	Wed, 21 Oct 2026 06:35:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792589752; bh=K1+XouPflyX+8G49/HiO730D52/jF3umhs279EWrgBY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nYXLNQ+m65v1I4y0obonQ9lqui4JgOt4+DqhX03+NXDRwPJhBR+5eXzu3HFypdarB
+	 260uJDalXUV9HrTgNpR7ZPbYtjl9wbcutcQcYsbMycxZAFFN23wSwQesecaDaWSXY8
+	 V9wUjjfnHaCB1HCL+OPrGx+2p/vshWxKbHaQoRJo=
+Message-ID: <34bf0c98-35b1-4402-842f-a100245cb9a7@arm.com>
+Date: Wed, 21 Oct 2026 14:35:47 +0100
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,205 +53,173 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020233132.793b7e97@jic23-hlaptop>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 06/10] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+Content-Language: en-GB
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com, Soby Mathew <Soby.Mathew@arm.com>
+References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+ <20261002061507.1600269-7-suzuki.poulose@arm.com>
+ <atiyZ7_S7aBxowIQ@FCCLS0092175.localdomain>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <atiyZ7_S7aBxowIQ@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Wed, Oct 21, 2026 at 12:31:32AM +0200, jic23@kernel.org wrote:
->On Thu, 15 Oct 2026 16:50:34 +0200
->Jiri Pirko <jiri@resnulli.us> wrote:
->
->> From: Jiri Pirko <jiri@nvidia.com>
->> 
->> Define the YAML schema and append-only family registry. Add ctlvgen to
->> validate specifications and emit kernel and UAPI outputs.
->> 
->> Assisted-by: Cursor: GPT-5.6 Sol
->> Assisted-by: Cursor: Claude Opus 5.5
->> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
->
->Obviously you asked for broad structural review and this isn't that. I'm terrible
->at reading code for just the big picture but feel free to ignore the small stuff
->in this reply.
->
->My python being even worse than my yaml I'll only say that
->part looked plausible to me!
->
->> diff --git a/Documentation/ctlv/ctlv-schema.yaml b/Documentation/ctlv/ctlv-schema.yaml
->> new file mode 100644
->> index 000000000000..38fd56e6627c
->> --- /dev/null
->> +++ b/Documentation/ctlv/ctlv-schema.yaml
->> @@ -0,0 +1,359 @@
->> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://kernel.org/schemas/ctlv/ctlv-schema.yaml#
->> +$schema: https://json-schema.org/draft-07/schema
+Hi
+
+On 21/10/2026 14:07, Kohei Enju wrote:
+> Hi Suzuki,
+> 
+> I've tested this series and found a possible TF-RMM issue.
+> Please  below.
+> 
+> On 10/02 07:15, Suzuki K Poulose wrote:
+>> From: Steven Price <steven.price@arm.com>
+>>
+>> The RMM maintains the state of all the granules in the system to make
+>> sure that the host is abiding by the rules. This state can be maintained
+>> at different granularity, per page (TRACKING_FINE) or per region
+>> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
+>> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
+>> all pages in the region must be of the same state, this implies we need to
+>> have "fine" tracking for DRAM, so that we can delegate individual pages.
+>>
+>> For now we only support a statically carved out memory for tracking
+>> granules for the "fine" regions. This can be extended in the future to
+>> allow modifying the tracking granularity and remove the need for a
+>> static allocation by the firmware.
+>>
+>> Similarly, the firmware may create L0 GPT entries describing the total
+>> address space. But if we change the "PAS" (Physical Address Space) of a
+>> granule, then the firmware may need to create L1 tables to track the PAS
+>> at a finer granularity. Linux therefore checks if the platform firmware
+>> manages the PAR region. i.e., the firmware is in charge of managing the
+>> L1 GPTs (creation and the required memory for the GPT tables - via static
+>> carveouts) without host intervention. Support for dynamic GPT creation by
+>> the host will be added later.
+>>
+>> If the firmware requires us to manage the tracking or GPT memory,
+>> deactivate the RMM and reclaim any memory donated at RMM activation.
+>>
+>> Apply the same checks when hotplugged memory is brought online.
+>>
+>> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Tested-by: Gavin Shan <gshan@redhat.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+> [...]
+>> +/*
+>> + * We do not support creating L1 GPTs yet. So, make sure that all the regions
+>> + * are managed by the firmware.
+>> + */
+>> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +	unsigned long l0gpt_sz;
+>> +	unsigned long next, par_state;
 >> +
->> +# The syntax gate for a CTLV family specification: permitted keys, their shapes
->> +# and the closed sets of keywords. Anything needing more than one declaration at
->> +# a time is checked by tools/ctlv/ctlvgen/lib/semantics.py.
+>> +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+>> +					  rmi_feat_reg(1)));
+>> +	start = ALIGN_DOWN(start, l0gpt_sz);
+>> +	end = ALIGN(end, l0gpt_sz);
 >> +
->> +$defs:
->> +  name:
->> +    description: Kebab-case identifier. A dot is reserved for selectors.
->> +    type: string
->> +    pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+>> +	while (start < end) {
+>> +		long ret = rmi_gpt_info(start, end, &next, &par_state);
 >> +
->> +  family-name:
->> +    description: Name carried by family discovery.
->> +    allOf:
->> +      - $ref: '#/$defs/name'
->> +      - maxLength: 63
+>> +		if (ret != RMI_SUCCESS) {
+>> +			pr_err("RMI_GPT_INFO failed for %llx-%llx: (%ld)\n",
+>> +				start, end, ret);
+>> +			return -ENXIO;
+>> +		}
 >> +
->> +  selector:
->> +    description: |
->
->Really trivial but nice to drop | where it doesn't make sense to
->force line break preservation like here. 
-
-Okay
-
->
->> +      A named attr set, a whole attr group, or one exact attr as
->> +      "group.attr". There are no tuple selectors and no cross-family
->> +      qualification.
->> +    type: string
->> +    pattern: ^[a-z0-9]+(-[a-z0-9]+)*(\.[a-z0-9]+(-[a-z0-9]+)*)?$
+>> +		if (WARN_ON(next <= start))
+>> +			return -ENXIO;
 >> +
->> +  selectors:
->> +    oneOf:
->> +      - $ref: '#/$defs/selector'
->> +      - type: array
->> +        minItems: 1
->> +        items:
->> +          $ref: '#/$defs/selector'
->
->My yaml is terrible (and all learnt form reviewing DT bindings which are
->undoubtedly perfect :) but random LLM agrees with me that you can simplify
->this as it's a local definition.  I think doing so makes life a little
->easier for reader by indicating it is thing defined a few lines up.
->
->            $ref: 'selector'
->
->I don't care that much though.
+>> +		if (par_state != RMI_GPT_PAR_PLAT) {
+>> +			pr_err("GPT for the region is not managed by firmware %llx-%lx\n",
+>> +				start, next);
+>> +			return -ENODEV;
+> 
+> When system RAM starts at a non-L0GPTSZ-aligned address, the alignment
+> in rmi_verify_gpt_firmware_managed() may cause the queried L0GPT range
+> to include a memory hole.
 
-Okay
+> 
+> On out platform, the relevant memory layout is:
+> 
+>      800c0000000-800dc3fffff : memory hole
+>      800dc400000-82fffffffff : System RAM
+> 
 
->
+Thanks for the report.
+
+> Consequently, Linux queries the following L0GPT range:
+> 
+>      800c0000000-80100000000
+> 
+> The query fails with RMI_GPT_PAR_RESERVED:
+> 
+>      [    8.551855] GPT for the region is not managed by firmware 800c0000000-80100000000
+> 
+> and arm64_init_rmi() subsequently fails.
+> 
+> As I understand it, smc_gpt_info() in TF-RMM checks only the beginning
+> of the aligned L0GPT range. Since that address is in the hole, the whole
+> range is reported as RMI_GPT_PAR_RESERVED, even though it contains
+> platform-managed System RAM.
+> 
+> I believe this should be addressed in TF-RMM. Do you have any thoughts
+> on the expected RMI_GPT_INFO behavior in this case?
+
+I believe the RMM should report a value that represents the situation
+better. In this case, there is a hole, and some conventional memory
+areas. For the conventional memory, the RMM has to manage the GPTs.
+(This applies to the tf-RMM implementation of TRACKING Granule state
+too. It only looks at the first granule and reports the type of memory.)
+
+RMI_GPT_PAR_RESERVED is not accurate as the memory region is not
+reserved, unless it is reserved for firmware (in which case the
+memory description is wrong).
+
+I would say RMI_GPT_PAR_PLAT  is accurate if the L1GPT exists, as the
+  region covered by the L0GPT has some memory that are delegable.
+
+Otherwise it must be reported as RMI_GPT_HOST_NOT_CREATED.
+
+The information that a given memory region is not "memory" (i.e. hole)
+is basically TRACKING_STATE returned as RMI_MEM_CATEGORY_NONE
+
+
+> 
+> As a side note, we tested this series and the v23 integration branch
+> with a Linux-side workaround to avoid the problem above, and we have not
+> observed any other major issues. Sorry for the delay in testing this
+> series.
+
+Thanks for the testing !
+
+Suzuki
+> 
+> Thanks,
+> Kohei
+> 
+>> +		}
+>> +		start = next;
+>> +	}
 >> +
->> +  uint:
->> +    type: integer
->> +    minimum: 0
->> +    maximum: 4294967295
->> +
->> +  integer-bound:
->> +    type: integer
->> +    minimum: -9223372036854775808
->> +    maximum: 18446744073709551615
->> +
->> +  max-occurrences:
->> +    description: |
->> +      A finite positive count, or unlimited, which is reachable only from
->> +      query replies.
->> +    oneOf:
->> +      - type: integer
->> +        minimum: 1
->> +        maximum: 4294967295
->> +      - const: unlimited
->> +
->> +  unit:
->> +    description: CTLV-owned unit, matching enum ctlv_unit.
->> +    enum: [ seconds, hertz, bytes, celsius ]
->
->These are used in here?  I'm sure some are but guessing not
->all of them yet.
+>> +	return 0;
+>> +}
 
-Nope. I just want these to be part of the initial schema as it is not
-omitted by later family implementation by accident. Easy to pick up by
-AI assistents I believe.
-
-
->
->
->> +  attr:
->> +    description: |
->> +      One attr declaration. Exactly one primary form out of type, enum,
->> +      flags, attrs and blob must be present. optional-attrs and recursive
->> +      may only accompany attrs.
->
->Maybe worth the yaml gynastics needed to enforce this rather than
->just putting it in the description?  An LLM fed me something when
->I sanity checked how bad it would be and it's only somewhat nasty...
->
->Bunch of:
-> oneOf:
->      - required: [ type ]
->        not: { anyOf: [ { required: [ enum ] }, { required: [ flags ] }, { required: [ attrs ] }, 	{ required: [ blob ] } ] }
->
->lines, though I thought there was a more compact way to do it.
-
-Okay, will try.
-
-
->
->
->> +    type: object
->> +    required: [ name ]
->> +    additionalProperties: false
->> +    properties:
->> +      name:
->> +        $ref: '#/$defs/name'
->> +      type:
->> +        description: |
->> +          Primitive payload. Integers are always 64-bit, and a bool is one
->> +          byte holding zero or one.
->> +        enum: [ uint, sint, bool, string, binary ]
->> +      enum:
->> +        description: Name of an enum definition; implies an unsigned payload.
->> +        $ref: '#/$defs/name'
->> +      flags:
->> +        description: Name of a flags definition; implies an unsigned payload.
->> +        $ref: '#/$defs/name'
->> +      attrs:
->> +        description: Nested payload, given as selectors.
->> +        $ref: '#/$defs/selectors'
->> +      optional-attrs:
->> +        description: Further nested payload whose placements are optional.
->> +        $ref: '#/$defs/selectors'
->> +      recursive:
->> +        description: |
->> +          The nested payload is one attr set that may contain this attr
->> +          again, describing a structure of any depth. Only a query reply can
->> +          hold one, since such a nest has no maximum length.
->> +        const: true
->> +      blob:
->> +        $ref: '#/$defs/blob'
->> +      min:
->> +        description: Inclusive minimum of an integer payload.
->> +        $ref: '#/$defs/integer-bound'
->> +      max:
->> +        description: Inclusive maximum of an integer payload.
->> +        $ref: '#/$defs/integer-bound'
->> +      length:
->> +        description: Exact payload length of a binary attr.
->> +        $ref: '#/$defs/uint'
->> +      min-length:
->> +        description: |
->> +          Minimum payload length, excluding the terminator of a string.
->> +        $ref: '#/$defs/uint'
->> +      max-length:
->> +        description: |
->> +          Maximum payload length, excluding the terminator of a string.
->> +        $ref: '#/$defs/uint'
->> +      unit:
->> +        $ref: '#/$defs/unit'
->> +      scale:
->> +        description: Decimal exponent applied to the payload.
->> +        type: integer
->> +        minimum: -128
->> +        maximum: 127
->> +      max-occurrences:
->> +        $ref: '#/$defs/max-occurrences'
->> +
