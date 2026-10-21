@@ -1,149 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792598355;
-	b=2wkLzmndj2XpL3cshfAfSRXFNDB9kZT6Q0m6BUO+91koE8XPq+eGPXpsIj2pDF0Lh2zg
-	 2OnCck4Fn3LfgUQpDaEggwSwwdTkQkA2S7uU85kgJeZfa9sprKuaofMPUGRl23GbOCYPU
-	 dZFivVrAH9iuqI1A5GyQu0/jjShoGIIh6nFbP/QKOKvcCeg7M+X0+ujNsSx0pk0GOV38w
-	 gZQtioaQJ/PhvgQZCP+gngbIZNH/2KjH5ri807ntAv8uhBJYE+PtxUMpLePOQGnsb+pgS
-	 0j22eumfz871dZab+K+TEzHTlZdtI2Ku8XCSblhkiZwE171RXGh0woGkbIPeGrzL1eQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598355;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=MgbkmyRY3dWQ+0q39TGlReSJ/nHDw4nZJBjNAY9+L6k=;
-	b=4Ep968CHTFnpCPgB4wMMm7Ak9peS6rw4OXktD7kc/D1bDfnEY9AuLgSaDhXTanoHQ1tC
-	 fYDK8lmeXvXboOI+FN6jiQc+iNr01uGR5sPJVChZ6XGC/TDZQcSPwrHU4YDTOfPcp08Iy
-	 9mLXYETEm9yhJvpbrNRaNI2fiX2ER6l4C8YtJX4eAkZ6U6F/iReLHQYCgZ8v93Ijd+IyM
-	 Y1P61NYhpU0NwKTnLRV7urgFvHLiy6j/eUfaipi4y7ha59EShHc5no5/M/aHVF6QS4xoP
-	 P834PRs9nH0XbAE3vWnYf5k0Z+O5nnVT7m9t8BLWdkvfWJbOQHkMDMquhdre8+mLb6Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YpkV7Dud;
-	arc=fail smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792599394;
+	b=HEGVDjdHpv5Z6m6f2o2WkhT/VSp0HYEItbmOUBOFocYl2BJdr4VTlr82E2xPetDS/uNv
+	 +9Rs6W8JWmwpF9HA5huAzQoeQDR56nGstI3XKntUxOUBIvoe8HJ9dLC/IDy4llX5040QS
+	 d2F90BV+uQ7CeCgkxLEGOpZCDJy4BPC2U0rWndQEKl4Xk+FwlKdvrSU20yKhxGBXjE3tz
+	 r2yKcxEmJAiv761I+mv+MshgW1qYrBC3ZDlHOy6D9n9IwSXAJVq2MuZlksRg+Pqg4Ssoe
+	 0TTPMvyE8oJSfmF8RbQLltR9Ala/n0hZeq+HT3/PMolXxzJcOH5xwPEhY6ZA9TwHmtw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792599394;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=I4fExWWHQfHqyUEeP/lXCLS3UZaAlkJ5mBxOj4iktHE=;
+	b=AkgMurB+0Yi4Q5s2yOLal9coUwT6fB09cEqKkoWrlP3PVfS0q3Z+pLBFpQ9kGdGSn67D
+	 CKw1Zfg2PJLNWWgqkv+STYyDK+XHhjfe92T6p53oKp9bgkOhIpiRIxAfMVKxKNI4gaXwm
+	 zsZfsYkQ8EjwAMzNEgQb4S0cY0yL3bS/5dLzW1yj9xiFtrAuNf2daCiMuyoLeRmJlsCUq
+	 4qO91/tjkczrt8Zv0Mv2irplruPl5QvC7jQ1EilgI9AoVTaOz9b9utqturoLt1bF/juHT
+	 W0k6zJxNJ/3XWjalSGja/2/vloPvT72kH7KljEQK0YOduWGZpvlhVb6IGSdGF2cOmLg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nGCPpxsU;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE393606A324
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 15:59:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE393606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0306E606A552;
+	Wed, 21 Oct 2026 16:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YpkV7Dud
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792598355; x=1824134355;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=uxAydxtpEwe7RkSH9CgBeuOpMuIqxWJqbYhQsY88R0s=;
-  b=YpkV7DudrnUeTKCUndrNnJhA3azIBK2x5TKyfZEhNnhXQqBMM1zT3Rtn
-   nem1CdkbXxe6Nx9zR5LOtkvxOkfOpGjtthBXxTZhvcLEr7254ZF0yDFjp
-   Uvo64cAYnvxIRlUYNPKS8mx2wzoasaDbTbPHfn1wBggQ/0xwLz9bkPnM4
-   KkyNjSp64rT3U/BxzRU6JYJeC+gXQ66lTX7TgngMX1lbyZASqAA8un4Wk
-   8NW3IboT4KrGIE4T08+ME2/ZX8n8izTvP7lL062g9VIbrztt8tbvMUZ76
-   hv46N20qj974AOeGuIf+9VF8YXPXV33o1VjpcXF2SFAchScqCeHAqbZph
-   w==;
-X-CSE-ConnectionGUID: l2C/J183Q8yL+nH3dpBoZQ==
-X-CSE-MsgGUID: xuMcQ8jbQry3VhPu4GGo4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1361661"
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="1361661"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 08:59:14 -0700
-X-CSE-ConnectionGUID: fUBVcnIXSMqvMOh1DHarmA==
-X-CSE-MsgGUID: 5TcETsNpSImkPVn0fA65dQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="3441003"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 08:59:13 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 21 Oct 2026 08:59:12 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 21 Oct 2026 08:59:12 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.5) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 21 Oct 2026 08:59:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PxX7eTscOpyAOYuHSXnuFCOAfLqXvr382ksi5LfHW26MeTM81HpGMls76E5tmj3qstxAQtrmMyW7GLFxUn+9MvRgut1ZXrih0sRSK0BJLpsQ3mSIU0Kg3AnC27kkfOtNEf5IHIt/6+20JWgC7P+1Qt+o2R0mJ14nCpZLiqLMa9jMv3W6C+ElpOry35/Xi46gZfZkxJebbVwrFwAHCEiMVinX9/fJy4Fm27bGew1O/n6U/d9OCsGJIk5PDkuTeLdiFyhg1U4wq30R1s5UI4X1UdUtmz2NiLkAK5n4haL/KI+juh9HjsSXyMfxSSoEaodYUtvwd4SsZWm9e+Mq+hmk+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MgbkmyRY3dWQ+0q39TGlReSJ/nHDw4nZJBjNAY9+L6k=;
- b=OOPHflYQSbFzaLdT7b2+a1Lnbo/eoTvg6ermzh7tqkY8gvC+w2ayywe1SvYcg4dRt70ei8/hkX1JWHJqvmzYRqefu51gpyA64JdymP8EPfZu+R2VmUjm6L6QYF+AmdLkK3oCJP8C8Oy8qpaOxzMLw7jP4ObboVWipu6CTiA5+EA1oEELDs5z5C8+Njfvab1/OwuKOAbXVydNkM2ZIM1xQ5YKy14SOYVd+MhXy3vlgpx8Cz4JC/pAbvL9jYHlxvpMMDtUBwzKT8FrwLjqWG0Ri4WqToZIR6uRuaFL5SU4PPn6j43D2XYT5StbYpluGXMXla67VZDUjLZRTNFhh6kH+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20)
- by EA8PPF65D11CA20.namprd11.prod.outlook.com (2603:10b6:30f:fff5::794) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.18; Wed, 21 Oct
- 2026 15:58:58 +0000
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc]) by SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc%6]) with mapi id 15.21.0522.017; Wed, 21 Oct 2026
- 15:58:58 +0000
-Message-ID: <69748525-438c-48be-8876-6e6cf1ba88fe@intel.com>
-Date: Wed, 21 Oct 2026 08:58:53 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 04/18] fs/resctrl: Introduce kernel mode enum
-To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>,
-	<ben.horgan@arm.com>
-CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <fenghuay@nvidia.com>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>, <rppt@kernel.org>,
-	<dapeng1.mi@linux.intel.com>, <elver@google.com>, <enelsonmoore@gmail.com>,
-	<jlayton@kernel.org>, <kuba@kernel.org>, <ebiggers@kernel.org>,
-	<seanjc@google.com>, <ewanhai-oc@zhaoxin.com>, <binbin.wu@linux.intel.com>,
-	<peterz@infradead.org>, <ashish.kalra@amd.com>, <superm1@kernel.org>,
-	<chang.seok.bae@intel.com>, <prathyushi.nangia@amd.com>,
-	<kim.phillips@amd.com>, <ackerleytng@google.com>,
-	<elena.reshetova@intel.com>, <naveen@kernel.org>, <darwi@linutronix.de>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>, <eranian@google.com>,
-	<peternewman@google.com>
-References: <cover.1790867441.git.babu.moger@amd.com>
- <66efcdc1bf71c1cb47c546b1d1299b58594bd30d.1790867441.git.babu.moger@amd.com>
- <6764525f-0245-4cd3-b35c-c2bbf4e65733@intel.com>
- <a23f9f1a-3c5e-4166-8956-86c3063a9e64@amd.com>
- <14e8bcd9-4431-4dba-887b-c5b5e156dea3@intel.com>
- <b8ec67ee-3a5e-4c36-a1c6-2b291d013369@amd.com>
-Content-Language: en-US
-From: Reinette Chatre <reinette.chatre@intel.com>
-In-Reply-To: <b8ec67ee-3a5e-4c36-a1c6-2b291d013369@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4P220CA0009.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:303:115::14) To SJ2PR11MB8370.namprd11.prod.outlook.com
- (2603:10b6:a03:540::20)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nGCPpxsU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BF81F000C1;
+	Wed, 21 Oct 2026 16:16:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792599393;
+	bh=I4fExWWHQfHqyUEeP/lXCLS3UZaAlkJ5mBxOj4iktHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nGCPpxsUs4AvaWFhNU3hCDoWDL+/491Ja1Ge+UAeHCAMLn+P65iDIBcQIIBP9d4Ap
+	 bMYEeRz4pgVCIGqpqh4+MKCZ+a4he9z2d84c9tcRQZ9vssLTGdLVpORCNxcVWIKnv2
+	 dd0YyPrvKWsmKsp9Sv3eZ5Tfw+EwwuMRfr4L7Txdr0VZe7crztysVmyciYjBbkyqLd
+	 Ps57Smw9NLgfrfnAeDoWftW1myB8xt6bVXXSk9f2ZaLSR854azFasI64ryNttTYhKz
+	 lsCfX92+OT3Ym5tCTthLZn/1YA3mWXXBSBM+tCh3Ri8TfQru8lokx4F/zoXJbrXa3D
+	 6EW2a22re4f4Q==
+Date: Wed, 21 Oct 2026 19:16:24 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	luto@kernel.org, peterz@infradead.org, ardb@kernel.org,
+	akpm@linux-foundation.org, arnd@arndb.de, thomas.lendacky@amd.com,
+	shivankg@amd.com, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v2] x86/sev: Apply the RMP table e820 fixups before
+ memblock is populated
+Message-ID: <atjlWMlcVsaHJOmd@kernel.org>
+References: <20261020202818.368416-1-Ashish.Kalra@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -153,153 +61,98 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB8370:EE_|EA8PPF65D11CA20:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91dbb199-e520-45a1-cc52-08df2f8c3757
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|18092099006|22082099003|10067099003|18002099003|11063799006|4143699003|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info: zG4BkV85wi27JXzY2dNB01yVgVjuBLoDLdPyIAxzu3uOtS5TJLk0tPuLRr1CuGMmH9bdrJOOYJLcVmaR+q+ODl2uVZNZJfDDhgbGAdyNy4KH8YjUluq3WkzvXuWHDgyh86qH28eG4cYVVZJ0hD7qLmIMLIulKe8D4jWUprq5QYdrmrg3j++im/edWrabDKGjwo8aaf9WqbfbZ9qVNOoecgw2vQGUUss9YmSdLaugi15sFWxuIdbdrtQQL3GsSEWsZZFQId/xQIc49RIa1MlvnZc9rTyRSRw5eyVXThNhhLBxy/Uk3iyDcbLZ9F7vrL5TJhIhbRjbtX0iCSuv90w2Ww2dgk5xalPb2XR0wc9wiWI3M3cJzNHWkn7rSNIH5hVBJ23N48WvnxEwcCJERQ2vXo2aXM6lcVxXVYyrba1/b0UueCp1UO608PYmpKSI6Eum5p/iA5RRIqFXcNKGqHEc4AEkOeJHaVY8Gg8s/ehB13MckjYmdWuJbV2Q/8ZTdBkEVhooBjD3AztQLfHXwa0JaF3khtUJyAqQZR7Ub8kIN8CEzUDJATkKQNGu0Y+kPoi+WgNTkqWxyKMO/YEfSlVIz6IiXBpqxAxYGV1ehQp2RGPbiI6OWuSN2lFpfh+sPl2RhcpG180oqL40IwOv7LWFuAlmEP7mPD3meUprkuqw4zk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(18092099006)(22082099003)(10067099003)(18002099003)(11063799006)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bFcvbzc3aXVTOGR2YU5oVjRPYWJyT1FFV0VySy9KTXM5NGRHUDh3Ym1CUERz?=
- =?utf-8?B?L1Y4ZGlWQW0rd0dIQVl2ajBJd0kwTDdQNTFlNEh4Vlc5VWgvaktwYmZIelN1?=
- =?utf-8?B?SlNiSHBTSGt4bzJIT3M0UjVIS0ZoUDRLQUR4LzlWQVNRWWNXQXZxeklGRGtD?=
- =?utf-8?B?eWVaL2dpTDJUU2E1NEN1bGpaQ1NpWmpZdlhJVGZjODBXMEhLbHZKeEpLcG1Z?=
- =?utf-8?B?cmg3MENOcHdvenEwS0VTQzRjUkV6Q3huOTZVQ0pQdzZPd1REMTllb1BOdCsx?=
- =?utf-8?B?b0dpR204LzlEcWFYU0NGaTNwQnprSEFSSVhobmFiRXZYekYvLytEM0xyY25i?=
- =?utf-8?B?d2pkK3J0YVRmeDFLZUVZMXNZT25MTVdSNnVzdG5YKzZRT3Z2SVM3TGtmTWNE?=
- =?utf-8?B?ZmFseEcyVmJUUTlaVGxKdGIwT1BtRTE4UjEyK1dwaEpqbVFIWHV0YlNvTmJh?=
- =?utf-8?B?dk44RXlqSlY2aVlkQUtpRFVPcXJTaVNaM3h2YXpQaXliTG9yUEJEbUFSTS9C?=
- =?utf-8?B?MVMwTHVWa2NlczZBR0YwUmNrazRER2w1U1FIK0VkR0VxR0FVM2wwOXBZMmgr?=
- =?utf-8?B?dXA1emRHb1RQYXcwTzFTbXlZSk15RWxpaERDUFl1bnhrdldSRFdncFEwWWRl?=
- =?utf-8?B?bUJkMGx2Z1Z6ZFNBVm5ERFAyRUgydzNad3ArWmVobkV0RGxQbVlpek1QMjNl?=
- =?utf-8?B?N3lMczQ2djlDQ1FNcUJ0TXZ2TVM1QU4rUVFJUWJQbHdoLzFkNVI3SkEwY1p2?=
- =?utf-8?B?QjJrZUVrZ3dGS20zY1ZvZWRKRkdnYTVaZ0FpN1VCcUkzSFVDTUZvNCtlSlhM?=
- =?utf-8?B?cFlZYkZDL0ZJUEd3Rk9XRm05OXFmTkcwMTJDR3RyKzVXZXk2ajNiSSsrV3Yw?=
- =?utf-8?B?bkVZTTJVYndJWlhYdGxvNUpmSG1vM2xpaFpxaFpsaEEyWWhHajlNdFY2TmND?=
- =?utf-8?B?RGNqcjA0cFFZcEt4ME9NRmtiU0RCdEJhS2hOTjVrYmcwamFyYU0rQmJyaDJ0?=
- =?utf-8?B?R3VvUHdCbFVyNUdXcER0eS9HRnRESHRYT0xvNkZmcnZhK1pUNUpjdVZkdHpL?=
- =?utf-8?B?RXNEOVo5aS9mKzVnRHdGVktWMmJDQnR6T3NIdHJJc1VFMnE5N0k0QzdQTmN0?=
- =?utf-8?B?STNhaHZVOTl6RUM3c3k1K1lxOC95T2ZZRThRcjFmWGlCUDhzR3MrUEY5SDg1?=
- =?utf-8?B?MVA5b2lnQmpWeWJRSFUvTjV3MXcvbFh2YlRhUXZ4Z3lUNkQrbm0vWU5QLzE0?=
- =?utf-8?B?SnZ1a2NpQlFpcjZ1dnlBNDVpeEFiNFdDci9SSzNWd08ydTBtSmM2NHk0MDFG?=
- =?utf-8?B?NFlwbnBWUm9yK1ZLNTFqSjlhOUd5Ykp0c1ZEZXhicGgxR1JiN3FVdmdUVmJa?=
- =?utf-8?B?YjdYNnNDb01nMnRTS0pScGNFalJ3ZWJabnUrS0o0NS9DU0pxelY3SEpYdElq?=
- =?utf-8?B?cnJJSDZ0MldMbUhBNUxHSWR1N25PakRiM0FReFRZaGhhZDBoTEhCSmRoN0pm?=
- =?utf-8?B?SUcxWkpNZzQ5blcvUWFpY1Nua2ZGbEtLdENuSHBVZGxGZkRRNkdCUkdVUVNm?=
- =?utf-8?B?VWVqMk9mTEFueU5uMXY1UHZnOUhuSTVVNUZ3bDdXaTRQUk1URGFJSU9YU25x?=
- =?utf-8?B?cEFaeTRiUE56QTNGeTFGd3dvRFVkMnJhLzRUMURFTEY2dVVnenlmanZvUG1Y?=
- =?utf-8?B?UjlZNjQwenlPT09BQmNSVkw4QUdLanZwNW1iMEF1NnFiNnRuTkVucktmUGla?=
- =?utf-8?B?SGtkMDdTYWJqWU5kVHJPU0ErVUU1QTdKQUYwMjBrZlFxNkVBSStGMytkVFRo?=
- =?utf-8?B?akthM2RQQmkxN0NvRHJBbnBoNWU2c3hQYTRVVFc1WlFaV2J0aExNeERCSU5k?=
- =?utf-8?B?UUV2amQ2ZW41ZnVQSVV5QXp0MlArU2NIbkpaamxZdVNEVm1YREdpWXJNQkIx?=
- =?utf-8?B?K01OT3E2bGlzTWRIM0w1VzJUL3VIQ25rKzNzdFpyNUNwcU8vVTZXbS9CanEv?=
- =?utf-8?B?enBhU1l0OVNlUVU4amdURko5Uk1vZ2NEQk93YlBqb2JOK3lnNjJib0UxYUE2?=
- =?utf-8?B?Q3UzNE1JdG9qMmVMdUwvbjNpSTBTZ1NRZWJIUWdmMHNQcUZ3Sk5HbFR2TG5m?=
- =?utf-8?B?TnU2VTgzSjFDSHNlYW9GbEdUNlhqYTU1R01ycmsra3pUK2NxVEJMZjJud1Z4?=
- =?utf-8?B?YkQxVVNyQkdFQTZJeHhWcmRKdThMaGdzcklKZU9oMGxCWHYrUXphMVNPSkNL?=
- =?utf-8?B?UEVFVWlNSjgrMlJ6UHdqNGdnYTN4bzlSRVhxTjExWmp4MWQvWUxZRG92anU1?=
- =?utf-8?B?aHNMelUyUFcvRWszTjN6ejB3UGdGK2tPZTE3K1lYbFVuVGNSbllvM3FGb3RF?=
- =?utf-8?Q?N1cu7fO5hW9IyuF4=3D?=
-X-Exchange-RoutingPolicyChecked: yB9Za4vrqB1ai3FyLt80RzDIbtkByUnZrFMSXkeWpf8AejLQvp6Qs+d5aouaEnOVFbCkSoZh0V2LTQUgPIoo0ac6ay93mHr6roASBzqj1S3V/B54HliwakVvDFMo+Nl/FR8hsjCzflinsQCm+IbpyBIPBNx3YwotsJ2vQoikkOj2aP4aqywpm999K1yslmZ886Vlv9V/mXhyC/kl2OOKgXiXoAmIXpp/7IWIlnaARBNVztIhLv/W8AZLkXIGDi6wGdBs+W3zF5cnXzjTZsWiCaQZj+2q2EE49HSD+mggVM6+ubxIS1QL16VtDJq0OoSQIqV8A/w9IgJ4I99krYyqTQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91dbb199-e520-45a1-cc52-08df2f8c3757
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8370.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 15:58:58.1892
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G6djKmap4RXVjpLI4xcn7euI2RXwmPlqG4blm+g5WoOHrRMMcJ7mZS8j6CbxfllJlZ100DZbSgSsK2v6UZ3QZQ5rr/zSPy7wyL8+yHnSz1Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: EA8PPF65D11CA20
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020202818.368416-1-Ashish.Kalra@amd.com>
 
-Hi Babu,
-
-On 10/21/26 6:58 AM, Babu Moger wrote:
-> On 10/19/26 11:17, Reinette Chatre wrote:
->> On 10/15/26 4:09 PM, Babu Moger wrote:
->>> On 10/15/26 09:44, Reinette Chatre wrote:
->>>> On 10/1/26 8:10 AM, Babu Moger wrote:
->>>>> Kernel mode work can use different allocation and monitoring associations
->>>>
->>>> Here I think "different allocation and monitoring associations" means
->>>> different CLOSID/RMID, while other places "different allocation and monitoring
->>>> associations" means different MSR_IA32_PQR_PLZA_ASSOC.closid_en and
->>>> MSR_IA32_PQR_PLZA_ASSOC.rmid_en?
->>>
->>> That is correct. Hope text here is fine.
->>>
->> I had to guess. This is the same topic as being discussed in patch #3. Could you
->> please add clear definitions to eliminate the need for guessing?
->>
->>
-> Ack, rephrased the changelog to use CLOSID and RMID terminology to
-> avoid the ambiguity around "allocation and monitoring associations".
-> If you agree, we can use CLOSID and RMID consistently throughout the
-> series.
-
-I agree, with emphasis on consistently.
-
+On Tue, Oct 20, 2026 at 08:28:18PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
+> When the start and/or end of the RMP table is not 2MB aligned,
+> snp_fixup_e820_tables() converts the 2MB chunk containing it from RAM to
+> reserved in the e820 tables, so that it is never used by the kernel (or
+> by a kexec-ed kernel) and SNP_INIT marks it HV-Fixed.
 > 
-> "fs/resctrl: Introduce kernel mode enum
+> The fixups are done from mem_encrypt_setup_arch(), which runs after
+> max_pfn has been computed and after e820__memblock_setup() has populated
+> memblock from the e820 table. The RAM part of those chunks therefore
+> remains in memblock.memory. Commit 88a921aa3c6b ("x86/sev: Ensure that
+> RMP table fixups are reserved") dealt with one consequence of that, the
+> chunks still being allocatable, by additionally reserving them in
+> memblock, but memblock still describes them as memory.
 > 
-> Kernel mode operation enables a CPU to use a different CLOSID and/or
-> RMID when executing in kernel mode than those used in user mode.
-
-Please take care to distinguish between the "kernel mode" that defines the
-policy here and "kernel work" that is what the policy governs. At this time
-this series even conflates the two in some places ("kernel mode work").
-
+> That trips up the direct map setup. init_range_memory_mapping() maps the
+> memblock.memory ranges, so the RAM part of a chunk gets mapped. When a
+> subsequent, lower range is mapped, the trimming in phys_pmd_init() or
+> phys_pud_init() consults e820 instead, finds no RAM in the 2MB (or 1GB)
+> slot and clears the already populated entry. At boot this goes through
+> set_pmd_safe()/set_pud_safe() and triggers:
 > 
-> Architectures need a common set of kernel mode definitions so resctrl
-
-It is resctrl filesystem that needs the common vocabulary.
-
-> can report supported modes and indicate which mode is active.
+>   SEV-SNP: RMP table physical range [0x000000bf77900000 - 0x000000c037efffff]
+>   SEV-SNP: Reserving start/end of RMP table on a 2MB boundary [0x000000bf77800000]
+>   SEV-SNP: Reserving start/end of RMP table on a 2MB boundary [0x000000c037e00000]
+>   ...
+>   init_memory_mapping: [mem 0xbf60000000-0xbf778fffff]
+>    [mem 0xbf60000000-0xbf777fffff] page 2M
+>    [mem 0xbf77800000-0xbf778fffff] page 4k
+>   init_memory_mapping: [mem 0xbf40000000-0xbf5fffffff] page 2M
+>   WARNING: arch/x86/mm/init_64.c:89 at phys_pmd_init+0x389/0x4b0, CPU#0: swapper/0
+>   Call Trace:
+>    phys_pud_init
+>    phys_p4d_init
+>    __kernel_physical_mapping_init
+>    init_memory_mapping
+>    init_range_memory_mapping
+>    init_mem_mapping
+>    setup_arch
+>    start_kernel
 > 
-> Introduce enum resctrl_kernel_mode:
+> and leaks the page table page that hung off the cleared entry.
 > 
->   - RESCTRL_INHERIT_USER: Kernel mode work inherits the CLOSID and/or
->     RMID of the user task.
-
-This does not look right, it inherits CLOSID *and* RMID, unconditionally, no?
-
+> None of the fixups depend on memblock: the RMP table is probed and
+> CC_ATTR_HOST_SEV_SNP is set from early_cpu_init(), and the segmented RMP
+> case only needs early_memremap(). They do depend on the e820 tables,
+> which are only built in e820__memory_setup() (which also populates
+> e820_table_kexec), so the fixups cannot run any earlier than that.
 > 
->   - RESCTRL_GLOBAL_ENABLE_PER_CPU: Kernel mode work uses a single
->     global CLOSID and/or RMID association shared by all userspace
->     tasks. The mode can be enabled or disabled on a per-CPU basis.
+> Move them into a new mem_encrypt_fixup_e820() called from setup_arch()
+> right after trim_bios_range(), before max_pfn is computed and memblock is
+> populated, so that both are derived from the final e820 table, and
+> finalize the table with e820__update_table(). mem_encrypt_setup_arch()
+> keeps the SWIOTLB sizing, which needs the memblock-derived memory size and
+> stays after e820__memblock_setup(). The memblock reservation is then no
+> longer needed and is removed.
 
-"shared by all user space tasks" is not right? The CLOSID/RMID come from
-the backing CTRL_MON or MON group, so they are shared only with the tasks
-assigned to that group (possibly even none).
+Although the commit message is a bit hard to parse, the idea makes sense to
+me.
 
-Below is a suggestion that aims to address the comments. Please do not just
-copy&paste without verifying it for accuracy and that it matches the terms you decided
-to stick with.
+If we anyway have a range marked as E820_TYPE_RESERVED, just keep it
+consistent with other E820_TYPE_RESERVED that never make it into
+memblock.memory.
+ 
+> Fixes: 400fea4b9651 ("x86/sev: Add callback to apply RMP table fixups for kexec")
+> Co-developed-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 
+FWIW: 
 
-	Kernel work need not use the CLOSID and RMID of the user task on
-	whose behalf it runs. On x86, Privilege Level Zero Association (PLZA)
-	enables a CPU to use a different CLOSID and/or RMID while executing at
-	privilege level zero.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-	resctrl needs common definitions of how kernel work is managed so that
-	architectures can advertise the kernel modes they support and user space
-	can query them and select the one to use.
+> ---
+> v2:
+>  - Route the fixup through a new mem_encrypt_fixup_e820() wrapper instead of
+>    calling snp_fixup_e820_tables() directly from setup_arch().  This keeps
+>    the memory-encryption specifics out of setup.c (no <asm/sev.h> there) and
+>    alongside mem_encrypt_setup_arch() in the mem_encrypt layer.  No
+>    functional change.
+> 
+>  arch/x86/include/asm/mem_encrypt.h |  2 ++
+>  arch/x86/kernel/setup.c            |  1 +
+>  arch/x86/mm/mem_encrypt.c          | 14 +++++++-------
+>  arch/x86/virt/svm/sev.c            |  9 ++++-----
+>  4 files changed, 14 insertions(+), 12 deletions(-)
 
-	Introduce enum resctrl_kernel_mode:
-
-	  - RESCTRL_INHERIT_USER: Kernel work uses the CLOSID and RMID of the
-	    user task.
-
-	  - RESCTRL_GLOBAL_ENABLE_PER_CPU: All kernel work uses the CLOSID and/or
-	    RMID of a single resource group, which may also have user tasks
-	    assigned to it. The mode can be enabled or disabled per CPU; on a CPU
-	    where it is disabled, kernel work inherits the user task's CLOSID and RMID.
-
-Reinette
-
+-- 
+Sincerely yours,
+Mike.
