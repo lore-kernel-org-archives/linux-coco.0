@@ -1,102 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792599860;
-	b=Jjz3Ws8wedg4vshjUiHjOQP+QgitWviZQRnWp7BiRndING9mXrJsgPQwItpd3lcXoWJp
-	 JwNc/0zppXWAAZIFaCJ1hrIIVEUuQwDqgwW/VSudyeSOBuv5vqcTDf2yJFf0japt+p8XF
-	 JxAS2rEsEJ5e2D/7UvD+OZIepTi/p3v9Po7yo+NwkYrtUR474JJLenJ2p6tZpOhnlkiN2
-	 1QYyNFMUT8RS8F2PotGoA5PlBRLh4CxU/ffoRK/NrirEb/V6zHAhBorALQx/pjLUhXzJQ
-	 77QV8/8wdA4ViCi5CFcKRnIwjWpJ8rCJlGKb7c0sOB8Aw67cyQzBRP25ddY8/fzJChQ==
+	t=1792599929;
+	b=umPym2iDd30XiESCU2crEYmiF1WIUjIGw0W9/I+TqYTGL+7/Ss02m+fHsCa2dFR4ECJM
+	 Baq+PGK0cSdfwYCvua0vBpiYd7zLH9SkQgjle6OV0/aj+GTcsjrrrR6bP4o+WeV0JRlMi
+	 Vz26v0Y7+4ZP3Ru/U5ft/CiiSX7+d3og8akKt2t1a4rh7SoQTVPRZ8h5HZ8A4l4PwfPUh
+	 yT3zUfVSoEOHg22xq8YVsjSEJWu46NAiUZuKI/5Wy8NFCgVwQVtHBDHEWCP2yl1pZumWq
+	 ZIUmKdV2z5ZSU3IRAOpWDV6ni4FZc6pmLNd4w6VAf/Pj+e7J7FBX36jlAhFw8+FVUWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792599860;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792599929;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=J+d1lI1CTytiZQns3U5FyUF/mcA833hGCvYKT8aAybo=;
-	b=FMFr/0cEUn8t2Iy0qQrnGRbbyantO+VNUpGyY2PEboZ/cOfGirkhZnK361+5/4UXGVX+
-	 lEkTXcrZVzbR8rcRjdoxGGd/+ZiumrT9rLvcgsyVLilBOHYcKvOh8PvbXzTkEEkkA1Vhl
-	 bqACmgO6n8yy1jwwAm+ymwB1vQle/DI/zziSXmCHQW5oscVXnMyhKydewHqp+a6GvkoE7
-	 3lFbBJz2JCmd8fjCac6qe7FM/qzwT1E9UF9yuSjsX3DHtgqu0nzm+ISGixPa2RzFDvJv4
-	 w/FSlaIkhqvcCyUH/PgJ6LraHTwNldAJCCJRLcD7Nzwps/edzRcs9bVpmAqVQ4Jas7g==
+	bh=wTPDb7LIMtyEiz+mqYTBrrnJbHRN01tnFVsBBXNS8TY=;
+	b=SjgFoeMt2cLx6o7FOhIV1QqqxYJ46l0q6O3JmTfnv/KXKxc6G673doNBdDe4UxsDQvXH
+	 W97MYULnDP9KxRKgDXHIf0OryG1n+F3TADEg0VO9b+3YqF8Fqwj6P/qkcqf1Apt9AOEUc
+	 rRE2pI0HeCb13poi744wVl8Jm0Ux3yRorF0SjsSuIH9PN+a7W2s/J/20YCBO/Me+K2N22
+	 pyVmovUx8YcItFk5513R7XasZNX+ni6FmXc8mHxtODWG2ba77ugLmLRGpe8MJmL/bMeNZ
+	 aGjTnnwlipOrdHzLpF9TySSvy31JGZasMDaCW8ym36dEoz4UH1zNG3wqK9GDXN2+UvQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=s9b7RjlC;
-	arc=none smtp.remote-ip=209.85.218.54
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b="peKR/ng4";
+	arc=none smtp.remote-ip=209.85.218.49
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB74606A31A
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 16:24:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BB74606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A2A606A31A
+	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 16:25:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40A2A606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=s9b7RjlC
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c445c95d553so120954266b.1
-        for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 09:24:18 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=peKR/ng4
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c445c95d553so121139966b.1
+        for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 09:25:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792599857; x=1793204657; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1792599927; x=1793204727; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=J+d1lI1CTytiZQns3U5FyUF/mcA833hGCvYKT8aAybo=;
-        b=s9b7RjlCSsviJIpPU5gLDSA8/jjHgc5Je0M4OjD8sePce4y7FOUcna7AOX1UY1m1He
-         ApemqNdnlD/OG3+bED8Eoqq5pNTaSYEleje8eIRbL0HDa86nuDxQ/UbMIjlsPs/pAIqf
-         46DkUowISQg6PlqfpGy9mRF+G8xLT9O5DiGqvkMURlcsaq9zhCMoi0FcknHon5PE+ch9
-         xEwJ+KGBoSuhU++fCFTVF0z6r/Q6duSmGHcl6k61GsAaoVgJJNeoL3A26GdBPQTuLb0q
-         4VR18AOIEYP3TGgQsIvzkmJLUFsrucvEtB/Enq4Tb3Hba0+R3gELBuiebQYF53vev6k1
-         hnMA==
+        bh=wTPDb7LIMtyEiz+mqYTBrrnJbHRN01tnFVsBBXNS8TY=;
+        b=peKR/ng4Acyx1QS3YkfjkeZfj85ncYR8sNf11KoxaV1Kq5B4Tn5a6AnolXBKtsaCtq
+         npU6XKCqr88HkwiNjssXSPpKyN366tA/fyS+fzP5TNw/tK9v/C2+9Mrpt8gT9pwY1oXO
+         mknAgKjHr27zQFIKvJqcd9sF57Lons6qfznfJyiw2WX/lrlh0OtXwSo8fYBeTuuGJmNG
+         NcEHyAO3HpYxLDPw0n+y6vzepEeu1AtATziTt4enTeZArk1KEDz8jaAXMPb6N4DJaqfa
+         oZz0KUT9S+lTOtqDJKlryBy31ctS0mQWJJa1MBmHZYlbrmXL8sQy1BIMAaiP4tIUnmdj
+         bCcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792599857; x=1793204657;
+        d=1e100.net; s=20260707; t=1792599927; x=1793204727;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=J+d1lI1CTytiZQns3U5FyUF/mcA833hGCvYKT8aAybo=;
-        b=2WpWkEjTfxJCBp2eHhPbaLQ/QZN/3AAaPsAFFfCczDrnBoZmVMWFDZpsV21eqobR4i
-         JnC4Dc/r6qZs7iblxEGmDVZnQfY0nEZiewgxVVZWxruVHdb0KDERVRUF1dZjceFAHHN4
-         TTf4J2oSZJc1phoBvyFA2sXpmtUGLATN5kbKyH70Ry0zC6tC3HFCSRG16e4tKDYmeVlk
-         ifRzti36ibeu+BgXuOKEBO1DPAyDrtppeWaj6IwFHHMJBtY064hTgeRDXrLEbzEQCztb
-         IjBlcMC8cfCqXYSrBQS21xyfXO/P6ut7ovZNbdB2zN5txvg/gOH3l3XiQ6X+JTGjUKvv
-         8eqA==
-X-Gm-Message-State: AFq9FYKzE+4I3yd54iSwxzkGuc/H7PHzFH9jrkCkl945Ir3JotkY2hIT
-	hqOyeRG1Ts+rzMpyOIg/4c+90RW9wqxDWjq/kRktZe3AYp1R08RnW+TgaSlcqRsHtdk=
-X-Gm-Gg: AYBFou17Rs1i+dJtZIT/9WTkzpNczDnciyC6+JLyYbeR6oIX45q2RKPkuv9cypinTo/
-	/t0mUhrrldotWI7R9OcJg1AG7sWCsBT44sMywQhcunKnfnRcousK+ySD8dpVLCky24G/BByxjAh
-	xIZkyGM2oUDfRjWVPdxzk73lRuRaxGA5PVKfaxnA0TI1l0Yaj1Jutn8zj9e+9+B2TGqCIjyTTP8
-	lBlBS/UQBUvEblDzc8qimjYFF9ECNDQy8+whgBjj4Kar/rJaEaNdcBrNU0B4tv8XRvXiOG9UxMr
-	sDFxUcRbp267CcWnMqNG7aM1Cz0QvtuH2KpRHxze5DmU8AiON2oAPFery7NZOOUok+qCONrQymP
-	2aP3pDswwlCKWgY4nAobWMW+aKb2MK3fi/Ol/wGmd+LvoLHOVI8O5v4oUIzYDT4xAGRIN2nR9b5
-	Llb7YZiuOH50dxbbjpD/wh3/a9mmfAXXctCpVD0jDSB2JSGuoV/E8RPu1uvIDf9pMkwec+IataF
-	tRJgrb9kNYgSnOiP7FusteYgvBZOg7sRHPMVDvJr0DvBgCXL80/hT9G/F4nEQK0Q5if
-X-Received: by 2002:a17:907:2d92:b0:c25:afb6:2d91 with SMTP id a640c23a62f3a-c46791a97a9mr240205966b.2.1792599856528;
-        Wed, 21 Oct 2026 09:24:16 -0700 (PDT)
+        bh=wTPDb7LIMtyEiz+mqYTBrrnJbHRN01tnFVsBBXNS8TY=;
+        b=YuSuc0BUN+hbVIRb/WohoJPUfePxOp8SyQWh2PjkKWkvDe+S0J6L7NGkQz0aRJfjE8
+         8njzzxmcEf6SBQuO04yZmW2toKzmZZtBwOObbW/CCo/juMz6siZm6lzjG91CdsUjRoMG
+         yTzRWlEk0fivyUFTYdF4/5AhMgz4OfDgMIufHiDoJE2lOcRLEvsTRP0ESjk16AQEuHOm
+         mDLDO7LwU2DX0At6tuBkH1V+lW82Kqg0741k/YiopvacmKjzzS9PSJ9oD400RyWJJ+Sz
+         P+mao+jTusjVeRL26AeI3nsaww9mXzipAs8EdERisXAv40DtKrlFxnJYTYdKYPwdBytq
+         7Osg==
+X-Gm-Message-State: AFq9FYLRE8dClteeLPqFKw0LJ8SdTkrn6savJwDr+YrxEdUWT14MudRm
+	DbzDUz+I5RQYJbzSfq8ObQ8ld3H1IihfKQWNbvaNpVi9JNIhQWUtDFvEATrv7zF0YoE=
+X-Gm-Gg: AYBFou2Pq6tqUvzU6RyfV73V4FL2Vcwqb+a+JdasLjbJVLFvNfmCRUoDpMzc7U7zkGS
+	swmrafql5xTLfAycNGZIMZ2Oz1OsBf4kc/nNvmKTrxv0H1ASOBSHuw8Z2BuQNSQUiR5LUwYfz/j
+	aMbt+3n/zPghY7/QSJ0EJjgYRm2kuvimK5hFjeqyD4YFRaEH7DQTmVFOr5sbRACF5hqR8tHMrH1
+	difItM2uzKNY8H7C8AAD/D37Jx5CO94MC8oQdx4jQ8wtPFaGD9JOOEgwTvJoRreR8yZdUjMGn4x
+	AIhYWaCneFEdJPkwv5HSkDIiJsmZ6ovwz+FTQbQlFO2NXpZw2nMFHUSTgddDeNX8yLerHDdTDNJ
+	tThu51Ldis99s6W5lQZ7VIiSnwlHFsjBGT1zZNSyFfq3w0JTRj98NqoD4o9h0tRjAevU0ynDFjY
+	9EIKlhq3rCOfQtZvF+DEPTavq5ebRRmmjKo1TLBGDPb0jyNa2u57HTKZ698JWJN3ZxpgYH6+jmN
+	ZNhzIFZAJxyG1Xqhf/7FfB7wFHFe+KMW15e+qLcxHsFYuxVui9K4GZKn5UY08zeGsgr
+X-Received: by 2002:a17:906:dc91:b0:c27:420b:7c79 with SMTP id a640c23a62f3a-c4679a40b62mr221295166b.48.1792599927374;
+        Wed, 21 Oct 2026 09:25:27 -0700 (PDT)
 Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c468a4ffd07sm18747466b.17.2026.10.21.09.24.15
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c468a6182e8sm17768966b.81.2026.10.21.09.25.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 09:24:16 -0700 (PDT)
-Date: Wed, 21 Oct 2026 18:24:12 +0200
+        Wed, 21 Oct 2026 09:25:26 -0700 (PDT)
+Date: Wed, 21 Oct 2026 18:25:23 +0200
 From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
+To: Jonathan Cameron <jic23@kernel.org>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
-	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
 	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
 	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
 	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
 	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 13/20] Documentation: ctlv: Describe how to write a
- family
-Message-ID: <atjiW8bnqDZ8zb5t@FV6GYCPJ69>
+Subject: Re: [PATCH RFC 03/20] ctlv: Add the root family specification and
+ generated files
+Message-ID: <atjnZ9oVYZN1VnwG@FV6GYCPJ69>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-14-jiri@resnulli.us>
- <179245258505.58760.3972297562218204862.b4-review@b4>
- <atjEgLYpgbZNzfkZ@FV6GYCPJ69>
- <20261021144951.GR3008132@nvidia.com>
+ <20261015145053.3664509-4-jiri@resnulli.us>
+ <20261021003056.354a40ad@jic23-hlaptop>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -108,136 +106,32 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261021144951.GR3008132@nvidia.com>
+In-Reply-To: <20261021003056.354a40ad@jic23-hlaptop>
 
-Wed, Oct 21, 2026 at 04:49:51PM +0200, jgg@nvidia.com wrote:
->On Wed, Oct 21, 2026 at 04:23:17PM +0200, Jiri Pirko wrote:
->> >> +    attr-sets:
->> >> +      - name: item-request
->> >> +        attrs: item.index
->> >> +        optional-attrs:
->> >> +          - item.label
->> >> +          - item.data
->> >> +      - name: item-reply
->> >> +        attrs: item.index
->> >> +        optional-attrs: item.label
->> >> +      - name: items-reply
->> >> +        optional-attrs: list.item
->> >
->> >I haven't quite figured out what attr-sets is about. I think these
->> >blocks should have some # comments with more guidance what is going on.
->> 
->> "group" defines attrs with all the description once. "set" just puts
->> together multiple atrrs from multiple groups. Will try to document it
->> more clearly.
+Wed, Oct 21, 2026 at 01:30:56AM +0200, jic23@kernel.org wrote:
 >
->Maybe also include a explanation why it is like this, how it should be
->used, etc.
+>> diff --git a/Documentation/ctlv/abi/ctlv.yaml b/Documentation/ctlv/abi/ctlv.yaml
+>> new file mode 100644
+>> index 000000000000..fa11bce98f46
+>> --- /dev/null
+>> +++ b/Documentation/ctlv/abi/ctlv.yaml
+>> @@ -0,0 +1,186 @@
+>> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+>> +%YAML 1.2
+>> +---
+>> +# Checked-in ABI snapshot of the ctlv family, written by
+>> +# "make -C tools/ctlv abi-update".
+>> +#
+>> +# The checker compares this family's declarations and inherited stub fills
+>> +# against this file. Updating it is how a UAPI change gets reviewed; an update
+>
+>Slightly confusing text: 'it' is unclear, checker or this file?
 
-Okay.
+The file. Will reword.
 
 
 >
->> >> +
->> >> +    ops:
->> >> +      - name: item-set
->> >> +        type: action
->> >> +        optional: true
->> >> +        request:
->> >> +          attrs: item-request
->> >> +      - name: items-dump
->> >> +        type: query
->> >> +        availability: dynamic
->> >> +        pre-post: true
->> >> +        reply:
->> >> +          attrs: items-reply
->> >> +        suggested-reply-length: 4096
->> >> +      - name: item-changed
->> >> +        type: event
->> >> +        reply:
->> >> +          attrs: item-reply
->> >> +
->> >> +An attribute has one payload form: ``type``, ``enum``, ``flags``, ``attrs``, or
->> >> +``blob``. An attr set names one message level. ``attrs`` are required and
->> >> +``optional-attrs`` are optional. Its bounds and membership are ABI.
->> >
->> >The attribute first point of view is maybe a little too netlinky, I
->> >prefer to think of this as a system call first, with a first class
->> >'query' to get a list of things
->> >
->> >Alot of stuff this is going to deal with won't be the netlink esque
->> >'dump a table, set a table' kind of flow, but a bunch of different
->> >system calls with arguments.
->> 
->> 
->> Can you elaborate a bit more about this please? I'm not clear about what
->> you mean by this. "'query' to get a list of things" sound cryptic to me.
->> Are you talking about doc or about family yaml as well?
+>> +# that removes or renumbers anything, narrows a bound, or makes a placement
+>> +# required is an ABI break, whatever this file says afterwards.
 >
->Just documentation. Netlink sort of evolved from a table row based API
->concept into something more complete, but here we are starting more
->from a systemcall concept that also has some first class tables too.
 >
->Maybe it just isn't clear what the original doc paragraph is trying to
->say.
-
-Okay. Will redo.
-
-
->
->> >> +.. code-block:: c
->> >> +
->> >> +    int ctlv_example_vendor_details_extension_fill(
->> >> +                            void *priv, struct ctlv_op_ctx *ctx,
->> >> +                            const struct ctlv_cursor *request,
->> >> +                            struct ctlv_cursor *nest)
->> >> +    {
->> >> +            ctlv_example_vendor_vendor_serial_put(nest,
->> >> +                                                   example_serial(priv));
->> >> +            return 0;
->> >> +    }
->> >
->> >I suppose this like RDMA and each HW driver using this gets its own
->> >full scheme tree that only has its own stuff in it?
->> 
->> It's the "family". Each child inheriting a subsystem family. It fills
->> up the subsystem family defines stubs/extensions. It can add ops too.
->
->I haven't got that far in the patches, but I think it would be good to
->spend more time here explaining the fundamentals of how the extension
->mechanism is expected to be used..
->
->It looks like RDMA to me where you have some 'common' and some
->'driver' parts but at this point in the docs it isn't clear how that
->is reached. Like does each driver gets its own family? What is a
-
-Depends on the consumer/subsystem. But esentially yes. That is what I'm
-doing for "attestation". This patchset introduces ctlv-attestation-tdx.
-Next we will have ctlv-attestation-tpm, ctlv-attestation-firme,
-ctlv-attestation-armcca ctlv-attestation-spdm and others.
-
-
->'family chain' etc Where is it reported?
-
-families_dump op of ctlv "root" family. Output is array of {id,name}
-tuples.
-
-
->
->> >What about userspace, it "knows" somehow what to do?
->> 
->> Userspace sees the family chain. It also has ability to do introspection
->> seeing right away which op supports with attrs in which nests.
->
->I was hoping the introspection would not be essential to use the
->interface..
-
-Depends on the user/subsystem. Either families_dump op could be used of
-udev uvevents that also carry family inheritance chain:
-    CTLV_FAMILY=ctlv-attestation-tdx
-    CTLV_COMPATIBLE_0=ctlv
-    CTLV_COMPATIBLE_1=ctlv-attestation
-    CTLV_COMPATIBLE_2=ctlv-attestation-tdx
-    CTLV_COMPATIBLE_N=3
-
-
