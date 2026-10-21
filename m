@@ -1,113 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.58
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792590670;
-	b=CGH6mf95f6kQJamu+mxhOw8KQh2V7PKpPRjJdleuCTKSsczcbZydQ4pQ64v4RSvBeTY4
-	 l7tuh5IVhuHV6HvBG3f3V4Gsd+cVJLRXq5NBd/35lGRdOYyc7tmw1fq7A55oXc97oAvYX
-	 hcLkIGqmJZBfPC6brnqV4K9k9ZArvX8Iyvn684oSzZUbkYw1Sk3ka3vV/27wLtCZuSP9r
-	 hG2lMB4xcO2EJQgaqgUx7KQqfwDF1YQE3HNtDvMMbMpJ7mhAtRoRAmJJlr9eh4UdK+adv
-	 4y4tmTBzXWNcjglTly/+MMRgJ6KrEc55kqZj9+wR5KyHMOT4KEjOk/Y4y4gpXmmRFSA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792590670;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=2Lsdu9ZU7Knt2vBPqwo7rP4ey4yHzUbeyrn8C37mBuk=;
-	b=J2hrbukGJUAOj39WRzIcW1SRe/o+r4nPpA69c3mcL9bFtgAQuNmAtgMjMM8HT+G7n/xj
-	 N8KxIfrY2Sd71ad8nCm9sB95+3Z59evormt4kDMXxNV142a/Qx8SlLZcOEBaQ4cEXC8KE
-	 1MizS0z7uWullCuvODETUroD++IILZwz2vskDS7/tWIWPsPFuMIWv8wSi5WFSw+PdGtG3
-	 A3Q3NmShUAJyX6J0qkYzl5YOinzNDlNyGvc3uQjqHSZu6uBYs1JokJPPKTksECycXWRiF
-	 BrA96H8rycr4rdhhZSMaSdAb2/Z/To2qyG3MiJBrZMO9l3V+9prCn8xqcM7XbsMwDVg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=bQ9rvFKl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.58
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013058.outbound.protection.outlook.com [40.93.201.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792590895;
+	b=gqXYZLrWsNyLs0MFhgwZck7zlmG5yxYwj1FRY+aF+anjlqpP5OWZVOt2lxDqSKUZCNj3
+	 qQox3umX8Zh3WRPWRmuX9rhxXS573F02Iqhhbb+ndLvISW/GxDLuClgkxUHOV8GU6DE29
+	 CvmKLlWBN2+Y4hgVDPBC2RwwPIe7Zn2Gsgfim08fMF+zRo89hGDUaVlmU7FHa+NFnSCUi
+	 I/yY5Er+PuWdQ5BJaQm9DCc/oZ6pSSQnZOvFIl87sJUJNVXsvVCEsmo1dS/TvanhgupEY
+	 QLUP9kDUrwtTF38EHKMR/MtGCgh9G+mIWWpZDNBwKpi44ovribc7nGhau+KIcHyFlDg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792590895;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=c8NANzTMJV28RCMd27ShXdH01N2IwKbSedeFEkSZyhI=;
+	b=bIbr1d+unmZgPspsiGQE3vqLHFO1oPddNxp++4W3U+AsxTdgECrrK12sP8rfphAY/CBW
+	 5YM+EjfwbmsYcDvx/OFb85itAuHFG4TqFOxN8HrshGga/rN6iQcfKOSMfML2g4cpgYiWK
+	 llFykIRQAgLEkQqoxPjovDirxkFdvwLwjpfWKbkqG0aaiG9FdKKRbkruMEQCzTwrvWDrp
+	 AvHN6Gvf0z6wuUjffl8+BnJUVyso5cO95U5ezpCVF5uXoC4PMXzB8ywliT0d7//x04WGP
+	 6h2W7PuacTk5dlyO7yYEjv5CFoBGNcMloAOSOh3o7zIsuUw5FJAUruselkcsOYxh+9g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=P2xy5FOB;
+	arc=none smtp.remote-ip=209.85.208.49
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC93606A31B
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 13:51:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEC93606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8DF606A31B
+	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 13:54:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D8DF606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=bQ9rvFKl
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DuNgANq31QWjY0fU7Xu7luBVEj22Vj/IzRq5LJk2N9xI3R0aDPsIb1/Fi5o674XyF1EIJ8A3b1OXpCJmwfRC/bah8JCKSinhNNIX+3hYRv7kdE0dOavlRbaHewxSc+LKkEwucMa/nGKJo5eqbM3unlpd4GeaDbDjfXlrSac/JLvpXpIFi1QqjkBm0l9kSyZZdy5ZXLjBTS2eD2MoajRVKI0uopx+wQ2cg01vlk6ZuUfnKFne3zn/d32jo2jqu0mViEBrkjDc4iD64ubM/IRVXL10uAApS1UK4Wvh9rd01Ow1NZlh87fEens/eg7iCiZC/pjAbNERl+j5smpNBzBGig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Lsdu9ZU7Knt2vBPqwo7rP4ey4yHzUbeyrn8C37mBuk=;
- b=dDLMlp63EMVUxPSt3dcsKJ53Y3SP9DrLCuRSkLAl5CUQUYLVQE3dwc+Nt31EGlEeZIc4C2TZTQB9pUOFgky3UGvpKiQpEHBlc4FR9wEloUdF/5bXoaS44Fz6KL48ywHErbAGW/qT7g+US+LrUMKaklsiuggDLJ5PPDOZK7iVxAgxdhnIUrjqVBb5e0BiYXWTA2kdJimC13NZunWqe1nsYmN47EaM2wdH7Hy+PhTULZf1u5E/ERWTV8arBjO9EMGS5Aiik34YtjQ6iM6VSpfCrxEHCT64SO2PNiWt3AJFjmg5t4Wqg1KMcR4GrfSTzxsYVD6gKSMQXPcKNQp+jp2BUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Lsdu9ZU7Knt2vBPqwo7rP4ey4yHzUbeyrn8C37mBuk=;
- b=bQ9rvFKlU+k4qzwMmXWEcK+tchPHRc3CeDGLD6Pla6ag042vCsDKDWWqhak+EwCGcVdcluTdgK48RbuZYYTYlF2tQN9lSCIuLT1HlBuL9TP6zuLi5RxooQ2u5szHe9rlbyiz9+uyi7i+A411YSyd9j1aQlOL9H1LaVNsnLj/eePeWoqDj8WC8yMXN96QXZ/xMyLuAOFi260kFlk1N8ieOKxtsk/FFsB8P+05uHeJdQ4Oy2lC8eXdvCw8cGIQyfT9hPPVEXZYfeQ3m4tmy+bnU09xqmozxlrKaqudFEd0x8e6D4iIGVDyqZ9dzOS0DATOqupS5KBsO/ZFjnwycWGm3g==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by BY5PR12MB4162.namprd12.prod.outlook.com
- (2603:10b6:a03:201::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Wed, 21 Oct
- 2026 13:51:03 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 13:51:03 +0000
-Date: Wed, 21 Oct 2026 10:51:02 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dionna Glaze <drdeeglaze@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>, Jarkko Sakkinen <jarkko@kernel.org>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	roberto.sassu@huawei.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <20261021135102.GM3008132@nvidia.com>
-References: <20261017231007.GP13920@nvidia.com>
- <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
- <atX9fugGUsI0hGcA@FV6GYCPJ69>
- <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
- <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
- <20261020140655.GV13920@nvidia.com>
- <aa00515a0f364fea0150cf1550a09d9400e4632f.camel@linux.ibm.com>
- <ateSly15N5mLrM1m@e129823.arm.com>
- <20261020165251.GG3008132@nvidia.com>
- <ae372ed03da3cd2d57c922850b3b017bcb83ca07.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ae372ed03da3cd2d57c922850b3b017bcb83ca07.camel@linux.ibm.com>
-X-ClientProxiedBy: YT3PR01CA0057.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:82::27) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=P2xy5FOB
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b1aa27963eso2558260a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 06:54:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1792590892; x=1793195692; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=c8NANzTMJV28RCMd27ShXdH01N2IwKbSedeFEkSZyhI=;
+        b=P2xy5FOBIE0m1+t43E5Q04OPOOEdrOImxxpUhKTabV3C+PuFtNhrNtrIiqYsroZFeT
+         Tc7uC4TprnmlSsKl8ZybsBNH5ztHuhkSUFuXCQwW2xZaW1r8cyAzlkyDhnXR8xjsHbmW
+         jUK6vnfCJdZPtH8MUrX7aeXkhrgJp4kWBcvnpMSNvUJ0HyNEDnedlKVJMgiChanLhxff
+         DayUxhZoAewTP/Obnf5TkFlzMyiDE30a/0bTgHKmAGeLPqDbo03GEXw/nysFVyiQ7ChK
+         H+9mYs3Uz8479bbfTMN5vt1hEhEz7DQe+LNmszHIVr+GE8R/B150do7Qqpre+MZh2XHG
+         on7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792590892; x=1793195692;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=c8NANzTMJV28RCMd27ShXdH01N2IwKbSedeFEkSZyhI=;
+        b=Vb2XefjEvkoNslzNz4qZ5R54iZivJjhK66Vc3okVQVAToFdGWsnOOIUffWkOtX7aUN
+         zbFoxrTYK/b7Adz50ZnPaEbPuOZNJ5KCtVOz3CZb+XfjDw2TXQRe6a+Pg3ARl2z3eP7F
+         Jp93VrEHDj8qhgzdPWFUTKCDTCDyDEoQBvFY/sFcoGOCVrb6Tnn+AmPzCcQu0wo7TkOq
+         hKDjIcL7+KpWr8i5+5cuubyciUzO4J+TEaRDlfrIvNp8cWU9KKR489uBeufI9h/GuEdQ
+         IeZAFoWBu7B5V/xiOFo/B33QFgxJKjtLgHmmXmQVMmMjHQpcbkGMSFeEDOqFuSXjC3Fi
+         dDMA==
+X-Gm-Message-State: AFq9FYLGhCvKAkvJ/8hrheH0wDY3Ws/xRsVQ/rNvddg1az5LGQekPIAM
+	+AJhQw8tsmDq1+W34EDPSf47v4JGWf+bSwFoCBNtWhxAKQx10XCVrseapHpJ2sfreo0=
+X-Gm-Gg: AYBFou3w4IKPOQCQH214ek5t8TuT3vJZkOyM7fGXc31qH2LuuDy/XaDTD6SBbFUfmkA
+	8LVpr077/XQvWaSb9XNdM7k/THIWdlH4aheO+jjFH9j4wxllKFLY3kvae01BXCkTqXWnqacVj/Z
+	BmAXkG0uWDA8S8TLv3o7+sZSllnikkeBZsFs/taS5zFPNcrb8gyNPfxKyl/Ka5N9mGZ/4uf3k8/
+	PBtna1tIRH28NfZPmU5EwNC/vk9zR4TUVbl2tkPrKRt15PHVdVmQldL9HBZ4FHW1fYdC7c8aDB8
+	V+CN602zlp1pRpLttFVfoLfbhVtCL2oaOGaRpmHZL9itWsLH3bquGck43XXZ2JNG9XjrT4P/MUw
+	ZCEnSpH+Wx6n0G1qoOgPVAlwHkRlca0dQmCg60sdGH3WeSzbqLYjUE1j4KUboiHV9ch6WwjeLDQ
+	p17ztGyCe5ud10iTmEsLekROnhGbtlW8gxMc14WS3CwutziTzZ4ELbjXKQp4tE7WKbgowcGn/W0
+	L7zdpvf35jCpJt0hTTKxGkzzsW16EePyuv1QODgUG+UOfvSHokbmHY94gA+8jbbwt4=
+X-Received: by 2002:a17:907:c30e:b0:c41:2ab8:aa3 with SMTP id a640c23a62f3a-c4606e91924mr434637166b.32.1792590892298;
+        Wed, 21 Oct 2026 06:54:52 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c468a4ffcc5sm7387366b.26.2026.10.21.06.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 06:54:51 -0700 (PDT)
+Date: Wed, 21 Oct 2026 15:54:48 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
+Message-ID: <atjDlIBMg3dmXxHn@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-3-jiri@resnulli.us>
+ <20261021000003.71f78d99@jic23-hlaptop>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -117,123 +103,134 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|BY5PR12MB4162:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ef3c088-b354-4b0f-8a07-08df2f7a5909
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|56012099006|4143699003|11063799006|10067099003|18002099003|6133799003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	qZlgpAS0pAnhec+qgoJmfwibUBu2Oq4URE7+IHeU5YH+d+pUaq39NZo7GZtnK74o8HgbUPnvMRYOISBldyrgFt+p9b5z1l4gf8f3LieQVWeviqaM+WcwcjOw2djV5s8fsTAGUCCfd+eMNolX1xv+LM6+4xvLNHfPDo9BTe5j1aj9ABmS+0dy/8nWN8HuTWn5QzUSJRwyFmj2xg51iszQKobdQKTxDy+TUL8EgMlPPyqkYNxVHF/3FBeL4KjUCAWOLZgRdbcaxgwUpeqfBRxnQH5e9N2zWaFZW57hjMtcxPUtTO4V0FOmuHSxVfSgFIJmbQkOYCs+fJdPx+79QeUOV/2C8GqKyxZdxVlFZvXXMwEkb4sl0otuiIZsMY/B2sTzqZPQFvnrEhO5QidBihQZgKtK5WE1rpsyFNBn82VvjUJdnEcEx9mmguY8VdUFEWa3U4EZdS8O6GskcbiV1PZG3sCd24X4O9DO0iOWmdxGMGJuSTLHMI4YHf8Ge8s7yq9sPK+fqLGX44p2ZLCE/ezVIdjPgX8pMw7LZo284WImfrjujOszOEXorAxr/iR5fBkcWMEmx2S5aq71LFUs/usLWmDD4qJn2fndU8o8cJ89324XCLiP6LQAnSJFJ4NBX74Hb2cJiKwoxyFZ+aZ827DjeVOJPuVmctxs1XByvT7+fQo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(6133799003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T0JrUCtCWE1LZHd2ZEZyV09RSE1lSGtzWHZEUXJYZEh2Qm5HK1FMeWp0YVN6?=
- =?utf-8?B?YWtrek1Ed25hSENTMmNMWG1QbGxwTWIyYUhZNUxncCtrVUk4UnUrOVdVUDc3?=
- =?utf-8?B?Q1VnMVhRekx3TTZCYm1vbG9TZ0JrcHdrMDQycWl5REkrb205a1gxekp1eFdr?=
- =?utf-8?B?ZUpGUVRoTVVENGtEaktvS2lVOUttT1hWUFNkWHNnL28rb1ROOWVOUEZQT2RM?=
- =?utf-8?B?TUIxYzdYVFQyVkswTjdYaThRSWxpYWU2VXVnNFdGaG15NVhpR0xNV2tuaVRP?=
- =?utf-8?B?ZEN3SmdxbUtWZy9WeEx1ZGJkem55ajk3eHNJVzhNOW0zRXlFOTlpWjV5Qy9L?=
- =?utf-8?B?T0dFWkltMWQwT0VVZFdRT0tTVVEzZ0szMHpVYlRlVnRPcDI5TEt0WnYwYUdQ?=
- =?utf-8?B?K2FLbXIydWMrZDc3T0lrUVJRWXJGUGtnWEJHTkRMSFJHQXRCUXhUNXdkMWpx?=
- =?utf-8?B?MW53VDFxRXNQVjRna1ZVMzJTS2JzaWFKczNPc0VUeWdFV0F2MHhyUHhpU1Vl?=
- =?utf-8?B?MXZyd0ZHdktLQ2NZUTlUYXdGQ1dFM29OSTF5bktmeFpGVEYyRFVDWkczZFI4?=
- =?utf-8?B?YzhJdDI3UDBtTXJFcFFPUXpGdFF6UkxMeURoSkgyVTh3SGw4UzZSS0poVlFN?=
- =?utf-8?B?eXFYbzRNakdLYjdwQm53VXV1cDFocGF0c21VZjhydXRJUnRWYU5MZWRjMWJU?=
- =?utf-8?B?RVRIMkNYQmRvYWVjOFJodE1UcGRZWVY2c3pwVmU2RFc0c2o0cW5UeWRQb1BC?=
- =?utf-8?B?RjVEUDRTTHRNalRXUkppY1RXakxkaGYydGZjQ3l3N3RCMDFWSlJNdGpRaWda?=
- =?utf-8?B?S2xlaVpaTGtFRmJWc0NwMHc3ZG43RDk1K1B1V2pNa1phNjNUSHFucWVFenF1?=
- =?utf-8?B?MUJzUHBYdi9DQ0QrKzA5UFVJZUwwdmZUVWdDUzQ3ZHpjY2wxL1hyb1FEOEFp?=
- =?utf-8?B?UXVHZkpNbXN6ZjVyMHV1bEsxYVNEdUJmRFdWeEFmUzVLNlZHVmpFaSswZWtj?=
- =?utf-8?B?UUVJY2xmRXBDOURtVnFnSnV0UmMybVVrbjNLMXFOYTVuTEl3WnA4NjFwbmc2?=
- =?utf-8?B?RmdXclZOUWloRmtNMnJ3ZjZVOEdFOE9udkZnYlZndjZaek5mVVBWMW9TcmNh?=
- =?utf-8?B?MDdTdnVYZG0zM2NvbWFaOGQyelJOUmwvdndPeGFvSitTQmxjbUczMC9YVVJB?=
- =?utf-8?B?b1A1ZW1RajFLYWI1TkYvL29UMFd1TzlieTE5VU1MTWxBWXJHTVV3ZGNCMU5a?=
- =?utf-8?B?Mm1QRmZ6Q1ZSd1ArZVdZVUp6MzBrZ3VubCtya04zSFRlQSt6Z09CK2g3Yzhj?=
- =?utf-8?B?YmlQZ204aWEyYkxrS3lYSDZZSHRDS3c4OTE2TGNQeTJiTE9yK3F3U2J4Tmhu?=
- =?utf-8?B?c2t2aEFjd1RmM3N2MHI5RlU2eW1pajhObTZnUkhjUHJYQjlaSXU0WnNLM24x?=
- =?utf-8?B?dEVZRFE4ZURueEJDSnFaaDZ1R2JXQ0ttNUlvRll1N2RzK3Rwc2hUTnhUZXJv?=
- =?utf-8?B?ekdmdEhOQzk4Z21oeUl1TTllS3d2ekNRQS8vMkhPMDgrWjZQRmlKL3hjcStR?=
- =?utf-8?B?ZDBtNmtBdE9lcjdpL1ltVC9TcEhPL1ovTVlnZFcrOTBNT010bFc2TVJkZkR1?=
- =?utf-8?B?WU01Y2k0QmI2RTR0NTBxek9yZHpSTHBFU3hvY1NMaFEzK25oZm5CeTVMSzZk?=
- =?utf-8?B?U3dtZjJtb2JHR2RvM2E3Zm9WYk5lNStKL2FlM3hHbk00NWpjUmpGVDNuNVBD?=
- =?utf-8?B?RjB6alMxREs4ZjVuSFhJd3F5bzBUeVhWWDU0Z2E3bkNDUjNoMk9VVUVkYzFM?=
- =?utf-8?B?VWpxd0dkbWRTWG1wckhYaDd1R1M2cWhHSVdUWTF2M3FNeHBVcjNHS25BdFRx?=
- =?utf-8?B?WWQzanM2bkJhdWFYVEdjU3dBTjhQcEx2MUFzM3hDUXd0SHFXcmdhYmY0cXFk?=
- =?utf-8?B?ZHNqK2doMVpTTWI5TFpsRUtCQ1dpMjhObFhnRURPZks4MW5naG1rYXBCN0dP?=
- =?utf-8?B?eWFGSUptSEErYzRwak02RzFFc2JWSGJ1eEgxK3dBWENmWCs1Z0I3VmhyN3Yx?=
- =?utf-8?B?aDhxMVh1RUhSa1RuRlFFeHNoa3RJb3pYZkh2OWovNnBYQkZOdjQ0Qmhsdzht?=
- =?utf-8?B?UjFuSjduOVZtb21NbXgrRERkVkR3bWFPb1o3bFQyVEFYeU44Ykh2Y2hFOFB3?=
- =?utf-8?B?M08ySzBQZkZZZXA0bUMyNGk1QXRJOGVDbjZZNTdFdEoxQ3ZQZXJkQ0kvQTEz?=
- =?utf-8?B?ZVNEb3FBV09RY0Z4WVVLT3h3K0FSSzBqeDh0TXRYcGdFSlFMN1RFNHlFZlIr?=
- =?utf-8?Q?TevV0EvTkLB9zYC3Vv?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ef3c088-b354-4b0f-8a07-08df2f7a5909
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 13:51:03.7302
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mEnns8sFcXkBBaSFWuosCJXFuv3mm9v6F9dZW78HHSeq8hJWazK0h9XghAtAkWQh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4162
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021000003.71f78d99@jic23-hlaptop>
 
-On Wed, Oct 21, 2026 at 08:23:05AM -0400, Mimi Zohar wrote:
-> On Tue, 2026-10-20 at 13:52 -0300, Jason Gunthorpe wrote:
-> > On Tue, Oct 20, 2026 at 05:11:03PM +0100, Yeoreum Yun wrote:
-> > > But, I have a related concern about deferred probing of RoT devices.
-> > > 
-> > > For example, if TPM probing is deferred until after the attestation
-> > > subsystem has been initialized, how would the subsystem handle the
-> > > TPM becoming available later (This is reason for
-> > > IMA_INIT_LATE_SYNC).
-> 
-> FYI, this patch set initializes at module_initcall(), not even late_initcall().
+Wed, Oct 21, 2026 at 01:00:03AM +0200, jic23@kernel.org wrote:
+>On Thu, 15 Oct 2026 16:50:35 +0200
+>Jiri Pirko <jiri@resnulli.us> wrote:
+>
+>> From: Jiri Pirko <jiri@nvidia.com>
+>> 
+>> Define CTLV's common TLV transport, ioctl, event records, identifiers
+>> and limits. Add the in-kernel API used by family implementations and
+>> generated code.
+>> 
+>> Assisted-by: Cursor: GPT-5.6 Sol
+>> Assisted-by: Cursor: Claude Opus 5.5
+>> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+>Minor stuff only.  Some of it moaning about toys we don't get in uapi
+>headers that make kernel code 'so elegant' :)
+>
+>> diff --git a/include/linux/ctlv_family.h b/include/linux/ctlv_family.h
+>> new file mode 100644
+>> index 000000000000..1ae4d3a536f7
+>> --- /dev/null
+>> +++ b/include/linux/ctlv_family.h
+>
+>FWIW I fully agree with Jason that sometimes it is worth burning
+>some lines and even duplicating things a bit to avoid too many
+>complex macros.  I didn't have anything to add to comments on this file
+>at this point.  Will see how new version looks!
+>
+>
+>> diff --git a/include/uapi/linux/ctlv.h b/include/uapi/linux/ctlv.h
+>> new file mode 100644
+>> index 000000000000..6bc0d1a296e6
+>> --- /dev/null
+>> +++ b/include/uapi/linux/ctlv.h
+>> @@ -0,0 +1,183 @@
+>> +/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
+>> +/*
+>> + * Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES
+>> + *
+>> + * CTLV transport UAPI: the TLV wire format, the op-execution ioctl, the event
+>> + * record header and transport limits. Schema-free; a family's constants
+>> + * are generated into <linux/<family>_gen.h>, the root family's into
+>> + * <linux/ctlv_gen.h>.
+>> + */
+>> +#ifndef _UAPI_LINUX_CTLV_H
+>> +#define _UAPI_LINUX_CTLV_H
+>> +
+>> +#include <linux/ioctl.h>
+>> +#include <linux/types.h>
+>> +
+>> +/**
+>> + * struct ctlv_attr - Attr header.
+>> + * @len: this header plus its payload, excluding this attr's trailing padding
+>> + * @flags: CTLV_ATTR_F_* bits
+>> + * @attr_id: complete attr ID, or CTLV_ATTR_ROOT for a message root
+>> + *
+>> + * Attrs are aligned to CTLV_ALIGNTO, which is why @attr_id is __aligned_u64: a
+>> + * 32-bit ABI would otherwise align this structure to four bytes. A nested
+>> + * payload is the concatenation of CTLV_ALIGN(child.len) bytes per child, so
+>> + * child padding counts inside the containing attr's @len while a leaf's own
+>
+>Whilst I get what you mean, leaf doesn't feel like a clear concept in this
+>comment block.  Maybe 'this attrs own padding does not.' or something like that?
+>
+>> + * padding does not. Scalar payloads are native-endian. Within each request
+>> + * root or nest, occurrences of one @attr_id are contiguous; different IDs
+>> + * otherwise have no required order.
+>> + */
+>> +struct ctlv_attr {
+>> +	__u32 len;
+>> +	__u32 flags;
+>> +	__aligned_u64 attr_id;
+>> +};
+>> +
+>> +#define CTLV_ALIGNTO 8
+>> +#define CTLV_ALIGN(_len) (((_len) + CTLV_ALIGNTO - 1) & ~(CTLV_ALIGNTO - 1))
+>
+>Could this use __ALIGN_KERNEL() from uapi/linux/const.h?
 
-Yeah, it's fine for where this patch series is.
+Okay.
 
-> > I don't think it would be any different, the mechanism for TPM would
-> > become generalized and apply to any attestation driver.
-> > 
-> > This series doesn't attempt to do that flow yet, moving ima over and
-> > dealing with this is another series :)
-> 
-> When TPM device initialization is deferred, it is retried during
-> late_initcall().
-> 
-> As there is no way of ordering within an initcall level, there is a race between
-> the device driver probing and the call to late_initcall(). The solution was to
-> allow IMA to register at late_initcall_sync() based on a Kconfig.
-> 
-> Both device_initcall() and module_initcall() are at level 6. Are you sure:
-> • the PCIe SPDM Devices will be ready at module_initcall()?
-> • the PCIe SPDM Devices are not deferred to late_initcall()?
 
-Why does SPDM need to get involved here? The device acceptance flow
-and SPDM stuff will be managed in the initrd. The subsystem can accept
-drivers and load a TPM/etc earlier while doing SPDM later. That's fine.
+>
+>
+>> +
+>> +/* Set exactly on root and nested attrs, clear on scalar attrs. */
+>> +#define CTLV_ATTR_F_NESTED		(1U << 0)
+>> +/* Query fragments: set on the root and each nest logically open at the end. */
+>> +#define CTLV_ATTR_F_FRAG_MORE		(1U << 1)
+>> +/*
+>> + * A request attr, never the root, that a device whose schema does not declare
+>> + * its ID skips whole instead of refusing the message. An ID that schema does
+>> + * declare is held to it wherever it appears, so this asks to be forgiven what
+>> + * this kernel has never heard of and nothing else.
+>> + */
+>> +#define CTLV_ATTR_F_IGNORE_IF_UNKNOWN	(1U << 2)
+>
+>Doesn't really matter but could use __BITUL() just to hammer home this are single
+>bits. Places like pci_regs.h have started doing this for new things.
 
-AFAICT IMA needs its ROT to be loaded before we reach the initrd.
+Sure.
 
-DRTM also needs a ROT loaded much earlier as we need to measure ACPI
-(and the initrd?).
 
-I imagine attestation subsystem will eventually have to be ready to
-accept drivers prior to ACPI.
+>
+>
+>
+>> +/* Implementation limits, not wire-field maxima: raising them is compatible. */
+>> +
+>> +/* Request roots, action replies, query reply fragments and event roots. */
+>> +#define CTLV_MAX_INLINE_MESSAGE_LEN	0x100000	/* 1 MiB */
+>> +/* Includes the error information root. */
+>> +#define CTLV_MAX_ERROR_LEN		0x4000		/* 16 KiB */
+>> +/* The root attr is at depth zero. */
+>> +#define CTLV_MAX_NEST_DEPTH		32
+>> +#define CTLV_DEFAULT_QUERY_REPLY_LEN	0x10000		/* 64 KiB */
+>> +#define CTLV_MAX_EVENT_QUEUE_LEN	0x1000000	/* 16 MiB */
+>
+>Pity the linux/sizes.h header isn't in UAPI as result is we need
+>those comments on what the sizes are.  Ah well, never mind.
 
-ARM's DRTM architecture splits the ACPI into parts that are already
-secured/measured somehow, and then other parts that the OS is
-responsible to measure itself. This split is arranged so the OS can
-discover the TPM through ACPI using only secured ACPI tables.
+I already eliminated all of them. Some are kernel internal, some
+userspace internal, some I moved to introspection.
 
-Thus we need to parse enough of the ACPI to get the TPM driver loaded,
-an attestation driver for it, and then continue to parse the rest of
-the ACPI that wasn't already secured.
 
-Yikes! I dread making all of those things.. But that's an option for
-the required shape of things.
-
-Jason
+>
+>> +
+>> +#endif /* _UAPI_LINUX_CTLV_H */
+>
