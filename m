@@ -1,110 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.7
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792602009;
-	b=ByCO94s2DlOa2UPsSXEb30H2eu6kQZthg07/NXC8JUgckvZIdnpLWzOoHa5quoHi4DlI
-	 qbJFZxxmNGiOWuDMwpT+kKyHOne8cpfJfSX8VUuuZ8bVquJCRFaIvoeHXHFzpqGN6BnHo
-	 HwmQsXUgl9hlH9hHNQphgr5ei+Ws+agijZp1vHKlrBn6YL7degBbw8K0+FKHOU0teGwJF
-	 q1j3JbsratTK5+2mg3xSitJfMDpM400gAmzESuuuYscp3NMmFV8ML6oIRSfRUOdMSTqDD
-	 coppHSFM5dQJmk3vjiCTqopGqtFJTwt/ovx5DTS0TpO9XUusiMFqIPvk9o0pasV7T8w==
+	t=1792602999;
+	b=BhY+SLsD17POOfeJDfJi2xd+hAxO8EZ6QKZrJ3H4+FmVVXCcqEq0/hD00sV+ek2kxPHu
+	 8tZWkCfMgAf5MV1Tn/QzAwZKlgps9mQA1jT0M6xIzqhaNTu+R4PU4uyo18bi4hcywnJ/l
+	 lWkw8QQbC8Tap/zML6q7p4+hlVm+rNt79iAAN9JrZccJcVLsgVRwupsEVXQekpwct5XPO
+	 XQkK+REAiCfJihOUNiAvIyWgnRlCAbogs3vlWd/I5budwSteWOdrl5ZM+Q1neYyyGDpXE
+	 44lSjzt1V3mR/g08jXsRIyZDKCx4tSjexc1CdvS+gYgZAj/SfP7XUdukagMwuUNxBaA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792602009;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=jz2h+fDQpIjsnhUo54g20qmIZjwTYgRPH6a6FRwxN7k=;
-	b=GVWtfAjqhpwKjFJfdmipDto+ZmCDhTvkxJ6UHIabsivKig6yph84r9vbP2cg5zDCaZZJ
-	 yefbjbm5VJJwasyzR8rG7X9s8FDTbL1URg8yUmi5tyO/BGlpgKBIPYE1d7TbxJzszLFnV
-	 ApcKiNqWuLzPsA0Op3HCCB+ljHhiMwvGRnh2guX4zBuCMBGCtuoA7SG5vGpb7nAK7b+6R
-	 CKIjM/hHWwaM2N/IL6IQuDIA67tUZqxsvhBSFm4pMUTYdKf/YdLU9Aclw4AohUAVbfh62
-	 xhXyULRqXCx0uQVtMdpd1OUqqXOezGBK9B/Aokh1g926tFkLM7RteO94+Zf6La4KFDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792602999;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=osRbuQ/Bkf4fHB+3iFdZWVyxGfpI6q99uA9VbpH4+zA=;
+	b=hNpJTReemmJUDn5vGx0KuAafqq1Wrwaz1nn8tqQHKvbSlBtDzqxMF4gR4qXY7aRmHaUM
+	 jAeJLyuhBaU1SGbKnCT/QYD7V9yQ9AD52jMed503S4F9VxuPF6UBRQgbwDsqnoX+JmJgL
+	 nmHPY6JJwfBzGkTPSSfJwZjNPcp8hiFaoUdKN/vjdKa9ZfA1YH+j0Jqer3yL+B6lrvRl8
+	 dAgP6FdlG1oVWr0KHJwJhFVr1998yMiUG325ra+k6AVNyI2YgDMhRewiVD+moKfVWPRhn
+	 LYulseXdruq9EGsdYGpqoYhUAY72dHFNpJarrclz45gfQWNxm879TrByCOG1HEjSBIw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Ten42nts;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.7
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012007.outbound.protection.outlook.com [52.101.48.7])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WULuCDb1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D32606A31A
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 17:00:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93D32606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA862606A319;
+	Wed, 21 Oct 2026 17:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Ten42nts
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vQcIUrEXQhnzYQQ5Uwj9QlLXJmP6R0cl9+pnZoFMfeM6sShf4lBuKW3S8ZkHsKof65iX4zxK4RNL+Lr5ZQVn2xfqOnkBQV7vwg9vmBSQGtISD7969kke+rN/6RFirOlMKPW4Ank9Fy3eQulDExxmq0mewjCt5oSPJAwLrbQsOmxM/5LztoYl/l3mGzTkdmK+Y+TQbFWTmpnCCyUS0qM+JsZCCBCzwer5UXSgNHoCDTs2VMkqvFK2EFgMRYr7Jlu9SnoeaejR89suq4Rrfo7yuiAMbV+LiiXO2D1QbDhyCJBZnbJ4ueDZIzPVCbE4R7XyPl9NqmzqeKSmV49ERicH3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jz2h+fDQpIjsnhUo54g20qmIZjwTYgRPH6a6FRwxN7k=;
- b=kOh06lt/4ngkYzT9MssXOmTQZ8cFIAAb5BS0aCRkqBRloG/r8z5wjGdy5LAGS9v1EoyVv0jUoOBSF6YseBHhQRs9mAQ1gjCpeVzBis5drXF2llh1kPCJnQc9rBYzeFGw3C8QI4iiDjwQejh0pjs0wXcIyuF55+e2TloyXVdOt/ZYfXmWg/fZ7ajb+xaTSVcun7DRGttXjkKrrX2P6puqY3RnbxsscNjGlo/2DdoNM0wzhzHsiGU+Lgj756M2ILb7HnB4f4RlY8k0LRrTOxNFkpv8agiW4G765iAzxNpDd3nq5vrX0yOInWFO87jljlzyevj3aYrJGP0suXv7SE8B7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jz2h+fDQpIjsnhUo54g20qmIZjwTYgRPH6a6FRwxN7k=;
- b=Ten42ntsBe0yWcVKmCKF/hivvIx+x62quXOKXFWM2tl/OVrlsWV/vjfAx1tu2AN/15HqxuLV6AN0DoRvgBrKEBiMbuo7+unVeKXRNhGO5pj2Fo7kqgEppBG7LMRfSNodA3JoRma1Uhl9FQaBFUVYm6ALl3U3xR+42OdhZuRTKm4=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by PH8PR12MB7207.namprd12.prod.outlook.com (2603:10b6:510:225::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Wed, 21 Oct
- 2026 17:00:02 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 17:00:01 +0000
-Message-ID: <345e3647-5bdf-4cd4-828d-bd28e0b66cac@amd.com>
-Date: Wed, 21 Oct 2026 11:59:57 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 14/18] fs/resctrl: Control visibility of global per-CPU
- kernel mode group files
-To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
- bp@alien8.de, ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <28d7e4484c93d899ed86ddafa13faccce0dedca9.1790867441.git.babu.moger@amd.com>
- <c600a240-ed11-4e31-b3c3-779f01175f28@intel.com>
- <e1753b90-f22e-4708-8c2e-0e1d2e0f46dc@amd.com>
- <91e0e000-7e37-4e49-95cd-76062097fb79@intel.com>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <91e0e000-7e37-4e49-95cd-76062097fb79@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN9P223CA0002.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:408:10b::7) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WULuCDb1
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792602998;
+	b=DRlQjR2pd/lMPyQfa/+IhJp7lZXCbA6dMkTrN1BHT/l8a3r0VIv1QcdR1mbneFfiwnyg
+	 G2f6ploQ4H5lpTpJlqHgKwV1qzynw+kb0q82jUxxsKCEksdtJf/RyW0K7qJtxYZS7dJVd
+	 4gX0ME+mPUavZ5zdEMDNO2lwCMVT1PKOhd1lSCCGdirfU0NsQ+luNSQOhnDqLezo9uk5G
+	 2jqH4O+V8V1iYgCBAN7/B6ajgOR71jlVHoAYhr7bEYE/21fo6Wjub/YmuXLKR1U9xMzY2
+	 xrkPhaNnzpBQjCsDXdTHUeU/g3RnWwS1nKjjkHzI4l4C2ZKpNaHSa+YQrabcYHXvcUA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792602998;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=osRbuQ/Bkf4fHB+3iFdZWVyxGfpI6q99uA9VbpH4+zA=;
+	b=SsLxtVhSYEAEQlYYyoo3/756rg/EpqV8dIsYB/umDzIWNtavivZBEjo4rSg40Zo9bgyB
+	 JrkItE783k01L/fJohV7F/gRssbKulYGL/AaxWCxJ10xx5fHgnUbmquk8j9Idhe2qkat5
+	 PVYwHO3g4SlV5Tc19hy1xEEBhbk6X4G4rhGBXvnogfN95EhXzvQK3hAOj9eo5cM6piIz2
+	 6Oyi+gSP3tGCSnp0s77sl0aKsI88lVaY+T180qASaxc4nrf2gg3WugXhlMuTsLAxyaQ6e
+	 K/oBChE1oqd2FHIRLdfG0NA9W9PscWfdwweOBY7Yb5+lx//ThHb6aB1d37jAjQZb6pQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id AC8231F000C1;
+	Wed, 21 Oct 2026 17:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792602998;
+	bh=osRbuQ/Bkf4fHB+3iFdZWVyxGfpI6q99uA9VbpH4+zA=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=WULuCDb1uAoVNb9mO6Srz96qBl7FPsOJ1kTxorP4QEALAhfJvOahsHPoVU3cAuZso
+	 ieSmdyZHouz4Xht9GlPW9RkfAYYQ3YzmFSEhf73SXbtE0F7NuRgXxQDz/E/9SO969Z
+	 KhzYT9b7ZV3VZm9rpb+BUMkMy8MV/1t0imx7r5i3mlWhmtfjFVmlKlV/ntvKHzk+zZ
+	 LMZPUOYF1nK1YNurhgjDHnci8PjT+l00KTnW6WUZQOy+d8IyVyT8Ta9L/Dywep9YsP
+	 2gND7YUxbG77ZZQaoZNo4CApO9IgLKCg8pJZs0Q+DzBiiF55Batd7bd94JIEX2Akep
+	 eynXO+JmMhAIQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 2902F400AB;
+	Wed, 21 Oct 2026 17:16:37 +0000 (UTC)
+From: Moe Mahhouk via B4 Relay <devnull+moe.flashbots.net@kernel.org>
+Date: Wed, 21 Oct 2026 17:16:32 +0000
+Subject: [PATCH] virt: tdx-guest: Poll Quote status with exponential
+ backoff
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -114,126 +83,120 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|PH8PR12MB7207:EE_
-X-MS-Office365-Filtering-Correlation-Id: d28cf12c-ea1b-4739-766d-08df2f94bea3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|22082099003|18002099003|10067099003|261021121427099002|4143699003|5023799004|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	uY9H3eXmzz8AsgefUbdsjjQqmG5m+7Mde6/2mJXfIE6UohE84zHzauzIefRkaT7U0Hds61LhNUjjCpFyOePh4k0vac+xItBSvL0oLm3NdCjKoJmqHGd+/hUbss/256pgQWSg/GUIII3Lc/LUE1BG4wx9vUrzf4sxOEy6Tn7PXofmcPGZW1kisjpU8ZTVwEa7KS8bYcOx4I0LtRfQMn0QYFxRqCNg6LUdXnsvSRSD5d/xTKkgDD7DklJGwTGRwxhuT48FJC5+ozXFI6Q+hNUzM8042MAlp7zC1VHQOStsAnIEpMJ2h2QxNeAsX98lBew3jEFLq0px6Zqq77l9VuPBO1cylVqkWDuluXYV3E0RxaBHZTxKJbx1gWFqdUz3CO57mOwt7S1CZm+inTuMVlzcKfHOrPwxsMfsoYUVZR7To6h96FOWJSiPFhJ0ZZmhOjtIWO0gwckIy+NmCY3Wu9YUhPYrgndUVNtnSVbNN9yAKJR+dh+dRUT63ztDLe9/fPN8+VjrNuxqNL4u7w1WYxzp06qiL1i637lnt57bufUUn5PDdFeLlDtp0cSd2yaefly0NN0CZT+PQay8t6vA3vVlmQ4qiCEZ0gr615cCdFMIUAlUKLiJDiJIN7hm1QPfqYAnsOP/bYjsLqiHIDpabrcXAAsWPFxqfD8ZBM6owM92zgg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(22082099003)(18002099003)(10067099003)(261021121427099002)(4143699003)(5023799004)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WXJzZEtCL0NBZm5JSC9ZSUE1dFdFTW92dGlMaHZlbGtCMFBPWnJSWDBVbDFh?=
- =?utf-8?B?emg3MHQ0MWpKUXUwYnNXNlBNWDllTG55U0RPWGtla3dDVW81blRaazFOaDh4?=
- =?utf-8?B?TW5GSjQvYk1JcmlNVDRYN0NhakE5ZXVNQ2J1cUFqbmhEL2VEdGxlcWVJRzla?=
- =?utf-8?B?a2JQcXQyZkRvc09aYkxEc1gwY0E2NUNud1IzdlpTRFFYNTlabU4rLzBmOGJa?=
- =?utf-8?B?Q0xiUit6RjVUMUhQMkdiMDhodGlzT0ZiS2wxK3VrRUVPc3A1SWJ2VWJoaS9V?=
- =?utf-8?B?Nkd4VXhEaUxrNEtHSE5QRUNmR3JqK25FRVhZc0p6ZHA0TC9xaFh4R0FNWDZ1?=
- =?utf-8?B?VGc2YXhUMHVieDJHR29JajMvUjVwdWd1bVV2Z2paQWRjZ2NGSFZZQlUvOXVJ?=
- =?utf-8?B?cTF1dkwvMG1YMWg2NmJ5K1ZuUWNGVHQ3WjdQdjYzMUhibFNObGIwMlNVWHhU?=
- =?utf-8?B?bUtNby9jSzJXdHFPbW5JS3FHNkNQYzdCUFI4WXorWUVlbmRqeWtlYlpkaXlj?=
- =?utf-8?B?UzdQUjRFaytuc3phM0FYTlNsUTlFa0dlbUZRN3EyNFk4VzcrREFidHF1Qzhi?=
- =?utf-8?B?NnlVbGduMHp1TklyK2NyOGI2K2krYTN0cUZLdjlxdks4M3E5RFBoK2NVWVRF?=
- =?utf-8?B?NXZMM3hHMmk4S2FySmgvNnBkdzlOakFqZHZEeWxXY1kxR2loK1NtMlBuYlBQ?=
- =?utf-8?B?VzRHZG1kSEJ6czk2d2Mva3Z3WjVNWUo3R1oweTJtdWt6RTlVbU41c09kc2xD?=
- =?utf-8?B?MUNINVBYZUU5RDVJYTlqbVZQZ3I3aEorZ1E5K1RTbHhyMWlLakwyUU1xdjdL?=
- =?utf-8?B?UjVIZjJZK0czQi9uY1JQUVBkRzBTblA1UU45Y01tZmdURndiVkM5V2srUUw3?=
- =?utf-8?B?OVZpbEUrK08vVDJyTnkrVWV0OFFiR21mSXA1Qm4xeHlwLzZnR3JaQnM1ZVkr?=
- =?utf-8?B?V3JJMUFqU0J0aHdOaWlpSWhaZUp3MkdHWW13alhCc2tsTVpod0E2KzZDSHho?=
- =?utf-8?B?NFJuOWc2M1M2aE1HT3QxUnhSS0hkTjNjT1VMUWxVb3M4U0x5QS9GelhKN2dP?=
- =?utf-8?B?bmpRWTd6bVNTUG94WkFoZGhjK3NRMzJpT3lLSS94MGh3TVNVV29sN01ZQkhO?=
- =?utf-8?B?bGtDdTREVW9vSVlrUjhjL1NrVmpGaHRxVFhnYitERnNKQUltZWNjUGg1TFFo?=
- =?utf-8?B?aUo3bW9pcHJET3QrcFhwQWRhUjhRbWltRkdwbmVRNThKQlRGQnk2Wm9CMUQw?=
- =?utf-8?B?bmNDRm45QjNxYXJwbzBxRmtYZ21MVXF4V2Nha0JhUkVhU3Z5NlZUdjdpd2Ux?=
- =?utf-8?B?blQ1Mm1GS1ArTWd5QnNoU1VrRjRoSUxOd284NTk5N25qbjU5MkxzdXErNEhQ?=
- =?utf-8?B?Rng0dk1aZml0TGxCRmIwZ3p1bSthVWFwMnFQTm1wSmprTzJyaHhrby9iSTlU?=
- =?utf-8?B?SzVxaXV3RmFuUk5uYkpzR0wxekpJS2Jhcnlac29IckVPQUM4Ny92N01ra3Zv?=
- =?utf-8?B?SEtPdmZDMFdaVGljK3lhTEFNRmFEZGFKeUpTMXZad3QwR2ZaaWZLNkZzQ0F2?=
- =?utf-8?B?Y1czeDF1UEFmcy83ZWR4QmlTWlgvTzZKTFhHa2JmdS95VzArcGNKSUEvZUdt?=
- =?utf-8?B?OEFJYUd6YzF3ZDlEcTBWazl2MGRLK3hxYmRZcis5OVBsbVhEMUdrb09VWkQv?=
- =?utf-8?B?UmZtTGxPZFppSk1pMVpsMGFrWE9vMWhTY2VLQ1RrU3BYelF6emEwNjV5cDdl?=
- =?utf-8?B?RTlRUjBPWHRkbGgwZG00NlNFa1E0KzY0UDJxdGNud1RsME5rZjU4WFN3WmZJ?=
- =?utf-8?B?TXBxak5SVVNkcXZyL2s5VGp1WXltWE1RNTNFWWRmWjFYb2VUR1JIQWdKenZn?=
- =?utf-8?B?SXhWTnJxTEEza2pBQnBBUlEzU0pJV2kxQXZIMEY0b3B0a3VDOFdUdTc1R2Yv?=
- =?utf-8?B?WGtrblZTblBTZ3ppbjd6WXNhMEhYRlNTOHlicFF1Ti9EM1NnREt2elNVVnk4?=
- =?utf-8?B?ekNrRmMzNHdtK013aEN4MTJ0TEN5RVlQUTVYcjEvZy9zRWFqT2V3T055UGZQ?=
- =?utf-8?B?M2pIb28yUXR1VFdtVzdkRHBkVG1rTVRCODUzUjV6NkxzaUZVcDVsMDY4T3ln?=
- =?utf-8?B?M0hMUGM0cHQ0SmJmc1FPMml5YzdmZG1pVW5TdXN1TUhDNG0ycUlleXFXQ0xQ?=
- =?utf-8?B?YXViT1N3d2ZTVCsvR1ZxN1doTU1JcHJKMjJoYnBkV0NpV1VIcXFNSXByaS9m?=
- =?utf-8?B?TkRsaXNRZmZUVjNQR1l5WnVjTG1GaVE4Wkd1WkhidHV0SHdMTlR1ZzdVK1hF?=
- =?utf-8?Q?ded0sJMCS9SqK2hyn8?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d28cf12c-ea1b-4739-766d-08df2f94bea3
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 17:00:01.1686
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I/G75DEK1X7Flzz/sFixbakcpzF4zwLIWRMjWuiDRhxP1dAuCE578Vc4McIK/oMg
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7207
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261021-tdx-guest-quote-poll-v1-1-919a87812ecb@flashbots.net>
+X-B4-Tracking: v=1; b=H4sIAG/z2GoC/yXMQQqDMBBA0avIrDswCbRir1K6aOJEp4ixmaQI4
+ t2b6vIt/t9AOQkr3JsNEn9FJc4V5tKAH1/zwCh9NViyN0PWYO5XHAprxk+JmXGJ04QUWhf8teu
+ IHNR0SRxkPbaP52kt7s0+/1+w7z+kcMDgeAAAAA==
+X-Change-ID: 20261021-tdx-guest-quote-poll-0f7bfc59900b
+To: Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Moe Mahhouk <moe@flashbots.net>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792602996; l=3676;
+ i=moe@flashbots.net; s=20261021; h=from:subject:message-id;
+ bh=ovLjrwfOdsN8YV/HwtnnZX45Tn33AdVlaLj2iyiZxOg=;
+ b=NerAd036wmkMOdNkDJm5yKzKT8DYx11lgGw4sGyYs33FluB7iBSKnw0ovprvbNvjeyeRTOoib
+ Chgkf+bdwTWAe2iY3uOW0Za4az4NHjcAknw5+o6DNLQwK+5cV3GQbYR
+X-Developer-Key: i=moe@flashbots.net; a=ed25519;
+ pk=hJTKfjLno/YESrpxMIKDJk34GM+/8Tol+24XK2b4xf0=
+X-Endpoint-Received: by B4 Relay for moe@flashbots.net/20261021 with
+ auth_id=1259
+X-Original-From: Moe Mahhouk <moe@flashbots.net>
+Reply-To: moe@flashbots.net
+Content-Transfer-Encoding: 7bit
 
-Hi Reinette,
+From: Moe Mahhouk <moe@flashbots.net>
 
-On 10/19/26 17:00, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/19/26 9:31 AM, Babu Moger wrote:
->> Hi Reinette,
->>
->> On 10/15/26 10:46, Reinette Chatre wrote:
->>> Hi Babu,
->>>
->>> On 10/1/26 8:10 AM, Babu Moger wrote:
->>>> The kmode_cpus and kmode_cpus_list files are specific to the
->>>> RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode. These files are created in a
->>>> hidden state when an rdtgroup is created.
->>>>
->>>> Introduce resctrl_kmode_global_files_show() to manage the visibility of
->>>> these files based on whether the global per-CPU kernel mode is enabled or
->>>> disabled.
->>>
->>> This does not sound right and does not match the patch. The visibility of files
->>> is per group, not globally whether the mode is enabled or not, right?
->>>
->>> It is ok to have cryptic changelogs when changes are small and simple but these
->>> changes are not small and simple.
->>
->> "The kmode_cpus and kmode_cpus_list files are specific to the RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode. These files are created in a hidden state when an rdtgroup is created.
-> 
-> Could the context please help the reader a bit more? Some items that could help:
-> - *why* are these files specific to global per-CPU kernel mode? (mention that it is used by user space
->     to do the per-CPU enable/disable of the mode)
-> - *why* is it created in a hidden state? (mention that a resource group can only be assigned
->    to the global per-CPU kernel mode after it has been created via a separate resctrl file)
-> 
+wait_for_quote_completion() sleeps for a full second before it first
+checks whether the VMM has completed a GetQuote request, and then
+rechecks once per second. Every Quote request therefore takes at least
+one second, however quickly the host answers.
 
-Sure. Will add that.
+With a local Quote Generation Service the VMM completes the request in
+a few milliseconds. On an Emerald Rapids host (KVM, QEMU 11.1, Intel
+QGS), 40 back-to-back Quote requests through configfs-tsm took
+1021-1024 ms each; with this change they take 2-3 ms. Since quote_lock
+serializes requests, the one-second floor also caps a TD at about one
+Quote per second, which hurts users that bind a fresh Quote to every
+connection, such as attested TLS.
 
->>> Introduce resctrl_kmode_global_files_show() to manage the visibility
->> of these files based on whether a resource group backs the global
-> 
-> hmmm ... resctrl_kmode_global_files_show() does not actually do any
-> checks to ensure the resource group backs the global per-CPU kernel mode.
-> 
+Poll with an exponential backoff instead: start at 100 us and double the
+interval up to 100 ms. A fast Quote is noticed within a few milliseconds,
+a slow one costs at most ten wakeups per second. The timeout is
+unchanged, and a pending signal still aborts the wait with -EINTR.
 
-Yes. Will fix this.
+The latency was found while measuring TD boot and attestation times.
+The code and this changelog were written with an AI coding assistant,
+Claude (Claude Code, model Claude Opus 5.5), which also ran the tests.
+Tested on mainline a804c5742 in a TDX guest (KVM host v7.0, QEMU 11.1.2,
+TDX module 1.5.34, Intel QGS) with 40 Quote requests per kernel; builds
+with W=1 and passes checkpatch.pl.
 
-> 
->> per-CPU kernel mode. Hide the files when the group is no longer
->> associated with the mode.
-> Could the patches be organized so that this becomes a symmetrical change
-> that highlights when files become visible and when they become invisible to support
-> the description within this changelog?
+Signed-off-by: Moe Mahhouk <moe@flashbots.net>
+---
+The GHCI SetupEventNotifyInterrupt mechanism would avoid polling
+altogether, but it relies on the VMM implementing that service. This
+patch keeps the existing polling model, which works with any VMM, and
+only removes the fixed one-second floor.
+---
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-I didn't quite understand this comment. Could you please elaborate?
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 11d741da3..5cb7365b2 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -16,6 +16,8 @@
+ #include <linux/set_memory.h>
+ #include <linux/io.h>
+ #include <linux/delay.h>
++#include <linux/jiffies.h>
++#include <linux/sched/signal.h>
+ #include <linux/sockptr.h>
+ #include <linux/tsm.h>
+ #include <linux/tsm-mr.h>
+@@ -271,18 +273,25 @@ static struct tdx_quote_buf *alloc_quote_buf(void)
+  */
+ static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+ {
+-	int i = 0;
++	unsigned long deadline = jiffies + timeout * HZ;
++	unsigned int sleep_us = 100;
+ 
+ 	/*
+-	 * Quote requests usually take a few seconds to complete, so waking up
+-	 * once per second to recheck the status is fine for this use case.
++	 * A local Quote Generation Service usually completes the request
++	 * within a few milliseconds. Poll with an exponential backoff, from
++	 * 100 us up to 100 ms, so that a fast Quote is noticed promptly while
++	 * a slow one costs at most ten wakeups per second.
+ 	 */
+-	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+-		if (msleep_interruptible(MSEC_PER_SEC))
++	while (READ_ONCE(buf->status) == GET_QUOTE_IN_FLIGHT) {
++		if (time_after(jiffies, deadline))
++			return -ETIMEDOUT;
++		if (signal_pending(current))
+ 			return -EINTR;
++		usleep_range(sleep_us, 2 * sleep_us);
++		sleep_us = min(2 * sleep_us, 100 * USEC_PER_MSEC);
+ 	}
+ 
+-	return (i == timeout) ? -ETIMEDOUT : 0;
++	return 0;
+ }
+ 
+ static int tdx_report_new_locked(struct tsm_report *report)
 
-Thanks,
-Babu
+---
+base-commit: a804c5742bff224d4cb4d25dd383554d598be32b
+change-id: 20261021-tdx-guest-quote-poll-0f7bfc59900b
+
+Best regards,
+--  
+Moe Mahhouk <moe@flashbots.net>
 
 
