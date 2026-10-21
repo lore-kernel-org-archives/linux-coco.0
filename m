@@ -1,100 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.139.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792587896;
-	b=nAr4l5CK5snMT7i21kCZpuEgnojkgI7XZV25lXPKc5tNo0zvmm3N+QSgPaPobXL95NbA
-	 LA5LPBQyVYdFNVT+INNcbhqCDTD88mnWG3rQm7vx1I9D2LiK81GPHd9u71io10SiW9BBE
-	 oPGvbwK/ZUiX3Xb5iJFbdbRBpJnNo9xZlTo6GjmcBBeD0zTOZJti6HNgJuRVo6+JwWHYe
-	 5bi2qkpLlY0+tMsSd1O3Qq2K3zRKulXNabhRkLz8RKxH6XKgyNJDDHdd8dvVfiYbSLpPm
-	 pfmlqvt3WRmV2WWfHwowaHdT26GGKJlA9dIlqmdnM/PUPLFD70ab/TcJBHrgal61Qrw==
+	t=1792588055;
+	b=m7U5gsEgu4R2gpGOBb5ZU9KyHzk0Z6a36X0G4hCdr/cbsU+GF9TMn368rrd2XW3AK2uY
+	 PS8GB0IcTN7Oszh72XW2QBmUbf/mlHipWLxHnrpwRJhX2FguHsQtDyG6UBSbQ3SHMUnGW
+	 HZ8kSdpz7HcqU1vM4kd0WfzbuXNb+/oyUEMmLZVw5Vwt2YQKmHZAiQXzCg3v/kAOQFTPc
+	 FQW25Wp9SMb25R5vzD3lOJwjvryDQyIC1wis83pDVBinBwFZnDZJgt9e9o3vkY0ScCydl
+	 xhLBd9ipiNPsFWIAbEVxKqlO9LZapUluybK4TP7iAuKsthl5U/EAXlrW7VUC8V3UgNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792587896;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792588055;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
-	b=HSHPbuxgtR/i8kZpnADDSL5yDZBDaKJvIvjt6gAGH5EWYtoHi3N1ot8tbRkKYAmYZJUY
-	 HGC+ECdtzG+w1Wcko0e2myt/nqlaQFzDkaGWP8umoNBWcV5kS0NGhwMAGx/vNtuKCZ+68
-	 EZ+HAnYWztcpkez2T40ymdCGf6g3a93hcl12lvxQx8PrDWfSf2JkFYmF3cEbxc075yG6T
-	 4Ey37lRu4ZHe+pcmwf6L9MVTZkN0LFDonxpkS0DL+PjRdMH/bPxrKaarhna20FDA2b9aL
-	 HTn7g0ZZhqTJ9lEL3qrobEYZb9qhw77Olzs5pvFXduWc/ZhtZjcZtwhqguOgLBqZ9BA==
+	bh=eptm0nTE5XWF6wwWhwC1vVdEa1trOJQC7h6Lca2PiP4=;
+	b=jY2a4zOdXWLKJz2IMcCAzIdS2uCOxEPj4pu1SUGWnVJxgJYQv7xwYqqduhDibDTSDya3
+	 S7T6Y0wTq/slNBzjfREDtaUvGNBgr/QxckyxrxTOWOglMPlW3h8ZMLJx8i3glMYfIuwQN
+	 vSHXSzGYV/mItkAPbEOCCQ5+Vv4acZ7EkylFxV/oSnHxu4qPxX8OF/1hi3WbZ737jSZ+s
+	 n1qCDoAchvOkZRNthwNQe8P25HuKSsNh21B3dw+NfzMzrWJX1fbbH1wCqPnN1wjRai/7w
+	 jMWFyZDbjEOeXp/8RgoLsuxJPFCyCVEOi4BI9uwYHCRmGueBNPLUmzIm1MziKcndvJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=lF7AJXBV;
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=fujitsu.com;
+	spf=pass smtp.mailfrom=fujitsu.com;
+	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=CHxHAxec;
+	arc=none smtp.remote-ip=68.232.139.130
+Received: from esa5.hc1455-7.c3s2.iphmx.com (esa5.hc1455-7.c3s2.iphmx.com [68.232.139.130])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BABD606A31A
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 13:04:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BABD606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6320606A319;
+	Wed, 21 Oct 2026 13:07:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6320606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=lF7AJXBV
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a1dfd49525so5609855e9.0
-        for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 06:04:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792587893; x=1793192693; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
-        b=lF7AJXBVYKv0DM7hLr+lnXrItG62PW23lojZdNbGSn04n6LDnC41NEDHJAF9xTgyGZ
-         FI+dwsM96egU6A3npJmh23h6CwiDbRM5bZaV2WxCB7jPi0lZndRgQ0rQTeCY3txxTjGl
-         SgxwtXiwSgO4tlssVar9emajbXAceZfDl8EMIuJ19Fus4DfJraR5bdLrxwl7xPUa1kys
-         3w/7VgTpvPZkOMbbNIFl0WNQ37RdKYxdlSpcdWCuGcOzZ0UznNIFAQVVap/kWyRIpBqG
-         L7WJnI7yFQhB6xZuyOs59KagMLHzI617HGjPpbR2reOz+T8ZerOQwI4ZuWsrbrZH7wMB
-         AALQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792587893; x=1793192693;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
-        b=lp330UG1l88+TH6l1+xRCcrkrCNg8HinCvdFPjt2XMWi9RJvRSmRI532IwqhQ1j0i+
-         o2AVdn0Lb5wgvL38+86d75qTB8z6OOSJXPr64pH4+twjvJOcnUB1hhxacP/SPlwOa7oG
-         agGp6CFV6ftAfYhNa+Gw/+5X60t4EQavdFPEdqmw6AbcBcYcrFxJZDnU7itVbKPhX7zQ
-         hZpmi8MAW/AxXV80CMPhvLwgKSD6XDqKiKZqAsAX9wGC+DynwvWYlWpfEKSw7RqzeGmt
-         vijBerPjBrNAnESwr18MNwmAd19LRtQ0IVvVI2ZwUqECfvUlaseTceuMvQ2DUqqVPrTc
-         8UzA==
-X-Gm-Message-State: AFq9FYL7K80eDFzIu6HDnTrLHoRRJeAbXfMA2vvqvN3e9x39lYwIo7mM
-	L2zvKmWCU2WzvKAxpaaBaLYMU/ITKYTHYTQoDwiw1+CcQiT8cFPzfUziK5GJu2Gd/WE=
-X-Gm-Gg: AYBFou0BNsxHST1oUak9X3iACn6qtS9OanLKfeKOVhYrahDWv/HmOprw1/cchhJueFU
-	rtDUogA0nlvUUJwlu8GqBxPCO6QonoPmlLjt/AG1R2NQz5/K+/vXKQva6lrWTPlLBl/yo56kbXT
-	css6m+VTkKpFx1w8v+98i6WNWudntlxQWL64SMQokp7GArFRH9ooodqLUBVswGnl8GtjGk08A7r
-	IZvgin6BelAHW+QhNfjzKuLrCxktq30mToJy/Yw3DixSUYyHVH4AhT7o0lzo8a0/6TEotBo5OTS
-	2mqpLjI9tQAB5bYmroRFHUz/JdJCSDvgfzpdlsluLiP4j3bwmZSdWZsarzBA9SFOoGFjkMtLNRM
-	SOaYHH1BgQazIsW96cVWMjjN2N8yIqtgdlYDg7j9oczCVWvszSILpAjWkP7ESYkF/J7ciQrFEV3
-	0l/yh2I+rSAEjXyTBA97ZQEr8CEmIMVPrvDZUhxDGKFrmEJwYpvfnQzbIfKQF+cIte9Xop0D1XZ
-	m6MMkEkUV9Szl6NYP5AkR3qbLaqX64ysn3aITIlbV4BCUntJoXyAzHrmGQBGdOTosKjtcL7OKbb
-	Co3TWdhHp7ZD
-X-Received: by 2002:a05:600c:3512:b0:4a1:e00b:a0ea with SMTP id 5b1f17b1804b1-4a1fd8a3fd3mr39461765e9.1.1792587893167;
-        Wed, 21 Oct 2026 06:04:53 -0700 (PDT)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835c77sm5101952f8f.36.2026.10.21.06.04.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 06:04:52 -0700 (PDT)
-Date: Wed, 21 Oct 2026 15:04:49 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 15/20] attestation: Prepare provider and instance core
-Message-ID: <ati4arl9sf1Rgnob@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-16-jiri@resnulli.us>
- <179245258506.58760.1633805100070716498.b4-review@b4>
+	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=CHxHAxec
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1792588061; x=1824124061;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4XdfwgpkFvzFS14XCzmyfcy7TRjNNYg4aRwWFx3svRg=;
+  b=CHxHAxec5PzKnUkzqYvpbL0x9p6SJvRg7ZZMBUi+p5aJQnhnrGb4cZI3
+   QXoEmQL5zvsFTTF4jBYIQ+azKRemKWwuSTrHATA1c6QzpcIG86B/xE+qo
+   YB4dcg6CFgd4nOYFCY4pFDbAQQLXn9a64bv0YnqGGXJf7yhWgqOOg2rRo
+   4tJFY4CNTa53lFMOy+6x31IBhqfTdqPKGi7MUVqzGkSD2Pdpc3MUBkBOy
+   fJWfZICQtJ/fuOz2cd/9zVAH3NGU4f5HHVAU8219uro22JtY49N+TBp25
+   tFCe/fUUKTli8LZ3w/bP+p/ttzv1b6u0dKb3tX4SpGp56sCGpPHvscp4/
+   w==;
+X-CSE-ConnectionGUID: rl2LlXjTQ++KV4tuo9oFfw==
+X-CSE-MsgGUID: qF8cjxgxRAyj/Mtq88yVlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11941"; a="257182662"
+X-IronPort-AV: E=Sophos;i="6.27,170,1786978800"; 
+   d="scan'208";a="257182662"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 22:07:33 +0900
+Received: from az2uksmgm1.o.css.fujitsu.com (unknown [10.151.22.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id C7F501002808;
+	Wed, 21 Oct 2026 13:07:26 +0000 (UTC)
+Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 768458D6D9A;
+	Wed, 21 Oct 2026 13:07:26 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.8.62.79])
+	by az2uksmom2.o.css.fujitsu.com (Postfix) with SMTP id 2F17214000EC;
+	Wed, 21 Oct 2026 13:07:17 +0000 (UTC)
+Date: Wed, 21 Oct 2026 22:07:16 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, 
+	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v22 06/10] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+Message-ID: <atiyZ7_S7aBxowIQ@FCCLS0092175.localdomain>
+References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+ <20261002061507.1600269-7-suzuki.poulose@arm.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -104,30 +92,123 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179245258506.58760.1633805100070716498.b4-review@b4>
+In-Reply-To: <20261002061507.1600269-7-suzuki.poulose@arm.com>
 
-Tue, Oct 20, 2026 at 01:29:45AM +0200, jgg@nvidia.com wrote:
->> [ ... 99 lines skipped ... ]
->> +++ b/drivers/attestation/Kconfig
->> @@ -0,0 +1,12 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +menuconfig ATTESTATION
->> +	tristate "Attestation"
->> +	depends on CTLV
->
->ld.lld-21: error: undefined symbol: hash_digest_size
->>>> referenced by ctlv.c
->>>>               drivers/attestation/core/ctlv.o:(ctlv_attestation_mr_read_query) in archive vmlinux.a
->>>> referenced by ctlv.c
->
->Needs a:
->
->+       select CRYPTO_HASH_INFO
+Hi Suzuki,
 
-Ack
+I've tested this series and found a possible TF-RMM issue.
+Please  below.
 
->
->-- 
->Jason
+On 10/02 07:15, Suzuki K Poulose wrote:
+> From: Steven Price <steven.price@arm.com>
+> 
+> The RMM maintains the state of all the granules in the system to make
+> sure that the host is abiding by the rules. This state can be maintained
+> at different granularity, per page (TRACKING_FINE) or per region
+> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
+> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
+> all pages in the region must be of the same state, this implies we need to
+> have "fine" tracking for DRAM, so that we can delegate individual pages.
+> 
+> For now we only support a statically carved out memory for tracking
+> granules for the "fine" regions. This can be extended in the future to
+> allow modifying the tracking granularity and remove the need for a
+> static allocation by the firmware.
+> 
+> Similarly, the firmware may create L0 GPT entries describing the total
+> address space. But if we change the "PAS" (Physical Address Space) of a
+> granule, then the firmware may need to create L1 tables to track the PAS
+> at a finer granularity. Linux therefore checks if the platform firmware
+> manages the PAR region. i.e., the firmware is in charge of managing the
+> L1 GPTs (creation and the required memory for the GPT tables - via static
+> carveouts) without host intervention. Support for dynamic GPT creation by
+> the host will be added later.
+> 
+> If the firmware requires us to manage the tracking or GPT memory,
+> deactivate the RMM and reclaim any memory donated at RMM activation.
+> 
+> Apply the same checks when hotplugged memory is brought online.
+> 
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+[...]
+> +/*
+> + * We do not support creating L1 GPTs yet. So, make sure that all the regions
+> + * are managed by the firmware.
+> + */
+> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, phys_addr_t end)
+> +{
+> +	unsigned long l0gpt_sz;
+> +	unsigned long next, par_state;
+> +
+> +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+> +					  rmi_feat_reg(1)));
+> +	start = ALIGN_DOWN(start, l0gpt_sz);
+> +	end = ALIGN(end, l0gpt_sz);
+> +
+> +	while (start < end) {
+> +		long ret = rmi_gpt_info(start, end, &next, &par_state);
+> +
+> +		if (ret != RMI_SUCCESS) {
+> +			pr_err("RMI_GPT_INFO failed for %llx-%llx: (%ld)\n",
+> +				start, end, ret);
+> +			return -ENXIO;
+> +		}
+> +
+> +		if (WARN_ON(next <= start))
+> +			return -ENXIO;
+> +
+> +		if (par_state != RMI_GPT_PAR_PLAT) {
+> +			pr_err("GPT for the region is not managed by firmware %llx-%lx\n",
+> +				start, next);
+> +			return -ENODEV;
+
+When system RAM starts at a non-L0GPTSZ-aligned address, the alignment
+in rmi_verify_gpt_firmware_managed() may cause the queried L0GPT range
+to include a memory hole.
+
+On out platform, the relevant memory layout is:
+
+    800c0000000-800dc3fffff : memory hole
+    800dc400000-82fffffffff : System RAM
+
+Consequently, Linux queries the following L0GPT range:
+
+    800c0000000-80100000000
+
+The query fails with RMI_GPT_PAR_RESERVED:
+
+    [    8.551855] GPT for the region is not managed by firmware 800c0000000-80100000000
+
+and arm64_init_rmi() subsequently fails.
+
+As I understand it, smc_gpt_info() in TF-RMM checks only the beginning
+of the aligned L0GPT range. Since that address is in the hole, the whole
+range is reported as RMI_GPT_PAR_RESERVED, even though it contains
+platform-managed System RAM.
+
+I believe this should be addressed in TF-RMM. Do you have any thoughts
+on the expected RMI_GPT_INFO behavior in this case?
+
+As a side note, we tested this series and the v23 integration branch
+with a Linux-side workaround to avoid the problem above, and we have not
+observed any other major issues. Sorry for the delay in testing this
+series.
+
+Thanks,
+Kohei
+
+> +		}
+> +		start = next;
+> +	}
+> +
+> +	return 0;
+> +}
