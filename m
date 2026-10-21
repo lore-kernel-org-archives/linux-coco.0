@@ -1,107 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.57
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792608352;
-	b=CwQykyhuWkHTqGRAq2ZlwiawyCwsE9YatBnsnKEazgJHocQbq+ykbgP7GShTdui5D4ar
-	 0xydxYzhTVxo21ME/0fFTyXEPf63j22IULOJm1CZjkjq49/kMauX3cba2VYiGmdIDIqwE
-	 Sr+oNXb+QEHTEp9UKvI5FFP0YwwLo61fnsaasfSTpQwFUOwYyn76swHOLCBAUW5JOzveJ
-	 4cBVvCYE4bWolaPaUl2x6W0IFmWpgK+GCFj57giPGlXIEVqqlXi5M5kJeNQ84xfwHbfeI
-	 knBRaGkf8/F688UJjcdj48RdDqgRCM5+J6jIJOo/OyvaBLGr23sOUzn9cS6G8lofuKg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792608352;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=25FRF5LL9YttW+e5pbqV/SkZJfROnfCIDEeVPeA55RU=;
-	b=RfMZwvHvMqQvc9GVDlnZLteOcbEr2+IpiCFclbrSM8JtOLLKdDyu6E7e/8BfZxF90mc7
-	 tU7uJSjUN8Tf7fzioIBx8ffqQ+6u+nvOEcPnZJqY9LDqFqHcTN16/hqTWhaZ0113/8XEN
-	 8ieGPsnmOB78dXELZ/nAdZhrhXsTO/0fVx5pRkdVk2HcNpuikeP0XAs8A8uZ9mMgO9aq+
-	 YNlgIAiSQuTlMWupgD5pm3fdEiPFJKVS3lTF/4B2Y84HC9EZotgYYpR+1/HNxTaZn7pmK
-	 nRTj4zNZg2GpLfbsqA+3/KzHyEb3u3CE5kwsN4aYZ88T8AyEEVaxyzoZhvyWSodaFvQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g1bBXFR7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.57
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011057.outbound.protection.outlook.com [52.101.52.57])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792609529;
+	b=KMPjndw2tpLSerj9s4Lc9zD+3QErq/QM0to1RkNrhzjmTm4Onj6SjYr+cNeS8DnypF57
+	 NpC4Bf9qzwyiptX46+1hmwlxbItcVNo/xpuFIY/WT/wv8DWxZxh+lC98TuKVFP6pFSvb6
+	 VmkutwYR881susQqco3RpJAKIC4ELlTNzMrTIaOeQVIUPxCdn+4N6nSZAuGr3sehc3cZc
+	 C9hdHMfHHzflmNISfXF1rPLteJSVSpyrd1CHhIa+FA4n1LdDpbLcLTAddd177IuLiYPuI
+	 q580uLDUpgwYNtHQAPv2+PxekgMOAhAWdQzHh3jVdVlR4lwMxfKd/S0jv1Q8uUMzznA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792609529;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:
+	 MIME-Version:User-Agent:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=xQ2SqnwVDG5xMzvzDIXO6M7gDqTy1UNMqzDsHAfACMk=;
+	b=t+iifwCX1NSOxsXqrHhZ/k155XCVP2ALg/qCWDQUfcUJGA854KHREkHT7rOazm36yNwI
+	 oTijsJrzMLX4tXco4Knfa691KvtOZa+q+10de3MzgvsrYu/GLXChV6Q2s/ZPMr0+HjDOL
+	 LuJimGMMiMlEDkrm7hh73NSHDBUwrHN1KoRY/8AiG/OBhJXiLtS+/EEqbC4mng0k+EtsU
+	 uAKhFlo/cko/3MvO2/v9Q23O5Ld4NqkEojLz9+2LSHV8TUaiOxhlTDrddle1P2gIlRoVl
+	 XIUPnqEf7YsQ4mMksh54qENLbVBMz/9zDGkAWhjVxXWlA9HvUwiEZhD3VVr13I59mLg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=coL7n6oI;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63786606A321
-	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 18:45:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63786606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CDD606A319
+	for <linux-coco@lists.linux.dev>; Wed, 21 Oct 2026 19:05:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70CDD606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g1bBXFR7
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Imdg4dY8AIleEaRgehiPD478ww19pGLw77SPPADrevzgsvOY9wmxeXVfnnoJHGyOZdpjEzSefP+/O7WpuJ/Ij4i7TPtI5FOeBwEu4ijnugkinhJ8FlffjirjOiJgR18qE7CU3EUB06QmwOadpz0lRPgv0xQrokIRW2z5JngR4TXkliruUq5OU2cB1JkB/MYnDLnurRB86AYtVTP8e+0kNKKPRx0I24KwVoDLiKtyEFzQDQIwo2oKSQGsKgRkHhkGMf0SGhy2FSXSGhpbVfF96SnQTQgFkjC/TmBmTxIpkqoYVzz4qVcdH0ggE1zBlx/BiUlVpRnYJDmOc2M3sWDDVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=25FRF5LL9YttW+e5pbqV/SkZJfROnfCIDEeVPeA55RU=;
- b=QBVCUtj9HViJXIGwt0FqfhNz7TqrZAUcZblok6yELg3aAA0sv7MFbtutvnzDPVLowB8l+RuSLqE1zGtMcSVVS41gDwGa5cWwubAV6ItSMx2fNbBD1sBgUkwkEDKOq/KqfYBYHL2GXTrVY6UJBBErUghItrKqswk7Zbihpmvskq0ybDDr2Jm1cmpgZazccrpTqJc83kS7XGcvmPkUMtCgMWNPrJyfDN9xbDsaz9PlM0wAX6RNYHHg/SCToQNgWnr8p4az+y1V3yNFDd0Z3eAdm28BlkgyNVX3JjJBT2cpWfwn/ENPtHH/wvIl+fypTLP1h/DuFtjOSbkuncRB3vrpZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=25FRF5LL9YttW+e5pbqV/SkZJfROnfCIDEeVPeA55RU=;
- b=g1bBXFR7/Zm0FIRbC5+evoGH/C0GLzw0igltTXpV6zgyk/xn8lLy6s7Bq/eaovU/dorj4neF0hzJVBwZmVWUryNVj8cKaHjOOsoEP/CqOdEMnWi+uxVJqeQs2CNcRzVddKR9pUvzx0BWHJ2Lcbo+gKvfDd74x6IeLukAhHMDIIQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by SJ0PR12MB7008.namprd12.prod.outlook.com (2603:10b6:a03:486::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 18:45:46 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 18:45:45 +0000
-Message-ID: <72328ebb-ec1b-4c6d-ad0e-d422e488a9cb@amd.com>
-Date: Wed, 21 Oct 2026 13:45:41 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/18] x86,fs/resctrl: Add kernel-mode (e.g., PLZA)
- support to the resctrl subsystem
-To: Drew Fustini <fustini@kernel.org>
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>, tony.luck@intel.com,
- reinette.chatre@intel.com, bp@alien8.de, ben.horgan@arm.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, x86@kernel.org,
- Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org, mingo@redhat.com,
- dave.hansen@linux.intel.com, hpa@zytor.com, fenghuay@nvidia.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, akpm@linux-foundation.org,
- rppt@kernel.org, dapeng1.mi@linux.intel.com, elver@google.com,
- enelsonmoore@gmail.com, jlayton@kernel.org, kuba@kernel.org,
- ebiggers@kernel.org, seanjc@google.com, ewanhai-oc@zhaoxin.com,
- binbin.wu@linux.intel.com, peterz@infradead.org, ashish.kalra@amd.com,
- superm1@kernel.org, chang.seok.bae@intel.com, prathyushi.nangia@amd.com,
- kim.phillips@amd.com, ackerleytng@google.com, elena.reshetova@intel.com,
- naveen@kernel.org, darwi@linutronix.de, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, eranian@google.com, peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <atK9u7Wm6jYQdqfy@thelio>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <atK9u7Wm6jYQdqfy@thelio>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0078.namprd03.prod.outlook.com
- (2603:10b6:610:cc::23) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=coL7n6oI
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69LIE1B6208261;
+	Wed, 21 Oct 2026 19:05:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xQ2Sqn
+	wVDG5xMzvzDIXO6M7gDqTy1UNMqzDsHAfACMk=; b=coL7n6oIAQolMtk9jv3xCD
+	IdOjROBbuS8cjUl20s1RZTJh4mekwegdSgpa4i2L1qYmOasx8S0/v0cu3MUxqjuQ
+	3VCnBeeJzA3TxPZX64Yhiy6b3At4DYvKAZ4+ZwN5vy0w1M0OJKdZ0JYsIYe7AZSK
+	FcmvztvzKFbdc7QtK++cBEEUbsdfAXXd3f0rxO9MsW7n05QxY581f8hdEonceQOA
+	CACZZBE/sHGxQqrT8NCDVgcpdYYdqRPbAo+1CipenFAZt+OEUzJYDXmysvjdywCs
+	x8QNQv2W64rPX/In2OSqbV+9nWruPsQOwizQozakHKOyzJCgY+3lRzlEsKYSyJQw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5bk3jk-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 21 Oct 2026 19:05:14 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69LHopV93498329;
+	Wed, 21 Oct 2026 19:05:13 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hcmuh8gr3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Oct 2026 19:05:13 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69LJ5CNV61080034
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Oct 2026 19:05:12 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 909FD58056;
+	Wed, 21 Oct 2026 19:05:12 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 370605805A;
+	Wed, 21 Oct 2026 19:05:10 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.77.162.217])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 21 Oct 2026 19:05:10 +0000 (GMT)
+Message-ID: <8d8833fac61558a94af415143530884349584a2f.camel@linux.ibm.com>
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Dionna Glaze <drdeeglaze@gmail.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+        x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+        rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+        James.Bottomley@hansenpartnership.com, aik@amd.com,
+        jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+        jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+        suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+        elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+        roberto.sassu@huawei.com
+In-Reply-To: <20261021143529.GP3008132@nvidia.com>
+References: 
+	<CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
+	 <20261017203407.GM13920@nvidia.com> <atPgqROZZxnihYfC@kernel.org>
+	 <20261017231007.GP13920@nvidia.com>
+	 <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+	 <atX9fugGUsI0hGcA@FV6GYCPJ69>
+	 <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+	 <20261019225658.GS13920@nvidia.com> <ath4vwt7KGyDXKVJ@FV6GYCPJ69>
+	 <103486a4a29ecc7b72940dd051c00ae59266bd05.camel@linux.ibm.com>
+	 <20261021143529.GP3008132@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 21 Oct 2026 15:05:09 -0400
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -111,106 +115,98 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|SJ0PR12MB7008:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39a1a16c-c326-4c68-e955-08df2fa383d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	9uyg/pIBdNup7ImNE429Mf+xudEAlQnacygZszdIx4j/gLweciKTBEsFZ5f2i2Ih5nQQIn7aP2A3ywwrNdBShVl1NFYCZZdfxYAJGcxQ++LVVa5FGx9D2TNZM5X9pqXuksmA1zMrMQ7DwGun1DvOmEZczwzyaQ8W27urKuIrA3cSMVMz7zEQxnr9zvePZ4OnlGIhk47rDMKfIKYCplyXip96fhhhoSMQgus5Chcy2Fj7ECNGCk0OzXSjJOJRwPGW2JSEghbwnFDiS1wwF3WdZ2BpOsTMsNyMOhlLt4MxhLhMYP+jYwCDYEp1IOae0o3ND+miRLwNd/Sr8f6M4cD4BscHucTG9Rx6cJiehP3F0oXV3cdTym+c18BkHhUAUNzOTz7d+eTiFIsZ/V61E2mPEC00i/Y8rtMHc+0j8KK35sePMfaBWARrHAJoWzGomSL07ljrd+ZnyYJgInjhurK8GeNl1Q7Qtba9BIqUk+sxTbWsCypAes7nqvhucB/rAifoNbhuULDGKL3KRVu2MwGOPhz2eRi13AA90T/STZolz/5eYfnEA0yu2kDFFttRfKpXEN4hgCuCB4Sm0rx8AdG1uvzWbvwm6/kbO3pjVkU+25qN64MYJ7kcCjtp8X6XC6ibbXJECMx+Lr6Pu8wGzNeQ8ySmgjoWWX7CwaH1kSs/0UI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzJqMGxFZVdrOTV6bm12TlVlbzl2Z25hQ2dpcE9DUGRmOHAxU2p0K004SmEw?=
- =?utf-8?B?T1h1aTFiMG9Yak9BaVRha1NrejJ1S01mMDkyaWFMMGFIa0tYdnl5bzJGZHdX?=
- =?utf-8?B?N1dvUmlCaVBJYnRJL0JiSk1ERnUzSDd0WWR0bFl2ekRkRit2V2NncmUxekxv?=
- =?utf-8?B?ZUtqUGRnaGZuMHNwRTF2bk5ya3dIVmYvOGxHekE1bkZ6bHVJWmkzRU10S0xZ?=
- =?utf-8?B?dkUrNXRtOW5ldUhXK3dYM2JCckQyVzllV3YyRWZueE1IUWZ0T0gvTXRpbzdC?=
- =?utf-8?B?aklPNmJQQkZJZ1pEa1d5T3FHa0phNHVqVmQvNlBCV3RibzgwSEE1amhnZ1Ju?=
- =?utf-8?B?SUpzWDRhMTNzTm0yVXE4SExkTlNjVVRVK05FMFBOT1cvNk1mNnJ5dHo0Vlc3?=
- =?utf-8?B?c1JMZk1OVTlydVNtQmw1QndwTU1Hd2drajgrRm4yOU5xeUs4Y0xoOEIwNUQ1?=
- =?utf-8?B?eU10QXJFdGdXejNyVGREcE5JSEhBNTI3WEtGbGlmVjNkTStybnFmVVhzYnJX?=
- =?utf-8?B?cHZrM3lpTHA2RWZvdndqM3ViYUkyTEFYZDdTM3dGTEUwajhWZTJrcE9kenRU?=
- =?utf-8?B?U0NPY1FaOUMxN2FsSys1Z3JSZzQ0RHBqTXY2N2p0SEN0SEI0Yk1OSW1KVm5D?=
- =?utf-8?B?VG8xUWJ6ei9vd1Bzc056TG5zODdnSHh3SHA2U1lrSkVXUHNxeUxwSkp3UGE0?=
- =?utf-8?B?VDR4SEpwN2E2c3pMbWVIS2ZmYmRTQkJ3YkJhek1MOGFyUlA1dUN1UnBET1ht?=
- =?utf-8?B?OHU4NzFJNUo3bEZHVXZKby93ckg1akV3R2d2emkwcnVzY2pYaStIQjRCZmt5?=
- =?utf-8?B?SENMZG51VkFadm5sdmVIcndqM0lrbURHQzZUUXBEMFJnZmd5UndFeWNQTzk4?=
- =?utf-8?B?NHZRNnVBMHZscFV2bU04U0FBV0hlWlczUXo4NnBkOHlZTUpjR1dWVTlvZ3Y5?=
- =?utf-8?B?SklTTTlJNHN1VEtIVFc5VndOZW1uV3g2T1p4eFBxZVJwQUp2cUtweEN5ODYw?=
- =?utf-8?B?V3d1R0lXbGxTZHBmZHNVYzl5TVV0allsQ0FmV0JwcFB2UlYvQTNPMUdIa1ZV?=
- =?utf-8?B?V3RVbTUreEtKSllwK0svL3M4eU1EMEkwS1JkVHR3eHdCbGdwZFFWb1p1K2Ey?=
- =?utf-8?B?dnc0ZWJjNkNpVHhDMFBreTNuMGJXdEt5Z3BwM0pNZDUydjlFQ2c3eElsODkr?=
- =?utf-8?B?bVZXSjN4a2tPa0J6WUpvWmdQUHZIZGdZWm1HOWFESUl4alU2WDBkemI2VGdR?=
- =?utf-8?B?S3ZFQUlEZDZNTlNheGRPR3VPeHFta0JiZ3hmOTJKeE9EYU10MWRKa2lpZld6?=
- =?utf-8?B?cUN2YW5MM3M4Y0liWXo0RGlWRlJtc2JHT2ZtMDdKS2dCZmFjbGk0eHU0Qjhq?=
- =?utf-8?B?aVJrQVp4eVliMkhjYmUrSk1sUjhtRkhBR3g4QjV4L1p5RTViWHFEWUY1QThM?=
- =?utf-8?B?UitTNDFLRjJVVmorM00zMHptdzFhdzNQK2oybnRUdVRSRGNZNVBCckFzZkdr?=
- =?utf-8?B?a2RHSkZ2dE45akU2bVJraGJONk90ajdHT3hkNWpiUnQ2aUx4ZGNEM3pzZC9w?=
- =?utf-8?B?QlVjTWl3NTdVR0FYVkhnUGlxb1hmbDREVXpGb0xRRXFiMThWQnh5Q1N4eFl5?=
- =?utf-8?B?NE0zMGVUbjlMbkNweEVJVDZEMDZMVmFLV1MwYjRsV1F5ZDRsN0ZKS2o2VTYw?=
- =?utf-8?B?RkUyQ2hINVIwWGdtM1pyUXN6Uno0cG81SU5hWTFLczkveDd1R24vdWlQeU4y?=
- =?utf-8?B?UFNoT0hrdXI2dDVOc0k0RktzOHFmOHZtNVo4SFpmZDYrVkVkSHVHNUY0MXAy?=
- =?utf-8?B?ZnpGZ0tvYWdISXFFMTVURXhJU3pEem1Ma1JRN1FBcHhvdDh3d296WEVVeEFr?=
- =?utf-8?B?TUYzOVNpZjEvVkJHYUgxdFVKaTJnaytBYk5LRnVKdEVncFhxdmp3NlgyaFho?=
- =?utf-8?B?T0NpbjhlTXhWUDA4UjBMd2d2cEFSVFZ1ekk5U1lGcmw2amFJYmxHdTJZWitC?=
- =?utf-8?B?cTBPQlozZmthT0tvMDMvc1dmT2FBNHA2eVNFZVpiSHA4c1N0ZEd5Sjk1VDZk?=
- =?utf-8?B?ZVNSZGZPK0ZqOVBzN1Z1Z1Vvc3d1MFdWVjNLV1ZkVUl5Nk9EU0pjbk9OWENj?=
- =?utf-8?B?dFFUb0FHdVp4cnZkSkp2c2xuMmdoejZhUGVLQUV1cFZ1clZTWGMzV2pBVXhQ?=
- =?utf-8?B?SStYOFpKNGRGR0hSSE80d2RMc0Fla0tTNVhsZlFOYkszV0hYZzRJOThxZWdi?=
- =?utf-8?B?cG1PYkRuaklhSmFRRFQrTDZDd0RYaFFjcUtvUzlTcmNoOExCZDFHRXhIWEdE?=
- =?utf-8?Q?QBW/ymHLXsestR+RP6?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39a1a16c-c326-4c68-e955-08df2fa383d9
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 18:45:45.0348
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q4IoOLb2B4jkJf1fLZ+zY7rKDlsmtS2m7mrI+xc/0Bebrddhob5DZja4qkY/2s28
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7008
+User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: ydaOzlwPIUk9SIhOIcCkK3SVXfS2DDcg
+X-Proofpoint-ORIG-GUID: GzBYn879Oa5NzXnY4sgOMq8X1dbUx1fB
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDA3NCBTYWx0ZWRfXwyVoKuAud310
+ A3MMgRuO3P9BfDlryZr7ihLhpK+1PPfP0xO1xgsoY0qD3mT++OvGba+8UA0zkcoD+iWg/elNtcH
+ Z8gPzXT/JWDMgUcPZBCKi26sOkrkUsY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDA3NCBTYWx0ZWRfX1hmDKI4a0lIN
+ oCbznsJRgcS0JN6foELRHP6ISHyPt+L/UW64K16gcO4VrYiohYmtKf0oW63pkMniBR5FA572QN5
+ ieNRoOqQ5C+MUuzixWaCYc9xzLcGBWUGx03ndwS3NTq8ewrjFeaaF25ZgavBj0gzJcdgbUGxSh1
+ z/ImEgbAtQpFnbxfpY5IGBnzAOUVBhPlq7kbzT4jo+YS8enEUnhx0XveFs7pUFwmfqtIhy7rfMr
+ /eNM5pZnlbLbm0Swwddnnl31pEYsNFSv3Bp6+k2s2ORgrk1ke5QlzwIRPi80LBWPLiKzQs+u8rS
+ SF8vdtLnNGB//AB0FOdXciN8gmxl2uGcWMN78g8nK/9aLNTmGVGxuGAPsMu90zKkHsZHcndSc2b
+ gg2i2oceWWm/HafsY/e03vEgK0dQEZfnGympFncPnRryoEodcVL2DFBslRUkKJieyf7rN1+dJEg
+ a9Wr0QwuxTURorMH4dw==
+X-Authority-Analysis: v=2.4 cv=Gb2CDgXL c=1 sm=1 tr=0 ts=6ad90ceb cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=yVQDdmlqToHGFoNqkO4A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-21_05,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
+ clxscore=1015 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610210074
 
-Hi Drew, Yunhui,
+On Wed, 2026-10-21 at 11:35 -0300, Jason Gunthorpe wrote:
+> On Wed, Oct 21, 2026 at 10:12:34AM -0400, Mimi Zohar wrote:
+> > > > I think for now we should not include a new dynamic log here, the u=
+API
+> > > > around this Jiri drafted can remain a future step. I don't want to
+> > > > open complicated discussions about new functionality at this
+> > > > stage. The whole CTLV idea in general is a big enough thing to bite
+> > > > off for this series.
+> > >=20
+> > > Okay, dropping the log from this set.
+> >=20
+> > Thank you.  Please keep in mind going forward, that the scarce hardware=
+ register
+> > limitation (like the 4 TDX RTMRs) should be resolved (e.g. by multiplex=
+ing the
+> > extension path), not by combining distinct measurement lists.
+>=20
+> I'm not sure what you mean?
+>=20
+> Since the HW doesn't support sealing the only *technical* requirement
+> is the verifier can reproduce the measurement register hash. So long
+> as we can get there we can do whatever.
+>=20
+> Multiplexing extension alone isn't enough. We need some scheme to
+> reconstruct interleaved logs too.
+>=20
+> For example we could add an atomic sequence number for each
+> extend. Every log sharing a register can report the sequence
+> number. The verifier would have to globally sort all logs to confirm
+> the hash.
+>=20
+> Hopefully we don't have to tackle this problem. I hope that 4
+> registers is enough for Linux. One for IMA, one for systemd, one for
+> user? Plus a spare!
 
-On 10/16/26 19:13, Drew Fustini wrote:
-> On Thu, Oct 01, 2026 at 10:10:23AM -0500, Babu Moger wrote:
->>
->> Hi All,
->>
->> This series adds support for AMD's Privilege-Level Zero Association
->> (PLZA) so kernel work can use a separate resource allocation and/or
->> monitoring association from the user task, and wires it up through a
->> small generic "kernel mode" (kmode) layer in fs/resctrl so future
->> architectures can plug in without touching (hopefully) core resctrl.
-> 
-> Hi Babu,
-> 
-> Yunhui Cui (cc'd) recently proposed a RISC-V extension [1] with similar
-> functionality. It adds a new CSR with a RCID (like CLOSID) and MCID
-> (like RMID) to use when the cpu switches to the privilege level that the
-> kernel runs in (supervisor-mode in RISC-V terminology). The srmcfg_assoc
-> register is defined as:
-> 
->      Bits      Field
->      --------  --------
->      11:0      RCID
->      12        RCID_EN
->      15:13     Reserved
->      27:16     MCID
->      28        MCID_EN
->      30:29     Reserved
->      31        ASSOC_EN
-> 
-> It is similar enough to PLZA that I believe that this series could work
-> for RISC-V. Hopefully Yunhui Cui can comment further.
-> 
-That's great to hear. Please feel free to share any feedback or 
-suggestions that would make this easier for RISC-V.
+Agreed, I hope you don't have to tackle it either.
 
-Thanks,
-Babu
+>=20
+> Maybe we can build a multiplexed scheme on the spare? I don't know.
+
+To avoid interleaving the logs, AI had suggested multiplexing or virtualiza=
+tion
+of the RTMRs.  Whether is has any merit, I'll leave to you.  Here's the ver=
+y
+short AI explanation:
+
+"Instead of allowing external drivers or subsystems to execute a direct, ra=
+w
+extend command to a specific hardware register index, the new attestation
+subsystem should act as a Hypervisor for Registers."
+
+>=20
+> But we almost certainly need to have logs sequentially created in time
+> occupying the same register. Ie IMA may take over the register from
+> UEFI logging. Here we'd want to report the start/end hash values of
+> the logs back to userspace so the verifier can stitch the order back
+> together.
+>=20
+> It would also be nice to think about a way to restrict the registers
+> to help avoid multi-user conflicts from misconfiguration.
+
+That would definitely be a plus.
+
+Mimi
