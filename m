@@ -1,99 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792657679;
-	b=D8SCm0CH5QPB9gPkkGuLq6TOUZDJXIKvCGBWv5/MCkaJONLrbUK9kgHdmOknlsJHktd7
-	 J3DWY10Nc0SQo+0vMB/DlrpVALe6ZWBoLYH0m8Ycn1YtB4Jb/sKqpcY1K+TsdRWRn9LCf
-	 w3ZxAgh+9uPvqNp/373IRTBlvPzjZbwA9FCtFd2X5nY2kD6RDKtdbEXf4swg9z5dFMK+Q
-	 Qs3wgLRnaHRExx4T7CILaNeT7VE4XbHWPjsSyzhPHU9jqtYhQguW8OnEvKjC2RWMl1seq
-	 ugNkpSYmCED9nco4cv0x06a/3+0nE2aScv3dIp8BiSpc6UWXJcaI6aj+oe7nbXRhjtg==
+	t=1792658372;
+	b=jGqj7v8HfjSQeGnZka1QQl2wG9b+4b0Lpj72R8dtDt86SD3a3EKQquA4IyTtovkYI/EX
+	 fVs7UhhEJqZXFyBYv8OpJx6U2E9lT9FEwYbCYsM3mG8UsfX9P2XNp+debvxedDsBgDvhe
+	 xOh5VynH/LOrWljAhhLrhry+44h3DN9hATT4cKHPYdVc9KhTadAM2um0/99s1H2CGzxke
+	 oDp7DkMCwwGnTYQlMfGghY64W981hlntzsJ3e4EPgMAAlN4iyVXmNby9YYpBdKUZVOhQO
+	 08gR3iNPyXRsakGCWY2FXuho1AkfmU8rACAb5tzC3Vj9YD4dK7DPSoKC8zchHrSNEUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792657679;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=asTQwS3Q/pIZmKtVtb/ZZcYojtRdxCAchkNTDOljnRg=;
-	b=5NITP+JREsWH+JdQhvVZeS68Le4OynpfvS5fo+nR++bo9HraQVrSz9NDLqaJJc7NXoig
-	 PHduW9efe9al58EWZ5HBjoKb7o58X1pL4lJYD4tcMxH8U886+r/PgIXXU5fuXKcV1uB6g
-	 dqRGpSN4J1fIEL9pS7zFNE4l2Uh1ZtDL5/yIFJiL6o63+jjx0pDYddGyGE4K5RWG8DnjQ
-	 BuEJD7n85LDbf38Zh5ZuXvqYeUrJEnD6mk+QyN6YDikeUA1ma/S4eM9TkDqNV2I44eiWg
-	 39m0ARXGIA4E/K20Mo89o2BQW94cQqGG60fHT0GnWT9S/9CKIss38i0aumTOUVMW4Uw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792658372;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=CvCWEqXaZH/iIUkBgP+o8Ay2lvbiOFHenVSVWHTDnio=;
+	b=tgc9/W4jQxOomtxja9etFVOZznrMIlZRzE3rzCRm/c9LIr1C9vdZWejy0/E5Su6YtABp
+	 vNL/RBkhk3G+Fqg0F0ZV3uj8loez8A28P3HeJraDT9Lpq0YrDXqmtTFEP+9FW2xLYl8Y3
+	 Y56wj5qdSMPdnuHh2UIYnXphTzmplBV/FIxoCGzyPIJqRJIpYaRpoQO06iQvarbH7pgnG
+	 S4KxRfjAxlPCkHrwtpj0W3joMYha4eo+r4x90vfy4XZ1w8Ixc1HmUClOLy6vXao5nJMlb
+	 mQ2KkfnClPgs99SL7OzhOsBrk2sT1ajoBVZZkvny3pVUN0I+yZKk3qV73tmBO1Htj2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=rzMWUbxb;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DE5606A320
-	for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 08:27:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3DE5606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hEObLniC;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10514606A31A;
+	Thu, 22 Oct 2026 08:39:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10514606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=rzMWUbxb
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a20c923847so261985e9.0
-        for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 01:27:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792657677; x=1793262477; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=asTQwS3Q/pIZmKtVtb/ZZcYojtRdxCAchkNTDOljnRg=;
-        b=rzMWUbxbXpRa8105K+wzqsxaBCdOQ10WsIo9rLklyxEz0rUBmpWcXi18ka0bqIt35c
-         mZig8asUhxYsYFz8JRepB3Z80G0J9QnyCmkMO5u4EIkC7CssOGj+sMYZoF3kPlGyPJZx
-         kxHeUvHnDgBC1S8dqhLAQLIAttiHaXztSF94cwiU1hm73ObK/2csl7RCf4/jV/GtmZfg
-         pep+FWmPR5Sd71W+XvU8Ii6X/Jo7IYQFomwR62PPv5NEvhIA+j0GaYmGCX99dOrEZWT9
-         VHNDrfuoV+Krg52+tdgU/ZoV1XPL20dD6hn9/MWb3ck3RYC5iRYENFs8LBImSNspZNhP
-         7aWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792657677; x=1793262477;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=asTQwS3Q/pIZmKtVtb/ZZcYojtRdxCAchkNTDOljnRg=;
-        b=W7X+TQL7aQel5NSGfDQS0R+IDOon/qbzUhgL5SxiIfYDV0xGF1uMq/m5B+7yVb3Yfy
-         yheDuiwmyyj2kYOMYOuGPq4Yk14Js1k+LcWWMe5W3BpDRl1qDoUhNKRClQS7+cXe4KDn
-         IDCRMemDF0sVKLFwswwPl6PCzPLIv4EHK/48s86ZwtIzdO6tDXXnY1y9Aj8PLrVYEcK3
-         qba9zr9yZlTpZuHXP1QvnrZNf7f2dEY/lXRz1yIRsDG4SxKRB6e9OHyO7BjSp+1PdG7C
-         k256c7vbeNsNsjnOyEZDSXI/Geel033bOc1Ma7asSLa7iqi2hKCsY3/iOmDGmELLEIaw
-         /Z+w==
-X-Gm-Message-State: AFq9FYKPJ6ifU+ZHwFfSt/mSGkR1Fqa0N2DEIVGcpUfWJnIptzcVOnZV
-	hzyFsT9wb/k3Gqom+9rBkeZX8Mzxw/HlnUVTHnJmdf5O+JvlwTcBRnf2b3UIYHifjRI=
-X-Gm-Gg: AYBFou2E+D3r5smOOYbuE8lt5EpUa6UAPzxWi9zIJICX1oSskJcsM0dfIZ6ldPxhWmU
-	oZ+75WxBDN7SXzuYVRIupCVoAgSjqrq0r052n3NCiea7QIgwgY207EApCRx+Fnk0PZ2NoMSruUe
-	XiWka4kBBoDCiuTffvGy0vvlWeMDqz88Ty9ih93pFq4XKvDeiupX44ykZ3ys9H/7XEm70VbGRJN
-	eURd3qcWvL8JXd5Vcn+4jqX0XC6M9Zx2bVmC3CxTwXB7sIN6nTfrPFLn6YH3iRyNwyha5t92gEI
-	mDqDjaMjth8FybbkZjGHG+ixQyZKqVcXi0ex7PEcvzY3vKRd81Q+Vn9S8DK+cikgAOMvO9kmhXe
-	1rX0txOIyOmkkrCDQQ6WW0xACGglbFIEWOymCNtwBmPEKM7we0vlvav59H0p7HN9MofM+cyjjn/
-	+ICoaBvO2uaiAUOyF4WXIgkY/zoE+wTUCReSkLMjn3aQG+u6iMDzB/imBE9XVMQrJm4aWYvARrP
-	Njnp0V22/jTfbpFxwT355EGX3cs/5mLUHKsGmyGasN9CcKI6RAJ2iO0xHrsK17l
-X-Received: by 2002:a05:600c:524a:b0:4a2:994:5750 with SMTP id 5b1f17b1804b1-4a209945818mr14069445e9.32.1792657677030;
-        Thu, 22 Oct 2026 01:27:57 -0700 (PDT)
-Received: from localhost ([128.77.52.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e258426f4sm10865456f8f.54.2026.10.22.01.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 01:27:56 -0700 (PDT)
-Date: Thu, 22 Oct 2026 10:27:52 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 05/20] ctlv: Prepare message input handling
-Message-ID: <atnIDx6qmLe-geb4@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-6-jiri@resnulli.us>
- <20261021014324.58376589@jic23-hlaptop>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hEObLniC
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD9062C46;
+	Thu, 22 Oct 2026 01:39:21 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE8D93F673;
+	Thu, 22 Oct 2026 01:39:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792658365; bh=uD8Z+VnaxokujgVMBewvc6O/2Oc94t5bbNpab8XT2Mo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hEObLniCfO8tvUEME++blEmza9btcaiRUMVFVtYl9TdDINt/Jh+KSuOXaWp/rKmlo
+	 WUhI/MoxamaYnryozypEz5akzYCHQwBT1DP41jmVMtmfcNM9rOY0pgG75S1zir53qf
+	 PQfmGihfe1dbVdN8Zrb0zomrdSqiyDwI9lvPy+WU=
+Message-ID: <4a086f49-14a3-43a9-ba9b-ab387f5e7f91@arm.com>
+Date: Thu, 22 Oct 2026 09:39:20 +0100
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,166 +53,110 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021014324.58376589@jic23-hlaptop>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
+To: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+ yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com
+References: <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com>
+ <araketG70TIKeNuf@arm.com> <12e83d88-de4c-4230-aac2-1796123320ad@arm.com>
+ <70d47475-e26e-40e1-b409-b0c16aecb8c0@arm.com>
+ <195cdfe4-a55a-453f-9c34-620738eca244@arm.com> <arqrZ_Auk9BYOopa@arm.com>
+ <0f68dcff-1dfe-4515-9912-515ca6457674@arm.com> <arudWVBPXcnUvYNh@arm.com>
+ <5d487949-9195-442f-97af-acb9e3fdfb0d@arm.com> <86ld7ryvm8.wl-maz@kernel.org>
+ <atj7A1CV4paW3htS@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <atj7A1CV4paW3htS@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Wed, Oct 21, 2026 at 02:43:24AM +0200, jic23@kernel.org wrote:
->On Thu, 15 Oct 2026 16:50:38 +0200
->Jiri Pirko <jiri@resnulli.us> wrote:
->
->> From: Jiri Pirko <jiri@nvidia.com>
->> 
->> Add wire walking, request indexing and validated input accessors for
->> generated family readers.
->> 
->> Keep CONFIG_CTLV unwired until dispatch completes the module.
->> 
->> Assisted-by: Cursor: GPT-5.6 Sol
->> Assisted-by: Cursor: Claude Opus 5.5
->> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
->
->Trivial stuff only. I didn't attempt (yet) to check
->all the walking code, just get a feeling for what was here. 
->
->
->> diff --git a/drivers/ctlv/Kconfig b/drivers/ctlv/Kconfig
->> new file mode 100644
->> index 000000000000..aed3243c55fd
->> --- /dev/null
->> +++ b/drivers/ctlv/Kconfig
->> @@ -0,0 +1,12 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +menuconfig CTLV
->> +	tristate "CTLV character device TLV UAPI"
->> +	help
->> +	  CTLV provides character device UAPIs described by a checked-in YAML
->> +	  specification. It owns the character device lifetime, the strict TLV
->> +	  message format, request validation, reply serialization, the large
->> +	  payloads a request describes rather than carries, per-open event
->> +	  queues and runtime schema introspection, so families only implement
->> +	  semantics.
->> +
->> +	  If you don't know what to do here, say N.
->
->I'd not say that.  Overly cautious for something we expect
->to get fairly extensive use.
+On 21/10/2026 18:48, Catalin Marinas wrote:
+> On Wed, Oct 21, 2026 at 03:30:07PM +0100, Marc Zyngier wrote:
+>> On Wed, 21 Oct 2026 10:58:13 +0100,
+>> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>>
+>>> On 29/09/2026 12:15, Catalin Marinas wrote:
+>>>> On Mon, Sep 28, 2026 at 07:28:20PM +0100, Suzuki K Poulose wrote:
+>>>>> On 28/09/2026 19:01, Catalin Marinas wrote:
+>>>>>> possible, to defer the RMM activation until the first user (still do the
+>>>>>> RMI probing as an initcall). If we run on RME-capable hardware and
+>>>>>> firmware but don't care about realms or TSM, we still get the normal OS
+>>>>>> functionality.
+>>>>>
+>>>>> Would you prefer this in the first drop of the RMM ? Or is this
+>>>>> something we could add as a separate series ?
+>>>>
+>>>> I think we could add the deferring as a separate patch, maybe together
+>>>> with the KVM bits. An advantage of keeping it here if we merge this
+>>>> first is that we still exercise the activation path without full realm
+>>>> support or TSM. Otherwise a lot of this would be dead code until the
+>>>> other series arrive. Either way, do it as as separate patch on top of
+>>>> this series.
+>>>>
+>>>
+>>> I have been looking at the "on-demand" activation support and came
+>>> across the following design decision.
+>>>
+>>> * We have KVM_CAP_ARM_RME which advertises that KVM can create Realm VMs
+>>>    to the userspace. A VMM could check this before it creates a Realm VM
+>>>    using KVM_CREATE_VM with type=RealmVM.
+>>>
+>>>
+>>> Now, we could delay the RMM activation as late as the KVM_CREATE_VM and
+>>> kick it off while we initialise the kvm as part of kvm_arch_init_vm().
+>>> But if that fails, we would fail the KVM_CREATE_VM.
+>>>
+>>> The question is, what should KVM_CAP_ARM_RME indicate ?  We could
+>>> initially enable the cap based on the presence of RMM (but not
+>>> activated). However, should we turn the KVM_CAP_ARM_RME=off when we
+>>> fail to activate the RMM ? Is that senisble ? (i.e., runtime
+>>> disabling a cap).
+>>
+>> I think this sets a bad precedent. If activation can fail, KVM end-up
+>> not delivering on the promise that it makes, and that's not great.
+>>
+>> My take is that the least surprising behaviour is best. If you have
+>> bought into the CCA kool-aid by enabling it on the kernel command
+>> line, that's not by accident. You expect your VMs to reliably be
+>> created when KVM tells you that CCA is available.
+>>
+>> So KVM_CAP_ARM_RME should indicate whether the RMM has been
+>> successfully activated, and nothing else.
+> 
+> Tying activation to kvm-arm.mode=rmm works for me, roughly similar to
+> kvm-arm.mode=protected. It's still an eager activation (just
+> conditional) and KVM_CAP_ARM_RME then only reports whether activation
+> succeeded. We lose kexec/hibernation but that's fine, it was explicitly
+> requested on the command line.
 
-Okay.
-
-
->
->
->> diff --git a/drivers/ctlv/message.c b/drivers/ctlv/message.c
->> new file mode 100644
->> index 000000000000..7e5742ba8f70
->> --- /dev/null
->> +++ b/drivers/ctlv/message.c
->
->> +
->> +bool ctlv_message_input_rebind(struct ctlv_cursor *nest, const struct ctlv_schema_tree *tree,
->> +			       u32 node)
->> +{
->> +	const struct ctlv_message_input_scope *bound_scope;
->> +	const struct ctlv_message_input_nest *indexed;
->> +	u32 i;
->> +
->> +	if (WARN_ON_ONCE(!nest->attr || !nest->msg || !nest->msg->index))
->> +		return false;
->> +	if (!ctlv_message_nest_index_ok(nest))
->> +		return false;
->> +	bound_scope = &nest->msg->index->scopes[nest->index_nest_scope];
->> +	indexed = &nest->msg->index->nests[bound_scope->nest];
->> +	for (i = 0; i < indexed->scopes_count; i++) {
->
->	for (u32 i = 0; ...
-
-Okay.
-
-
->
->> +		u32 scope_index = indexed->first_scope + i;
->> +		const struct ctlv_message_input_scope *scope =
->> +			&nest->msg->index->scopes[scope_index];
->> +
->> +		if (scope->tree != tree || scope->node != node)
->> +			continue;
->> +		nest->tree = tree;
->> +		nest->node = node;
->> +		nest->index_nest_scope = scope_index;
->> +		return true;
->> +	}
->> +	return false;
->> +}
->
->> +
->> +void ctlv_attr_next(struct ctlv_cursor *cursor)
->> +{
->> +	const struct ctlv_message_input_slot *slot;
->> +	const struct ctlv_message_input_scope *scope;
->> +	const struct ctlv_node_schema *node;
->> +	const struct ctlv_attr *next;
->> +	u32 next_nest;
->> +	u32 next_offset;
->> +
->> +	slot = ctlv_message_cursor_index(cursor);
->> +	if (!slot || WARN_ON_ONCE(!cursor->attr))
->> +		return;
->> +	next = (const void *)((const u8 *)cursor->attr +
->> +			      ALIGN((size_t)cursor->attr->len, CTLV_ALIGNTO));
->
->kernel code is allowed to rely on void * arithmetic, so this can be
->	next = (const void *)cursor->attr +
->	       ALIGN((size_t)cursor->attr->len, CTLV_ALIGNTO);
->
->container_of() for instance makes use of sizeof(void) == 1.
-
-Okay.
-
+Thank you both, I will tie the activation to kvm init, gated on the
+kvm-arm.mode.
 
 > 
->
->
->> +const void *ctlv_attr_binary(const struct ctlv_cursor *cursor, u32 *len)
->> +{
->> +	const void *value;
->> +
->> +	*len = 0;
->> +	value = ctlv_message_cursor_payload(cursor, BIT(CTLV_SCHEMA_BINARY), len);
->> +	if (!value)
->> +		*len = 0;
->
->I'd kind of have assumed that ctlv_message_cursor_payload() would not
->set len to anything if it returns NULL.  Thus the default *len = 0 would
->be intact.  From a quick look that seems to be the case making this
->code a little odd. 
->
->Perhaps overly defensive or keeping an LLM happy?
->Same applies on some other functions.
+> There's also the case of a host-only PCIe TSM (without realms). IIUC
+> (grep'ing FIRME spec) on an RME system IDE key programming goes via the
+> RMM, so this would need the RMM activated even without KVM. Not sure it
+> makes sense without realms, so I think we can ignore it until there's a
+> concrete use case (and add one more hook to activate the RMM).
 
-You are right. Will remove these.
+We could, again gate this on kvm-arm.mode. RMM is not useful without
+the capability to run realms. The dependency is the other way around.
+If an RMM exists and would be used for any other device TSM, then it
+should act as the TSM for all devices, to make sure we have a single
+TSM managing the IDEs (and the SPDM connections).
 
+So, tying this again to the kvm-arm.mode=rmm, i.e., the capability
+to run Realms makes sense to me. Thoughts ?
 
->
->
->
->> +	return value;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(ctlv_attr_binary, "CTLV");
->> +
->> +/*
->> + * The room is measured before anything is written, which is what leaves a
->> + * refused attr's message exactly as it was, padding included.
->> + */
->
->Having a trailing comment in a file rarely adds much or indeed
->even more rarely gets read.
+Suzuki
+> 
 
-True, will remove.
-
-
-Thanks!
-
->
->
->> diff --git a/drivers/ctlv/message.h b/drivers/ctlv/message.h
