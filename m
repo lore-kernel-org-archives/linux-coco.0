@@ -1,114 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.49
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792678208;
-	b=Ny5tvIlepg9zw9GsowoAPDGnANLzUwM5K42SOw6PUmfJIMtphOTCEggJgcinCoB55++J
-	 hDHdvPreBD4t60lTaaEiP+uWfPhf0lHWuMec2I2/Y0qIVe6YHQ7MqOoAx0XziKRe58AvJ
-	 5MMm1Pf9jWArTuYIZhXxN2hW7Q11ljeWLR1jEbm0FsMbcCsI/nt8g/jOw2J3gvMAvCUVt
-	 ZqZ6rzUkTUY8OpzA6+x0KOgLOzfauBdPQvgKQVOlwZj3Iqpkw3MrV37aJ3u/MVJTCsmG9
-	 n+h5ouoqd8kGsXxO1KlMIc5DSG8MNP5gbaV973vIkk+6aQBKQe4u20xlcHl4UDoKiSQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792678208;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=O7iO3LVCjQSnGYGCE2vVj+SHHWr2zbeF4noFKjBGDT8=;
-	b=RqwzYYvDddsncli3MCr80wN2GwB9KMTQFXQaA8f7/vGKKfJTWzF3TwVkI5KqHJrGoTzt
-	 BEdKY2s/p9m9c+CiULVIvxhzbEXCY9vzlZLzwLMdwE6w8ca686rJ8H2/O61RoJjZlidhK
-	 qZcadGKzggylcUE/+7LwjRHpiNKpS6OPL8crRBf/6FUdVHXNTtSp8OTPnJm4kjezJPcvz
-	 W/bpJ1ZzeFVAF5HH6B5rbZ/m/JkjjZHw0UqWWU3047S9pIONm57ZxiP9Szx3diH6sgfnc
-	 IU0Dsa3CxavAeWk5Acae00HF7/3OgFlkDJO/mega2RU6jozLjg4atJFriWKlEOI95zA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=AUQsueqU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.49
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010049.outbound.protection.outlook.com [52.101.193.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792683512;
+	b=bjuvCQArvnRVczJ/fkRiDGNDMtfRlCsik8WNFI6R8z24L2dfO6vzpg/enM4YnDIKARSz
+	 JF2MzvEQmYG3OoNKe8IoxtQOimHOr4AOCDlPWsd0b+2+5vIEjcvEPLfNQnMLZoflK9F/P
+	 A5IDQXYvVn4uCVAHS+levmvPKNY+8eO47x23JNSv/ZMYcXxyHQYQnr++y09yfQ/2PARKl
+	 9M57qjxtiRH01dXi/6eCpeAFfpinkt0teVGD3Dn689XyXvnyGTb3jg5L66zi5ETLj8w7c
+	 MrLUozUcejN6mxxanQ95A5s2eQZx30cJB9igHQt8I/3vcc8XZYeaSGO2tOC5LzPl+hA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792683512;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
+	b=dHHDCHLyaKTdwY1YctglDNJxYpNiEmhs5fTSO0RKGg7qG5zlJ//vVFOB9LiLMGFC5lNL
+	 RqGH2E2nRwTQi2FBNAbhVAEmOFlrBhSWEv/cP+4FmOeOq/zHNwl8TvFED1GQb7Yp/n8ZI
+	 GH7QkVGsdvkS3i9zxJPkf2EVv43kKy6LWxwyNDYlySFstalkZrPAZfV+8xw1sXg4MN6FV
+	 1CoiBu7rThApL5s2n9aBkwUlVEPGr1qYcGxsyUPgaHi6a916MLk0iAbVLkIPRup3mX0Wc
+	 67/EKtWNFuYaJM1UfZRUbpp2FmzjF6qPO5gSLR2RTjp/gMkwCdgbZcxEXzz54O1RN/w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=k3f3S4Q7;
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A84606A319;
-	Thu, 22 Oct 2026 14:10:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5A84606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9390606A31E
+	for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 15:38:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9390606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=AUQsueqU
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pYVqEPO3IarIACQHwflz8IErcfL8a7bNovp4FUusU7qv29LmeZMvQ2D/BYgJ9Pbyo2bSRa416TOsjG17fQ4EHr5cEnbyiLbrFTSuWI4MHC9YWAhOFioE0ggEuy9saCxBgUm4kaztDFgFYmd0CWXcm0gp7PM7lcpp+GNrzELFYdpqBzz+VRXqNsIwR8hfNta9fa/o6r9KsmKRY/JhpnhlxAmGiKAx3Z125gR2mXmyOi4avr8KLdjOeMq2A2vr20RDJ0WF+/XrRNoCZLe/ilzyhPm8ATuqDtVbw+EdiVElNXRYqQFvGB89/XusHRtJ/4XtcinQe6U7kQZEjeIC/WKpFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O7iO3LVCjQSnGYGCE2vVj+SHHWr2zbeF4noFKjBGDT8=;
- b=JVhDnFwru3IZg4ReGHeKYxjlyFAFZWdNjG42gInTWZ04/DQy1zHRJ0SRcdv4K8LEuFYHwCI7h8bWtw6nBRvMRywpewiQywYxACMsAd+PFJQk9qMHaCUXvIbvx92F2fZRLP6CpaMXQNpZeJcQYwA8JpcuIiZTIQyn4VFcpWehvafHtFxdEDGGeEvrKdp6nn3uFkIFA9EzFFFlY0vEtXxv03pMFV2f8dLXtkg+v+03wa/qUYftUoWal1br1MPskwnairipLNz63bnafUBEC3l3DY+t+dMYO0XWM8l/dEDHpMd7KHv1CJLO5jfAcMi1fvcfhctHG7KC9fBkNQlaHwseuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O7iO3LVCjQSnGYGCE2vVj+SHHWr2zbeF4noFKjBGDT8=;
- b=AUQsueqUZaXD/2yjhZjCIi8u21B6drJROwqLcoeuWSqPBTCr71gHmaQG/7e4ONtMtp32cuyoqaCBfYw7kTMkBT4L8Q+oZNhVUv1TklQfqZLBA/mNUq+3cpkwqpcOSPOt6i3HDSbD1gyvuYirbW3WlS38h6TMLFv4fXwWBnoeavo=
-Received: from DM6PR04CA0001.namprd04.prod.outlook.com (2603:10b6:5:334::6) by
- DS0PR12MB6534.namprd12.prod.outlook.com (2603:10b6:8:c1::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.19; Thu, 22 Oct 2026 14:10:02 +0000
-Received: from LV8PEPF0000005B.namprd02.prod.outlook.com
- (2603:10b6:5:334:cafe::7f) by DM6PR04CA0001.outlook.office365.com
- (2603:10b6:5:334::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.17 via Frontend Transport; Thu,
- 22 Oct 2026 14:10:02 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- LV8PEPF0000005B.mail.protection.outlook.com (10.167.245.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.15 via Frontend Transport; Thu, 22 Oct 2026 14:10:01 +0000
-Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 22 Oct
- 2026 09:09:38 -0500
-From: Sairaj Kodilkar <sarunkod@amd.com>
-To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Borislav Petkov <bp@alien8.de>, Dapeng Mi
-	<dapeng1.mi@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>, Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>, Jeff Layton <jlayton@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, Kiryl Shutsemau <kas@kernel.org>, Li RongQing
-	<lirongqing@baidu.com>, Marco Elver <elver@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, Rick Edgecombe
-	<rick.p.edgecombe@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sairaj
- Kodilkar" <sarunkod@amd.com>, Sean Christopherson <seanjc@google.com>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Suravee Suthikulpanit
-	<suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, "Vasant
- Hegde" <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	<iommu@lists.linux.dev>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: [PATCH v6 7/7] iommu/amd: Provide kernel command line option to enable GAPPI
-Date: Thu, 22 Oct 2026 19:34:25 +0530
-Message-ID: <20261022140425.27465-8-sarunkod@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261022140425.27465-1-sarunkod@amd.com>
-References: <20261022140425.27465-1-sarunkod@amd.com>
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=k3f3S4Q7
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4956869750eso13590255e9.2
+        for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 08:38:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1792683509; x=1793288309; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
+        b=k3f3S4Q7MgiWeNBSHKpBVn79v4g/2/kmnNdDLW+GyIzlrvsGVzJ4c8IOMSkX2v9BUS
+         30jSZUR9E869GCLI7DSynJFK8z7P4UWajTV6dVU1YmVYsjF9QqdRohlZ5FVG0GS2kXiJ
+         adJ631ZLe2/lkzHgdYMXa2/Ecti8pGxkzkH1/hudxqnqdbPwT2kCM28kzvcT1x2YuPjq
+         HeabtGRxnXQgpNxwXZRvd0CsAlYFb5s99jG+iPOOJtGn/wco+9TWIyjc4btbBi0hwrdK
+         sb/e0Z9VrP29AQ6Q9LsWslvPrMW0jRG6t9RwqNlOuLUPCbPK7dWuOVNiLB/c6HQUO8mk
+         0R9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792683509; x=1793288309;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
+        b=WtHfiWKrUntUms3JVRigwBMb5SPcKmr5uXCMvBWn5Dqn0dE03tWopyKz54TDF91yfW
+         SRiuCyeznToA6lmvnmZlzsaFzw2h3TbgctL0S2Q9gqBld/WtC6aKaiU05Lqr2o6JDjsq
+         /l6GG3dldH1iWByvtsKDQHqAN2VQAy0ChNEZTDpjix4SXXzSzInw1PGpsSP1ZpewfI8L
+         Wm9dw2c09USuNXfWCz2C4DHMxAApiDjgcR3m+7XPVt5xwctme3o6y0qtUGExMYOJuNMs
+         bmTw0PGyb5vrXWua/GfuYV6J5NBCpsDCUN0lBj/IprNyWN0er197krkqMP+j8mXuQOWY
+         74OA==
+X-Gm-Message-State: AFq9FYL0ANrFy52vo0iLjA/Btq6Odax8xLCdBz1qr8Rz14zmMCPGKdRn
+	pvwG614UCRiRpzbCZI7q7R4U5ii8ioYMaMDrqBYKsof+QM3TNfbTJvk9mAvE6AJJ5R0=
+X-Gm-Gg: AYBFou327dC5EG/I5JKJk/Y1o9LYNJtaRys2BXQDt8jckXu/ToEsgQ4ytTjH5KeMe3Y
+	cDvUJg18ove742hGG2b4EF32zXK6zOxS7BJ0Wy0AZMTSV7BeBxdB2+FqA+tqUsz+GNCJlH5+nRp
+	102BbOQ7nKEpIpYUzq/TEYU0A9LI8aelJJgoumaM1G9Ycsw4utjQu4Qi3/M2hdfDirb/NzEfIge
+	8U+Li5dmCySvuU+nvNnkidlQ/ldRtpXJMovWgZVajiCEfHWuJVOfAliLgadW89CHoXGzQcEP7ZJ
+	F9g7pR4JzXwApeUE6LhEx3Vu5eyEMZwlme1ofJwtnktJSKeO2lq/+UrxdxF2nWyynlFJkSk7u47
+	3VJ3/kw/0F9GVIbMRYQ4FNly8Kjx4EFIixTzxZhqKDwV+J1FOODFHD3nWxil22z7t6gOUh70eGm
+	ofEffzvZ5igJMrvHu9WXofbmQTnCbv9PcBGaQDiZtS2yCZFCCmnzSNjdZXrwY8yAbveFLOV0NT9
+	z5mlR9sbUU4pA18fVdblIDjiVSriRRj4RkLgdvsrSHQ61i/e5ZoMHi2AW+KtMdHbEU=
+X-Received: by 2002:a05:600d:6413:20b0:4a1:80d8:aed5 with SMTP id 5b1f17b1804b1-4a1fdd20c95mr82878645e9.6.1792683507910;
+        Thu, 22 Oct 2026 08:38:27 -0700 (PDT)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2a034fc2sm8929342f8f.5.2026.10.22.08.38.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 08:38:27 -0700 (PDT)
+Date: Thu, 22 Oct 2026 17:38:22 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <atooh7uO2RauUTfY@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <yq5a7bjajaco.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -118,199 +103,193 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PEPF0000005B:EE_|DS0PR12MB6534:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64e2b3fd-2080-4431-4365-08df304629c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|7416014|1800799024|82310400026|23010399003|261021121427099003|261009223027099003|10067099003|56012099006|3023799007|6133799003|22082099003|18002099003|261021123027099003|11063799006|921020;
-X-Microsoft-Antispam-Message-Info:
-	0DHv2OMWQ3MqsgSl33SFC6tdMQnLPLuD2WqC5tPh7iD8dwFyZe+9fQ295MREvLYC1EOYhvARrU3605SL2azfRAjns10gUVxqIuQVe9UuXe5TajwRstRIUT57eum7XN+9JQjEurxv6rFJ+9FBmThth4UEkg4uTZVxxnN06G7sQgLlmwKmxV4CklRstvQgd9MUuGaCA3awuPS3c68qh15ElAIrY3jnQ6eq+axjhlSzXCY1SsykQ2Yf4RVYEXDh+NbLfvxzHU/tM+jvqhd/aczvZjw1aqz07X/ouwB5bohdtI8hxRoNXqKwx3MaJNbOrE1eCW7f2zwFdKL53PJAXlIe3zLWMJXoXBrgWM+l5LFiDxtf3puu+eWRv79YhtxbVFtoHF466YdN9H6WjDSZfgb+3s/VbxdVQeJT55D2hcNlK2aeCwwTGriEQACrB4kB3STHt6rscO/qjURamNpnXn3WAU3+EJ70FyYll1lqWBwI2dX4M3WXoYtF6xCTybbyjEZq2F2TjVsuD2v/85gITGl302sVfNNkJLbT6gkziT42/vzowiidHavegj/eEXn86TTUi2B2pt4zVlwMxZe+NVpTPG9fn2vhgCdY5uVPqk9UxMz/UPXD2jeeRpzORuVCwGkoAgb2P40hcKrbmO2rvYmpSlA/Gv2ha0wZRWuZJZmPazQNiY/L63WIVOc7lGXFIqrvmFQpbOmmTnQJcqP99LgF6jwv9d4N7Ey+UKaOPuHfgSDkZfytCopde6Y03s2r69h3
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(7416014)(1800799024)(82310400026)(23010399003)(261021121427099003)(261009223027099003)(10067099003)(56012099006)(3023799007)(6133799003)(22082099003)(18002099003)(261021123027099003)(11063799006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Q9VCwg1h04pQYSm6rCVYvZOOHwiOhSMYKYZ98PdUSjOyws3xyBYj9mqgeR9FqD0I1GFnI8gRHUtjqrMPzAyVAJNKs3xnhnqqA1wZivGRH+paOr8/w9mW+3sJhDjRPJGzHnP72lnerHmgMAxbk2N6lC9TcWDxAndA2S9bAy15ogOD217nlrcMi7PVNSEhJvkLKCH8tFTqbQ+Z8RCrJTPTi7wpnknA77qkIQIoQ7WfGxx24FBf1iRsoBKHc8LDM7Lu2RsozIVO9GAU69HoAeA5g+Hvn4SeulJjp9IOLLXQFrphPpUWMjQYXUy8pgYYzdj+IAkhQDvb4VrsktkkHJHNxE6cWdaFHp4DPu6L5AiFvAiHZXNs9ZhKbQyfKeis2O4DNNI6h3TQujf2NVKOjdvfB8aDQsbeQnHL7mqB6wO13JsJSp88tvcGN+jS5HQnFMWh
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 14:10:01.6236
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64e2b3fd-2080-4431-4365-08df304629c7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	LV8PEPF0000005B.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6534
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5a7bjajaco.fsf@kernel.org>
 
-Enable GAPPI when the IOMMU GAPPISup extended feature bit is set and
-the kernel is booted with the amd_iommu=gappi kernel parameter.
+Thu, Oct 22, 2026 at 12:30:47PM +0200, aneesh.kumar@kernel.org wrote:
+>Jiri Pirko <jiri@resnulli.us> writes:
+>
+>> From: Jiri Pirko <jiri@nvidia.com>
+>>
+>> Linux has several attestation interfaces tied to individual technologies.
+>> That makes evidence retrieval, measurement registers, device state and
+>> kernel consumers provider-specific.
+>>
+>> This series introduces a common attestation subsystem. Its goal is to
+>> support platform, TEE and device providers through one model, including
+>> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
+>> This first series implements the common subsystem and a TDX provider.
+>> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
+>>
+>> Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
+>> Compared with sysfs or configfs, CTLV executes one validated request
+>> atomically instead of assembling a transaction through several files.
+>> Compared with netlink, an opened device fd directly identifies authority
+>> and lifetime, can be delegated normally, and owns its event queue. CTLV
+>> also provides:
+>>
+>>   - generated kernel metadata, UAPI constants and documentation;
+>>   - strict type, bounds, nesting and required-field validation;
+>>   - runtime operation and schema introspection;
+>>   - family inheritance and extension points;
+>>   - fragmented queries with generation checks;
+>>   - per-fd event subscription, overflow reporting and removal notification;
+>>   - large input and output blobs.
+>>
+>> The attestation family exposes capabilities, evidence, measurement-register
+>> topology and operations, an append-only MR journal and journal
+>> notifications. This first ABI contains the paths exercised by TDX. Extended
+>> evidence classes, dynamic registers, record payloads, verdict recording and
+>> device-security transitions follow with providers that need them and are out
+>> of scope of this initial patchset. The broader direction is illustrated here:
+>>
+>> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
+>>
+>> That branch also contains additional providers (test and sim),
+>> attestation core extensions, libctlv and ctlvctl. With the tools
+>> and kernel specifications, an attestation device can be used as follows:
+>>
+>>   # Discover CTLV devices and their family chains.
+>>   ctlvctl --spec-dir Documentation/ctlv/specs list
+>>
+>>   # Inspect the root-family lineage and attestation capabilities.
+>>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
+>>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
+>>
+>>   # List the measurement registers of the attestation device.
+>>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
+>>
+>>   # Read RTMR0 (MR 1).
+>>   ctlvctl --spec-dir Documentation/ctlv/specs \
+>>           query ctlv0 mr-read mr.id=1
+>>
+>>   # Extend RTMR0 with 48 zero bytes (SHA-384).
+>>   digest=$(printf '%096d' 0)
+>>   ctlvctl --spec-dir Documentation/ctlv/specs \
+>>           exec ctlv0 mr-extend --json \
+>>           '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
+>>
+>>   # Retrieve the RTMR0 journal.
+>>   ctlvctl --spec-dir Documentation/ctlv/specs \
+>>           query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
+>>
+>> The 20 patches are organized as follows:
+>>
+>>   1-13    add CTLV, its generator and documentation
+>>   14-17   add the base attestation family and implementation
+>>   18-20   expose the native TDX service and add the TDX family
+>>
+>
+>I am using this to understand what the IDE setup flow would look like,
+>but it is unclear whether the connect flow belongs in an attestation
+>framework. I understand the desire to pass the certificate slot number
+>as part of connect, and sysfs is probably not a suitable interface for
+>that. However, is CTLV the interface we want to use for connect?
 
-Document the option in Documentation/admin-guide/kernel-parameters.txt
-and mechanism in Documentation/arch/x86/iommu.rst.
+I was thinking about this and "connect" really does not belong in the
+attestation CTLV (same applies to "lock"). I was thinking about some
+parallel PCITSM CTLV instance, but that does not really click as well.
 
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
----
- .../admin-guide/kernel-parameters.txt         |  3 +-
- Documentation/arch/x86/iommu.rst              | 22 ++++++++++++
- drivers/iommu/amd/amd_iommu_types.h           |  2 ++
- drivers/iommu/amd/init.c                      | 34 ++++++++++++++++---
- 4 files changed, 56 insertions(+), 5 deletions(-)
+Currently I'm thinking we can maintain existing "connect" in sysfs and
+extend it with "lock" sysfs knob for Realm side. Both would create
+ctlv-attestation-spdm instance. The same spdm instance may be created
+for other non-PCI-backed device.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index e75344f4e0cd..b260ebef118f 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -456,7 +456,8 @@ Kernel parameters
- 				          to 4 KiB.
- 			v2_pgsizes_only - Limit page-sizes used for v1 page-tables
- 				          to 4KiB/2Mib/1GiB.
--
-+			gappi           - Use GAPPI instead of GALOG for vCPU
-+				          wakeup notification.
- 
- 	amd_iommu_dump=	[HW,X86-64]
- 			Enable AMD IOMMU driver option to dump the ACPI table
-diff --git a/Documentation/arch/x86/iommu.rst b/Documentation/arch/x86/iommu.rst
-index 79c33560299b..6bac30f5abbd 100644
---- a/Documentation/arch/x86/iommu.rst
-+++ b/Documentation/arch/x86/iommu.rst
-@@ -150,3 +150,25 @@ AMD Fault reporting
- 
- 	AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0007 address=0xffffc02000 flags=0x0000]
- 	AMD-Vi: Event logged [IO_PAGE_FAULT device=07:00.0 domain=0x0007 address=0xffffc02000 flags=0x0000]
-+
-+
-+AMD vCPU wakeup Mechanism
-+--------------------------
-+
-+GALOG
-+^^^^^
-+
-+GALOG is a legacy notification path to wakeup the vCPU waiting on an interrupt.
-+When IOMMU receives an interrupt destined to vCPU which is scheduled out, it
-+updates the vAPIC backing page IRR and appends vCPU tags to a shared GA log
-+buffer and raises a single GA log interrupt. IOMMU driver scans this buffer to
-+decide which vCPU to wakeup.
-+
-+GAPPI
-+^^^^^
-+
-+GAPPI is an alternative to GALOG.  With GAPPI enabled, the IOMMU still updates
-+the guest vAPIC backing page IRR, but may deliver a physical APIC interrupt
-+directly to IRTE[Destination], using IRTE[GATag][7:0] as the vector. This
-+distributes host wakeup notifications across CPUs instead of centralizing them
-+in a log buffer. This can be enabled by adding option amd_iommu=gappi
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index b89a2b3df0a4..51edd617ddca 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -78,6 +78,7 @@
- #define FEATURE_X2APIC		BIT_ULL(2)
- #define FEATURE_NX		BIT_ULL(3)
- #define FEATURE_GT		BIT_ULL(4)
-+#define FEATURE_GAPPI		BIT_ULL(5)
- #define FEATURE_IA		BIT_ULL(6)
- #define FEATURE_GA		BIT_ULL(7)
- #define FEATURE_HE		BIT_ULL(8)
-@@ -178,6 +179,7 @@
- #define CONTROL_EPH_EN		45
- #define CONTROL_XT_EN		50
- #define CONTROL_INTCAPXT_EN	51
-+#define CONTROL_GAPPI_EN	55
- #define CONTROL_GCR3TRPMODE	58
- #define CONTROL_IRTCACHEDIS	59
- #define CONTROL_SNPAVIC_EN	61
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 78e3c14dc1c2..72394c92a3fa 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -448,6 +448,9 @@ static void iommu_disable(struct amd_iommu *iommu)
- 	iommu_feature_disable(iommu, CONTROL_GALOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_GAINT_EN);
- 
-+	/* Disable IOMMU GAPPI */
-+	iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 	/* Disable IOMMU PPR logging */
- 	iommu_feature_disable(iommu, CONTROL_PPRLOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_PPRINT_EN);
-@@ -2273,7 +2276,7 @@ static void print_iommu_info(void)
- {
- 	int i;
- 	static const char * const feat_str[] = {
--		"PreF", "PPR", "X2APIC", "NX", "GT", "[5]",
-+		"PreF", "PPR", "X2APIC", "NX", "GT", "GAPPI",
- 		"IA", "GA", "HE", "PC"
- 	};
- 
-@@ -2986,6 +2989,13 @@ static void enable_iommus_vapic(void)
- 	struct amd_iommu *iommu;
- 
- 	for_each_iommu(iommu) {
-+		/*
-+		 * Disable GAPPI, do not check amd_iommu_gappi as it may be
-+		 * false in new kexec kernel even though previous kernel has
-+		 * enabled it.
-+		 */
-+		iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 		/*
- 		 * Disable GALog if already running. It could have been enabled
- 		 * in the previous boot before kdump.
-@@ -3027,10 +3037,19 @@ static void enable_iommus_vapic(void)
- 		return;
- 	}
- 
-+	if (amd_iommu_gappi &&
-+	    !(check_feature(FEATURE_GAPPI) &&
-+	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-+		pr_warn("GAPPI is not supported.\n");
-+		amd_iommu_gappi = false;
-+	}
-+
- 	/* Enabling GAM and SNPAVIC support */
- 	for_each_iommu(iommu) {
--		if (iommu_init_ga_log(iommu) ||
--		    iommu_ga_log_enable(iommu))
-+		if (amd_iommu_gappi)
-+			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
-+		else if (iommu_init_ga_log(iommu) ||
-+			 iommu_ga_log_enable(iommu))
- 			return;
- 
- 		iommu_feature_enable(iommu, CONTROL_GAM_EN);
-@@ -3039,7 +3058,8 @@ static void enable_iommus_vapic(void)
- 	}
- 
- 	amd_iommu_irq_ops.capability |= (1 << IRQ_POSTING_CAP);
--	pr_info("Virtual APIC enabled\n");
-+	pr_info("Virtual APIC enabled with %s\n",
-+		amd_iommu_gappi ? "GAPPI" : "GALOG");
- #endif
- }
- 
-@@ -3782,6 +3802,12 @@ static int __init parse_amd_iommu_options(char *str)
- 		} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
- 			pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
- 			amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-+		} else if (strncmp(str, "gappi", 5) == 0) {
-+#ifdef CONFIG_IRQ_REMAP
-+			amd_iommu_gappi = true;
-+#else
-+			pr_warn("amd_iommu=gappi ignored, IRQ remapping is not enabled\n");
-+#endif
- 		} else {
- 			pr_notice("Unknown option - '%s'\n", str);
- 		}
--- 
-2.34.1
+The proposed host flow is:
 
+    sysfs connect: select tsmN and prepare the connection
+        -> negotiate SPDM and discover certificates
+        -> register ctlv-attestation-spdm instance in DISCOVERED state
+
+    SPDM_GET
+        -> populated certificate slots and digests
+
+    EVIDENCE_GET(CERT_CHAIN, blob-instance=slot) /*optional*/
+        -> retrieve candidate certificate chain for appraisal
+
+    SPDM_AUTHENTICATE(device-generation, spdm-slot=selected_slot)
+        -> authenticate the selected chain
+        -> complete backend-required session and IDE setup
+
+    sysfs disconnect
+        -> remove the attestation instance
+        -> destroy the native connection
+
+The slot is therefore selected after discovery, rather than supplied to
+connect. The attestation instance represents the prepared connection; it
+does not exist beforehand as a controller for a disconnected PCI function.
+
+This requires a staged native backend. It is not how existing automatic
+sysfs connect behaves today, and those backends would retain their
+existing behavior.
+
+For Realm assignment, as written above lock is sysfs interface.
+Lock creates a separate assigned-TDI attestation instance for evidence
+retrieval, EVIDENCE_ACCEPT, and DEVSEC_RUN
+
+Protocol authentication is distinct from the userspace attestation
+verdict: SPDM_AUTHENTICATE does not imply acceptance or TDISP RUN.
+
+So the main difference from your implementation is the lifecycle boundary:
+sysfs creates/removes the native contexts, while attestation handles
+discovery, explicit authentication, evidence, and the evidence-gated
+transition to RUN.
+
+Makes sense?
+
+>
+>My patches end up doing the following. I am also unsure whether this is
+>the intended workflow for the attestation framework.
+>
+># ./ctlvctl/ctlvctl --spec-dir=./specs/ ops ctlv0
+># ctlv/ctlv-attestation/ctlv-attestation-pci, generation 1
+>families-dump           query   read    fixed   request 16      reply 112..65536
+>ops-dump                query   read    fixed   request 16      reply 56..65536
+>op-schema-get           query   read    fixed   request 40      reply 552..65536
+>subscriptions-add       action  read    fixed   request 6160
+>subscriptions-remove    action  read    fixed   request 6160
+>event-queue-get         query   read    fixed   request 16      reply 40..65536
+>event-queue-set         action  read    fixed   request 40
+>op-changed              event   record 112
+>event-overflow          event   record 112
+>device-removed          event   record 40
+>device-get              action  read    fixed   request 16      reply 12984
+>evidence-get            action  read-write      dynamic disabled        request 26800   reply 472
+>device-state-changed    event   record 64
+>mr-log-entry-appended   event   record 73416
+>evidence-accept         action  read-write      dynamic disabled        request 64
+>evidence-accept-clear   action  read-write      dynamic disabled        request 16
+>devsec-state-get        query   read    dynamic disabled        request 16      reply 40..1024
+>devsec-run              action  read-write      dynamic disabled        request 64      reply 40
+>evidence-state-changed  event   record 112
+>state-get               action  read    fixed   request 16      reply 184
+>connect                 action  read-write      dynamic enabled request 88      reply 40
+>disconnect              action  read-write      dynamic disabled        request 40      reply 40
+>lock                    action  read-write      dynamic disabled        request 64      reply 40
+>unlock                  action  read-write      dynamic disabled        request 40      reply 40
+>evidence-refresh        action  read-write      dynamic disabled        request 88      reply 40
+>
+># ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get
+># state-get, 1 fragment, generation 0
+>  pci.generation 0
+>  pci.connected 0
+>  pci.locked 0
+>  pci.accepted 0
+># 
+>
+># ./ctlvctl/ctlvctl --spec-dir=./specs/ schema ctlv0 connect                
+>connect (action)
+>request:
+>  root nest
+>    pci.generation required uint [0, 4294967295]
+>    pci.tsm-id required uint [0, 2147483647]
+>    pci.cert-slot optional uint [0, 7]
+>reply:
+>  root nest
+>    pci.generation required uint [0, 4294967295]
+># 
+>
+># ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 connect pci.generation=0 pci.tsm-id=0
+>
+>-aneesh
