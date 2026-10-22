@@ -1,111 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792668382;
-	b=deca3qGMFpqV1FW2jXx6mkHYp6yGcx17u8+LOd1eLlw+5Ni9DvFpmvICAulzMsgTXRg7
-	 VTqSXSDlhT8peW27EvCitEsaFljr+ZIvQ/RAp7wTrZFadC80ckxOollLgYcqa8YexAR0z
-	 xL1pf8L0MH3OXNKsPsl5KArNqSdgKwjlvbBJ7vESn/V5/GPNBEfzAHi/biDK8c2WWQq3X
-	 dROWZnC1j/MausSLCdWw28SZSTNtXJRi+/dVMx5c2zGELQypXk2vyE1KfTAVrpIL3rJ2i
-	 5VzwxvjJJOmDI1M2StYLhzITBDTWemuFwp4CvmTsRfQqzBk6UfxpjrYGllDTZmTrhhQ==
+	t=1792670868;
+	b=zWMuZTAGosoJTvQ5jV1WoeH38sque7tIKY1RWKQg3yJVrnWm+TCRgdYIQ2Ek5vIxxxfc
+	 FRa+0mKBuRzcaRzCEbTx3hXYNWqVFv8pVc0vtAdTquYKJ4n1OWoJ3fjqtM/vd4VIo7jDP
+	 KKsDME1yhg38n0+0m8iShjeER49PgKJVta9OPSbubzDhOFc19YP2laA9vNLlgB9RB3RsB
+	 wOT1B2qiFOcwxUe2cA4qkWDkdr45DZRqO/lrx1DL59Knb2AxujLnmr7v2cGzc4hZkFMHF
+	 2tN9+u3+tXr0OQ8Ychv3SmNWE8VQR6kpTCJcZeZAJ3wFnWF4LUsH6Ztkx9zRW/q6EJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792668382;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:
-	 MIME-Version:User-Agent:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=H75v3I9hrZtnPC5oLMkBzDelhJGj3dWwVG0uNk3+Ha0=;
-	b=n64hHB6icXXk4vUbXacHtLo22Os0IlRiccSiHvdlyvVEkcHOXoMI0/HgHGFHBTmxuhYl
-	 GzOjH45G3JvQMT2CFG0v1BhZ7C/eeoYn9qSIMIztjtxsiEO+H564vWkUqT/hiUtbwpMsH
-	 3hdj3j6F/bhleYyL8eEWxrXLWgyv2VpktSOm8c0X1q+fsC+rLvxeQutrQw2UW8ZPsBDiA
-	 vdkGltWBqEwED6vjbUmDmslv2jnq9hzXJcimzVoLUk3HgGNWMHWCE3gxXjbKxF//gpsV9
-	 PmO+L8l1xYZH/z1ZYki69v5By86YPXyPcmlnobEHXrqKk3CmCExtuGa8cdFB5kWQ78Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792670868;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=U+E2goX+603MK4R3YbLe0NZDVKTFLoXN52JzT924H9k=;
+	b=LlYeiEFRDVgJ+3GZ9KImA+6bSOOvJBocs1CnIZfGtMkDqwRYNOhHRkxrMON9Y73wqd4u
+	 UNZwdkedS34HVNbgo2f3R+EPGHyg6yBefHoaqc/HLQk9L71kaYTGYAZtnrx1DoV4tZbAG
+	 1jd6azfYqQDiy02ksh4iHewpFdnfj9xNPxGkFy44X2x/B+jrn2VdtWpbGP+dC5LUocK0i
+	 JO5grt8P6E0pXkdbzy7s+ICeA9eeC3hIb8ixyGWpjw9hHax3gvo/KfKQlwmiOSTrb+GOa
+	 QfX5su/aFRy8jyQZuMCQbjzOC5pXeUT+HSWcFqpDaEaaDy5LvxTEfnfJw+XkzYIvboQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lsLGDmdW;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6E2606A319
-	for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 11:26:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA6E2606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=F9rzmpQ0;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63322606A31A;
+	Thu, 22 Oct 2026 12:07:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63322606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lsLGDmdW
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69MAEYJv3824238;
-	Thu, 22 Oct 2026 11:25:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=H75v3I
-	9hrZtnPC5oLMkBzDelhJGj3dWwVG0uNk3+Ha0=; b=lsLGDmdWPtn2CX10h+XxDw
-	x5wBg6WHB3+bSoaQUEvwIuQrjoGmajSen9pTPgRxWhV/s/tOjot1Aa03KEpecoCE
-	fmyJCkze8aLBnQ+cLxt2I/ZddydBbBS19+S4GhpPbHf4OJXOmb6Tl87CDuEubcD1
-	b+ERZaLyHwaTVI8IGjasRzMcCUsgwmv8hZen3Gbd8W1TCXe1NTmbIwk9x/M0JJr8
-	z6JDKRgKi5Xf955VJVvnjvr/u5UFmdhqpBD1PQLIJiw1PD0jzdSl1zhYbXGx5NTM
-	zvKpL+aeojQiNR1qaptzAO0/uMZCz5K9FsUdKPMq9bb3LE454xIFGQ4Oq8onCwIw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5a69br-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 22 Oct 2026 11:25:02 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69MA4sQ3337793;
-	Thu, 22 Oct 2026 11:25:01 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4he6gqhwnr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Oct 2026 11:25:01 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69MBP0ja1442606
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 Oct 2026 11:25:00 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B46D58056;
-	Thu, 22 Oct 2026 11:25:00 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D83D58052;
-	Thu, 22 Oct 2026 11:24:58 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.112.79])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 22 Oct 2026 11:24:58 +0000 (GMT)
-Message-ID: <2342b42699292d4e5fc85e5dd4d351a3f29ae336.camel@linux.ibm.com>
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Dionna Glaze <drdeeglaze@gmail.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-        david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-        rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-        James.Bottomley@hansenpartnership.com, aik@amd.com,
-        jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-        jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-        suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-        elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-        roberto.sassu@huawei.com
-In-Reply-To: <atnqmDhgaJycTf_Q@FV6GYCPJ69>
-References: <atPgqROZZxnihYfC@kernel.org>
-	 <20261017231007.GP13920@nvidia.com>
-	 <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
-	 <atX9fugGUsI0hGcA@FV6GYCPJ69>
-	 <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
-	 <20261019225658.GS13920@nvidia.com> <ath4vwt7KGyDXKVJ@FV6GYCPJ69>
-	 <103486a4a29ecc7b72940dd051c00ae59266bd05.camel@linux.ibm.com>
-	 <20261021143529.GP3008132@nvidia.com>
-	 <8d8833fac61558a94af415143530884349584a2f.camel@linux.ibm.com>
-	 <atnqmDhgaJycTf_Q@FV6GYCPJ69>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 07:24:57 -0400
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=F9rzmpQ0
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 405C92C41;
+	Thu, 22 Oct 2026 05:07:43 -0700 (PDT)
+Received: from [10.0.129.145] (Suzukis-MBP.cambridge.arm.com [10.0.129.145])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DDB643F7B4;
+	Thu, 22 Oct 2026 05:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792670866; bh=YaugAaOmXpQMbGlR3yQjGJIUa/UWqthL0o7dDmiSzso=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=F9rzmpQ0ewydjOM5Qv2BdnCe/OuDpwBhtCFdR50SESHcFJQn+h++HvTUD+D4WLr/k
+	 xknS5QY+Wgn8HOgpNw40KmbQhMVVOHGQw3OcgSl7If9mgbz6AA7Lavl4a7hIeoBXK6
+	 xRiC9nve68kc1VzLusRjYJgPqEkbyCJGZX+vwlwg=
+Message-ID: <0ab0d3a1-a225-4a88-91bf-04f8f0e42eb7@arm.com>
+Date: Thu, 22 Oct 2026 13:07:41 +0100
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -115,106 +53,202 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDA0NCBTYWx0ZWRfXxwiqvDMronE4
- FQK3t3Ka+UBmU9zzP6ecQ8euUkLzhX4FWUA5V6YeEa4nH5caVDHgElYPouOKaWY3eO8sxSm1dQq
- H9/MmeIBwxmSOkAbNRJNbqEIv2r1PEY9b1MnCLPNEX55kJslBV5xEVWyyOyg9O0b9gQeRA+uSgu
- CHr64hZ9+eFCMu4Eg31bmjUZAedOL5lT0MHSsG3X9uxk9kuBE0aN07NN90hsjqZGukFlvNi+kbN
- qv0hKlFArX4L+q+8xOiOrZfCGEnyMBxfUuw+usWF8t2Xgp5pDm5omURfcg6/QKbMdBXe7lF7m35
- 0m9fwfHY2VP0GfW6qd8iWkBOJ3LOOtvHhZ5+qfxq7bKjK7mEf3MJAAs87PHyTjNgR1mM/wIovh7
- 9hTns2c/rsKR85/hvetAL40zf8fx8w==
-X-Proofpoint-ORIG-GUID: -IIoPKCgjZ0iA8b4LLnSoxnm_Zenbl1V
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDA0NCBTYWx0ZWRfX7uaAEEsIiURA
- ne+UmovPSY99pNXg6qSZquGDhuWRRe4QPG5ipgQoLtIN4s8DvmHYGAUjbPLNQTDpe8oGqQEQCGh
- DzJvSX212klGw9ZeBsDgcoe8AzXgIYU=
-X-Proofpoint-GUID: Dmhzh_FOqH-X5ktGgnB0OO9LGedtpqZL
-X-Authority-Analysis: v=2.4 cv=ZfSIpcVA c=1 sm=1 tr=0 ts=6ad9f28e cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=cpN7-hlQ1AlEGHSOM8EA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-22_04,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 suspectscore=0 phishscore=0 bulkscore=0
- lowpriorityscore=0 adultscore=0 classifier=typeunknown authscore=0 authtc=
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.22.0-2610190000 definitions=main-2610220044
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 06/10] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+Content-Language: en-GB
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com, Soby Mathew <Soby.Mathew@arm.com>
+References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+ <20261002061507.1600269-7-suzuki.poulose@arm.com>
+ <atiyZ7_S7aBxowIQ@FCCLS0092175.localdomain>
+ <34bf0c98-35b1-4402-842f-a100245cb9a7@arm.com>
+ <atjEkyLimpQSL4d4@FCCLS0092175.localdomain>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <atjEkyLimpQSL4d4@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2026-10-22 at 12:54 +0200, Jiri Pirko wrote:
-> Wed, Oct 21, 2026 at 09:05:09PM +0200, zohar@linux.ibm.com wrote:
-> > On Wed, 2026-10-21 at 11:35 -0300, Jason Gunthorpe wrote:
-> > > On Wed, Oct 21, 2026 at 10:12:34AM -0400, Mimi Zohar wrote:
-> > > > > > I think for now we should not include a new dynamic log here, t=
-he uAPI
-> > > > > > around this Jiri drafted can remain a future step. I don't want=
- to
-> > > > > > open complicated discussions about new functionality at this
-> > > > > > stage. The whole CTLV idea in general is a big enough thing to =
-bite
-> > > > > > off for this series.
-> > > > >=20
-> > > > > Okay, dropping the log from this set.
-> > > >=20
-> > > > Thank you.  Please keep in mind going forward, that the scarce hard=
-ware register
-> > > > limitation (like the 4 TDX RTMRs) should be resolved (e.g. by multi=
-plexing the
-> > > > extension path), not by combining distinct measurement lists.
-> > >=20
-> > > I'm not sure what you mean?
-> > >=20
-> > > Since the HW doesn't support sealing the only *technical* requirement
-> > > is the verifier can reproduce the measurement register hash. So long
-> > > as we can get there we can do whatever.
-> > >=20
-> > > Multiplexing extension alone isn't enough. We need some scheme to
-> > > reconstruct interleaved logs too.
-> > >=20
-> > > For example we could add an atomic sequence number for each
-> > > extend. Every log sharing a register can report the sequence
-> > > number. The verifier would have to globally sort all logs to confirm
-> > > the hash.
-> > >=20
-> > > Hopefully we don't have to tackle this problem. I hope that 4
-> > > registers is enough for Linux. One for IMA, one for systemd, one for
-> > > user? Plus a spare!
-> >=20
-> > Agreed, I hope you don't have to tackle it either.
-> >=20
-> > >=20
-> > > Maybe we can build a multiplexed scheme on the spare? I don't know.
-> >=20
-> > To avoid interleaving the logs, AI had suggested multiplexing or virtua=
-lization
-> > of the RTMRs.  Whether is has any merit, I'll leave to you.  Here's the=
- very
-> > short AI explanation:
-> >=20
-> > "Instead of allowing external drivers or subsystems to execute a direct=
-, raw
-> > extend command to a specific hardware register index, the new attestati=
-on
-> > subsystem should act as a Hypervisor for Registers."
->=20
-> Isn't the hypervisor what we are doing now? I mean multiple extension
-> originators share the same register and eventually the same log. Or do
-> you suggest to go even further having a "generic_registerX" exposed for
-> every hw implementation allowing the user to have full abstraction?
-> The "generic_registerX" would be always alias to something hw specific,
-> like RTMR2 for example of TDX.
+On 21/10/2026 15:00, Kohei Enju wrote:
+> On 10/21 14:35, Suzuki K Poulose wrote:
+>> Hi
+>>
+>> On 21/10/2026 14:07, Kohei Enju wrote:
+>>> Hi Suzuki,
+>>>
+>>> I've tested this series and found a possible TF-RMM issue.
+>>> Please  below.
+>>>
+>>> On 10/02 07:15, Suzuki K Poulose wrote:
+>>>> From: Steven Price <steven.price@arm.com>
+>>>>
+>>>> The RMM maintains the state of all the granules in the system to make
+>>>> sure that the host is abiding by the rules. This state can be maintained
+>>>> at different granularity, per page (TRACKING_FINE) or per region
+>>>> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
+>>>> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
+>>>> all pages in the region must be of the same state, this implies we need to
+>>>> have "fine" tracking for DRAM, so that we can delegate individual pages.
+>>>>
+>>>> For now we only support a statically carved out memory for tracking
+>>>> granules for the "fine" regions. This can be extended in the future to
+>>>> allow modifying the tracking granularity and remove the need for a
+>>>> static allocation by the firmware.
+>>>>
+>>>> Similarly, the firmware may create L0 GPT entries describing the total
+>>>> address space. But if we change the "PAS" (Physical Address Space) of a
+>>>> granule, then the firmware may need to create L1 tables to track the PAS
+>>>> at a finer granularity. Linux therefore checks if the platform firmware
+>>>> manages the PAR region. i.e., the firmware is in charge of managing the
+>>>> L1 GPTs (creation and the required memory for the GPT tables - via static
+>>>> carveouts) without host intervention. Support for dynamic GPT creation by
+>>>> the host will be added later.
+>>>>
+>>>> If the firmware requires us to manage the tracking or GPT memory,
+>>>> deactivate the RMM and reclaim any memory donated at RMM activation.
+>>>>
+>>>> Apply the same checks when hotplugged memory is brought online.
+>>>>
+>>>> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+>>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>> Tested-by: Gavin Shan <gshan@redhat.com>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>> ---
+>>> [...]
+>>>> +/*
+>>>> + * We do not support creating L1 GPTs yet. So, make sure that all the regions
+>>>> + * are managed by the firmware.
+>>>> + */
+>>>> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, phys_addr_t end)
+>>>> +{
+>>>> +	unsigned long l0gpt_sz;
+>>>> +	unsigned long next, par_state;
+>>>> +
+>>>> +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+>>>> +					  rmi_feat_reg(1)));
+>>>> +	start = ALIGN_DOWN(start, l0gpt_sz);
+>>>> +	end = ALIGN(end, l0gpt_sz);
+>>>> +
+>>>> +	while (start < end) {
+>>>> +		long ret = rmi_gpt_info(start, end, &next, &par_state);
+>>>> +
+>>>> +		if (ret != RMI_SUCCESS) {
+>>>> +			pr_err("RMI_GPT_INFO failed for %llx-%llx: (%ld)\n",
+>>>> +				start, end, ret);
+>>>> +			return -ENXIO;
+>>>> +		}
+>>>> +
+>>>> +		if (WARN_ON(next <= start))
+>>>> +			return -ENXIO;
+>>>> +
+>>>> +		if (par_state != RMI_GPT_PAR_PLAT) {
+>>>> +			pr_err("GPT for the region is not managed by firmware %llx-%lx\n",
+>>>> +				start, next);
+>>>> +			return -ENODEV;
+>>>
+>>> When system RAM starts at a non-L0GPTSZ-aligned address, the alignment
+>>> in rmi_verify_gpt_firmware_managed() may cause the queried L0GPT range
+>>> to include a memory hole.
+>>
+>>>
+>>> On out platform, the relevant memory layout is:
+>>>
+>>>       800c0000000-800dc3fffff : memory hole
+>>>       800dc400000-82fffffffff : System RAM
+>>>
+>>
+>> Thanks for the report.
+>>
+>>> Consequently, Linux queries the following L0GPT range:
+>>>
+>>>       800c0000000-80100000000
+>>>
+>>> The query fails with RMI_GPT_PAR_RESERVED:
+>>>
+>>>       [    8.551855] GPT for the region is not managed by firmware 800c0000000-80100000000
+>>>
+>>> and arm64_init_rmi() subsequently fails.
+>>>
+>>> As I understand it, smc_gpt_info() in TF-RMM checks only the beginning
+>>> of the aligned L0GPT range. Since that address is in the hole, the whole
+>>> range is reported as RMI_GPT_PAR_RESERVED, even though it contains
+>>> platform-managed System RAM.
+>>>
+>>> I believe this should be addressed in TF-RMM. Do you have any thoughts
+>>> on the expected RMI_GPT_INFO behavior in this case?
+>>
+>> I believe the RMM should report a value that represents the situation
+>> better. In this case, there is a hole, and some conventional memory
+>> areas. For the conventional memory, the RMM has to manage the GPTs.
+>> (This applies to the tf-RMM implementation of TRACKING Granule state
+>> too. It only looks at the first granule and reports the type of memory.)
+>>
+>> RMI_GPT_PAR_RESERVED is not accurate as the memory region is not
+>> reserved, unless it is reserved for firmware (in which case the
+>> memory description is wrong).
+>>
+>> I would say RMI_GPT_PAR_PLAT  is accurate if the L1GPT exists, as the
+>>   region covered by the L0GPT has some memory that are delegable.
+>>
+>> Otherwise it must be reported as RMI_GPT_HOST_NOT_CREATED.
+>>
+>> The information that a given memory region is not "memory" (i.e. hole)
+>> is basically TRACKING_STATE returned as RMI_MEM_CATEGORY_NONE
+> 
+> Thanks for the clarification. Could you please raise this with the TF-RMM
+> team? Please let me know if I can help with testing or provide any
+> additional information.
 
-I definitely prefer the latter, as everything continues to work as is with
-minimal, if any, change.
+[Duplicating Soby's response, which may have been filtered due to the 
+HTML email]
 
-AI's wording:
-=E2=80=A2 The Virtual Mapping: The [attestation] subsystem exposes "Virtual=
- RTMRs"
-(vRTMRs) internally to the kernel.
+--->8---
 
-=E2=80=A2 IMA's Dedicated Lane: The kernel config routes IMA to vRTMR_IMA.
+Thanks Kohei for reporting this issue. I have pushed a fix for this in 
+TF-RMM which we hope to get merged soon.
 
-Mimi
+https://review.trustedfirmware.org/c/TF-RMM/tf-rmm/+/55689/1
+
+Best Regards
+Soby Mathew
+
+---8<---
+
+> 
+> Thanks,
+> Kohei
+> 
+>>
+>>
+>>>
+>>> As a side note, we tested this series and the v23 integration branch
+>>> with a Linux-side workaround to avoid the problem above, and we have not
+>>> observed any other major issues. Sorry for the delay in testing this
+>>> series.
+>>
+>> Thanks for the testing !
+>>
+>> Suzuki
+>>>
+>>> Thanks,
+>>> Kohei
+>>>
+>>>> +		}
+>>>> +		start = next;
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>
+
