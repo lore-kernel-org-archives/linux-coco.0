@@ -1,65 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792665058;
-	b=AM/WaYnQQIo/cGJUnEK2D7n/FB885lzckMb+gqllqamkf/uGfsN2pGB0do6kLgnbGW3+
-	 A5uWBb39rwekyGnTuxkmxqVjQZ0yjrRzOiGsEgHp3ZKSPB3tIwL5crR8QQ1kVp2oElJk9
-	 gDu2oaeTjkLk0Zx49fIyq1/8Qv2kfjFgZc+9FFNj/cwGp0f6C32Uw/obTQK4zrTL4qqNT
-	 UkTvT56Dt4wD1Y/vRII+Ouscflb9KkFQ6W7BxOl+c0qmHMoHa1IzO6PskwdbWqQIqZAp6
-	 oREgnpC08G7npW1lt0I222s5K+FrZbgh5qaRHcyPzYmEsCWusoVLKJSnMIoCmtEqiQQ==
+	t=1792666479;
+	b=HkKrN9Un/BcsrLKyiFeYDbHwCi2+NOtXbhd5PRXAenTLPGlFJ68jEIfjUr2U2g5HGeC1
+	 lDkE8pB4X/gKffzEI9NUrZuogBvlW+CJI23rzmgF5ntqrO1A/XjDFOYBQtVazL0DFUthx
+	 Aw5TPcS3bwHG7mDp2O6r+vAvfRf0P/Wm5jfXVpWEXilI8nJLQsBbI36jA4I6IZcRJpgEG
+	 6OK071SqoEPUGrZ4FkA74h5SdwysXj7sFn5BHE4rV+vdtHTcoKHWJmjjSZAYCBCD6tYw1
+	 jGiy/7A3eWQNk1JE22GQ74PwE12QJKQmjK3h1q3Py6uFwNCbHE2xXA+fk+PjIHb+eUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792665058;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=cAdUEYTyoJImjLe4kG0fs9d/mimG75V4j7IdQG63j78=;
-	b=xHXN06dzvrardeULtr40DacLDVaEiBfjSyHqqi+k6LRwBc9cWIloqahmsJy4nAeYpxbF
-	 /Pg/Tki5CSVqukSp2sptUlQUt5EwnvUbYXYlwmbI/okDBVqeTaHGI6X1peCN8hCUTrZHx
-	 CJon6WzZwDrEBz+mN2PTEE15W87jMxQUuvvKMJKG065CbtvWsDQ/4cioZPmwb0k5ysZ5+
-	 ZLhjUxAbExQQUbrfmmSCMIG7pUi3pckEAtTmLCRFHmzWGB/BhiFKvPgu/Kf6tAXk/q01u
-	 I5QFCL1VbnUjvxp4SGQY9/NDJU5XZ1OCbiF+y3671NRstS3B9VdURc0bfTEoJRHUaZg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792666479;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=wsdeMYd/7eLXCr9Ufg4dZ6+EW6LYxWJjZpkMLdZ1OLI=;
+	b=jfZ8CqUTQJV3MEJ2+Pl+tP2RylgrLirdMcULd8Dw+6pgVKev71bsSoAkLEKRsVVqqiks
+	 Nj0c4etb8b82aE8Pz08zpZlPlZrB0ClvCUJwCQi7Tm+kgug5R0h74PptThzfKwWG6avCx
+	 LZmn0TX2V91D3fE7q2P+OeFZOJTElhA1QssGFdN8xZe/MvQdwiaZnejyYL6L32YbFQ6Nk
+	 T8skszhiNOv6sWMYoZjPIHwbgH3mLR/Yr2EjL1N5LR8VcgTW0DB69TATMJ77oTLjzboEb
+	 101lbUJPR1bO9o17YDdRE1E6n3gtjq8Hk1U+ahro5LwmHYSsJFsYEVAzPFQUEAdROug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AugG4S2f;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=VvGEcboY;
+	arc=none smtp.remote-ip=209.85.221.43
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299EB606A319;
-	Thu, 22 Oct 2026 10:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD19606A31A
+	for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 10:54:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FD19606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AugG4S2f
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620D41F000C1;
-	Thu, 22 Oct 2026 10:30:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792665057;
-	bh=cAdUEYTyoJImjLe4kG0fs9d/mimG75V4j7IdQG63j78=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=AugG4S2fl9ZI1ikXQgoMQEAel//Gz6cQMDUvE51bYXTbvidiwPlSQBCxdxm+Kq9RM
-	 dq8oFYELOKPEWxsU+r0ve6TVIc0cm8l0m1+5Tcy3/sm/kS1wGtA+jiXPVus8iIF7gc
-	 0zoILL/U70KVeOQNzp3sq5N35I9xLgAExuAKj7PbwKUedAaByW3xIo0qWopytpmZO0
-	 zehL9I+iov8lCqw6RdYBcN/pchtgTVbYALHB2VQVtk9H0ryPEdr6Vi01DE9CCCl5Qz
-	 pGwCxgn1YU2YsuLUMZLGI3uvHnwurh4DWh8lB4lBGWFiGQqIc94kZy/ceLfldGhP3U
-	 +DvCq1We37oew==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com,
-	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@HansenPartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
-	dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=VvGEcboY
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48c4649b35bso1647727f8f.3
+        for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 03:54:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1792666476; x=1793271276; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wsdeMYd/7eLXCr9Ufg4dZ6+EW6LYxWJjZpkMLdZ1OLI=;
+        b=VvGEcboYMg/AmhQ6EihKs5CC1Uj0Wf0I4YfYzc0FPBNLkP1GwNG2vaRIZOBwUAFUEQ
+         TubDLJ5yAaAqHpQsjHq6KgXSJ/0pCHtWQcJ8pV+xVIv2OAlY5TICyp1wZwKwKGT7cPC9
+         SU/ABwO4KlDjZewps7cV/YdggEW1RGHM91XoKBuYTR6uzlMN0YtyxA2+xf3Bi0kKN49h
+         JSxlAZy9aaqcDc7l4R5Noo8NCiUJX9O2gNu52CQbqIx/ulvoUAdgb2PuAfjSsm3fVNSy
+         UM5LDSYL9jc6lSkALHD9icBnMal6bQ/xj43f6ZAiMaIoj19+pJpalZ5Qj2FB4b6Ha7db
+         IE4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792666476; x=1793271276;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wsdeMYd/7eLXCr9Ufg4dZ6+EW6LYxWJjZpkMLdZ1OLI=;
+        b=Elv1NONIu0MaG+8w3md+OLZlkUAtO0dgjmG6NHXBaOss8kAtj1kBrL1FzdOBT+QcOo
+         evWgPCEBH3luW3yWIHR7fgeZTz0VNnuLfzvTv0s56n/b5zHsa/lFnA2VX+jHkDJ6MBki
+         RGXWKjeZQo5jWCtVwXM1F2IAVqLvSq5d/slz5uoYXCrxv8PM6Ot4RNWnST3ZcsfYxR4B
+         dfon2P2TndCJdlw93tfUHMYyYqgV+Uq7VFTAsCy6GJmccIovqFAizp4wOGobb5BLxigf
+         a6vHoQcqi3PdYEeubmkC9pmODGHbm5+7fv2lR2cE0BiXpdDzeXNWttQU7TQlZN/ok7kW
+         H9tA==
+X-Forwarded-Encrypted: i=1; AKwUvByHWHOoqDd9Gv41/+qQ+QEh9DgAaUkHqLfi2Rz+iSAnLLeY94Yhkgqyg5w3sojF6VuE6OV3z1yV8wCg@lists.linux.dev
+X-Gm-Message-State: AFq9FYJJkDDd15/sdMuIeVry0yz3NtFc8yeSpp2wf5KjfltduXsJ5mJM
+	mSprvnGHDtlU0Qclxc19ZqOeEA67JTBzk4q3uM1KlcGr+WjBn7U/j+kFzpoV6+TENzU=
+X-Gm-Gg: AYBFou3pFrBTHbiAoAulnoKspKa89aTLfoRIO5veJRuROfozgd1WsuoGWvL75Kp7//n
+	eiIfJbIHqx3L2AWMCl2WhsYWfb9DBpEA9SUwit9Tv2onEWKqMxmjdx1zsEWPVvBm4FoMoeVj/Vq
+	kmyexq/dRnNYSiU7bQteIEsHCXoQXhi9JYFLS32aztZUvv639xiDVFDPHHiYYu/sbqkrsf5vJ6K
+	sKnmNqG2n5mcGRVzKV8rJtxuLZxHlYQjw/kDy9knp4pLBswAr4N1mLyJr9oWvSxDaKiyqvql7gt
+	WwJ80NncVfYAzxiv1BGNpjoHFJ/zEr/Cd8WmL18aNxdksH/HQOUpSiNZkTpqn54AjrzosNuvDRa
+	btunBw3Xi/gRDKEpF6WjF18uwcjae1reiZ0shOnqPQw481khG3V54UIOcTAUusWZ7eQy6GeLIs+
+	PUdoISu8XcUFeevizxCDVjQMpZqfL9Aw/69cRXGu1gk3MohutQiApMfn3s4MVvRs1oA1MRSWW4b
+	zOW7tTfAqLarOqSqbelNPgfpVmpSuBTZeDc1KDa13KOnFXrK/LM15Y9d82hDEh/tVc=
+X-Received: by 2002:a05:6000:288e:b0:485:8cc8:1f5f with SMTP id ffacd0b85a97d-48e264a1f81mr10449260f8f.42.1792666476063;
+        Thu, 22 Oct 2026 03:54:36 -0700 (PDT)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2583522esm11890881f8f.35.2026.10.22.03.54.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 03:54:35 -0700 (PDT)
+Date: Thu, 22 Oct 2026 12:54:30 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Dionna Glaze <drdeeglaze@gmail.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
+	cedric.xing@intel.com, sameo@meta.com, James.Bottomley@hansenpartnership.com, 
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com, 
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, roberto.sassu@huawei.com
 Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
  support
-In-Reply-To: <20261015145053.3664509-1-jiri@resnulli.us>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
-Date: Thu, 22 Oct 2026 16:00:47 +0530
-Message-ID: <yq5a7bjajaco.fsf@kernel.org>
+Message-ID: <atnqmDhgaJycTf_Q@FV6GYCPJ69>
+References: <atPgqROZZxnihYfC@kernel.org>
+ <20261017231007.GP13920@nvidia.com>
+ <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+ <atX9fugGUsI0hGcA@FV6GYCPJ69>
+ <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+ <20261019225658.GS13920@nvidia.com>
+ <ath4vwt7KGyDXKVJ@FV6GYCPJ69>
+ <103486a4a29ecc7b72940dd051c00ae59266bd05.camel@linux.ibm.com>
+ <20261021143529.GP3008132@nvidia.com>
+ <8d8833fac61558a94af415143530884349584a2f.camel@linux.ibm.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -69,138 +113,75 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8d8833fac61558a94af415143530884349584a2f.camel@linux.ibm.com>
 
-Jiri Pirko <jiri@resnulli.us> writes:
+Wed, Oct 21, 2026 at 09:05:09PM +0200, zohar@linux.ibm.com wrote:
+>On Wed, 2026-10-21 at 11:35 -0300, Jason Gunthorpe wrote:
+>> On Wed, Oct 21, 2026 at 10:12:34AM -0400, Mimi Zohar wrote:
+>> > > > I think for now we should not include a new dynamic log here, the uAPI
+>> > > > around this Jiri drafted can remain a future step. I don't want to
+>> > > > open complicated discussions about new functionality at this
+>> > > > stage. The whole CTLV idea in general is a big enough thing to bite
+>> > > > off for this series.
+>> > > 
+>> > > Okay, dropping the log from this set.
+>> > 
+>> > Thank you.  Please keep in mind going forward, that the scarce hardware register
+>> > limitation (like the 4 TDX RTMRs) should be resolved (e.g. by multiplexing the
+>> > extension path), not by combining distinct measurement lists.
+>> 
+>> I'm not sure what you mean?
+>> 
+>> Since the HW doesn't support sealing the only *technical* requirement
+>> is the verifier can reproduce the measurement register hash. So long
+>> as we can get there we can do whatever.
+>> 
+>> Multiplexing extension alone isn't enough. We need some scheme to
+>> reconstruct interleaved logs too.
+>> 
+>> For example we could add an atomic sequence number for each
+>> extend. Every log sharing a register can report the sequence
+>> number. The verifier would have to globally sort all logs to confirm
+>> the hash.
+>> 
+>> Hopefully we don't have to tackle this problem. I hope that 4
+>> registers is enough for Linux. One for IMA, one for systemd, one for
+>> user? Plus a spare!
+>
+>Agreed, I hope you don't have to tackle it either.
+>
+>> 
+>> Maybe we can build a multiplexed scheme on the spare? I don't know.
+>
+>To avoid interleaving the logs, AI had suggested multiplexing or virtualization
+>of the RTMRs.  Whether is has any merit, I'll leave to you.  Here's the very
+>short AI explanation:
+>
+>"Instead of allowing external drivers or subsystems to execute a direct, raw
+>extend command to a specific hardware register index, the new attestation
+>subsystem should act as a Hypervisor for Registers."
 
-> From: Jiri Pirko <jiri@nvidia.com>
->
-> Linux has several attestation interfaces tied to individual technologies.
-> That makes evidence retrieval, measurement registers, device state and
-> kernel consumers provider-specific.
->
-> This series introduces a common attestation subsystem. Its goal is to
-> support platform, TEE and device providers through one model, including
-> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
-> This first series implements the common subsystem and a TDX provider.
-> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
->
-> Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
-> Compared with sysfs or configfs, CTLV executes one validated request
-> atomically instead of assembling a transaction through several files.
-> Compared with netlink, an opened device fd directly identifies authority
-> and lifetime, can be delegated normally, and owns its event queue. CTLV
-> also provides:
->
->   - generated kernel metadata, UAPI constants and documentation;
->   - strict type, bounds, nesting and required-field validation;
->   - runtime operation and schema introspection;
->   - family inheritance and extension points;
->   - fragmented queries with generation checks;
->   - per-fd event subscription, overflow reporting and removal notification;
->   - large input and output blobs.
->
-> The attestation family exposes capabilities, evidence, measurement-register
-> topology and operations, an append-only MR journal and journal
-> notifications. This first ABI contains the paths exercised by TDX. Extended
-> evidence classes, dynamic registers, record payloads, verdict recording and
-> device-security transitions follow with providers that need them and are out
-> of scope of this initial patchset. The broader direction is illustrated here:
->
-> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
->
-> That branch also contains additional providers (test and sim),
-> attestation core extensions, libctlv and ctlvctl. With the tools
-> and kernel specifications, an attestation device can be used as follows:
->
->   # Discover CTLV devices and their family chains.
->   ctlvctl --spec-dir Documentation/ctlv/specs list
->
->   # Inspect the root-family lineage and attestation capabilities.
->   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
->   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
->
->   # List the measurement registers of the attestation device.
->   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
->
->   # Read RTMR0 (MR 1).
->   ctlvctl --spec-dir Documentation/ctlv/specs \
->           query ctlv0 mr-read mr.id=1
->
->   # Extend RTMR0 with 48 zero bytes (SHA-384).
->   digest=$(printf '%096d' 0)
->   ctlvctl --spec-dir Documentation/ctlv/specs \
->           exec ctlv0 mr-extend --json \
->           '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
->
->   # Retrieve the RTMR0 journal.
->   ctlvctl --spec-dir Documentation/ctlv/specs \
->           query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
->
-> The 20 patches are organized as follows:
->
->   1-13    add CTLV, its generator and documentation
->   14-17   add the base attestation family and implementation
->   18-20   expose the native TDX service and add the TDX family
->
+Isn't the hypervisor what we are doing now? I mean multiple extension
+originators share the same register and eventually the same log. Or do
+you suggest to go even further having a "generic_registerX" exposed for
+every hw implementation allowing the user to have full abstraction?
+The "generic_registerX" would be always alias to something hw specific,
+like RTMR2 for example of TDX.
 
-I am using this to understand what the IDE setup flow would look like,
-but it is unclear whether the connect flow belongs in an attestation
-framework. I understand the desire to pass the certificate slot number
-as part of connect, and sysfs is probably not a suitable interface for
-that. However, is CTLV the interface we want to use for connect?
 
-My patches end up doing the following. I am also unsure whether this is
-the intended workflow for the attestation framework.
-
-# ./ctlvctl/ctlvctl --spec-dir=./specs/ ops ctlv0
-# ctlv/ctlv-attestation/ctlv-attestation-pci, generation 1
-families-dump           query   read    fixed   request 16      reply 112..65536
-ops-dump                query   read    fixed   request 16      reply 56..65536
-op-schema-get           query   read    fixed   request 40      reply 552..65536
-subscriptions-add       action  read    fixed   request 6160
-subscriptions-remove    action  read    fixed   request 6160
-event-queue-get         query   read    fixed   request 16      reply 40..65536
-event-queue-set         action  read    fixed   request 40
-op-changed              event   record 112
-event-overflow          event   record 112
-device-removed          event   record 40
-device-get              action  read    fixed   request 16      reply 12984
-evidence-get            action  read-write      dynamic disabled        request 26800   reply 472
-device-state-changed    event   record 64
-mr-log-entry-appended   event   record 73416
-evidence-accept         action  read-write      dynamic disabled        request 64
-evidence-accept-clear   action  read-write      dynamic disabled        request 16
-devsec-state-get        query   read    dynamic disabled        request 16      reply 40..1024
-devsec-run              action  read-write      dynamic disabled        request 64      reply 40
-evidence-state-changed  event   record 112
-state-get               action  read    fixed   request 16      reply 184
-connect                 action  read-write      dynamic enabled request 88      reply 40
-disconnect              action  read-write      dynamic disabled        request 40      reply 40
-lock                    action  read-write      dynamic disabled        request 64      reply 40
-unlock                  action  read-write      dynamic disabled        request 40      reply 40
-evidence-refresh        action  read-write      dynamic disabled        request 88      reply 40
-
-# ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get
-# state-get, 1 fragment, generation 0
-  pci.generation 0
-  pci.connected 0
-  pci.locked 0
-  pci.accepted 0
-# 
-
-# ./ctlvctl/ctlvctl --spec-dir=./specs/ schema ctlv0 connect                
-connect (action)
-request:
-  root nest
-    pci.generation required uint [0, 4294967295]
-    pci.tsm-id required uint [0, 2147483647]
-    pci.cert-slot optional uint [0, 7]
-reply:
-  root nest
-    pci.generation required uint [0, 4294967295]
-# 
-
-# ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 connect pci.generation=0 pci.tsm-id=0
-
--aneesh
+>
+>> 
+>> But we almost certainly need to have logs sequentially created in time
+>> occupying the same register. Ie IMA may take over the register from
+>> UEFI logging. Here we'd want to report the start/end hash values of
+>> the logs back to userspace so the verifier can stitch the order back
+>> together.
+>> 
+>> It would also be nice to think about a way to restrict the registers
+>> to help avoid multi-user conflicts from misconfiguration.
+>
+>That would definitely be a plus.
+>
+>Mimi
