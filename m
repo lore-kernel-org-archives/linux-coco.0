@@ -1,99 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792683512;
-	b=bjuvCQArvnRVczJ/fkRiDGNDMtfRlCsik8WNFI6R8z24L2dfO6vzpg/enM4YnDIKARSz
-	 JF2MzvEQmYG3OoNKe8IoxtQOimHOr4AOCDlPWsd0b+2+5vIEjcvEPLfNQnMLZoflK9F/P
-	 A5IDQXYvVn4uCVAHS+levmvPKNY+8eO47x23JNSv/ZMYcXxyHQYQnr++y09yfQ/2PARKl
-	 9M57qjxtiRH01dXi/6eCpeAFfpinkt0teVGD3Dn689XyXvnyGTb3jg5L66zi5ETLj8w7c
-	 MrLUozUcejN6mxxanQ95A5s2eQZx30cJB9igHQt8I/3vcc8XZYeaSGO2tOC5LzPl+hA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792683512;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
-	b=dHHDCHLyaKTdwY1YctglDNJxYpNiEmhs5fTSO0RKGg7qG5zlJ//vVFOB9LiLMGFC5lNL
-	 RqGH2E2nRwTQi2FBNAbhVAEmOFlrBhSWEv/cP+4FmOeOq/zHNwl8TvFED1GQb7Yp/n8ZI
-	 GH7QkVGsdvkS3i9zxJPkf2EVv43kKy6LWxwyNDYlySFstalkZrPAZfV+8xw1sXg4MN6FV
-	 1CoiBu7rThApL5s2n9aBkwUlVEPGr1qYcGxsyUPgaHi6a916MLk0iAbVLkIPRup3mX0Wc
-	 67/EKtWNFuYaJM1UfZRUbpp2FmzjF6qPO5gSLR2RTjp/gMkwCdgbZcxEXzz54O1RN/w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=k3f3S4Q7;
-	arc=none smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792686706;
+	b=UuDhUOr+33SYXP2g4hBZESo7EUhG5quSodDUr4kTfX32pIDTAl5tKSBab1k0qlURedWY
+	 WWSndOI2gxBsh753cEv7M5WHFXGw8LBkRnJKyUoR4kmi6skUc4seJsHp++3Q/xvUWyXXT
+	 28sXD/o6u0f4A2uuDnw4e0OfQhRF04vA+dMdnKBGfrkrZYLiDKJjVqAX+TFiuAl+eAVbx
+	 velD7LWuveaVlWi49R6cKi+e5+euJO5UHtokGS/i90f8roxgkVuR+Aw4Emwj6ZAWirzA9
+	 lDXoDtlEL0eeiPjHSyverzN4on1C3yC22ssOmErcKdqS6VxRIO3z1fIeGTLQ3UNR1WQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792686706;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=zfmkGR26biULCCpkdz9z11eYXUUcEbs91FqVrijv5ks=;
+	b=oPtWKqB1BB+7Q3U/RHCPDsDquToPbQmlaO1i6uZmFkAX57ZpxAzz0TTILHRJEzSoCnnc
+	 YqlnVxXp/Z7dKlqkKKBMG66jjaMuN4efE3CUliVVvq9oYCuSF6o0gX0D1ZVqSdOA6Fjhx
+	 cAEN1MgfoKRYuLvAINE1u1Vu2DjWfO+w4bM4GkDj4kGlMvlM+NERX+It5/fk6VXgjY8JD
+	 Vf1v7QHJKrf56B9X4xrQZt5AtdPopA6wDQGF+3/4MEWu8TxAUubFHzYJTurcVc4BkiBdS
+	 JTlXveVatHBbtILIUT/G0O4CD6g+OZSo1hIZSL1BiZhq5jmgum5J/OXaPUgjdvC8I2A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZjzKOwL;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C95A606A319;
+	Thu, 22 Oct 2026 16:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZjzKOwL
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792686705;
+	b=K/37uFVFSmBkmV9YKzdmrv9o7VvPhU7wfIHP4VjYi2eTjiTsEwHwSumBfEsJ9WcBDt4e
+	 1+mtE12EuLewiXInOEZfu6wU2DuSAsWGrw8iL8+NLQze49+jEGRYcEbSja3mto3fIS0Ql
+	 moY5qCv9NFqhtgsss5DO29L7XM9MzjaI9NsXGVOPWNiV05p/O89OWFzr3qSMERJag+70R
+	 F7vOx3MfI26gtIgW5WgUHyjNnYYGcVhl62hANBuJNlSjztMYqsL/S9hpINHntN7rrQuQF
+	 bZFq0TZ84aYLGl+lFXR3m9Ci5VRpmtQgoariD6AqmM4maCPlIc052AREqckOO3aduQA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792686705;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=zfmkGR26biULCCpkdz9z11eYXUUcEbs91FqVrijv5ks=;
+	b=QxvMpDbdaAdt+kTx0Uds7z1t9RdM59tHMcqoUojxizJJ80K5hKqSfnmKcHhN9RxHs403
+	 nLGVYFHkMEuWqnCHGTVeZ180YPwHX0aKxIYT34QwCOz56YsHBbiEZfjtO0naOVMhlFyMt
+	 aRerAv30sVLAsiDOdUDAQ5im9Y8qjkicqXHxta4dZeR1ePE4VkqhHYMnyZxZx684UGVkm
+	 gzu6C7S3RTYhfYYVKrxmwvz8k4ioRGbrc/p07cZaFjMCj2i05a18praC+OqVjiDesOBH+
+	 pQBUjFICp7Pkpt+edwDlYFSkqxVLcLwPrrzrTmL/syELOO0hEB5x0GxCOdE6pApZvRw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9390606A31E
-	for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 15:38:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9390606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=k3f3S4Q7
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4956869750eso13590255e9.2
-        for <linux-coco@lists.linux.dev>; Thu, 22 Oct 2026 08:38:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792683509; x=1793288309; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
-        b=k3f3S4Q7MgiWeNBSHKpBVn79v4g/2/kmnNdDLW+GyIzlrvsGVzJ4c8IOMSkX2v9BUS
-         30jSZUR9E869GCLI7DSynJFK8z7P4UWajTV6dVU1YmVYsjF9QqdRohlZ5FVG0GS2kXiJ
-         adJ631ZLe2/lkzHgdYMXa2/Ecti8pGxkzkH1/hudxqnqdbPwT2kCM28kzvcT1x2YuPjq
-         HeabtGRxnXQgpNxwXZRvd0CsAlYFb5s99jG+iPOOJtGn/wco+9TWIyjc4btbBi0hwrdK
-         sb/e0Z9VrP29AQ6Q9LsWslvPrMW0jRG6t9RwqNlOuLUPCbPK7dWuOVNiLB/c6HQUO8mk
-         0R9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792683509; x=1793288309;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
-        b=WtHfiWKrUntUms3JVRigwBMb5SPcKmr5uXCMvBWn5Dqn0dE03tWopyKz54TDF91yfW
-         SRiuCyeznToA6lmvnmZlzsaFzw2h3TbgctL0S2Q9gqBld/WtC6aKaiU05Lqr2o6JDjsq
-         /l6GG3dldH1iWByvtsKDQHqAN2VQAy0ChNEZTDpjix4SXXzSzInw1PGpsSP1ZpewfI8L
-         Wm9dw2c09USuNXfWCz2C4DHMxAApiDjgcR3m+7XPVt5xwctme3o6y0qtUGExMYOJuNMs
-         bmTw0PGyb5vrXWua/GfuYV6J5NBCpsDCUN0lBj/IprNyWN0er197krkqMP+j8mXuQOWY
-         74OA==
-X-Gm-Message-State: AFq9FYL0ANrFy52vo0iLjA/Btq6Odax8xLCdBz1qr8Rz14zmMCPGKdRn
-	pvwG614UCRiRpzbCZI7q7R4U5ii8ioYMaMDrqBYKsof+QM3TNfbTJvk9mAvE6AJJ5R0=
-X-Gm-Gg: AYBFou327dC5EG/I5JKJk/Y1o9LYNJtaRys2BXQDt8jckXu/ToEsgQ4ytTjH5KeMe3Y
-	cDvUJg18ove742hGG2b4EF32zXK6zOxS7BJ0Wy0AZMTSV7BeBxdB2+FqA+tqUsz+GNCJlH5+nRp
-	102BbOQ7nKEpIpYUzq/TEYU0A9LI8aelJJgoumaM1G9Ycsw4utjQu4Qi3/M2hdfDirb/NzEfIge
-	8U+Li5dmCySvuU+nvNnkidlQ/ldRtpXJMovWgZVajiCEfHWuJVOfAliLgadW89CHoXGzQcEP7ZJ
-	F9g7pR4JzXwApeUE6LhEx3Vu5eyEMZwlme1ofJwtnktJSKeO2lq/+UrxdxF2nWyynlFJkSk7u47
-	3VJ3/kw/0F9GVIbMRYQ4FNly8Kjx4EFIixTzxZhqKDwV+J1FOODFHD3nWxil22z7t6gOUh70eGm
-	ofEffzvZ5igJMrvHu9WXofbmQTnCbv9PcBGaQDiZtS2yCZFCCmnzSNjdZXrwY8yAbveFLOV0NT9
-	z5mlR9sbUU4pA18fVdblIDjiVSriRRj4RkLgdvsrSHQ61i/e5ZoMHi2AW+KtMdHbEU=
-X-Received: by 2002:a05:600d:6413:20b0:4a1:80d8:aed5 with SMTP id 5b1f17b1804b1-4a1fdd20c95mr82878645e9.6.1792683507910;
-        Thu, 22 Oct 2026 08:38:27 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2a034fc2sm8929342f8f.5.2026.10.22.08.38.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 08:38:27 -0700 (PDT)
-Date: Thu, 22 Oct 2026 17:38:22 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <atooh7uO2RauUTfY@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <yq5a7bjajaco.fsf@kernel.org>
+	by smtp.kernel.org (Postfix) with ESMTPS id 9C13A1F01828;
+	Thu, 22 Oct 2026 16:31:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792686705;
+	bh=zfmkGR26biULCCpkdz9z11eYXUUcEbs91FqVrijv5ks=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=gZjzKOwLlnrWNf528ajgJyDycB8+FA/GCFzOq76ThxIGVwta9IY4l3nttw6qbdnBI
+	 nuydHg6Bt/3zsmkD8FGoxhWSwVlw4rjTyakwDibAIkx9Km490YBWgc5eLbUq5SaSlJ
+	 Oc0+yQ5q70yCHi5Gz5Rh9sUrEhnfw420kd/F+9scGZcteukgdpFWV8lOTdr9gJP5vA
+	 dvBwn/VMT3Rbsj06/d74y30hdirbzTLnUIkqP7bA0VzrGvHhWKjpATIKvcqu19lEhX
+	 cn5UyXvW7noMfIJPsiDpxhWY6uk4M4r36oxcjf8Bn4qpkb1/KFo5PhRrvpArHwvibu
+	 vhDweVnFp10nw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 305F741E73;
+	Thu, 22 Oct 2026 16:31:44 +0000 (UTC)
+From: Moe Mahhouk via B4 Relay <devnull+moe.flashbots.net@kernel.org>
+Date: Thu, 22 Oct 2026 16:31:41 +0000
+Subject: [PATCH v2 1/2] virt: tdx-guest: Fix timeout detection in
+ wait_for_quote_completion()
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,193 +83,77 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5a7bjajaco.fsf@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261022-tdx-guest-quote-poll-v2-1-7543c6eb2d36@flashbots.net>
+References: <20261022-tdx-guest-quote-poll-v2-0-7543c6eb2d36@flashbots.net>
+In-Reply-To: <20261022-tdx-guest-quote-poll-v2-0-7543c6eb2d36@flashbots.net>
+To: Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Erdem Aktas <erdemaktas@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+ Dan Williams <djbw@kernel.org>
+Cc: Jun Miao <jun.miao@intel.com>, 
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+ x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Moe Mahhouk <moe@flashbots.net>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792686704; l=1829;
+ i=moe@flashbots.net; s=20261021; h=from:subject:message-id;
+ bh=YaSIvAAyOdwGXioa5qC1w+XfaeHGA1mdgyIez+tbqmI=;
+ b=gop851gcNfC9FdA8rDtgApXoAypDqEwm9vBsHIfarMsYKnB/wXH8uxG49GfAyZWG28NmwFcMs
+ CHj3aeTmSQIDQj74Yoa2z9lMdTPaMxAk5xsdwb459xgf5rydkSrLnRA
+X-Developer-Key: i=moe@flashbots.net; a=ed25519;
+ pk=hJTKfjLno/YESrpxMIKDJk34GM+/8Tol+24XK2b4xf0=
+X-Endpoint-Received: by B4 Relay for moe@flashbots.net/20261021 with
+ auth_id=1259
+X-Original-From: Moe Mahhouk <moe@flashbots.net>
+Reply-To: moe@flashbots.net
+Content-Transfer-Encoding: 7bit
 
-Thu, Oct 22, 2026 at 12:30:47PM +0200, aneesh.kumar@kernel.org wrote:
->Jiri Pirko <jiri@resnulli.us> writes:
->
->> From: Jiri Pirko <jiri@nvidia.com>
->>
->> Linux has several attestation interfaces tied to individual technologies.
->> That makes evidence retrieval, measurement registers, device state and
->> kernel consumers provider-specific.
->>
->> This series introduces a common attestation subsystem. Its goal is to
->> support platform, TEE and device providers through one model, including
->> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
->> This first series implements the common subsystem and a TDX provider.
->> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
->>
->> Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
->> Compared with sysfs or configfs, CTLV executes one validated request
->> atomically instead of assembling a transaction through several files.
->> Compared with netlink, an opened device fd directly identifies authority
->> and lifetime, can be delegated normally, and owns its event queue. CTLV
->> also provides:
->>
->>   - generated kernel metadata, UAPI constants and documentation;
->>   - strict type, bounds, nesting and required-field validation;
->>   - runtime operation and schema introspection;
->>   - family inheritance and extension points;
->>   - fragmented queries with generation checks;
->>   - per-fd event subscription, overflow reporting and removal notification;
->>   - large input and output blobs.
->>
->> The attestation family exposes capabilities, evidence, measurement-register
->> topology and operations, an append-only MR journal and journal
->> notifications. This first ABI contains the paths exercised by TDX. Extended
->> evidence classes, dynamic registers, record payloads, verdict recording and
->> device-security transitions follow with providers that need them and are out
->> of scope of this initial patchset. The broader direction is illustrated here:
->>
->> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
->>
->> That branch also contains additional providers (test and sim),
->> attestation core extensions, libctlv and ctlvctl. With the tools
->> and kernel specifications, an attestation device can be used as follows:
->>
->>   # Discover CTLV devices and their family chains.
->>   ctlvctl --spec-dir Documentation/ctlv/specs list
->>
->>   # Inspect the root-family lineage and attestation capabilities.
->>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
->>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
->>
->>   # List the measurement registers of the attestation device.
->>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
->>
->>   # Read RTMR0 (MR 1).
->>   ctlvctl --spec-dir Documentation/ctlv/specs \
->>           query ctlv0 mr-read mr.id=1
->>
->>   # Extend RTMR0 with 48 zero bytes (SHA-384).
->>   digest=$(printf '%096d' 0)
->>   ctlvctl --spec-dir Documentation/ctlv/specs \
->>           exec ctlv0 mr-extend --json \
->>           '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
->>
->>   # Retrieve the RTMR0 journal.
->>   ctlvctl --spec-dir Documentation/ctlv/specs \
->>           query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
->>
->> The 20 patches are organized as follows:
->>
->>   1-13    add CTLV, its generator and documentation
->>   14-17   add the base attestation family and implementation
->>   18-20   expose the native TDX service and add the TDX family
->>
->
->I am using this to understand what the IDE setup flow would look like,
->but it is unclear whether the connect flow belongs in an attestation
->framework. I understand the desire to pass the certificate slot number
->as part of connect, and sysfs is probably not a suitable interface for
->that. However, is CTLV the interface we want to use for connect?
+From: Moe Mahhouk <moe@flashbots.net>
 
-I was thinking about this and "connect" really does not belong in the
-attestation CTLV (same applies to "lock"). I was thinking about some
-parallel PCITSM CTLV instance, but that does not really click as well.
+wait_for_quote_completion() counts the seconds it has waited in i and
+reports a timeout when i == timeout. That gets both outcomes of the
+last second wrong:
 
-Currently I'm thinking we can maintain existing "connect" in sysfs and
-extend it with "lock" sysfs knob for Realm side. Both would create
-ctlv-attestation-spdm instance. The same spdm instance may be created
-for other non-PCI-backed device.
+- If the request is still in flight after the last sleep, the loop
+  condition increments i once more before it fails, so the loop ends
+  with i == timeout + 1 and the function returns 0. The caller then
+  returns -EIO instead of -ETIMEDOUT, without the "GetQuote request
+  timedout" message. Before commit 0f409eaea53e ("virt: tdx-guest:
+  Return error for GetQuote failures") a timed-out request even
+  returned success with an empty Quote.
 
-The proposed host flow is:
+- If the VMM completes the request during the last sleep, the loop ends
+  on the status check with i == timeout, and the function returns
+  -ETIMEDOUT for a completed request, discarding the Quote.
 
-    sysfs connect: select tsmN and prepare the connection
-        -> negotiate SPDM and discover certificates
-        -> register ctlv-attestation-spdm instance in DISCOVERED state
+Decide on the Quote buffer instead: the request timed out if it is
+still in flight when the wait ends.
 
-    SPDM_GET
-        -> populated certificate slots and digests
+Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Reported-by: Kiryl Shutsemau <kas@kernel.org>
+Closes: https://lore.kernel.org/all/atoHWgQF-0vlTRK4@thinkstation/
+Signed-off-by: Moe Mahhouk <moe@flashbots.net>
+---
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    EVIDENCE_GET(CERT_CHAIN, blob-instance=slot) /*optional*/
-        -> retrieve candidate certificate chain for appraisal
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 11d741da3b35..a5a53174f9d9 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -282,7 +282,7 @@ static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+ 			return -EINTR;
+ 	}
+ 
+-	return (i == timeout) ? -ETIMEDOUT : 0;
++	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
+ }
+ 
+ static int tdx_report_new_locked(struct tsm_report *report)
 
-    SPDM_AUTHENTICATE(device-generation, spdm-slot=selected_slot)
-        -> authenticate the selected chain
-        -> complete backend-required session and IDE setup
+-- 
+2.34.1
 
-    sysfs disconnect
-        -> remove the attestation instance
-        -> destroy the native connection
 
-The slot is therefore selected after discovery, rather than supplied to
-connect. The attestation instance represents the prepared connection; it
-does not exist beforehand as a controller for a disconnected PCI function.
-
-This requires a staged native backend. It is not how existing automatic
-sysfs connect behaves today, and those backends would retain their
-existing behavior.
-
-For Realm assignment, as written above lock is sysfs interface.
-Lock creates a separate assigned-TDI attestation instance for evidence
-retrieval, EVIDENCE_ACCEPT, and DEVSEC_RUN
-
-Protocol authentication is distinct from the userspace attestation
-verdict: SPDM_AUTHENTICATE does not imply acceptance or TDISP RUN.
-
-So the main difference from your implementation is the lifecycle boundary:
-sysfs creates/removes the native contexts, while attestation handles
-discovery, explicit authentication, evidence, and the evidence-gated
-transition to RUN.
-
-Makes sense?
-
->
->My patches end up doing the following. I am also unsure whether this is
->the intended workflow for the attestation framework.
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ ops ctlv0
-># ctlv/ctlv-attestation/ctlv-attestation-pci, generation 1
->families-dump           query   read    fixed   request 16      reply 112..65536
->ops-dump                query   read    fixed   request 16      reply 56..65536
->op-schema-get           query   read    fixed   request 40      reply 552..65536
->subscriptions-add       action  read    fixed   request 6160
->subscriptions-remove    action  read    fixed   request 6160
->event-queue-get         query   read    fixed   request 16      reply 40..65536
->event-queue-set         action  read    fixed   request 40
->op-changed              event   record 112
->event-overflow          event   record 112
->device-removed          event   record 40
->device-get              action  read    fixed   request 16      reply 12984
->evidence-get            action  read-write      dynamic disabled        request 26800   reply 472
->device-state-changed    event   record 64
->mr-log-entry-appended   event   record 73416
->evidence-accept         action  read-write      dynamic disabled        request 64
->evidence-accept-clear   action  read-write      dynamic disabled        request 16
->devsec-state-get        query   read    dynamic disabled        request 16      reply 40..1024
->devsec-run              action  read-write      dynamic disabled        request 64      reply 40
->evidence-state-changed  event   record 112
->state-get               action  read    fixed   request 16      reply 184
->connect                 action  read-write      dynamic enabled request 88      reply 40
->disconnect              action  read-write      dynamic disabled        request 40      reply 40
->lock                    action  read-write      dynamic disabled        request 64      reply 40
->unlock                  action  read-write      dynamic disabled        request 40      reply 40
->evidence-refresh        action  read-write      dynamic disabled        request 88      reply 40
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get
-># state-get, 1 fragment, generation 0
->  pci.generation 0
->  pci.connected 0
->  pci.locked 0
->  pci.accepted 0
-># 
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ schema ctlv0 connect                
->connect (action)
->request:
->  root nest
->    pci.generation required uint [0, 4294967295]
->    pci.tsm-id required uint [0, 2147483647]
->    pci.cert-slot optional uint [0, 7]
->reply:
->  root nest
->    pci.generation required uint [0, 4294967295]
-># 
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 connect pci.generation=0 pci.tsm-id=0
->
->-aneesh
