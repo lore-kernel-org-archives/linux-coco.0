@@ -1,66 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792742704;
-	b=gDTUeM+Aosq/BcrgQnV7U1Iy1SO4lD+N8R7Mz+cdydRqjb38xA/hp1PeheUhG+vHfwsn
-	 GCAaqLq1iOoGij+XVXnha+iwvxr1PCfv8bZYPt5oy0u2k5Ki9TJUnVjMV8CgSY4IlDYGd
-	 MI19fJEm0WoLTfl9QPolDC7R+Tbf20d1d94RFrXZ5TugTfvd+54jtjl0RCJsPDMI29wBT
-	 sHv+GHHaJycecJw7/WJq9LteYj3gR8kTnK9bW9pdX7Uo2veT9kxk1vmXKzqWkfcC14PW5
-	 o1cLSyP3S29fjOWpfoBH0Upe7Geq2wI3jVlel9wIUxseVfxLdFmwO47Ff0lzaeP42vw==
+	t=1792743083;
+	b=35qB64tM/oqLF8Xlyr4rekBzgj0t187isB7t7wqWD5gW19IKW25g6L4+h3IbIFsU/QgV
+	 w1T3yTIsIUDBux+rdTNNIP5EHhZjynct5Nnu1heydPQPU/XK6j1TjvxBU6J6a6HJAn/j4
+	 csv8iGC9l80gJZ9vapLn6tkeUkjvCWHWm61cKEWZLkrsyuYiFkYejHnSwts8XTDHMuJSx
+	 JgRma3PJD+eKwBJBbIAOzuF8gPwsM20eW1h3K3geZmY/zm+h9jovwCF3G5jRMwAX3a5rg
+	 bmie2wPvep7TjvvEenhUrIUEIoydn9jkS/E7AQio1YbN+D1zG5mZgyNsZUnvdNSv9PQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792742704;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=m2tmSGXuQRVKV0r4MiiAuAOPVUluBMUb7eqsLcZmIXU=;
-	b=FUeZVafAaoiU5FIe+bjFddaMHiG+RM7LoMC37SNkhLkfncEtr4ff8EuaVbS9YtCaoacj
-	 7T9yrXF822KhBAjpd7Ti2iVaFFBnTZf0wIsi6MS4KZ4bC1sT+aYjUfqTvC6I955zOwWQE
-	 rK6CkO7NPnL9emWuJC01thItBu91tuvafBC7D7uuoArkPXLoze20HAaw3DUBv6MktETZE
-	 /5fg4OxZSqBSs47a2olag23pU3SaMQtkDOCa5CeF/cvSdQhFOz115U+rO86A3b9wQwFEo
-	 snLXTE2LE4m3QwaEPzHpv43wiLe+FSJUwBDzKicktNDW0ezCnJoXRZdnDHdex1U0mMw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792743083;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=dksq6JzYz/7e2KyIjNlZAHkwElyy14O+kTiWQeWvxMk=;
+	b=duJ6vHNh9wFcGvxLKLQ2bXfh6WCgo3kzKWga2OBJN+gXB0edEVHBvT7UqWOfqoSojbNN
+	 Bsc+yeXOUN0zltyAN0d6yKTuRHN6JBPbPufp9Xx6gB4U2K0Y2rbFsPG4rjbr0JU5AhuUl
+	 Lnoi4QATiIvRZlzwdaeQA/CDPU2j6M0KaO6KGf5aGev0umj5sugv+YmY5b41Xwq0haDsb
+	 vvOzGEMCik8F5B1OHmOawSaZOgdatepqcrm4GrIWpE0umpvIIvKS6TfKKqLCSnPDVU65N
+	 t6wtU9QKYSTRI03LWc/l68gWbg7Wf3oE78vqFaVjqlq/FxhrSQM2EiRtyVkI4Eahklw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lBruzr1e;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="l/xJPrtU";
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0DF606A31D;
-	Fri, 23 Oct 2026 08:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F5F606A31B
+	for <linux-coco@lists.linux.dev>; Fri, 23 Oct 2026 08:11:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7F5F606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lBruzr1e
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D521F01825;
-	Fri, 23 Oct 2026 08:04:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792742704;
-	bh=m2tmSGXuQRVKV0r4MiiAuAOPVUluBMUb7eqsLcZmIXU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=lBruzr1ee/0GkWnTWhoGc3vOszw1v2kglMLuJvfcNuqHtY/xPVO2mI6cP0MfiS6Aq
-	 8gdL6khYEHCDWyhE4rqSPItnrbF2BSSK8O1qTqBFnL8cOLwBpLhz/EgwUL9XaN22J9
-	 QqRxo2Ye7X68+GtPQcWcDWfwal4n/Ss0UA0oeOpoBJLZhwX/JBgs2CuUIPeUcecC/6
-	 kjj95Pc51jlPFVehIFzBeUF9QyR8VtHy3svgRAqLLvqnpyWiCSh0f4kUl6Nb4kpS1r
-	 jmbxXesjaIirUOBO+URQbV5l3DU/3NKgJcIu2o6ZGdKG9otHiiNnyI2D3fh8fAF8ow
-	 U9c7g+3FcDh+Q==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, jgg@ziepe.ca,
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
-	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
-	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
-	dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-In-Reply-To: <atooh7uO2RauUTfY@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <yq5a7bjajaco.fsf@kernel.org> <atooh7uO2RauUTfY@FV6GYCPJ69>
-Date: Fri, 23 Oct 2026 13:34:53 +0530
-Message-ID: <yq5av76sj10a.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l/xJPrtU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792743082; x=1824279082;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=d56qZiErZsAL2brFzhSqUiWxNRHHzU79TQ7RquVyumY=;
+  b=l/xJPrtUNzvk/IQJvxYvUg7Zcdwpt7BKgfEA34wgTzEzrQDt93MT+J4m
+   DXFWENL53db/qgoMcBwk3L4nDMhXFUaCL0TxTrh+1Ezs6uI4H6jEhhZ1p
+   53Wf3EhreTBdNG4ke4wF/NJMaesBWfBye3p6ULf6xOP+8a6upTqCbIeZn
+   D9q0uy3VhBGUjFhDHNesOBxX/Ow/n69Eiy422+KSfX/so2cdTL7pUYO4V
+   Hl6Ohql8LEa6QA1oVoGrTA0qSHXTEuG09jx2qz4lIuR75eEDDQddo2sQy
+   apBYJwfBRukKsZo/gZCQJArJSzkYDOi9G9fhDZKuklgaZA4AejzgoCNVJ
+   Q==;
+X-CSE-ConnectionGUID: KcwylaFOR4ihItIu5CKCDA==
+X-CSE-MsgGUID: 4p25VTZiSqq8roNj0EdMBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1504126"
+X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
+   d="scan'208";a="1504126"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 01:11:22 -0700
+X-CSE-ConnectionGUID: fPfiCPHqRzKnAvtn6QOc2A==
+X-CSE-MsgGUID: EhMZgs2jTWmxsv8U5x2Lgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
+   d="scan'208";a="5338267"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 01:11:17 -0700
+Message-ID: <740e0e88-6353-4174-af86-c30b0957c056@intel.com>
+Date: Fri, 23 Oct 2026 16:11:15 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -70,134 +72,112 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] KVM: TDX: Reject KVM_TDX_INIT_VM if indexed CPUID
+ functions don't match
+To: Binbin Wu <binbin.wu@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, Changyuan Lyu <changyuanl@google.com>,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20261022210134.612848-1-seanjc@google.com>
+ <20261022210134.612848-4-seanjc@google.com>
+ <88de514b-8f83-4b04-82c8-caa6bd5ac976@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <88de514b-8f83-4b04-82c8-caa6bd5ac976@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Jiri Pirko <jiri@resnulli.us> writes:
-
-> Thu, Oct 22, 2026 at 12:30:47PM +0200, aneesh.kumar@kernel.org wrote:
->>Jiri Pirko <jiri@resnulli.us> writes:
+On 10/23/2026 11:05 AM, Binbin Wu wrote:
+> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
+>> Reject KVM_TDX_INIT_VM if userspace doesn't configure the canonical CPUID
+>> entries correctly with respect to KVM_CPUID_FLAG_SIGNIFCANT_INDEX to fix a
+>> bug where userspace could bypass the TSX and WAITPKG checks by simply not
+>> marking a CPUID.0x7 entry as being indexed.  This also sets the stage for
+>> more in-depth validation of the incoming CPUID configuration.
 >>
->>> From: Jiri Pirko <jiri@nvidia.com>
->>>
-
- [ ... 67 lines skipped ... ] 
-
->>>
+>> This is obviously an ABI change and diverges from KVM's general approach of
+>> "let userspace do what it wants".  In practice, no "real" VMM that supports
+>> TDX misconfigures a TD's CPUID entries in this way, i.e. the probability of
+>> actually breaking userspace is basically nil.  And unlike normal VMs, where
+>> KVM has full control and thus can deal with bizarre CPUID input without too
+>> much fuss, TDX VMs require extra care due to the TDX Module also reacting
+>> to the CPUID configuration, i.e. KVM_TDX_INIT_VM needs to be more strict
+>> than KVM_SET_CPUID{,2} to avoid creating potentially dangerous-to-the-host
+>> setups.
 >>
->>I am using this to understand what the IDE setup flow would look like,
->>but it is unclear whether the connect flow belongs in an attestation
->>framework. I understand the desire to pass the certificate slot number
->>as part of connect, and sysfs is probably not a suitable interface for
->>that. However, is CTLV the interface we want to use for connect?
->
-> I was thinking about this and "connect" really does not belong in the
-> attestation CTLV (same applies to "lock"). I was thinking about some
-> parallel PCITSM CTLV instance, but that does not really click as well.
->
-> Currently I'm thinking we can maintain existing "connect" in sysfs and
-> extend it with "lock" sysfs knob for Realm side. Both would create
-> ctlv-attestation-spdm instance. The same spdm instance may be created
-> for other non-PCI-backed device.
->
-> The proposed host flow is:
->
->     sysfs connect: select tsmN and prepare the connection
->         -> negotiate SPDM and discover certificates
->         -> register ctlv-attestation-spdm instance in DISCOVERED state
->
->     SPDM_GET
->         -> populated certificate slots and digests
->
->     EVIDENCE_GET(CERT_CHAIN, blob-instance=slot) /*optional*/
->         -> retrieve candidate certificate chain for appraisal
->
->     SPDM_AUTHENTICATE(device-generation, spdm-slot=selected_slot)
->         -> authenticate the selected chain
->         -> complete backend-required session and IDE setup
->
->     sysfs disconnect
->         -> remove the attestation instance
->         -> destroy the native connection
->
-> The slot is therefore selected after discovery, rather than supplied to
-> connect. The attestation instance represents the prepared connection; it
-> does not exist beforehand as a controller for a disconnected PCI function.
->
+>> Opportunistically rename the helper to make it more obvious that it's
+>> checking if the passed in @entry is unsupported, as opposed to returning a
+>> set of unsupported entries or something.
+>>
+>> Fixes: 6d415778f106 ("KVM: TDX: Disable support for TSX and WAITPKG")
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Closes: https://lore.kernel.org/kvm/20260604024927.E22311F00893@smtp.kernel.org
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Sean Christopherson <seanjc@google.com>
+>> ---
+>>  arch/x86/kvm/vmx/tdx.c | 8 ++++++--
+>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> index 37d088f6f7a8..6abf92ffec24 100644
+>> --- a/arch/x86/kvm/vmx/tdx.c
+>> +++ b/arch/x86/kvm/vmx/tdx.c
+>> @@ -151,8 +151,12 @@ static void tdx_clear_unsupported_cpuid(struct kvm_cpuid_entry2 *entry)
+>>  		clear_waitpkg(entry);
+>>  }
+>>  
+>> -static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
+>> +static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry)
+>>  {
+>> +	if (cpuid_function_is_indexed(entry->function) !=
+>> +	    !!(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
+>> +		return true;
+> 
+> Similar to patch 2, if cpuid_function_is_indexed(entry->function) misses some function,
+> the value of cpuid_function_is_indexed(entry->function) is not accurate.
+> 
+> For current code, it's OK, since all unsupported bits are in leaf 7.
+> In the future, with the TDX CPUID validation patch set
+> https://lore.kernel.org/all/20261016091422.3182216-6-binbin.wu@linux.intel.com/
+> It still allow userspace to by pass some check in theory.
+some idea.
 
-CCA currently takes the device identity index during pdev_create. I am
-investigating how to retrieve the certificate chains for all slots. For
-now, I have implemented the sequence below.
+If we decide to honor TDX module's report over KVM's cpuid_function_is_indexed()
+in patch2, then how about something below:
 
-echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/connect
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 6abf92ffec24..1456f4c5c6b3 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -151,10 +151,10 @@ static void tdx_clear_unsupported_cpuid(struct
+kvm_cpuid_entry2 *entry)
+                clear_waitpkg(entry);
+ }
 
-./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 device-get                                                               
-# device-get, 1 fragment, generation 0                                                                                      
-  device.generation 0            
-  device.caps                                                                                                               
-    cap.evidence                                                                                                            
-      cap.min-challenge-length 0                                                                                            
-      cap.max-challenge-length 0                                                                                            
-      cap.max-total-output-length 369098752                                                                                 
-      cap.evidence-flags evidence-accept
-      cap.object                                                                                                            
-        cap.blob-class cert-chain                                                                                           
-        cap.blob-instance 0                                                                                                 
-        cap.format spdm-cert-chain
-        cap.representation raw                                                                                              
-        cap.representation tcb-digest                                                                                       
-        cap.hash-algo 4                                                                                                     
-        cap.hash-algo 5          
-        cap.hash-algo 6                                                                                                     
-        cap.max-length 16777216                                                                                             
-  device.info                                                                                                               
-    pci.name 0000:02:00.0                       
+-static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry)
++static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry,
++                                          bool significant_index)
+ {
+-       if (cpuid_function_is_indexed(entry->function) !=
+-           !!(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
++       if (significant_index && !(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
+                return true;
 
-I think we can use evidence-refresh to select the blob-instance for the
-desired slot once the CCA specification supports that.
+        return has_tsx(entry) || has_waitpkg(entry);
+@@ -2397,7 +2397,8 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
+                if (!entry)
+                        continue;
 
- ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get                                                                
-# state-get, 1 fragment, generation 0
-  pci.generation 0                                                                                                          
-  pci.connected 1                                                                                                           
-  pci.locked 0                                                                                                              
-  pci.accepted 0                 
-  pci.tsm-id 0                                                                                                              
-  pci.dsm 0000:02:00.0                                                                                                      
+-               if (tdx_is_unsupported_cpuid_entry(entry))
++               if (tdx_is_unsupported_cpuid_entry(entry,
++                       tmp->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
+                        return -EINVAL;
 
-device is marked connected, but IDE is not setup as indicated by pci.accepted = 0
-
-
-./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 evidence-get --json '{
-"evidence.challenge": "hex:", "evidence.object": [{
-"evidence.blob-class": "cert-chain", "evidence.format":
-"spdm-cert-chain", "evidence.blob-instance": 0,
-"evidence.representation": "raw", "evidence.data": { "file":
-"/tmp/cert0.bin", "data-buf-size": 16777216 } }] }'
-# evidence-get, 1 fragment, generation 0                                                                                    
-  device.generation 0                                                                                                       
-  evidence.generation 1                                                                                                     
-  evidence.object-length 1632           
-
-
-I added the file: attribute to verify the evidence blob's contents. ie,
-we can do:
-
-# file cert0.bin  
-cert0.bin: Certificate, Version=3
-
-./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 evidence-accept device.generation=0 evidence.generation=1
-# acknowledged
-./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get
-# state-get, 1 fragment, generation 0
-  pci.generation 0
-  pci.connected 1
-  pci.locked 0
-  pci.accepted 1
-  pci.tsm-id 0
-  pci.dsm 0000:02:00.0
-
-
-I am wondering why we need 'devsec-run' ops. Isn't that already the result of
-'evidence-accept'?
-
--aneesh
+                copy_cnt++;
