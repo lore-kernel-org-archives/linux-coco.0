@@ -1,68 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792724725;
-	b=uZQ50z/2QfJpd4mfI13VpivOxqIZEsP1EyQxmZAfC7df8yGwPvsx4Exsrp/TOYftMwTZ
-	 CXlCricFF1YXxqNMfV3P/dGN737ZT+77n872AEK58ERfrz3clBIIXISQip8G/cBWI+oOH
-	 g6+iMm6AKWeiAA5hoxj+3DZEvPQzCmNYDQm/PKIjn6rDsICPb8TIuc9OEadxVaufct2rj
-	 VSUHnKyISHIrxW3bzNTmzNVlcfVetADftt8EzwAE9KqBIhKvTU43nUkwOLdIZTgFxfEgc
-	 Xnk0UbMCorZUHjSkXFx8O51NEx9xs4d+bPC5d1riETfrfES3KDCdTGrBv6Ki86YWXTg==
+	t=1792742649;
+	b=PGal/Nj2iN6YhsCXNSpAgg8bFJyLx58UAnCYD5tI44IQpPyEfszV/zWDv5tKXX4hR2vo
+	 odZga5oGcSlVSp4QMBc4dP2x8dDgami60WoyqSx4cJx0uhuvuYQPxuEk85M4UXUKIjFs3
+	 SarThMEz5dL+FUIiKUkL87HjVixrbFPFeWeN/ucxphzmo8ImTmASV783EWPo1WaTcpJ0y
+	 HrUT08Jfb0G6o6725gTaElsO2V4InUO/R5/6l6P9lLvJi1CBSXB9oQcuZ44mWJjlSjyh/
+	 13519Wc9wL/o0GtzTUd8N7Xbd03v8D1F/ZtrZkDrEX1BKDJCX67wKyBvRFXEpACslxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792724725;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792742649;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=dhMnfcK1OZCkXS3jlKG9FO2BzWzDeHFEAl52uVGMzYQ=;
-	b=dphipJ9jkdd9u8wrpoSiiW9MCAISCg11is8m6wZ+tIF8MOqNEUnoBPO9yA/CQTIQKEXJ
-	 NJsFb8Nr7zJZVGbn196kXmZa8do6OEVbXujrNqDHq23PXa58DKDjokj6ekx1rlzj2acd4
-	 EF/EG39iRv5K47L12OOQbK9qSw/H258JNZVF8nBDOKcD+veCshkZTNpykPUU5qSisZigG
-	 BJlwsxudZzj+GG4WtUAed7zNZBnHWJRmnqvzL9i2kNpHNRR3iwIYg0CpN27AcIezkywgH
-	 WWNfugb39PFvp71pSFGU711brEgey9NUPMVPOlJEZehI4ZsbZY+OGc6nv0D9w867Ogw==
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=NspgpVN/iGeXqQA4hXTiaDm9SkSYHuM4hgWy6uCGbYc=;
+	b=4l5cxNAcehBDcEkiGepRN0WfTX9KwPxsT0DpDS6svslQ68JqhiJjEG9jDxSaamYsdpv5
+	 CNuGUug+nUMFniYiJtUy0GgNuzflBezzMiOnco5H6KQ08YQFTrLkmBlMX5ghp0tozmIfY
+	 pJW2xvrgRfvAqZXd2vqnA3qwzuKSzZUr6tJO0PafZz4svHjtsoKKWZGwBfvJfVJAZ+QEJ
+	 G4MC7JWQE7MaSQCBsWcJ9fS44hhrmUrprpfD82a5AL6oCVvWYXSGNhNzRrmjeNvOYwyw3
+	 bKdCBSCCogWc7/zAYfLVjk5DCwWizSR+/p2M8lFubdAimT1nl3sijkXfzgDRmKvokFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hfrTCGXX;
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=InsP505p;
 	arc=none smtp.remote-ip=198.175.65.15
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A162606A31B
-	for <linux-coco@lists.linux.dev>; Fri, 23 Oct 2026 03:05:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A162606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7C2606A31A
+	for <linux-coco@lists.linux.dev>; Fri, 23 Oct 2026 08:04:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B7C2606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hfrTCGXX
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=InsP505p
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792724725; x=1824260725;
+  t=1792742647; x=1824278647;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=m6kBOfHooZ1cfrqoSGRtQrUdWdak3kJ0IQfEZasphkQ=;
-  b=hfrTCGXXO4qALU3MDtZeOD8Gckjslq4PUCeweGPEh3941FD8SiBH+ig2
-   w5RcqRLMh5OoZtQmujnVDHeOJ+8XWAwqZu99zlBImpXP3t70olDKDQHSK
-   h/+GXwOn6VbZTj/Ih2lvPDSwrGBzzlxk5b++ExvVhtROIxobV0EGo8lqU
-   bz0iZzi1QgW6/XHq6iWn6dy3P/5LkxKzVmkghwnwhNj7w7VAC8oTZGFYA
-   1aFJFdFcmoAXn529uvSfxMX5Ba7WlvPtWkwHCfI+Aa7/0kQMWPyVxRaaz
-   faO0O79XK1uRbvf4oW7yXVMr29nE7VPfbDo8XONPs5B41e8xiw6I1/UFq
-   Q==;
-X-CSE-ConnectionGUID: e+wGNBgvSW25H2PEBSmuAA==
-X-CSE-MsgGUID: Bfmj/KgqRPCZ8X0HsSkgGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1486353"
+  bh=eyWX1HCZAF9CzSx0nus5pkufJOkW2YINd4qW7HRe8qE=;
+  b=InsP505pz9RUKFQzRH5S0Dq+8oz0W95EhDtdPkYjKLRb1Z6RZTlHl7eW
+   OAVjH2OyBzGNsOSN0phNZn2Kl9G1+G+5OOsakH+kwCB+YMQRuBsrd9iGc
+   v1Xg5m64wGQcbsTLD/1TKUXUNBlTMGfQkWCPWOYEiB7gJKaw7H3hRzH17
+   py6ozS1Qmwpb6JGPOra1Il2iNZb+zms+Z1Xq6afadU/DFP3/sjF4aedyS
+   YUutYmefn4GcOtOwNxL3WFBboZdNBxzHw8P5sHH3ubZBTfkhqcd7q50L4
+   twCpcYtvFqdYkCM+bs37srD8pbXOdTl1//3JNzqc0eixTGp3YwdjgqV0X
+   w==;
+X-CSE-ConnectionGUID: JKWmiqjbStqArhiv0An/Xw==
+X-CSE-MsgGUID: jSLmsA5tSdKf3MX3SP1BZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1503766"
 X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="1486353"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 20:05:24 -0700
-X-CSE-ConnectionGUID: VwG2/CpzQjGR2tAV6iiDaA==
-X-CSE-MsgGUID: myojr/oLQWupJT3IFQPovg==
+   d="scan'208";a="1503766"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 01:04:06 -0700
+X-CSE-ConnectionGUID: 0JiKgAfeRG+KUuhDyoprcQ==
+X-CSE-MsgGUID: FQm/dQJOQVaQg8oYRm1mIw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="3403331"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 20:05:21 -0700
-Message-ID: <88de514b-8f83-4b04-82c8-caa6bd5ac976@linux.intel.com>
-Date: Fri, 23 Oct 2026 11:05:16 +0800
+   d="scan'208";a="5336485"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 01:04:02 -0700
+Message-ID: <dbc686a7-35f8-40b6-9f45-d8f05edc4881@intel.com>
+Date: Fri, 23 Oct 2026 16:03:59 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,88 +73,50 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] KVM: TDX: Reject KVM_TDX_INIT_VM if indexed CPUID
- functions don't match
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+Subject: Re: [PATCH v2 1/3] x86/cpuid: Mark CPUID function 0x23 as being
+ indexed
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Changyuan Lyu <changyuanl@google.com>,
- Sashiko <sashiko-bot@kernel.org>
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ Binbin Wu <binbin.wu@linux.intel.com>, Changyuan Lyu
+ <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
 References: <20261022210134.612848-1-seanjc@google.com>
- <20261022210134.612848-4-seanjc@google.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
+ <20261022210134.612848-2-seanjc@google.com>
 Content-Language: en-US
-In-Reply-To: <20261022210134.612848-4-seanjc@google.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261022210134.612848-2-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/23/2026 5:01 AM, Sean Christopherson wrote:
-> Reject KVM_TDX_INIT_VM if userspace doesn't configure the canonical CPUID
-> entries correctly with respect to KVM_CPUID_FLAG_SIGNIFCANT_INDEX to fix a
-> bug where userspace could bypass the TSX and WAITPKG checks by simply not
-> marking a CPUID.0x7 entry as being indexed.  This also sets the stage for
-> more in-depth validation of the incoming CPUID configuration.
+> Add function 0x23 to the set of CPUID functions that are indexed, as per
+> the SDM and the many sub-leafs defined in leaf_types.h.
 > 
-> This is obviously an ABI change and diverges from KVM's general approach of
-> "let userspace do what it wants".  In practice, no "real" VMM that supports
-> TDX misconfigures a TD's CPUID entries in this way, i.e. the probability of
-> actually breaking userspace is basically nil.  And unlike normal VMs, where
-> KVM has full control and thus can deal with bizarre CPUID input without too
-> much fuss, TDX VMs require extra care due to the TDX Module also reacting
-> to the CPUID configuration, i.e. KVM_TDX_INIT_VM needs to be more strict
-> than KVM_SET_CPUID{,2} to avoid creating potentially dangerous-to-the-host
-> setups.
-> 
-> Opportunistically rename the helper to make it more obvious that it's
-> checking if the passed in @entry is unsupported, as opposed to returning a
-> set of unsupported entries or something.
-> 
-> Fixes: 6d415778f106 ("KVM: TDX: Disable support for TSX and WAITPKG")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/kvm/20260604024927.E22311F00893@smtp.kernel.org
+> Reported-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Closes: https://lore.kernel.org/all/213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@Intel.com>
+
 > ---
->  arch/x86/kvm/vmx/tdx.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  arch/x86/include/asm/cpuid/api.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 37d088f6f7a8..6abf92ffec24 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -151,8 +151,12 @@ static void tdx_clear_unsupported_cpuid(struct kvm_cpuid_entry2 *entry)
->  		clear_waitpkg(entry);
->  }
->  
-> -static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
-> +static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry)
->  {
-> +	if (cpuid_function_is_indexed(entry->function) !=
-> +	    !!(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
-> +		return true;
-
-Similar to patch 2, if cpuid_function_is_indexed(entry->function) misses some function,
-the value of cpuid_function_is_indexed(entry->function) is not accurate.
-
-For current code, it's OK, since all unsupported bits are in leaf 7.
-In the future, with the TDX CPUID validation patch set
-https://lore.kernel.org/all/20261016091422.3182216-6-binbin.wu@linux.intel.com/
-It still allow userspace to by pass some check in theory.
-> +
->  	return has_tsx(entry) || has_waitpkg(entry);
->  }
->  
-> @@ -2393,7 +2397,7 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
->  		if (!entry)
->  			continue;
->  
-> -		if (tdx_unsupported_cpuid(entry))
-> +		if (tdx_is_unsupported_cpuid_entry(entry))
->  			return -EINVAL;
->  
->  		copy_cnt++;
+> diff --git a/arch/x86/include/asm/cpuid/api.h b/arch/x86/include/asm/cpuid/api.h
+> index 82eddfa2347b..25b22b173f2a 100644
+> --- a/arch/x86/include/asm/cpuid/api.h
+> +++ b/arch/x86/include/asm/cpuid/api.h
+> @@ -181,6 +181,7 @@ static __always_inline bool cpuid_function_is_indexed(u32 function)
+>  	case 0x1d:
+>  	case 0x1e:
+>  	case 0x1f:
+> +	case 0x23:
+>  	case 0x24:
+>  	case 0x8000001d:
+>  		return true;
 
