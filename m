@@ -1,68 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792743083;
-	b=35qB64tM/oqLF8Xlyr4rekBzgj0t187isB7t7wqWD5gW19IKW25g6L4+h3IbIFsU/QgV
-	 w1T3yTIsIUDBux+rdTNNIP5EHhZjynct5Nnu1heydPQPU/XK6j1TjvxBU6J6a6HJAn/j4
-	 csv8iGC9l80gJZ9vapLn6tkeUkjvCWHWm61cKEWZLkrsyuYiFkYejHnSwts8XTDHMuJSx
-	 JgRma3PJD+eKwBJBbIAOzuF8gPwsM20eW1h3K3geZmY/zm+h9jovwCF3G5jRMwAX3a5rg
-	 bmie2wPvep7TjvvEenhUrIUEIoydn9jkS/E7AQio1YbN+D1zG5mZgyNsZUnvdNSv9PQ==
+	t=1792750637;
+	b=JQrRQpj/cwGawpGNGMgTu/PIDGe8YMPQXOBwS672YUo/AGGeus3zuYyv2EGm6g2HwB3q
+	 kPnOXMMGJONzIN2K9HXKEP5/4MHJaKwthw4oF64h/iWjxGg32bHH2v5fYV///aBNbu849
+	 4eUkBLmxcLDlz4mlr3qG7q8GXg24CmoLy1LNwNFixQd4zq85+MmTc3DBkdXCJOIhWOYZG
+	 iWHKeFUyu2xIvwjcMcnK8eKzyUub9meGr4oUZecpmR5uuOR+PIyEDUnjJRnKe6e2baKMY
+	 85G3SbdErWWLFZgINQw0E5wv963Zkt3EJK/RPhendwC6DLwMebG6e1wmwzmakcEgN/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792743083;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=dksq6JzYz/7e2KyIjNlZAHkwElyy14O+kTiWQeWvxMk=;
-	b=duJ6vHNh9wFcGvxLKLQ2bXfh6WCgo3kzKWga2OBJN+gXB0edEVHBvT7UqWOfqoSojbNN
-	 Bsc+yeXOUN0zltyAN0d6yKTuRHN6JBPbPufp9Xx6gB4U2K0Y2rbFsPG4rjbr0JU5AhuUl
-	 Lnoi4QATiIvRZlzwdaeQA/CDPU2j6M0KaO6KGf5aGev0umj5sugv+YmY5b41Xwq0haDsb
-	 vvOzGEMCik8F5B1OHmOawSaZOgdatepqcrm4GrIWpE0umpvIIvKS6TfKKqLCSnPDVU65N
-	 t6wtU9QKYSTRI03LWc/l68gWbg7Wf3oE78vqFaVjqlq/FxhrSQM2EiRtyVkI4Eahklw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792750637;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=gpeLZJVtpiJlPDO3HGOLqYYd8BW6Z+Hn1e4Q/28eTGA=;
+	b=Nhyi/Obq+yR7vF8m+lAJCC3vFFsPkRysPLggdvPJbyHtlxsA9TZczEQFFJgbKnHkELfW
+	 ckm1YcMKnkfqMd/j3Pg2uFYBSKqGZD2noIc+485+WQ6GpA6EfcWZLaVbyWn9udOTTn4fr
+	 Rb2mKl3++YenDs3PXgo3ryRPc9LTfNT00kTP5Mt8bzSIzGMNmfIw8q8uKxMiusbM6nCS/
+	 PUWXMwtqyT6v2+/0lL0iqrzsPaDRrj4wG94BPx8cLlJkA7v7MWXBBiOX9ZEie/q7ebXSZ
+	 KtuXQ7fm41+sveNIQFrEk4wwcDRfPJrzHa+86xJrpHnv0veMOASf6DZYY0B+KQmaHWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="l/xJPrtU";
-	arc=none smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="VYk/D+3k";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F5F606A31B
-	for <linux-coco@lists.linux.dev>; Fri, 23 Oct 2026 08:11:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7F5F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8AD606A31B
+	for <linux-coco@lists.linux.dev>; Fri, 23 Oct 2026 10:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l/xJPrtU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792743082; x=1824279082;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=d56qZiErZsAL2brFzhSqUiWxNRHHzU79TQ7RquVyumY=;
-  b=l/xJPrtUNzvk/IQJvxYvUg7Zcdwpt7BKgfEA34wgTzEzrQDt93MT+J4m
-   DXFWENL53db/qgoMcBwk3L4nDMhXFUaCL0TxTrh+1Ezs6uI4H6jEhhZ1p
-   53Wf3EhreTBdNG4ke4wF/NJMaesBWfBye3p6ULf6xOP+8a6upTqCbIeZn
-   D9q0uy3VhBGUjFhDHNesOBxX/Ow/n69Eiy422+KSfX/so2cdTL7pUYO4V
-   Hl6Ohql8LEa6QA1oVoGrTA0qSHXTEuG09jx2qz4lIuR75eEDDQddo2sQy
-   apBYJwfBRukKsZo/gZCQJArJSzkYDOi9G9fhDZKuklgaZA4AejzgoCNVJ
-   Q==;
-X-CSE-ConnectionGUID: KcwylaFOR4ihItIu5CKCDA==
-X-CSE-MsgGUID: 4p25VTZiSqq8roNj0EdMBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1504126"
-X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="1504126"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 01:11:22 -0700
-X-CSE-ConnectionGUID: fPfiCPHqRzKnAvtn6QOc2A==
-X-CSE-MsgGUID: EhMZgs2jTWmxsv8U5x2Lgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="5338267"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 01:11:17 -0700
-Message-ID: <740e0e88-6353-4174-af86-c30b0957c056@intel.com>
-Date: Fri, 23 Oct 2026 16:11:15 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VYk/D+3k
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E7E1F01828;
+	Fri, 23 Oct 2026 10:17:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792750636;
+	bh=gpeLZJVtpiJlPDO3HGOLqYYd8BW6Z+Hn1e4Q/28eTGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VYk/D+3kbKnN4Td708RzwXNiZQVZkFWUmZxiuigbcwG+CdlVoZzrggmWEYTIZLwuh
+	 AzXJb59AXe41gthqxiYcdHMvmnpJEdZaoscSDro0jUBpaQEzorZAmc/U0kFk91XQwy
+	 ak0p76QwdoFgt6Uxn2BIe3th7Ohg6KmkLYhX3sGt/7cOKh2U6xoEzL+9ncKD9Gtlki
+	 3tUvSxvqITPkB8czRLZuV/ZsDod6v3hlLKdk4wT1ygaQznFpM9OFOy60We3qObERos
+	 NC37C3T09OtndSaZM/duFZcoS4/5fy9dfm/7jHIc048POkCIMSzGm/jgTpk7PMk+MP
+	 XzcuznffEhkGQ==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 6975A198003A;
+	Fri, 23 Oct 2026 06:17:12 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 23 Oct 2026 06:17:14 -0400
+X-ME-Sender: <xms:JzTbamcM6thTVQGnNUGh5O7vXtFmn-fFEBcx-um2RSE3YGq57VkFrw>
+    <xme:JzTbagFRooSn3XcuAnLfBtgpWGZp6Evs0rL_gpPZ6UNyH9ycxo5F3rvatpJzelQm8
+    yIbvAUMe5JL4TA5XMciswkJl9IZIUdHxi4VrrpsMk_77z5fvsmn903N>
+X-ME-Received: <xmr:JzTbak1qpy8Z6yC8grYUdBiyEYMJdJ6LcAeUO9Oo4InJHUdVFjUbJS33WjU>
+X-ME-Proxy-Cause: dmFkZTErg9z4G4UhidklPuc8uFrLu2Z2aaxmgnGy3D0KEdUY6W7O/OlsaLOLS5DbOc08LB
+    +5/iEztytUd59/o2IkmcrQGmA/fZJJD1NOHadjZHONHNkkocRANUoUv+g0S8bKlfeTQ+Fl
+    JWTd5e9DLxWLLLAP+rGKsOMDHdiWSzUzgTQlZp+FcF6FlQHgqwNAX3euVj9+ZJdBXcMrk3
+    sFB4RuHQI1wi9F9fPlEHNIObiUrEWqNOoCQvC36+l3uwhPwTowNT04EaTvE+HV8B7IJgqo
+    ZNY6ia+NrtfoBJmiriJ0t9g0M7mlpIN/h6AJiITfUM4iGRmbdgNy+hX4rzpdjUQJVckkcf
+    R1FVprDjCR3M6+GS67BrJ7uOzJWXeVND86gwtT679fhrrz/yzaXzvahEraMbK+H3fWzZ0l
+    D7RO0rkhGNX47LUnKuFs96ULJscKhEltHMup9JV9Rj315617++feXwpPDC0whXS7AA9x7b
+    mA0+gnFZQ6jYx0lpO+PXUIRO9ORhl8mmBvzWQbUpvLohOhrhZsec5F5s67HXOOq7jfoQB8
+    cRa6EzcDscpNfcGPtWkNkYRO9fSCuGryHQZrwPOCHytoRDDhHXG80raBJQzcjV9KwzBmJW
+    RD7huo7vf95k76ktT8jRXuqaB+ZECAwZoI3eIyDaZksX5riQla3+0EgstAeQ
+X-ME-Proxy: <xmx:JzTbagIodmA06YeFG2ObXsM6bu0asV1jbKGP6NOGcj-5aH96uXehzg>
+    <xmx:JzTbav2poA5KMbiX94TINoYMtbvJpT-_VEIvxX1OZP50l6jn_Z1YJg>
+    <xmx:JzTbarj0NwG5BPrVWnS-ubsq0QLHh7HGrL4iAC3ITKbu9PcKc1kpCQ>
+    <xmx:JzTbav09oRLTFwhhGukdOsryfPzJVIQmk2dREs0dOn1q15jyLK5i9A>
+    <xmx:JzTbamdL2cE8AUTDCr-OJSFGboKtUIfnCbTufQJR-RwIrkFOAH0qbs-9>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 23 Oct 2026 06:17:11 -0400 (EDT)
+Date: Fri, 23 Oct 2026 11:17:10 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: moe@flashbots.net
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Dan Williams <djbw@kernel.org>, Jun Miao <jun.miao@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] virt: tdx-guest: Fix and speed up the wait for a
+ Quote
+Message-ID: <atsz9rdU4CCjhSD2@thinkstation>
+References: <20261022-tdx-guest-quote-poll-v2-0-7543c6eb2d36@flashbots.net>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,112 +89,23 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] KVM: TDX: Reject KVM_TDX_INIT_VM if indexed CPUID
- functions don't match
-To: Binbin Wu <binbin.wu@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Changyuan Lyu <changyuanl@google.com>,
- Sashiko <sashiko-bot@kernel.org>
-References: <20261022210134.612848-1-seanjc@google.com>
- <20261022210134.612848-4-seanjc@google.com>
- <88de514b-8f83-4b04-82c8-caa6bd5ac976@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <88de514b-8f83-4b04-82c8-caa6bd5ac976@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022-tdx-guest-quote-poll-v2-0-7543c6eb2d36@flashbots.net>
 
-On 10/23/2026 11:05 AM, Binbin Wu wrote:
-> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
->> Reject KVM_TDX_INIT_VM if userspace doesn't configure the canonical CPUID
->> entries correctly with respect to KVM_CPUID_FLAG_SIGNIFCANT_INDEX to fix a
->> bug where userspace could bypass the TSX and WAITPKG checks by simply not
->> marking a CPUID.0x7 entry as being indexed.  This also sets the stage for
->> more in-depth validation of the incoming CPUID configuration.
->>
->> This is obviously an ABI change and diverges from KVM's general approach of
->> "let userspace do what it wants".  In practice, no "real" VMM that supports
->> TDX misconfigures a TD's CPUID entries in this way, i.e. the probability of
->> actually breaking userspace is basically nil.  And unlike normal VMs, where
->> KVM has full control and thus can deal with bizarre CPUID input without too
->> much fuss, TDX VMs require extra care due to the TDX Module also reacting
->> to the CPUID configuration, i.e. KVM_TDX_INIT_VM needs to be more strict
->> than KVM_SET_CPUID{,2} to avoid creating potentially dangerous-to-the-host
->> setups.
->>
->> Opportunistically rename the helper to make it more obvious that it's
->> checking if the passed in @entry is unsupported, as opposed to returning a
->> set of unsupported entries or something.
->>
->> Fixes: 6d415778f106 ("KVM: TDX: Disable support for TSX and WAITPKG")
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Closes: https://lore.kernel.org/kvm/20260604024927.E22311F00893@smtp.kernel.org
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Sean Christopherson <seanjc@google.com>
->> ---
->>  arch/x86/kvm/vmx/tdx.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->> index 37d088f6f7a8..6abf92ffec24 100644
->> --- a/arch/x86/kvm/vmx/tdx.c
->> +++ b/arch/x86/kvm/vmx/tdx.c
->> @@ -151,8 +151,12 @@ static void tdx_clear_unsupported_cpuid(struct kvm_cpuid_entry2 *entry)
->>  		clear_waitpkg(entry);
->>  }
->>  
->> -static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
->> +static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry)
->>  {
->> +	if (cpuid_function_is_indexed(entry->function) !=
->> +	    !!(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
->> +		return true;
+On Thu, Oct 22, 2026 at 04:31:40PM +0000, Moe Mahhouk via B4 Relay wrote:
+> Getting a TDX Quote takes at least one second, because
+> wait_for_quote_completion() sleeps a full second before each status
+> check, while a local Quote Generation Service answers in a few
+> milliseconds. Patch 2 polls with an exponential backoff instead.
 > 
-> Similar to patch 2, if cpuid_function_is_indexed(entry->function) misses some function,
-> the value of cpuid_function_is_indexed(entry->function) is not accurate.
-> 
-> For current code, it's OK, since all unsupported bits are in leaf 7.
-> In the future, with the TDX CPUID validation patch set
-> https://lore.kernel.org/all/20261016091422.3182216-6-binbin.wu@linux.intel.com/
-> It still allow userspace to by pass some check in theory.
-some idea.
+> In v1, Kiryl noticed that the same loop gets a real timeout wrong.
+> Patch 1 fixes that on its own, so that it can be backported; patch 2
+> then replaces the loop.
 
-If we decide to honor TDX module's report over KVM's cpuid_function_is_indexed()
-in patch2, then how about something below:
+For the series:
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 6abf92ffec24..1456f4c5c6b3 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -151,10 +151,10 @@ static void tdx_clear_unsupported_cpuid(struct
-kvm_cpuid_entry2 *entry)
-                clear_waitpkg(entry);
- }
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
--static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry)
-+static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry,
-+                                          bool significant_index)
- {
--       if (cpuid_function_is_indexed(entry->function) !=
--           !!(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
-+       if (significant_index && !(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
-                return true;
-
-        return has_tsx(entry) || has_waitpkg(entry);
-@@ -2397,7 +2397,8 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
-                if (!entry)
-                        continue;
-
--               if (tdx_is_unsupported_cpuid_entry(entry))
-+               if (tdx_is_unsupported_cpuid_entry(entry,
-+                       tmp->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
-                        return -EINVAL;
-
-                copy_cnt++;
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
