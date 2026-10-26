@@ -1,99 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793026357;
-	b=2Ti5QsbUwQOmwmefbmnFFrB+sFmsVDp56V1QZdVl0wQ9p2q8nmDii4BFEucGk+U9H5aR
-	 XWlKqsQELZnef/SWJ9u9WBIVsbyg5IvmiNMlMRLRDPvxYsEcgn4unZf6ZHM9ZPCRCpTA2
-	 lkcORXjqx7sFfD8chYTQ1x59Qg4uLDY8PnFsM68QnsRunnL4oiEyGBccCkiRz9Hal4I7j
-	 ozOjai+kZjl6ENfQbFSDz+WluZSiiV9aEM6KTGhvimCJIKz+3RiyxcoRds6oFiIjKv8Gt
-	 /gwtrPB21BDspoG+Kct+bMnUB+r7QKo/FIyQsQ0d65fLtPuxqXI8Yh+SdYUuJwFIGZQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793026357;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=VdhjTRpZkzPz14e+11oPuZMjIuI1bMnZdjQ9c48oYKg=;
-	b=AU9SH3pA5SuFdHx7YTfWOaCLVCcecGfDbG68OVjIQMSH0/3SIUC0LUZJy3sisyvDQ/cD
-	 hPnNoUi8Jc1VC90SS0/Xn9waaZVjyXYp9/ZKMW223klyD76v8FnHLq2VgmMYS2buaMRTo
-	 uQdqhnqNKjZno0ImQ4iSZp4O01SAFOB0vXQUKQzUxsseyBUeoOnL7k6QKQtLFvzDD8Q1W
-	 7WHDruhqxrZj14z1w2rCOC8xsvrwyN9GYoK2swPeD0B9uKbescuo5B+beu769O9McBAHx
-	 6NP0gue5gYXUg6wUenI/tC40wGi48w2Ib0CZFgnbroHf7yWXAAvfsh9Wt1R2BDvnKPw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=XYbQHvDF;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.4
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793031153;
+	b=0qgvgLsX/RJ+N2uNbIKoJLdjYqzxg8qhXBKOuyjMB0A0KdxjF4WWyvQbxA39Yv2qrbUc
+	 7fO9KhdNAWD/g6j+M35EoIBcN+pwwzltvs6rKTXGjSyXdbR5U2LPQz90y6dRkmpWzvQfN
+	 z0US9CXAApQCBaN5Sm3ub4l40IPdZG9rj3MNaqzS1REM/35la+dlsEMDxUofLG7i6gxFw
+	 a/ewybe2x5+OPDwa0dTpOYf15K7QZB8JrUhHjuxW41eZ3yZnHXUeSDrsQxRRcRHJM9JGH
+	 SAXcdiUFhBIlMnrB9QHEu6b1uZ3WJaU9+LYBdvLMam85KPO71zCUDvzdHKZ1/2x0Jdg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793031153;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=jlkPzgTlmUMOKrW11p2Wj2h4Qapw8gJ3Mse34u5Vu34=;
+	b=I9SfJV/d8YDVgNk43STlMeE+4DsWIknH7vYF646B1KzKIEKYsPlwOpdSg5gJvNwBX1iz
+	 xhyq/yf/t6J72wian2q4YifyUZlaaGrWiELEZtP2dcvAvivhnzSZHrCC+q54MjEL1tQ8a
+	 88cwgUkp+yPGhEd7+QtcU10YU33X7Hs7oQToXuTTc5tBrzBxtqwpeKmajzWFgG1ETQRap
+	 VkMfNpQCwydN6YvQekE/KKrcyqRvmfc6D1PMMAMBBtwKvNK0UVOFYtZtLSaIH+8pdzMOE
+	 7W9/klZxO0sPoCIqFLNRZkrXv3o+9SjgLgxYHnPkXf8lpC+Hu62tpDE88s5W0gzRCag==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VNkRZ8gs;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.4
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013004.outbound.protection.outlook.com [40.93.201.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABE1606A32C
-	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 14:52:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CABE1606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5609606A31A
+	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 16:12:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5609606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=XYbQHvDF
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso20012535e9.1
-        for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 07:52:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793026354; x=1793631154; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VdhjTRpZkzPz14e+11oPuZMjIuI1bMnZdjQ9c48oYKg=;
-        b=XYbQHvDFVxVGJb0sGyso6DF+t5Dq8arR4fwrECaus4PtCrXr6y/OyZkFpXh8XxTxBi
-         UEd1bU/5q8ClAccGtSTNvM+a066omBeMbUc1qqm8I6z1P5Xlv9g/t5a8SF92cnv/AhMc
-         YPggkcmNsxJqvx1j7B56Hr05SfnAt9A1H6b56XrP12DXHVEhKZcqr9Dm6gZcEyhYsoKj
-         n0a2WgQjqkf8aboBxW+DKAWbpYuXnhUxoxfH2NywLCM9n3XfQphojDXSa8L+H/nK2Q/j
-         CyhNBJsQeYr1Bszw6uq305JkuGjnQ6vcfRKWRP/SqP4oTFV2Ky0mOJRks6bBi8pYjUL5
-         Rziw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793026354; x=1793631154;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VdhjTRpZkzPz14e+11oPuZMjIuI1bMnZdjQ9c48oYKg=;
-        b=dHk0uMMLyj76o3PTCoNLydlgP9jARNOrtGbpuRniKtjPIX55Sv6lOkcuKNeMVKe+jS
-         9ksiUMC7Ut+bUgw5V5Wu8RfzNROE33F+KhTeJZtEYuR7LABqKrBOXCVH7ZAcRYugcVU2
-         dI4J39XBchz0RvUS51DgqhmOYmbLS66nNDUbdl0SYKmqUPz3azFwnpXSXENOYA1/qBvN
-         3E9kC0ru3GV1sVLgkHchSvlwBh/wFa5xCdpAM9PKSGaUjruzS6McetgQaEK3iu81zFRf
-         CblnDoQ1fyh1HcQ2U5Caell6QtA8MDc3j77TN/67p0Aa31VSkAjI2ygzc6hu5r18070R
-         JB8w==
-X-Gm-Message-State: AFq9FYKUnUtz63er/S6vXDh5mS3BVORgfN30IZJz/Lb+2/JjwRu2BLex
-	IUu2oPvN9wi/2vVH1zuTmyyrgD8ZYEf7hOA9QRmdc9esnEaVCPvR6lcBwFFL9pqKOEo=
-X-Gm-Gg: AYBFou017sJm1dRvuGBHTRbzQartV9mJ5o4xYLi773iHBnfpoiP+K+NEsf5S1OqANCg
-	ZvU5AYW2Eovv/kZhKsAsQ1ahKxyAnmb8EvXDKYikxaHOUDWQQnJHyV8DsTz+oz8KNHe8uoy+scP
-	5c5zMVrFYNDAxd8CK0c6sC1nNxWlMqb0/R8RbK6cWgcS4IWZGTG0e+MwGp8yfqjjri1nDHdYrOc
-	DULPP4QKX8wmYaSOvgZ8/PV87fQso6D8ZtCLEOE7hrfXZzO0IgyrQwzhXuYagpBt32J4DCIt7RL
-	jloxxTRhgv2cxCWIN8ZmxG+/Rn1kAtpTzgeyYq5E3NpA9stz1Tfd8naX/ltvk0KJjTcf1yFc0+w
-	vrmdmX2xRzq50Eyqc7FGtQpiGiTJHZabxepVU4c69fuSyoYcmVaGvmz5ilWXJ/GK7TuuQQWYDl3
-	UqGahb8rMTgR6njwZ3YuYtDjxPcc/rTt3XbByBScce0j6/J0DwTmwtcp00qOBZAlO32G+SpDghE
-	fPuEPwZCdSqh4LOZ5UALWS3aAqWdvj+uj0yvLqzS5vAH+nuzDHohMzELSh1kaR/xQ==
-X-Received: by 2002:a05:600c:3493:b0:4a2:a6e:80f5 with SMTP id 5b1f17b1804b1-4a35ac9d0e8mr130236665e9.11.1793026353844;
-        Mon, 26 Oct 2026 07:52:33 -0700 (PDT)
-Received: from localhost ([208.127.45.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a04ad39sm528356935e9.1.2026.10.26.07.52.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 07:52:33 -0700 (PDT)
-Date: Mon, 26 Oct 2026 15:52:30 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VNkRZ8gs
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WmHCN5CcKMI7Inqcr4hQND48iB4MZYug+znLE845FJuPkThTvxGYRFAOAFTcR3y04e4DtuVyDvl8FtzskSAsNDMOVrW/sjLKpuAIMjyIiUyvtkFePGaAvJJ9G6RAXx1OjK8s9mcidD7jRrH6XH5rP1aye9I9Cd4kGHmu/Pfy4SEl30mz20fQfI+DO0UUYjREBrRJpEjy4UtdBBwqKTz5D9yuxh+zixhMy4g4x9Sv075yrKAgXBSFOjvo4Bl0Og78yvOAN1CBDrr1/4/h3qob2MPMkC8hzj/sm2iakurRdOy72Om3Ok8H1foTKGeW/oOkrQIhWKarp6/XG6Ykstx/ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jlkPzgTlmUMOKrW11p2Wj2h4Qapw8gJ3Mse34u5Vu34=;
+ b=I9k6kg41OTMnva3aeO+aq+ia3RNxKWIaEZR/Qa1LXdSh2KsBuwdGmRdGxNpC6DPziKR3s7bpsWbJxoKo0STTMtsjxs7Z5Wdqf+QkDJ6w3/K35yVHKCjzDh15KP7o5dzMpQB30uKecR9qN/Nbl3XX4pSJ+Gi/UsMPDZtHe2ACsonuSMq2Wx/O/sxnkdcs2ckd1cUalf7opxmSIIilDfg23jlWvIZfIE2Af2GrL8QSzznXB47RkOgABZgBAfBJerP2TdOS0czy/iB+HIWcKdjNd5dJRdl4hCb9Vz29YcSQ5v0pRjDymdcz5x5ZjzSiMvv6E4FaPuRivYfZKMl31yVUkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jlkPzgTlmUMOKrW11p2Wj2h4Qapw8gJ3Mse34u5Vu34=;
+ b=VNkRZ8gsVSwVIYc9y3gPHhzxGpt1F4fSTi7KNVOpgxm90QDs0Aqmw0lAFQO5LUA1XmOkVPozfhpjTE2l8iEHpmk42x7LKpasMFYZeMjt9Pae8Z+ITLUqn1fo8cPHDu2CnXSxzT4ZatO8bTQ8UevWPmMHGxhU7V11+/5ujyH5ASxDA+uK2YSxvYyVLWmXc8nN2cm67y5r+qw0gd9kLEVqHdhqX9w/1X5JPMlK7ME3fS4iIaFzfEp4yvZXPooWrXkW06LlvoISMq1vu8e0uzXj9OFTwdct+zkpx0uL8bStpmW7rw8wlrMi8m4u5QBUENfIhILhEyNCwv/qgSiYwRuWPQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by CH2PR12MB4312.namprd12.prod.outlook.com
+ (2603:10b6:610:af::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 16:12:21 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 16:12:21 +0000
+Date: Mon, 26 Oct 2026 13:12:20 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
 Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
-Message-ID: <at9nsxtGOl3N5PJR@FV6GYCPJ69>
+Message-ID: <20261026161220.GA1671235@nvidia.com>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
  <20261015145053.3664509-12-jiri@resnulli.us>
  <179302367452.58760.11808905856343064399.b4-review@b4>
+ <at9nsxtGOl3N5PJR@FV6GYCPJ69>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <at9nsxtGOl3N5PJR@FV6GYCPJ69>
+X-ClientProxiedBy: BN9PR03CA0373.namprd03.prod.outlook.com
+ (2603:10b6:408:f7::18) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,248 +107,106 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179302367452.58760.11808905856343064399.b4-review@b4>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CH2PR12MB4312:EE_
+X-MS-Office365-Filtering-Correlation-Id: bbdb8a00-d070-40de-0138-08df337bea5d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|18002099003|22082099003|261026121527099003|3023799007|56012099006|11063799006|4143699003|261021121427099003|10067099003|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+	F6w0XDT9LyST6qOcKb2CDq+wuUDQb3azPD+hJHg7dQzVw+/rFtGAEU8D2nVi+JRvEwbjQCsE6ayM1ARCjAZzhIObxDbCLX5RMb+TfnvGOVSCOwhL8SO1BK9+9YxRnpKJnZBy30vm2nYxTrS84ZqNtaBTy6LC+h9FXEVTcmhTFXxqEiFSr5U5mFvZBXKpZPG2UXotTEIwYjp/F96HcMVDVs/lqyMEWjadjkfTEiD0WWZrn6ADUR6E1FnzuIdGWhe2LZm9T5mrQPo19Sf4wQQTNrYtKYwtQi17l4pOtsojYpwpMWzakHT6ORm3ZJT4rMqjYBLQb+KD1owNHUuT7wp2WmG3q22Bz0rFK0ifry4I6szig+TPiTrCG27s2BnrdyjDSmChDska942Cb6n0KZOiYvUa+Si62Z7fqGQ5BSkjxN3sJixQydsaKrsCe/kBMGH2I7/jSMzDAZcwBkLeyFN1JGbHP2CLe/ZdMWFPxMRdkKP/f8TKTtRtBV3VN2ekH3JDMESXZ873rStfAT7mqGQwldTs2vCdKQaviUO/R9POBfHUoHPtq2vcvl0inE0NnssEG0ypNDVhd+YgqZ4rRVPW/yaPzYHenbIWgPaAIgQ9DTJwqWzoujPRIKlhnD72aj+odH56w87woTwpKmhebwYDYme7IIQ2oN9RXpvZwPVQZSY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(18002099003)(22082099003)(261026121527099003)(3023799007)(56012099006)(11063799006)(4143699003)(261021121427099003)(10067099003)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QPF5V16Gu8NFRhgj/OAzwLAMqP6iS7NPDPhFOAr/XpJ/RK2ZuTOF3S68GG3H?=
+ =?us-ascii?Q?hQEMiM216Xodwp+uV3MGvA6sQZ305F7BhxvkMw1lE9SuNQzYlSISLVUL9XGA?=
+ =?us-ascii?Q?2Kf15koZpSDGlNPNu3rbz6XNCLL0+tZ79V0Z3rLMHUSCHj2oAuXiJD3k8Xgs?=
+ =?us-ascii?Q?3vV59wuav2UuSD2vt40rJIdYAH8veinOqgtBbyAe5ld+hU/TfW4fPT1JuQBe?=
+ =?us-ascii?Q?EErot6t8BVhW/ExLcbrTLLLomnvr+PXZ6YO5Gt/BTix20tqEzy1W3VaJ/+hv?=
+ =?us-ascii?Q?GwOoB5IRwsZbtDDvrEl+zUxaMsTWqw28U4Mq/qHl3CHlFw3HHe35URJ3oZTv?=
+ =?us-ascii?Q?vSfmqMrkbcb27qgFfP2Myys3HOhJ4jpeKIC58xrsm5vwcISec5KJlr6O2xBb?=
+ =?us-ascii?Q?cF/q2QE1q04wrj4BzsD/d9ux/fLNqaUM4ALm5TQEtLT7a/SKxD3vaHBUCu49?=
+ =?us-ascii?Q?DcGfIUVCtj+YER+oScaTProtCUluXTSsiQKoq10kWW3izmpNzPACfe9LadBK?=
+ =?us-ascii?Q?hIQzXpxAMofLg39qsPsIb+BMD+Z/ABCuXxuLS8u3rhhV7fop3bJRbqz7J75N?=
+ =?us-ascii?Q?WFCagsGAwR1GH5HJkUd7JdSeCUhweBgmNyOBbn2IjiiG4aRmDw4fcI97bqnZ?=
+ =?us-ascii?Q?5m+9vV9c2uyL8WjG5mFAyUZ3GLcTynmtwk/X9eVfoAohpLhnyPbNN00DNi9Q?=
+ =?us-ascii?Q?WjZKtiioRDXznzs4DloD3jZvRuEgq7Ch9Ygb56smRqjPjoiL0AMBiUqxmIo0?=
+ =?us-ascii?Q?mL7wlrXMqap+egTC6jMpbwKGsDgxPUz4tQdRdDR5xbHT5eXgQ3g149u4zLq/?=
+ =?us-ascii?Q?uPawnYlikcP0BTioqwrC7fUs/Jpru0k/Ju/jjchg0wBrjWNtDRQJwo7qtGQ5?=
+ =?us-ascii?Q?nr+8IPEL72S3ZG57gP6ewdxoWRS5qPVNCxi0nJeLyPcpAg9ysqF7W8qzKUJM?=
+ =?us-ascii?Q?CESOiAbxWd0749c7qpnUuXEFnCmfAfh87rbxX+GVnDXa5+VtEmQ7rU8pbJAq?=
+ =?us-ascii?Q?Wzd1lIL9NJeaDMhZgQ+teScoQEI79ABkiKMeUqBX7E0SnYPhVPVS9EMQG5bh?=
+ =?us-ascii?Q?vq7/pI3Zl9B2kuXAwbwI2WRWkQkcF2oFa02iidJUHl7F55U0aFTbK8P15HwG?=
+ =?us-ascii?Q?op06xsLN9+tmlLS9qa6ry8remCb3q6lO1UgDipVC1+wGvWNlcLwIBjsWUBxb?=
+ =?us-ascii?Q?jrRrMEB2n77g5/f+KqIr+GabsT1Wvd8S9oyqGOhuCmexIbksULI9CG2MCwWh?=
+ =?us-ascii?Q?61f6mcWaM+bE4uWjSFTAjgheE0N1S6Adot7tgCL9fzXf3hu2/ei3k1cnWHTg?=
+ =?us-ascii?Q?oEGqtMop6Epdoj4wk03CHLoNVHUCWGBHN5CsqkArD7qY8PkwJkF1jJmihTZZ?=
+ =?us-ascii?Q?lfMJIHuisFk1qk+r6vGby2ff0xeySMTrYHCPSEgdWZBwfKmqaiOkq/wdpcr4?=
+ =?us-ascii?Q?OdigYp18hpDE6DY/sj8uwKbYRoqTR5+Vze9m8eAWSR2sJNnU8XnCsox46zsq?=
+ =?us-ascii?Q?jWAlq38ETsIDUyWhWhkj5WYzMHbe3QFdYDiq+j4eEVC6SibSPm/qlTgGm8bA?=
+ =?us-ascii?Q?u1ndEsiAHAOHmwRgWi5nMu17XG8R8YRYZw6etkDrGe+tG83sBx0SIKBjjQhD?=
+ =?us-ascii?Q?baXmqOdbyqtuolsZPxl2HFPRFFh3KCe4WDcS4gpiqt524efSRJ3+687hTPA4?=
+ =?us-ascii?Q?gsiBfVfI8fYwRDAUMV+jBIhX7483J7ponXdvOoyW2rSbmGFS?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbdb8a00-d070-40de-0138-08df337bea5d
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 16:12:21.6990
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: D4tUu3CnIgi7PfZwokGmK419h3hSMflqsHwC8zEWObXc3+dVIoXy+5vrwPvgF0CX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4312
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
->> [ ... 53 lines skipped ... ]
->> +/* A cursor packs the record and member where fragmentation resumes. */
->> +#define CTLV_INTROSPECTION_MEMBER_SHIFT 48
->> +#define CTLV_INTROSPECTION_RECORD_MASK GENMASK_ULL(CTLV_INTROSPECTION_MEMBER_SHIFT - 1, 0)
->
->Use genmask for everything:
->
-> #define CTLV_INTROSPECTION_MEMBER_MASK GENMASK_U64(63, 48)
-> #define CTLV_INTROSPECTION_RECORD_MASK GENMASK_U64(47, 0)
->
->	pos->record = FIELD_GET(CTLV_INTROSPECTION_RECORD_MASK, cursor);
->	pos->member = FIELD_GET(CTLV_INTROSPECTION_MEMBER_MASK, cursor);
->
->	return FIELD_PREP(CTLV_INTROSPECTION_RECORD_MASK, pos->record) |
->	       FIELD_PREP(CTLV_INTROSPECTION_MEMBER_MASK, pos->member);
->
->> +
->> +struct ctlv_introspection_dump_position {
->> +	u64 record;
->> +	u32 member;
->
->Maybe a comment describing how record and member are encoded for each
->of the users?
->
->> [ ... 13 lines skipped ... ]
->> +/* The immutable root-first chain always has generation zero. */
->
->This comment seems out of place, it should be closer to the 0's it
->refers to a function below
->
->> +static bool ctlv_introspection_family_record(struct ctlv_cursor *reply, struct ctlv_cursor *entry,
->> +					     const struct ctlv_family *family,
->> +					     struct ctlv_introspection_dump_position *pos)
->> +{
->> +	const struct ctlv_family_schema *schema = family->schema;
->> +
->> +	if (!ctlv_family_entry_start(reply, entry))
->> +		return false;
->
->I'm finding it quite hard to go from this statement to the YAML. I get this:
->
->CTLV_NEST_START(ctlv_family_entry, CTLV_ATTR_FAMILY_ENTRY, CTLV_SCHEMA_NEST)
->
->I asked AI and it said it was this:
->
->attr-sets:
->  - name: family-entry
->    attrs:
->      - family.id
->      - family.name
->
->Which is some cyclical reference to this one:
->
->attr-groups:
->  # One record per family of the chain a device answers, as reported by
->  # families-dump.
->  - name: family
->    attrs:
->      - name: id
->        type: uint
->      - name: name
->        type: string
->        max-length: 63
->      - name: entry
->        attrs: family-entry
->        max-occurrences: unlimited
->
->But having poked it some more I see that AI was wrong, and it is the
->reverse..
+On Mon, Oct 26, 2026 at 03:52:30PM +0100, Jiri Pirko wrote:
+> >device-get:
+> >  request: {}
+> >  reply:
+> >    caps:
+> >      evidence?:
+> >        min-challenge-length: uint
+> >        max-challenge-length: uint
+> >        max-total-output-length: uint
+> >        objects[]:
+> >          blob-class: evidence-blob-class
+> >          format: string
+> >          representation: evidence-representation
+> >          max-length: uint
+> >      mr?:
+> >        mr-flags: mr-device-caps
+> >    info:
+> >      $extend: device-info
+> >
+> >So.. how about could we drop the sets, use a direct description of the
+> >layout and do something else for the ID numbering? Maybe the numbering
+> >can be solved directly by only listing the names in:
+> 
+> I didn't want to have a lot of duplications. Netlink show us that the
+> same attr, or attr group (or nest) is often used in multiple ops. It is
+> not good to repeat them each time (multiple obvious reasons), so I came
+> with the sets and groups. But I will think about how to make this
+> possible to be formatted in more readable way.
 
-Yep. Already spotted. Will fix.
+If a "record" is re-used in multiple places, then sure, put it in one
+spot, not disagreeing with that.
 
->
->But.. Where is the actual op? I finally see it is here:
->
->ops:
->  - name: families-dump
->    type: query
->    fd-access: read
->    reply:
->      attrs: family.entry
->
->So.. The op points to family.entry which points back to family.id and
->family.name through the attr-sets? I queried AI for a while and came
->to this:
->
->  The confusing part is that the family group contains both the leaf
->  attributes and the container that holds them. Their grouping
->  establishes names and attribute IDs; it doesn't imply
->  nesting. Nesting comes from attrs: family-entry.
+That can still work out with a clearer top down flow, more like C:
 
-True, will fix.
+records:
+   evidence-object:
+          blob-class: evidence-blob-class
+          format: string
+          representation: evidence-representation
+          max-length: uint
 
+ops:
+  device-get:
+    reply:
+      caps:
+       evidence?:
+	 objects[]: record evidence-object
 
->
->I don't have a constructive idea yet. I've been trying to understand
->the yaml in this series for a while now, and I think it is just
->unreadable in this organization. The information is spread about all
->over the place and it is very hard to construct an idea of what is
->actually in a particular system call. Maybe the missing html
->generation would be helpful..
->
->Poking at AI some more I understand it is like this because this is
->how the ABI numbers are generated, things need to be in these lists so
->they can be automatically numbered.
->
->Going the other way isn't much better..
->
->ops:
->  - name: device-get
->    type: action
->    fd-access: read
->    reply:
->      attrs: device-reply
->
->Okay, so then I see:
->
->  - name: device-reply
->    attrs:
->      - device.caps
->      - device.info
->
->Uh, why do we have this extra layer? but OK..
->
->attr-groups:
->  - name: device
->    attrs:
->      - name: caps
->        attrs: device-caps
->
->Er.. 
->
->  - name: device-caps
->    optional-attrs:
->      - cap.evidence
->      - cap.mr
->
->Getting closer!!
->
->  - name: cap
->    attrs:
->      - name: evidence
->        attrs: evidence-cap
->
->Oh, apparently not..
->
->  - name: evidence-cap
->    attrs:
->      - cap.min-challenge-length
->      - cap.max-challenge-length
->      - cap.max-total-output-length
->      - cap.object
->
->This time for sure!
->
->  - name: cap
->    attrs:
->      - name: min-challenge-length
->        type: uint
->
->It is too much, this going back and forth to the sets is very
->obfuscating. Everything is called attr. There is no editor aid to jump
->between the sections, by the time you figure out what type a single
->value is you've lost the trail for the rest of it.
->
->This isn't even that complicated, if I ask AI to explain it in a C ish
->language:
->
->struct device_get_reply {
->	struct {
->		optional struct {
->			uint min_challenge_length;
->			uint max_challenge_length;
->			uint max_total_output_length;
->			struct {
->				enum blob_class;
->				string format;
->				enum representation;
->				uint max_length;
->			} objects[];
->		} evidence;
->
->		optional struct {
->			flags mr_flags; /* read, extend */
->		} mr;
->	} caps;
->
->	struct {
->		/* device-info: filled by the derived family */
->	} info;
->};
->
->I think the yaml names are not helping, calling everything attrs
->everywhere is really confusing. At least the transition into a nest
->and an attr-set should be more clearly marked in the yaml..
->
->The yaml would be significantly better if it was layed out according
->to the actual semantic flow instead of artificially being twisted into
->this need to put everything into a linear list. AI invented this:
->
->device-get:
->  request: {}
->  reply:
->    caps:
->      evidence?:
->        min-challenge-length: uint
->        max-challenge-length: uint
->        max-total-output-length: uint
->        objects[]:
->          blob-class: evidence-blob-class
->          format: string
->          representation: evidence-representation
->          max-length: uint
->      mr?:
->        mr-flags: mr-device-caps
->    info:
->      $extend: device-info
->
->So.. how about could we drop the sets, use a direct description of the
->layout and do something else for the ID numbering? Maybe the numbering
->can be solved directly by only listing the names in:
-
-I didn't want to have a lot of duplications. Netlink show us that the
-same attr, or attr group (or nest) is often used in multiple ops. It is
-not good to repeat them each time (multiple obvious reasons), so I came
-with the sets and groups. But I will think about how to make this
-possible to be formatted in more readable way.
-
-
->
->numbering:
->  - device-get.reply
->  - device-get.reply.caps
->  - device-get.caps.evidence
->  -[..]
->
->?
->
->-- 
->Jason
+Jason
