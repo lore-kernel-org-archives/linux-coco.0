@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793023699;
-	b=2Sws2EBqySZf2vglMaphxtZtd+CuEGrYB2vE6Ny52sRki1b2inEt0cHRjKFGWcV8Hki2
-	 ps6LqPE4JBN7I+tjsVqa2JduOZUdVfX3NoUesnqGcpmGFgYArIxivnDigYtNEa3QownFR
-	 DrKdkWR9jeIb9XkpIMch077RFxNc6Bz2gzaShHvl9nRnMf2ojFKHEqhr8upGSHqLPl1bL
-	 6a/ZQztQf+XRlzOQ1AEciacdTE9hhot4kcoykwR1f3VDcmY8TsE+Bi961bmnmGAJx/3FZ
-	 j3QJ/PHavQau99Sj8IwlPOJRH7vfRX03ZXN5S4p5E9EM5hyRK7WVkdhTwL7Uv1yFlzg==
+	t=1793023705;
+	b=KzpBCDtQBW0jzh2qSjBgwJGM3dUBsQrjKk5LFAXzZgvCVUouYKPCLWp9eofD6gWzmgCs
+	 /E3iBVjpwkxM/1m5owRFdOZu/w2Hej+Cw63/lqNh0Ppw+S3myhtYKIWmAL584GvX4EQ8N
+	 0ta+i3+zTxT5EIf4k9/o4qAQhuEJSPLHNkCSbz95Ae2ihhurTxgfWq9qjbVXwwlw50Y7l
+	 1VRAWddUITZR2Lx1wAtrPaA6VBd7oc0wYgryW31hEoH07pQVQv83mUTk8nddGkEyjdRcu
+	 wEf/74tJ7W1xm7HdPd3eitDBvSYnB4hlwQhRRk791AV40Z+SVSmyC6OgjgkdGgoyURg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793023699;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793023705;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-ClientProxiedBy:MIME-Version:
@@ -24,57 +24,57 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=6A9ugxWIGCXfoXiXLYwN/RGr6dW8W9ZoGwM7NmVe31I=;
-	b=2qxHQVh7SSrcLY0mo1yhHdG4qisw3wx9RuxKWwiumGMPy3ovNwPIvbKdLHdW66erca0a
-	 a8dMd6E8yWSioEkWufBq87sVUiFuZgmBPD0SMB1yWhqNKY7OrAUF1j1Xhf55svRPZdDej
-	 ak1dXhH47XtNv0oxXEbVJw/LwZRfA44sVi4BQfkHJ5GVvrspmtTPXk/2nZk27/KKuStVF
-	 PRzczf4LYvf74TftDNnbyZJnnONK+yxfXyjF2N2yhWadDnzVkbnaPM+vW0UqEHZRjbHEP
-	 L4i2DBNAk3nsXZu9kT6ZGibX0eF8NfYrug2K7NUyhM/x90ufz4h/5ZProtOFir4dkSw==
+	bh=HmN6qMj2q/RAN3RMFibA/CYYSvxqf1Qovxi1RH4w5v8=;
+	b=NVl9Ign6vGvSYbbg50r3QEc068yXAz8GWitVuNBjQSzQAAoQbFMExvqyqpBz9OFXP/q/
+	 g+bdYXIO9u5hYv0PzKn9GjEmlS7MJM7Q7I1ePq79uk4B7aaI1BZcaTCYJS3gNW0yHgmMD
+	 kv4Gd7Ju+nOyndVidphiS5sxOMWXpnnkdS0euCzmQdoAiHXfcVcGpEcnMxO0XWGPYkX7L
+	 icTzenKskGgm/ZM9xs7zMZrvoWqDuMZx41TGaH4EZMKWjnYC4/Xli9wmmsTtLjw8cx5tQ
+	 Nq08p3XUmzwUl9v3LEa6q4arA3CU8dRZDcHbmZp/0UwLbfofViK8iIjcSHJMtRdDPow==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GpAG9tzI;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rMZAwtyb;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.18
 Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013018.outbound.protection.outlook.com [40.107.201.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02E7606A326
-	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 14:08:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F02E7606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4375E606A327
+	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 14:08:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4375E606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GpAG9tzI
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rMZAwtyb
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gm0JwdP8A5egER39qWE0Z62+soAKsqiyIy3PKxGT974HP/BA6ybcXFajQm/bn+AK1UQnDz2/2dXSYv/BTicnLWmDCIMGHsQe3VviE4tFNBk1d2EIuFzXwFdeOohbsdI4FpcvqHQPqXCBBQfyOLdmSac6+gDwZfzj7UL8Gkvlnah9+qpOIWq6Xba2mtuG93AFu8KAEKxLFgTLMgTW2DdYeiqnjX3wDWWLzeyWzaHGEf2ZmZba5hNm/8mphbiyht+Q2Oi4EuQG95rk+UoKB64FakSJzwwAzGva/rDcIIHmZYrr/Vt5oyWpnAtcH7/PJjA4kDAb9Cll+syErdpn5oRH3A==
+ b=haNA8r5xEQpJgsdAdD0ig93q9MnG1LPFYFlKT2ZVvaH9mnsdnE8VkI8UFfl6V/96K0llLv8GYnXzHJ+iBIK9sfL/YsE8lwYLfXxHQSlgJ2D4abcaJc3BnKVRmbsngph5xmAB/kT00w/gtNS4efoMPuX8Olwmd3CccG9hPUOc1XOCl8LFZ98qx18jtUOsQ0Cjp0IFhn0j+0uKtNtGEwI95XNS4JFIQyVETb/mv4e5rBzl+eWYFp5C5NSVNsKIdGVFq03t0hNOng0Co4wuHH+kcxFvtqwQ5ycn0OBwa55awfy19RWLESwFtkPalhSsfZlvea8+XDlWOYt3MX5j8anjLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6A9ugxWIGCXfoXiXLYwN/RGr6dW8W9ZoGwM7NmVe31I=;
- b=infyrKIQAUUKUh5DA+gXmchKh1V1rjzSIlTiWgU3D1AlvXCOmTscDZs0+P22j/h4Tr+Wjsf98EHJaC6OAHwuoL/RMpp7UpuCyXLNsiTgTpGTXsVofyPlNaUVS6i1Zqq8TVEJ6elgghIacy5xOZh6cNgpTx8Vs2p7e76y0M0D9TBUuXTQ3rQD1CqyjOM85+ijc4xgBEIk0AE2xK+cujCgOPuDm6E9py1QLweZ6/5oF2GbhUww2F/9wuQPEzW/XfqB3414r4oquT5CXZx03ZrAwQ6lluHP8U8xDMzmzUfZctZNjBa66EL689Hxcok71Zsrn7M7D78Ho5QxF5/oascOtA==
+ bh=HmN6qMj2q/RAN3RMFibA/CYYSvxqf1Qovxi1RH4w5v8=;
+ b=n8AYUN8J8I6LPadDVZ0TRBJTlla95Te6bU2iKrTI9A4BRASUf0l35pbLO15X7P1NNoIBSBR/VQd+rLoBVjWr2froOwZOTCnPNq20YASXYIdqR8Yij3wHSfJiKrVRsF3f7o0izYYc8c8cDKSqgSsCsV8dKVZf4WFBXK7gQ3566pd7K25Nc/uulhFlz2C/FsQowlX85VU0PWFzQoISoZw7j9pi5u9pOv9D2dP7T8gtnfHaMDCsD8PY8dUvK06VhWabXZ0SxMLM3Xil11FbiyJTd+gSMwRxsUohW3N4Oqb9VTVog/KTVsFGNuJ1IUlGDZcbGPe/95SAKQmnprithUul8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6A9ugxWIGCXfoXiXLYwN/RGr6dW8W9ZoGwM7NmVe31I=;
- b=GpAG9tzIXfC0SAYWxoY4ulFgOVVOzdPqaBs/5WTg00NNXtDZ8eVNZTvkzKAFSbsRD9Mzcuj924AQIqsI6HScpkYSwlssaENM8PmAA7Edilwww7Owya6GWsvRSYC5cB3rl2iz5Y2q1clwuB/FccpOs+cYN0RhnZ9/JLXFZBhLDBMXZT0zAwErFqEUoiHF20/J+TeKbrxdA644lSdjJmjbyr5zHDdQwez75azGuBDgvWVEA1yhhvtgEvrWkwhsU1/k8RjZm/mw4UU3DJhXYCwl0jSI1JwLXBLlWiDfX92KHMeWVRAtPx/KgkYNy4eS8kTX0hROWZRJL3a6KsrQJzPpVw==
+ bh=HmN6qMj2q/RAN3RMFibA/CYYSvxqf1Qovxi1RH4w5v8=;
+ b=rMZAwtybCs+6KTY6yX34T+BA6zPfwz56C+66Z/qwo50zZ8BsHK9MSn5fvOwAZ13TaZeHBijpep9toHCjCm8l8rSofTQtX8k8TLzUOY182x9s8PtN1Ck62ZXE64E2Egh6Yy7Hzkn9rUHZhLImwhHmQqKMYX5WpuTnsN45dgLbmIwENuEty12UCj0pmelBjWBRZpiwyALk9bDGoTjvZqnn5R9jcihaNecag6ew0dP9+DMotuKWUcHXYuIpam1BKXf/tNyQOu7ErfZaWr27txnBsARZ8V+niNW/cBlAkm3KdtEkN0XiQzePf0nL7yMaWTaH0aHM07MGj/y/3c0vqS2C0g==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12) by DM4PR12MB5961.namprd12.prod.outlook.com
  (2603:10b6:8:68::21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 14:08:03 +0000
+ 2026 14:08:04 +0000
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 14:08:03 +0000
+ 14:08:04 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
+Subject: Re: [PATCH RFC 12/20] ctlv: Add device and operation dispatch
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: Jiri Pirko <jiri@resnulli.us>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
@@ -88,14 +88,14 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com, 
  dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
  peter.fang@intel.com
-In-Reply-To: <20261015145053.3664509-12-jiri@resnulli.us>
+In-Reply-To: <20261015145053.3664509-13-jiri@resnulli.us>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-12-jiri@resnulli.us>
+ <20261015145053.3664509-13-jiri@resnulli.us>
 Date: Mon, 26 Oct 2026 11:07:54 -0300
-Message-Id: <179302367452.58760.11808905856343064399.b4-review@b4>
+Message-Id: <179302367452.58760.16195458599265885835.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-ClientProxiedBy: YT4PR01CA0240.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:eb::14) To CHBPR12MB731189.namprd12.prod.outlook.com
+X-ClientProxiedBy: YT4PR01CA0265.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:109::29) To CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -108,290 +108,92 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DM4PR12MB5961:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffc2f39b-53be-496c-5bc6-08df336a8c0b
+X-MS-Office365-Filtering-Correlation-Id: bb905a0e-14dd-4147-0ffd-08df336a8c67
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|56012099006|11063799006|261009223027099003|261022105027099003|261022113327099003|261022075727099003|261021121427099003|10067099003|22082099003|18002099003|6133799003|3023799007;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|56012099006|11063799006|261022105027099003|261021135927099003|261021121427099003|10067099003|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	0p1Wi4gHodGt4kKULhHjvIlju2naX8GPp+hvAMgoV6ZgwOAzeix+/ZDJ+7iBGpDOLpW20Z3Iqasgfz4b2hrA+qNu2d/Ph8zYTn/NhuwqTQb0ZHbL++9Z1Cy6Kz71dau4Elq5gmf1QGPC/gFDfwuxEEbYWxeON779kHmuEqYFfHTFeYYcxnR7fDfjP6DM8XuWbkCmt0F2wBzRxgso5rC4bJd1IdigpvSDNAUypgVP6L9ftijfLJpvtG7AjNwbrtSj8Gh6QRAWfUGPkwuJAnz0y7GUrUUNuFVbPpW49wUZhPPAbsTUaENLu6RYdLKkhQvEqlgj9WBDteMHZt49ezWjsEbUGaKRJqvVmYiPuxlq3flqhxT+zTUA+2iNZDiXyinFCfBUoaASZVb7SE0kohQRLonsEQIrswBr5kokFn4c92kmLf7jo8sFks6uhG1jPUBef1KVD0tgPV3EiAct1aefbHy5AEtDBufMq65bz8KXhEYbetq94sztCbSIDOv28NAoYWcllc1MkdWtex6on0ksd/cCeZN6la/4PVl+LzTypEaHczv27PfhghuEzI89cyfg7FS1eCNWT7tT5J5Rmh3QCaVorQia8Uzn3iCyO+O/yQ/MWSOKuBXd5UL9OdjGuDAxfvQPDwy7a0WJIj+3YhAe45UykNjKBVw+wDWvftsJBSY=
+	+PrnCe0w3lSl2NzsDSCEKNFjyUA0uqC/OJlOCCHf2gNBBbiDjGuBxrU3U49W/XUGp1InzFXcOZ5R7ps2ss4BUxVwYx/5zAX5nraPwgKjoKVVreCeBYXYAp4pEopO9D7Im534x7Hd3FlxB3RNC9ck7/cehyaX1E0FrOjPFSI0+uVUbWdHmgfvtXPVbBxSIw/bljsrqvOEsvF7pOtzj8ClbDzpjBUJI352Uz2okCbe6yDNsNNSncOcQcMjYElKRirAXDtBhA8+urJOEppIoY2PXDap65EubpWNgYUoj+j+yv6Hf4VGGbt5k9ahE52TmHiuUG/q7YeJ1wG+s4Ls59qjHYtBAtoc7KarFAvoPa0L1YCqBXreMZ+wp8FCM3SgZmVi0/jxkefFgCNuKDfFQZgZTB9LlonCbDaFZSVndXHHwQ2J09x7zhQ5h9m4iHIkgZ34rKyTI2+fCRxJVIvxDE/5pRJPD1Z0WHXFDX93rzXdFKYHOFdTVAL26uhBAV8sHH/+blVdfMF2IxPLHAd1uXjeQwtqq9i+wMAl5fNG6tA3Yb9BfhCl5PuXzZYvSFwNmyrkIvD10s3QODyI7+MyGZ0WJzzze7JWnPpz5qb+qsHCD19ADPG3XmPTdBHdJPoyOuoHdfOFWx2/bzukVGvmxW4Y40JUZ4SXN+9L7EGSj+amXYI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(56012099006)(11063799006)(261009223027099003)(261022105027099003)(261022113327099003)(261022075727099003)(261021121427099003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(56012099006)(11063799006)(261022105027099003)(261021135927099003)(261021121427099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QlhCcmRidkgwMzlEeXlpZ05QUnp4RmVQWFM1SjFlRXJXZHFkeHhMVTBJZUg4?=
- =?utf-8?B?MXIwZlEyUENmV2txaHR3ZnphOEJIK05ZWlhjdzgzMlROQ3htOGNzQ2NLTWFL?=
- =?utf-8?B?TWZoNFphZFNTT21IQjAvdWtSK0RrVnZaTHpMa0h6ZHozNzBEOTlPSzRoZDRK?=
- =?utf-8?B?dXpyeDBMK2MvZGFUcHRMQitGYUthTWZXZW1ZcVpqcUdTSlJ4bzlweFVPSmJC?=
- =?utf-8?B?cFJob28rQUczZzlyQ2ovakNlWmlkZDVCUlZBR0NZQUpZQVFSTlNiNERIMGIr?=
- =?utf-8?B?d1grbGg0aHg1QjBHQmtKVG9GbFJsVW9zdDc2TERnMGtITFhOSy9rUEJ5RVFY?=
- =?utf-8?B?RjZ1QnNoQUFZcmZwL28zTlFkQWtQbFhDaHhvUWhTdjJzdlRvOWxEak9MeTFx?=
- =?utf-8?B?Ym5WVzZxUThxZ0YxRlZhWkVQdlljMTFmenpqSkFKL2hBczUxNjdWU0NTcmdD?=
- =?utf-8?B?Q1BpTDErUS8yaW95M1RwcVhCaWp3ZHg2OGZEc3h2RVJVOWlpMkhtMHJqc0Zy?=
- =?utf-8?B?eHI3NEwwRXNrTSt2V2g2TG1zblJsdjFkbUZyOUl4ckR2L0RmYklIK3o4YTJM?=
- =?utf-8?B?V2JrWnlPbUhQbUJjbkduTkdkNUdYWFpZTENTY3pyTkFoTVVudFljN0JJWGJw?=
- =?utf-8?B?c1pQd0tNWEtpSWtPRUVHVlpLMXFHa3BYVE9kd1lHZGVHWDd2bUl0RGQyZ0do?=
- =?utf-8?B?N1JDRXJnbjZKYkpSbmtFQ1BaWmxJZm1scjdtcjY3b3IrZ0lWR20vTWdQUXJy?=
- =?utf-8?B?bktOYVptSVZpNHg0UWM3c3ZqWDFtc29vS0o0MGRidEZvWDhVb2F0NFVudHdj?=
- =?utf-8?B?ay9tOUI4WlhrQjNxYmZVbGFHcGo0U0RMOVVDbm13T1VkZXRPdUZrQTJJdGE3?=
- =?utf-8?B?UVU1cHpVYjl2c3lxK0VVK2NCcThxMzl2ZnVLYkJ0KzNhU2EwaEpVV2lWa0do?=
- =?utf-8?B?QnZ0ZkNhRlBGdTdEMm5qcDRuV2lNZHU4ZjU2L1pJa1RRd0J0NW42ZCt2SkZ1?=
- =?utf-8?B?MEZCWGp6NGFVMjNoVWpHaVpLWHpOMnM2Q3R4Yk5ESU9YV3dOU2hFc080d0Ja?=
- =?utf-8?B?K21oclphYTE0MUVRNDV5T3FVeThibENpZG4wbjRaeVZIMGNvVDNMOEkwMVc0?=
- =?utf-8?B?N3dWWFhMNkxZNU5HY1JBMmZZZk5kdzZDc0JBQlo3eG1WbWRXaWk0NDJHSFNJ?=
- =?utf-8?B?YWxIUnVhK1dZV2Ftc1YrRlp2N1cvdUdnMXRHUlhiclYvSGIwNXNOVVZSQnFB?=
- =?utf-8?B?Uk1HSDh3K1NkMjRwVnFEK096akxoWmpRMW95NklUSFh0VmZjTWZNV0F3bkNh?=
- =?utf-8?B?ejEzM0hoemhGY0VLTTF4cXBBenowbHZsZWV1N1dLeWlzZWUrZ0RMT1ZjL3h6?=
- =?utf-8?B?VW9uRTFUNVkzWXBpZEdVT29OdXlkQyt6ZnV5cklDdXl5dGM1SnVCSVNEUkNF?=
- =?utf-8?B?eG5iMGdzZWkySlh3elhRaUs1QXUxb0Z6TDM0YThoWjlONkcyOGpQZnBLdFZG?=
- =?utf-8?B?UmZxZ1ZlYkVaRHk0TDZHa3lHUXlac0l2UnB4WjRCdTlMSUVZMFRXM1hvVG40?=
- =?utf-8?B?dXNucnk2RS9CU3NrSkRaYXZXdUVUeng3clZ3eHVGdjZOTWN5TEN6dTRHZDRk?=
- =?utf-8?B?Z2k2QjByMlUyK05SN0s2aU1ZdHpIcnpPbGxJMTg0RXRmb3hnWmhPN0Fjci9o?=
- =?utf-8?B?QUhBaEdxTTRvL2ZqWFZMMFdKTmcyQTczS3FYclRDcUNneThBWlkzcmp1b0hG?=
- =?utf-8?B?bzV3K2xHNDVFSW9xZk5XS01pYVRnNVRCWms2Q1lOaXB0aHdVRmIzK2hnendG?=
- =?utf-8?B?UGJyWkRGVzJxaUVRQmpCcFZrb3pYYjFsV1QyY0JhaHplK2JFV3NQVlhNNVJL?=
- =?utf-8?B?WGFCaEQ2WU9LNEtJN1BSUlJBS1BYY2JoNlFXTzZBM1FqSXdBT21ObXBwVUdZ?=
- =?utf-8?B?OER0Z2ErWEh1d1lDL2xhWFB5TjhYaXJHK045dTVxc0JVdE5tM0lBbmlDQ2RC?=
- =?utf-8?B?c05CTHdxTk1KL3FubXA2SjhSWmZUcytlL1JyVnIyaGtPelFiSjVyRVRTUzVW?=
- =?utf-8?B?c0tGMnorRGNzck56TFFjdDhiTkRZVnd4WmFack5FTnNWTDhPQ2VKRFFId3ZK?=
- =?utf-8?B?WlBGUGZSY1dON0FIZVZCVWN1SkRGK2lreTJQOGMvWWNSU3VJZWJSQ2lucVZP?=
- =?utf-8?B?Y215T0hOVi8zeXdVa1pzUndkejRjbEJaNTZhUmlmUkNyNE5hb2E2QzJ1WVJS?=
- =?utf-8?B?NGtwSUVsbmFmTFFTNlJmUUlqTXpIdTdBWXQ0c0hvajZGUDdtcjk4dDU0akZK?=
- =?utf-8?Q?bO2Kar0XmsPGtCP3k8?=
+	=?utf-8?B?Rzc5K2FBbXpXb1FNY0daa3ZyeWZJNDRNWUc4bTAyOXllS3Q5L3N3MEFsdlNO?=
+ =?utf-8?B?ekVlZm5FZ0NsYXUyTTZxREdRVWMvMEpic0xnbXBMT1B6RkNhK2pyRlpFSWdR?=
+ =?utf-8?B?dWRCOTRsdjRwRExMakxQTlFRT0JPV2RPZUhPS080UFVtSVVnN3FKaWF0ZU5a?=
+ =?utf-8?B?THNXQXRRcmtld1Z0R2kvSm53SlhUVjA1Y2lnbGlZTE1DQlJPQ2VseTY4ME9h?=
+ =?utf-8?B?b09DVnZvMksxV2ZVUUo5SmpEOURMVmtmTlhrbzhGR2c5Vk1POVFPbmpySTRi?=
+ =?utf-8?B?SldtTkhmNTZSUEVoaU9jWUlQKzlUay9pa2NnbTdiL2V1enAxT3RYdVhJMS9j?=
+ =?utf-8?B?MURqYmlLYmUvbjNMaXBCb3ZEUTJ0WlVyeS9qYnR3UlBjNmVLN3ZLSWlHOHVR?=
+ =?utf-8?B?dndQcEUvOG1Rb2p3YjcvTlRFZ0dDVEhENXNJRVd5UG5BemE2N2x3NWk1Y3hn?=
+ =?utf-8?B?VVd0NStjeG01ZlV4Uk9aVlhtamYyaCtRVXVKdm5YQ2cwM0JnWWlkeHBTcy8y?=
+ =?utf-8?B?U0ZjUnJlY3lwNURiK0ZtQUNKenZtNWh5TlJHbTNlMTlVTDFzMWo0Zm9Ia3JC?=
+ =?utf-8?B?eVZ0ejJVUGhvQUZTdE56cDNWbklLT0R4NE56TTdxN2doL09WWG5EUzJjYlBD?=
+ =?utf-8?B?V0NyVEQyd1E4SHVDVFZpcUpmVmUyS01IQm9IMldqTEJ0NzRlVW42bWpmWHhV?=
+ =?utf-8?B?NXhFZWNJdnlsVzhUL2wwTk9xZUVXWVlLbHd6VTRPOG5ZS0twMmNyUGhieWFi?=
+ =?utf-8?B?REVabkZQdDZxT3FFL3pWRE1BckNCU3FIRFRBTWdlbHlOZFdrQ1pJZHpOWURh?=
+ =?utf-8?B?Y0hpVk5ialFGUWxVbDVmQlRTUzVxVm1Kdkd5ejdJRzRnVkg1TktXeERsQUFh?=
+ =?utf-8?B?RmJYallPK0M5QjczdTd5RGtwdW1zeFVsMjVFVkE0dE4rNFRCUkw1SWE5TmVV?=
+ =?utf-8?B?Q0JaaTJUQ3FwQUdRd2FyVk1WTFNnK3BxREVoYVNFKzU2YkRrODViY0NZOGdS?=
+ =?utf-8?B?ekFCTWw1Y2ptM0ZEbGZPRFduOTh6MGZxUzZua244WXkxd2tEbUJma3FSdkx0?=
+ =?utf-8?B?MEJ5ME9LSlNxRGZ5bE9ZNjF1ZXBKL0tHM09tTUZRR2loTDRjT1o5T21ELzAr?=
+ =?utf-8?B?OUdXeXB6ZGZuQ1BuenZ2OStobkQxcVRTZU9TamJXSHB2dGY3UmdBYkR4Rng3?=
+ =?utf-8?B?OVh1MFF3WUl6QW96VWlzTW9ud3lBZjhHQVJGWmU4a05FMThKUnpWVzRLc2tj?=
+ =?utf-8?B?c3FwWWcyV1BDVlRIRkVDS29VdU5rb1BnTDQ4a0F4cUpkcmRHTzczU2kyTVdW?=
+ =?utf-8?B?Tlk2aVRKRGpaWTFjZTJONS9YQ1hHN3MvajFTTnFhb0tPcWZVSklGQ29Ld0dP?=
+ =?utf-8?B?OEdKb0t0NHdwWGd1aVBVNWRzQ1JjcVZ6T096QzVxV2plREZLTlJjZEZ3eXU1?=
+ =?utf-8?B?ZEFaVXRuOWRtQ25FODdYVC9NanJjeTNsQ2VnQS9NWEkvZWtkaFFUWTVEdWNF?=
+ =?utf-8?B?akxhdUFWelY3Wm44aVdCb3JoL1pDYjFRQXE1ZHBUOHpacFMySzNpUSszTy9T?=
+ =?utf-8?B?bFhtVnhQK3poc3dwYU83bkljbzNFbjU0TmpnMkRJNW11dXYzYmg0MkRXYlRs?=
+ =?utf-8?B?VTNuamJsUHphd2RlYUpVOHRYZUIyZGpBTmZPV0hNVzd5L0gveFZGNUN1Sll4?=
+ =?utf-8?B?NFg2YmtWdGl0b1R3YitCVjd3V09QY005TlZIeGtkK2dhV21SR0t0ZXd5K0Rv?=
+ =?utf-8?B?cElxZ3ZFUlRrQWsxTVA0UFhHK2xSK1FKR0hTRmZXeE5nUy9jVzFHYkFUL0pR?=
+ =?utf-8?B?RHdVTVgxUHAwNUEveldhbkZtdDNNMFY2UU5hbjg4aC9Cd0FGL2x1K3NlQ0ZZ?=
+ =?utf-8?B?VGlMM093Vml5djNML2pDYzkyY3FGcjArY1pGS3ZCMThkWlNNWUZCRnVqVndp?=
+ =?utf-8?B?bXZjTjVaTUhZbEZEYS9FOEJqRXFzb0hURUF5MHBKamk4TXB0TllWdDEzNCtE?=
+ =?utf-8?B?a0NYTTc2UmpQRFd0WkdOck5OUFM5YkFxaExMcEtxb29QSXFQalg0Wno0R1F6?=
+ =?utf-8?B?OTk4Snd4c0FVTjlHY25uM0s2bDAxQU9EYmxEWEhOQVk3OHhEd0t3Um0zQVQy?=
+ =?utf-8?B?dDVjV2haSEJpNEtaaE5EdFdUK3VXMlhaYm5WSnZETGdaRlFwM2ZCV21wb2NI?=
+ =?utf-8?B?aGJURCtMcDE0eHRnemdTZHg3MWJXK3JqU1VyczVrRjkvWVhSSENPY0lhMXdy?=
+ =?utf-8?B?Q2hScVMyVy9rYWFrM29IWGNoTVdYdVVqWFRDNFNJT04vV3dCTmxMblk5eHIv?=
+ =?utf-8?Q?MhnKZAJPAHi3t5rgjp?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffc2f39b-53be-496c-5bc6-08df336a8c0b
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb905a0e-14dd-4147-0ffd-08df336a8c67
 X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 14:08:01.9859
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 14:08:02.6151
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dsgrj3EwRkNShOaPOTaicY9bajEM5dlB0RDXJqSOqO/hY5dY7joMuxMxhZBGu3Mu
+X-MS-Exchange-CrossTenant-UserPrincipalName: QBg0p7i6LjUecL3lUcpkP3Up84iqFEB5PD7MngNaemRFsxE9J75JuQybCVmHkYp4
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5961
 
-> [ ... 53 lines skipped ... ]
-> +/* A cursor packs the record and member where fragmentation resumes. */
-> +#define CTLV_INTROSPECTION_MEMBER_SHIFT 48
-> +#define CTLV_INTROSPECTION_RECORD_MASK GENMASK_ULL(CTLV_INTROSPECTION_MEMBER_SHIFT - 1, 0)
+> [ ... 125 lines skipped ... ]
+> +struct ctlv_priv_container {
+> +	struct ctlv_priv_container *parent;
+> +	struct ctlv_priv_container *child;
+> +	u8 priv[] __aligned(CTLV_PRIV_ALIGN);
+> +};
 
-Use genmask for everything:
+This scheme with priv is very clever, but..
 
- #define CTLV_INTROSPECTION_MEMBER_MASK GENMASK_U64(63, 48)
- #define CTLV_INTROSPECTION_RECORD_MASK GENMASK_U64(47, 0)
+The usage in the tdx driver ends up having both the 
+ctlv_priv_parent() and ctlv_priv_child() calls, but there isn't any
+type safety and it just seems worse off than using the normal
+container_of approach.
 
-	pos->record = FIELD_GET(CTLV_INTROSPECTION_RECORD_MASK, cursor);
-	pos->member = FIELD_GET(CTLV_INTROSPECTION_MEMBER_MASK, cursor);
+I think it is a nice thing to have for someday if we get to a place
+that needs more than two things, but for attestation subsystem I think
+it would be clearer to have the normal container_of relationship and
+some reliable way to get the 'struct attestation'
 
-	return FIELD_PREP(CTLV_INTROSPECTION_RECORD_MASK, pos->record) |
-	       FIELD_PREP(CTLV_INTROSPECTION_MEMBER_MASK, pos->member);
-
-> +
-> +struct ctlv_introspection_dump_position {
-> +	u64 record;
-> +	u32 member;
-
-Maybe a comment describing how record and member are encoded for each
-of the users?
-
-> [ ... 13 lines skipped ... ]
-> +/* The immutable root-first chain always has generation zero. */
-
-This comment seems out of place, it should be closer to the 0's it
-refers to a function below
-
-> +static bool ctlv_introspection_family_record(struct ctlv_cursor *reply, struct ctlv_cursor *entry,
-> +					     const struct ctlv_family *family,
-> +					     struct ctlv_introspection_dump_position *pos)
-> +{
-> +	const struct ctlv_family_schema *schema = family->schema;
-> +
-> +	if (!ctlv_family_entry_start(reply, entry))
-> +		return false;
-
-I'm finding it quite hard to go from this statement to the YAML. I get this:
-
-CTLV_NEST_START(ctlv_family_entry, CTLV_ATTR_FAMILY_ENTRY, CTLV_SCHEMA_NEST)
-
-I asked AI and it said it was this:
-
-attr-sets:
-  - name: family-entry
-    attrs:
-      - family.id
-      - family.name
-
-Which is some cyclical reference to this one:
-
-attr-groups:
-  # One record per family of the chain a device answers, as reported by
-  # families-dump.
-  - name: family
-    attrs:
-      - name: id
-        type: uint
-      - name: name
-        type: string
-        max-length: 63
-      - name: entry
-        attrs: family-entry
-        max-occurrences: unlimited
-
-But having poked it some more I see that AI was wrong, and it is the
-reverse..
-
-But.. Where is the actual op? I finally see it is here:
-
-ops:
-  - name: families-dump
-    type: query
-    fd-access: read
-    reply:
-      attrs: family.entry
-
-So.. The op points to family.entry which points back to family.id and
-family.name through the attr-sets? I queried AI for a while and came
-to this:
-
-  The confusing part is that the family group contains both the leaf
-  attributes and the container that holds them. Their grouping
-  establishes names and attribute IDs; it doesn't imply
-  nesting. Nesting comes from attrs: family-entry.
-
-I don't have a constructive idea yet. I've been trying to understand
-the yaml in this series for a while now, and I think it is just
-unreadable in this organization. The information is spread about all
-over the place and it is very hard to construct an idea of what is
-actually in a particular system call. Maybe the missing html
-generation would be helpful..
-
-Poking at AI some more I understand it is like this because this is
-how the ABI numbers are generated, things need to be in these lists so
-they can be automatically numbered.
-
-Going the other way isn't much better..
-
-ops:
-  - name: device-get
-    type: action
-    fd-access: read
-    reply:
-      attrs: device-reply
-
-Okay, so then I see:
-
-  - name: device-reply
-    attrs:
-      - device.caps
-      - device.info
-
-Uh, why do we have this extra layer? but OK..
-
-attr-groups:
-  - name: device
-    attrs:
-      - name: caps
-        attrs: device-caps
-
-Er.. 
-
-  - name: device-caps
-    optional-attrs:
-      - cap.evidence
-      - cap.mr
-
-Getting closer!!
-
-  - name: cap
-    attrs:
-      - name: evidence
-        attrs: evidence-cap
-
-Oh, apparently not..
-
-  - name: evidence-cap
-    attrs:
-      - cap.min-challenge-length
-      - cap.max-challenge-length
-      - cap.max-total-output-length
-      - cap.object
-
-This time for sure!
-
-  - name: cap
-    attrs:
-      - name: min-challenge-length
-        type: uint
-
-It is too much, this going back and forth to the sets is very
-obfuscating. Everything is called attr. There is no editor aid to jump
-between the sections, by the time you figure out what type a single
-value is you've lost the trail for the rest of it.
-
-This isn't even that complicated, if I ask AI to explain it in a C ish
-language:
-
-struct device_get_reply {
-	struct {
-		optional struct {
-			uint min_challenge_length;
-			uint max_challenge_length;
-			uint max_total_output_length;
-			struct {
-				enum blob_class;
-				string format;
-				enum representation;
-				uint max_length;
-			} objects[];
-		} evidence;
-
-		optional struct {
-			flags mr_flags; /* read, extend */
-		} mr;
-	} caps;
-
-	struct {
-		/* device-info: filled by the derived family */
-	} info;
-};
-
-I think the yaml names are not helping, calling everything attrs
-everywhere is really confusing. At least the transition into a nest
-and an attr-set should be more clearly marked in the yaml..
-
-The yaml would be significantly better if it was layed out according
-to the actual semantic flow instead of artificially being twisted into
-this need to put everything into a linear list. AI invented this:
-
-device-get:
-  request: {}
-  reply:
-    caps:
-      evidence?:
-        min-challenge-length: uint
-        max-challenge-length: uint
-        max-total-output-length: uint
-        objects[]:
-          blob-class: evidence-blob-class
-          format: string
-          representation: evidence-representation
-          max-length: uint
-      mr?:
-        mr-flags: mr-device-caps
-    info:
-      $extend: device-info
-
-So.. how about could we drop the sets, use a direct description of the
-layout and do something else for the ID numbering? Maybe the numbering
-can be solved directly by only listing the names in:
-
-numbering:
-  - device-get.reply
-  - device-get.reply.caps
-  - device-get.caps.evidence
-  -[..]
-
-?
+At the very least the parent/priv functions should take in the family
+ID they are trying to seek too, for an assertin, and many cases are
+probably better off with just a simple:
+   ctlv_priv_get(ctx, family);
+That is slower but always gives the right thing..
 
 -- 
 Jason
