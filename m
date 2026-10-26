@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793023704;
-	b=hhSAmIFpC64ffXtPiTBreEfcMf6DENvnxiNUlvGLyIywduj3aBeKxi0AZV5k/0gN4JLl
-	 ZmRgCg6zFQQt3REkI1SXiQKmPpoSIWvjYI7wLhGfZsNRUqFQOG8Rm9I471czq9X68YRqV
-	 jn+g19LRB5T58BiyvHVisGq6IRLshsTjfP6wKO8+aOzn+u8aWQr5jQ426oiq9ftgm3r6d
-	 F11XinNU4IaMUkuzqtye53wF/kJdtioTu2I+zCU0SkoDlbQMVOSKAWeQdg0xOanhd8n2A
-	 HIJTBO3/0tCR3q6erZDLuepw4Y2WtdpqtVXE17hNDjWZVLnsqp1qIQyq72SIYlgG8iA==
+	t=1793023699;
+	b=2Sws2EBqySZf2vglMaphxtZtd+CuEGrYB2vE6Ny52sRki1b2inEt0cHRjKFGWcV8Hki2
+	 ps6LqPE4JBN7I+tjsVqa2JduOZUdVfX3NoUesnqGcpmGFgYArIxivnDigYtNEa3QownFR
+	 DrKdkWR9jeIb9XkpIMch077RFxNc6Bz2gzaShHvl9nRnMf2ojFKHEqhr8upGSHqLPl1bL
+	 6a/ZQztQf+XRlzOQ1AEciacdTE9hhot4kcoykwR1f3VDcmY8TsE+Bi961bmnmGAJx/3FZ
+	 j3QJ/PHavQau99Sj8IwlPOJRH7vfRX03ZXN5S4p5E9EM5hyRK7WVkdhTwL7Uv1yFlzg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793023704;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793023699;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-ClientProxiedBy:MIME-Version:
@@ -24,43 +24,43 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=1uRCslZB4s/z9iMsP0GaZYFj+XIIs2RGM+qGTVO/lEA=;
-	b=nWrDpTisn9y30KhOMRUzZgzgqUMO7tMnBvV+ImsI99W+HWHyKeNPztMFhTr3cqJyl++w
-	 UMNIGBIw/VaICR5U9UuQXmW8crcfq1RjBvF7WZJtvPyX0EAXQasJjkBpEm+Qb/d+MbSRJ
-	 UyoGKrwgEWuGltEP5z/BNhD/MbFrEvdOLupiLY3rHuWw1FgEKH9xTyGavEySNpw/4h4VK
-	 api6SfC1x1a60ivdorhUExeTPaF6eF53XdEac6THTCw1PtAvJ/oQkg0qeG5epK1S6WHsz
-	 bTsMlW44sby2WHYWpGQLKgjhNbL4SieG2h+TKHCe6zhoA3XFOpT8tvJiUKZVaxX7c9g==
+	bh=6A9ugxWIGCXfoXiXLYwN/RGr6dW8W9ZoGwM7NmVe31I=;
+	b=2qxHQVh7SSrcLY0mo1yhHdG4qisw3wx9RuxKWwiumGMPy3ovNwPIvbKdLHdW66erca0a
+	 a8dMd6E8yWSioEkWufBq87sVUiFuZgmBPD0SMB1yWhqNKY7OrAUF1j1Xhf55svRPZdDej
+	 ak1dXhH47XtNv0oxXEbVJw/LwZRfA44sVi4BQfkHJ5GVvrspmtTPXk/2nZk27/KKuStVF
+	 PRzczf4LYvf74TftDNnbyZJnnONK+yxfXyjF2N2yhWadDnzVkbnaPM+vW0UqEHZRjbHEP
+	 L4i2DBNAk3nsXZu9kT6ZGibX0eF8NfYrug2K7NUyhM/x90ufz4h/5ZProtOFir4dkSw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="n+/rnzCQ";
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GpAG9tzI;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.18
 Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013018.outbound.protection.outlook.com [40.107.201.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3DA606A321
-	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 14:08:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD3DA606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02E7606A326
+	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 14:08:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F02E7606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=n+/rnzCQ
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GpAG9tzI
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gBzuMfqZkR6Y47UxLeBx5Tpy4hdW4zByVtMvHvu5RAzTmJD2UtWhQARA5al60z868aEczxdg/Edzfe274YNV0jDngUQtdhUEZAUviBOwlzcNor6lxZXYMy8OTwGD/KzJ1AC7krG8D3WQwR30Vsz00Oy1WEdoOF6IcJUKMmef+wETce1lFpOjvtLc6A+INSbKzUUm0IfUL3cdBf171r/n2CcLTc28VPejJm9C4I9V0kNSjtUeHJtfyxpp+LYhtgdqXibJ4vGuFqZDJV3tNKVf2HhsE1LQFRUaYxtI8GrRr+Np7dCmrAD5R6UMXCca2udTXnXy2jNYtFpqzUYCknm5DQ==
+ b=gm0JwdP8A5egER39qWE0Z62+soAKsqiyIy3PKxGT974HP/BA6ybcXFajQm/bn+AK1UQnDz2/2dXSYv/BTicnLWmDCIMGHsQe3VviE4tFNBk1d2EIuFzXwFdeOohbsdI4FpcvqHQPqXCBBQfyOLdmSac6+gDwZfzj7UL8Gkvlnah9+qpOIWq6Xba2mtuG93AFu8KAEKxLFgTLMgTW2DdYeiqnjX3wDWWLzeyWzaHGEf2ZmZba5hNm/8mphbiyht+Q2Oi4EuQG95rk+UoKB64FakSJzwwAzGva/rDcIIHmZYrr/Vt5oyWpnAtcH7/PJjA4kDAb9Cll+syErdpn5oRH3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1uRCslZB4s/z9iMsP0GaZYFj+XIIs2RGM+qGTVO/lEA=;
- b=ZhukPLX1/l0XMFlDbkriBLAO+50AJjtKwQpFdVQc1qnANjH13oqhCVM1BACeZ8PRGVylGogYo5fvL0HFM+zqIYv+E+DpdCISk4d9YXBh1WAuhEcUfwQVknoUIlyHPzrc1GRlirlKoJU5HTNJcTLCdsCiZCGv4f6ff8tfVSwMhGYK+7j2llxFmdCDpxvFb2EgXqZWe/8elOhO4bssOicUQyyPSPU3oSY+FXw/tYIpBacsBE/Pe4o5iZPvcciiKXexoI0fahIeapa2S2LOaE54dnp8DRR+Z89XDqkasM2HBzQgAWtK9GORZ9ulIG9cKNLz2YzHANGa396h15k0hES6yw==
+ bh=6A9ugxWIGCXfoXiXLYwN/RGr6dW8W9ZoGwM7NmVe31I=;
+ b=infyrKIQAUUKUh5DA+gXmchKh1V1rjzSIlTiWgU3D1AlvXCOmTscDZs0+P22j/h4Tr+Wjsf98EHJaC6OAHwuoL/RMpp7UpuCyXLNsiTgTpGTXsVofyPlNaUVS6i1Zqq8TVEJ6elgghIacy5xOZh6cNgpTx8Vs2p7e76y0M0D9TBUuXTQ3rQD1CqyjOM85+ijc4xgBEIk0AE2xK+cujCgOPuDm6E9py1QLweZ6/5oF2GbhUww2F/9wuQPEzW/XfqB3414r4oquT5CXZx03ZrAwQ6lluHP8U8xDMzmzUfZctZNjBa66EL689Hxcok71Zsrn7M7D78Ho5QxF5/oascOtA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1uRCslZB4s/z9iMsP0GaZYFj+XIIs2RGM+qGTVO/lEA=;
- b=n+/rnzCQpw6mqLxh+cbJNdEcdL8MlbLm0l+Yle0HQFTO2AqO5m33DQU+uXRBA6NuQ0WoG0XerTo4zQIy5+XXgTM5+GDLES+608W859Qv50NgPweVOEdmBdU2e6N+hogC3o/SHGxJvedc9jfTip6+IHengQw9w+8qvT85f1BzMcGL+kr4uqZg9lNBEcuPAEYhPAxc09J2NwEZQ30gdOvhjvSUsmcSoRWle8q37ArKVLagRVGscvjVC4kR2J0cPZ9BhysAWVECFwY+6dMiBcd1xgDVYof8IByg5txqa8JDfvY3XtMOXor2Qczw4LfpKulXlOsElf9JXbD3FwoiD5SVqw==
+ bh=6A9ugxWIGCXfoXiXLYwN/RGr6dW8W9ZoGwM7NmVe31I=;
+ b=GpAG9tzIXfC0SAYWxoY4ulFgOVVOzdPqaBs/5WTg00NNXtDZ8eVNZTvkzKAFSbsRD9Mzcuj924AQIqsI6HScpkYSwlssaENM8PmAA7Edilwww7Owya6GWsvRSYC5cB3rl2iz5Y2q1clwuB/FccpOs+cYN0RhnZ9/JLXFZBhLDBMXZT0zAwErFqEUoiHF20/J+TeKbrxdA644lSdjJmjbyr5zHDdQwez75azGuBDgvWVEA1yhhvtgEvrWkwhsU1/k8RjZm/mw4UU3DJhXYCwl0jSI1JwLXBLlWiDfX92KHMeWVRAtPx/KgkYNy4eS8kTX0hROWZRJL3a6KsrQJzPpVw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
@@ -74,8 +74,7 @@ Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  14:08:03 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH RFC 18/20] tdx-guest: Expose the native attestation
- service API
+Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: Jiri Pirko <jiri@resnulli.us>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
@@ -89,14 +88,14 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com, 
  dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
  peter.fang@intel.com
-In-Reply-To: <20261015145053.3664509-19-jiri@resnulli.us>
+In-Reply-To: <20261015145053.3664509-12-jiri@resnulli.us>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-19-jiri@resnulli.us>
+ <20261015145053.3664509-12-jiri@resnulli.us>
 Date: Mon, 26 Oct 2026 11:07:54 -0300
-Message-Id: <179302367453.58760.3338436189030317197.b4-review@b4>
+Message-Id: <179302367452.58760.11808905856343064399.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-ClientProxiedBy: YT4PR01CA0239.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:eb::27) To CHBPR12MB731189.namprd12.prod.outlook.com
+X-ClientProxiedBy: YT4PR01CA0240.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:eb::14) To CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -109,74 +108,290 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DM4PR12MB5961:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d3bbc1b-9e55-4e91-9352-08df336a8c55
+X-MS-Office365-Filtering-Correlation-Id: ffc2f39b-53be-496c-5bc6-08df336a8c0b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|56012099006|11063799006|261021121427099003|10067099003|22082099003|18002099003|6133799003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|56012099006|11063799006|261009223027099003|261022105027099003|261022113327099003|261022075727099003|261021121427099003|10067099003|22082099003|18002099003|6133799003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	ieE2f9pHy9JYkDBsDqb7Acm9QMpMYbjguvt6Cl5nNZAHWm8chUcrho3pHhXKbgeTodfxWWi1lTEewGkQqKpz9+f+6HYa22gQV5/hrceqM3SHhiOQrl2jgH90rCtTnvofvS5ba8ALyg88TqeOVAoApyqqNPgSXHLByfqnGjkFnyg8hvpyarQX4tnMQxC/s0SFFWLFPO+4d8Qkh7nv0cESzxcrOTgYrFJoi3iIueQ2L8DWkiA86r07lXj3W4hUo9raumX+3dkRW9McSPVFn8UMeaLIIRByT6HyVeImW6gigUg/vg5EAwT7/CXKVgUoGsYdyfkM04AoKTWkb6NK6ReXIrB5wNPibQV5BBBmJznMPA/ekj+mp9juUzXpLToGOOiwQr2E2pPntmdjoXGIgZGrgbxaxQc77zCm3EHAqPdoPzCocGBpDELbMAXmwOEmBZrE3Q6fC/GYREqoANo44KkLQRwUWvswojtSxtFIPEscdmPNZGlaIAu++F2Z651jEAQ0krJQU4qMEhy7bugy869agSsmOVP1THzmw0xUMabu9htZSGDPrs6cUWwT3Jk+n4jUPPupOBYeSiCwVRyQGqRjWkG/jbSZ74vaV3kBpy9dfqVx/tEP4Ol9u8PRgUEG3yTlvnJxEGcKnsQ1dukLjg0GAjD6YP6feAlud2j7VesOoJs=
+	0p1Wi4gHodGt4kKULhHjvIlju2naX8GPp+hvAMgoV6ZgwOAzeix+/ZDJ+7iBGpDOLpW20Z3Iqasgfz4b2hrA+qNu2d/Ph8zYTn/NhuwqTQb0ZHbL++9Z1Cy6Kz71dau4Elq5gmf1QGPC/gFDfwuxEEbYWxeON779kHmuEqYFfHTFeYYcxnR7fDfjP6DM8XuWbkCmt0F2wBzRxgso5rC4bJd1IdigpvSDNAUypgVP6L9ftijfLJpvtG7AjNwbrtSj8Gh6QRAWfUGPkwuJAnz0y7GUrUUNuFVbPpW49wUZhPPAbsTUaENLu6RYdLKkhQvEqlgj9WBDteMHZt49ezWjsEbUGaKRJqvVmYiPuxlq3flqhxT+zTUA+2iNZDiXyinFCfBUoaASZVb7SE0kohQRLonsEQIrswBr5kokFn4c92kmLf7jo8sFks6uhG1jPUBef1KVD0tgPV3EiAct1aefbHy5AEtDBufMq65bz8KXhEYbetq94sztCbSIDOv28NAoYWcllc1MkdWtex6on0ksd/cCeZN6la/4PVl+LzTypEaHczv27PfhghuEzI89cyfg7FS1eCNWT7tT5J5Rmh3QCaVorQia8Uzn3iCyO+O/yQ/MWSOKuBXd5UL9OdjGuDAxfvQPDwy7a0WJIj+3YhAe45UykNjKBVw+wDWvftsJBSY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(56012099006)(11063799006)(261021121427099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(56012099006)(11063799006)(261009223027099003)(261022105027099003)(261022113327099003)(261022075727099003)(261021121427099003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SEVqNllKeUUyQm9ja3YzeXBmM0ZyTXlKK1lPTWRQME5SV2s1OFlNTUt4UFRq?=
- =?utf-8?B?V2VrbVZQYVhCN2lXTDlqSnlhajV3M3JFcngwZzdSVEphbTArQndZSE9iam1k?=
- =?utf-8?B?U2tHTDluVTFEUVo4c1M1MFhFVmQ1MlBXeUJheFZEZndNbU1oWnhyQnhRYVBN?=
- =?utf-8?B?djFhVGt4dURKWjV2SWYxbU5wb1BnT1FseE5WVVRGdnFWLzk5VklIaG5NazF4?=
- =?utf-8?B?QjJCMXUxdVZrSloyUE1xU3hnV2FIMjRXUzg0RnFtM1Zhbk84T1NwckhpV3Bm?=
- =?utf-8?B?bDJSOExLekNzNTlBeGMrUXBYQjJCZFFWZTNwWGtOVEY4c1F3RzhyY2RKektl?=
- =?utf-8?B?Z3lQQ2pJdDlpTTlMSlN0RXBqd3hSTFJYSThmNlJKdW00RjB3SVFTeklTcmxE?=
- =?utf-8?B?K0FJT2NwSVI1T0tnd2txcHltQUxNQk00TGlHUU90T0IvMEExYU00KzAxN1pM?=
- =?utf-8?B?aElzYmUxekVuOXIxZXpVamMyS2taV3hwdXd1bHRVVE5sRElmM09FZXg1Ukta?=
- =?utf-8?B?ZW5qL2daUThEdnUzem9hQkthemdaaEdvSmY4VDRqNklOeFZCWk1sd1ExNVNE?=
- =?utf-8?B?a0NMWHVvU0NpejBGNUd3R1JGY2g3cUtLZzduZm54YzRWYTlYYlQxVllXMHJq?=
- =?utf-8?B?dTJtMVh2THFpUTJLcjQ1OEc4eVlnMXdIZDd6YldtbHBVMDJqMXVYSW15a1E1?=
- =?utf-8?B?bUNBY3ZyNmxCd2NXQ2FYVFovZUxhbXYyNS9zdVFsdUFBd0g3blRKZnVjSVVS?=
- =?utf-8?B?TmZUNUNjTUpSTG5aa1pDQ3huUi9NVldSQzV1VTY3VzJHVk5JZnU4UFpBM0lN?=
- =?utf-8?B?cG5WcFlnTWgzMHEyYWpCNWFUM1B2MGJTanlXbStRN25Hc2FUUTFpengzSTJk?=
- =?utf-8?B?UmluRk9Zc3hNaVVFN3NGZFlmSVQyRDFNQ212K21Rejl4WUp0d3J0MCs1dXNx?=
- =?utf-8?B?U0JiVFJOL09ZQVl1N2xDMFB6TVNkTFNBdWdJTEx4dXNTemRMeVczandNQXZT?=
- =?utf-8?B?aG83NnpLN3V1dENxeVg4UC9sT2JGR0xZdXNhZDBlMG5OY3NOKytrOUY4N3p6?=
- =?utf-8?B?RE85bU1nOVdjZ1Y1TWhhTkFxSjlySUJPWFJQd2wybloxcnJzb2RRUHRhdkVY?=
- =?utf-8?B?N1NtTmtacW5OZW40a1U3Nm9pem9EZzZOclMzcmpyTExwUEh3U0N6Ri9yNlc4?=
- =?utf-8?B?MW4vUy9sWDVuRzV1VHNQWTE3L1lYRk9tSk43eXhKS2wxZ0QzWW9qeGh5a3ZW?=
- =?utf-8?B?UDVYQVlneVNiOHlzek1ZZzdiUm9BN1lmVDgzb3ZrWFBmd3psbHVhcUc2eEhB?=
- =?utf-8?B?aTVNMmROdHovbGs2akFXd3hhSWQycER5bjByTUh1Yjh1VDRLdHQrNDdxREZo?=
- =?utf-8?B?ZnBYWW1uekVySmlpcFFycVNLbnNkSG1RL2d2Mk5TTXl4dlI0a0tzQXpNb3p1?=
- =?utf-8?B?VWZwRkZBd0dNbEdFOTJYZldRZnlQY3RiWlU1TzU5c20zUGIrSUVRZDhFNWR4?=
- =?utf-8?B?cDI0cXdNQXkrVVBDaHdicFdvTk1GanNaTHFoTW1wdllrWU1TOXltRk1Yb2ZG?=
- =?utf-8?B?WWc3cXpHNDdWckh4Mzc4dHFTUjZoWGFpcTdUQ04vdG04N3JiYmxZM0YyWVFM?=
- =?utf-8?B?T2svOVMvRnBCYjNLRHFuTVY0TThKWGZZdE9rZVY1bFVXR1FnTEFoMVlKK0FL?=
- =?utf-8?B?K2J1S09EU2ZLaW9TVFdleXRPZU1YVVdZNGVDVlVqZlk5QXdQSlUrdUZkbURU?=
- =?utf-8?B?anl4ZHNHU2lwZEhiZmZOY2Y0MFFCcUpHYkVyNFV1azNyYnZpYmptbk1IdVVp?=
- =?utf-8?B?eStmbDI5bXNUU0psMGJERUJSeEJVNXZKcjdPNVRVcUVqdFRaY1pVaFdXYXpL?=
- =?utf-8?B?YlNBRUxadnFUNjBlN3lJbTFxWUU0N29Ca2N2TDZaaG9ySUI4VVBndEVBTDRF?=
- =?utf-8?B?a0VWazU0UGhVU29DcDBuUHdnZUhPUXFSejBJL3RXckJLYlJmTURKRkZIUzc3?=
- =?utf-8?B?N3dnR3RnZnVCbEtLSHQ3WXNCWVR6YUZKWVhyN1UrVmtLQUdqSWxwK3ZFRzRj?=
- =?utf-8?B?QStYZzVLV2pZNVVTRDBYNUtmYVM0M1RpRzRXeDV3Vlk3Mmp2bTUzVFBlSmc5?=
- =?utf-8?B?ckh1SStyY1Q5Qk0vSlNpZXVxQ0NXK21XUnBhcjNNVnZuQktFdkxiSDM3NEVG?=
- =?utf-8?B?b29iZkU5dThUaUFIY05yTTVYM2hlL0Y1aDRnVCtWWHpKK1plRFFDNlAxM1lr?=
- =?utf-8?B?WlM3Um80c2JJdGExL3ZVWkt5Z2EvQTdWL2o1S1AxQmgyRnBJdURCUjIwNlgw?=
- =?utf-8?Q?iKsvS6kGdm2kZnaN7O?=
+	=?utf-8?B?QlhCcmRidkgwMzlEeXlpZ05QUnp4RmVQWFM1SjFlRXJXZHFkeHhMVTBJZUg4?=
+ =?utf-8?B?MXIwZlEyUENmV2txaHR3ZnphOEJIK05ZWlhjdzgzMlROQ3htOGNzQ2NLTWFL?=
+ =?utf-8?B?TWZoNFphZFNTT21IQjAvdWtSK0RrVnZaTHpMa0h6ZHozNzBEOTlPSzRoZDRK?=
+ =?utf-8?B?dXpyeDBMK2MvZGFUcHRMQitGYUthTWZXZW1ZcVpqcUdTSlJ4bzlweFVPSmJC?=
+ =?utf-8?B?cFJob28rQUczZzlyQ2ovakNlWmlkZDVCUlZBR0NZQUpZQVFSTlNiNERIMGIr?=
+ =?utf-8?B?d1grbGg0aHg1QjBHQmtKVG9GbFJsVW9zdDc2TERnMGtITFhOSy9rUEJ5RVFY?=
+ =?utf-8?B?RjZ1QnNoQUFZcmZwL28zTlFkQWtQbFhDaHhvUWhTdjJzdlRvOWxEak9MeTFx?=
+ =?utf-8?B?Ym5WVzZxUThxZ0YxRlZhWkVQdlljMTFmenpqSkFKL2hBczUxNjdWU0NTcmdD?=
+ =?utf-8?B?Q1BpTDErUS8yaW95M1RwcVhCaWp3ZHg2OGZEc3h2RVJVOWlpMkhtMHJqc0Zy?=
+ =?utf-8?B?eHI3NEwwRXNrTSt2V2g2TG1zblJsdjFkbUZyOUl4ckR2L0RmYklIK3o4YTJM?=
+ =?utf-8?B?V2JrWnlPbUhQbUJjbkduTkdkNUdYWFpZTENTY3pyTkFoTVVudFljN0JJWGJw?=
+ =?utf-8?B?c1pQd0tNWEtpSWtPRUVHVlpLMXFHa3BYVE9kd1lHZGVHWDd2bUl0RGQyZ0do?=
+ =?utf-8?B?N1JDRXJnbjZKYkpSbmtFQ1BaWmxJZm1scjdtcjY3b3IrZ0lWR20vTWdQUXJy?=
+ =?utf-8?B?bktOYVptSVZpNHg0UWM3c3ZqWDFtc29vS0o0MGRidEZvWDhVb2F0NFVudHdj?=
+ =?utf-8?B?ay9tOUI4WlhrQjNxYmZVbGFHcGo0U0RMOVVDbm13T1VkZXRPdUZrQTJJdGE3?=
+ =?utf-8?B?UVU1cHpVYjl2c3lxK0VVK2NCcThxMzl2ZnVLYkJ0KzNhU2EwaEpVV2lWa0do?=
+ =?utf-8?B?QnZ0ZkNhRlBGdTdEMm5qcDRuV2lNZHU4ZjU2L1pJa1RRd0J0NW42ZCt2SkZ1?=
+ =?utf-8?B?MEZCWGp6NGFVMjNoVWpHaVpLWHpOMnM2Q3R4Yk5ESU9YV3dOU2hFc080d0Ja?=
+ =?utf-8?B?K21oclphYTE0MUVRNDV5T3FVeThibENpZG4wbjRaeVZIMGNvVDNMOEkwMVc0?=
+ =?utf-8?B?N3dWWFhMNkxZNU5HY1JBMmZZZk5kdzZDc0JBQlo3eG1WbWRXaWk0NDJHSFNJ?=
+ =?utf-8?B?YWxIUnVhK1dZV2Ftc1YrRlp2N1cvdUdnMXRHUlhiclYvSGIwNXNOVVZSQnFB?=
+ =?utf-8?B?Uk1HSDh3K1NkMjRwVnFEK096akxoWmpRMW95NklUSFh0VmZjTWZNV0F3bkNh?=
+ =?utf-8?B?ejEzM0hoemhGY0VLTTF4cXBBenowbHZsZWV1N1dLeWlzZWUrZ0RMT1ZjL3h6?=
+ =?utf-8?B?VW9uRTFUNVkzWXBpZEdVT29OdXlkQyt6ZnV5cklDdXl5dGM1SnVCSVNEUkNF?=
+ =?utf-8?B?eG5iMGdzZWkySlh3elhRaUs1QXUxb0Z6TDM0YThoWjlONkcyOGpQZnBLdFZG?=
+ =?utf-8?B?UmZxZ1ZlYkVaRHk0TDZHa3lHUXlac0l2UnB4WjRCdTlMSUVZMFRXM1hvVG40?=
+ =?utf-8?B?dXNucnk2RS9CU3NrSkRaYXZXdUVUeng3clZ3eHVGdjZOTWN5TEN6dTRHZDRk?=
+ =?utf-8?B?Z2k2QjByMlUyK05SN0s2aU1ZdHpIcnpPbGxJMTg0RXRmb3hnWmhPN0Fjci9o?=
+ =?utf-8?B?QUhBaEdxTTRvL2ZqWFZMMFdKTmcyQTczS3FYclRDcUNneThBWlkzcmp1b0hG?=
+ =?utf-8?B?bzV3K2xHNDVFSW9xZk5XS01pYVRnNVRCWms2Q1lOaXB0aHdVRmIzK2hnendG?=
+ =?utf-8?B?UGJyWkRGVzJxaUVRQmpCcFZrb3pYYjFsV1QyY0JhaHplK2JFV3NQVlhNNVJL?=
+ =?utf-8?B?WGFCaEQ2WU9LNEtJN1BSUlJBS1BYY2JoNlFXTzZBM1FqSXdBT21ObXBwVUdZ?=
+ =?utf-8?B?OER0Z2ErWEh1d1lDL2xhWFB5TjhYaXJHK045dTVxc0JVdE5tM0lBbmlDQ2RC?=
+ =?utf-8?B?c05CTHdxTk1KL3FubXA2SjhSWmZUcytlL1JyVnIyaGtPelFiSjVyRVRTUzVW?=
+ =?utf-8?B?c0tGMnorRGNzck56TFFjdDhiTkRZVnd4WmFack5FTnNWTDhPQ2VKRFFId3ZK?=
+ =?utf-8?B?WlBGUGZSY1dON0FIZVZCVWN1SkRGK2lreTJQOGMvWWNSU3VJZWJSQ2lucVZP?=
+ =?utf-8?B?Y215T0hOVi8zeXdVa1pzUndkejRjbEJaNTZhUmlmUkNyNE5hb2E2QzJ1WVJS?=
+ =?utf-8?B?NGtwSUVsbmFmTFFTNlJmUUlqTXpIdTdBWXQ0c0hvajZGUDdtcjk4dDU0akZK?=
+ =?utf-8?Q?bO2Kar0XmsPGtCP3k8?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d3bbc1b-9e55-4e91-9352-08df336a8c55
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffc2f39b-53be-496c-5bc6-08df336a8c0b
 X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 14:08:02.4802
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 14:08:01.9859
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8rg8yUWkbvku/eAZYcgpEYPsIhHTRQ+Vlv/pHXWQILS9JNDeVjOgJ7f1FelPok+z
+X-MS-Exchange-CrossTenant-UserPrincipalName: dsgrj3EwRkNShOaPOTaicY9bajEM5dlB0RDXJqSOqO/hY5dY7joMuxMxhZBGu3Mu
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5961
 
-> Share TDREPORT, Quote and measurement-register operations with one
-> in-kernel client while preserving the existing misc, TSM report and TSM
-> MR interfaces. Tie clients to service initialization and removal.
+> [ ... 53 lines skipped ... ]
+> +/* A cursor packs the record and member where fragmentation resumes. */
+> +#define CTLV_INTROSPECTION_MEMBER_SHIFT 48
+> +#define CTLV_INTROSPECTION_RECORD_MASK GENMASK_ULL(CTLV_INTROSPECTION_MEMBER_SHIFT - 1, 0)
 
-The tdx stuff should just be an attestation driver, we don't need to
-make these kinds of linkages..
+Use genmask for everything:
+
+ #define CTLV_INTROSPECTION_MEMBER_MASK GENMASK_U64(63, 48)
+ #define CTLV_INTROSPECTION_RECORD_MASK GENMASK_U64(47, 0)
+
+	pos->record = FIELD_GET(CTLV_INTROSPECTION_RECORD_MASK, cursor);
+	pos->member = FIELD_GET(CTLV_INTROSPECTION_MEMBER_MASK, cursor);
+
+	return FIELD_PREP(CTLV_INTROSPECTION_RECORD_MASK, pos->record) |
+	       FIELD_PREP(CTLV_INTROSPECTION_MEMBER_MASK, pos->member);
+
+> +
+> +struct ctlv_introspection_dump_position {
+> +	u64 record;
+> +	u32 member;
+
+Maybe a comment describing how record and member are encoded for each
+of the users?
+
+> [ ... 13 lines skipped ... ]
+> +/* The immutable root-first chain always has generation zero. */
+
+This comment seems out of place, it should be closer to the 0's it
+refers to a function below
+
+> +static bool ctlv_introspection_family_record(struct ctlv_cursor *reply, struct ctlv_cursor *entry,
+> +					     const struct ctlv_family *family,
+> +					     struct ctlv_introspection_dump_position *pos)
+> +{
+> +	const struct ctlv_family_schema *schema = family->schema;
+> +
+> +	if (!ctlv_family_entry_start(reply, entry))
+> +		return false;
+
+I'm finding it quite hard to go from this statement to the YAML. I get this:
+
+CTLV_NEST_START(ctlv_family_entry, CTLV_ATTR_FAMILY_ENTRY, CTLV_SCHEMA_NEST)
+
+I asked AI and it said it was this:
+
+attr-sets:
+  - name: family-entry
+    attrs:
+      - family.id
+      - family.name
+
+Which is some cyclical reference to this one:
+
+attr-groups:
+  # One record per family of the chain a device answers, as reported by
+  # families-dump.
+  - name: family
+    attrs:
+      - name: id
+        type: uint
+      - name: name
+        type: string
+        max-length: 63
+      - name: entry
+        attrs: family-entry
+        max-occurrences: unlimited
+
+But having poked it some more I see that AI was wrong, and it is the
+reverse..
+
+But.. Where is the actual op? I finally see it is here:
+
+ops:
+  - name: families-dump
+    type: query
+    fd-access: read
+    reply:
+      attrs: family.entry
+
+So.. The op points to family.entry which points back to family.id and
+family.name through the attr-sets? I queried AI for a while and came
+to this:
+
+  The confusing part is that the family group contains both the leaf
+  attributes and the container that holds them. Their grouping
+  establishes names and attribute IDs; it doesn't imply
+  nesting. Nesting comes from attrs: family-entry.
+
+I don't have a constructive idea yet. I've been trying to understand
+the yaml in this series for a while now, and I think it is just
+unreadable in this organization. The information is spread about all
+over the place and it is very hard to construct an idea of what is
+actually in a particular system call. Maybe the missing html
+generation would be helpful..
+
+Poking at AI some more I understand it is like this because this is
+how the ABI numbers are generated, things need to be in these lists so
+they can be automatically numbered.
+
+Going the other way isn't much better..
+
+ops:
+  - name: device-get
+    type: action
+    fd-access: read
+    reply:
+      attrs: device-reply
+
+Okay, so then I see:
+
+  - name: device-reply
+    attrs:
+      - device.caps
+      - device.info
+
+Uh, why do we have this extra layer? but OK..
+
+attr-groups:
+  - name: device
+    attrs:
+      - name: caps
+        attrs: device-caps
+
+Er.. 
+
+  - name: device-caps
+    optional-attrs:
+      - cap.evidence
+      - cap.mr
+
+Getting closer!!
+
+  - name: cap
+    attrs:
+      - name: evidence
+        attrs: evidence-cap
+
+Oh, apparently not..
+
+  - name: evidence-cap
+    attrs:
+      - cap.min-challenge-length
+      - cap.max-challenge-length
+      - cap.max-total-output-length
+      - cap.object
+
+This time for sure!
+
+  - name: cap
+    attrs:
+      - name: min-challenge-length
+        type: uint
+
+It is too much, this going back and forth to the sets is very
+obfuscating. Everything is called attr. There is no editor aid to jump
+between the sections, by the time you figure out what type a single
+value is you've lost the trail for the rest of it.
+
+This isn't even that complicated, if I ask AI to explain it in a C ish
+language:
+
+struct device_get_reply {
+	struct {
+		optional struct {
+			uint min_challenge_length;
+			uint max_challenge_length;
+			uint max_total_output_length;
+			struct {
+				enum blob_class;
+				string format;
+				enum representation;
+				uint max_length;
+			} objects[];
+		} evidence;
+
+		optional struct {
+			flags mr_flags; /* read, extend */
+		} mr;
+	} caps;
+
+	struct {
+		/* device-info: filled by the derived family */
+	} info;
+};
+
+I think the yaml names are not helping, calling everything attrs
+everywhere is really confusing. At least the transition into a nest
+and an attr-set should be more clearly marked in the yaml..
+
+The yaml would be significantly better if it was layed out according
+to the actual semantic flow instead of artificially being twisted into
+this need to put everything into a linear list. AI invented this:
+
+device-get:
+  request: {}
+  reply:
+    caps:
+      evidence?:
+        min-challenge-length: uint
+        max-challenge-length: uint
+        max-total-output-length: uint
+        objects[]:
+          blob-class: evidence-blob-class
+          format: string
+          representation: evidence-representation
+          max-length: uint
+      mr?:
+        mr-flags: mr-device-caps
+    info:
+      $extend: device-info
+
+So.. how about could we drop the sets, use a direct description of the
+layout and do something else for the ID numbering? Maybe the numbering
+can be solved directly by only listing the names in:
+
+numbering:
+  - device-get.reply
+  - device-get.reply.caps
+  - device-get.caps.evidence
+  -[..]
+
+?
 
 -- 
 Jason
