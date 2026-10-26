@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792974812;
-	b=5T/pPMK2hgdJqTd8sR9LU0Dys+Iml9xvNLci9DRvveXWznmTSO8y11xl6SJcajqAf1A2
-	 e4iCeWQhTSjT6HCwmZmyFWXMwJxvP95YkORgC2MzQU9FvQmW+nZ89AiKgH1A7ijcrhJAP
-	 fkUIyVIEIaAoyV/QjFcbVA51uUq4pVaps2ij+Rf/6Xvj50sn7MaE6K/2B8vimtfnjOt71
-	 Gx74GP8n5coLmwlm0QIRB0UK0ueNg52fD1+nLK/L3y8FcvWFMcUrNg02BLIXeYtJQGCoG
-	 kjknkn3dHO9eMWYup9kXLRnXUMtdYuhVnTLwNw50MBAwzie2Om+lPmY12J3zEtYaQJQ==
+	t=1792975923;
+	b=BmxRnd4tDmkk07kZsTDU++jk2Ehi92MpHRm/RC3oqYpDPB4V5sD0XaDtyll6FNWbZwyX
+	 pandCyuGzLrSslWoKE9jEhS+2a/Eoo4v7dR/PcQyCVqYN0ovZqpoiBJFRSGMFeS4/iiUO
+	 SiXy8kPSGyBU6mh2NnDMScATx2n4hn1sphfifDKH7E7k7twWGuS60sZRGWQCX4P9TbJs7
+	 BM65m3K6RT3JZw7ZEgfRrkVoEvHdnfNXwJmL2wBdazd4Xhv4HdwfRzfTDzFJGE0Q0wfDQ
+	 E/utlCO8jPTF3P7uDv/2VdlJQthcUZ5Xwp7xDEu0w14uBEZqbeqYFtemB1LR10utrQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792974812;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792975923;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=KGg0YaTfqauJu0vVxfgSJ3rCnmQ5A64hk6E/ER/6bh8=;
-	b=RkwAateSlTUbHLqpq7QPBCA4WUIvWVDynmlPkuzMZzjuN6WuIrBUHvK+H0YAhViFoIig
-	 rFi1nN44lKgygWMFmW6FaLlY9NJ5OADOY8qU77bsvd2aQj0OkwyMGDSM5WdZKd7Wc6ITE
-	 rDluJBjzbVuMwoG0XGJN7oCBeHI8N5aUwD0O5vVM4lEjkEU9QjovsirtArdLDGpeUraf1
-	 weSBbc9bCxhCe0sNhwf3Um8WJCucjpO+flwDslthUTVGSGh/vGSXjoE8s4REA0JyBigXU
-	 r6BO+YtUze3T9ZsRpV8Ku+/C19MbQ3/pVSLWihwEkE4d7TPb9dO7I+8r+ji4GUnF5fw==
+	bh=b9fH36rPga1m/YKhPFxzMrQCe595oHYTRuGjJPzK7rE=;
+	b=qp10aXTw6ZgRlbhznfee7tcpk/aRDg3ps5cp4dgw/JtxHkIZZr7hn+36gP0GrYFbX0a7
+	 ndm0J0y64EntIN4xw5C94bXN5QnuKB2ZxaG3FT1SQP/GYrl9z1UxgZSkBszazaSCLCyK0
+	 JKoPTb+HVt0hHhimqPKotvdmqlEbLxH+6NyC2Iisg886OGl/tDQKhxK9wIOKRrZYWGz8h
+	 a30pF9YxJkFWY/eUW1TDHC6EbNjOW55uCMu1/rU/Wa6k6iHwPo6AhRKGFCWR4YrT2saLD
+	 rkLxQ50XfONzrhjzOD7vQxH5ZC+fmTVsdFMZkUPWVkMRz3CsW8TOdaX9GqyTw594ZYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K6Sjmp4h;
-	arc=none smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="mA/oJVf8";
+	arc=none smtp.remote-ip=192.198.163.17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A813606A31B
-	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 00:33:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A813606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D42606A31A
+	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 00:52:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5D42606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K6Sjmp4h
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mA/oJVf8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792974811; x=1824510811;
+  t=1792975921; x=1824511921;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=jDW3zNKTgRakGdHRX+x3xt4uVuBKJZYGYCw+1NVm+wQ=;
-  b=K6Sjmp4h5Npj1noKxllwhNQ+hhqyBfPxuf5/nmO6QIxFXFsNaBLaEh77
-   MD5FYUSiDyO27m4ifWcevxBkZSw3SQNx0MrciB4JIPNgL/m3056+wSmun
-   b4eh3lz5Wd+/mt4K9uz4AxR0ZKDYET8J8Uz+UjbVpSW3M6/8HZE3bCFKM
-   nm6cNqSEMQMO5/DabkwMj4kqQk11O2U8N8YU26pKS1meco/tNc8L05IUk
-   sdvDLPB6Y0sYpfrlcz1yaECrV4k5J4uGZb96WVhblGw4tOk6X3UwBHHXv
-   qQLtmnKtVBXDXa2CcAuH+WA5OliuvVqjELEOTrjpHkTa93ApXhyRqViHr
-   g==;
-X-CSE-ConnectionGUID: ic9Z24N8RgKmtTfsQ1E/tQ==
-X-CSE-MsgGUID: LfhrelLCT42H3e52yz3wgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1639360"
+  bh=cAg/kfv8+ENBqgEJrRZIOg4+FnSqfG/3NeBnA2eO2GI=;
+  b=mA/oJVf8Q7tJC6+9yF/EAu9Rj/dOHbxo+meiTy61BWO0or+Ff7NQ4cvc
+   GqKPXX4RdJVsU4GRXWCC5/BSItuB6rShJn531yXfSCckFuNSj6bKgWvzh
+   r4H3bqTfLef8RnTwb/COvAOGSuBirvCenTmYAwqksbaqQogMbxU656a89
+   /GbFXysrL4M/sCGY/a831Hms15sjqpK1yFzSnXkrgvDHJDje7+arOoyUT
+   F5bmEm2F/Swaym2JCOyzc4W2SxxZnqC18Gs2bwm1tU5K3+TZxMM0z/VLT
+   DyjCPHxU+mxo1gbLPf6ZnnrBu5Cy086Qwhm4qcKMWADYVVjNanmeF7k5z
+   Q==;
+X-CSE-ConnectionGUID: PSV5ktXATuqBpXTbRd85aw==
+X-CSE-MsgGUID: DkywSBKZTtOObgor8Z0sbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1645230"
 X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="1639360"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 17:33:30 -0700
-X-CSE-ConnectionGUID: UX4LKqlHRv2LF5v2Lge95Q==
-X-CSE-MsgGUID: EjUahS49R9W1XQmTwFuTVA==
+   d="scan'208";a="1645230"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 17:52:00 -0700
+X-CSE-ConnectionGUID: gGR7B+poQ+e5x2JnG+mAmg==
+X-CSE-MsgGUID: 7+LH8CDkQK6yKT+MqR6S6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="4080344"
+   d="scan'208";a="5995300"
 Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 17:33:24 -0700
-Message-ID: <023f3254-c368-4ef6-89b2-8bbacb42d89d@intel.com>
-Date: Mon, 26 Oct 2026 08:33:22 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 17:51:55 -0700
+Message-ID: <ded2ccb0-b551-4f04-ad4a-0139f12a3616@intel.com>
+Date: Mon, 26 Oct 2026 08:51:53 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,8 +73,8 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/15] x86/tdx: Add TDCM hypercall wrapper for TDX
- Connect
+Subject: Re: [RFC PATCH 03/15] x86/tdx: Add TDG.TDI.RD module call wrapper for
+ TDX Connect
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
@@ -84,142 +84,67 @@ Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
  pbonzini@redhat.com, yilun.xu@linux.intel.com, chao.gao@intel.com,
  vishal.l.verma@intel.com, kevin.tian@intel.com, chao.p.peng@intel.com
 References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-3-zhenzhong.duan@intel.com>
+ <20260924041032.1096569-4-zhenzhong.duan@intel.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260924041032.1096569-3-zhenzhong.duan@intel.com>
+In-Reply-To: <20260924041032.1096569-4-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/24/2026 12:10 PM, Zhenzhong Duan wrote:
-> TDX Connect is a TDX feature that enables secure device assignment,
-> allowing a TDX guest to directly interact with TEE-IO capable devices.
+> Introduce wrapper tdx_mcall_tdi_read() to provide tdx-guest driver with a
+> standard interface for querying specific metadata fields from a target
+> Trust Device Interface Control Structure (TDI_CS).
 > 
-> The TEE-IO Device Control and Management (TDCM) hypercall
-> (TDG.VP.VMCALL<TDCM>, defined in TDX GHCI v2.0 specification) is the
-> primary interface through which a TDX guest issues device management
-> commands to the host. The host processes these commands and returns
-> responses via a shared memory buffer.
+> Explicitly mapping architectural TDX error codes into Linux POSIX errno
+> with two helpers, introducing tdx_mcall_to_errno() to handle general
+> module calls, while introducing tdx_mcall_tdi_to_errno() specifically for
+> TDI related module calls.
 
-Could we add some clarification of why this guest-host hypercall is necessary?
-i.e., explain that some device management operations can only be performed by
-the host VMM.
+Set aside why mapping architectural TDX error codes into Linux POSIX errno is
+needed and what it brings, I think the common enabling order is one prep patch
+to introduce tdx_mcall_to_errno() and turn existing users to use it. Then this
+patch introduces tdx_mcall_tdi_to_errno() to use it as well.
 
-> Abstract the underlying leaf call and pass the shared buffer physical
-> address as a decrypted mapping. Add a runtime page alignment check
-> for the buffer to enforce correct usage.
+> Unlike TDG.VP.VMCALL based hypercalls which communicate with the host,
+> TDG.TDI.RD is a module call (mcall) that communicates directly with the
+> TDX module. This distinction is reflected in the tdx_mcall_ naming
+> prefix, as opposed to tdx_hcall_ used for host-directed hypercalls.
 
-This doesn't match the implementation. The code only WARNs instead of enforcing
-correct usage.
+I would say this paragraph is not needed. It's not the first patch to introduce
+hcall and mcall.
 
-> Place the implementation in a separate tdx_connect.c file to keep TDX
-> Connect specific code isolated from core tdx.c.
-> 
-> CONFIG_TDX_CONNECT_GUEST referenced in the header guard will be
-> introduced in a later patch in this series.
+> Note that while host-bound hypercalls (such as tdx_hcall_tdcm()) pass a
+> platform-specific Device Identifier (devid), the func_id parameter used
+> here is defined by the TDISP standard (refer to Section 11.2 "TDISP
+> rules"). Although these values result in the same underlying bit format
+> when the PCI segment is zero, they represent separate structural
+> abstractions in their respective specifications.
 
-I'm not sure why the CONFIG cannot be introduced in this patch...
+This paragraph seems to provide help but it doesn't look to help (at least for
+me). Because until now there are only the helper defined but no user, I still
+don't know what specific values will be passed to them.
 
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  arch/x86/coco/tdx/Makefile        |  2 ++
->  arch/x86/coco/tdx/tdx_connect.c   | 32 +++++++++++++++++++++++++++++++
+>  arch/x86/coco/tdx/tdx.c           |  5 ----
+>  arch/x86/coco/tdx/tdx_connect.c   | 41 +++++++++++++++++++++++++++++++
 >  arch/x86/include/asm/shared/tdx.h |  1 +
->  arch/x86/include/asm/tdx.h        |  4 ++++
->  4 files changed, 39 insertions(+)
->  create mode 100644 arch/x86/coco/tdx/tdx_connect.c
+>  arch/x86/include/asm/tdx.h        | 20 +++++++++++++++
+>  4 files changed, 62 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
-> index b3c47d3700e2..2ab2dbbdd3d2 100644
-> --- a/arch/x86/coco/tdx/Makefile
-> +++ b/arch/x86/coco/tdx/Makefile
-> @@ -1,3 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
->  obj-y += debug.o tdcall.o tdx.o tdx-shared.o
-> +
-> +obj-$(CONFIG_TDX_CONNECT_GUEST) += tdx_connect.o
-> diff --git a/arch/x86/coco/tdx/tdx_connect.c b/arch/x86/coco/tdx/tdx_connect.c
-> new file mode 100644
-> index 000000000000..0c6ca650771a
-> --- /dev/null
-> +++ b/arch/x86/coco/tdx/tdx_connect.c
-> @@ -0,0 +1,32 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (C) 2026 Intel Corporation */
-> +
-> +#undef pr_fmt
-> +#define pr_fmt(fmt)     "tdx_connect: " fmt
 
-I think this is file is only intended to hold guest stuff. Thus maybe call out
-"guest" as
+...
 
-  #define pr_fmt(fmt)     "tdx_connect guest: " fmt
-
-though arch/x86/coco/tdx/tdx.c doesn't print "guest":
-
-  #define pr_fmt(fmt)     "tdx: " fmt
-
-So this is just my preference, feel free to ignore it.
-
-> +
-> +#include <linux/io.h>
-> +#include <asm/tdx.h>
-> +#include <linux/mm.h>
-> +
-> +/*
-> + * tdx_hcall_tdcm - Send a TDCM command to the host via TDG.VP.VMCALL<TDCM>.
-> + *
-> + * @devid:  Device identifier of the target TEE-IO device.
-> + * @buf:    Shared, directly mapped buffer containing the TDCM command on
-> + *          input and the host response on output.
-> + * @size:   Size of @buf in bytes.
-> + * @vector: Event notification interrupt vector, or 0 for synchronous operation.
-> + *
-
-"0 for synchronous operation" isn't correct.
-
-vector 0 means "no vector. TD polls the status for completion". If the command
-doesn't finish when TDG.VP.VMCALL<TDCM> returns. It's not a synchronous operation.
-
-> + * The buffer physical address is passed to the host with decrypted/shared
-> + * mark.
-> + *
-> + * Returns 0 on success or a TDX VMCALL status code on failure. See
-> + * TDG.VP.VMCALL<TDCM> in the TDX GHCI v2.0 specification for status codes.
-> + */
-> +u64 tdx_hcall_tdcm(u16 devid, void *buf, size_t size, u8 vector)
-> +{
-> +	WARN_ON_ONCE(!PAGE_ALIGNED(buf) || !PAGE_ALIGNED(size));
-> +
-> +	return _tdx_hypercall(TDVMCALL_TDCM, devid, cc_mkdec(virt_to_phys(buf)), size, vector);
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(tdx_hcall_tdcm, "tdx-guest");
 > diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> index f20e91d7ac35..f46a3171a512 100644
+> index f46a3171a512..665c12925ff6 100644
 > --- a/arch/x86/include/asm/shared/tdx.h
 > +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -74,6 +74,7 @@
->  #define TDVMCALL_GET_QUOTE		0x10002
->  #define TDVMCALL_REPORT_FATAL_ERROR	0x10003
->  #define TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT 0x10004ULL
-> +#define TDVMCALL_TDCM			0x10007
->  
->  /*
->   * TDG.VP.VMCALL Status Codes (returned in R10)
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 884bb8067521..df4496ef8a6a 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -85,6 +85,10 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
->  
->  u64 tdx_hcall_get_quote(u8 *buf, size_t size);
->  
-> +#ifdef CONFIG_TDX_CONNECT_GUEST
-> +u64 tdx_hcall_tdcm(u16 devid, void *buf, size_t size, u8 vector);
-> +#endif
-> +
->  void __init tdx_dump_attributes(u64 td_attr);
->  void __init tdx_dump_td_ctls(u64 td_ctls);
->  
+> @@ -20,6 +20,7 @@
+>  #define TDG_MEM_PAGE_ACCEPT		6
+>  #define TDG_VM_RD			7
+>  #define TDG_VM_WR			8
+> +#define TDG_TDI_READ			67
+
+Please name it TDG_TDI_RD to keep it consistent with TDG_VM_RD
 
