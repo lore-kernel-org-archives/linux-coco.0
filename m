@@ -1,101 +1,173 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793016182;
-	b=IEP3amRQfos9UDOZDr+GarQTEJpCSSX/p9fE9gtDlKJiIdeQav6hBreIxLGHMXgWbNlw
-	 km0L2zMs3qeyo781oWVJvFFmU7tiSg/K63Mo9o8PQl7d1b6//USWEFcRA+FFxgmmhw61M
-	 Jt2I4ET87cNF+gFTcq139wh06Uz04kCSQ7wcemQ07wORAJBEzYNlkSLxjfyrrAe1Z07rq
-	 c4zuPVtsl0iux9WiQTtIiKtHpHdORvniI2KM9Eb2SG75tTz5rZ6ON1HUXKTi51ezfeSuc
-	 mMIcD/3WWDKas2rRdnPWr/QohXQ6eLJbPqhq84gpetobpZM0nrEcBG0qwUu1eYo9WDQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793016182;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=M6YkhSoM6h6rfv1ateNJDi0d6hmf1Rd14u1CuPWAcso=;
-	b=R0Qn1vuKTqBHhEhMGQ2YpmCwUL0mrmQlakuSTCmj6P4mWahtHMbC1/OOjRtoW6Pa+G/m
-	 HOvJ7ECwH+4IrPoxwR2nKXesrc7iEFsxTlmCc6/Nx4cJKGGYMkK9oJohYffZB2ZYBHkDE
-	 W9XD4oLCxkGyPiceFI/iI7KEfzlH8Cl+tzref8cJZ4o/fxuyd1CSefbHUIB0TEpHBZDuR
-	 abol2cW2+r5Wt9H0pVRf8udnhc65ZVpUIhCn+Ty2jx1Hqt9559ZCD46NtsKpvQO629JHj
-	 Jo0tXXkj++JMLSZd07KXKsb4SEhFta0VERPABf/9wMg2SW0zZbrTA4K5x2FQxrv8w8Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nJrvkGsM;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.19
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011019.outbound.protection.outlook.com [40.93.194.19])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793019751;
+	b=aRAIbswXMRom/bz4SQXlh7tRY3Sl/G0Yj3O+qbBVi+nCTjWPHZTGD0FheRnv5OfDSWSY
+	 64HTI932khL03Wiqy6TFz/sH32njYSDa7JeHbsh8IxM7VWXXR5umA1BicBGKkOfKcydFI
+	 NBeo2sX3a6ls9dVOGVC+g3u63sAHS8wOxN9bTSP93Wln6RxxHmFMntV24A7tHTGD4E7RW
+	 G1Gzti1AmL+4lQ2x3CrBrOUemsN5H9heY1xZpPPGDEaZm471eHbyNUNQObcRzjpTGHuDv
+	 7dYan3geK5K24Hgg1jAozFmKWm9We3GK3cBxTLFNC5oNs2B5uw/StA/QiXg+Oe//4AA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793019751;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
+	 X-Spamd-Result:X-Spam-Score;
+	bh=VgucDQGlpzyRpthc04g7/oRg6NX1oBAdxDc/UgjwdQw=;
+	b=XQX64MSqdjHli026Vpy0OzMuLjaTnWp+rXdrzHDtTtcxoILNKTICBGrMPxW29kEFLBMl
+	 vxO7AVNR+FOlXfXmGCFmrgIiEys68NheptBDIqcnlIGymdRgHAQzeUiqoylVzejjMJilX
+	 D0i5qMHcOzR6xV7oNP6DE8YSLrdWU1tEpvALmfKdMCZ9HkFo8VNfO58sqvMOirxeKOuop
+	 4q1suRUw3GhgTPv8C32INK4CDUuQ537kf3L5AjyV6w+j9MfFYPkzjfdOzKU1NKTOanoL2
+	 B4JDCyzGYlkmkYlh5WjqSxaP1CkBOBk9syM79/pCX1QMo6yiznbqKlP+LcjtkJttYlA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=JJ17nvYM;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=JJ17nvYM;
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507F560A2603
-	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 12:03:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 507F560A2603
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC9A606A324;
+	Mon, 26 Oct 2026 13:02:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4AC9A606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nJrvkGsM
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NGjoxSV3Otm8+1uDq3ZGJc+uW9dem0yfgQiQ67kxhzgslpzhIpVJME8t+0LAi/McDhzAzClNPPdBSQFemaTMpYvZ65qEX/GmqMsyyebE/+Kih87aFqaau5y4RJ0gqAeoZcC+Rw8LTc/ny/EhtRUxM+5wMQQBbVdhqZX0FZaW8TFW6l9QTuXL/O3mTFiHtvD3pjDsOYSztNrKzExQPoRkkvfJK+3e/7zi6WIhfIiIovFkhufYECr54uiUe5AbjBk2Jcs6woIrJpfBwoxMAfqxU2lewFRfG2zbKMd2and5oPQEyRg5Vw6K5lkOGE1g1hXOZA8vIpeGCMxIwBaO2WZmnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M6YkhSoM6h6rfv1ateNJDi0d6hmf1Rd14u1CuPWAcso=;
- b=HThzuIzaI3WgWgw2jKvn80UsNUAjEHh6XilEjimQTfhMxXD9bhbwWCz1rM1Nbiascumwy72Hm7gnSNOtqT0Zsenh+80uG90SuWN5PrKV7WSmLhgHqBv0ARx/bM6OEnohe5CG04DLJlMcW/sLovT4rM0EHuGyPJywI9E/FxKK4g0yOnREL+Hj1HZtllyEqI+CW8+SKb3FHXDKnmAmD6HLrBbqGlMOUkDqLiSONNehrRFTkecbLEutKpFPt0wjeAJ3KuHhm9xIa16jOzfHCUFG46m7wo5sKH0jVupvitKaFqTfifJro/nktrMP4xdS0oLu0J7s9s6Kt3FJZzjBLkCYQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M6YkhSoM6h6rfv1ateNJDi0d6hmf1Rd14u1CuPWAcso=;
- b=nJrvkGsMngYMI9oEggUmnozKUXk/SqGhLEij/B2bdv92cLH+bziGmbzml8kFrcX8s2qkJHhywsHxOEUqfKUsvQIXDAVfwYjdMH6Ufy4u/RRVxDZeGZq3deCbX81R0yLwmTegcYEvnGEept+2BB9NlmHPfRu3Io4lQWUBB8n0lslftHninXw91rG2tsYk+vOMfP2Z9JxZL0d+XfINpatURd/FTben9O4P+b5k0easobS6sF880nsehSQa0QOFq/7Vt74lVk7QWLPVY1iXZ8LdCKtG7+BssnebbDE1D/nqVX4lHwjAmdQeh1dpLBV7rNTY1tqPnShav1TBF6vtk8s0tg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by SJ1PR12MB6147.namprd12.prod.outlook.com
- (2603:10b6:a03:45a::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 12:02:51 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 12:02:51 +0000
-Date: Mon, 26 Oct 2026 09:02:49 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
-	bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, nicolinc@nvidia.com, aik@amd.com,
-	aneesh.kumar@kernel.org, seanjc@google.com, pbonzini@redhat.com,
-	yilun.xu@linux.intel.com, chao.gao@intel.com,
-	vishal.l.verma@intel.com, kevin.tian@intel.com,
-	chao.p.peng@intel.com
-Subject: Re: [RFC PATCH 15/15] virt: tdx-guest: Accept default DMAR entry
- during PCI driver attach
-Message-ID: <20261026120249.GA4002401@nvidia.com>
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-16-zhenzhong.duan@intel.com>
- <de19ab97-c86b-442b-be23-c921c0831542@intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de19ab97-c86b-442b-be23-c921c0831542@intel.com>
-X-ClientProxiedBy: BN1PR12CA0027.namprd12.prod.outlook.com
- (2603:10b6:408:e1::32) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (1024-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=JJ17nvYM;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=JJ17nvYM
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 491121F461;
+	Mon, 26 Oct 2026 13:02:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1793019748; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VgucDQGlpzyRpthc04g7/oRg6NX1oBAdxDc/UgjwdQw=;
+	b=JJ17nvYMH3Y9kIckqy6Y5tJHT+fxv7TDUxcVfKccWHoD50mqQbH+hNM2c2hvMMjr/kBmMY
+	oXpu9UOTuwrkToNMxTLQys1MhXYd4kAzwIqHxFz3hF3W+PS7xhIKY4h/VKbLYDyripnlMG
+	GSL+hGu0ouKDyR1+nDCWhv1EumU3ogE=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1793019748; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VgucDQGlpzyRpthc04g7/oRg6NX1oBAdxDc/UgjwdQw=;
+	b=JJ17nvYMH3Y9kIckqy6Y5tJHT+fxv7TDUxcVfKccWHoD50mqQbH+hNM2c2hvMMjr/kBmMY
+	oXpu9UOTuwrkToNMxTLQys1MhXYd4kAzwIqHxFz3hF3W+PS7xhIKY4h/VKbLYDyripnlMG
+	GSL+hGu0ouKDyR1+nDCWhv1EumU3ogE=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E928313408;
+	Mon, 26 Oct 2026 13:02:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4jNRLWFP32puWgAAD6G6ig
+	(envelope-from <jgross@suse.com>); Mon, 26 Oct 2026 13:02:25 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	virtualization@lists.linux.dev,
+	linux-ide@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	David Airlie <airlied@redhat.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-geode@lists.infradead.org,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Pu Wen <puwen@hygon.cn>,
+	Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Babu Moger <babu.moger@amd.com>,
+	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Len Brown <lenb@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Ashok Raj <ashok.raj.linux@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	Xi Pardee <xi.pardee@linux.intel.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	xen-devel@lists.xenproject.org
+Subject: [PATCH v5 00/12] x86/msr: Drop 32-bit MSR interfaces
+Date: Mon, 26 Oct 2026 14:02:11 +0100
+Message-ID: <20261026130223.773129-1-jgross@suse.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -105,86 +177,242 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SJ1PR12MB6147:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ae823ff-95bb-402c-a002-08df33590f6f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|10067099003|18002099003|22082099003|56012099006|11063799006|4143699003|261022105027099003|261022075727099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	Kik3Zuz34Owmm5zFItDygLhkAjLHtv9PhsTtDjRkeLUQopfPmjxSO2DY7VjdkFDC1ObYS75ctPd2+2TiL5Ft4hXATHu/DGhBXuJWuz/Fvmxwg1koy1qinqKCAqY4/MpvR84UtF89JdqoB50T01KMdDLB6rYAVzio30ZaJb40KJ0aOSwKZPLiocv6E7ZSGiIV9is01ShZMKYb/lpUk9QT+NIBDjYYU+txrDC1R8sVIlSS/2pc5sE1Ywsf4l4JZuayG05zd7kF8s0KZXwaiZ7hkthbnNqiqcuif4JwwyEJd9cyjNkiSL5utYby04PC8MHFJqxw+oBW+oKMWq5UuA32pQ7zZlgt5sWrvpWGVGdN3DPEq7pMPEH5e7vfxO78iZyuWriff2YYu9c+jwy4jAoP4BRYd6BlvwJ/5k0LOYsl2354Q3Ghp5qqOc5qe+etrwnB8dUlj2hmo8U0PLUavbivvhVMMn5wiYO1VJA7xsmPngUGhr5k508O5f8sc9kOLpWkzZ1qM+CPCKOiDeJ4wlA1gxrnQK7EJonFudOFaJcIURV06bmHWUCA+KNKYCuoysmY+Yxz+3Fh94e/oFln0+TzryYaSZhQghGA/3VVqM7X+bcDUHSJ3kjIxD94ts7p1HZ2J6u/bTbvXlTeQ8CAHczYov3rU2LUuef2xBlErqjbohE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(261022105027099003)(261022075727099003)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rCLaQP9p/lBdoObRvhnpA/NhCVQhD2fP5YlPB7biYgwkYaJE57uoLSJSMswR?=
- =?us-ascii?Q?u2d+7TKIJkfAROCiMM7VNT9/Xwb1bCxjdv7WN0gCyojVDcRGyQgbsfuCRfEK?=
- =?us-ascii?Q?kfH2nwF5Tpq8TqE5Bbwrp7L1Vt8Cvz+nCUt9MhkNBm4qZS4bgWV2R4GvUorI?=
- =?us-ascii?Q?kH0BmB7l5q7nJ1APltPYTF2TooZjCLnMj68i8skT/nZwoLVIPvNfjFcu0uIF?=
- =?us-ascii?Q?YJvW9qa3m75aM14k7Orj+DKsKYR+R253wZyPTlzSi7jDP3tzIVCFKH1MCV30?=
- =?us-ascii?Q?TkOyZmNJwPTwUAbajZ5F0loKkCEUL+GKRhDe5ATv4dIV2cdzyOpsPpTsvciw?=
- =?us-ascii?Q?Tf+QnPvMF8cDm/S4EQ3jtW6oyFyHZEvIq20Ph49GGRLXnLdVrArPYAi1YdYI?=
- =?us-ascii?Q?H0Sr6qLnCD+NJhL2gxS5o16dlaRlxjNlL6+36K4wTY7xe9Qxae3SI89RH9Dw?=
- =?us-ascii?Q?E7ql5ylnYBaGAau0P7dCxt5v3DJxOXTrdCG6R+4hlesuMq0RyTubeDxG2Sdw?=
- =?us-ascii?Q?U61pcMiXjZPxkU7CEtleKOswXDpulM/Cx+G8vcJ7UajWbf+bo1YC1UApdTnU?=
- =?us-ascii?Q?XfmNWE0VrJEkGuLwLWHEWIugbnN/VjH5Uo/1m8xU+0tOsbJuA+ewUSZo9Vj/?=
- =?us-ascii?Q?qYqix01PXmAaCswlrUGqXtOSM6dZ8V15AwGR6GbY5qG8pzSQIhGkeMScILc4?=
- =?us-ascii?Q?b6H2NttVXq4GKG0zKAFBCDWFy+lsUDn+dqFSirM+m1O70zR7vXLiDMD+8BvT?=
- =?us-ascii?Q?ERDHzg8OIDjWrXqRUo9o9iymSHsKvtAok3K3SQaxwzWCQmbO7naU0bj9I0zr?=
- =?us-ascii?Q?H9Q2G4XOGjt5+6zmVBAK/WQr584vpEEvbtZiF9MeNI4mslNHw4iV6x/FSn2s?=
- =?us-ascii?Q?VAnkZzOp9PZFE+Pb+Xoo8OdN7JPg5PJsdbRo+7i9VhByuMRbLVHf+ci4gqSh?=
- =?us-ascii?Q?wH2rjdtZnj/pWQPxJTWef7qA2YYew0WA2pe3mMM8GlEWT7I8hjaGD25u2bjC?=
- =?us-ascii?Q?B9/abKhuzpUE7DYCfF0aYbeTacJzA/PkNd4hn3S+vLvy+mT/vs6NME7+OVVc?=
- =?us-ascii?Q?bDnApvnS2j3vCMQWbjmLKUd6fzP9G0YngAT6xoZWhxJ7wGBw6FaAJF2Aco/s?=
- =?us-ascii?Q?Z2rCNsh3DhqQVTK0BegIjRzv9tFskLlTEnd7jogZpbENzMcZyEzdGFPT6QkC?=
- =?us-ascii?Q?Lt4NXugFsqSHbJFoFIF58HTmj1xDor53bTGtBtPyagieTSJgTGPjJLEFjHNQ?=
- =?us-ascii?Q?H6FDH/YmAKPrvWJIf59Cwd+Ty+N3JPjh7UF05cR/I+P/DE2iAQUewv2mB2un?=
- =?us-ascii?Q?0JpDEg+Wc3lIegEzBL1YN+q2a+goXIXfxmT0+Cocs2yMej/ufK+pm08oUQqs?=
- =?us-ascii?Q?/1mv31AetDvqcoxz0YiVi2rben715fN01aGN3+dl8c/VtjUmbJgZOQ/XmCPx?=
- =?us-ascii?Q?lQiwBxQL7/MrFmgLQwLC4PIonvfAN6qYmot3TmQalMxDpFEGEHzm45Z8j03m?=
- =?us-ascii?Q?ek98B+mJr+ocNVrdKBZZG0HenZkpSwbp3b1N01sAWVCktTTS1Cs55fMO+pWh?=
- =?us-ascii?Q?pLhr96LRwah8c2paAvOZLBnKKjSxPKgOBHgDCB6ZU2hdGk1+To00I0lvktwx?=
- =?us-ascii?Q?TdSdM9NaQijIiNMt/trtUTNB9ADiU/r3p0Xw7yVPxaJUda9ZR/+OwCTsmOd3?=
- =?us-ascii?Q?MVwfEntDlDXEXW1zQGpHgfUFMpgQ6/xivG34f+nv3RupPX/F?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ae823ff-95bb-402c-a002-08df33590f6f
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 12:02:51.5106
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /wAt/CMQx4aXrnKlG8wmBtoBAz2l0SSuIUDKWJy5xfSNOu5DZhrZQEM7LbIrcs9O
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6147
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spamd-Result: default: False [-10.80 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,broadcom.com,gmx.de,lists.infradead.org,selenic.com,gondor.apana.org.au,infradead.org,arm.com,google.com,intel.com,linaro.org,microsoft.com,hygon.cn,amd.com,zhaoxin.com,oracle.com,roeck-us.net,gmail.com,arndb.de,linuxfoundation.org,bootlin.com,nod.at,ti.com,lists.xenproject.org];
+	R_RATELIMIT(0.00)[to_ip_from(RLbixyxwsf3a5i7e4ez64ejni4)];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[93];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -10.80
 
-On Mon, Oct 26, 2026 at 03:49:30PM +0800, Xiaoyao Li wrote:
+For accessing the MSR registers on the local CPU, there are 2 types of
+interfaces: the "modern" 64-bit ones (rdmsrq() etc.) and the 32-bit
+ones (rdmsr() etc.) which are using the upper and lower 32-bit halves
+of the 64-bit wide MSR register values.
 
-> > +static int tdx_devsec_enable_dma(struct pci_dev *pdev)
-> > +{
-> > +	int ret = tdx_mcall_dmar_accept(pci_dev_id(pdev), 0);
-> 
-> after going through the series, I have a basic question on guest function_id.
-> 
-> Per TDX connect API spec, TDG.DMAR.ACCEPT, TDG.DMAR.RELEASE,
-> TDG.TDI.MMIO.ACCEPT, TDG.TDI.RD and TDG.TDI.START all require guest function_id
-> as input parameter. However, the guest function_id is specified by the host VMM
-> on TDH.TDI.CREATE.
-> 
-> So how can the guest ensure pci_dev_id(pdev) is the value that will be specified
-> by the host VMM?
+The 32-bit interfaces are not optimal for 3 reasons:
 
-It is not supposed to matter.
+- They are based on primitives using 64-bit sized values anyway.
 
-The VM sees a device composed of a bunch of stuff: a BDF, some memory
-ranges, IRQs, etc.
+- Modern x86 CPUs have added support for MSR access instructions using
+  an immediate value instead of a register for addressing the MSR,
+  while the value is in a 64-bit register.
 
-It locks the device and then it has to query TDX module to confirm
-that the memory, etc are all part of the same device. Mismatching is a
-bad failure.
+- rdmsr() is a macro storing the upper and lower 32-bit halves in
+  variables specified as macro parameters. This is obscuring variable
+  assignment through a macro. Additionally rdmsrq() is mimicking this
+  pattern by being a macro, too, with the target variable specified as
+  a parameter as well.
 
-If the VMM is messing with things so the function_id is mismatched
-then the guest will detect it and fail validating the memory ranges.
+For those reasons drop the 32-bit interfaces for accessing the x86 MSR
+registers completely and only use the 64-bit variants.
 
-Jason
+This allows to switch all "high-level" MSR access macros to inline
+functions in the end.
+
+This series will be used as the base for further reorganisation of the
+MSR access functions, especially for completely inlining the MSR
+access instructions even with paravirtualization being active.
+
+Based on kernel 7.4 as of 2026-10-26.
+
+IMHO at least patches 2 and 3 should be applied rather sooner than later
+in order to avoid new instances of the 32-bit variants of the *_safe()
+functions creeping in again.
+
+Changes in V2:
+- dropped already applied patches
+- added patch 1
+- rebased
+
+Changes in V3:
+- small fixes in patches 4 and 13
+- rebased
+
+Changes in V4:
+- rebased
+
+Changes in V5:
+- patch 9 of V4 has been applied
+- rebased
+
+Juergen Gross (12):
+  x86/cpu: Fix coding style violation
+  x86/msr: Remove wrmsr_safe()
+  x86/msr: Remove rdmsr_safe()
+  drivers/ata: Stop using 32-bit MSR interfaces
+  agp/nvidia: Stop using 32-bit MSR interfaces
+  fbdev/geode: Stop using 32-bit MSR interfaces
+  hw_random/via-rng: Stop using 32-bit MSR interfaces
+  drivers/gpio: Stop using 32-bit MSR interfaces
+  x86/msr: Remove wrmsr()
+  x86/msr: Remove rdmsr()
+  treewide: convert rdmsrq() from a macro to an inline function
+  x86/msr: Simplify some rdmsrq() use cases
+
+ arch/x86/coco/sev/core.c                      |  2 +-
+ arch/x86/events/amd/brs.c                     |  4 +-
+ arch/x86/events/amd/core.c                    |  8 +--
+ arch/x86/events/amd/ibs.c                     | 18 +++----
+ arch/x86/events/amd/lbr.c                     | 16 ++----
+ arch/x86/events/amd/power.c                   |  8 +--
+ arch/x86/events/amd/uncore.c                  |  4 +-
+ arch/x86/events/core.c                        | 20 ++++----
+ arch/x86/events/intel/core.c                  | 15 ++----
+ arch/x86/events/intel/cstate.c                |  5 +-
+ arch/x86/events/intel/ds.c                    |  2 +-
+ arch/x86/events/intel/knc.c                   | 10 ++--
+ arch/x86/events/intel/lbr.c                   | 25 +++-------
+ arch/x86/events/intel/p4.c                    |  6 +--
+ arch/x86/events/intel/p6.c                    |  4 +-
+ arch/x86/events/intel/pt.c                    | 12 ++---
+ arch/x86/events/intel/uncore.c                |  6 +--
+ arch/x86/events/intel/uncore_nhmex.c          |  4 +-
+ arch/x86/events/intel/uncore_snb.c            |  2 +-
+ arch/x86/events/intel/uncore_snbep.c          |  6 +--
+ arch/x86/events/msr.c                         |  2 +-
+ arch/x86/events/perf_event.h                  |  6 +--
+ arch/x86/events/rapl.c                        |  6 +--
+ arch/x86/events/zhaoxin/core.c                | 10 ++--
+ arch/x86/hyperv/hv_apic.c                     |  9 ++--
+ arch/x86/hyperv/hv_init.c                     | 26 +++++-----
+ arch/x86/hyperv/hv_spinlock.c                 |  2 +-
+ arch/x86/include/asm/apic.h                   |  7 +--
+ arch/x86/include/asm/debugreg.h               |  6 +--
+ arch/x86/include/asm/fsgsbase.h               |  2 +-
+ arch/x86/include/asm/kvm_host.h               | 10 ----
+ arch/x86/include/asm/msr.h                    | 39 ++-------------
+ arch/x86/include/asm/paravirt.h               | 26 +---------
+ arch/x86/kernel/apic/apic.c                   | 14 +++---
+ arch/x86/kernel/apic/apic_numachip.c          |  6 +--
+ arch/x86/kernel/cet.c                         |  2 +-
+ arch/x86/kernel/cpu/amd.c                     | 14 +++---
+ arch/x86/kernel/cpu/aperfmperf.c              |  8 +--
+ arch/x86/kernel/cpu/bugs.c                    | 12 ++---
+ arch/x86/kernel/cpu/bus_lock.c                |  8 +--
+ arch/x86/kernel/cpu/centaur.c                 |  8 +--
+ arch/x86/kernel/cpu/common.c                  | 12 ++---
+ arch/x86/kernel/cpu/feat_ctl.c                |  4 +-
+ arch/x86/kernel/cpu/hygon.c                   |  4 +-
+ arch/x86/kernel/cpu/intel.c                   |  6 +--
+ arch/x86/kernel/cpu/intel_epb.c               |  4 +-
+ arch/x86/kernel/cpu/mce/amd.c                 |  4 +-
+ arch/x86/kernel/cpu/mce/core.c                |  8 +--
+ arch/x86/kernel/cpu/mce/inject.c              |  2 +-
+ arch/x86/kernel/cpu/mce/intel.c               | 18 +++----
+ arch/x86/kernel/cpu/mce/p5.c                  |  8 +--
+ arch/x86/kernel/cpu/mce/winchip.c             |  2 +-
+ arch/x86/kernel/cpu/microcode/intel.c         |  2 +-
+ arch/x86/kernel/cpu/mshyperv.c                |  6 +--
+ arch/x86/kernel/cpu/mtrr/amd.c                |  4 +-
+ arch/x86/kernel/cpu/mtrr/cleanup.c            |  4 +-
+ arch/x86/kernel/cpu/mtrr/generic.c            | 32 ++++++------
+ arch/x86/kernel/cpu/mtrr/mtrr.c               |  2 +-
+ arch/x86/kernel/cpu/resctrl/core.c            |  2 +-
+ arch/x86/kernel/cpu/resctrl/monitor.c         |  4 +-
+ arch/x86/kernel/cpu/resctrl/pseudo_lock.c     |  4 +-
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c        |  2 +-
+ arch/x86/kernel/cpu/topology.c                |  2 +-
+ arch/x86/kernel/cpu/topology_amd.c            |  4 +-
+ arch/x86/kernel/cpu/transmeta.c               |  8 +--
+ arch/x86/kernel/cpu/tsx.c                     | 10 ++--
+ arch/x86/kernel/cpu/umwait.c                  |  2 +-
+ arch/x86/kernel/cpu/zhaoxin.c                 |  4 +-
+ arch/x86/kernel/fpu/core.c                    |  2 +-
+ arch/x86/kernel/hpet.c                        |  2 +-
+ arch/x86/kernel/kvm.c                         |  2 +-
+ arch/x86/kernel/mmconf-fam10h_64.c            |  6 +--
+ arch/x86/kernel/process.c                     |  4 +-
+ arch/x86/kernel/process_64.c                  | 14 +++---
+ arch/x86/kernel/shstk.c                       |  8 +--
+ arch/x86/kernel/traps.c                       |  4 +-
+ arch/x86/kernel/tsc.c                         |  2 +-
+ arch/x86/kernel/tsc_msr.c                     |  6 +--
+ arch/x86/kernel/tsc_sync.c                    |  6 +--
+ arch/x86/kvm/msrs.c                           |  2 +-
+ arch/x86/kvm/svm/pmu.c                        |  4 +-
+ arch/x86/kvm/svm/svm.c                        |  6 +--
+ arch/x86/kvm/vmx/main.c                       |  2 +-
+ arch/x86/kvm/vmx/nested.c                     |  4 +-
+ arch/x86/kvm/vmx/pmu_intel.c                  |  8 +--
+ arch/x86/kvm/vmx/sgx.c                        |  6 +--
+ arch/x86/kvm/vmx/tdx.c                        |  2 +-
+ arch/x86/kvm/vmx/vmx.c                        | 40 +++++++--------
+ arch/x86/kvm/x86.c                            |  6 +--
+ arch/x86/lib/insn-eval.c                      |  6 +--
+ arch/x86/lib/msr-smp.c                        |  2 +-
+ arch/x86/mm/pat/memtype.c                     |  2 +-
+ arch/x86/pci/amd_bus.c                        |  8 +--
+ arch/x86/platform/olpc/olpc-xo1-rtc.c         |  6 +--
+ arch/x86/platform/olpc/olpc-xo1-sci.c         |  2 +-
+ arch/x86/power/cpu.c                          | 10 ++--
+ arch/x86/realmode/init.c                      |  2 +-
+ arch/x86/virt/hw.c                            |  8 +--
+ arch/x86/virt/svm/sev.c                       | 22 ++++----
+ arch/x86/virt/vmx/tdx/tdx.c                   |  2 +-
+ arch/x86/xen/suspend.c                        |  2 +-
+ drivers/acpi/processor_perflib.c              |  2 +-
+ drivers/ata/pata_cs5535.c                     | 24 ++++-----
+ drivers/ata/pata_cs5536.c                     | 17 +++----
+ drivers/char/agp/nvidia-agp.c                 | 32 ++++++------
+ drivers/char/hw_random/via-rng.c              | 29 +++++------
+ drivers/cpufreq/acpi-cpufreq.c                |  8 +--
+ drivers/cpufreq/amd-pstate.c                  |  4 +-
+ drivers/cpufreq/e_powersaver.c                | 20 ++++----
+ drivers/cpufreq/intel_pstate.c                | 28 +++++------
+ drivers/cpufreq/longhaul.c                    | 12 ++---
+ drivers/cpufreq/longrun.c                     | 16 +++---
+ drivers/cpufreq/powernow-k7.c                 | 10 ++--
+ drivers/cpufreq/powernow-k8.c                 |  8 +--
+ drivers/cpufreq/speedstep-centrino.c          |  4 +-
+ drivers/cpufreq/speedstep-lib.c               | 14 +++---
+ drivers/edac/amd64_edac.c                     |  6 +--
+ drivers/edac/intel-bff.c                      |  4 +-
+ drivers/gpio/gpio-cs5535.c                    | 10 ++--
+ drivers/hv/mshv_vtl_main.c                    |  2 +-
+ drivers/hwmon/hwmon-vid.c                     |  4 +-
+ drivers/idle/intel_idle.c                     | 26 +++++-----
+ drivers/misc/cs5535-mfgpt.c                   |  6 +--
+ drivers/mtd/nand/raw/cs553x_nand.c            |  6 +--
+ drivers/platform/x86/intel/ifs/load.c         | 10 ++--
+ drivers/platform/x86/intel/ifs/runtest.c      |  8 +--
+ drivers/platform/x86/intel/pmc/cnp.c          |  2 +-
+ .../intel/speed_select_if/isst_if_mbox_msr.c  |  6 +--
+ .../intel/speed_select_if/isst_tpmi_core.c    |  2 +-
+ drivers/platform/x86/intel_ips.c              | 20 ++++----
+ drivers/powercap/intel_rapl_msr.c             |  2 +-
+ drivers/thermal/intel/intel_hfi.c             |  8 +--
+ drivers/thermal/intel/therm_throt.c           | 22 ++++----
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  6 +--
+ drivers/video/fbdev/geode/display_gx.c        |  8 +--
+ drivers/video/fbdev/geode/gxfb_core.c         |  2 +-
+ drivers/video/fbdev/geode/lxfb_ops.c          | 50 +++++++++----------
+ drivers/video/fbdev/geode/suspend_gx.c        | 24 +++++----
+ drivers/video/fbdev/geode/video_gx.c          |  8 +--
+ include/linux/cs5535.h                        | 10 ++--
+ 140 files changed, 567 insertions(+), 685 deletions(-)
+
+-- 
+2.56.0
+
