@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793000425;
-	b=EEmwz79OzfDX2VRUP+rFz97G/EHTUx50WbhHHOrvLAqoqPl0/0zz9Ik/3wwsTcRVFuER
-	 updy3PEVObarg+O3dnBzWIVE6KvtK79oj2lr1O3YRJQzaSGg6KD/5sMfGAICzgeJXlMCE
-	 kzTGrc2rb+dLmFSiHWn/4u5cKGjFFkV5N3/FPtISU/joB+U1aQr1DWfKWZkO1m5Wy3TAe
-	 LNHOnsjR69wOq0+gcA6AqyFTXZ3stG2tOBhDobBhAg/rdktB0B8/EfRW4jcA95HxItGdQ
-	 J0KnSWw/K/kFtcH0bgqNMCpD/LAQvfXifDmCG7rFS9JTyJ4DF0Qp3aH5GrvuWlGpe5g==
+	t=1793001026;
+	b=XTspHtnidTZzG8/YY5hP9qmARsmoAiagDXFpOSdFILiETlc9f9t8UdiiDWi4Y8cUU2Gb
+	 4i96D421ZXc2Ju2+LFJ5tY0YkqAoHQF7JcmR+vRrBBKXqJtUm3sbFyg0zBfUvZkYUZqLS
+	 +2LLCZMPR16uwzHsmAMe51VVBU935Fsr0VW8bE7LtBGR7bGayISKPTvAeOynAI6h4nckm
+	 Yn2K90YtxYhkPfVqj1IMV3ClO9m8EhyDc9zQP/7U8kQkSrRZ9dfOXQohWiV7u44xvKeZQ
+	 eBDesXIReAmZ42Y2/RhTCYnam24FTHS9mE6+vdHPUI9IK1NOXBORe1h+V08HdRrZldA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793000425;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793001026;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=8T10hJCk/kOeswwpJvKXMYFyC3jypKOiaTvB8IF5Fd0=;
-	b=2TOKWJeYOhy8oa9SKxmX9Hhurlrh9ZvWP1kDZvxGqUCT5d9E2/3QzTgx3YzTAMOMn0nx
-	 hdBr1xAWhF+FW5/ZlBRKz8ZoRDuGZKwp5FKZ4yDKYA9m8e7o7M0Yzqji4jFa3cB5M9S5n
-	 OdBqOuwJ0j6QHa9dn0w4mk6aMdOcj3hP/L7YODhNsNR60FPf4nv7XFHQUcCzoLhAwjeZ9
-	 c5V9gPIhMtnVEixEFLmX22DRUK1hynP3Winja2m8fz0LmhFIqCfoE2FtAkZBWAdq8sJu7
-	 lsUhcpYUr0WPD7I7Q86YtaAYkGFQ8o30iSITE9uDWnDOewd/T0fSGcHyjyi6Cd86I+Q==
+	bh=/8Nfa8ZvhcxBCeEQYtMEiwr7Pt2NnxZjTkwqiUDch6k=;
+	b=RzbMXw/Zo7kHeyJtfyixdHuFe16ZWBciA3hcBehiJU5UWKREQEXIp2WgU9mQjdnT/9Jw
+	 RRaOeOw0fkONzjCQNjUK99jS4ZZA1cU6sRjjV0y6yE/d+e28KG1/Pu5sfML+NIIUlEdsF
+	 MB1YKJb9HbftWbBBJVvj2K8ImD2sjPDh1QBFDC4fRVuxG9n+c3E6HJXFU88AP04WywseP
+	 q2xyv2tvwRwW6wqtKP38/7jz6iSRwJ2EuUCRFwlwczokwy9KlHEjO128XDd5+CBp+LhdX
+	 Nq7q5PCQACYFmTHmgwQDkNPGsgSwoG/bGEekakvN3esIEWspb4e2BWhOgPbaUjruGFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nnbEAEi9;
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YFSoeg3C;
+	arc=none smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F45606A31B
-	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 07:40:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55F45606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CBD606A31B
+	for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 07:50:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0CBD606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nnbEAEi9
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YFSoeg3C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793000423; x=1824536423;
+  t=1793001026; x=1824537026;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=FF+d8a+jtwAMDOrVTY9A6IFopNqIDLwibtD5Fx43VvI=;
-  b=nnbEAEi9Inq56yugrWuqaObVZIhR6pGyACiWoT5EAgK5QC3kc2G5SyH4
-   vgWvKiA4E1hWAcyVvaPXgC7VZCnyratx2d+FtC0gxbentZg4KuyKgpQ+V
-   xwE3gw5ez//jJ9VS9duunTrXBW2m9y+M39zMEn1BzrpYvgcbW5bEpV3TI
-   qNPRT96otXfOBF8ZBSt99tajJt65E+WR6PArrayVzWnGIUdZWuWQSeZMk
-   8zFIT3ye26JEfWVWwbBItzOc9K5NQYWngwXvgmXVW6mhkPcQq6UBa1n62
-   FVPAJgkM3dr+K9US1OqCYNcwiqKjk3kQRI21kv+7H3ih9FvPeCsAAtokF
-   g==;
-X-CSE-ConnectionGUID: gdMqpyo4Td6LVbj8mlM9zQ==
-X-CSE-MsgGUID: RiwV6J1WQ6Oh3NHPBKBdwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1688867"
+  bh=Ypr1y4OAt1ajVjc3EN9jMN03ZJtAjXWvwbJYIgIM4CM=;
+  b=YFSoeg3CKXXltUmftiw4T0brg1JmiaWoqu2vE/J0HRy3zfhv73dRVwnH
+   dEXhZNWCO7Z9UPp///lArGXi26NnSVZV+oP8LCFNeuOZ1y3TkT/rGjoQk
+   p8ZL2hFk7JOxjD9V3wULLcDFgBWr2E2wsUEA3L1V7L2njh7kSOHvx8T8Z
+   RPJAmF9jgV4F2iHWHjBC8BUJoiFqcAmbKr/JYZ8Uvm/r+5ET4tpmOAuqd
+   f3hk2HLAX1hEYs8Id4jevcxRtqT+5VYfb8H1wa9jwQHsFoBfwLZaCqKVX
+   3FSOdWJMVkXVZOXLyJG4VCWf5A9uE2U3wFGjLPejhx8xOPjBL+p6cSRYn
+   w==;
+X-CSE-ConnectionGUID: Wvo0MyYFRI6eQlWjAfrHfA==
+X-CSE-MsgGUID: CmIlnO4QTRGQCcjBZ2IaPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1670406"
 X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1688867"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 00:40:01 -0700
-X-CSE-ConnectionGUID: DjBsxKTBQXO/9JG9HEZ0+w==
-X-CSE-MsgGUID: 6Yc3T8mTSw2tB+o/Hk3RNg==
+   d="scan'208";a="1670406"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 00:50:25 -0700
+X-CSE-ConnectionGUID: zavmyGjdSfaR3xUCQhfbMQ==
+X-CSE-MsgGUID: aeLsWiS0RsCnda2uclnjmg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4579501"
+   d="scan'208";a="4175053"
 Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 00:39:57 -0700
-Message-ID: <bc2fc3a1-b2e0-4262-bced-40211db5f0df@intel.com>
-Date: Mon, 26 Oct 2026 15:39:53 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 00:49:33 -0700
+Message-ID: <de19ab97-c86b-442b-be23-c921c0831542@intel.com>
+Date: Mon, 26 Oct 2026 15:49:30 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,8 +73,8 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 14/15] x86/tdx: Add TDG.DMAR.ACCEPT module call
- wrapper for TDX Connect
+Subject: Re: [RFC PATCH 15/15] virt: tdx-guest: Accept default DMAR entry
+ during PCI driver attach
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
@@ -84,93 +84,49 @@ Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
  pbonzini@redhat.com, yilun.xu@linux.intel.com, chao.gao@intel.com,
  vishal.l.verma@intel.com, kevin.tian@intel.com, chao.p.peng@intel.com
 References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-15-zhenzhong.duan@intel.com>
+ <20260924041032.1096569-16-zhenzhong.duan@intel.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260924041032.1096569-15-zhenzhong.duan@intel.com>
+In-Reply-To: <20260924041032.1096569-16-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/24/2026 12:10 PM, Zhenzhong Duan wrote:
-> TDG.DMAR.ACCEPT updates the PASID table entry of the TDI as present to
-> allow DMA access to the TD private memory.
+> Before a TDI can perform DMA to guest private memory, its secure DMA
+> mapping must be accepted. This happens during driver load stage after
+> MMIO acceptance and TDI activation.
 > 
-> For TDG.DMAR.ACCEPT, the R8-R15 input registers are reserved and must
-> be zero. Use a zero-initialized argument structure with __tdcall_saved()
-> so the complete TDCALL input register set is loaded with the required
-> values.
+> The enable_dma callback issues TDG.DMAR.ACCEPT to set secure PASID
+> table entry to present state and target non-partitioned TD.
 > 
-> Translate TDX module return codes into Linux errno values.
+> The secure PASID table entry is cleared in unlock stage implicitly
+> so disable_dma is a no-op currently.
 > 
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  arch/x86/coco/tdx/tdx_connect.c   | 28 ++++++++++++++++++++++++++++
->  arch/x86/include/asm/shared/tdx.h |  1 +
->  arch/x86/include/asm/tdx.h        |  1 +
->  3 files changed, 30 insertions(+)
+>  drivers/virt/coco/tdx-guest/connect.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> diff --git a/arch/x86/coco/tdx/tdx_connect.c b/arch/x86/coco/tdx/tdx_connect.c
-> index 3ef10b1df401..a03b1da9a52a 100644
-> --- a/arch/x86/coco/tdx/tdx_connect.c
-> +++ b/arch/x86/coco/tdx/tdx_connect.c
-> @@ -136,3 +136,31 @@ int tdx_mcall_tdi_start(u64 func_id, u64 exp_bind_session)
->  	return tdx_mcall_tdi_to_errno(ret);
+> diff --git a/drivers/virt/coco/tdx-guest/connect.c b/drivers/virt/coco/tdx-guest/connect.c
+> index a9d41fd38b64..b328caac0a49 100644
+> --- a/drivers/virt/coco/tdx-guest/connect.c
+> +++ b/drivers/virt/coco/tdx-guest/connect.c
+> @@ -427,10 +427,26 @@ static int tdx_devsec_run(struct pci_dev *pdev)
+>  	return 0;
 >  }
->  EXPORT_SYMBOL_FOR_MODULES(tdx_mcall_tdi_start, "tdx-guest");
-> +
-> +/**
-> + * tdx_mcall_dmar_accept() - Accept PASID table entry of a TDI instance
-> + * @func_id: Function identifier specifying the TDI instance
-> + * @target: DMAR target, 0 for non-partitioned TD or L1, 1-3 for L2 VM1-VM3,
-> + *          other value reserved
-> + *
-
-Linux doesn't support TD partition and the next patch just hard codes it to 0.
-We can drop it entirely for simplicity.
-
-> + * Update the PASID table entry of the TDI to mark the DMA Remapping (DMAR)
-> + * state as present, allowing DMA access to the TD private memory.
-> + *
-> + * Return 0 on success, -ENXIO for invalid operands, -EBUSY for busy operation,
-> + * -ENODEV for TDI not present or invalid metadata, or -EIO on other TDCALL failures.
-> + */
-> +int tdx_mcall_dmar_accept(u64 func_id, u64 target)
+>  
+> +static int tdx_devsec_enable_dma(struct pci_dev *pdev)
 > +{
-> +	struct tdx_module_args args = {
-> +		.rcx = func_id,
-> +		.rdx = target,
-> +	};
-> +	u64 ret;
-> +
-> +	ret = __tdcall_saved(TDG_DMAR_ACCEPT, &args);
-> +	if (!ret)
-> +		return 0;
-> +
-> +	return tdx_mcall_tdi_to_errno(ret);
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(tdx_mcall_dmar_accept, "tdx-guest");
-> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> index 90f2842f4253..01387f6b24b3 100644
-> --- a/arch/x86/include/asm/shared/tdx.h
-> +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -22,6 +22,7 @@
->  #define TDG_VM_WR			8
->  #define TDG_TDI_READ			67
->  #define TDG_TDI_START			68
-> +#define TDG_DMAR_ACCEPT			70
->  #define TDG_MMIO_ACCEPT			71
->  
->  /* TDX TD attributes */
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 787b3039ef5a..118cc58cc909 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -157,6 +157,7 @@ u64 tdx_hcall_tdcm(u16 devid, void *buf, size_t size, u8 vector);
->  int tdx_mcall_tdi_read(u64 func_id, u64 field, u64 *value);
->  int tdx_mcall_mmio_accept(u64 func_id, u64 index, u32 pg_offset, u32 page_cnt, phys_addr_t gpa);
->  int tdx_mcall_tdi_start(u64 func_id, u64 exp_bind_session);
-> +int tdx_mcall_dmar_accept(u64 func_id, u64 target);
->  #endif
->  
->  void __init tdx_dump_attributes(u64 td_attr);
+> +	int ret = tdx_mcall_dmar_accept(pci_dev_id(pdev), 0);
 
+after going through the series, I have a basic question on guest function_id.
+
+Per TDX connect API spec, TDG.DMAR.ACCEPT, TDG.DMAR.RELEASE,
+TDG.TDI.MMIO.ACCEPT, TDG.TDI.RD and TDG.TDI.START all require guest function_id
+as input parameter. However, the guest function_id is specified by the host VMM
+on TDH.TDI.CREATE.
+
+So how can the guest ensure pci_dev_id(pdev) is the value that will be specified
+by the host VMM?
+
+This is a strong contract, while this series doesn't mention it at all.
