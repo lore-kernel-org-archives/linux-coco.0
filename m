@@ -1,74 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793112921;
-	b=Narl8EZxpzrMcYnoSs+5QuDxJWLZTyzFuOcwxe+mi8Xyz6SjT/Pmr2a7NvFPWvpuLEVu
-	 Max1UOBq9Y4nObF1N6O/FbQ7u7UVOi+0uwUKUUl8f4BTePM7uK93ssHlmgzVHjH7jRnxE
-	 klu7lqoMXmSIYo0750xTihZzMRlg0ad3LLCYKBnrS4YKf364AwXVzqj60Vx3/RVvLJfvb
-	 rls/1AfbCV9hq6F5RLeyl1nju/u00jFY9wc1xYEl2Kt3CrthgqZQ94v3qS6jeth/soHk3
-	 8TdIywTp9svC9OO4euTSQYMLWjSSYTpIzuv6hYlf9HDyTSMrPmyW4dn/zt/ORHCZfbA==
+	t=1793114256;
+	b=2kn6rQdVcXkm1SE41k0WKOLWW/7OeOEkxgztMfLautjEjc95AVoHFnmr5NDTSN1xMQJ7
+	 rm68BhEwKjQA9384i5LrZbbmZKfHU0hYjIBbblzW2Ws1JzrEmZm0OTuP880K6RtT4qgP5
+	 Kyo0C0w2w48fPcV6gAT57UkQlHN6M/PCWCLhkRcz0TxROz7i8G+i+P0A1nQvNABezt+ND
+	 agK46Nz+ZwXZFIik3040mXlnLWmfWTsgvQS5RUMtiNRqXTQShAI8TM7LHLCklfZpx1TeL
+	 cKniyM7X4ZiN3gp0KlnESmYh2TbVwOpSOPSVqwrsQnpENeNICxkKjOsFbqEM3tW2smg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793112921;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793114256;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=1DehjZ5BL8d0YnBEeJuu65Ld1wB1OE7I+m9Hy0VoO3I=;
-	b=fQqRHGG3H0AC+JmcSzAMSpOQIatgXQlp32QD2I8IPV0YAbXbE7YVbDjrieyfXUS2g9mb
-	 YF2LVTE3GUvzK2p3TKquILs2UsU6FSwGnAf2tBgEbjWiOJz+dpv19WIXumN8uOKQXIwmf
-	 6uDsVnw7/CxyfD7dfBHfPaDNcIJ+JfHeiBR5Vmr2/XBC18KCyIdVsohNfBF64ig55XZ/q
-	 Qati2sgYYl5YE/TpdLt4za/dW4VKp+trEqAECks/bkzHLpwSXi2y1jIYCJrEEGNdNCGgf
-	 6lgu0JhJ0ab3urJJ424p910tLzjzxdqM2/tFD/tV3mILO3ws2E2UxGMdDNxNJwlF7pA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=U4Ud7qq2I83GZDTdN1xiR67Ms11VsCn4buA6mqvOa9c=;
+	b=SAlSsq110zShO/L01mvim0v3N9qT2zlOBUBlU+j2eGw6lBDGbKBKlguy0Hs3XCM8Xcyk
+	 JI8D55uDX3wRXH9a5oyVFK5QxXmQYq6wIcaKlsXGFXU5MeqYwzCf8nZ6F52lpM7DsL0ew
+	 2DG8yRa3XWqx1f1DnmL5AQRPt94DlaiLL9Mt2VcZpY8qBsrvIq9cEIA444qrQ+EgM0eML
+	 yCloLgSoxYu3zN4ee2Oh/5rsyeatgPxyhPuV+ie9t+QO9iX0rtuBN0aUurQg6s9dEljnL
+	 NFUTp+Fg+F6/Pv1RuKNBf3FgIbTBpG57suJc5hPPYBv4KOOvlAGpRiP76nds7UFQ9qA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nZupIfEU;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=TRtUsxnS;
+	arc=none smtp.remote-ip=209.85.219.43
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69DF606A31D
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 14:55:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B69DF606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7974606A31F
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 15:17:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7974606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nZupIfEU
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3adbc9a47fbso4169094a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 07:55:20 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=TRtUsxnS
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-91c7a0c1617so194116d6.0
+        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 08:17:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793112920; x=1793717720; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1DehjZ5BL8d0YnBEeJuu65Ld1wB1OE7I+m9Hy0VoO3I=;
-        b=nZupIfEUx9sx42VWb3BAzrEc57RtxPd1utyGKdHghOkVcauTUa+1tu7RBRhEX5/MjG
-         +aotVQPKPuG+bA9gsxVodjxR4hDrrcMnHD3LKaAJAeUfxaTdNYsbgMHrJL8+9mkLPR1J
-         7h2jx6/LRx1LK1LYtTO0/fnN3z+IhPA7ZlWs0WD4H23hQtritDqEgFfycTft2W6TTXPP
-         koyl14UXNfvRG90MdM9ImzuOGK99QPhaCK79QZM62cHrfWhtPzN5ZIgumiVVh7s5yCDw
-         CXnZz7o6Mt36aKDumA5HZma+RV/B/5nSYhaga9C3s1LlWXx8+VV3a+xjQ/5d9F+yKZx3
-         uGkQ==
+        d=ziepe.ca; s=google; t=1793114255; x=1793719055; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=U4Ud7qq2I83GZDTdN1xiR67Ms11VsCn4buA6mqvOa9c=;
+        b=TRtUsxnS5OhOBtM0nqEu3BAEHM8agKTpPFFj9cQTN+TQi8hLjEWZG8kXy7P0oiRE7z
+         POXeLjz++zwPsc+7KE7WfPjLT7Gmax7FK2ILBPjP7u/gSYToJYLQUxFKAQwtcIrgJZlH
+         WeKVJkpHYyE+RgLjk6pt53XPVAW/XLZnxlA06UuldrOjILfmeF5Zpbsm/32zd68NaUyJ
+         H2sqcVAGJApp6xwPOnBHS3IU+jwtQyEEPoXRc6KiUyDakvjvIM6YGYodLZfRs/tcb9jS
+         TyHx3uFxYDnMiJhZPSWVc7R4oXHbvKhb4/4pXrkaXz8YrPxVpDlyecBG7cn47mNixXju
+         eVaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793112920; x=1793717720;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1DehjZ5BL8d0YnBEeJuu65Ld1wB1OE7I+m9Hy0VoO3I=;
-        b=zItVlgAdx0gnEWyViWqrPYMckVaWRcQ8/kOML54sYZu7mtt5DI9W5Mi2j1kpAmwYH5
-         7xmisCg63TyxcYZwC5SwOqolGUszxIZ7TeaOuR79e6ZoYM6InFk2Qo+es2DML6/4U7b9
-         yB7Y8//WwIpb3gi0dkSLAEzR9Gbu4yVUm0i/WhM6jdgsStPv9zauP9JTpl46LTT8DOkn
-         Bdysa65CYKG6p9Q76212hnXAeFKpiRJCJMAVf/90qz2/QnDiaMBMNeJlnOjr0teIiFQl
-         uVK14HRNX4RAxlz/mQQqs4zT9ESa9MUDdD518tNHHz8k3G358i8sKsFmRUz87uNI2v0j
-         x/pg==
-X-Forwarded-Encrypted: i=1; AKwUvBz4oGZhIgnVBjeLGZ5WECf9J9jhjLyDhILUp4KoleckwXj1hwi4nsOGyDLsup+F3SslrgQ0gqrsdfkl@lists.linux.dev
-X-Gm-Message-State: AFq9FYKZX/CgA/Ou+7VgxCHHnlqyfUrv62aTAsIzWWsxA3bnJSWpeXzh
-	5vOg9tbW6nURXoa6aukxpy5s0wEiKYIVeqXzg5RB5MHF9krGNXrBvrXKKPRGN/8VefCS3/7nSt5
-	vSTziCw==
-X-Received: from pjtn20.prod.google.com ([2002:a17:90a:c694:b0:3ae:1810:840c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:590f:b0:39e:4c81:6c5f
- with SMTP id 98e67ed59e1d1-3adeaae86acmr7469745a91.26.1793112919756; Tue, 27
- Oct 2026 07:55:19 -0700 (PDT)
-Date: Tue, 27 Oct 2026 07:55:18 -0700
-In-Reply-To: <6c156bb3-a04f-4d4e-8611-b1e93359e8ad@intel.com>
+        d=1e100.net; s=20260707; t=1793114255; x=1793719055;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U4Ud7qq2I83GZDTdN1xiR67Ms11VsCn4buA6mqvOa9c=;
+        b=gHlVezk6JqBqsSjhWcPK0B3ldwmIJ5qk9ApMtcERkK+7srWL7XwlIF+54MTiFugsM0
+         JfN9UCcCjQA2nIq7KR1ChtlQOkFBx536xa3gxSEJ5HgvK+Gq76huMNXADC4sT7TlQ5nE
+         kCD0F/nLbYcbJALvwCbUsgKI4Mwpgaxy6HW1+EYNBxb+9C+vh/QUbS1AFeOTtLdMQt0E
+         iiYNIZk2Tfvl40lR5GkZYA/MVDH4qf6BFBT+w7gZmoa6ihrVuUyUEfQ3zpwKqg/TBv1d
+         dAr8Q+NGOm2Xo4MerPzFvduuPE6g1c+pfMukGzRquQ/23Rl9ukjmCYrC9SMw8RiNyHQ4
+         UgHA==
+X-Forwarded-Encrypted: i=1; AKwUvBw5PLy+99LlmesUeNaCyj4cdHZUtp5UInOpDrPHR23G3Xke/xRCxEKtIId2jcjpGt0rnde/xEw6sJ3E@lists.linux.dev
+X-Gm-Message-State: AFq9FYIyLYWWQEoQ89lAJjcE2qB42sxO/xGrPmE1pGjMTJXgrU/VLinP
+	ObAX17SERY6AeTI0DcXdpES1Cc4V3VNXyZ2FeXKlZR/nhoW344flVmNWPYnYczsSIsQ=
+X-Gm-Gg: AYBFou3g7nDFAcbVgSNw/xHp2B2Ncncd6uF1pdItMV6YjyP2Y9+rgLH//K3SH7d5G6J
+	p4uTX3y3x06K3GrFMP1JA3sVVgiWI7RgXQ9rzY37Vu2OmkBKD61x4afdl7EYCiXYbDSg4R3Km25
+	/8obK5HVprlrAuiVymlP+GRp0N34RvOoq6U5tDEORIlappbdg3LK4cMok5xZlhZ0/n0qAgp22c+
+	U9yE1zY1czHnjkVNynU0B3muwW7X3PjFvb15kERuEVroinuMH5YiUV8lmO/jpg+xp+rh7iG7ea3
+	kmI9q5z8HBcCVWvc8uNvOlw8tbfNsJoaZTKTv3jAyZicuSP+ElVhPc8Y7Hk5UcEWAHTQllCsFCR
+	jrKogr5dSNykIzTSOukl9fJwvUvAjM68BqKbco2l0whMCrPuY1nD8GA8/ssu4IUMhXkxLnLf3pf
+	Ss6xq2ZY7egoYASnhdlG+w4CS1xDnus4NqYH/6cy7bSIjD7cY8vieAbpjaZwKnzEbMOIYREgW5V
+	TuVJlp9u1oSxyMOpsyUCSmPlNpbYeWyMsBFv5ZxloKUSL6xVYSQ9G0+/svs4GcqiufneVNI8r9K
+	aOvpT8Q0MYXQ7nPd2Kq08eJ7KdlLs/5FiDY85A==
+X-Received: by 2002:a05:6214:f2b:b0:91c:7246:2d4a with SMTP id 6a1803df08f44-91c72462e58mr34928326d6.35.1793114254057;
+        Tue, 27 Oct 2026 08:17:34 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47c96375sm105565826d6.33.2026.10.27.08.17.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 08:17:30 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xLivZ-0000000ADMO-20dz;
+	Tue, 27 Oct 2026 12:17:29 -0300
+Date: Tue, 27 Oct 2026 12:17:29 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
+	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
+Message-ID: <20261027151729.GG1685504@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-3-jiri@resnulli.us>
+ <at-iEMxN98nie1Qr@e129823.arm.com>
+ <auBaROC0XdWpILEI@FV6GYCPJ69>
+ <20261027141524.GF1685504@ziepe.ca>
+ <auC5sw9YMC9NO4wl@e129823.arm.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,68 +114,54 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-References: <20261022210134.612848-1-seanjc@google.com> <20261022210134.612848-3-seanjc@google.com>
- <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com> <auCvuyY7tTg7ISwR@google.com>
- <6c156bb3-a04f-4d4e-8611-b1e93359e8ad@intel.com>
-Message-ID: <auC7VoynSWStxCg3@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
- when filling CPUID entries
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Changyuan Lyu <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auC5sw9YMC9NO4wl@e129823.arm.com>
 
-On Tue, Oct 27, 2026, Xiaoyao Li wrote:
-> On 10/27/2026 10:05 PM, Sean Christopherson wrote:
-> > On Tue, Oct 27, 2026, Xiaoyao Li wrote:
-> >> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
-> >>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> >>> index 271c2f94b8dd..37d088f6f7a8 100644
-> >>> --- a/arch/x86/kvm/vmx/tdx.c
-> >>> +++ b/arch/x86/kvm/vmx/tdx.c
-> >>> @@ -2,6 +2,7 @@
-> >>>  #include <linux/cleanup.h>
-> >>>  #include <linux/cpu.h>
-> >>>  #include <asm/cpufeature.h>
-> >>> +#include <asm/cpuid/api.h>
-> >>>  #include <asm/fpu/xcr.h>
-> >>>  #include <linux/misc_cgroup.h>
-> >>>  #include <linux/mmu_context.h>
-> >>> @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-> >>>  
-> >>>  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
-> >>>  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
-> >>> +	entry->flags = 0;
-> >>>  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
-> >>>  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
-> >>>  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
-> >>>  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
-> >>>  
-> >>> -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
-> >>> +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
-> >>> +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
-> >>
-> >> I think the WARN_ON_ONCE() is very likely to be triggered in the future when
-> >> people run old kernel with new TDX modules.
+On Tue, Oct 27, 2026 at 02:48:19PM +0000, Yeoreum Yun wrote:
+> > On Tue, Oct 27, 2026 at 09:02:14AM +0100, Jiri Pirko wrote:
+> > > Mon, Oct 26, 2026 at 07:55:12PM +0100, yeoreum.yun@arm.com wrote:
+> > > >[    3.856919]  ctlv_schema_check_attr+0x3dc/0x538
+> > > >[    3.857105]  ctlv_schema_check_indexed_nest+0x788/0x958
+> > > >[    3.857301]  ctlv_schema_validate+0x88/0x180
+> > > >[    3.857482]  ctlv_msg_test_as_deep_as_the_core_allows+0x11c/0x1e8
+> > > >[    3.857698]  kunit_try_run_case+0x64/0x188
+> > > >[    3.857878]  kunit_generic_run_threadfn_adapter+0x30/0x68
+> > > >[    3.858086]  kthread+0x10c/0x140
+> > > >[    3.858245]  ret_from_fork+0x10/0x20
+> > > >[    3.858398] SMP: stopping secondary CPUs
+> > > >[    3.858630] Kernel Offset: disabled
+> > > >[    3.858720] CPU features: 0x0,00000000,00b0802e,9f190bc3,2affe72f
+> > > >[    3.858872] Memory Limit: none
+> > > >[    3.858976] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
+> > > >
+> > > >[...]
+> > > >
+> > > >I think it might be good to configurable according to architecture
+> > > >unless it's not good to reduce the CTLV_MAX_NEST_DEPTH number
+> > > >otherwise, increasing stack size when CTLV is enabled seems unresonable...
+> > > 
+> > > Agreed, will lower it down. I think we should be okay with 8 for start.
 > > 
-> > Then upstream patches to make that not happen.  Intel insists on treating the TDX
-> > Module like hardware.  So, treat new TDX Modules like new hardware.  Upstream
-> > support for the new "hardware" before it ships, cc'd to stable@vger.kernel.org
-> > if necessary.
-> > 
-> > Because IMO, the WARN is doing exactly what it's intended to do: alerting the
-> > admin that they are running a potentially dangerous setup.
+> > I'm surprised this ran out of stack though with even as few as
+> > 32 levels.. Is there accidently something large on the stack?
+> >
 > 
-> For this specific case, does it mean every later patch to add a new leaf in
-> cpuid_function_is_indexed() needs to be backported to stable?
+> Nope.
+> 
+> When I see the each functions stack allocation:
+> - ctlv_schema_check_indexed_nest():
+> 	sub	sp, sp, #0xf0 // 240 bytes
+> 
+> - ctlv_schema_check_attr():
+> 	sub	sp, sp, #0xb0 // 176 bytes
+> 
+> Roughly (240 + 176) * CTLV_MAX_NEST_DEPTH = 13,952 (around 14KB)
+> consumed.
 
-If you want to ship a new TDX Module that enumerates features in those leaves and
-works as-is on older kernels, yes.  Again, this isn't really any different than
-enabling new hardware.  E.g. a kernel from 2024 generally doesn't work flawlessly
-on a CPU being released in 2026.
+400 bytes per nest seems pretty big to me...
+
+Do you have debug options enabled or something that increases stack usage?
+
+Jason
