@@ -1,137 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.21
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793118982;
-	b=NfBUTokuFbbwj7/Zs8NzNz8CpeqBzyL57kGSpus96L2aFRDPdW9n72FEQ/l+MiQIvefN
-	 GAqxx+RvTEvFsFIB4AwvsD5q5RCvsb24phi81fJBBmLTRyWTbsIqz9/EvdO3Ufk8USOFz
-	 HjmIiGrgwKsQxxm0RQZSrgHJ0eNs6cjCzzXtJ4MFs3XR58b8RGy2nQRKO+XwLUbpb9dJX
-	 Hon3vUx8vHEiRNTn2g/umuop7mBJRyhVWb6TdTcbZYxFh0FP3gImwU5i1OiS+rJMzlzC2
-	 uohPMnyEfwcWLaZZUP6bzUzQ+0xoH4ujCLWhYmp9xT5NM8eVNH94RV5HGOrPMeVZJFw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793118982;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793126591;
+	b=sV2HkX3AcoR0KCIpp+BFA5fr2fL/seE3H5Kq/WjVcecY1EHhDBb7M92Uk6U9AZCH2TEd
+	 pcVCIvno40e/u6vPABcURuQIutjjGFqdyObRa6Bd7I1S0uLAI2UEhjQYwP9gQo/SkNJH4
+	 SxwtkSMLtIstlpwRbgB2zLj6SPWtkTTQuoaiTAQ+b3ydv4ic3e0RhCppJEcXv6iExx3bn
+	 eg+MyWOQmaDI2PtHZZ9gx3OSSORh0+Qrj0fTy/AfUjBfbisFoXQ93avJaXM4ZXtYP3OSP
+	 lmx+PXOnzk25f68IgSIOv3M7RwYe6RNXin04lW9KRQoPO7pYKE0y9wyU4e4aaYTZRrw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793126591;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=rDlGdlPqrxe20803Rw4nucxmUzP7t4lNaWKtazBehAc=;
-	b=RC0w/r6GjAxvbVz9ymx5GiTPxoIJnvdC/jAI7HqNcNLSaEP3f2rpQtLZLvH7Adqz0uuW
-	 f5dwB21tZay4HMTSY22FeQGk3WsqJY/Zwih05xF30mYnydEyKCs95VKt7wmHxT74luXDT
-	 3Imtuk/SZ/vqE189e/lfv9Htl/ONUezOU/5j/FXDNWw1AonTsi1WKvP8jWeRcgX7r/ZeK
-	 RcoR4w/qlnJ7ayl4kl3njCISbhKnoEaspd79ApiXxyQmTkUU5fB7gpPtKEKm4i39IKxdI
-	 mL7eoIvsbENqjUvl5C+nnN1RjVudI4hZy3wkFbdsiFGHsqlOkuDfW5JCwAO/NaORK6Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=xIFdqcQop16rBA6d8rokSjCRa+xyZ7YEUJL0UVFobxw=;
+	b=ESjZ5sS8vP6lJdswTd40amdD8BLgoVqhjJ14IC6wNk4WGP1+K+hC1rbu2p8msqIafRfG
+	 D8DhdNr/wiQSG6JNV8ujiEpwUtkv1wZLdfwmrgM+p88OgJvUTnr4vINTT34J+5n4KcIzf
+	 O9ec0xyAQTmw+0MnDpeOOKDcwbPRYFHfXM6dzhjBrYgwSa3JKXvTKQLqkKXL02WY9hwKr
+	 unv4Ml8J5IxJPB7JHBQHOt+wJMnTqLycQLDDlhp1YptW7oBAryYNu4OV5OqP02gBQDCTr
+	 T0IIJafEnmI9Muc1JkRn016lNG13W1y7uo6BEXNaoLv30/P2th26VIUkXkcdBLK6C2A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+ufP52Y;
-	arc=fail smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCupMWgX;
+	arc=none smtp.remote-ip=192.198.163.12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133F6606A31F
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 16:36:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 133F6606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB0606A31D
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 18:43:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3FB0606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+ufP52Y
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCupMWgX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793118982; x=1824654982;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Crc/rUnGbNYX7mGZ0FbxyxtZr11pZxNvJ9S/qX08khA=;
-  b=W+ufP52YMI7sBtZN8mE/pd++AKSkxZjNbBZeJC2tj2ythi6EHZ9UsH0R
-   BoueVI9KugciIaoRv7Zr3jz203/4DqR/M96mL0nfZ5AXi9oPx3Dk50V0H
-   pKx8z3rdRFIHigLe4y+eWQP4CiAtgnOctc0ylcJhEWZudIdK2I9n57O2Y
-   I2dzjjJu6JPxIi2Hcp/TK0UF7YzCeCUK28PY6aMldZ/57ANYfgXNr+jaa
-   JFY+BTyqDOXOCg55MiuKGkcal4VCaaLpJV4A39NYyLC8hZU0bensTxqDM
-   2rb3N+XKVabKwc21xC7l24/AIgLeJaMwZHq7lN21an6lA+eOU2HNWBQpt
-   g==;
-X-CSE-ConnectionGUID: M2ImZ1rgTiuXnyK2ksHQmg==
-X-CSE-MsgGUID: gBPNcz9DTAOb49cg6pLfPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1916031"
+  t=1793126590; x=1824662590;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UwTqLSGufc96edkaRFFGuSNo8Y98RISJikAmskrMGZs=;
+  b=PCupMWgXdTjloa+A++EHK9iT1zMP8Wfm4hAnHBrIotUx6Jxqlq/aE2O3
+   hsA1RVdlZOoXaS7xRQbzXKbKeDXViQC1imk5cDO2sHA3zyzOuWEPd9LPT
+   DTfzxS4AFG4tgMHwUVpKpwM7NVPEMrteaXS+aQ1yFc5l1kl0i7ISWSxsW
+   KY6ehTf7zyW/5FhjAEWuupUQkKWb1wDGuAD9a+o4/vwp7+9oR2hdgelBb
+   v7bgcFAvfjU06KZ/lEPXOVo+plmfBzDWexubHpGLkuEwbQb5/x2cL20+f
+   oyoFnSHQ/+SiU71j3NCj5sZk1kTcDqUG/XSrRT8S0cnNkvovBp85HMgKL
+   Q==;
+X-CSE-ConnectionGUID: RAwbBN5BRBOv0FBB7xthgA==
+X-CSE-MsgGUID: q+Q6wvqAQG+sKK3eTjh9iQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1736631"
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1916031"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 09:36:20 -0700
-X-CSE-ConnectionGUID: 8lD42n53SsiNUmAmFGJ5fQ==
-X-CSE-MsgGUID: E+0ZfZInRFeHUvyNyChFsg==
+   d="scan'208";a="1736631"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 11:43:09 -0700
+X-CSE-ConnectionGUID: sGhZ8Nj9TKOOJVH0GytfUg==
+X-CSE-MsgGUID: SmUAzGd1Tz6Ltvlu8kgzxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="6354860"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 09:36:16 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 27 Oct 2026 09:36:15 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 27 Oct 2026 09:36:15 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.56) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 27 Oct 2026 09:36:15 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O8TatAdWkSdYEul3F3bnI40veNNc3ycteK/8BB3b+vZZuF7TKuEx2dINI0EFZEePhX/HQFDOgkyPTMEaYwwBTgQrcobHOKpPB5XttMV+KojKtvvZzDONSwKjqs8TrdBWxoM51ovyPKhi8YPOlVTNtY72i0z5Ba0HLL25bADOS4iN8eSJeuBig+3YV/TsTkxrS3RwJlFCTtad5TSCV/2gXWP4SZLMIYFYRvpKX1Qkrfebso036guGEul+My0pmdpUho6hgzFFY/u9jc1FabaxJtrSrd7lom9La/khW9XizfL2cJu+0hfiTgO8NeC804OxBWHPMkocGtecaPVg8hMQYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rDlGdlPqrxe20803Rw4nucxmUzP7t4lNaWKtazBehAc=;
- b=HamHQZd/yAQzJ8PxEGgxuIiy66oB0u/oWJ9QfjuGaY2jtFcM+8WGvE7aDNYEnXrpBXRyEQbnHZ3MHsH2CiV4HLTg310beyQ/k2hoBYNuV4vXaQ+W71A+Cgz6DSA6kROwgfrkgeyKwZpnLaWbk8QVTFYDQPuBbB/nOP+k6RPAIZvzCaL7Ejk7UkFTrMN4qcebyAQZ2gkRIBvv4/GhdR3mtL4cf2K/p2pnoNE9AkQciY8CA5P39Wr9f2ukrRFMxZTOX4x9M2iD/emdvCdDqnFe4o7+bolgbs9bffNeUau+LJSQq4JEvk8eovPr8fb/dxuqanb/GQRJdLPX81AvQHa0GA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20)
- by MN2PR11MB4662.namprd11.prod.outlook.com (2603:10b6:208:263::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 16:36:08 +0000
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc]) by SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc%6]) with mapi id 15.21.0546.016; Tue, 27 Oct 2026
- 16:36:05 +0000
-Message-ID: <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
-Date: Tue, 27 Oct 2026 09:36:03 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
- mode at boot
-To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
-CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-References: <cover.1792627082.git.babu.moger@amd.com>
- <1a8f3900e9e14ec19f5f7204fd64716eb0aa8427.1792627082.git.babu.moger@amd.com>
- <0082b675-5749-410c-9fec-9ce9b23b2498@intel.com>
- <9778fb3e-f5f8-4137-be2a-598cd44fc6f4@amd.com>
-Content-Language: en-US
-From: Reinette Chatre <reinette.chatre@intel.com>
-In-Reply-To: <9778fb3e-f5f8-4137-be2a-598cd44fc6f4@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR03CA0048.namprd03.prod.outlook.com
- (2603:10b6:303:8e::23) To SJ2PR11MB8370.namprd11.prod.outlook.com
- (2603:10b6:a03:540::20)
+   d="scan'208";a="6484299"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.108.170]) ([10.125.108.170])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 11:43:06 -0700
+Message-ID: <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
+Date: Tue, 27 Oct 2026 11:43:04 -0700
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -141,134 +72,219 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB8370:EE_|MN2PR11MB4662:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b1716ad-cdf1-4e89-d7d2-08df34486585
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|261009223027099003|261022105027099003|261021121427099003|261021135927099003|261022075727099003|10067099003|56012099006|261026121527099003|22082099003|18002099003|11063799006|4143699003|261026140227099003;
-X-Microsoft-Antispam-Message-Info: mwRTAc5yHl4F2+eL5ndF8RQf08uUj3RYbRaFYm+U2JzaMZ+RNZ8sPXaOqVB4meJx6J8Tcl6aosTumjtpASrh0QTplD5lq2aGpyaqIfs/ojVqQJgsvnk5NC85i5nZXgpn4XkfJ536uz+ngjYcKhHUgRS5j0DKMaBjUjn1L5wQ/YEhVImf4Y6OFRca9JLoyAo8XfN2qBuMe8RQw8Es2+HqK4g5M8xI9/ulR9bsEoYvDLgHeax3lrwIY56vEw5LauiRJWogw0sAv/VgHlGWO5j048hgt52EoUCzhNv6x8NmoctV44oDPCFzyJxSoT2JFkQ+ICuxdZO/5CgfPHrd9ixEwkFmrKjs76oSGWa+IHHCedhMepIjyq714F2BbqngT9onvqX4Z04TaGS4AjzFp/TUAWb2hBSqItcwUWKBU5O3DyWbeSCl3woVLd77O1ywagulJY6U+A6RHD19vQHQxxR36b5vLQSApYVQmbF5ANdlBcVZmXiF648LISW/Bs5jAQO00MWw3Ik0vLp3VmBEAuhEc1Q+9g0Qh6w2Ph+VjPbkQDIIwUxmW7VWD+WorpTYMHLMd9EhzJDRAFLf7lOVAa5yj6Ubrjf1Lw9t8StlzahUt5X3yQNqjAQPnb9WKBWWV+SVrl6SarPiRaaathdVvtK2g+9Ll5k3roJoQbZvmaBTxtM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(261009223027099003)(261022105027099003)(261021121427099003)(261021135927099003)(261022075727099003)(10067099003)(56012099006)(261026121527099003)(22082099003)(18002099003)(11063799006)(4143699003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eDQ5TGhqRmFyY3BTdGdOZVk0a1RieGRhQUxZNUNwZm5EejBFbWNNMlFlWUZW?=
- =?utf-8?B?T3lTd1orYk1iclYrcnM4eVU5TTgyVHhZS0ZOSDAyb0FxWHlGQStFR1I3T24x?=
- =?utf-8?B?dlhsZGNBUzRyR3hwWWd5OWg1K21ZRS9tZklJVEhIRDJnT1p4Uk8zNjlPZlRL?=
- =?utf-8?B?anFwRXVtM2dGMHl5aVkwWHlac05oNWpabWV1cnlmakY2QkpXSnNqODMyMndp?=
- =?utf-8?B?NVdnWG14eFlIWnZJWFlLamZSNCtsOVk1VGhpbzZqbThEcjBKMGtRSno2d25k?=
- =?utf-8?B?WkUrckdBVHhMV3JhdDhpUGIwWVYxNHFaR1VBQXRDT29SL2VzQWRRQ2JtSEdh?=
- =?utf-8?B?YVZKcnJEZHVpZ3dIVVpkWkcyRlkvOEdyb0Z3RlhvaWI5ZGFxSEkvWmkwemFj?=
- =?utf-8?B?TkJOTjA3R0xtZ3lIejkwbDNsK0RqamVsSDRheDRSemFrNjNpUkdtc01pNXhH?=
- =?utf-8?B?SlUySFg5SnR6Y2pROWtFWVIvVERqZVVGWks5Y05KckFBOXkrWXM0UG9vcmVv?=
- =?utf-8?B?RWtrQ3dDOWd5YTB1WXBzNU0wZjAwUFRKNVkyK282K2x1Mm1MSTFtYTV5Mmdj?=
- =?utf-8?B?ZEJMMnNBWnpubEFsbWN1bmR0ZWllencrbG5HQWpramNCdFFxWnJDc1FRdTZ6?=
- =?utf-8?B?S1hmdXRhTk9hT2xFL2h5MUF3TGhCVjhrZXZlK3FsaUxJUFgvNWtyS3RSeW9I?=
- =?utf-8?B?dlo3UXE3dFdFa1ZONFBvQkdmTzJqZUVUaTdQSWVuWTRtVEtOeHN6NWRSeWxm?=
- =?utf-8?B?aDE4T0hVdTZtYUZRS3BuRlNqblpBby9yWTJSeHhSQi93OUwrWENQSXd6RWVq?=
- =?utf-8?B?SGJzYVRWdFptckoyeG9RUjBwQ1l0QlFrMnAyZmZDUnRSOURER3hNbUZlOVVV?=
- =?utf-8?B?TUZweEh4b0d1YkZTWCtWT1FxVmE4SDRCVmhJOHowakdUT3JOOCs1OUEzaGdE?=
- =?utf-8?B?TCt0NUhXc1o1MUhPeVhidHgyRHA3Ujk1NHlZOXU2Ky9GU3VwdFZvOFpSK2Iv?=
- =?utf-8?B?RWwxMXlUY1UxOVRCQlBGeDJEZTZzbGdnMzB5ZTJrakh1NFNPUENrMmlNZ1dW?=
- =?utf-8?B?azQ5WENQWjlYd21HV2g5bVJ3cU56ZVYxMUk3ZFRCNUV6ZlpEdVl2Z2ZHMVU5?=
- =?utf-8?B?VzhDa3Z5MzQ3ek1kNlRZVXl4eHJqSXJ0RDdwTGtEQkhURUQ5ZnkzaktWODBp?=
- =?utf-8?B?WTAraTlpUG16cnpXcVkxSlRJZ0tIVVpsMElwdlVMeTdnWVorQ1ptVm9UNnYr?=
- =?utf-8?B?TnBOeHBVbjhZblY2R1RkUHNWYW9aVGxJMmJUVS9GUTJqZjRZdTRPeHp1ZXIw?=
- =?utf-8?B?RUNsQjRiQVFxQzY2bmVhRzg2eU0xRnQ5WkF2M01uM3hXN1ArMWQzbFJQNnBO?=
- =?utf-8?B?UmJBNlJmQVhSbU9tTlo1OXVnSGZhd2FkeG1xSzNXS3QzajZ3UE1jZ3pKSG9q?=
- =?utf-8?B?VGRCQjYyTDlVeXlNYlltVUVPc3FPT25OaW45a1BwVVA0cFRSMEVTZVZuZU9S?=
- =?utf-8?B?UU9XSzdzYVRsSU5RbTBJNE44dUlPbmE4LytzaEROeDRnMXhEQUExbit6WUgv?=
- =?utf-8?B?d2NXOWdDNnRnY21TU3MreEU2djEybG1OZElEOWd3V2NHZFl6eHEzNWFEc2Ja?=
- =?utf-8?B?c2JCY1BBbHF5cnpFL3J4NFpycTFQQ1d2aGZQenhSelFtalVERGlvNFNKK2pW?=
- =?utf-8?B?MVNFTll3THZxSjNOdXJrQVlORGNFZEJKL2ljSnlsdUZtZEtwUzhnYVBuVUZM?=
- =?utf-8?B?NHhuS1ZPWlVUREUrVTh5OUhuT1NoTmoxVVRPUTk3alBnWXFNNWY5QXM1U2VO?=
- =?utf-8?B?bzdudVpROHdzQjkvNnNwQlFFenZyMTlzSVFBR2ErS3pGd1dmYnRPNFRQYTdq?=
- =?utf-8?B?dGdxTkEzcjQ0UXJxbEcxUExXcjRRWjE4YzRFNHBzUXIxQzhQTnpvRi9uYnd6?=
- =?utf-8?B?QTlXdnltZ3Zoa0VNcVRCMXI3TWxuWUo2bUQyYVZlcVZQcnRYZzI4Rlc0UVFV?=
- =?utf-8?B?bno5Z2MybU8rL2tYUTlWS0J2KzJHZm9qcXZ0MXpiTU1QS2dCbGN4LzhTUjk5?=
- =?utf-8?B?TVRaemVxMmVpVmIrVURGV3VoeE0xZDVxZE1Vd0lsR1lrcWx2RlE5ejZleCtS?=
- =?utf-8?B?TjhBc2hKeHp6VjJQdm1oMFA4OXZZM3dNditpeUd4ZG9sWnNmVVkzVnVXc0JJ?=
- =?utf-8?B?aytKN2tkOG5NZGlaRFBIb09hQ1crbTNOUjd1L3V2ckJrMFJuUW01bkwrTndC?=
- =?utf-8?B?Tjg1OXdwcmNvZDh5WmZrSEhOSWNlSkN4UTMwWTlsbEZlb3NvOGJ2dWFlZmtM?=
- =?utf-8?B?dnVudlczam10d3lyRFFXVTB3cmRmY2NJZVM1WmwvUXR2S09zdERjcERXbTdr?=
- =?utf-8?Q?ABCul9oIgS1vdD3s=3D?=
-X-Exchange-RoutingPolicyChecked: FggsIJihOCHR0x8608SSrgh6eOp01R0b+FCIunFtOKYk6QJu+QFtcdvFQuU6LJ/g94gV/tU38VyWH/skQ07yp+0W/51zh1dNjPvrRzUZw5x2mPXaGqg5XC6KJunxXWexkUbOfY69s05ZFvaRByt3gyGHQ71clcHLD6MVOlm5SMgGK3ATMt0mqki2V9UlWphm2rVlM4r/p7Qu3F6ddaWZK2sC9LTbCWB3VLMt5K406MM0I7EPHpyrdu7Akoog/j7RijiZSYXDSn+USPhwPqmRLO95Y39zwAxV20ZtDiisTRaCaRAL3rhEqH6mfIY61Apk4rbjyVxR8MbDIb9C0ML6vg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b1716ad-cdf1-4e89-d7d2-08df34486585
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8370.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 16:36:05.6553
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FQEUjRbTNc45H0w3SuPrcfc1FEnX/r1Ny2EzQRD0ZLgt4w3W5gcE8bvAmIaIfEUBm7iAYpspL/b32u7zDKVOqxiaAryLBDdtY9QpnWfJyRk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4662
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+To: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org, jgg@ziepe.ca,
+ david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+ rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+ drdeeglaze@gmail.com, James.Bottomley@HansenPartnership.com, aik@amd.com,
+ jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+ jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+ suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20261015145053.3664509-1-jiri@resnulli.us>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Babu,
 
-On 10/27/26 7:48 AM, Babu Moger wrote:
-> On 10/26/26 19:15, Reinette Chatre wrote:
->> On 10/21/26 4:58 PM, Babu Moger wrote:
 
-...
-
->>
->>> +  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>> +  [default]
->>> +  mbm_event
->>> +
->>> +The "default" mode is enabled. "mbm_event" is supported but not enabled.
->>>   +b. Enable "mbm_event" mode. Switching the mbm_assign_mode may
->>> +reset all the MBM counters (and thus all MBM events) of all the resctrl groups.
->>> +::
->>> +
->>> +  # echo "mbm_event" > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>     # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>     [mbm_event]
->>>     default
->>>   
->>
->> The above changes could be merged together under a single step "a" that
->> will significantly reduce the churn when considering this is a stable patch.
+On 10/15/26 7:50 AM, Jiri Pirko wrote:
+> From: Jiri Pirko <jiri@nvidia.com>
 > 
-> Yes. We can. But because of auto assign is not enabled on mode switch, we still have to touch few steps. Your choice.
-
-Understood. The benefit here is that the patch will only change actual information.
-
-Specifically, changes like the two below that just updates the letter
-associated with the step:
-
->>> -b. Check how many assignable counters are supported.
->>> +c. Check how many assignable counters are supported.
->>>   ::
->>>       # cat /sys/fs/resctrl/info/L3_MON/num_mbm_cntrs
->>>     0=32;1=32
-
-and
-
->>>   -c. Check how many assignable counters are available for assignment in each domain.
->>> +d. Check how many assignable counters are available for assignment in each domain.
->>>   ::
-
-will be dropped from the patch. They distract from the core change and do not
-seem appropriate for a patch headed to stable.
-
-...
-
->>>   -h. Read the events mbm_total_bytes and mbm_local_bytes of the default group. There is
->>> +i. Read the events mbm_total_bytes and mbm_local_bytes of the default group. There is
->>>   no change in reading the events with the assignment.
->>>   ::
->>
->> Could you please remind me if the first read after assignment returns
->> "Unavailable" or a valid count?
+> Linux has several attestation interfaces tied to individual technologies.
+> That makes evidence retrieval, measurement registers, device state and
+> kernel consumers provider-specific.
 > 
+> This series introduces a common attestation subsystem. Its goal is to
+> support platform, TEE and device providers through one model, including
+> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
+> This first series implements the common subsystem and a TDX provider.
+> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
 > 
-> As far as I have observed, mbm_event mode (ABMC) returns either 0
-> when there is no activity or a valid count. I have not personally
-> encountered an Unavailable value. However, the specification allows
-> Unavailable to be returned when the count is not available.
+> Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
+> Compared with sysfs or configfs, CTLV executes one validated request
+> atomically instead of assembling a transaction through several files.
+> Compared with netlink, an opened device fd directly identifies authority
+> and lifetime, can be delegated normally, and owns its event queue. CTLV
+> also provides:
+> 
+>   - generated kernel metadata, UAPI constants and documentation;
+>   - strict type, bounds, nesting and required-field validation;
+>   - runtime operation and schema introspection;
+>   - family inheritance and extension points;
+>   - fragmented queries with generation checks;
+>   - per-fd event subscription, overflow reporting and removal notification;
+>   - large input and output blobs.
+> 
+> The attestation family exposes capabilities, evidence, measurement-register
+> topology and operations, an append-only MR journal and journal
+> notifications. This first ABI contains the paths exercised by TDX. Extended
+> evidence classes, dynamic registers, record payloads, verdict recording and
+> device-security transitions follow with providers that need them and are out
+> of scope of this initial patchset. The broader direction is illustrated here:
+> 
+> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
+> 
+> That branch also contains additional providers (test and sim),
+> attestation core extensions, libctlv and ctlvctl. With the tools
+> and kernel specifications, an attestation device can be used as follows:
+> 
+>   # Discover CTLV devices and their family chains.
+>   ctlvctl --spec-dir Documentation/ctlv/specs list
+> 
+>   # Inspect the root-family lineage and attestation capabilities.
+>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
+>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
+> 
+>   # List the measurement registers of the attestation device.
+>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
+> 
+>   # Read RTMR0 (MR 1).
+>   ctlvctl --spec-dir Documentation/ctlv/specs \
+>           query ctlv0 mr-read mr.id=1
+> 
+>   # Extend RTMR0 with 48 zero bytes (SHA-384).
+>   digest=$(printf '%096d' 0)
+>   ctlvctl --spec-dir Documentation/ctlv/specs \
+>           exec ctlv0 mr-extend --json \
+>           '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
+> 
+>   # Retrieve the RTMR0 journal.
+>   ctlvctl --spec-dir Documentation/ctlv/specs \
+>           query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
+> 
+> The 20 patches are organized as follows:
+> 
+>   1-13    add CTLV, its generator and documentation
+>   14-17   add the base attestation family and implementation
+>   18-20   expose the native TDX service and add the TDX family
+> 
+> Note to reviewers: Please focus on the overall design, UAPI and internal
+> attestation-provider API. The internal CTLV and attestation implementations
+> remain rough around the edges.
+> 
 
-Thank you for checking. I just wanted to confirm that the values shown
-reasonably represents what a user may see.
+< --snip-->
 
-Reinette
+Hi Jiri,
+
+I built a proof of concept on your wip_attestation_all_1 branch with help of LLM
+for TDX Connect device attestation to see how it holds up, and wanted to share
+what I found.
+
+What I built:
+
+- A ctlv-attestation-spdm family. As you proposed, the sysfs lock creates the
+  assigned-TDI attestation instance; in my version unlock removes it.
+  EVIDENCE_GET, EVIDENCE_ACCEPT, DEVSEC_STATE_GET and DEVSEC_RUN all go through
+  your ops.
+
+- A provider (a 'struct attestation_provider') that sits on top of PCI/TSM, so
+  any backend can use it. It serves the evidence PCI/TSM already publishes, and
+  asks the backend for a refresh when EVIDENCE_GET carries a challenge.
+
+I ran it in QEMU with the devsec sample TSM, and in a TDX Connect guest on real
+hardware with a real device. Both worked: lock, EVIDENCE_GET, DEVSEC_RUN
+refusing a device without a verdict, RUN, and unlock. My tree has out of tree
+code for TDX Connect to get things working.
+
+The model works well for device attestation. A few things came up that I think
+worth a look.
+
+1. EVIDENCE_ACCEPT and DEVSEC_RUN take any evidence generation since the last
+   device change (attestation_evidence_validate()). Ranges would narrow that,
+   but they need measurement registers (attestation_ranges_required()), and a
+   device has none. So a verdict survives a refresh. In QEMU with the devsec
+   sample:
+
+     EVIDENCE_GET, empty challenge   -> evidence generation 1
+     EVIDENCE_GET, challenge c1      -> generation 2, measurements changed
+     EVIDENCE_ACCEPT generation 1    -> ok
+     EVIDENCE_GET, challenge c2      -> generation 3, measurements changed
+     DEVSEC_RUN generation 1         -> ok, device in RUN
+
+   Any process that can issue EVIDENCE_GET can do this between the appraisal and
+   DEVSEC_RUN, and the device runs on evidence nobody looked at.
+
+   Combining EVIDENCE_ACCEPT and DEVSEC_RUN, as you and Aneesh discussed, makes
+   sense to me, but it doesn't completely resolve this. The combined op would
+   still take generation 1 and run the device directly.
+
+   Only the provider knows a refresh replaced the evidence. It can't tell the
+   core from inside an op, because attestation_state_changed() takes the lock
+   ctlv_attestation_op_pre() already holds. How about a helper the provider
+   calls after a refresh? With it, the old generation gets -ESTALE:
+
+     /* core.c, next to attestation_state_changed() */
+     void attestation_evidence_replaced(struct attestation *att)
+     {
+             lockdep_assert_held(&att->lock);
+             attestation_evidence_accept_clear_locked(att);
+             attestation_evidence_ranges_clear(att, false);
+             att->evidence_floor = att->evidence_generation;
+             att->devsec_version++;
+     }
+     EXPORT_SYMBOL_NS_GPL(attestation_evidence_replaced, "ATTESTATION");
+
+     /* the provider's evidence_get */
+     if (request->challenge_length) {
+             rc = pci_tsm_attest_refresh(pdev, request->challenge,
+                                         request->challenge_length);
+             if (rc)
+                     goto out;
+             attestation_evidence_replaced(att);
+     }
+
+2. TDX Connect (maybe others) does not raise an event when a device drops out of
+   RUN. The provider only finds out when it asks, and on TDX even that answer
+   can lag. The guest reads the state the TDX Module last saw in a TDISP
+   response. A function level reset, for example, moves a locked TDI to ERROR,
+   but the guest keeps reading CONFIG_LOCKED until the TDX Module sees another
+   TDISP response, such as when the host asks the device for its state.
+
+   So the provider learns about a change inside an op, where the same lock keeps
+   it from calling attestation_state_changed(). DEVSEC_RUN doesn't check the
+   state itself either in ctlv_attestation_devsec_run_action().
+
+   Could the core add a version of attestation_state_changed() that a provider
+   can call while the op already holds the lock? Or let the provider flag the
+   change, and have the core send the notification once the op drops the lock?
+
+3. Jason asked on 14/20 whether anyone needs a variable-length challenge. I
+   don't think devices need a range. A plain read sends an empty challenge, and
+   an SPDM GET_MEASUREMENTS nonce is "NL = 32 or 0". Your TDX provider always
+   takes 64 (attestation_tdx_evidence_caps).
+
+   A device needs exactly two lengths: 0 for a plain read and 32 for a refresh.
+   struct attestation_evidence_caps only holds a single min/max range. It's
+   checked on every request in attestation_evidence_request_decode(), and any
+   range that allows both 0 and 32 also allows everything in between.
+
+   To work around that, my provider declares 0-64 and PCI/TSM rejects any length
+   other than the backend's nonce size, 32 for both backends I ran. Could the
+   caps give one exact challenge length instead of a range, plus a flag that
+   also allows an empty challenge? A device provider would set 32 with the flag,
+   and your TDX provider 64 without it.
+
+4. EVIDENCE_GET rejects any buffer smaller than max_length
+   (attestation_evidence_decode_objects()), so userspace has to allocate for the
+   worst case. Aneesh's provider declares 16M per certificate chain, so every
+   read needs a 16M buffer. Could EVIDENCE_GET take a smaller buffer and return
+   the length it needs, or offer a way to ask for the size?
+
+5. evidence.challenge is a required attr of evidence-request, so a plain read
+   has to send an empty one ("hex:" in Aneesh's example). Could it be optional?
+
+6. tdx_attestation_test's discovery_and_construction_fields expects an
+   inheritance chain of 4, but the TDX family inherits ctlv-attestation
+   directly, which gives 3. In a real TDX guest it fails with
+   "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
+
+
