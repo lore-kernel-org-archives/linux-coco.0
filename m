@@ -1,101 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.27
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793128352;
-	b=5Iojm8HmvPnSCeXJLxSt2Mi83B+y0GZFizZOFz2m5Z7AvwwdbO11KXEtuuxGmvfjFJYR
-	 mtso+LK8yeafVN/dD8nj2R+8l3rwcLYNooceowyjRw/LVCX81Z/OroKnF/H7qxLCEZBS3
-	 adsXemNJKR2FS/xdWkg/NhSKmzpcYOJKT6tozCJKPTyQPNnXYZwDjMsIqi6q2x+f7fbpU
-	 uii5Ann+3TEwJfHyT6cjUZDp4tSGIYMvlHFJ9tXYpDPfKZfNQUawXZGsbspixzb3pl8CD
-	 n0jjENwsT7jOmKoIPDlvV0V/CXDt6ApfIKnIuDsdONF5I2TvlQ8rNO9iqOXCjauKNtg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793128352;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
-	b=gvcNUh43w/ghPfT9GSMr6awSzHziU4QoB79bTD2cYSPWpCfMtHIqrLXGleLaUFhtyhWi
-	 u31LU0tWOXq1VbiLcOBdvBMRQX0hJ9qQXz8VX5SDbvsgLee+FOfJnATisYDWMvALyWLRU
-	 +mNpGX0pW/ZOoXkYZlpVPjCMur+3nEPZsa+9C6gK9yK3DyxDxIjcLlgEIGaWOV+I1lkPL
-	 KAjMymZOqajzfcais6aF/N89ncooVVYogXVy9c+kaZ0mRvAa2vHUylXlzfopLGjc/qFcN
-	 qvU5CQ2bOyVC0Z7oulmzXb/NcdQri8SOroFINby7hnmT4YKrxTWRCFOJ1aKR7lQr85g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jk5LgKuW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.27
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011027.outbound.protection.outlook.com [40.93.194.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793129798;
+	b=aVUD26w9MglRGqaiLzBVE9Kb6VYQ+wG9prwyN2AojDAUNDJYbjQCHhbV4IxwKNQRmI46
+	 iM9Ljoaw2uMNFiZNZBZu8PqLnIFVUwpLcj1vDLBU7libesfiO7/Lzlwg44q18iqvtNh55
+	 EvweAgVR7+lpsNAIF9zfF5ECDMxgL4N6tpKGlvBh6RTuDo6UVKnFTWmsg+Dxj3ckC6H31
+	 Qif+cdE/9VkslrqrQweBeX+Ok2PwTB9GvlMhWPSj4CxJplRS1h36J5JECGG0zwLWcP7rQ
+	 NEEUfO5neQ7M0JfaEdYB7nexOK43GMaNPnFyNbqhmR42mrA6EAkn2Xttye4Eub3RyJQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793129798;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Wsbrsmt/p01OP4rmJRzk8Y2oM9M62JnRW05OxgVh8zg=;
+	b=3Z/AgwDZSgRCnJyEvr0hK6hmgH3TdVqiFttvIYRVc0wfShbto0IPOG4FAHWpxeyxV9C5
+	 nQpy+GfsMp8KuQWavJahfgfRPg/jx3G3Xw7zKebG/VFgJtk4FpeoopJG7LbhwHYCKrehr
+	 kIfY61VhFU0SexYbpSW5Zj6cB8NbAE+oBXC4jKEeLfkfBIw2Tt2vh+PrLycoITt92WDog
+	 1vi1uHGizjofiMtMIVmKsxPoWOGCyxlQH1XXGQjsE1T/2wxGaetDzfNggcP9uVVlYRD/D
+	 zJtB448OV5jLsbyGcNFBoEAOJwxOXeK6afuaCbaHFJfBOOjg22DbtUzaSiCF83vvNSg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bh8igv0R;
+	arc=none smtp.remote-ip=209.85.222.182
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65601606A324
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 19:12:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65601606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A5E606A320
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 19:36:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56A5E606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jk5LgKuW
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gMWjDSCtC/LZUEBxoCJJxL1Etxi/j8oT4U6OzZ9xRlFvQZL/PeNOw22hhCFWJiD/wqMiAldcGVeEd3R3nsxqkS5G9BwB44C9QULlYVwlwXLl9+52hUBba9lgM28DLbyzm3HirvffHBTXrKMLP2ElnFJZPQ7kxmzWZ7aBzEHkIZJDi5ldB0RPe1TNMSvhHiYyfzN8srgzue9ac7a43mQz4EKv1G4TmQkXlnLTi+Yq07riJXqYvNKCQbcEul8Ju4Up7bZE0tDtYo5ZooOKv7weBJ+r45FocwQDWTxjy/oI0GK2huGU2JaiMZN7PyeQwTDpsEpO+XAIerRV4HfoCJtDVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
- b=Q7O0eRYDtLwHqSOLM9XrABbhiq7Nc9LDP1WDx/qNtrzIKDPSPUTlvwjdBa1koLvkbH/1CN3LnaiK/F8wNT7W21AtTIDFV6sUBgQRvJ5dLFxqtIoII/VY/eTs4FAE91GFDshZsnkTJWLzZT6msxu95c7DqDrfgZhhBMdWMopGtV7I/G0N7zrPURDHGlcrJGFM+RB/nLezAPO0IX1yJ4sYJopAMbCCxH8p61zCj916d/cDMEO+Etf4jGr8V3Dp5O9Ho/Sn53tYTCwQDCbDAk8vXe2dUPd/oMinmQCXfL3D0CpH+ABmJf5hmAs/ShCvlkMdPYLXOEIgTuiYALQx20dirw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
- b=Jk5LgKuWFwFVuw3OWbJeSW49CmZILCRjNXeJlaVoVpKPKdEZMyCEaXXv4DtNgUkaqs2T5J/VVb0lLwrxeSbt5GCkqGmhOZTfoWa0l58vtEtu09UH2bEAfxe6k3s/TM7y8NU4boPPL9DS2gp1BN1vWB5mpW90RuZUhu+Zcsl7dU0=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by CY3PR12MB9679.namprd12.prod.outlook.com (2603:10b6:930:100::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 19:12:28 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
- 19:12:27 +0000
-Message-ID: <5135e588-0a73-4d1d-8e1e-7894e8b7089f@amd.com>
-Date: Tue, 27 Oct 2026 14:12:24 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
- mode at boot
-To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
- bp@alien8.de
-Cc: x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <cover.1792627082.git.babu.moger@amd.com>
- <1a8f3900e9e14ec19f5f7204fd64716eb0aa8427.1792627082.git.babu.moger@amd.com>
- <0082b675-5749-410c-9fec-9ce9b23b2498@intel.com>
- <9778fb3e-f5f8-4137-be2a-598cd44fc6f4@amd.com>
- <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH2PR03CA0020.namprd03.prod.outlook.com
- (2603:10b6:610:59::30) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bh8igv0R
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93cbc3ab2fdso6809985a.3
+        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 12:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1793129792; x=1793734592; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Wsbrsmt/p01OP4rmJRzk8Y2oM9M62JnRW05OxgVh8zg=;
+        b=bh8igv0RPd9Jl6k41ftp7y7UtapbUwhdE2OJtGx3fxwKuH9ZiAke9lUT8I7cr795I6
+         PI0gLXkAcuSraqZyoVVD5N1nZDvYJFub7qbJRVULd1fhIEXTbLCOu72+THgi16KXnukp
+         FrvbB5VGLOxfwZa0YbM/XG0h0I+eqbScqd4cV/Zj4TMmOFaAMLYlbDR8jJdXGJOA/6I6
+         hYvbrNWqtJ/ZZNr2wvHuj8ARk1GG7NalPWr1EicPUTxn4cuWSTZRdkOlIqv0tpkbnLR3
+         JFEy7UqhjF1eEWa1NOyy6tw4K5HZp8AVDT1avR0/w4SdJKNIaecQ9DRDzTUzALU5LIdx
+         8EYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793129792; x=1793734592;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Wsbrsmt/p01OP4rmJRzk8Y2oM9M62JnRW05OxgVh8zg=;
+        b=wiB8pRuJXjhXSA5fdbeI43KFhmCllhR5e8yZUM6JkrmtAYf91oLKMU/OYYkQV2xo0i
+         h+Ubq7OzxVxkprT4zDXfvocqCSDNJqCSsxJ7k7r3E2RzsimFC+cXPwTbvLVGiVN35qww
+         lC4KWikLSx4dhwJnu6ZKojxKJWxnQzBp6f4/0TnALm7Yqykpr8/vQ0TsOKOV1iwZWwEa
+         JkmAWvwdpN6GlBFvVkWHaA6KJEK/DPCJwuTcI09rdLrSEllioI68m87jC5Vd5dceM9uJ
+         X6NrAsfM9yKhioCpnIDFnhC6oxrIbvKig6zcrYqBdKOKgbQvHeLEacC3osTaUuqYqKbs
+         rqDg==
+X-Forwarded-Encrypted: i=1; AKwUvBzaJUjk4R1FMVMGvvtKXz74Faq1Q2CAukpVwv/lVAX2xT3ea/h0RLSKYSLpFP5LpMDH9E8Px3tXMrIx@lists.linux.dev
+X-Gm-Message-State: AFq9FYKO1TL0HmMp8lEmR8cv1AseD9ZFdATXw2yyTZNGXJIfTVhFcj1f
+	JvmZEykp2eaOdNXB12NdmdSNbUQ9Kyz5ryqC3/oYZ7HXqYLeSAkGU44TXyvyShr+haU=
+X-Gm-Gg: AYBFou1ugCofaBi+DYTG3divIThwTehcZ4FIHfxD9ftUiaey+4+tq+gPbh3fwTwaNQY
+	8xDhrBdDWP2sV4qS1T557l+ppDwVNI4kDh5KFoMHJcXbmCAelr1+2D6evnEMbVOhsUcSYy8Ppwj
+	C1t5RtlKotD5emei7jOb6QSEK8PAV0yRxqc7LiE4wboOyPW0sOzH3ZRNpPVqZfUjq3yg4hwwKoP
+	SvgjM/sOiH8qsCNpWBqCUSHUfAE8090LFfwFk+w6zOnPxjryxPlfJf4H1cIXpPi0ziAE2w9V2eG
+	/yckRtDlyucXdYzjqoOLdwdsSUEYgYXH6Y9K1I5msnmZn1G31nScZnkAUZNdg5MKZfIJeEDk3YL
+	5XjUKcOUl/fBrZA+6XNlLwTaB7D9crkC1BcK9WC/dFHMcUPTGmqxdAEcRtxf243bgdCy+onxlq0
+	SmNw5cwd0LFqYWmf+Bp+KmkAUnRdLg9cX2u4EJOWZlKGsJUBeZtKkPPRVlSDpO+0s7HevxnE8Xk
+	ckCgxZfhWISCkeF4IdaFgpkYVFlv711Sl/5aPoA8zHt36athuKFw41WnpNd3iznnSUSVZPdgWaG
+	Dew8LSK7sWsr5vIJbgS5EoY/J94JFv9UPXtIKQ==
+X-Received: by 2002:a05:620a:4728:b0:93f:2236:a61 with SMTP id af79cd13be357-940ef996db1mr1690589085a.61.1793129792026;
+        Tue, 27 Oct 2026 12:36:32 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f067e97csm1064928585a.21.2026.10.27.12.36.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 12:36:30 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xLmyD-0000000AobX-1vC7;
+	Tue, 27 Oct 2026 16:36:29 -0300
+Date: Tue, 27 Oct 2026 16:36:29 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
+	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <20261027193629.GK1685504@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -105,140 +112,146 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|CY3PR12MB9679:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1570457-f1f4-4923-a753-08df345e3d43
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|261026121527099003|4143699003|56012099006|261022075727099003|11063799006|261009223027099003|10067099003|261021121427099003|261022105027099003|22082099003|18002099003|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	MboWlXes7kA+RQ4Qi7JkKh2I8GAsgRS/aSklBY45TDLfkT47gn/ts7auK7iuQKg+RqQ11e5l+sRLkexIAtd6z82URmUgvPn/jCvTDwhtLrjYrNbdS1LsK5zz61U6SOfJ21N/4sPd6kx+OUW4NlaQ2DN163Rbplp1KAZKHtdORL4rX/CBqXxXOAtBg9fNo6v6Ql/BtGgW8ryp6jAC8NKMaGOVHAvHPGezvcSVCyjdcFi/3nL1+daxbFxNt2RwRccfQOZQPoXVWJgscK9lMYfikIzhMy34A7i9FWC6QkUjVEsZv/YHHt9L5NCeZshcrMfg3EphWZSdV5lwqhyGhNTRqU4f0alkdVemkGIJyIUvJVnyfGDRGD+SKG42vvnPZQ19QJV59vfIR4bINXoOPhbqoIH93gzzLaWitKA7V+F1IjExsR7jlvUns1aH9vXYV7crkO7Jc7Biu9H5zfNScLEEk6gpYkDQt9mNreJC0/WwO3ag6GcDmQUbfFPLTeF35hKjwPIwUIjEnL/mkYbrOW90jYY9VRg2UI7njr2hC9p2ZZRl78C6z7YK+/y1YAnYwnn63eAXPbXac3TnYGphtkZ70pE39YbDe896CT+Dd4RVeyJxzYkK+sWgiPvCtJy5qhaJVAAa5m+mGT4dwavngBLB7aS5bU98DdH361IsvHw8k80=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(261026121527099003)(4143699003)(56012099006)(261022075727099003)(11063799006)(261009223027099003)(10067099003)(261021121427099003)(261022105027099003)(22082099003)(18002099003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mmxsak9VSzhYTmlVeDdiam90V1BhTUIzdVhJazdsYU9lalM4Z2diaEs4SWM5?=
- =?utf-8?B?RmZ2cGZ2a2l3MzJ2SGcrVkdRNlBOVWV4TVFPbnVVVlFmTGQ4S1hhblhQMXBn?=
- =?utf-8?B?eDRnTUppZFpFd3dKZ0N6djQxZVhtV2dkVisza3hocVVKd3V0dzBJS090KzdQ?=
- =?utf-8?B?a1RKRnRZV1M0MHpiYTF1Rk1hanAzZlFsMzdKaWhqSnFPT05FdjhtNXMxbGhO?=
- =?utf-8?B?N29xdEN5R1JZQmRPeDdNeTk0OHBodTJKcWJqLzNRRkcwMzJrVC9tRlZCYjBR?=
- =?utf-8?B?RGxHT2dQbEttQW1Kb2JjSVdKRllBR2xseHFGczN5TjhKVTQybmRpbFZKQ3Ni?=
- =?utf-8?B?ZmtNS3kwTERzOGZhcitsZVpoNVJzaUhBL0dzZjBidHVleHAxbWF5MUFjUGNS?=
- =?utf-8?B?VWhpUXVidm00N1JVQTJ4blBPaXFtN3RjWXJ5bWI0NkM2a29NVjlWcnFMVEJR?=
- =?utf-8?B?a3R4aGRPMlZLdlBPSDBnQk9rT0o2dm9aenU5Wko3VjFhQ3VtVmx6UW9nNmRl?=
- =?utf-8?B?OUM1eUdtVGc1dXNDSGRHYXltajk0L1FNalhLREx2dHRNZGdIcDYybVlzc0kv?=
- =?utf-8?B?SnlKaXczQWZXV1ZWZ1Z5UFFHOHo1QW1YZ2dsanRCNjlMc2YxZFJMcG5RMlhF?=
- =?utf-8?B?c3E5cG9BbWtNQTVaNnlCNkRIY0ZQWURaVk9xZUVFRG5ya0NvRmdaYy9pVEtD?=
- =?utf-8?B?TDZzQ2RMRitRdnlyZjZJUXY1WFluUitVV0pKSmgwbU1UQ0Myak1qVVh0Z3R2?=
- =?utf-8?B?R3Vua09KdTE5TmdFR0QwVU5MREsrRVdWMGlreGIwNWZqTHZaY2g0dzFuQTVJ?=
- =?utf-8?B?STJQTEJtZkNzcTgxYnZRSk0rQVh1NmoyOEJ1bzJGZ0RpN2R1WG5HT1g4c05C?=
- =?utf-8?B?emVmSjE3TUxoQVQzRmFqdnFJYmFjeDFrM1YyOVJyOUZWUmNSRkpmTTl6bHN2?=
- =?utf-8?B?Q3FkNDhNTXFSaDI4VkVFdTdqNTV4NnZjQjh4ZFVZeHR0S0w2dkpMNUEvNmlH?=
- =?utf-8?B?MkVFb3BVYnl0NkNXVFh5RUIzRE5EbTVTdzN0VXRITnhDcHEzR3ZMejhBbHQz?=
- =?utf-8?B?aVZvWXJVQnFlNkFNbnc1U3NtendndkdubGkvbmo4VUVEbkg0WjFWdUNHY3dH?=
- =?utf-8?B?cU1jZUJ5R1lwMG11KzkvNW95UzNMWVBISUlqcmh2V3hSRnF3YUxaUWJNNjFI?=
- =?utf-8?B?bFhtNmlBYTVmajVod0dSWXdUaFBSczNFTWoveE54SThaTnFZbEpRUWkxWGZw?=
- =?utf-8?B?d2ZCa3lCRmEvV2NGV2xVSXJsbWlrVmxVaWxiN0ErZFF2NlM0c0MvN0QyTTEz?=
- =?utf-8?B?Z1BET3pJNlhqSHE2Vkh0WUZMeEpPWkFKSUJ4OUY1TzdUUUFoT0JZbnZTY3dE?=
- =?utf-8?B?WUlmV29pdDIzOU9SekR3V1J2UnJMTTRuSDRsajRETWVGUUdaclhlTWR5bVFX?=
- =?utf-8?B?VnBOL1BOZjZ0Nm1tb3JKRitmdzUzL3QzSGh1eDk3SDBCUFlzYStuK25JczM4?=
- =?utf-8?B?emlmcFFUTGt2QXhTRFhja2xYaW50QmN1RllzVmhnZW5TcnQ1MTZLQUxhSzJD?=
- =?utf-8?B?ZmZlaWJFR1lpL2VMREV2SEpMbTRDcmQ5WU0vM0J6ZGZNbFNUQlJrVGM0ZnFh?=
- =?utf-8?B?NkpQRGlkeDJ6TUdPbkcwNnc4bHdrNnAzSFE1QW9GSGkxZVB4a1d3cjVCM0E4?=
- =?utf-8?B?QW01MXpBODJ6UTloY1lqWXE5TVRHb0FUQjk5WW5lVkNIZ1ZYTzNPS1k4dEp0?=
- =?utf-8?B?RndRK3V6cWt1by9KVENRQnNlUlNNdGtoWnJnMHlCYy9Fbkp0Z3lmVzFyaDZ3?=
- =?utf-8?B?U2plRDNUUmFYRjl0V2x5WFFQMHBBbjJ3WlpZMjI2d3I4bWFWY01EMjRJeW1F?=
- =?utf-8?B?WEpjMXdIMlhiQ1JYVVFzWk0wb3I4VWVISWprNXlIU3dpR2RrYVhhQktQWnF5?=
- =?utf-8?B?ay9TblIwREhlaXl3YTh6UDROYXVEYU43NG9JNGE5Tm8xdFVEb2FMYTZMOUV6?=
- =?utf-8?B?c1RuMVNHSzROVGl3czNMYkt6UEVrUTVST2Q2eE45aEdaOHJUZEZ1d2VXaTN2?=
- =?utf-8?B?WUlINDBkbjNzZ0NWckg4c2ljRFhDOGxLZHdUd0VYcldFS1VrSkNXeExRT3Vu?=
- =?utf-8?B?aVNRNlY4eTBlcjRESHVKSlFNOHpDemtLc0VUNnk3Q2Myek9TRjhxWDc0SWQ3?=
- =?utf-8?B?MXp4YWxSTVV6V1ZsdGhpNW8xSHArMGlHNWZsYk41VEl5WUozcGVEVW5MRHJM?=
- =?utf-8?B?aTFycTJEdkhwSjBUb2NZUmdQTTl4eTVKMlNYc0ptRjE0UFN4c1pDOUFadExT?=
- =?utf-8?Q?pU8TfqCSbntYe/Ie6L?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1570457-f1f4-4923-a753-08df345e3d43
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 19:12:27.0997
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zLmZqiUUfbom5t292AVPLCVBbpsH9b51Hqi53LUvOpdCo8oYfUm15/RsOSh4hvWQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9679
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
 
-Hi Reinette,
+On Tue, Oct 27, 2026 at 11:43:04AM -0700, Dave Jiang wrote:
 
-On 10/27/26 11:36, Reinette Chatre wrote:
-> Hi Babu,
+> I built a proof of concept on your wip_attestation_all_1 branch with help of LLM
+> for TDX Connect device attestation to see how it holds up, and wanted to share
+> what I found.
+
+Nice!
+
+> What I built:
 > 
-> On 10/27/26 7:48 AM, Babu Moger wrote:
->> On 10/26/26 19:15, Reinette Chatre wrote:
->>> On 10/21/26 4:58 PM, Babu Moger wrote:
+> - A ctlv-attestation-spdm family. As you proposed, the sysfs lock creates the
+>   assigned-TDI attestation instance; in my version unlock removes it.
+>   EVIDENCE_GET, EVIDENCE_ACCEPT, DEVSEC_STATE_GET and DEVSEC_RUN all go through
+>   your ops.
+
+> - A provider (a 'struct attestation_provider') that sits on top of PCI/TSM, so
+>   any backend can use it. It serves the evidence PCI/TSM already publishes, and
+>   asks the backend for a refresh when EVIDENCE_GET carries a challenge.
 > 
-> ...
+> I ran it in QEMU with the devsec sample TSM, and in a TDX Connect guest on real
+> hardware with a real device. Both worked: lock, EVIDENCE_GET, DEVSEC_RUN
+> refusing a device without a verdict, RUN, and unlock. My tree has out of tree
+> code for TDX Connect to get things working.
 > 
->>>
->>>> +  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>> +  [default]
->>>> +  mbm_event
->>>> +
->>>> +The "default" mode is enabled. "mbm_event" is supported but not enabled.
->>>>    +b. Enable "mbm_event" mode. Switching the mbm_assign_mode may
->>>> +reset all the MBM counters (and thus all MBM events) of all the resctrl groups.
->>>> +::
->>>> +
->>>> +  # echo "mbm_event" > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>>      # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>>      [mbm_event]
->>>>      default
->>>>    
->>>
->>> The above changes could be merged together under a single step "a" that
->>> will significantly reduce the churn when considering this is a stable patch.
->>
->> Yes. We can. But because of auto assign is not enabled on mode switch, we still have to touch few steps. Your choice.
+> The model works well for device attestation. A few things came up that I think
+> worth a look.
 > 
-> Understood. The benefit here is that the patch will only change actual information.
+> 1. EVIDENCE_ACCEPT and DEVSEC_RUN take any evidence generation since the last
+>    device change (attestation_evidence_validate()). Ranges would narrow that,
+>    but they need measurement registers (attestation_ranges_required()), and a
+>    device has none. So a verdict survives a refresh. In QEMU with the devsec
+>    sample:
 > 
-> Specifically, changes like the two below that just updates the letter
-> associated with the step:
+>      EVIDENCE_GET, empty challenge   -> evidence generation 1
+>      EVIDENCE_GET, challenge c1      -> generation 2, measurements changed
+>      EVIDENCE_ACCEPT generation 1    -> ok
+>      EVIDENCE_GET, challenge c2      -> generation 3, measurements changed
+>      DEVSEC_RUN generation 1         -> ok, device in RUN
 > 
->>>> -b. Check how many assignable counters are supported.
->>>> +c. Check how many assignable counters are supported.
->>>>    ::
->>>>        # cat /sys/fs/resctrl/info/L3_MON/num_mbm_cntrs
->>>>      0=32;1=32
+>    Any process that can issue EVIDENCE_GET can do this between the appraisal and
+>    DEVSEC_RUN, and the device runs on evidence nobody looked at.
 
-Yea. This will be dropped.>
-> and
+We don't care about freshness of measurements. What we care about is
+that the device has remained continuously locked while we are doing
+this.
+
+Generation should not have anything to do with the # of evidence
+collected, it should be tied to the lock event. We do a lock and we
+get a generation number. That number remains fixed and could be passed
+into run as a minor sanity check.
+
+However the real security work is in the kernel driver which is
+required to actively detect/prevent any host tampering with LOCKED.
+
+RMM does this with a trio of sequences counters maintained by the
+kernel driver: lock_seq, meas_seq, report_seq
+
+If the host tampers with things then the sequences computed by the
+driver will not match those computed by the RMM and it will fail.
+
+So, I don't care if we lock the device and then collect three
+evidences for some reason. It is not the APIs problem to make sure
+they are all the same, or that the one used for attestation is
+"freshest". 
+
+While locked the device is not supposed to change its measurements,
+allowing that turns locked into complete security nonsense. How do you
+know when the measurements stop changing to actually measure it?
+
+The only point here is to collect some evidence that represents the
+start time of a continuous period of exclusive guest control.
+
+Have I got this wrong somehow?
+
+> 2. TDX Connect (maybe others) does not raise an event when a device drops out of
+>    RUN. The provider only finds out when it asks, and on TDX even that answer
+>    can lag. The guest reads the state the TDX Module last saw in a TDISP
+>    response. A function level reset, for example, moves a locked TDI to ERROR,
+>    but the guest keeps reading CONFIG_LOCKED until the TDX Module sees another
+>    TDISP response, such as when the host asks the device for its state.
+
+Yeah, I bet this is common.
+
+>    Could the core add a version of attestation_state_changed() that a provider
+>    can call while the op already holds the lock? Or let the provider flag the
+>    change, and have the core send the notification once the op drops the lock?
+
+Sounds right to me
+ 
+> 3. Jason asked on 14/20 whether anyone needs a variable-length challenge. I
+>    don't think devices need a range. A plain read sends an empty challenge, and
+>    an SPDM GET_MEASUREMENTS nonce is "NL = 32 or 0". Your TDX provider always
+>    takes 64 (attestation_tdx_evidence_caps).
+
+>    A device needs exactly two lengths: 0 for a plain read and 32 for a refresh.
+>    struct attestation_evidence_caps only holds a single min/max range. It's
+>    checked on every request in attestation_evidence_request_decode(), and any
+>    range that allows both 0 and 32 also allows everything in between.
 > 
->>>>    -c. Check how many assignable counters are available for assignment in each domain.
->>>> +d. Check how many assignable counters are available for assignment in each domain.
->>>>    ::
-> 
-> will be dropped from the patch. They distract from the core change and do not
-> seem appropriate for a patch headed to stable.
+>    To work around that, my provider declares 0-64 and PCI/TSM rejects any length
+>    other than the backend's nonce size, 32 for both backends I ran. Could the
+>    caps give one exact challenge length instead of a range, plus a flag that
+>    also allows an empty challenge? A device provider would set 32 with the flag,
+>    and your TDX provider 64 without it.
 
-Actually, the step (d) will be partially dropped as assignable counters 
-changed from 30 to 32 without auto-assignment.
+I'd expect to be able to learn the exact nonce sice that the challenge
+can support. It should probably be a list not a range, then you could
+include 0 for SPDM..
 
-   # cat /sys/fs/resctrl/info/L3_MON/available_mbm_cntrs
--  0=30;1=30
-+  0=32;1=32
+And maybe other lens if we do crypto agility here or something.
 
+The challenge is formed into the returned token so it is a kind of
+ABI and we don't want things like transparent 0 pad or something, so
+userspace does have to know..
 
-Will send the updated series later this week.
+> 4. EVIDENCE_GET rejects any buffer smaller than max_length
+>    (attestation_evidence_decode_objects()), so userspace has to allocate for the
+>    worst case. Aneesh's provider declares 16M per certificate chain, so every
+>    read needs a 16M buffer. Could EVIDENCE_GET take a smaller buffer and return
+>    the length it needs, or offer a way to ask for the size?
 
-Also, noticed a minor typo:
+Makes sense, this is also where someday having the memfd as an option
+might be nice since it could be dynamicaly sized by the kernel
+ 
+> 5. evidence.challenge is a required attr of evidence-request, so a plain read
+>    has to send an empty one ("hex:" in Aneesh's example). Could it be optional?
 
--  # cat /sys/fs/resctrl/mbm_L3_assignment
-+  # cat /sys/fs/resctrl/mbm_L3_assignments
+I'm a bit puzzled by this optional challenge concept, I haven't tried
+to read SPDM spec yet, but it really has a way to omit the challenge
+from the reply? It doesn't just replace it with 0 or something?
+ 
+> 6. tdx_attestation_test's discovery_and_construction_fields expects an
+>    inheritance chain of 4, but the TDX family inherits ctlv-attestation
+>    directly, which gives 3. In a real TDX guest it fails with
+>    "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
 
+I would have naively guessed this should inherent from some SPDM family?
 
-Thanks
-Babu
-
-
+Jaon
