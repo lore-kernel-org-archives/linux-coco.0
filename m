@@ -1,124 +1,42 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.250.239
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793096980;
-	b=O+iLMlnkNMT/N7E0DAojf/Pe3xcNkpQoc7kLx9GWbM5Vg18UkcK1HkIrVonmZ/u5dxsm
-	 rBWHTD0ZGbxGsFe1gBUwFdjOsrBOn/JEdJw5cvGURE9ONec7d9EhFC9OQEFUMB73aZ2xm
-	 wvvJxa9/NQfb46kydYOKiV9hgfwgyy2ZEOatq61K7oq3XZTRLsEVFx55c0ypbibIBjMLh
-	 as+v59LoaNEMfnlBYYbpC4WqqauWC8uC8y7ngwuJ2/HCtYcDTbH4vYCbn/OkIF+GneQpU
-	 RvC6eQCvoAjnLsLo0UEEdUfhXP9s4zw1y/uaAOzoUApE2k/0BV0QdFrLsNpJ+n9if+A==
+	t=1793098375;
+	b=P/sLtvDW+DOPGYJZ2E6pjCbzP6WTVAMOjSAov4Mhhcpp+5/NWoEX7OSzs/NF4udo+2UH
+	 ayEcIwfpyy/W1l60bZVJRSnueyo4n+6agEGgq0h1a4Nlh1x2bB7hXUar1PfXPdfr53mdI
+	 UNhyJOzJfccObmFEWpLBQ7r7hIU1cEyfLnFhE0Mf7TQhnOepngMihUoNE97jvQVffouGb
+	 +3U15H3FBDBeBOYUAqB/k4homBHiGZXMotf3//NgUhbXz2RnQ1zrhimrqIqgqkM4vN4cq
+	 XT9T/WTEnB8mlzv60oNeVUj0b+R7lLloicSOzMBw1NLMoRxvK2yJmjTXrBoYv1Fp65A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793096980;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
-	 X-Mimecast-Originator:Content-Type:Content-Disposition;
-	bh=h84z7fd1Ik8wN7YTsUmwTZKDWUsWH0q82RExH9eag3k=;
-	b=dA/0aOmJtWsqTs6M01YW94Gh8tGeHwiWH4uhpwaKnAy2RU5F5xDuqlnh/5m7j9mZ+qkk
-	 Hxn12OXD+omkbqHnSy0QZUCvoYU8+wmG8K4McE+fynNMqmfQjOBvkIeyl/BLmz040WCBY
-	 +77YQIlVvuSkLLA5JwI3y0MHNX0tSv0j+umw/Bvi8q7AG8ut/Wiol2HH1rrRscyV4SNug
-	 cu8iRa0+KQJpJrLj01yV7UYz9NtwCtRin/6ss0SRsru8BrlDnKGQp3eyaDLycyKIcsHoS
-	 DWJCo6bxECUP0NHrpJQjL1/qGA4yXowPMMdQBRWgMJbFH8AbUbX6YxziHiJR3IcyTpg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793098375;
+	h=DMARC-Filter:Received:Date:From:To:Subject:Message-ID:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=o8F1K2/jIqNA+uVQ9PF8zXJgsC0lQGajgm5OQ5zE4qw=;
+	b=uxt7GS9oxC7EEUHQS3/Wlve876Etety1LGwjUQRPYTigNsNHt9WJunm5B7gJ+BJbZZv5
+	 MsqvPxrtCF4r7VXLrvlCloncZO3V9C07ELcehtHMdSvSXHLeCIl4V6nK1DThUMwcbz4yS
+	 1Anm1hXXWqwnr4ix7boc2D5DWtcfrJVuBjiA26ciPmYIpqHEK/uMlgvPldlZO5nRodrBM
+	 h4laKOI0QcjXX+wKSvce/mhG0X99TsknzfBKNObR7d1GVhgiosk8rYEmzp3ZcpVuXUKu1
+	 Q6v8E7g9sOq2WPs6QGp0x0gISTrVwb5Ikiao0TNlwBdBNYCM7PoLpY00CXimxmm1srw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gLb9YpG7;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=none header.from=8bytes.org;
+	spf=pass smtp.mailfrom=8bytes.org;
+	arc=none smtp.remote-ip=85.214.250.239
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65A8606B78B;
+	Tue, 27 Oct 2026 10:52:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C65A8606B78B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p200300f6af404a007f96e19db8f88024.dip0.t-ipconnect.de [IPv6:2003:f6:af40:4a00:7f96:e19d:b8f8:8024])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC07C606A32E
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 10:29:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC07C606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gLb9YpG7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793096978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h84z7fd1Ik8wN7YTsUmwTZKDWUsWH0q82RExH9eag3k=;
-	b=gLb9YpG7t7aAG5zdrtnhvrwl+EWJbl8BAas3vnSQvE7RZFC1to4hrFJ2HzYEXlEd7BUFNl
-	AQp/dEfFDJW0EhBTKWGntzjWOoRNCmTG3CAPNCoGP2WFDppFPrRHTHwVg7Povykn7MS4Hz
-	YOoQJy/9sO9n4UL2QB3b4MknMrzEpLQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-320-ORIGWGBGPj6J_33amd8MiQ-1; Tue, 27 Oct 2026 06:29:37 -0400
-X-MC-Unique: ORIGWGBGPj6J_33amd8MiQ-1
-X-Mimecast-MFC-AGG-ID: ORIGWGBGPj6J_33amd8MiQ_1793096976
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48dfdc0f491so2201340f8f.1
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 03:29:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793096976; x=1793701776;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=h84z7fd1Ik8wN7YTsUmwTZKDWUsWH0q82RExH9eag3k=;
-        b=Ji0EwgMr//Xgi6G9h2GwjMeYOp70RQdt/QG+P1/vM0F8hYn+A8Xvw1J/9FCuovTEw2
-         sj6It23WbzKvOZ14wTopaCKKZCg5ddD9riqQ/16KwjkGu574POYQcKcshKFGtTaD1YFF
-         y+CausWA9nGl6qKbAIKbNFNt94ltGs8kNxd6EuhRyUB8ctqVyk/rvb4qH20gHGbiYi4P
-         9xBgrak7siTzxWCAWzMwM5rHzRej8A9ubqiug3pS6BEqFp674ARH8K3YQwXJh+q/RxMR
-         WcNERhT7iRqxVTfeQEGjoujLDajhwweWBP0jSHDK1UC/f6sWaEZNmis04CysKjyZx/vi
-         +ZAQ==
-X-Forwarded-Encrypted: i=1; AKwUvByJ5RH1/0pMKK2Viy8+vn6QS8TiQZhiFgao/VZTj3UBzSHDLone9LV6+Uu0uRMXiFMYrE2yHD+wJj2N@lists.linux.dev
-X-Gm-Message-State: AFq9FYKu9gKp2FSXV+EIM4XsyQGbDLTHgxL4YF87KA3mCLw0MIn+/TXL
-	PguMGDpywWmmPo0F4uoMRjjwYtHxd2vUAQ8qcwgh5BN8JpA65DtWI/8ZdJK6OWfAcJ3+mosDpDx
-	1GlPTAd3zIl/PdpmXZlzv+bY2qAlCkCaNOTR/P14HZAOCoYGPER5tSuc2p5ln55M=
-X-Gm-Gg: AYBFou2IMvHizACDbNtEAVMwkgSKyqNUzqFid7RphLtBrqWqAAeiQNs7JEennU7lqqY
-	Md7ZW5X1FUiNqFmIwAQIAjLcLfrwfv98PI8pQ49d4UhXCPQg8eFsqc2f/6Kbf7y16WXkM+BeTlZ
-	t2vkxpwO1mIKMQqsgBIA2rd1415s1GvK1QjDXRy2S20dlW4f6HIxVa5zvfm+d/zBJ/MsZprxmx9
-	T1d3DGmZsUl7OhUb/D4RlcSwKHFPTRl2EZ9CMEb4kLeqpNGeR84gyMN1y9pEpYGo862t7btWN/V
-	uNPQboB+m7faLkfwWigxIhJnW9ekxmDYFY/RU+hAxt8i7o5OJV6wWwJexBOZAS1rYAk=
-X-Received: by 2002:a05:600c:8b86:b0:4a3:59c9:a754 with SMTP id 5b1f17b1804b1-4a35acb17bfmr175618575e9.22.1793096975894;
-        Tue, 27 Oct 2026 03:29:35 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b86:b0:4a3:59c9:a754 with SMTP id 5b1f17b1804b1-4a35acb17bfmr175617615e9.22.1793096975354;
-        Tue, 27 Oct 2026 03:29:35 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a2d9280sm254068375e9.13.2026.10.27.03.29.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 03:29:34 -0700 (PDT)
-Date: Tue, 27 Oct 2026 06:29:29 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Kevin Loughlin <kevinloughlin@google.com>
-Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sidharth Telang <sidtelang@google.com>,
-	Punit Salian <psalian@google.com>, Peter Gonda <pgonda@google.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Jacky Li <jackyli@google.com>,
-	Steve Rutherford <srutherford@google.com>,
-	David Skidmore <davidskidmore@google.com>
-Subject: Re: [PATCH 00/13] virtio_balloon, efi/unaccepted: support memory
- ballooning and free page reporting in CoCo guests
-Message-ID: <20261027051245-mutt-send-email-mst@kernel.org>
-References: <20261027025616.1632690-1-kevinloughlin@google.com>
+	by mail.8bytes.org (Postfix) with ESMTPSA id 7F3961C7802;
+	Tue, 27 Oct 2026 11:52:48 +0100 (CET)
+Date: Tue, 27 Oct 2026 11:52:47 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: COCONUT-SVSM Development Release v2026.10-devel
+Message-ID: <auCCf9ScqKH2xBty@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -128,43 +46,105 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261027025616.1632690-1-kevinloughlin@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -_56ThqYv5aAbLg12TvCuAq87RC7BT2AylHa5kMazlY_1793096976
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 27, 2026 at 02:56:03AM +0000, Kevin Loughlin wrote:
-> This series enables virtio-balloon free page reporting and memory balloon
-> inflation/deflation in Confidential Computing (CoCo) guests, starting
-> with architectural hooks implemented for AMD SEV variants, in order to
-> support dynamic CoCo guest resizing.
-> 
-> Today, memory ballooning and free page reporting are essentially unusable
-> in CoCo guests due to three main roadblocks:
+Hi,
 
+Another small COCONUT-SVSM release is out: 2026.10-devel. This development
+snapshot release contains 49 non-merge commits from 4 contributors. The
+highlights in this release are:
 
-For me, the bigger question is not whether we can, but whether we
-should. Considerations I would like to see addressed:
+  * New per-CPU storage infrastructure: Added linker-backed per-CPU keys with
+    GS-relative access, runtime initialization, and assembly support.
 
-Security, e.g.: does knowing which memory is free leak information from
-the guest? If no, why not?
-Consider CONFIG_SHUFFLE_PAGE_ALLOCATOR, RANDSTRUCT, etc.
+  * Exception handling: Added GS-base switching on exception and interrupt
+    entry from userspace, including special handling for NMI, machine-check,
+    double-fault, and #HV paths.
 
-correctness, e.g.:  Linux has init on free (and default on windows), if
-initialized pages are dropped and host can not be trusted, they have to be
-re-initialized. Is this handled? I don't see it in code.
+  * Page-table correctness: Fixed memory-management operations to use the
+    currently active page table after switching into task context. Added
+    immutable page-table walking and reader-writer locking for task page
+    tables.
 
-Also, performance, e.g.: How much does this re-initialization cost?
+  * APIC emulation: Corrected processor-priority calculation when an in-service
+    interrupt determines the priority. Added unit tests for interrupt
+    priorities, guest IRQ delivery, EOI handling, and #HV doorbell
+    interactions.
 
-Management: it was simple with balloon off unconditionally.
-Now we are in murkier waters with various features offering
-various performance/security tradeoffs.
-What if some guests want the tradeoffs but others don't?
+  * CPU feature detection: Improved handling of multi-bit CPUID fields and
+    corrected C-bit and INVLPGB capability detection.
 
-Documentation: for all of the above.
+  * Panic handling: Prevented recursive panics and routed SEV-SNP GHCB I/O
+    failures through the panic handler so termination includes secrets-page
+    scrubbing.
 
--- 
-MST
+  * Dependency updates: Updated P-384, crypto-bigint, and Tokio to address
+    audit findings affecting constant-time arithmetic and AsyncFd I/O safety.
+
+The full shortlog of the non-merge commits is attached.
+
+Happy testing!
+
+Cheers,
+
+	Joerg
+
+Carlos López (20):
+      kernel: mm/pagetable: rename methods to reflect mutability
+      kernel: mm/pagetable: add immutable page table walking methods
+      kernel: task: deduplicate current_task()
+      kernel: task: always get active task via current_task()
+      kernel: task: replace pagetable spinlock with RWLock
+      kernel: cpu/percpu: store page table in AtomicPtr
+      kernel: cpu/percpu: explicitly install page table
+      kernel: cpu/percpu: add PerCpu::new_pgtable()
+      kernel: cpu/percpu: fix current page table accesses
+      kernel: prevent reentrant panicking
+      kernel: platform/snp: route GHCB I/O port failures through panic handler
+      kernel: cpu/features: allow arbitrary feature presence detection
+      kernel: cpu/apic: mask priority subclass if ISR determines PPR
+      kernel: cpu/apic: abstract away CPU APIC state
+      kernel: cpu/apic: introduce APIC testing infrastructure
+      kernel: cpu/apic: add basic APIC tests
+      kernel: cpu/apic: add guest IRQ delivery tests
+      kernel: cpu/apic: add EOI tests
+      kernel: cpu/apic: add #HV doorbell tests
+      xbuild: preserve build artifacts before objcopy
+
+Joerg Roedel (25):
+      kernel: cpu/idt: Handle GS swaps on exception entry and return
+      kernel/percpu: Add linker-backed per-CPU keys
+      kernel/percpu: Install CPU-local GS areas
+      kernel/percpu: Support runtime CPU-local initialization
+      kernel/percpu: Add assembly-visible per-CPU keys
+      kernel/vmsa: Move reset IP to a per-CPU key
+      kernel/irq: Move IRQ state to a per-CPU key
+      kernel/apic: Move the x86 APIC to a per-CPU key
+      kernel/apic: Move guest APIC state to a per-CPU key
+      kernel/mm: Move the 4K virtual-range allocator to a per-CPU key
+      kernel/mm: Move the 2M virtual-range allocator to a per-CPU key
+      kernel/hyperv: Move hypercall pages to a per-CPU key
+      kernel/sev: Move the GHCB page to a per-CPU key
+      kernel/percpu: Move context switch stack to a per-CPU key
+      kernel/percpu: Move paging root to a per-CPU key
+      kernel/smp: Move shared CPU state to a per-CPU key
+      kernel/sev: Move the HV doorbell to a per-CPU key
+      kernel/percpu: Move current stack to a per-CPU key
+      kernel/percpu: Move TSS to a per-CPU key
+      kernel/percpu: Move ISST to a per-CPU key
+      kernel/percpu: Move initial shadow stack to a per-CPU key
+      kernel/percpu: Move IST stacks to per-CPU keys
+      kernel/percpu: Move legacy per-CPU state into the percpu directory
+      deps: Update p384 and Tokio to resolve audit findings
+      COCONUT-SVSM Release 2026.10-devel
+
+Luigi Leonardi (2):
+      kernel: make block and vsock imply virtio-drivers
+      verification/verus_macro_stub: remove unused proc-macro2 dependency
+
+Stefano Garzarella (2):
+      docs/RELEASE-TESTPLAN: add persistence test
+      build: remove legacy wrapper script
 
