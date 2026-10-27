@@ -1,108 +1,125 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793129798;
-	b=aVUD26w9MglRGqaiLzBVE9Kb6VYQ+wG9prwyN2AojDAUNDJYbjQCHhbV4IxwKNQRmI46
-	 iM9Ljoaw2uMNFiZNZBZu8PqLnIFVUwpLcj1vDLBU7libesfiO7/Lzlwg44q18iqvtNh55
-	 EvweAgVR7+lpsNAIF9zfF5ECDMxgL4N6tpKGlvBh6RTuDo6UVKnFTWmsg+Dxj3ckC6H31
-	 Qif+cdE/9VkslrqrQweBeX+Ok2PwTB9GvlMhWPSj4CxJplRS1h36J5JECGG0zwLWcP7rQ
-	 NEEUfO5neQ7M0JfaEdYB7nexOK43GMaNPnFyNbqhmR42mrA6EAkn2Xttye4Eub3RyJQ==
+	t=1793133573;
+	b=N+Bjq3nOYJ3/HdhwwpGJO3hKCUY6nIUYawbdxlK9ukzemLiDDXErl59VFv4Co+kfC31M
+	 0E6Qs0atTQJnZGCiqkq4aUKhAt69WsxaJkeLSyYq7IUUlHfB+sjRiTdy8UfOP7G7YskCW
+	 1C3SjENjUas4X9MQ+mcIOoYwO1Lej3cGya576RVSY7YIO2rT4gyxleteKe0m2nvVsANNz
+	 UY15i8AilBIJxuayoeT6AdUHvPkiWz46UM+g85z7G2x6n7zkghZctTZLZyUXSAVTvXHvR
+	 IWcsEI0PcdMHe251sjQEL/dIp/l1prx9ZxrW5DBdcEZoFg+lddmGj9KddI76qV0T0XA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793129798;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Wsbrsmt/p01OP4rmJRzk8Y2oM9M62JnRW05OxgVh8zg=;
-	b=3Z/AgwDZSgRCnJyEvr0hK6hmgH3TdVqiFttvIYRVc0wfShbto0IPOG4FAHWpxeyxV9C5
-	 nQpy+GfsMp8KuQWavJahfgfRPg/jx3G3Xw7zKebG/VFgJtk4FpeoopJG7LbhwHYCKrehr
-	 kIfY61VhFU0SexYbpSW5Zj6cB8NbAE+oBXC4jKEeLfkfBIw2Tt2vh+PrLycoITt92WDog
-	 1vi1uHGizjofiMtMIVmKsxPoWOGCyxlQH1XXGQjsE1T/2wxGaetDzfNggcP9uVVlYRD/D
-	 zJtB448OV5jLsbyGcNFBoEAOJwxOXeK6afuaCbaHFJfBOOjg22DbtUzaSiCF83vvNSg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793133573;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
+	 X-Mimecast-Originator:Content-Type:Content-Disposition;
+	bh=roOwYu0f5KwBgODRuBr3gTl9MLGpmNzor9SYb28//4o=;
+	b=LcquuMVqNUgwMwHgNS6eMOrXLFoM5Du2ci/igNURnT0sr+5RHAYTjzHoTB3X0iO8nlHb
+	 hvfbranPlFq45BIFRGehPoKefgrRjB1KHAKiSaQG5wxrcHS7lNOxfF3WkiRcWFFoQAYHy
+	 q67cfzI4eCXowJKwp2Tjfus3Y1UkHKEF+y8hk52fUMFOVwmYb05e9JPFhUgeT8pQoOsuM
+	 lcAibcMcL1aO7HQGIgwfKi+sCJdnj8D5fgnygnZLxFbjQJEn6ljIW2RKzVgvYvgCo8X8D
+	 U5YGiq5/hodEPZox/Iwo6F5skpC+diFSaqkDD76x6yQIbsSh3MIC9tEEvavhTDXGaMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bh8igv0R;
-	arc=none smtp.remote-ip=209.85.222.182
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=akK1+Pw6;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A5E606A320
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 19:36:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56A5E606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6A2606A31E
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 20:39:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A6A2606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bh8igv0R
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93cbc3ab2fdso6809985a.3
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 12:36:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793129792; x=1793734592; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Wsbrsmt/p01OP4rmJRzk8Y2oM9M62JnRW05OxgVh8zg=;
-        b=bh8igv0RPd9Jl6k41ftp7y7UtapbUwhdE2OJtGx3fxwKuH9ZiAke9lUT8I7cr795I6
-         PI0gLXkAcuSraqZyoVVD5N1nZDvYJFub7qbJRVULd1fhIEXTbLCOu72+THgi16KXnukp
-         FrvbB5VGLOxfwZa0YbM/XG0h0I+eqbScqd4cV/Zj4TMmOFaAMLYlbDR8jJdXGJOA/6I6
-         hYvbrNWqtJ/ZZNr2wvHuj8ARk1GG7NalPWr1EicPUTxn4cuWSTZRdkOlIqv0tpkbnLR3
-         JFEy7UqhjF1eEWa1NOyy6tw4K5HZp8AVDT1avR0/w4SdJKNIaecQ9DRDzTUzALU5LIdx
-         8EYw==
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=akK1+Pw6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793133571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=roOwYu0f5KwBgODRuBr3gTl9MLGpmNzor9SYb28//4o=;
+	b=akK1+Pw6QAhpkcxtlACExkkdPBQa023n24AZ7US++Mz705Iu3vo+9YZJZPKDWtQNE98RpT
+	4mhHalLOuPoBzFxX0fsOK0RJr1ZFmQmYctf9yuxGMPltIChuWxw0KoapX9NRCDVqsSkpe/
+	B+g+McnWvhefWkzsq9iounxCS9miPkw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-6VMZZ6JCN1mD1rx64vuewQ-1; Tue, 27 Oct 2026 16:39:30 -0400
+X-MC-Unique: 6VMZZ6JCN1mD1rx64vuewQ-1
+X-Mimecast-MFC-AGG-ID: 6VMZZ6JCN1mD1rx64vuewQ_1793133569
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48dea677afcso132411f8f.1
+        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 13:39:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793129792; x=1793734592;
+        d=1e100.net; s=20260707; t=1793133569; x=1793738369;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Wsbrsmt/p01OP4rmJRzk8Y2oM9M62JnRW05OxgVh8zg=;
-        b=wiB8pRuJXjhXSA5fdbeI43KFhmCllhR5e8yZUM6JkrmtAYf91oLKMU/OYYkQV2xo0i
-         h+Ubq7OzxVxkprT4zDXfvocqCSDNJqCSsxJ7k7r3E2RzsimFC+cXPwTbvLVGiVN35qww
-         lC4KWikLSx4dhwJnu6ZKojxKJWxnQzBp6f4/0TnALm7Yqykpr8/vQ0TsOKOV1iwZWwEa
-         JkmAWvwdpN6GlBFvVkWHaA6KJEK/DPCJwuTcI09rdLrSEllioI68m87jC5Vd5dceM9uJ
-         X6NrAsfM9yKhioCpnIDFnhC6oxrIbvKig6zcrYqBdKOKgbQvHeLEacC3osTaUuqYqKbs
-         rqDg==
-X-Forwarded-Encrypted: i=1; AKwUvBzaJUjk4R1FMVMGvvtKXz74Faq1Q2CAukpVwv/lVAX2xT3ea/h0RLSKYSLpFP5LpMDH9E8Px3tXMrIx@lists.linux.dev
-X-Gm-Message-State: AFq9FYKO1TL0HmMp8lEmR8cv1AseD9ZFdATXw2yyTZNGXJIfTVhFcj1f
-	JvmZEykp2eaOdNXB12NdmdSNbUQ9Kyz5ryqC3/oYZ7HXqYLeSAkGU44TXyvyShr+haU=
-X-Gm-Gg: AYBFou1ugCofaBi+DYTG3divIThwTehcZ4FIHfxD9ftUiaey+4+tq+gPbh3fwTwaNQY
-	8xDhrBdDWP2sV4qS1T557l+ppDwVNI4kDh5KFoMHJcXbmCAelr1+2D6evnEMbVOhsUcSYy8Ppwj
-	C1t5RtlKotD5emei7jOb6QSEK8PAV0yRxqc7LiE4wboOyPW0sOzH3ZRNpPVqZfUjq3yg4hwwKoP
-	SvgjM/sOiH8qsCNpWBqCUSHUfAE8090LFfwFk+w6zOnPxjryxPlfJf4H1cIXpPi0ziAE2w9V2eG
-	/yckRtDlyucXdYzjqoOLdwdsSUEYgYXH6Y9K1I5msnmZn1G31nScZnkAUZNdg5MKZfIJeEDk3YL
-	5XjUKcOUl/fBrZA+6XNlLwTaB7D9crkC1BcK9WC/dFHMcUPTGmqxdAEcRtxf243bgdCy+onxlq0
-	SmNw5cwd0LFqYWmf+Bp+KmkAUnRdLg9cX2u4EJOWZlKGsJUBeZtKkPPRVlSDpO+0s7HevxnE8Xk
-	ckCgxZfhWISCkeF4IdaFgpkYVFlv711Sl/5aPoA8zHt36athuKFw41WnpNd3iznnSUSVZPdgWaG
-	Dew8LSK7sWsr5vIJbgS5EoY/J94JFv9UPXtIKQ==
-X-Received: by 2002:a05:620a:4728:b0:93f:2236:a61 with SMTP id af79cd13be357-940ef996db1mr1690589085a.61.1793129792026;
-        Tue, 27 Oct 2026 12:36:32 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f067e97csm1064928585a.21.2026.10.27.12.36.30
+        bh=roOwYu0f5KwBgODRuBr3gTl9MLGpmNzor9SYb28//4o=;
+        b=gOaWtQCIhIE/vpf8FJqb43HjJamnUsEusSTIaACSi3Lq4feePzN6o0svXKwJllQ8TV
+         55zwc1u4XaNy5dYjP3BfJLwECvgP7/tjR94YaHpd1ysoCQLZLuCs8KH3LM35QAg3Ii2D
+         oz/xaUtHHo74HziUCmWFS5/g3PWGHx75KoGCtuBuYEYqRCvEZw6p7Kww4/m5NbjUO0GB
+         0viIhl50fq8o3r15FOXbIY1u1nDVNHnL6ptBFJGUOEVJr6Plu6y788MZWaFPICTXh5Nz
+         M+Yl2iZIzzyeaAVy5srJ5B3Fm9+/e6tYmIKjERS36Oy+MsZnLXkUc88cKffrLiDv+6cU
+         XRvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzpKu4jTpaLNUQulPxDs4azoDzRUBqfT6br3oW+JYaquzIkLW+LVxOJJ2Y7QxCTPYeG9enDiKUty+M7@lists.linux.dev
+X-Gm-Message-State: AFq9FYIzytNncGWTXWESMqSXhw7H648TvJWavpAiD5As2//KXHDX84y0
+	HWmsDXxhjatkMMkaM/IKtak4Q9VJh4SKYn+WDkzrUOCBMrG+iW7GN9Y1AOHDFa9CR+o6GXq1iMZ
+	WH7VRm4ka+kvkb+A9a7oGDkAA6yvGJ9SCKeGrRty4Gg8lv3MoTdr4X7krAWABceQ=
+X-Gm-Gg: AYBFou1sojiy67ue6WpG1WyvqANN1izk/K/eNYVyCeiQkMYNvj9fz7rz5Rv7fuGwF2h
+	4/LeVNK1/gXWK09eBmglOMKFe0+fqHxmHXpejy6C4uwigy80oeqqYTdp0ud7sknM+EIfo84YY/3
+	56gtAckJq8mGHCBjxZCiSHV5/VZdKhkPG4JLsbYi9nELnqw2qmXpq6M8AdQGK6RjJ/+lDINp5x5
+	q+ZmOK5HKnl0gRw0PYflozjJqcLYZZkGqNTZWafrMBD0S9pl6Wwf+CwM2fmEECpaFHW0+bqqqx8
+	Va0hruTcYWkB8/UCFmr5WzHcOKohiUZfydUyQMVyx/ToGGQFQGQsuexWDgw/TYXqfEk=
+X-Received: by 2002:a05:6000:60f:b0:48e:850:c0b7 with SMTP id ffacd0b85a97d-48e5d28705fmr1693089f8f.1.1793133568586;
+        Tue, 27 Oct 2026 13:39:28 -0700 (PDT)
+X-Received: by 2002:a05:6000:60f:b0:48e:850:c0b7 with SMTP id ffacd0b85a97d-48e5d28705fmr1693005f8f.1.1793133567964;
+        Tue, 27 Oct 2026 13:39:27 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecdd5b3sm24553225f8f.53.2026.10.27.13.39.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 12:36:30 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xLmyD-0000000AobX-1vC7;
-	Tue, 27 Oct 2026 16:36:29 -0300
-Date: Tue, 27 Oct 2026 16:36:29 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
-	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
-	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
-	dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <20261027193629.GK1685504@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
+        Tue, 27 Oct 2026 13:39:24 -0700 (PDT)
+Date: Tue, 27 Oct 2026 16:39:18 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Kevin Loughlin <kevinloughlin@google.com>
+Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sidharth Telang <sidtelang@google.com>,
+	Punit Salian <psalian@google.com>, Peter Gonda <pgonda@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Jacky Li <jackyli@google.com>,
+	Steve Rutherford <srutherford@google.com>,
+	David Skidmore <davidskidmore@google.com>
+Subject: Re: [PATCH 00/13] virtio_balloon, efi/unaccepted: support memory
+ ballooning and free page reporting in CoCo guests
+Message-ID: <20261027163814-mutt-send-email-mst@kernel.org>
+References: <20261027025616.1632690-1-kevinloughlin@google.com>
+ <20261027051245-mutt-send-email-mst@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -112,146 +129,78 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+In-Reply-To: <20261027051245-mutt-send-email-mst@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: UouH1lCyKXlEsf4QXaTV3y0Eb_Uv-SDmHthGWwxJm-I_1793133569
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
 
-On Tue, Oct 27, 2026 at 11:43:04AM -0700, Dave Jiang wrote:
-
-> I built a proof of concept on your wip_attestation_all_1 branch with help of LLM
-> for TDX Connect device attestation to see how it holds up, and wanted to share
-> what I found.
-
-Nice!
-
-> What I built:
+On Tue, Oct 27, 2026 at 06:29:35AM -0400, Michael S. Tsirkin wrote:
+> On Tue, Oct 27, 2026 at 02:56:03AM +0000, Kevin Loughlin wrote:
+> > This series enables virtio-balloon free page reporting and memory balloon
+> > inflation/deflation in Confidential Computing (CoCo) guests, starting
+> > with architectural hooks implemented for AMD SEV variants, in order to
+> > support dynamic CoCo guest resizing.
+> > 
+> > Today, memory ballooning and free page reporting are essentially unusable
+> > in CoCo guests due to three main roadblocks:
 > 
-> - A ctlv-attestation-spdm family. As you proposed, the sysfs lock creates the
->   assigned-TDI attestation instance; in my version unlock removes it.
->   EVIDENCE_GET, EVIDENCE_ACCEPT, DEVSEC_STATE_GET and DEVSEC_RUN all go through
->   your ops.
-
-> - A provider (a 'struct attestation_provider') that sits on top of PCI/TSM, so
->   any backend can use it. It serves the evidence PCI/TSM already publishes, and
->   asks the backend for a refresh when EVIDENCE_GET carries a challenge.
 > 
-> I ran it in QEMU with the devsec sample TSM, and in a TDX Connect guest on real
-> hardware with a real device. Both worked: lock, EVIDENCE_GET, DEVSEC_RUN
-> refusing a device without a verdict, RUN, and unlock. My tree has out of tree
-> code for TDX Connect to get things working.
+> For me, the bigger question is not whether we can, but whether we
+> should. Considerations I would like to see addressed:
 > 
-> The model works well for device attestation. A few things came up that I think
-> worth a look.
+> Security, e.g.: does knowing which memory is free leak information from
+> the guest? If no, why not?
+> Consider CONFIG_SHUFFLE_PAGE_ALLOCATOR, RANDSTRUCT, etc.
 > 
-> 1. EVIDENCE_ACCEPT and DEVSEC_RUN take any evidence generation since the last
->    device change (attestation_evidence_validate()). Ranges would narrow that,
->    but they need measurement registers (attestation_ranges_required()), and a
->    device has none. So a verdict survives a refresh. In QEMU with the devsec
->    sample:
+> correctness, e.g.:  Linux has init on free (and default on windows), if
+> initialized pages are dropped and host can not be trusted, they have to be
+> re-initialized. Is this handled? I don't see it in code.
 > 
->      EVIDENCE_GET, empty challenge   -> evidence generation 1
->      EVIDENCE_GET, challenge c1      -> generation 2, measurements changed
->      EVIDENCE_ACCEPT generation 1    -> ok
->      EVIDENCE_GET, challenge c2      -> generation 3, measurements changed
->      DEVSEC_RUN generation 1         -> ok, device in RUN
+> Also, performance, e.g.: How much does this re-initialization cost?
 > 
->    Any process that can issue EVIDENCE_GET can do this between the appraisal and
->    DEVSEC_RUN, and the device runs on evidence nobody looked at.
-
-We don't care about freshness of measurements. What we care about is
-that the device has remained continuously locked while we are doing
-this.
-
-Generation should not have anything to do with the # of evidence
-collected, it should be tied to the lock event. We do a lock and we
-get a generation number. That number remains fixed and could be passed
-into run as a minor sanity check.
-
-However the real security work is in the kernel driver which is
-required to actively detect/prevent any host tampering with LOCKED.
-
-RMM does this with a trio of sequences counters maintained by the
-kernel driver: lock_seq, meas_seq, report_seq
-
-If the host tampers with things then the sequences computed by the
-driver will not match those computed by the RMM and it will fail.
-
-So, I don't care if we lock the device and then collect three
-evidences for some reason. It is not the APIs problem to make sure
-they are all the same, or that the one used for attestation is
-"freshest". 
-
-While locked the device is not supposed to change its measurements,
-allowing that turns locked into complete security nonsense. How do you
-know when the measurements stop changing to actually measure it?
-
-The only point here is to collect some evidence that represents the
-start time of a continuous period of exclusive guest control.
-
-Have I got this wrong somehow?
-
-> 2. TDX Connect (maybe others) does not raise an event when a device drops out of
->    RUN. The provider only finds out when it asks, and on TDX even that answer
->    can lag. The guest reads the state the TDX Module last saw in a TDISP
->    response. A function level reset, for example, moves a locked TDI to ERROR,
->    but the guest keeps reading CONFIG_LOCKED until the TDX Module sees another
->    TDISP response, such as when the host asks the device for its state.
-
-Yeah, I bet this is common.
-
->    Could the core add a version of attestation_state_changed() that a provider
->    can call while the op already holds the lock? Or let the provider flag the
->    change, and have the core send the notification once the op drops the lock?
-
-Sounds right to me
- 
-> 3. Jason asked on 14/20 whether anyone needs a variable-length challenge. I
->    don't think devices need a range. A plain read sends an empty challenge, and
->    an SPDM GET_MEASUREMENTS nonce is "NL = 32 or 0". Your TDX provider always
->    takes 64 (attestation_tdx_evidence_caps).
-
->    A device needs exactly two lengths: 0 for a plain read and 32 for a refresh.
->    struct attestation_evidence_caps only holds a single min/max range. It's
->    checked on every request in attestation_evidence_request_decode(), and any
->    range that allows both 0 and 32 also allows everything in between.
+> Management: it was simple with balloon off unconditionally.
+> Now we are in murkier waters with various features offering
+> various performance/security tradeoffs.
+> What if some guests want the tradeoffs but others don't?
 > 
->    To work around that, my provider declares 0-64 and PCI/TSM rejects any length
->    other than the backend's nonce size, 32 for both backends I ran. Could the
->    caps give one exact challenge length instead of a range, plus a flag that
->    also allows an empty challenge? A device provider would set 32 with the flag,
->    and your TDX provider 64 without it.
+> Documentation: for all of the above.
+> 
+> -- 
+> MST
 
-I'd expect to be able to learn the exact nonce sice that the challenge
-can support. It should probably be a list not a range, then you could
-include 0 for SPDM..
+And to give this a bit more perspective, I present:
 
-And maybe other lens if we do crypto agility here or something.
+commit ab676b7d6fbf4b294bf198fb27ade5b0e865c7ce
+Author: Kiryl Shutsemau <kas@kernel.org>
+Date:   Mon Mar 9 23:11:12 2015 +0200
 
-The challenge is formed into the returned token so it is a kind of
-ABI and we don't want things like transparent 0 pad or something, so
-userspace does have to know..
+    pagemap: do not leak physical addresses to non-privileged userspace
+    
+    As pointed by recent post[1] on exploiting DRAM physical imperfection,
+    /proc/PID/pagemap exposes sensitive information which can be used to do
+    attacks.
+    
+    This disallows anybody without CAP_SYS_ADMIN to read the pagemap.
+    
+    [1] http://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html
+    
+    [ Eventually we might want to do anything more finegrained, but for now
+      this is the simple model.   - Linus ]
+    
+    Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+    Acked-by: Konstantin Khlebnikov <khlebnikov@openvz.org>
+    Acked-by: Andy Lutomirski <luto@amacapital.net>
+    Cc: Pavel Emelyanov <xemul@parallels.com>
+    Cc: Andrew Morton <akpm@linux-foundation.org>
+    Cc: Mark Seaborn <mseaborn@chromium.org>
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 
-> 4. EVIDENCE_GET rejects any buffer smaller than max_length
->    (attestation_evidence_decode_objects()), so userspace has to allocate for the
->    worst case. Aneesh's provider declares 16M per certificate chain, so every
->    read needs a 16M buffer. Could EVIDENCE_GET take a smaller buffer and return
->    the length it needs, or offer a way to ask for the size?
 
-Makes sense, this is also where someday having the memfd as an option
-might be nice since it could be dynamicaly sized by the kernel
- 
-> 5. evidence.challenge is a required attr of evidence-request, so a plain read
->    has to send an empty one ("hex:" in Aneesh's example). Could it be optional?
+Leaking phys addresses to unpriveleged entities might not be wise.
 
-I'm a bit puzzled by this optional challenge concept, I haven't tried
-to read SPDM spec yet, but it really has a way to omit the challenge
-from the reply? It doesn't just replace it with 0 or something?
- 
-> 6. tdx_attestation_test's discovery_and_construction_fields expects an
->    inheritance chain of 4, but the TDX family inherits ctlv-attestation
->    directly, which gives 3. In a real TDX guest it fails with
->    "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
+-- 
+MST
 
-I would have naively guessed this should inherent from some SPDM family?
-
-Jaon
