@@ -1,89 +1,89 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793093823;
-	b=oy4D9+cUrPZnKz52AHBG6Du5W36X3FVIQTnKnWcZvPwOw0hzqfoW+gmZ1B6MV37n2VDr
-	 lwy8iJcXGJQxoTpl9992roLrxREDaAvqRuoSdknGVRbt1T1T+qkS823+nG32ad/HXaQbz
-	 00eCAmM6i2XKKB2CT/Fjkdc8zYFUCSLKazblqTbQeVsXIYIFGqzkfNGhh50zJywQck/R2
-	 Mju/x49pVA8MRIxV8sAS6uTECq7tnkbb0qrrSK6XovvVlYHoxZLnP2Qm9xLEmEmIm+xI5
-	 HGUitlA/o2DbDcwHRYGVICrlYqVBs3Zj3HoyVzeOIc7X4pC3WY0TUhilbThz+u5pABg==
+	t=1793094180;
+	b=OGN/t7fmJrBQ+stS1JK5gXVmn0OpVH5fJEJu6i3/BC51yAPTOFRqwbZ9hrPqjdkm7fgO
+	 oglm2Ay5kMd9M0odq1fTMV6T7Kimb5hfI3IYI9cfMgFvi5TBFsEehA7Aca1fEsI4GLdxF
+	 GCZOwZvcGSTr7kD3OJlUyxJhX9a41X8SB1P6KOMmUTN3439esqj/4LLl0CNuGQphglHNk
+	 o+mtBBNm1c6lM+rB/hWlEOj/fBbpoUv8cIBo5i8Sk+yhgRtvkTcLREYl1a4oPJjR2paXi
+	 2fFyJA8bYW1r9Tq+tkc8BPmup3te7WnIDNXaLwwLBSxiaaFkz55XClCBnfS8gRjzELw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793093823;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793094180;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
 	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
 	 X-Mimecast-Originator:Content-Type:Content-Disposition;
-	bh=yZ6xG709ht579SVeXaHvhn7gbaGSx41yuwP8KO/9DQI=;
-	b=h1tlQQ5AWcvnKu87jFuWYFrDVjipWIP+wfZ0bZH6ti2HgjCC9h9nWmXxFR+JwwnVO8jQ
-	 dMYbgy374JgrZeiiY8FQC+jnrOwgHQJy0dR9LvRdsvyoz9jwbHD42f4VLyedIJJSRqRUF
-	 B70AJhlef0nGyTrwNGm3hUL/RWF9OLZuW04cVZiv9KVpcs9BsMUt1aRNXflr6QTgWjNCi
-	 upwFrDX2cBfJyrzBvQc2n7kxOfbb6DVlDDZ9mww1K2EFLDlsEayilT40NqNZbGbi+e9TW
-	 jC+yufjAkpelwOtGbKwIMvZUQCsCRGHFogzpOqk6e6vj//QYFgjrizjoc13jODPjdgw==
+	bh=+oMimfwV7cZjftt0OWdyMqPpN9ija5vYYfza+1oRCE4=;
+	b=1k0Z2A20oakro/0vcuQK7R8Ra7rfG7tWxsadIWYG3bnEj+Dv3Ta2fsI0JV0mpq39YHta
+	 l2n+VyrBzxP4U0sZJhKkGt1yYAq8x7Z7QRwyVeOFeMEVWPZX81zAVg9PeQ0PDn0Pfxu4E
+	 fzX82iXQgoQK9og5ftvSmT74c+aCMXvQpa1vebA5x/2FKGbvnmwL3HKrUxg4GLqfH3CEr
+	 +qvXhPAhnGEtUVK+QLhxxuXBPbRql6CNJ2Z8u9bqwRidTEzp+7YxXjor7k9RtT/5hmqRQ
+	 osvGdh9ryiZRzQAwE0urTFmRVdVxWDOw906dwQpcoh0yqzBUrClVzwQWXVbq2tkGl6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LJJvK4QG;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ETGplP2A;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A4B606A324
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 09:37:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28A4B606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEFC606A336
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 09:42:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8AEFC606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LJJvK4QG
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ETGplP2A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793093822;
+	s=mimecast20190719; t=1793094178;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yZ6xG709ht579SVeXaHvhn7gbaGSx41yuwP8KO/9DQI=;
-	b=LJJvK4QGbRxDuaUgcqznBlwSBS20laXRrRilamkS9tjmW2D/wX/Be6Y2iNWiVom8jhslLD
-	TdBa53NYQ8NiCmh6j1o3Sj93+o08/cbRfpgCA/v1M9Z3MZq8gbqSIBq7aeFt2WFt5hP1wh
-	hugxtHyjW5GviTBKWeK4H7Gwhnh4Umo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+oMimfwV7cZjftt0OWdyMqPpN9ija5vYYfza+1oRCE4=;
+	b=ETGplP2ADqAG50UZG3e7/2KO1sPE7pdOpcyJXolQjdvorEMqUldLcw1ubyf0gY3QMpC6rI
+	DBTrTfOdgG865OHpDtB9Yosm9gbzclLIjnYDUipqG4cFnd8IaLKA0eyl8ODZ/7cdzei5WU
+	rjcRqyEZtupyl63/ygv5tFbAZX+fK98=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-346-OEzzcYqWMCuXCN1uLavgEg-1; Tue, 27 Oct 2026 05:36:59 -0400
-X-MC-Unique: OEzzcYqWMCuXCN1uLavgEg-1
-X-Mimecast-MFC-AGG-ID: OEzzcYqWMCuXCN1uLavgEg_1793093818
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a20a40d3e9so24904305e9.0
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 02:36:58 -0700 (PDT)
+ us-mta-50-Rh2ttHNaP3OWyt2PriJwGw-1; Tue, 27 Oct 2026 05:42:53 -0400
+X-MC-Unique: Rh2ttHNaP3OWyt2PriJwGw-1
+X-Mimecast-MFC-AGG-ID: Rh2ttHNaP3OWyt2PriJwGw_1793094172
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48c46582442so2298767f8f.0
+        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 02:42:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793093818; x=1793698618;
+        d=1e100.net; s=20260707; t=1793094172; x=1793698972;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yZ6xG709ht579SVeXaHvhn7gbaGSx41yuwP8KO/9DQI=;
-        b=SE6mj/jXnC/S/q6XpM8iA3ap+T9tkkzdVOaUgRPQyqQTutyIhzhaf9+EZNmlwgLMo/
-         kFW1Yk2CqznD4KRF4vUP9r7p96H3508j2TYaHmYh0EAJY9/MQKuE4YaiNl3aXgWu/L+/
-         u5+i4rciGJC2QTmamtl2mS3eHFYWzZ67ESQckPcijYlaEbl7GyRJcjRc3YSIONma/PC0
-         MJarwS6mYkwYvEqasPPVjLoMtrwP97PHZrMcOnZn/ExiPdgOSCN41rRg0JpIE4cTZeBE
-         zpooFKHPhmFhKT+xehwRQJkvWvwzGUt3fa1G7uK8araYHseQtJlZtMsG/WCpGYpfZP3K
-         wGFA==
-X-Forwarded-Encrypted: i=1; AKwUvByAJKFLWyf8VNJZHJnHR3adzEeNKnqeJfE+oXs5A5gij2/LtsFW02J62ydkOoR1GKfNqsZgJTVCvDW+@lists.linux.dev
-X-Gm-Message-State: AFq9FYKyTLbcZUET7IBX/Gm2VblpYK3uAOeYbW+8YzRT11j4rtyslHBR
-	VaztuGCUA2a8YNwfXpNOo2/bumQxzlugeyCp60OEeTivEZS14NsDDLi9ieK+Ph5GBDDcg/5yZz9
-	Qar+pLzm0G36Wuwpe34RCg/OszwssbaOnY7rZ94KNrZVGcV/LMHZIQix8AXpKeaQ=
-X-Gm-Gg: AYBFou1ptL09zxIysyWAD3ld+muN7nuU91XSQVNH74FF6su+HndSlTRwvkjW7XGh/Uo
-	fp41Gy85m9sHi/CeuBeRQdFukBizFevSgXLDyQGXSFJtFUSEIlwZBLMIKkkzGxYYCYwqOQadsYe
-	i4zmiuKWhnwZDTVY9W0MuBugB+YE4LAvXbyHL5W0nZ8qqfR0AgYFhPdo/NvDzSHY4rXISVWcekd
-	TqeApSzhg9OMYoiZcK+TAk701tpjLHA/3koM9W/LnA+9+iF/pkLh0Ugy237rOqtlEb26mVsr1+A
-	Cbrh0XJoHoyeqfliTTECDMahR9px2wuoqvm2i0QIND5n4vOQiXIqVXcqGJ4yFNeH604=
-X-Received: by 2002:a05:600c:4f89:b0:4a2:150f:160f with SMTP id 5b1f17b1804b1-4a35aca4e43mr174240375e9.25.1793093817469;
-        Tue, 27 Oct 2026 02:36:57 -0700 (PDT)
-X-Received: by 2002:a05:600c:4f89:b0:4a2:150f:160f with SMTP id 5b1f17b1804b1-4a35aca4e43mr174239545e9.25.1793093816842;
-        Tue, 27 Oct 2026 02:36:56 -0700 (PDT)
+        bh=+oMimfwV7cZjftt0OWdyMqPpN9ija5vYYfza+1oRCE4=;
+        b=1E0YizP3c6dDifYkrhYEoZZKNqUGGIscL8MspFHM9RqSIAGM9C4eXmmkjvjBmwSUrw
+         XtvX6NKT2VA2/UhobZ/kNclT6xiYvYBoZYG3LJDvvqXg3k1VtD+0PRL3O5Fq7zwLunkl
+         g3ZotrbdpDz5IqOJMHkUJ5Ddy23ozkkLj0VxpY6/G/oICXWbc9h+bpmts7knJv1vyHgZ
+         JqLP1RI2OprlWzLPk8hVPT3rpX9NVpplAQhPtNg8cqi6QafjevKUs2zvVpowGgA/JTQh
+         5QhFaQ3Z0eOeIGy5a8k3WGVMKAh2E/C/kmuwwAMc5m055xCI5lzZep++3dmzQeAVjK3u
+         CDeA==
+X-Forwarded-Encrypted: i=1; AKwUvBwRIANorfIdz8tlE+ieMMkgvNkYykthfORnObMtVLIXvWsUQ6BrETEt3tNLE1cM9vd4QRjZQBzQ+ttx@lists.linux.dev
+X-Gm-Message-State: AFq9FYL1v9vQTXZSZcrNhGahGKMKC+hzjkobMKKqbLu1JQpe72dl5k8f
+	gwc8sWc3FmWaWlSzsT4lzin3zfzunaDlG432Ulc1Xqsgp4oX5jsyUdYFEYLKYqpAngWK8ryR2Zg
+	n/70ZWA3pa+pXeQ70p5uEDQli/yQO6ymV7pl25Q50ItZWp7EgIBYMLlgZy9jDjEg=
+X-Gm-Gg: AYBFou2MhSpR9IoOjVSWjgINmolifu5BH+5P3TSRUie4vPd6nGSzdFZ74I3GpZBIq/F
+	h6+TkHO6qzLxNUyrK9A7t0no45QeYMO4BWeNIHcJwYRjRA9WUTitMaT/ip9YMqL+PLgpBDnq5cW
+	nVx/fFx+hXnvNwIxcPIb1ElwL9qA4tHs7dGMz0+ybfwwVG28SfWJSYiChYU9P7rIA+Hk4oBo055
+	A00PPM8qG4N1KUFVWe/Q11f/2LeynJHNAyN38DH4fPgZEXwtvn9rTkVoVGgkQsq1X2keWSixFKZ
+	00QdJl5VoUMubzvqCraM/ELlUxQohCTp5dbixkdp7I2VZbQYl/mMSPuIPfajBuLFL0s=
+X-Received: by 2002:a05:6000:2289:b0:48d:f6d2:9c88 with SMTP id ffacd0b85a97d-48e3eb9fe3emr17684511f8f.47.1793094171565;
+        Tue, 27 Oct 2026 02:42:51 -0700 (PDT)
+X-Received: by 2002:a05:6000:2289:b0:48d:f6d2:9c88 with SMTP id ffacd0b85a97d-48e3eb9fe3emr17684427f8f.47.1793094170889;
+        Tue, 27 Oct 2026 02:42:50 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359fbb725sm253517165e9.0.2026.10.27.02.36.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd3705sm25694707f8f.45.2026.10.27.02.42.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 02:36:55 -0700 (PDT)
-Date: Tue, 27 Oct 2026 05:36:51 -0400
+        Tue, 27 Oct 2026 02:42:49 -0700 (PDT)
+Date: Tue, 27 Oct 2026 05:42:45 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: Kevin Loughlin <kevinloughlin@google.com>
 Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>,
@@ -115,10 +115,10 @@ Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>,
 	Jacky Li <jackyli@google.com>,
 	Steve Rutherford <srutherford@google.com>,
 	David Skidmore <davidskidmore@google.com>
-Subject: Re: [PATCH 10/13] virtio_balloon: add higher-order page inflation
-Message-ID: <20261027051822-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH 01/13] virtio_ring: support per-virtqueue DMA mapping ops
+Message-ID: <20261027053843-mutt-send-email-mst@kernel.org>
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
- <20261027025616.1632690-11-kevinloughlin@google.com>
+ <20261027025616.1632690-2-kevinloughlin@google.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -128,339 +128,333 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261027025616.1632690-11-kevinloughlin@google.com>
+In-Reply-To: <20261027025616.1632690-2-kevinloughlin@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wyr2l57Xhp7fF10s2n0SSJv-EgcDXb6PWuM3OcC9HVI_1793093818
+X-Mimecast-MFC-PROC-ID: rTH8rFzXPupZJGw1tLSheI_4_gXrxj9AaCWSuffJYmU_1793094172
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Oct 27, 2026 at 02:56:13AM +0000, Kevin Loughlin wrote:
-> In confidential computing guests requiring page state transitions,
-> unaccepted memory tracking operates at the EFI unaccepted memory unit
-> granularity (typically 2MB / order 9 on x86). Inflating the balloon
-> with 4KB pages would prevent unaccepting the backing 2MB unit.
+On Tue, Oct 27, 2026 at 02:56:04AM +0000, Kevin Loughlin wrote:
+> Allow individual virtqueues to override the device-wide DMA mapping
+> operations via virtqueue_set_map_ops(). When custom per-virtqueue
+> mapping operations are configured, vring_map_one_sg(), vring_unmap_one(),
+> vring_mapping_error(), and the DMA sync helpers dispatch through
+> vq->map_ops instead of the parent virtio_device DMA API path.
 > 
-> Inflate balloon pages at unaccepted_memory_order() when
-> virtballoon_cc_needs_state_transition() is true, while retaining
-> order-0 allocations for non-CoCo guests and CoCo guests that do not
-> use unaccepted memory transitions. When a higher-order balloon page
-> spans more 4KB balloon PFNs than VIRTIO_BALLOON_ARRAY_PFNS_MAX (256),
-> transmit its PFNs to the host in VIRTIO_BALLOON_ARRAY_PFNS_MAX chunks.
+> Replace vring_map_single() with vring_map_indirect() and
+> vring_unmap_indirect() using the device-level mapping path (vdev->map
+> or dma_map_page_attrs()) so that indirect descriptor tables continue to
+> be DMA-mapped for host VMM access even when a virtqueue overrides buffer
+> mapping via vq->map_ops.
 > 
 > Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 
-BTW I'd say *everyone* prefers large pages. The fact that balloon
-currently breaks them up isn't nice to anyone. The only setup
-where they might be helpful is severe fragmentation, but even then,
-it is not clear we aren't contributing to the problem
-by making the fragmentation worse.
+Please, don't. The automatic mappings inside virtio core are there
+to keep simple things, simple.
+
+Everyone doing something funky with mappings should use the premapped API.
 
 
 > ---
->  drivers/virtio/virtio_balloon.c | 87 ++++++++++++++++++++++++++-------
->  include/linux/balloon.h         |  1 +
->  mm/balloon.c                    | 67 +++++++++++++++++++------
->  3 files changed, 121 insertions(+), 34 deletions(-)
+>  drivers/virtio/virtio_ring.c | 136 ++++++++++++++++++++++++-----------
+>  include/linux/virtio.h       |   4 ++
+>  2 files changed, 98 insertions(+), 42 deletions(-)
 > 
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index 11f74848fdc4..d162c162b496 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -182,6 +182,13 @@ static void balloon_ack(struct virtqueue *vq)
->  	wake_up(&vb->acked);
+> diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+> index db678f5a80e0..9c6a1e9f0a0b 100644
+> --- a/drivers/virtio/virtio_ring.c
+> +++ b/drivers/virtio/virtio_ring.c
+> @@ -261,6 +261,7 @@ struct vring_virtqueue {
+>  	bool we_own_ring;
+>  
+>  	union virtio_map map;
+> +	const struct virtio_map_ops *map_ops;
+>  
+>  #ifdef DEBUG
+>  	/* They're supposed to lock for us. */
+> @@ -477,16 +478,32 @@ static struct device *vring_dma_dev(const struct vring_virtqueue *vq)
+>  	return vq->map.dma_dev;
 >  }
 >  
-> +static inline bool virtballoon_cc_needs_state_transition(void)
+> +static inline const struct virtio_map_ops *vring_get_map_ops(const struct vring_virtqueue *vq)
 > +{
-> +	return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
-> +	       cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
-> +	       has_unaccepted_memory();
+> +	if (vq->map_ops)
+> +		return vq->map_ops;
+> +	return vq->vq.vdev->map;
 > +}
 > +
->  static void tell_host(struct virtio_balloon *vb, struct virtqueue *vq)
+> +void virtqueue_set_map_ops(struct virtqueue *_vq,
+> +			   const struct virtio_map_ops *map_ops)
+> +{
+> +	struct vring_virtqueue *vq = to_vvq(_vq);
+> +
+> +	vq->map_ops = map_ops;
+> +}
+> +EXPORT_SYMBOL_GPL(virtqueue_set_map_ops);
+> +
+>  static int vring_mapping_error(const struct vring_virtqueue *vq,
+>  			       dma_addr_t addr)
 >  {
->  	struct scatterlist sg;
-> @@ -243,24 +250,49 @@ static void set_page_pfns(struct virtio_balloon *vb,
->  					  page_to_balloon_pfn(page) + i);
+> -	struct virtio_device *vdev = vq->vq.vdev;
+> +	const struct virtio_map_ops *map_ops = vring_get_map_ops(vq);
+>  
+>  	if (!vq->use_map_api)
+>  		return 0;
+>  
+> -	if (vdev->map)
+> -		return vdev->map->mapping_error(vq->map, addr);
+> +	if (map_ops)
+> +		return map_ops->mapping_error(vq->map, addr);
+>  	else
+>  		return dma_mapping_error(vring_dma_dev(vq), addr);
+>  }
+> @@ -530,15 +547,45 @@ static int vring_map_one_sg(const struct vring_virtqueue *vq, struct scatterlist
+>  	return 0;
 >  }
 >  
-> +static void queue_page_pfns(struct virtio_balloon *vb, struct virtqueue *vq,
-> +			    struct page *page, unsigned int order)
-> +{
-> +	unsigned int nr_pages = 1 << order;
-> +	unsigned int i;
+> -static dma_addr_t vring_map_single(const struct vring_virtqueue *vq,
+> -				   void *cpu_addr, size_t size,
+> -				   enum dma_data_direction direction)
+> +static int vring_map_indirect(const struct vring_virtqueue *vq, void *cpu_addr,
+> +			      size_t size, dma_addr_t *addr)
+>  {
+> -	if (!vq->use_map_api)
+> -		return (dma_addr_t)virt_to_phys(cpu_addr);
+> +	struct virtio_device *vdev = vq->vq.vdev;
 > +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		set_page_pfns(vb, vb->pfns + vb->num_pfns, page + i);
-> +		vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE;
-> +		if (vb->num_pfns == ARRAY_SIZE(vb->pfns)) {
-> +			tell_host(vb, vq);
-> +			vb->num_pfns = 0;
-> +		}
+> +	if (!vq->use_map_api) {
+> +		kmsan_handle_dma(virt_to_phys(cpu_addr), size, DMA_TO_DEVICE);
+> +		*addr = (dma_addr_t)virt_to_phys(cpu_addr);
+> +		return 0;
 > +	}
-> +}
 > +
-> +static inline unsigned int virtballoon_preferred_order(void)
-> +{
-> +	if (virtballoon_cc_needs_state_transition())
-> +		return unaccepted_memory_order();
+> +	if (vdev->map) {
+> +		*addr = vdev->map->map_page(vq->map, virt_to_page(cpu_addr),
+> +					    offset_in_page(cpu_addr), size,
+> +					    DMA_TO_DEVICE, 0);
+> +		if (vdev->map->mapping_error(vq->map, *addr))
+> +			return -ENOMEM;
+> +		return 0;
+> +	}
+> +
+> +	*addr = dma_map_page_attrs(vring_dma_dev(vq), virt_to_page(cpu_addr),
+> +				   offset_in_page(cpu_addr), size,
+> +				   DMA_TO_DEVICE, 0);
+> +	if (dma_mapping_error(vring_dma_dev(vq), *addr))
+> +		return -ENOMEM;
+>  
+> -	return virtqueue_map_single_attrs(&vq->vq, cpu_addr,
+> -					  size, direction, 0);
 > +	return 0;
 > +}
 > +
->  static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
->  {
-> -	unsigned int num_allocated_pages;
-> +	unsigned int order = virtballoon_preferred_order();
-> +	unsigned int page_pfns = (1 << order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
-> +	unsigned int num_allocated_pages = 0;
->  	struct page *page, *next;
->  	unsigned int num_pfns;
->  	LIST_HEAD(pages);
->  
-> -	/* We can only do one array worth at a time. */
-> -	num = min(num, ARRAY_SIZE(vb->pfns));
-> +	/* We can only do one array or preferred-order page worth at a time. */
-> +	num = min(num, max_t(size_t, ARRAY_SIZE(vb->pfns), page_pfns));
->  
->  	for (num_pfns = 0; num_pfns < num;
-> -	     num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE) {
-> -		page = balloon_page_alloc();
-> +	     num_pfns += page_pfns) {
-> +		page = balloon_pages_alloc(order);
->  
->  		if (!page) {
->  			dev_info_ratelimited(&vb->vdev->dev,
->  					     "Out of puff! Can't get %u pages\n",
-> -					     VIRTIO_BALLOON_PAGES_PER_PAGE);
-> +					     page_pfns);
->  			/* Sleep for at least 1/5 of a second before retry. */
->  			msleep(200);
->  			break;
-> @@ -274,15 +306,17 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
->  	vb->num_pfns = 0;
->  
->  	list_for_each_entry_safe(page, next, &pages, lru) {
-> +		unsigned int page_order = compound_order(page);
-> +		unsigned int pfns = (1 << page_order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
+> +static void vring_unmap_indirect(const struct vring_virtqueue *vq,
+> +				 dma_addr_t addr, size_t size)
+> +{
+> +	struct virtio_device *vdev = vq->vq.vdev;
 > +
->  		list_del(&page->lru);
->  		balloon_page_enqueue(&vb->vb_dev_info, page);
->  
-> -		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
-> -		vb->num_pages += VIRTIO_BALLOON_PAGES_PER_PAGE;
-> -		vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE;
-> +		vb->num_pages += pfns;
-> +		num_allocated_pages += pfns;
-> +		queue_page_pfns(vb, vb->inflate_vq, page, page_order);
->  	}
->  
-> -	num_allocated_pages = vb->num_pfns;
->  	/* Did we get any? */
->  	if (vb->num_pfns != 0)
->  		tell_host(vb, vb->inflate_vq);
-> @@ -304,28 +338,42 @@ static void release_pages_balloon(struct virtio_balloon *vb,
->  
->  static unsigned int leak_balloon(struct virtio_balloon *vb, size_t num)
->  {
-> -	unsigned int num_freed_pages;
-> +	unsigned int order = virtballoon_preferred_order();
-> +	unsigned int page_pfns = (1 << order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
-> +	unsigned int num_freed_pages = 0;
->  	struct page *page;
->  	struct balloon_dev_info *vb_dev_info = &vb->vb_dev_info;
->  	LIST_HEAD(pages);
->  
-> -	/* We can only do one array worth at a time. */
-> -	num = min(num, ARRAY_SIZE(vb->pfns));
-> +	/* We can only do one array or preferred-order page worth at a time. */
-> +	num = min(num, max_t(size_t, ARRAY_SIZE(vb->pfns), page_pfns));
->  
->  	mutex_lock(&vb->balloon_lock);
->  	/* We can't release more pages than taken */
->  	num = min(num, (size_t)vb->num_pages);
-> -	for (vb->num_pfns = 0; vb->num_pfns < num;
-> -	     vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE) {
-> +	vb->num_pfns = 0;
-> +	while (num_freed_pages < num) {
-> +		unsigned int dequeued_order;
-> +		unsigned int dequeued_pfns;
-> +
->  		page = balloon_page_dequeue(vb_dev_info);
->  		if (!page)
->  			break;
-> -		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
-> +		dequeued_order = compound_order(page);
-> +		dequeued_pfns = (1 << dequeued_order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
-> +
-> +		if (num_freed_pages + dequeued_pfns > num &&
-> +		    num_freed_pages > 0) {
-> +			balloon_page_enqueue(vb_dev_info, page);
-> +			break;
-> +		}
-> +
-> +		queue_page_pfns(vb, vb->deflate_vq, page, dequeued_order);
->  		list_add(&page->lru, &pages);
-> -		vb->num_pages -= VIRTIO_BALLOON_PAGES_PER_PAGE;
-> +		vb->num_pages -= dequeued_pfns;
-> +		num_freed_pages += dequeued_pfns;
->  	}
->  
-> -	num_freed_pages = vb->num_pfns;
->  	/*
->  	 * Note that if
->  	 * virtio_has_feature(vdev, VIRTIO_BALLOON_F_MUST_TELL_HOST);
-> @@ -474,7 +522,8 @@ static inline s64 towards_target(struct virtio_balloon *vb)
->  	 * Aligned up to guest page size to avoid inflating and deflating
->  	 * balloon endlessly.
->  	 */
-> -	target = ALIGN(num_pages, VIRTIO_BALLOON_PAGES_PER_PAGE);
-> +	target = ALIGN((s64)num_pages,
-> +		       VIRTIO_BALLOON_PAGES_PER_PAGE << virtballoon_preferred_order());
->  	return target - vb->num_pages;
+> +	if (vdev->map)
+> +		vdev->map->unmap_page(vq->map, addr, size, DMA_TO_DEVICE, 0);
+> +	else
+> +		dma_unmap_page_attrs(vring_dma_dev(vq), addr, size,
+> +				     DMA_TO_DEVICE, 0);
 >  }
 >  
-> diff --git a/include/linux/balloon.h b/include/linux/balloon.h
-> index ca5b15150f42..bc46e36b997f 100644
-> --- a/include/linux/balloon.h
-> +++ b/include/linux/balloon.h
-> @@ -58,6 +58,7 @@ struct balloon_dev_info {
->  	bool adjust_managed_page_count;
+>  static void virtqueue_init(struct vring_virtqueue *vq, u32 num)
+> @@ -576,6 +623,8 @@ static unsigned int vring_unmap_one_split(const struct vring_virtqueue *vq,
+>  	if (flags & VRING_DESC_F_INDIRECT) {
+>  		if (!vq->use_map_api)
+>  			goto out;
+> +		vring_unmap_indirect(vq, extra->addr, extra->len);
+> +		goto out;
+>  	} else if (!vring_need_unmap_buffer(vq, extra))
+>  		goto out;
+>  
+> @@ -761,10 +810,11 @@ static inline int virtqueue_add_split(struct vring_virtqueue *vq,
+>  
+>  	if (indirect) {
+>  		/* Now that the indirect table is filled in, map it. */
+> -		dma_addr_t addr = vring_map_single(
+> -			vq, desc, total_sg * sizeof(struct vring_desc),
+> -			DMA_TO_DEVICE);
+> -		if (vring_mapping_error(vq, addr))
+> +		dma_addr_t addr;
+> +
+> +		if (vring_map_indirect(vq, desc,
+> +				       total_sg * sizeof(struct vring_desc),
+> +				       &addr))
+>  			goto unmap_release;
+>  
+>  		virtqueue_add_desc_split(vq, vq->split.vring.desc,
+> @@ -1370,6 +1420,7 @@ static struct virtqueue *__vring_new_virtqueue_split(unsigned int index,
+>  #endif
+>  	vq->map = map;
+>  	vq->use_map_api = vring_use_map_api(vdev);
+> +	vq->map_ops = NULL;
+>  
+>  	vq->indirect = virtio_has_feature(vdev, VIRTIO_RING_F_INDIRECT_DESC) &&
+>  		!context;
+> @@ -1488,6 +1539,8 @@ static void vring_unmap_extra_packed(const struct vring_virtqueue *vq,
+>  	if (flags & VRING_DESC_F_INDIRECT) {
+>  		if (!vq->use_map_api)
+>  			return;
+> +		vring_unmap_indirect(vq, extra->addr, extra->len);
+> +		return;
+>  	} else if (!vring_need_unmap_buffer(vq, extra))
+>  		return;
+>  
+> @@ -1585,10 +1638,9 @@ static int virtqueue_add_indirect_packed(struct vring_virtqueue *vq,
+>  	}
+>  
+>  	/* Now that the indirect table is filled in, map it. */
+> -	addr = vring_map_single(vq, desc,
+> -			total_sg * sizeof(struct vring_packed_desc),
+> -			DMA_TO_DEVICE);
+> -	if (vring_mapping_error(vq, addr))
+> +	if (vring_map_indirect(vq, desc,
+> +			       total_sg * sizeof(struct vring_packed_desc),
+> +			       &addr))
+>  		goto unmap_release;
+>  
+>  	vq->packed.vring.desc[head].addr = cpu_to_le64(addr);
+> @@ -2620,6 +2672,7 @@ static struct virtqueue *__vring_new_virtqueue_packed(unsigned int index,
+>  #endif
+>  	vq->map = map;
+>  	vq->use_map_api = vring_use_map_api(vdev);
+> +	vq->map_ops = NULL;
+>  
+>  	vq->indirect = virtio_has_feature(vdev, VIRTIO_RING_F_INDIRECT_DESC) &&
+>  		!context;
+> @@ -3064,7 +3117,7 @@ struct device *virtqueue_dma_dev(struct virtqueue *_vq)
+>  {
+>  	struct vring_virtqueue *vq = to_vvq(_vq);
+>  
+> -	if (vq->use_map_api && !_vq->vdev->map)
+> +	if (vq->use_map_api && !vring_get_map_ops(vq))
+>  		return vq->map.dma_dev;
+>  	else
+>  		return NULL;
+> @@ -3809,18 +3862,17 @@ EXPORT_SYMBOL_GPL(virtqueue_map_free_coherent);
+>   */
+>  dma_addr_t virtqueue_map_page_attrs(const struct virtqueue *_vq,
+>  				    struct page *page,
+> -				    unsigned long offset,
+> -				    size_t size,
+> +				    unsigned long offset, size_t size,
+>  				    enum dma_data_direction dir,
+>  				    unsigned long attrs)
+>  {
+>  	const struct vring_virtqueue *vq = to_vvq(_vq);
+> -	struct virtio_device *vdev = _vq->vdev;
+> +	const struct virtio_map_ops *map_ops = vring_get_map_ops(vq);
+>  
+> -	if (vdev->map)
+> -		return vdev->map->map_page(vq->map,
+> -					   page, offset, size,
+> -					   dir, attrs);
+> +	if (map_ops)
+> +		return map_ops->map_page(vq->map,
+> +					 page, offset, size,
+> +					 dir, attrs);
+>  
+>  	return dma_map_page_attrs(vring_dma_dev(vq),
+>  				  page, offset, size,
+> @@ -3842,11 +3894,11 @@ void virtqueue_unmap_page_attrs(const struct virtqueue *_vq,
+>  				unsigned long attrs)
+>  {
+>  	const struct vring_virtqueue *vq = to_vvq(_vq);
+> -	struct virtio_device *vdev = _vq->vdev;
+> +	const struct virtio_map_ops *map_ops = vring_get_map_ops(vq);
+>  
+> -	if (vdev->map)
+> -		vdev->map->unmap_page(vq->map,
+> -				      map_handle, size, dir, attrs);
+> +	if (map_ops)
+> +		map_ops->unmap_page(vq->map,
+> +				    map_handle, size, dir, attrs);
+>  	else
+>  		dma_unmap_page_attrs(vring_dma_dev(vq), map_handle,
+>  				     size, dir, attrs);
+> @@ -3941,13 +3993,13 @@ EXPORT_SYMBOL_GPL(virtqueue_map_mapping_error);
+>  bool virtqueue_map_need_sync(const struct virtqueue *_vq, dma_addr_t addr)
+>  {
+>  	const struct vring_virtqueue *vq = to_vvq(_vq);
+> -	struct virtio_device *vdev = _vq->vdev;
+> +	const struct virtio_map_ops *map_ops = vring_get_map_ops(vq);
+>  
+>  	if (!vq->use_map_api)
+>  		return false;
+>  
+> -	if (vdev->map)
+> -		return vdev->map->need_sync(vq->map, addr);
+> +	if (map_ops)
+> +		return map_ops->need_sync(vq->map, addr);
+>  	else
+>  		return dma_need_sync(vring_dma_dev(vq), addr);
+>  }
+> @@ -3971,14 +4023,14 @@ void virtqueue_map_sync_single_range_for_cpu(const struct virtqueue *_vq,
+>  					     enum dma_data_direction dir)
+>  {
+>  	const struct vring_virtqueue *vq = to_vvq(_vq);
+> -	struct virtio_device *vdev = _vq->vdev;
+> +	const struct virtio_map_ops *map_ops = vring_get_map_ops(vq);
+>  
+>  	if (!vq->use_map_api)
+>  		return;
+>  
+> -	if (vdev->map)
+> -		vdev->map->sync_single_for_cpu(vq->map,
+> -					       addr + offset, size, dir);
+> +	if (map_ops)
+> +		map_ops->sync_single_for_cpu(vq->map,
+> +					     addr + offset, size, dir);
+>  	else
+>  		dma_sync_single_range_for_cpu(vring_dma_dev(vq),
+>  					      addr, offset, size, dir);
+> @@ -4002,15 +4054,15 @@ void virtqueue_map_sync_single_range_for_device(const struct virtqueue *_vq,
+>  						enum dma_data_direction dir)
+>  {
+>  	const struct vring_virtqueue *vq = to_vvq(_vq);
+> -	struct virtio_device *vdev = _vq->vdev;
+> +	const struct virtio_map_ops *map_ops = vring_get_map_ops(vq);
+>  
+>  	if (!vq->use_map_api)
+>  		return;
+>  
+> -	if (vdev->map)
+> -		vdev->map->sync_single_for_device(vq->map,
+> -						  addr + offset,
+> -						  size, dir);
+> +	if (map_ops)
+> +		map_ops->sync_single_for_device(vq->map,
+> +						addr + offset,
+> +						size, dir);
+>  	else
+>  		dma_sync_single_range_for_device(vring_dma_dev(vq), addr,
+>  						 offset, size, dir);
+> diff --git a/include/linux/virtio.h b/include/linux/virtio.h
+> index f923e42cfd01..20fe333d6778 100644
+> --- a/include/linux/virtio.h
+> +++ b/include/linux/virtio.h
+> @@ -44,6 +44,7 @@ struct virtqueue {
 >  };
 >  
-> +struct page *balloon_pages_alloc(unsigned int order);
->  struct page *balloon_page_alloc(void);
->  void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
->  		struct page *page);
-> diff --git a/mm/balloon.c b/mm/balloon.c
-> index 96a8f1e20bc6..e9941d08d8e9 100644
-> --- a/mm/balloon.c
-> +++ b/mm/balloon.c
-> @@ -27,9 +27,12 @@ static DEFINE_SPINLOCK(balloon_pages_lock);
->  static void balloon_page_insert(struct balloon_dev_info *balloon,
->  				       struct page *page)
->  {
-> +	unsigned int i, nr_pages = 1U << compound_order(page);
+>  struct vduse_vq_group;
+> +struct virtio_map_ops;
+>  
+>  union virtio_map {
+>  	/* Device that performs DMA */
+> @@ -294,6 +295,9 @@ void virtqueue_map_free_coherent(struct virtio_device *vdev,
+>  				 size_t size, void *vaddr,
+>  				 dma_addr_t dma_handle);
+>  
+> +void virtqueue_set_map_ops(struct virtqueue *_vq,
+> +			   const struct virtio_map_ops *map_ops);
 > +
->  	lockdep_assert_held(&balloon_pages_lock);
-> -	__SetPageOffline(page);
-> -	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION)) {
-> +	for (i = 0; i < nr_pages; i++)
-> +		__SetPageOffline(page + i);
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !PageCompound(page)) {
->  		SetPageMovableOps(page);
->  		set_page_private(page, (unsigned long)balloon);
->  	}
-> @@ -45,20 +48,31 @@ static void balloon_page_insert(struct balloon_dev_info *balloon,
->   */
->  static void balloon_page_finalize(struct page *page)
->  {
-> +	unsigned int i, nr_pages = 1U << compound_order(page);
-> +
->  	lockdep_assert_held(&balloon_pages_lock);
-> -	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !PageCompound(page))
->  		set_page_private(page, 0);
-> -	/* PageOffline is sticky until the page is freed to the buddy. */
-> +	/*
-> +	 * PageOffline is sticky on the head page until freed to the buddy,
-> +	 * which resets the head page's page_type in __free_pages_prepare().
-> +	 * Clear PageOffline on tail pages here as __free_pages_prepare()
-> +	 * expects tail pages to have a default page_type.
-> +	 */
-> +	for (i = 1; i < nr_pages; i++)
-> +		__ClearPageOffline(page + i);
->  }
->  
->  static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
->  				     struct page *page)
->  {
-> +	unsigned int order = compound_order(page);
-> +
->  	balloon_page_insert(b_dev_info, page);
->  	if (b_dev_info->adjust_managed_page_count)
-> -		adjust_managed_page_count(page, -1);
-> -	__count_vm_event(BALLOON_INFLATE);
-> -	inc_node_page_state(page, NR_BALLOON_PAGES);
-> +		adjust_managed_page_count(page, -(1L << order));
-> +	__count_vm_events(BALLOON_INFLATE, 1UL << order);
-> +	mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES, 1L << order);
->  }
->  
->  /**
-> @@ -117,15 +131,18 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
->  
->  	spin_lock_irqsave(&balloon_pages_lock, flags);
->  	list_for_each_entry_safe(page, tmp, &b_dev_info->pages, lru) {
-> +		unsigned int order = compound_order(page);
-> +
->  		if (n_pages == n_req_pages)
->  			break;
->  		list_del(&page->lru);
->  		if (b_dev_info->adjust_managed_page_count)
-> -			adjust_managed_page_count(page, 1);
-> +			adjust_managed_page_count(page, 1L << order);
->  		balloon_page_finalize(page);
-> -		__count_vm_event(BALLOON_DEFLATE);
-> +		__count_vm_events(BALLOON_DEFLATE, 1UL << order);
->  		list_add(&page->lru, pages);
-> -		dec_node_page_state(page, NR_BALLOON_PAGES);
-> +		mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES,
-> +				    -(1L << order));
->  		n_pages++;
->  	}
->  	spin_unlock_irqrestore(&balloon_pages_lock, flags);
-> @@ -135,8 +152,9 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
->  EXPORT_SYMBOL_GPL(balloon_page_list_dequeue);
->  
->  /**
-> - * balloon_page_alloc - allocates a new page for insertion into the balloon
-> - *			page list.
-> + * balloon_pages_alloc - allocates a new page of given order for insertion
-> + *			 into the balloon page list.
-> + * @order: allocation order
->   *
->   * Driver must call this function to properly allocate a new balloon page.
->   * Driver must call balloon_page_enqueue before definitively removing the page
-> @@ -144,16 +162,35 @@ EXPORT_SYMBOL_GPL(balloon_page_list_dequeue);
->   *
->   * Return: struct page for the allocated page or NULL on allocation failure.
->   */
-> -struct page *balloon_page_alloc(void)
-> +struct page *balloon_pages_alloc(unsigned int order)
->  {
->  	gfp_t gfp_flags = __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
->  
-> -	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !order)
->  		gfp_flags |= GFP_HIGHUSER_MOVABLE;
->  	else
->  		gfp_flags |= GFP_HIGHUSER;
->  
-> -	return alloc_page(gfp_flags);
-> +	if (order > 0)
-> +		gfp_flags |= __GFP_COMP;
-> +
-> +	return alloc_pages(gfp_flags, order);
-> +}
-> +EXPORT_SYMBOL_GPL(balloon_pages_alloc);
-> +
-> +/**
-> + * balloon_page_alloc - allocates a new page for insertion into the balloon
-> + *			page list.
-> + *
-> + * Driver must call this function to properly allocate a new balloon page.
-> + * Driver must call balloon_page_enqueue before definitively removing the page
-> + * from the guest system.
-> + *
-> + * Return: struct page for the allocated page or NULL on allocation failure.
-> + */
-> +struct page *balloon_page_alloc(void)
-> +{
-> +	return balloon_pages_alloc(0);
->  }
->  EXPORT_SYMBOL_GPL(balloon_page_alloc);
->  
+>  dma_addr_t virtqueue_map_page_attrs(const struct virtqueue *_vq,
+>  				    struct page *page,
+>  				    unsigned long offset,
 > -- 
 > 2.56.0.307.g5fe7bd680c-goog
 
