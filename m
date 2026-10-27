@@ -1,68 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793126591;
-	b=sV2HkX3AcoR0KCIpp+BFA5fr2fL/seE3H5Kq/WjVcecY1EHhDBb7M92Uk6U9AZCH2TEd
-	 pcVCIvno40e/u6vPABcURuQIutjjGFqdyObRa6Bd7I1S0uLAI2UEhjQYwP9gQo/SkNJH4
-	 SxwtkSMLtIstlpwRbgB2zLj6SPWtkTTQuoaiTAQ+b3ydv4ic3e0RhCppJEcXv6iExx3bn
-	 eg+MyWOQmaDI2PtHZZ9gx3OSSORh0+Qrj0fTy/AfUjBfbisFoXQ93avJaXM4ZXtYP3OSP
-	 lmx+PXOnzk25f68IgSIOv3M7RwYe6RNXin04lW9KRQoPO7pYKE0y9wyU4e4aaYTZRrw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793126591;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=xIFdqcQop16rBA6d8rokSjCRa+xyZ7YEUJL0UVFobxw=;
-	b=ESjZ5sS8vP6lJdswTd40amdD8BLgoVqhjJ14IC6wNk4WGP1+K+hC1rbu2p8msqIafRfG
-	 D8DhdNr/wiQSG6JNV8ujiEpwUtkv1wZLdfwmrgM+p88OgJvUTnr4vINTT34J+5n4KcIzf
-	 O9ec0xyAQTmw+0MnDpeOOKDcwbPRYFHfXM6dzhjBrYgwSa3JKXvTKQLqkKXL02WY9hwKr
-	 unv4Ml8J5IxJPB7JHBQHOt+wJMnTqLycQLDDlhp1YptW7oBAryYNu4OV5OqP02gBQDCTr
-	 T0IIJafEnmI9Muc1JkRn016lNG13W1y7uo6BEXNaoLv30/P2th26VIUkXkcdBLK6C2A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCupMWgX;
-	arc=none smtp.remote-ip=192.198.163.12
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.27
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793128352;
+	b=5Iojm8HmvPnSCeXJLxSt2Mi83B+y0GZFizZOFz2m5Z7AvwwdbO11KXEtuuxGmvfjFJYR
+	 mtso+LK8yeafVN/dD8nj2R+8l3rwcLYNooceowyjRw/LVCX81Z/OroKnF/H7qxLCEZBS3
+	 adsXemNJKR2FS/xdWkg/NhSKmzpcYOJKT6tozCJKPTyQPNnXYZwDjMsIqi6q2x+f7fbpU
+	 uii5Ann+3TEwJfHyT6cjUZDp4tSGIYMvlHFJ9tXYpDPfKZfNQUawXZGsbspixzb3pl8CD
+	 n0jjENwsT7jOmKoIPDlvV0V/CXDt6ApfIKnIuDsdONF5I2TvlQ8rNO9iqOXCjauKNtg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793128352;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
+	b=gvcNUh43w/ghPfT9GSMr6awSzHziU4QoB79bTD2cYSPWpCfMtHIqrLXGleLaUFhtyhWi
+	 u31LU0tWOXq1VbiLcOBdvBMRQX0hJ9qQXz8VX5SDbvsgLee+FOfJnATisYDWMvALyWLRU
+	 +mNpGX0pW/ZOoXkYZlpVPjCMur+3nEPZsa+9C6gK9yK3DyxDxIjcLlgEIGaWOV+I1lkPL
+	 KAjMymZOqajzfcais6aF/N89ncooVVYogXVy9c+kaZ0mRvAa2vHUylXlzfopLGjc/qFcN
+	 qvU5CQ2bOyVC0Z7oulmzXb/NcdQri8SOroFINby7hnmT4YKrxTWRCFOJ1aKR7lQr85g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jk5LgKuW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.27
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011027.outbound.protection.outlook.com [40.93.194.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB0606A31D
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 18:43:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3FB0606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65601606A324
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 19:12:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65601606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCupMWgX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793126590; x=1824662590;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=UwTqLSGufc96edkaRFFGuSNo8Y98RISJikAmskrMGZs=;
-  b=PCupMWgXdTjloa+A++EHK9iT1zMP8Wfm4hAnHBrIotUx6Jxqlq/aE2O3
-   hsA1RVdlZOoXaS7xRQbzXKbKeDXViQC1imk5cDO2sHA3zyzOuWEPd9LPT
-   DTfzxS4AFG4tgMHwUVpKpwM7NVPEMrteaXS+aQ1yFc5l1kl0i7ISWSxsW
-   KY6ehTf7zyW/5FhjAEWuupUQkKWb1wDGuAD9a+o4/vwp7+9oR2hdgelBb
-   v7bgcFAvfjU06KZ/lEPXOVo+plmfBzDWexubHpGLkuEwbQb5/x2cL20+f
-   oyoFnSHQ/+SiU71j3NCj5sZk1kTcDqUG/XSrRT8S0cnNkvovBp85HMgKL
-   Q==;
-X-CSE-ConnectionGUID: RAwbBN5BRBOv0FBB7xthgA==
-X-CSE-MsgGUID: q+Q6wvqAQG+sKK3eTjh9iQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1736631"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1736631"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 11:43:09 -0700
-X-CSE-ConnectionGUID: sGhZ8Nj9TKOOJVH0GytfUg==
-X-CSE-MsgGUID: SmUAzGd1Tz6Ltvlu8kgzxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="6484299"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.108.170]) ([10.125.108.170])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 11:43:06 -0700
-Message-ID: <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
-Date: Tue, 27 Oct 2026 11:43:04 -0700
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jk5LgKuW
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gMWjDSCtC/LZUEBxoCJJxL1Etxi/j8oT4U6OzZ9xRlFvQZL/PeNOw22hhCFWJiD/wqMiAldcGVeEd3R3nsxqkS5G9BwB44C9QULlYVwlwXLl9+52hUBba9lgM28DLbyzm3HirvffHBTXrKMLP2ElnFJZPQ7kxmzWZ7aBzEHkIZJDi5ldB0RPe1TNMSvhHiYyfzN8srgzue9ac7a43mQz4EKv1G4TmQkXlnLTi+Yq07riJXqYvNKCQbcEul8Ju4Up7bZE0tDtYo5ZooOKv7weBJ+r45FocwQDWTxjy/oI0GK2huGU2JaiMZN7PyeQwTDpsEpO+XAIerRV4HfoCJtDVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
+ b=Q7O0eRYDtLwHqSOLM9XrABbhiq7Nc9LDP1WDx/qNtrzIKDPSPUTlvwjdBa1koLvkbH/1CN3LnaiK/F8wNT7W21AtTIDFV6sUBgQRvJ5dLFxqtIoII/VY/eTs4FAE91GFDshZsnkTJWLzZT6msxu95c7DqDrfgZhhBMdWMopGtV7I/G0N7zrPURDHGlcrJGFM+RB/nLezAPO0IX1yJ4sYJopAMbCCxH8p61zCj916d/cDMEO+Etf4jGr8V3Dp5O9Ho/Sn53tYTCwQDCbDAk8vXe2dUPd/oMinmQCXfL3D0CpH+ABmJf5hmAs/ShCvlkMdPYLXOEIgTuiYALQx20dirw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
+ b=Jk5LgKuWFwFVuw3OWbJeSW49CmZILCRjNXeJlaVoVpKPKdEZMyCEaXXv4DtNgUkaqs2T5J/VVb0lLwrxeSbt5GCkqGmhOZTfoWa0l58vtEtu09UH2bEAfxe6k3s/TM7y8NU4boPPL9DS2gp1BN1vWB5mpW90RuZUhu+Zcsl7dU0=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
+ by CY3PR12MB9679.namprd12.prod.outlook.com (2603:10b6:930:100::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
+ 2026 19:12:28 +0000
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
+ 19:12:27 +0000
+Message-ID: <5135e588-0a73-4d1d-8e1e-7894e8b7089f@amd.com>
+Date: Tue, 27 Oct 2026 14:12:24 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
+ mode at boot
+To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
+ bp@alien8.de
+Cc: x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+References: <cover.1792627082.git.babu.moger@amd.com>
+ <1a8f3900e9e14ec19f5f7204fd64716eb0aa8427.1792627082.git.babu.moger@amd.com>
+ <0082b675-5749-410c-9fec-9ce9b23b2498@intel.com>
+ <9778fb3e-f5f8-4137-be2a-598cd44fc6f4@amd.com>
+ <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
+Content-Language: en-US
+From: Babu Moger <babu.moger@amd.com>
+In-Reply-To: <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH2PR03CA0020.namprd03.prod.outlook.com
+ (2603:10b6:610:59::30) To BL1PR12MB5320.namprd12.prod.outlook.com
+ (2603:10b6:208:314::17)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,219 +105,140 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-To: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org, jgg@ziepe.ca,
- david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
- rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
- drdeeglaze@gmail.com, James.Bottomley@HansenPartnership.com, aik@amd.com,
- jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
- jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
- suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- elena.reshetova@intel.com, dave.hansen@linux.intel.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-References: <20261015145053.3664509-1-jiri@resnulli.us>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20261015145053.3664509-1-jiri@resnulli.us>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|CY3PR12MB9679:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1570457-f1f4-4923-a753-08df345e3d43
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|261026121527099003|4143699003|56012099006|261022075727099003|11063799006|261009223027099003|10067099003|261021121427099003|261022105027099003|22082099003|18002099003|261026140227099003;
+X-Microsoft-Antispam-Message-Info:
+	MboWlXes7kA+RQ4Qi7JkKh2I8GAsgRS/aSklBY45TDLfkT47gn/ts7auK7iuQKg+RqQ11e5l+sRLkexIAtd6z82URmUgvPn/jCvTDwhtLrjYrNbdS1LsK5zz61U6SOfJ21N/4sPd6kx+OUW4NlaQ2DN163Rbplp1KAZKHtdORL4rX/CBqXxXOAtBg9fNo6v6Ql/BtGgW8ryp6jAC8NKMaGOVHAvHPGezvcSVCyjdcFi/3nL1+daxbFxNt2RwRccfQOZQPoXVWJgscK9lMYfikIzhMy34A7i9FWC6QkUjVEsZv/YHHt9L5NCeZshcrMfg3EphWZSdV5lwqhyGhNTRqU4f0alkdVemkGIJyIUvJVnyfGDRGD+SKG42vvnPZQ19QJV59vfIR4bINXoOPhbqoIH93gzzLaWitKA7V+F1IjExsR7jlvUns1aH9vXYV7crkO7Jc7Biu9H5zfNScLEEk6gpYkDQt9mNreJC0/WwO3ag6GcDmQUbfFPLTeF35hKjwPIwUIjEnL/mkYbrOW90jYY9VRg2UI7njr2hC9p2ZZRl78C6z7YK+/y1YAnYwnn63eAXPbXac3TnYGphtkZ70pE39YbDe896CT+Dd4RVeyJxzYkK+sWgiPvCtJy5qhaJVAAa5m+mGT4dwavngBLB7aS5bU98DdH361IsvHw8k80=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(261026121527099003)(4143699003)(56012099006)(261022075727099003)(11063799006)(261009223027099003)(10067099003)(261021121427099003)(261022105027099003)(22082099003)(18002099003)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Mmxsak9VSzhYTmlVeDdiam90V1BhTUIzdVhJazdsYU9lalM4Z2diaEs4SWM5?=
+ =?utf-8?B?RmZ2cGZ2a2l3MzJ2SGcrVkdRNlBOVWV4TVFPbnVVVlFmTGQ4S1hhblhQMXBn?=
+ =?utf-8?B?eDRnTUppZFpFd3dKZ0N6djQxZVhtV2dkVisza3hocVVKd3V0dzBJS090KzdQ?=
+ =?utf-8?B?a1RKRnRZV1M0MHpiYTF1Rk1hanAzZlFsMzdKaWhqSnFPT05FdjhtNXMxbGhO?=
+ =?utf-8?B?N29xdEN5R1JZQmRPeDdNeTk0OHBodTJKcWJqLzNRRkcwMzJrVC9tRlZCYjBR?=
+ =?utf-8?B?RGxHT2dQbEttQW1Kb2JjSVdKRllBR2xseHFGczN5TjhKVTQybmRpbFZKQ3Ni?=
+ =?utf-8?B?ZmtNS3kwTERzOGZhcitsZVpoNVJzaUhBL0dzZjBidHVleHAxbWF5MUFjUGNS?=
+ =?utf-8?B?VWhpUXVidm00N1JVQTJ4blBPaXFtN3RjWXJ5bWI0NkM2a29NVjlWcnFMVEJR?=
+ =?utf-8?B?a3R4aGRPMlZLdlBPSDBnQk9rT0o2dm9aenU5Wko3VjFhQ3VtVmx6UW9nNmRl?=
+ =?utf-8?B?OUM1eUdtVGc1dXNDSGRHYXltajk0L1FNalhLREx2dHRNZGdIcDYybVlzc0kv?=
+ =?utf-8?B?SnlKaXczQWZXV1ZWZ1Z5UFFHOHo1QW1YZ2dsanRCNjlMc2YxZFJMcG5RMlhF?=
+ =?utf-8?B?c3E5cG9BbWtNQTVaNnlCNkRIY0ZQWURaVk9xZUVFRG5ya0NvRmdaYy9pVEtD?=
+ =?utf-8?B?TDZzQ2RMRitRdnlyZjZJUXY1WFluUitVV0pKSmgwbU1UQ0Myak1qVVh0Z3R2?=
+ =?utf-8?B?R3Vua09KdTE5TmdFR0QwVU5MREsrRVdWMGlreGIwNWZqTHZaY2g0dzFuQTVJ?=
+ =?utf-8?B?STJQTEJtZkNzcTgxYnZRSk0rQVh1NmoyOEJ1bzJGZ0RpN2R1WG5HT1g4c05C?=
+ =?utf-8?B?emVmSjE3TUxoQVQzRmFqdnFJYmFjeDFrM1YyOVJyOUZWUmNSRkpmTTl6bHN2?=
+ =?utf-8?B?Q3FkNDhNTXFSaDI4VkVFdTdqNTV4NnZjQjh4ZFVZeHR0S0w2dkpMNUEvNmlH?=
+ =?utf-8?B?MkVFb3BVYnl0NkNXVFh5RUIzRE5EbTVTdzN0VXRITnhDcHEzR3ZMejhBbHQz?=
+ =?utf-8?B?aVZvWXJVQnFlNkFNbnc1U3NtendndkdubGkvbmo4VUVEbkg0WjFWdUNHY3dH?=
+ =?utf-8?B?cU1jZUJ5R1lwMG11KzkvNW95UzNMWVBISUlqcmh2V3hSRnF3YUxaUWJNNjFI?=
+ =?utf-8?B?bFhtNmlBYTVmajVod0dSWXdUaFBSczNFTWoveE54SThaTnFZbEpRUWkxWGZw?=
+ =?utf-8?B?d2ZCa3lCRmEvV2NGV2xVSXJsbWlrVmxVaWxiN0ErZFF2NlM0c0MvN0QyTTEz?=
+ =?utf-8?B?Z1BET3pJNlhqSHE2Vkh0WUZMeEpPWkFKSUJ4OUY1TzdUUUFoT0JZbnZTY3dE?=
+ =?utf-8?B?WUlmV29pdDIzOU9SekR3V1J2UnJMTTRuSDRsajRETWVGUUdaclhlTWR5bVFX?=
+ =?utf-8?B?VnBOL1BOZjZ0Nm1tb3JKRitmdzUzL3QzSGh1eDk3SDBCUFlzYStuK25JczM4?=
+ =?utf-8?B?emlmcFFUTGt2QXhTRFhja2xYaW50QmN1RllzVmhnZW5TcnQ1MTZLQUxhSzJD?=
+ =?utf-8?B?ZmZlaWJFR1lpL2VMREV2SEpMbTRDcmQ5WU0vM0J6ZGZNbFNUQlJrVGM0ZnFh?=
+ =?utf-8?B?NkpQRGlkeDJ6TUdPbkcwNnc4bHdrNnAzSFE1QW9GSGkxZVB4a1d3cjVCM0E4?=
+ =?utf-8?B?QW01MXpBODJ6UTloY1lqWXE5TVRHb0FUQjk5WW5lVkNIZ1ZYTzNPS1k4dEp0?=
+ =?utf-8?B?RndRK3V6cWt1by9KVENRQnNlUlNNdGtoWnJnMHlCYy9Fbkp0Z3lmVzFyaDZ3?=
+ =?utf-8?B?U2plRDNUUmFYRjl0V2x5WFFQMHBBbjJ3WlpZMjI2d3I4bWFWY01EMjRJeW1F?=
+ =?utf-8?B?WEpjMXdIMlhiQ1JYVVFzWk0wb3I4VWVISWprNXlIU3dpR2RrYVhhQktQWnF5?=
+ =?utf-8?B?ay9TblIwREhlaXl3YTh6UDROYXVEYU43NG9JNGE5Tm8xdFVEb2FMYTZMOUV6?=
+ =?utf-8?B?c1RuMVNHSzROVGl3czNMYkt6UEVrUTVST2Q2eE45aEdaOHJUZEZ1d2VXaTN2?=
+ =?utf-8?B?WUlINDBkbjNzZ0NWckg4c2ljRFhDOGxLZHdUd0VYcldFS1VrSkNXeExRT3Vu?=
+ =?utf-8?B?aVNRNlY4eTBlcjRESHVKSlFNOHpDemtLc0VUNnk3Q2Myek9TRjhxWDc0SWQ3?=
+ =?utf-8?B?MXp4YWxSTVV6V1ZsdGhpNW8xSHArMGlHNWZsYk41VEl5WUozcGVEVW5MRHJM?=
+ =?utf-8?B?aTFycTJEdkhwSjBUb2NZUmdQTTl4eTVKMlNYc0ptRjE0UFN4c1pDOUFadExT?=
+ =?utf-8?Q?pU8TfqCSbntYe/Ie6L?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1570457-f1f4-4923-a753-08df345e3d43
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 19:12:27.0997
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zLmZqiUUfbom5t292AVPLCVBbpsH9b51Hqi53LUvOpdCo8oYfUm15/RsOSh4hvWQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9679
 
+Hi Reinette,
 
-
-On 10/15/26 7:50 AM, Jiri Pirko wrote:
-> From: Jiri Pirko <jiri@nvidia.com>
+On 10/27/26 11:36, Reinette Chatre wrote:
+> Hi Babu,
 > 
-> Linux has several attestation interfaces tied to individual technologies.
-> That makes evidence retrieval, measurement registers, device state and
-> kernel consumers provider-specific.
+> On 10/27/26 7:48 AM, Babu Moger wrote:
+>> On 10/26/26 19:15, Reinette Chatre wrote:
+>>> On 10/21/26 4:58 PM, Babu Moger wrote:
 > 
-> This series introduces a common attestation subsystem. Its goal is to
-> support platform, TEE and device providers through one model, including
-> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
-> This first series implements the common subsystem and a TDX provider.
-> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
+> ...
 > 
-> Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
-> Compared with sysfs or configfs, CTLV executes one validated request
-> atomically instead of assembling a transaction through several files.
-> Compared with netlink, an opened device fd directly identifies authority
-> and lifetime, can be delegated normally, and owns its event queue. CTLV
-> also provides:
+>>>
+>>>> +  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>>>> +  [default]
+>>>> +  mbm_event
+>>>> +
+>>>> +The "default" mode is enabled. "mbm_event" is supported but not enabled.
+>>>>    +b. Enable "mbm_event" mode. Switching the mbm_assign_mode may
+>>>> +reset all the MBM counters (and thus all MBM events) of all the resctrl groups.
+>>>> +::
+>>>> +
+>>>> +  # echo "mbm_event" > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>>>>      # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>>>>      [mbm_event]
+>>>>      default
+>>>>    
+>>>
+>>> The above changes could be merged together under a single step "a" that
+>>> will significantly reduce the churn when considering this is a stable patch.
+>>
+>> Yes. We can. But because of auto assign is not enabled on mode switch, we still have to touch few steps. Your choice.
 > 
->   - generated kernel metadata, UAPI constants and documentation;
->   - strict type, bounds, nesting and required-field validation;
->   - runtime operation and schema introspection;
->   - family inheritance and extension points;
->   - fragmented queries with generation checks;
->   - per-fd event subscription, overflow reporting and removal notification;
->   - large input and output blobs.
+> Understood. The benefit here is that the patch will only change actual information.
 > 
-> The attestation family exposes capabilities, evidence, measurement-register
-> topology and operations, an append-only MR journal and journal
-> notifications. This first ABI contains the paths exercised by TDX. Extended
-> evidence classes, dynamic registers, record payloads, verdict recording and
-> device-security transitions follow with providers that need them and are out
-> of scope of this initial patchset. The broader direction is illustrated here:
+> Specifically, changes like the two below that just updates the letter
+> associated with the step:
 > 
-> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
+>>>> -b. Check how many assignable counters are supported.
+>>>> +c. Check how many assignable counters are supported.
+>>>>    ::
+>>>>        # cat /sys/fs/resctrl/info/L3_MON/num_mbm_cntrs
+>>>>      0=32;1=32
+
+Yea. This will be dropped.>
+> and
 > 
-> That branch also contains additional providers (test and sim),
-> attestation core extensions, libctlv and ctlvctl. With the tools
-> and kernel specifications, an attestation device can be used as follows:
+>>>>    -c. Check how many assignable counters are available for assignment in each domain.
+>>>> +d. Check how many assignable counters are available for assignment in each domain.
+>>>>    ::
 > 
->   # Discover CTLV devices and their family chains.
->   ctlvctl --spec-dir Documentation/ctlv/specs list
-> 
->   # Inspect the root-family lineage and attestation capabilities.
->   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
->   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
-> 
->   # List the measurement registers of the attestation device.
->   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
-> 
->   # Read RTMR0 (MR 1).
->   ctlvctl --spec-dir Documentation/ctlv/specs \
->           query ctlv0 mr-read mr.id=1
-> 
->   # Extend RTMR0 with 48 zero bytes (SHA-384).
->   digest=$(printf '%096d' 0)
->   ctlvctl --spec-dir Documentation/ctlv/specs \
->           exec ctlv0 mr-extend --json \
->           '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
-> 
->   # Retrieve the RTMR0 journal.
->   ctlvctl --spec-dir Documentation/ctlv/specs \
->           query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
-> 
-> The 20 patches are organized as follows:
-> 
->   1-13    add CTLV, its generator and documentation
->   14-17   add the base attestation family and implementation
->   18-20   expose the native TDX service and add the TDX family
-> 
-> Note to reviewers: Please focus on the overall design, UAPI and internal
-> attestation-provider API. The internal CTLV and attestation implementations
-> remain rough around the edges.
-> 
+> will be dropped from the patch. They distract from the core change and do not
+> seem appropriate for a patch headed to stable.
 
-< --snip-->
+Actually, the step (d) will be partially dropped as assignable counters 
+changed from 30 to 32 without auto-assignment.
 
-Hi Jiri,
+   # cat /sys/fs/resctrl/info/L3_MON/available_mbm_cntrs
+-  0=30;1=30
++  0=32;1=32
 
-I built a proof of concept on your wip_attestation_all_1 branch with help of LLM
-for TDX Connect device attestation to see how it holds up, and wanted to share
-what I found.
 
-What I built:
+Will send the updated series later this week.
 
-- A ctlv-attestation-spdm family. As you proposed, the sysfs lock creates the
-  assigned-TDI attestation instance; in my version unlock removes it.
-  EVIDENCE_GET, EVIDENCE_ACCEPT, DEVSEC_STATE_GET and DEVSEC_RUN all go through
-  your ops.
+Also, noticed a minor typo:
 
-- A provider (a 'struct attestation_provider') that sits on top of PCI/TSM, so
-  any backend can use it. It serves the evidence PCI/TSM already publishes, and
-  asks the backend for a refresh when EVIDENCE_GET carries a challenge.
+-  # cat /sys/fs/resctrl/mbm_L3_assignment
++  # cat /sys/fs/resctrl/mbm_L3_assignments
 
-I ran it in QEMU with the devsec sample TSM, and in a TDX Connect guest on real
-hardware with a real device. Both worked: lock, EVIDENCE_GET, DEVSEC_RUN
-refusing a device without a verdict, RUN, and unlock. My tree has out of tree
-code for TDX Connect to get things working.
 
-The model works well for device attestation. A few things came up that I think
-worth a look.
-
-1. EVIDENCE_ACCEPT and DEVSEC_RUN take any evidence generation since the last
-   device change (attestation_evidence_validate()). Ranges would narrow that,
-   but they need measurement registers (attestation_ranges_required()), and a
-   device has none. So a verdict survives a refresh. In QEMU with the devsec
-   sample:
-
-     EVIDENCE_GET, empty challenge   -> evidence generation 1
-     EVIDENCE_GET, challenge c1      -> generation 2, measurements changed
-     EVIDENCE_ACCEPT generation 1    -> ok
-     EVIDENCE_GET, challenge c2      -> generation 3, measurements changed
-     DEVSEC_RUN generation 1         -> ok, device in RUN
-
-   Any process that can issue EVIDENCE_GET can do this between the appraisal and
-   DEVSEC_RUN, and the device runs on evidence nobody looked at.
-
-   Combining EVIDENCE_ACCEPT and DEVSEC_RUN, as you and Aneesh discussed, makes
-   sense to me, but it doesn't completely resolve this. The combined op would
-   still take generation 1 and run the device directly.
-
-   Only the provider knows a refresh replaced the evidence. It can't tell the
-   core from inside an op, because attestation_state_changed() takes the lock
-   ctlv_attestation_op_pre() already holds. How about a helper the provider
-   calls after a refresh? With it, the old generation gets -ESTALE:
-
-     /* core.c, next to attestation_state_changed() */
-     void attestation_evidence_replaced(struct attestation *att)
-     {
-             lockdep_assert_held(&att->lock);
-             attestation_evidence_accept_clear_locked(att);
-             attestation_evidence_ranges_clear(att, false);
-             att->evidence_floor = att->evidence_generation;
-             att->devsec_version++;
-     }
-     EXPORT_SYMBOL_NS_GPL(attestation_evidence_replaced, "ATTESTATION");
-
-     /* the provider's evidence_get */
-     if (request->challenge_length) {
-             rc = pci_tsm_attest_refresh(pdev, request->challenge,
-                                         request->challenge_length);
-             if (rc)
-                     goto out;
-             attestation_evidence_replaced(att);
-     }
-
-2. TDX Connect (maybe others) does not raise an event when a device drops out of
-   RUN. The provider only finds out when it asks, and on TDX even that answer
-   can lag. The guest reads the state the TDX Module last saw in a TDISP
-   response. A function level reset, for example, moves a locked TDI to ERROR,
-   but the guest keeps reading CONFIG_LOCKED until the TDX Module sees another
-   TDISP response, such as when the host asks the device for its state.
-
-   So the provider learns about a change inside an op, where the same lock keeps
-   it from calling attestation_state_changed(). DEVSEC_RUN doesn't check the
-   state itself either in ctlv_attestation_devsec_run_action().
-
-   Could the core add a version of attestation_state_changed() that a provider
-   can call while the op already holds the lock? Or let the provider flag the
-   change, and have the core send the notification once the op drops the lock?
-
-3. Jason asked on 14/20 whether anyone needs a variable-length challenge. I
-   don't think devices need a range. A plain read sends an empty challenge, and
-   an SPDM GET_MEASUREMENTS nonce is "NL = 32 or 0". Your TDX provider always
-   takes 64 (attestation_tdx_evidence_caps).
-
-   A device needs exactly two lengths: 0 for a plain read and 32 for a refresh.
-   struct attestation_evidence_caps only holds a single min/max range. It's
-   checked on every request in attestation_evidence_request_decode(), and any
-   range that allows both 0 and 32 also allows everything in between.
-
-   To work around that, my provider declares 0-64 and PCI/TSM rejects any length
-   other than the backend's nonce size, 32 for both backends I ran. Could the
-   caps give one exact challenge length instead of a range, plus a flag that
-   also allows an empty challenge? A device provider would set 32 with the flag,
-   and your TDX provider 64 without it.
-
-4. EVIDENCE_GET rejects any buffer smaller than max_length
-   (attestation_evidence_decode_objects()), so userspace has to allocate for the
-   worst case. Aneesh's provider declares 16M per certificate chain, so every
-   read needs a 16M buffer. Could EVIDENCE_GET take a smaller buffer and return
-   the length it needs, or offer a way to ask for the size?
-
-5. evidence.challenge is a required attr of evidence-request, so a plain read
-   has to send an empty one ("hex:" in Aneesh's example). Could it be optional?
-
-6. tdx_attestation_test's discovery_and_construction_fields expects an
-   inheritance chain of 4, but the TDX family inherits ctlv-attestation
-   directly, which gives 3. In a real TDX guest it fails with
-   "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
+Thanks
+Babu
 
 
