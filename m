@@ -1,74 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793109949;
-	b=K91p1Znmqh28FWzIrbKHl+NZ1pJwi8nIc0iL4E+ZajiFx0kxHnAlNieJeqr6RoJ8FbMX
-	 3Hr3c2us4SAuqx3LmBy2v5GAN4H14zggewjaHDm2mc6z7vn7SepPa1MdgJk/FysqWimOi
-	 ZmkowGMfCoW9aptzLgTYhfNUIKhIvm1ba8Mfkz6cVjRKqFe17AvXJeQSA7ePHHyrH05m6
-	 ktEP+SuIgftFxwoz03JMi1M+9ahBvXoPKdQ+cRt+iQsTpkqk5/ZXei1u5URrf6tcJ9mkJ
-	 k4SmSkkmPFJi3lwCrooWle0Beom51zpAGl1PUDGaf/MtBnqRHKlr5bR1zuPwOz9Llpg==
+	t=1793110128;
+	b=ifvpPVfRq9oWhLhF5GxyaD0/mu0vfNm+0K9deIp5Sr0eA4aLSk+m+H+ahGNGx2m897b5
+	 o5DBB288Gbj8+lPFfWgwVgUN6uTIrwQxXD7RKFOHOjA88R3FGLd6RDk0AXTOwOMA9RQZp
+	 wAssYFUbc1wZZvUz2dav8PbnloutmlHXZbVOcUfvW5un073BeRzk/R9kWVZZuqTEdW606
+	 GLnGjfQZWMgIygnZUJEqJHk8xEXwZL7ekdVviLP889RadjDlDBJOtT9sRB/hGqK+d2WX3
+	 Ru4jAwqyH77bEvir3NKQTqRtK7b6SJLVLYmbvaPTw7wX8zPmpKzf53wxJwu34sX1sMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793109949;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
-	b=jBtaPyFLzM6ZElgwGIVzJ96jLVxJcgu42UFrVE9sfAXds3PczwX8PNDQqyANBXm9ZOod
-	 31QCXgmyb6CwY191ZXhtmJWEYxSqTo4uahX0eWG0LbzdbYoIZQOuunIlplkzjfV8VwWOo
-	 DIwbtX6iHb3sjw4yurA3WchcUKxHu25o9rL8Fl6c2f7oxFFFp3Kkq3lHQjYvxBtOqpkJ0
-	 sywLX9DTIoopC7pxJm9ZZ/Tr86n6p9+a8E0AnUzIJR3FuekmC7JmDRne2AnLvqelHxFon
-	 pwKoAuRizDA9CHS2W2Bmnom9MxUMjf26JjVJmC4mdbIwvr8fCzqLjvszn4O/1pXC8Tw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793110128;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=lSLIUaL2Jt52ZL1/ZORhvu/M8g+F3YsO7Y845XP4dWA=;
+	b=AqcfEIOgtudPcX0al81TQyjq+Tpm4lTjCdDfsq9pJTKo8r1mY4SidF2mOl4x6EMCDoK0
+	 D+X7HEISR/dCiaUHv4UDCpqG16GEvyHLKegOmEzFnsjFny0qHzJ5+5+hDB77WoLFqfbZY
+	 2s9c/MsqZZBwULesuPVxsi+OuVQs+B28VXmzYz4/J16z7vKANs/1cC1iuOhQD6Az0KvzL
+	 g4YxAqPUH4UKVCQfC6M2iSaDj+2qG96J7bRHDNJQ7AvhfxnHbMS6pSN9f/uZ9Sez06vBu
+	 IKMmilmBPh/v8qz+daOgFRwie2c93UuSdlrMLD+NwyajMmaUky+rFx1sa/xnO9v7GyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=HxurlbMN;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S15z9dD9;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEFE606A31A
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 14:05:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBEFE606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA103606A31A
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 14:08:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA103606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=HxurlbMN
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab7f1efe5dso7053917a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 07:05:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793109948; x=1793714748; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
-        b=HxurlbMNRvTjTn6mulpUEjGonhRQbd9InZzaM6Rd4fqQgZRgq5saC5HAsJdw8U0IB/
-         l0zP5ky74fPGMdLhV6pbU6mK5B0439v+WDZjZddByWYwCy/P2pnpEqCNctnEIOgzM5al
-         KyfBBuErjIXyqvLLh0kEgznlFx7bAmvPyiT4sEzsgEuzYptZTDl4Qre5IIqExvxdgoFD
-         J3etxSSwZJFsO1U1XvKvCiOnMFyqG8KdL5y257pltEtboZawV/kbzgC0N1GaF4qahJqa
-         nGpaXAxVYCRGeKJkwo7fp8eX5bncMm4anv+x1fuTDjUrMjuRdnsKei9hv3/zpirFkoD9
-         U64Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793109948; x=1793714748;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
-        b=fNHi7UwK+WeFSHB7n9cnnFiWaPArjBZ5NlaAahljRoZUqA+VrjTBbaxKTlUf1ISbyK
-         admfJrJRllJH1Qybyle9obswa9fI3D3CX9g0exUxi5h0OfmRfzJ84+B5fg/oEKQ7WsuZ
-         CfHdVfxjNPUhbgy+qSHdFOOnZ3GU8Hvo48tZwIKS1TtPBvIUf70tik3WNdYUW81KQDZ3
-         LnD+rgOYzQb4MwhHWOmz6v4EO1FBeIIFA7OwtoK2F9w8KtSi5slx9ZCqzE/YAeAY9Vve
-         Yq6dqd35rTwkuf8yY1nLTpa+UJ7uW0DITxysIk7zpPtMoI/Mv/Tvfh0iiqyspzLF611l
-         k8/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwC4muy5TKl1vhny0mNFMw9D3V/DbjFnmlJLYU+QLHoNcyd+VTEFUKNaamx2AkVEaGWQJBN+g2WI7hx@lists.linux.dev
-X-Gm-Message-State: AFq9FYIr+9Q078kGkgd2cXJoEBKxeicFDVWh7zVLWWkm/rdzOyqnQLxK
-	H5aWbz1ONC1j/Jn1nOnsoHDLvGT7/48/URvn5kgvS9Ov7s1mvBGAsgULIJf7QRZDbX7wNdFTO/K
-	eBarSuw==
-X-Received: from pjbsb7.prod.google.com ([2002:a17:90b:50c7:b0:3ac:6795:2cbd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1cc4:b0:3ab:c80:9370
- with SMTP id 98e67ed59e1d1-3adead57e85mr7634057a91.20.1793109947891; Tue, 27
- Oct 2026 07:05:47 -0700 (PDT)
-Date: Tue, 27 Oct 2026 07:05:47 -0700
-In-Reply-To: <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S15z9dD9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793110126; x=1824646126;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=K47uyZ+9DXPOcHQqkyoR+d19Q9CpijVOgdBU1uW527U=;
+  b=S15z9dD9B7fR9E2m1zxBx0tfqtUZjQFAntxJ9eMw9U+Su76Jyfw5w241
+   ftydpSeHLM8bHRrqk7YTZF1xM6kaA5+9fjjR4kKXFxax9AVEnlOUhtBNI
+   pr6yXeJpfbMeZxWcWf++tQxx/MyPQ2XBlZPb6Vw1RcIrPuT0xpMCtYvl+
+   +XgQpnJxBkl33PXDJC1XjzzSyvqEKg30njerOsML2mUtpg6C0/hHSj0CN
+   Ohn2zWR+rpqTBQwGIu1hIbuFgV/4yGAHwdoLawQo3t+CQEF3Sqq2afijj
+   kDyeOeVWo6Y8n78hufNzLEgiR3H00cblQ+IXLqq3CQiUwwOcNl6zSIosx
+   A==;
+X-CSE-ConnectionGUID: c1zNb4G6RzK5vQq7BnjnCA==
+X-CSE-MsgGUID: IdeWGatFQJaP7iPvXftltA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1900010"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1900010"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 07:08:45 -0700
+X-CSE-ConnectionGUID: VxLkWFdXR02r0GM8ie7iKA==
+X-CSE-MsgGUID: 33F1fWAMRIyiBsNQEv6I0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4594033"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 07:08:42 -0700
+Message-ID: <7a832e5c-eaff-426f-adff-7935be265bbd@intel.com>
+Date: Tue, 27 Oct 2026 22:08:39 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,71 +71,109 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-References: <20261022210134.612848-1-seanjc@google.com> <20261022210134.612848-3-seanjc@google.com>
- <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
-Message-ID: <auCvuyY7tTg7ISwR@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
- when filling CPUID entries
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Changyuan Lyu <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] virt: tdx-guest: Poll Quote status with
+ exponential backoff
+To: moe@flashbots.net, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Dan Williams <djbw@kernel.org>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Jun Miao <jun.miao@intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
+ <20261024-tdx-guest-quote-poll-v3-2-6a83bb767314@flashbots.net>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261024-tdx-guest-quote-poll-v3-2-6a83bb767314@flashbots.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 27, 2026, Xiaoyao Li wrote:
-> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
-> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > index 271c2f94b8dd..37d088f6f7a8 100644
-> > --- a/arch/x86/kvm/vmx/tdx.c
-> > +++ b/arch/x86/kvm/vmx/tdx.c
-> > @@ -2,6 +2,7 @@
-> >  #include <linux/cleanup.h>
-> >  #include <linux/cpu.h>
-> >  #include <asm/cpufeature.h>
-> > +#include <asm/cpuid/api.h>
-> >  #include <asm/fpu/xcr.h>
-> >  #include <linux/misc_cgroup.h>
-> >  #include <linux/mmu_context.h>
-> > @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-> >  
-> >  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
-> >  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
-> > +	entry->flags = 0;
-> >  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
-> >  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
-> >  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
-> >  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
-> >  
-> > -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
-> > +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
-> > +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
+On 10/25/2026 3:17 AM, Moe Mahhouk via B4 Relay wrote:
+> From: Moe Mahhouk <moe@flashbots.net>
 > 
-> I think the WARN_ON_ONCE() is very likely to be triggered in the future when
-> people run old kernel with new TDX modules.
+> wait_for_quote_completion() sleeps for a full second before it first
+> checks whether the VMM has completed a GetQuote request, and then
+> rechecks once per second. Every Quote request therefore takes at least
+> one second, however quickly the host answers.
 
-Then upstream patches to make that not happen.  Intel insists on treating the TDX
-Module like hardware.  So, treat new TDX Modules like new hardware.  Upstream
-support for the new "hardware" before it ships, cc'd to stable@vger.kernel.org
-if necessary.
+It's not 100% correct.
 
-Because IMO, the WARN is doing exactly what it's intended to do: alerting the
-admin that they are running a potentially dangerous setup.
+I think it's possible that the host VMM completes the GetQuote request before
+the first check in wait_for_quote_completion()
 
-> > +	/*
-> > +	 * Explicitly zero the index when it's not significant, even though it
-> > +	 * _should_ be meaningless.  Userspace relies on the index being zero
-> > +	 * (the ABI was inherited from KVM_GET_SUPPORTED_CPUID).
-> > +	 */
-> > +	if (cpuid_function_is_indexed(entry->function))
-> > +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-> > +	else
-> >  		entry->index = 0;
-> >  
-> >  	/*
+> With a local Quote Generation Service the VMM completes the request in
+> a few milliseconds. On an Emerald Rapids host (KVM, QEMU 11.1, Intel
+> QGS), back-to-back Quote requests through configfs-tsm took 1021-1024 ms
+> each; with this change they take 6-12 ms at HZ=250. Since quote_lock
+> serializes requests, the one-second floor also caps a TD at about one
+> Quote per second, which hurts users that bind a fresh Quote to every
+> connection, such as attested TLS.
 > 
+> Poll with an exponential backoff instead: double the sleep from 1 ms up
+> to 100 ms, so that a fast Quote is noticed within a few milliseconds
+> while a slow one costs at most ten wakeups per second.
+> msleep_interruptible() rounds up to whole jiffies, so at HZ=250 the 1, 2
+> and 4 ms steps are one 4 ms tick each. The sleep stays interruptible,
+> and the timeout becomes a deadline in jiffies.
 > 
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+With the statement of the first paragraph fixed,
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+> Signed-off-by: Moe Mahhouk <moe@flashbots.net>
+> ---
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index a5a53174f9d9..d58c8eccb26b 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/set_memory.h>
+>  #include <linux/io.h>
+>  #include <linux/delay.h>
+> +#include <linux/jiffies.h>
+>  #include <linux/sockptr.h>
+>  #include <linux/tsm.h>
+>  #include <linux/tsm-mr.h>
+> @@ -271,18 +272,25 @@ static struct tdx_quote_buf *alloc_quote_buf(void)
+>   */
+>  static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+>  {
+> -	int i = 0;
+> +	unsigned long deadline = jiffies + secs_to_jiffies(timeout);
+> +	unsigned int sleep_ms = 1;
+>  
+>  	/*
+> -	 * Quote requests usually take a few seconds to complete, so waking up
+> -	 * once per second to recheck the status is fine for this use case.
+> +	 * A local Quote Generation Service usually completes the request
+> +	 * within a few milliseconds. Poll with an exponential backoff of up
+> +	 * to 100 ms, so that a fast Quote is noticed promptly while a slow
+> +	 * one costs at most ten wakeups per second. msleep_interruptible()
+> +	 * rounds up to whole jiffies, so the shortest steps take one tick.
+>  	 */
+> -	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+> -		if (msleep_interruptible(MSEC_PER_SEC))
+> +	while (READ_ONCE(buf->status) == GET_QUOTE_IN_FLIGHT) {
+> +		if (time_after(jiffies, deadline))
+> +			return -ETIMEDOUT;
+> +		if (msleep_interruptible(sleep_ms))
+>  			return -EINTR;
+> +		sleep_ms = min(2 * sleep_ms, 100U);
+>  	}
+>  
+> -	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
+> +	return 0;
+>  }
+>  
+>  static int tdx_report_new_locked(struct tsm_report *report)
+> 
+
