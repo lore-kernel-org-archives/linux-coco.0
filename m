@@ -1,47 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793085824;
-	b=YYkjTBhg6RL4YJPlMtHNJ8yNp97UwaVI5lBhgC/Rao2upA607UJ/Lz/voamxZIYZXPvL
-	 mLjk/LQsCTCZj02GomDMFom1tIno01YvZvb9P5QgBnn9Ho3wEq6FkSGOKCQSeVOjnOzas
-	 6x9dNzruY9LqeRR9xCkywMtkEaMOrSdRp2MZVJhNlrICh6WFd3w4ZsTHWdCBb7psFyXTm
-	 +N5N9NTHRomGQZEO76vXmv4K+uY7DDMcj7y3qr1KDBtStgABNrjYaCrHYgK/yHtwZBtEO
-	 347lqvefW5DlUV5iXYNNfvsuUrbWJzOQ0c7ieec42NTf6jvFA1x3BBwA45gPFCRS71A==
+	t=1793088145;
+	b=iK2Ehp58khZj1O1fM07Nv+d0vZBJ1+T61h0TB5xNtFsj7CjTAbiQKbjpbEngor3nb0dy
+	 ZCDd/P2ybM7mRDXZslBppIh90x/0ppUGBwUsLouh80PFr6fOIyB53rszTBrcJ+u1brkQh
+	 yxYbQ4qg2EvZ6SK89FM2J91ZW2UluDlc+J7j0n2CyIsYmI7Cvw7TsvotuGrZCScWfxl4o
+	 784adhRQVODFsiH2UKHl42BbF0+kAAnKmBuLpp1ai8vHGZdbgw2u7DA6wDF2uU1TNMTgK
+	 Uuyyrc6+NzJBkt5Qg/GIgcKhRB2b+niKp/EVCUPl+nPosBR8dAqwZ1XHdm1+excvv/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793085824;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=bO1yG0iNpQrDUD1BSljDEVJJw76/E5KtM6Y7Lj122vk=;
-	b=BRLQ8n6ImXQcB71/9PaUKwHQXr1YiHkZ+lMPZ3W4dgnv3jhGQfldfcOpd0U2+XYKSjQt
-	 VzIhcfjpXvJMYwOiDXQE781abziZmhDN6Drz3Wvob6zdHa1Nb4XAp7DcbXHCfIe4ITSFU
-	 UPFuzjFTMpgR2+K/hwok5PMOl4jIQd4ebYgVnFjXLu+J+NDvUL7QflnbiFhlBxCSARcmM
-	 s06BRwyCw1LqdFW/NU0MGSGRKkF0Z43PHuBLHky2G2sf92M73oZApRgCE7OyYA8TMHgKi
-	 Lf5tTTuYWx73CLie3GymmdhJXT5QPOdspM1lKrKG+O4N8asucTeTwz6ZlIQt4XmcGzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793088145;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=OscTJ3e2MwqNjRkFK+nwymaDOQ752snX6yOO/B0QxfQ=;
+	b=SVq7zmztOo9TL72+AbZOA6RyT1v9oqOgclw2YNXjY6KneQy2/LJP2yBLE2+SmnkFJv1n
+	 M6QCobYYHLJbXluUTypJPddbf7yWeRcy729lHPy8GXehhshkxizbytDHEssxJelwYnoZ8
+	 Wevd8g0hNZ3SCRFAEF9AumRzN97vFz0aRW/yAxNGseDvXjBlWW9yDyb72FPyllyPCimag
+	 IeGzZTUg//HGfkRqz8+KiyV//6erg7NFqaEgy/Mywkm2UqDn9Qt9aij/tHUnCKgSLVysb
+	 uuFZDi8dpn6dScp8XeIf6GgAQpdHe24pizkX/o8egwAir39BOTtPlYY69LjclvWvugw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hdw3zqsY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b="q/3yFLqh";
+	arc=none smtp.remote-ip=209.85.208.41
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E4B606A31A;
-	Tue, 27 Oct 2026 07:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF96F606A31E
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 08:02:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF96F606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hdw3zqsY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462D61F01825;
-	Tue, 27 Oct 2026 07:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793085823;
-	bh=bO1yG0iNpQrDUD1BSljDEVJJw76/E5KtM6Y7Lj122vk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hdw3zqsYAf76NUfhNwEfIA3FMnSY4lAZtfSQhPcdXEN9kVlh6zGddyZInJI6bLac+
-	 keCkbzhHw+xn1lsPX0MjFtxiU44ds4swNZiA9CcN920yetx/dgwEO24JUUbvzf77SG
-	 qn/tmX/+wkbcDU8SRYbsnyBPHZvCOap5fiB1wJGO7ShhFvERwerguLMuUiUElADOC9
-	 HL1xqYjI3S6oykGtA75sBt0j6uKKGquB5zL5LBOInh/Vd8Pdo+0XtVBAoacxr4Rg8i
-	 Ot+eGt/kFCS60qDpvJTc1N1cFUuz5eV4Xsd+0lkprK8GTNzruA6vy7Thf3WrivKG5O
-	 KE0ZSv4X8afCg==
-Message-ID: <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
-Date: Tue, 27 Oct 2026 08:23:36 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=q/3yFLqh
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6af9a9451daso5859279a12.0
+        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 01:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793088142; x=1793692942; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OscTJ3e2MwqNjRkFK+nwymaDOQ752snX6yOO/B0QxfQ=;
+        b=q/3yFLqhS4657rfWSYw27H+/ndx/wjRiXxWQqIcFpNkwTQ1qq8WffLiPfF1iJSI+cW
+         WcjA06Dq3Cc2v4QUBwIjzpXAvsQ/JS7BNQPO66XHnlm74jPVWDu9uJyWQ2PT1BAgjZAw
+         C+Sqv5GNDEVxBAAKn2iPL0PIQ9FxTyZo3eo8Xc5ZDu62DD9B1ADLZ9PoC/iN90dYBEkM
+         PI1bIHkbnJs6sx8JVZVArVtTGYxUBrrz4vDXM4SAxtJM6MISkNKiExlLT4cSU5qMo5Mr
+         bZP8Vh21ie7bdGSkgyQfMHGXZW45DMi/3kHCw0xOmeop62vq3plWlTAEFqp/K9bBnHmA
+         dCmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793088142; x=1793692942;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OscTJ3e2MwqNjRkFK+nwymaDOQ752snX6yOO/B0QxfQ=;
+        b=RV4iBm23DUCGygeh4AV/SAmhJVSNGDdoTDw8m3RsWQSuXiLM5tsYkR/unma2gRMzH+
+         b4cABCAEPKyzx888U0KswguZp5k+uIxOhLvTiQfGyu2d1h2WRiY8XZgqz5aLNH6icWpn
+         S0kg4JF6UWXOhHMTCDJDHsaD4CnT0SJ6wSnP2Wc+nSaBO1Td+AwhkHmbH60mX0diWKaj
+         6tkp0wx1l3YpE7qEHQi3dH/xgVKvUMLx+ztLv7CQb6qme0uPLan99Dkx1Jar9WmMl33s
+         Dl+tjTlapFKZhe/zh5gzFXf2jRwo2rnmFjtk6GrzJhskEteLfqTUoIozAg5nyqt5Jkfq
+         HM+A==
+X-Gm-Message-State: AFq9FYIdNGM6peuDumzgPY/NkJQpQXNPx7dAwomv2j1Sb26bEi4I7shL
+	NZ/hPo98i4hHJPILDcB61WvSCXfVD9jErMj3VbYY9fCR8KkEFaSDAkNHLmRcNN5Doos=
+X-Gm-Gg: AYBFou1Czbm8AZEjyH9qvqoTSXErdhS3kfQuZq7smGdZJpqyBIQD3sl5E9hBy3FMHlC
+	s8GtxV23OLsfeTaLX+HX0ptdZZAmpGOeBWTdaquiS9+wSSFR3KE6plZqsxVFbQySIMzdi52Jz07
+	Jj+qul6YxChKpceKquV+eKcXV01Z/pnBCasyIfg0LWqjzFLAdCHx6wRvySKweUCjzbFeH7MRJ4L
+	uAJ++BGwchR0E8QvM9vRW4GvDKHV5MVV4FC1EDYAAw+H3JCVxjAX6YFnRQezxpIvHGME3R0GHGf
+	8zfEW2ZyIkyAQcfx5kMLfVewPc7Kor2hczBvD2gCjpv647rO6YVpcq30Cuys9VlykBpghztRdDm
+	HKpV7ZDHOyS+X0ndTH8oHv6Rwrn3lOKigJCEpeIRqztqUy0a7XDhAgUp0I3RkoDXtZn8EVYPFb0
+	KUUjMFbXdJor0vXD3cRd1Cag69LZrmazH2KTtt5OxBmy1jsVohxZ5W0P0VF/NzpsbGiXf0PQvCO
+	hFpBwfIJO/uqAtjLRviCtF7JSGjqMya+ruFGpAKR6Qxd+QPMb3380J9Ng3wo45e
+X-Received: by 2002:aa7:d286:0:b0:6b3:8018:7643 with SMTP id 4fb4d7f45d1cf-6b44300a8d3mr6891627a12.45.1793088141026;
+        Tue, 27 Oct 2026 01:02:21 -0700 (PDT)
+Received: from localhost ([128.77.52.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecdd5b3sm21058785f8f.53.2026.10.27.01.02.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 01:02:20 -0700 (PDT)
+Date: Tue, 27 Oct 2026 09:02:14 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
+Message-ID: <auBaROC0XdWpILEI@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-3-jiri@resnulli.us>
+ <at-iEMxN98nie1Qr@e129823.arm.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -51,119 +103,94 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] Fix transmit handling on SCI/RSCI ports
-To: Biju Das <biju.das.jz@bp.renesas.com>, Borislav Petkov <bp@alien8.de>,
- "biju.das.au" <biju.das.au@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
- "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Au Dang <au.dang.jx@renesas.com>
-References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
- <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
- <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <at-iEMxN98nie1Qr@e129823.arm.com>
 
-On 27/10/2026 08:19, Biju Das wrote:
-> Hi Borislav Petkov,
-> 
-> Thanks for the feedback.
-> 
->> -----Original Message-----
->> From: Borislav Petkov <bp@alien8.de>
->> Sent: 27 October 2026 05:58
->> Subject: Re: [PATCH v3 0/4] Fix transmit handling on SCI/RSCI ports
->>
->> On Mon, Oct 26, 2026 at 11:23:32AM +0000, Biju Das wrote:
->>>  drivers/tty/serial/rsci.c          |  4 ++-
->>>  drivers/tty/serial/sh-sci-common.h |  4 +++
->>>  drivers/tty/serial/sh-sci.c        | 71 ++++++++++++++++++++++++++------------
->>>  3 files changed, 56 insertions(+), 23 deletions(-)
->>
->> $ ./scripts/get_maintainer.pl --no-rolestats -f drivers/tty/serial/rsci.c  drivers/tty/serial/sh-sci-
->> common.h  drivers/tty/serial/sh-sci.c Greg Kroah-Hartman <gregkh@linuxfoundation.org> Jiri Slaby
->> <jirislaby@kernel.org> Biju Das <biju.das.jz@bp.renesas.com> Geert Uytterhoeven <geert+renesas@glider.be>
->> Hugo Villeneuve <hvilleneuve@dimonoff.com> Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->> Frank Li <Frank.Li@nxp.com>
->> linux-kernel@vger.kernel.org
->> linux-serial@vger.kernel.org
->>
->> So why is
->>
->> x86@kernel.org, linux-coco@lists.linux.dev
->>
->> in your Cc: list?
->>
->> What can those people do about Renesas-something-serial driver?
-> 
-> I have been told by some maintainers to use b4 for easy review
-> rather than using 'git send-mail'.
-> 
-> If I do 'b4 prep --auto-to-cc' as per the b4 documentation,
-> x86@kernel.org is automatically listed.
+Mon, Oct 26, 2026 at 07:55:12PM +0100, yeoreum.yun@arm.com wrote:
+>Hi,
+>
+>> From: Jiri Pirko <jiri@nvidia.com>
 
-After 'b4 prep --auto-to-cc'  you edit the cover letter and see what is
-there, no? You can easily spot bogus addressed added.
+[..]
 
-> 
-> Can you please guide me how to remove x86@kernel.org from b4 tooling
-> So that x86@kernel.org will not automatically listed?
+>> +#define CTLV_MAX_NEST_DEPTH		32
+>
+>JFYI, when I tested with CTLV_MAX_NEST_DEPTH as 32 and try to run
+>ctlv_msg_test_as_deep_as_the_core_allows() message_kunit.c test,
+>It experiences the *real stack overflow* on FVP
+>(lesser value (e.g. 16) is fine):
+>
+>[    3.834419]     ok 22 ctlv_msg_test_the_bit_where_it_means_nothing
+>[    3.836499]     ok 23 ctlv_msg_test_a_bit_no_version_declares
+>[    3.837852] Insufficient stack space to handle exception!
+>[    3.837875] ESR: 0x0000000096000047 -- DABT (current EL)
+>[    3.837916] FAR: 0xffff800084efffe0
+>[    3.837953] Task stack:     [0xffff800084f00000..0xffff800084f04000]
+>[    3.838001] IRQ stack:      [0xffff800083d50000..0xffff800083d54000]
+>[    3.838049] Overflow stack: [0xffff00087b7c3150..0xffff00087b7c4150]
+>[    3.838114] CPU: 7 UID: 0 PID: 257 Comm: kunit_try_catch Tainted: G                 N
+>** replaying previous printk message **
+>[    3.838114] CPU: 7 UID: 0 PID: 257 Comm: kunit_try_catch Tainted: G                 N  7.3.0-rc4+ #1216 PREEMPTLAZY
+>[    3.838219] Tainted: [N]=TEST
+>[    3.838249] Hardware name:  , BIOS
+>[    3.838279] pstate: 21400009 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+>[    3.838360] pc : __kmalloc_flags_noprof+0x10/0x540
+>[    3.838433] lr : __alloc_empty_sheaf+0x48/0x88
+>[    3.838501] sp : ffff800084efffa0
+>[    3.838534] x29: ffff800084f00030 x28: 0000000000000400 x27: 0000000000000400
+>[    3.838657] x26: ffff000803d721c0 x25: 0000000000000000 x24: 0000000000400cc0
+>[    3.838780] x23: ffff00087b7e3398 x22: 16e0800080564b98 x21: ffff0008000a0900
+>[    3.838908] x20: 0000000000000000 x19: ffff000800013600 x18: 0000000000000000
+>[    3.839029] x17: 0000000000000001 x16: 0000000000000002 x15: ffffffff00000001
+>[    3.839150] x14: 0000001c000001c0 x13: ffffffff00000001 x12: ffff000800013500
+>[    3.839275] x11: ffff00080370a800 x10: 0000000000000060 x9 : ffff8000805627d0
+>[    3.839401] x8 : 0000000000000000 x7 : ffffffff00000001 x6 : 0000001d000001d0
+>[    3.839521] x5 : ffff800080567b68 x4 : 00000000ffffffff x3 : 0000000000000004
+>[    3.839640] x2 : 0000000000000dc0 x1 : 0000000000000008 x0 : 0000000000000080
+>[    3.839761] Kernel panic - not syncing: kernel stack overflow
+>[    3.841533] CPU: 7 UID: 0 PID: 257 Comm: kunit_try_catch Tainted: G                 N  7.3.0-rc4+ #1216 PREEMPTLAZY
+>[    3.841783] Tainted: [N]=TEST
+>[    3.841877] Hardware name:  , BIOS
+>[    3.841980] Call trace:
+>[    3.842065]  show_stack+0x20/0x40 (C)
+>[    3.842246]  __dump_stack+0x28/0x48
+>[    3.842427]  dump_stack_lvl+0x28/0xb0
+>[    3.842609]  dump_stack+0x18/0x34
+>[    3.842788]  vpanic+0x208/0x5b8
+>[    3.842944]  panic+0x54/0x60
+>[    3.843096]  nmi_panic+0xc0/0xc8
+>[    3.843273]  panic_bad_stack+0x10c/0x128
+>[    3.843466]  handle_bad_stack+0x34/0x38
+>[    3.843622]  __bad_stack+0x98/0xa0
+>[    3.843773]  __kmalloc_flags_noprof+0x10/0x540 (P)
+>[    3.843950]  __pcs_replace_empty_main+0x2ac/0x3e8
+>[    3.844139]  __kmalloc_node_track_caller_noprof+0x440/0x520
+>[    3.844328]  krealloc_node_align_noprof+0x178/0x390
+>[    3.844509]  kvrealloc_node_align_noprof+0x98/0x130
+>[    3.844690]  ctlv_schema_index_scope_add+0xb0/0x3f8
+>[    3.844882]  ctlv_schema_check_indexed_nest+0x1e8/0x958
+>
+>(repeat ctlv_schema_check_attr()/ctlv_schema_check_indexed_nest())
+>
+>[    3.856919]  ctlv_schema_check_attr+0x3dc/0x538
+>[    3.857105]  ctlv_schema_check_indexed_nest+0x788/0x958
+>[    3.857301]  ctlv_schema_validate+0x88/0x180
+>[    3.857482]  ctlv_msg_test_as_deep_as_the_core_allows+0x11c/0x1e8
+>[    3.857698]  kunit_try_run_case+0x64/0x188
+>[    3.857878]  kunit_generic_run_threadfn_adapter+0x30/0x68
+>[    3.858086]  kthread+0x10c/0x140
+>[    3.858245]  ret_from_fork+0x10/0x20
+>[    3.858398] SMP: stopping secondary CPUs
+>[    3.858630] Kernel Offset: disabled
+>[    3.858720] CPU features: 0x0,00000000,00b0802e,9f190bc3,2affe72f
+>[    3.858872] Memory Limit: none
+>[    3.858976] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
+>
+>[...]
+>
+>I think it might be good to configurable according to architecture
+>unless it's not good to reduce the CTLV_MAX_NEST_DEPTH number
+>otherwise, increasing stack size when CTLV is enabled seems unresonable...
 
-b4 does not add these addresses for these files.
-
-Best regards,
-Krzysztof
+Agreed, will lower it down. I think we should be okay with 8 for start.
