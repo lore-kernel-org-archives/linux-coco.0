@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793093723;
-	b=Ps0WzKww77GMGEjKd0ooX4hzBjfAqvaOCirRN3h/RA+LwWqtMDHp6Xc2AIHf6zUiY31/
-	 eSKtHPRkvnbWLUlBMX8yg9e9VOxCUl6jHQJyYIzPrG19hRaEbADOyu9hlCPBVV5vKFu/b
-	 DKLK0zjXKyOQvFRPxSitG4q5FDjHXLc+qjYqcnUgyzlfjk1Uh4L+fJSM1rKsDvEPaHccG
-	 +uS1akjZnSvQ7M+NcR2eOSHgUQJeoCUwFd4DoygLWrPRomFM3dqEQySqfoUTrOXKMT0Gl
-	 cUo99Zt0oRRrp2Pp9LEVWzGnnsnCYH1WYl3oBb4tgJ5kctvi/h/Ljr9lSOdX92IxPvA==
+	t=1793093823;
+	b=oy4D9+cUrPZnKz52AHBG6Du5W36X3FVIQTnKnWcZvPwOw0hzqfoW+gmZ1B6MV37n2VDr
+	 lwy8iJcXGJQxoTpl9992roLrxREDaAvqRuoSdknGVRbt1T1T+qkS823+nG32ad/HXaQbz
+	 00eCAmM6i2XKKB2CT/Fjkdc8zYFUCSLKazblqTbQeVsXIYIFGqzkfNGhh50zJywQck/R2
+	 Mju/x49pVA8MRIxV8sAS6uTECq7tnkbb0qrrSK6XovvVlYHoxZLnP2Qm9xLEmEmIm+xI5
+	 HGUitlA/o2DbDcwHRYGVICrlYqVBs3Zj3HoyVzeOIc7X4pC3WY0TUhilbThz+u5pABg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793093723;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793093823;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
 	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
 	 X-Mimecast-Originator:Content-Type:Content-Disposition;
-	bh=HWF1Lm9IEVGMMtM+ZXrfgWJyZeU0J8NTR2mjYrY1U18=;
-	b=GYq0IC6qXu2KnaJGgjrwM8nDMubeWe999Vx6pePfCqYXJjpemTSnTQoZVRZ4biuBghIv
-	 pZEji+DJMPwy+UUs/f6QWgOCUllAYWzEEk1DfOv1KOGNt2RgX83rqwsludW37ALeIRREF
-	 7AN8fEz/RUWTlZcDj130Mpzj59f/yPDripSv3F3SCdvPn7h+8lNSWtfsaDModIPwUixhd
-	 fvFDQsv/kZ+eN26l+uhOCtpQWMWHyIYFYR7u9WZ9jh7k8diJfwqsVDvWzDDxwGTpDTshI
-	 aH3XRuxevtWL9Tdc55Z9ufRGvSo9EJLcd4k3xUjbhVFvyobBbOJS0HkudNC2XBK9cTw==
+	bh=yZ6xG709ht579SVeXaHvhn7gbaGSx41yuwP8KO/9DQI=;
+	b=h1tlQQ5AWcvnKu87jFuWYFrDVjipWIP+wfZ0bZH6ti2HgjCC9h9nWmXxFR+JwwnVO8jQ
+	 dMYbgy374JgrZeiiY8FQC+jnrOwgHQJy0dR9LvRdsvyoz9jwbHD42f4VLyedIJJSRqRUF
+	 B70AJhlef0nGyTrwNGm3hUL/RWF9OLZuW04cVZiv9KVpcs9BsMUt1aRNXflr6QTgWjNCi
+	 upwFrDX2cBfJyrzBvQc2n7kxOfbb6DVlDDZ9mww1K2EFLDlsEayilT40NqNZbGbi+e9TW
+	 jC+yufjAkpelwOtGbKwIMvZUQCsCRGHFogzpOqk6e6vj//QYFgjrizjoc13jODPjdgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JIaf5rZ6;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LJJvK4QG;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F79A606A33E
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 09:35:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F79A606A33E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A4B606A324
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 09:37:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28A4B606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JIaf5rZ6
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LJJvK4QG
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793093722;
+	s=mimecast20190719; t=1793093822;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HWF1Lm9IEVGMMtM+ZXrfgWJyZeU0J8NTR2mjYrY1U18=;
-	b=JIaf5rZ6nDyiAtQTWmc5jnanGHHUyodaSGI9v5BHpS1mLut5lCq9IFxreiJm2NGJ8CUE7m
-	bai5k5VBCBTd805y1KSr1Fuwd9iHP8Vz6yDQmjvY2v+OIY8tWOyRWdyZZIR4ZvRfqOnx3g
-	MoLJZu5OXm489BwTrulTW+Qy6cVeQZI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=yZ6xG709ht579SVeXaHvhn7gbaGSx41yuwP8KO/9DQI=;
+	b=LJJvK4QGbRxDuaUgcqznBlwSBS20laXRrRilamkS9tjmW2D/wX/Be6Y2iNWiVom8jhslLD
+	TdBa53NYQ8NiCmh6j1o3Sj93+o08/cbRfpgCA/v1M9Z3MZq8gbqSIBq7aeFt2WFt5hP1wh
+	hugxtHyjW5GviTBKWeK4H7Gwhnh4Umo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-223-kpeQ2xK_OluxIv6tSqgPcA-1; Tue, 27 Oct 2026 05:35:20 -0400
-X-MC-Unique: kpeQ2xK_OluxIv6tSqgPcA-1
-X-Mimecast-MFC-AGG-ID: kpeQ2xK_OluxIv6tSqgPcA_1793093719
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4870142f030so2323781f8f.2
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 02:35:20 -0700 (PDT)
+ us-mta-346-OEzzcYqWMCuXCN1uLavgEg-1; Tue, 27 Oct 2026 05:36:59 -0400
+X-MC-Unique: OEzzcYqWMCuXCN1uLavgEg-1
+X-Mimecast-MFC-AGG-ID: OEzzcYqWMCuXCN1uLavgEg_1793093818
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a20a40d3e9so24904305e9.0
+        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 02:36:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793093719; x=1793698519;
+        d=1e100.net; s=20260707; t=1793093818; x=1793698618;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HWF1Lm9IEVGMMtM+ZXrfgWJyZeU0J8NTR2mjYrY1U18=;
-        b=ZVefUkeq+b4o316m2/3E7KKoc9/hElCHpEg8DI9dR4r79iPtqEhD3fdvQxojwwdMmu
-         Y/6N42Uz9yrBs6DPJaNQ/xCZO9Hi5yP6RqrKgzs4VYH1TQXzS/PXg6kzK5sBvGteNasP
-         Qiekxx1LmOLiTu0bnW3TPBVJYdcZEo6YFJGo89vR+Yj2Cf9jb54POETB6YQ6O24M0IH0
-         fWD5eN30S1sbfTrCiL9Q8NejR3Br0I3bhWCXlV09LY+fXeADSEgCqM7S2l+r4Qqgqxkm
-         pDzHMZJjIvx8VDQx/uVQ4o2f8Ycywqf+vVwiB7cSm2WP41cycQ7U0AVzgCGcYj5nIjGI
-         L8ng==
-X-Forwarded-Encrypted: i=1; AKwUvBwOd4jUWUyhltKOebAgGKNJAxw7Tw0lc49KoEym7d+Ki1Gr010Eo3pBtjErzI5EDph6Z80GEFQ2EI81@lists.linux.dev
-X-Gm-Message-State: AFq9FYLOXCO6JtawvI74ydF/wm/pNvXx/J7S2SyeEwX7Inod817z6mbv
-	Ayqip8b39RgZ19dZCP84hXVnuagSuiHEBABTSKHDjI/qpDNyIr9caGOa/zYl4HnNL/NUbq03i8m
-	6iIVQFws8jcjEiwLyyemU6paEzBcTVxRJjEBPrjDjFEuKeIRoBPpeWmu4upBYQgs=
-X-Gm-Gg: AYBFou2Q0zmzQ9hnFowlMzv5MYmpy0HJyf7aqc1P/V4EowNyRs9UYi7hRxwnlVHtJzA
-	Z4ilL47X1Iv5iho5TAGH10CH8AcW2QSH9PvbFrDe3QsxGNPAS0/8oeOaRDLN71ON71vEziMU0ap
-	4KzZIJTKF8SIJotOyMNhSXnUss4eYgaQnWdPCZN8uI/ZqpAlVBrs7xAwZ7s4MmXOA8tptXyK8ao
-	djPXp3crLGmVdie4i8bs9x5KZy6jFu/5lF+o1lDu1KHwQz3QBf2n7cpLy6avkgZ6FiuH7+ki6XY
-	dedFb4sJXQxWh7mfabwg2pMJy2Nda68/w4AwFWH+FskCyMKB3tC0fsXxadAc1l7Xc7s=
-X-Received: by 2002:a05:600c:c107:b0:4a5:e6fd:65e5 with SMTP id 5b1f17b1804b1-4a5e70ca839mr85162645e9.31.1793093718600;
-        Tue, 27 Oct 2026 02:35:18 -0700 (PDT)
-X-Received: by 2002:a05:600c:c107:b0:4a5:e6fd:65e5 with SMTP id 5b1f17b1804b1-4a5e70ca839mr85162045e9.31.1793093717941;
-        Tue, 27 Oct 2026 02:35:17 -0700 (PDT)
+        bh=yZ6xG709ht579SVeXaHvhn7gbaGSx41yuwP8KO/9DQI=;
+        b=SE6mj/jXnC/S/q6XpM8iA3ap+T9tkkzdVOaUgRPQyqQTutyIhzhaf9+EZNmlwgLMo/
+         kFW1Yk2CqznD4KRF4vUP9r7p96H3508j2TYaHmYh0EAJY9/MQKuE4YaiNl3aXgWu/L+/
+         u5+i4rciGJC2QTmamtl2mS3eHFYWzZ67ESQckPcijYlaEbl7GyRJcjRc3YSIONma/PC0
+         MJarwS6mYkwYvEqasPPVjLoMtrwP97PHZrMcOnZn/ExiPdgOSCN41rRg0JpIE4cTZeBE
+         zpooFKHPhmFhKT+xehwRQJkvWvwzGUt3fa1G7uK8araYHseQtJlZtMsG/WCpGYpfZP3K
+         wGFA==
+X-Forwarded-Encrypted: i=1; AKwUvByAJKFLWyf8VNJZHJnHR3adzEeNKnqeJfE+oXs5A5gij2/LtsFW02J62ydkOoR1GKfNqsZgJTVCvDW+@lists.linux.dev
+X-Gm-Message-State: AFq9FYKyTLbcZUET7IBX/Gm2VblpYK3uAOeYbW+8YzRT11j4rtyslHBR
+	VaztuGCUA2a8YNwfXpNOo2/bumQxzlugeyCp60OEeTivEZS14NsDDLi9ieK+Ph5GBDDcg/5yZz9
+	Qar+pLzm0G36Wuwpe34RCg/OszwssbaOnY7rZ94KNrZVGcV/LMHZIQix8AXpKeaQ=
+X-Gm-Gg: AYBFou1ptL09zxIysyWAD3ld+muN7nuU91XSQVNH74FF6su+HndSlTRwvkjW7XGh/Uo
+	fp41Gy85m9sHi/CeuBeRQdFukBizFevSgXLDyQGXSFJtFUSEIlwZBLMIKkkzGxYYCYwqOQadsYe
+	i4zmiuKWhnwZDTVY9W0MuBugB+YE4LAvXbyHL5W0nZ8qqfR0AgYFhPdo/NvDzSHY4rXISVWcekd
+	TqeApSzhg9OMYoiZcK+TAk701tpjLHA/3koM9W/LnA+9+iF/pkLh0Ugy237rOqtlEb26mVsr1+A
+	Cbrh0XJoHoyeqfliTTECDMahR9px2wuoqvm2i0QIND5n4vOQiXIqVXcqGJ4yFNeH604=
+X-Received: by 2002:a05:600c:4f89:b0:4a2:150f:160f with SMTP id 5b1f17b1804b1-4a35aca4e43mr174240375e9.25.1793093817469;
+        Tue, 27 Oct 2026 02:36:57 -0700 (PDT)
+X-Received: by 2002:a05:600c:4f89:b0:4a2:150f:160f with SMTP id 5b1f17b1804b1-4a35aca4e43mr174239545e9.25.1793093816842;
+        Tue, 27 Oct 2026 02:36:56 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebc3932sm23007023f8f.18.2026.10.27.02.35.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359fbb725sm253517165e9.0.2026.10.27.02.36.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 02:35:16 -0700 (PDT)
-Date: Tue, 27 Oct 2026 05:35:11 -0400
+        Tue, 27 Oct 2026 02:36:55 -0700 (PDT)
+Date: Tue, 27 Oct 2026 05:36:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: Kevin Loughlin <kevinloughlin@google.com>
 Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>,
@@ -116,7 +116,7 @@ Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>,
 	Steve Rutherford <srutherford@google.com>,
 	David Skidmore <davidskidmore@google.com>
 Subject: Re: [PATCH 10/13] virtio_balloon: add higher-order page inflation
-Message-ID: <20261027052057-mutt-send-email-mst@kernel.org>
+Message-ID: <20261027051822-mutt-send-email-mst@kernel.org>
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
  <20261027025616.1632690-11-kevinloughlin@google.com>
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -130,7 +130,7 @@ Precedence: list
 MIME-Version: 1.0
 In-Reply-To: <20261027025616.1632690-11-kevinloughlin@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: CxMZ90Q9QbbsBRv2z3MqTeAO3V_00bWtH_6zL3-qANU_1793093719
+X-Mimecast-MFC-PROC-ID: wyr2l57Xhp7fF10s2n0SSJv-EgcDXb6PWuM3OcC9HVI_1793093818
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -150,12 +150,11 @@ On Tue, Oct 27, 2026 at 02:56:13AM +0000, Kevin Loughlin wrote:
 > 
 > Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 
-I'm not too happy that this rides on the legacy PFN thing
-which is after all limited to 44 bit addresses.
-
-And given it is passing around 2MB chunks, then one 16 byte descriptor
-covering all of 2MB would actually be more efficient than 512 4-byte
-PFNs.
+BTW I'd say *everyone* prefers large pages. The fact that balloon
+currently breaks them up isn't nice to anyone. The only setup
+where they might be helpful is severe fragmentation, but even then,
+it is not clear we aren't contributing to the problem
+by making the fragmentation worse.
 
 
 > ---
@@ -182,13 +181,6 @@ PFNs.
 >  static void tell_host(struct virtio_balloon *vb, struct virtqueue *vq)
 >  {
 >  	struct scatterlist sg;
-
-
-Put all this, and preferred order, etc etc in kernel core somewhere,
-and expose some sensible APIs that devices can use.
-
-
-
 > @@ -243,24 +250,49 @@ static void set_page_pfns(struct virtio_balloon *vb,
 >  					  page_to_balloon_pfn(page) + i);
 >  }
