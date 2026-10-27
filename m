@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793069816;
-	b=vaWo6wcqcun626j/dY4eQhmGzmuTLEHG2LZX7uo9CJPeel8lVXAinQoa6Zq6YIU5GEn9
-	 uIFDx9h9Qu6TCf84C9o18KfsXQX/Cp/dafRX6UXbAOuuzXuWnsppstq5TGx/mnxGzAT34
-	 IpElsEcnNahUYKWvNWZk6Rjf/kl98Syq4Z2vyrAb7baqcAR3NJmXqLPWrK1PRNib72fG+
-	 E2lbWpGeIwztHJT2nPrEpZuos/FZ4rhHBrVsxwJJfgqGnJqR/fgneAi8CoAm7tzAtaFSs
-	 FsjXLTq6bKHlbcv2k9DHuofdyvf1mVGsrahvGSnuy6H39Hvk1fvnhpWGX5TjaAEAhOQ==
+	t=1793069818;
+	b=TVzAGp7NlPu26U/6Jk5NzcEPVZRcyA0kYWBWfw6G6frZiz0XbzFVcrowl0QxZMnjeLiS
+	 CkNmyDa3giGGliGXVQZeIEWuOGdNtLWAdN5f0BLn7WuJTuhjdJEM3VX0nq1dpD29FQnRF
+	 DoJ1Z6vnLl8dCYmU/CLaYNtCja5DdP8fLUZ3L7oDAIl5qhz3mgCnobyI24Yeraq61bmKN
+	 Qv60E+cEu8hO3WGAhZtXUsCLQIqzuyY+0f3gemAuUV2gm7dHznoT3mRJzYb82c6UXzGa/
+	 PnHaxLAVcvmBvqeA+8W5Pw3MLNBIlOLqLM3nIgBQxcT26VTDakiwYNcf/NX/aTKuq4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793069816;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793069818;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
-	b=NgxtdzBD7eXbJP73UgVy8y0fqAZGkO7CIEnDTosmL+GvtnrKMjfpWmMu95aZ1QL81Wfn
-	 dIUsw/3Bz4yelxZrGQoQy7D/mlGTWV0FJEFh1D3z6d12rso/PR7RdeM8XDDEQF3UfRcF7
-	 L5uIPNsmRlSBHdD55GRaCeQ8V7fCEnVokR1bCPsBfgpfRY/o3eDSuTVp+mYJri3kJqLGI
-	 OPjQXZpeyKNpySVr1F+sJJms70EFh/53qmTsJoQCOrbwaz6kAbvEYYjkHd7JhUKspjzIz
-	 b3SRT8CcLbhtcLXGkIvYQNmYccd1HVqgACuohrDmp3Zcnzy8eVEhxdr+lSPM/TELEpQ==
+	bh=8uOyeoIi9QhKAYiQPs1BFfiuxWbIrsz7kuwNrIhzcWE=;
+	b=kV94Rbw3CNlSfxV4xkZjopJoffCE0/JZhjm5CtvCc+8Wo2Gjb4YqLErnJLk5OwM6OEVU
+	 ghm1lbBhER21AKQtynmR0/dpX0qQSA7bap/+9pYicsYQdcw39pSJIPdilZ1iCFJ8jTtIR
+	 uHCPA7z0XL9YujBGXZyjhpsynpNuoUBIKMj9oFNcEYyQVBF8tulmDRA9w1wMicGlCrZ37
+	 qvzcZa2cKZYjr/PIYpkPmuSrybfaoGSsBVWGCYROTTvF3UOTmAfZcf6vbTuN9fVwAvoJb
+	 pnrrAfEbczK+EvjueM1CoMh1/EkMhoyT1b1u0DpTbcJXCN7lWxJ3FbxJ3V841qxsnLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Mg99Dt5f;
-	arc=none smtp.remote-ip=209.85.210.72
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Gl+wnZky;
+	arc=none smtp.remote-ip=209.85.161.69
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5AD60A261E
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 02:56:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C5AD60A261E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D24F60A2628
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 02:56:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D24F60A2628
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Mg99Dt5f
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-8486941f252so5608570a34.3
-        for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 19:56:56 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Gl+wnZky
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-702a3e438dbso3794972eaf.0
+        for <linux-coco@lists.linux.dev>; Mon, 26 Oct 2026 19:56:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793069815; x=1793674615; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1793069817; x=1793674617; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
-        b=Mg99Dt5f9PgDvqYVlgl8c31O4XCFobdYbasHqz0vZ3Z453x9Cu169KTim5QoUJPPSC
-         nHfx1AtlJOhIClWjlPgsVjdALfH7GPjupyf6Dp3xMVeqG3u8HlgE+66kQHi2DfbnMPh2
-         Gv4u15U6peFjC/w2cXo9kB4I+rlAdkeZUe97LhmkshSmxpARHBd83p6mE1tZT79ycGYA
-         uuKuPjGd7fec+cQseJBj432K+9GFw8+435ZvWoC15gPKlbnO64Y3qUSkZWde7xdK9wJq
-         FMudJb9QYquu3XuqEZSrHmBTno0Du+2CCA0j281eSrZgoDvB+zfbidSwTdECfgs3cQIt
-         uB6Q==
+        bh=8uOyeoIi9QhKAYiQPs1BFfiuxWbIrsz7kuwNrIhzcWE=;
+        b=Gl+wnZkyk6iDObmS99renPX7TDHFeHaDZjpF63H3Qq18z+qMIGNsGgWetPOgW7OT6c
+         a00Sm8UpbcxJxqTLGxypc7imXNl1UpIJs0kqojVdY0yTcML1D4sYpATo1L2q5OKTjgRv
+         FTVTgeoe6YgaOpNyk/kpQVEv3o2473nZWuBrP3UxjVzOO4JbHG/YUztB/803TPmqgfPe
+         QpkFGWWy2BmzDoGu60Bh/riE/AhGrNGzzOrwHBvRTuNgjOt23ky9IhUEGssgCMlFXxZi
+         OX6oyyU0PUegCSuukNkj4uKp9446cNu5R8VAfO8+73USDyEutanDP/MU/L7yTM9kQWsc
+         UMIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793069815; x=1793674615;
+        d=1e100.net; s=20260707; t=1793069817; x=1793674617;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
-        b=f61c1cazJTty4ilUl8VrCLUUMlTcNucNjklCE3fsaO5T9Xfe/cLTV9RV9KIPv5M2uk
-         Vmpmhi3bAgmWe5rvtX8FDNGi9a9v800RXdPekt4W2BZTLi0TljbvxSkyjd6d5HElxntk
-         gftMGBBw6v0cn2DozG8vV/R/Y/7Zl1GnfaxtnNSAFkod2IgDpxEpRG3lUdzKtwSDD2jq
-         8bnVGwRBROblnABYzJ2yRPXXfgdc1uPCHTAbP571Gd1Leo73mlPtVSuSVbILL5J4/x4/
-         o+EgsHkuxk1gq7LYJBf854M/dBGOk77e9OhZ3B+HF1N3ZzKxtF/KQJQcOe3Y4s1cy+0/
-         WWgw==
-X-Forwarded-Encrypted: i=1; AKwUvBxBrPp8R0M7XSvIXf5zsvw2ebV2/zAxnbWpqAVl7bpwlB85vroL1KUMY4YEfafcwJaDi3mqUtMvjjnR@lists.linux.dev
-X-Gm-Message-State: AFq9FYL/wgip3Hug5AVs5Sf2ObEaGeT7CxGsrQYOrDJikwBmfo4aKf+w
-	IVpkQFbDhrR8LTHnwYVSAVILstsfFHDpRxWd1GOgPq4LOEvOD8x4QMdl2wVqd917TCjrMQ5QMTX
-	Npo3FZLqqBjva7RmHOt1sFAEG60H+NfGGsg==
-X-Received: from ioda11-n2.prod.google.com ([2002:a05:6602:204b:20b0:9c4:dfbe:8634])
+        bh=8uOyeoIi9QhKAYiQPs1BFfiuxWbIrsz7kuwNrIhzcWE=;
+        b=VAyXlXiLOmS8VthkWhZF64gVHJMHce6EVzuohFvoX8AB/QC8XeRsTFqE4dTpR7bb62
+         +b72dHxB8Lsevf2cx55OloS4bJjas6SedGHPR57HX9zeLmqBNReps/GORfKQ7ea3I96T
+         M+qgPL3Eb6yZOb/dMrgfMuZAhNKSZTKXQMcAlsIiHDnkRRaExfrq4+THRlRpYZSyHaAR
+         Fx9j5OMIcRnSqmJIZKA73627G2Yx+WVpn37Hfnz+2DIHZFMumesbvG7vOWjzto+ZO70o
+         o6LAqdsV6SyWzvBoUF0vukeKoqxm0UW5j3+qDQ/Q4Nf/ZvYJqzFVp5+dvg5hpdyTrxeC
+         8qVA==
+X-Forwarded-Encrypted: i=1; AKwUvBwCzJFJfTYJiBNCfgzzCyvPirGp8T+xOlkwX+quHGw1TEcHFnOZ5HextSA2wD/UA/XORD+J3eY1LnPA@lists.linux.dev
+X-Gm-Message-State: AFq9FYK92bu17kve/6vmopaPnv76mv93VeJJgdF4y9A3ddI1E5gpKsF4
+	5py2UJk6B4gggXfcCSxPcRCP+dN+mKtia406ySV8JUADe+cElM32v9caw/6NnDGgwcyTabcCdWq
+	twhukheYU99fInKrr8cYWpVn5ta2oDgsaBA==
+X-Received: from iowl9.prod.google.com ([2002:a05:6602:2dc9:b0:9c7:5a74:531d])
  (user=kevinloughlin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6820:603:b0:70d:8086:e452 with SMTP id 006d021491bc7-70d8086eebemr3032864eaf.25.1793069815271;
- Mon, 26 Oct 2026 19:56:55 -0700 (PDT)
-Date: Tue, 27 Oct 2026 02:56:12 +0000
+ 2002:a05:6820:7094:20b0:6d7:aca3:bba9 with SMTP id 006d021491bc7-70ba0e5ee88mr3818249eaf.38.1793069816905;
+ Mon, 26 Oct 2026 19:56:56 -0700 (PDT)
+Date: Tue, 27 Oct 2026 02:56:13 +0000
 In-Reply-To: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261027025616.1632690-10-kevinloughlin@google.com>
-Subject: [PATCH 09/13] mm/page_reporting: account for unaccepted memory
+Message-ID: <20261027025616.1632690-11-kevinloughlin@google.com>
+Subject: [PATCH 10/13] virtio_balloon: add higher-order page inflation
 From: Kevin Loughlin <kevinloughlin@google.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>, 
 	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
@@ -104,117 +104,323 @@ Cc: virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
 	David Skidmore <davidskidmore@google.com>, Kevin Loughlin <kevinloughlin@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When lazy unaccepted memory is active, pages on zone->unaccepted_pages
-are counted in NR_FREE_PAGES (MIGRATE_MOVABLE) as well as NR_UNACCEPTED.
-Without accounting for NR_UNACCEPTED in free page reporting watermarks,
-page_reporting_process_zone() and __isolate_free_page() treat
-unaccepted pages as already-accepted free buddy pages and can over-drain
-accepted free lists.
+In confidential computing guests requiring page state transitions,
+unaccepted memory tracking operates at the EFI unaccepted memory unit
+granularity (typically 2MB / order 9 on x86). Inflating the balloon
+with 4KB pages would prevent unaccepting the backing 2MB unit.
 
-Account for zone_page_state(zone, NR_UNACCEPTED) in
-__isolate_free_page(), page_reporting_cycle(), and
-page_reporting_process_zone() (using promo_wmark_pages(zone) for free
-page reporting watermarks and skipping non-mergeable migratetypes when
-has_unaccepted_memory() is active), and enforce
-unaccepted_memory_order() as the minimum page_reporting_order.
+Inflate balloon pages at unaccepted_memory_order() when
+virtballoon_cc_needs_state_transition() is true, while retaining
+order-0 allocations for non-CoCo guests and CoCo guests that do not
+use unaccepted memory transitions. When a higher-order balloon page
+spans more 4KB balloon PFNs than VIRTIO_BALLOON_ARRAY_PFNS_MAX (256),
+transmit its PFNs to the host in VIRTIO_BALLOON_ARRAY_PFNS_MAX chunks.
 
 Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 ---
- mm/page_alloc.c     |  3 +++
- mm/page_reporting.c | 34 +++++++++++++++++++++++++++++++++-
- 2 files changed, 36 insertions(+), 1 deletion(-)
+ drivers/virtio/virtio_balloon.c | 87 ++++++++++++++++++++++++++-------
+ include/linux/balloon.h         |  1 +
+ mm/balloon.c                    | 67 +++++++++++++++++++------
+ 3 files changed, 121 insertions(+), 34 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c10b77304633..541b2eaf34a4 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3183,6 +3183,9 @@ int __isolate_free_page(struct page *page, unsigned int order)
- 		 * exists.
- 		 */
- 		watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+		watermark += zone_page_state(zone, NR_UNACCEPTED);
-+#endif
- 		if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
- 			return 0;
- 	}
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index de587be17801..adacdb015b55 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -17,11 +17,14 @@ unsigned int page_reporting_order = PAGE_REPORTING_ORDER_UNSPECIFIED;
- 
- static int page_order_update_notify(const char *val, const struct kernel_param *kp)
- {
-+	unsigned int min_order = has_unaccepted_memory() ?
-+				 unaccepted_memory_order() : 0;
-+
- 	/*
- 	 * If param is set beyond this limit, order is set to default
- 	 * pageblock_order value
- 	 */
--	return  param_set_uint_minmax(val, kp, 0, MAX_PAGE_ORDER);
-+	return param_set_uint_minmax(val, kp, min_order, MAX_PAGE_ORDER);
+diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+index 11f74848fdc4..d162c162b496 100644
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -182,6 +182,13 @@ static void balloon_ack(struct virtqueue *vq)
+ 	wake_up(&vb->acked);
  }
  
- static const struct kernel_param_ops page_reporting_param_ops = {
-@@ -206,6 +209,21 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 
- 		/* Attempt to pull page from list and place in scatterlist */
- 		if (*offset) {
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			if (has_unaccepted_memory() ||
-+			    !list_empty(&zone->unaccepted_pages)) {
-+				unsigned long watermark;
++static inline bool virtballoon_cc_needs_state_transition(void)
++{
++	return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
++	       cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
++	       has_unaccepted_memory();
++}
 +
-+				watermark = promo_wmark_pages(zone) +
-+					    zone_page_state(zone, NR_UNACCEPTED) +
-+					    (1UL << order);
-+				if (!zone_watermark_ok(zone, 0, watermark, 0,
-+						       ALLOC_CMA)) {
-+					next = page;
-+					break;
-+				}
-+			}
-+#endif
- 			if (!__isolate_free_page(page, order)) {
- 				next = page;
- 				break;
-@@ -275,6 +293,12 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 	/* Generate minimum watermark to be able to guarantee progress */
- 	watermark = low_wmark_pages(zone) +
- 		    (prdev->capacity << page_reporting_order);
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+	if (has_unaccepted_memory() || !list_empty(&zone->unaccepted_pages))
-+		watermark = promo_wmark_pages(zone) +
-+			    zone_page_state(zone, NR_UNACCEPTED) +
-+			    (prdev->capacity << page_reporting_order);
-+#endif
+ static void tell_host(struct virtio_balloon *vb, struct virtqueue *vq)
+ {
+ 	struct scatterlist sg;
+@@ -243,24 +250,49 @@ static void set_page_pfns(struct virtio_balloon *vb,
+ 					  page_to_balloon_pfn(page) + i);
+ }
  
- 	/*
- 	 * Cancel request if insufficient free memory or if we failed
-@@ -289,6 +313,11 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 			/* We do not pull pages from the isolate free list */
- 			if (is_migrate_isolate(mt))
- 				continue;
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			if (has_unaccepted_memory() &&
-+			    !migratetype_is_mergeable(mt))
-+				continue;
-+#endif
++static void queue_page_pfns(struct virtio_balloon *vb, struct virtqueue *vq,
++			    struct page *page, unsigned int order)
++{
++	unsigned int nr_pages = 1 << order;
++	unsigned int i;
++
++	for (i = 0; i < nr_pages; i++) {
++		set_page_pfns(vb, vb->pfns + vb->num_pfns, page + i);
++		vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE;
++		if (vb->num_pfns == ARRAY_SIZE(vb->pfns)) {
++			tell_host(vb, vq);
++			vb->num_pfns = 0;
++		}
++	}
++}
++
++static inline unsigned int virtballoon_preferred_order(void)
++{
++	if (virtballoon_cc_needs_state_transition())
++		return unaccepted_memory_order();
++	return 0;
++}
++
+ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+ {
+-	unsigned int num_allocated_pages;
++	unsigned int order = virtballoon_preferred_order();
++	unsigned int page_pfns = (1 << order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++	unsigned int num_allocated_pages = 0;
+ 	struct page *page, *next;
+ 	unsigned int num_pfns;
+ 	LIST_HEAD(pages);
  
- 			err = page_reporting_cycle(prdev, zone, order, mt,
- 						   sgl, &offset);
-@@ -384,6 +413,9 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
- 		else
- 			page_reporting_order = pageblock_order;
+-	/* We can only do one array worth at a time. */
+-	num = min(num, ARRAY_SIZE(vb->pfns));
++	/* We can only do one array or preferred-order page worth at a time. */
++	num = min(num, max_t(size_t, ARRAY_SIZE(vb->pfns), page_pfns));
+ 
+ 	for (num_pfns = 0; num_pfns < num;
+-	     num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE) {
+-		page = balloon_page_alloc();
++	     num_pfns += page_pfns) {
++		page = balloon_pages_alloc(order);
+ 
+ 		if (!page) {
+ 			dev_info_ratelimited(&vb->vdev->dev,
+ 					     "Out of puff! Can't get %u pages\n",
+-					     VIRTIO_BALLOON_PAGES_PER_PAGE);
++					     page_pfns);
+ 			/* Sleep for at least 1/5 of a second before retry. */
+ 			msleep(200);
+ 			break;
+@@ -274,15 +306,17 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+ 	vb->num_pfns = 0;
+ 
+ 	list_for_each_entry_safe(page, next, &pages, lru) {
++		unsigned int page_order = compound_order(page);
++		unsigned int pfns = (1 << page_order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++
+ 		list_del(&page->lru);
+ 		balloon_page_enqueue(&vb->vb_dev_info, page);
+ 
+-		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
+-		vb->num_pages += VIRTIO_BALLOON_PAGES_PER_PAGE;
+-		vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE;
++		vb->num_pages += pfns;
++		num_allocated_pages += pfns;
++		queue_page_pfns(vb, vb->inflate_vq, page, page_order);
  	}
-+	if (has_unaccepted_memory() &&
-+	    page_reporting_order < unaccepted_memory_order())
-+		page_reporting_order = unaccepted_memory_order();
  
- 	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
- 		prdev->capacity = PAGE_REPORTING_CAPACITY;
+-	num_allocated_pages = vb->num_pfns;
+ 	/* Did we get any? */
+ 	if (vb->num_pfns != 0)
+ 		tell_host(vb, vb->inflate_vq);
+@@ -304,28 +338,42 @@ static void release_pages_balloon(struct virtio_balloon *vb,
+ 
+ static unsigned int leak_balloon(struct virtio_balloon *vb, size_t num)
+ {
+-	unsigned int num_freed_pages;
++	unsigned int order = virtballoon_preferred_order();
++	unsigned int page_pfns = (1 << order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++	unsigned int num_freed_pages = 0;
+ 	struct page *page;
+ 	struct balloon_dev_info *vb_dev_info = &vb->vb_dev_info;
+ 	LIST_HEAD(pages);
+ 
+-	/* We can only do one array worth at a time. */
+-	num = min(num, ARRAY_SIZE(vb->pfns));
++	/* We can only do one array or preferred-order page worth at a time. */
++	num = min(num, max_t(size_t, ARRAY_SIZE(vb->pfns), page_pfns));
+ 
+ 	mutex_lock(&vb->balloon_lock);
+ 	/* We can't release more pages than taken */
+ 	num = min(num, (size_t)vb->num_pages);
+-	for (vb->num_pfns = 0; vb->num_pfns < num;
+-	     vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE) {
++	vb->num_pfns = 0;
++	while (num_freed_pages < num) {
++		unsigned int dequeued_order;
++		unsigned int dequeued_pfns;
++
+ 		page = balloon_page_dequeue(vb_dev_info);
+ 		if (!page)
+ 			break;
+-		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
++		dequeued_order = compound_order(page);
++		dequeued_pfns = (1 << dequeued_order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++
++		if (num_freed_pages + dequeued_pfns > num &&
++		    num_freed_pages > 0) {
++			balloon_page_enqueue(vb_dev_info, page);
++			break;
++		}
++
++		queue_page_pfns(vb, vb->deflate_vq, page, dequeued_order);
+ 		list_add(&page->lru, &pages);
+-		vb->num_pages -= VIRTIO_BALLOON_PAGES_PER_PAGE;
++		vb->num_pages -= dequeued_pfns;
++		num_freed_pages += dequeued_pfns;
+ 	}
+ 
+-	num_freed_pages = vb->num_pfns;
+ 	/*
+ 	 * Note that if
+ 	 * virtio_has_feature(vdev, VIRTIO_BALLOON_F_MUST_TELL_HOST);
+@@ -474,7 +522,8 @@ static inline s64 towards_target(struct virtio_balloon *vb)
+ 	 * Aligned up to guest page size to avoid inflating and deflating
+ 	 * balloon endlessly.
+ 	 */
+-	target = ALIGN(num_pages, VIRTIO_BALLOON_PAGES_PER_PAGE);
++	target = ALIGN((s64)num_pages,
++		       VIRTIO_BALLOON_PAGES_PER_PAGE << virtballoon_preferred_order());
+ 	return target - vb->num_pages;
+ }
+ 
+diff --git a/include/linux/balloon.h b/include/linux/balloon.h
+index ca5b15150f42..bc46e36b997f 100644
+--- a/include/linux/balloon.h
++++ b/include/linux/balloon.h
+@@ -58,6 +58,7 @@ struct balloon_dev_info {
+ 	bool adjust_managed_page_count;
+ };
+ 
++struct page *balloon_pages_alloc(unsigned int order);
+ struct page *balloon_page_alloc(void);
+ void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
+ 		struct page *page);
+diff --git a/mm/balloon.c b/mm/balloon.c
+index 96a8f1e20bc6..e9941d08d8e9 100644
+--- a/mm/balloon.c
++++ b/mm/balloon.c
+@@ -27,9 +27,12 @@ static DEFINE_SPINLOCK(balloon_pages_lock);
+ static void balloon_page_insert(struct balloon_dev_info *balloon,
+ 				       struct page *page)
+ {
++	unsigned int i, nr_pages = 1U << compound_order(page);
++
+ 	lockdep_assert_held(&balloon_pages_lock);
+-	__SetPageOffline(page);
+-	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION)) {
++	for (i = 0; i < nr_pages; i++)
++		__SetPageOffline(page + i);
++	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !PageCompound(page)) {
+ 		SetPageMovableOps(page);
+ 		set_page_private(page, (unsigned long)balloon);
+ 	}
+@@ -45,20 +48,31 @@ static void balloon_page_insert(struct balloon_dev_info *balloon,
+  */
+ static void balloon_page_finalize(struct page *page)
+ {
++	unsigned int i, nr_pages = 1U << compound_order(page);
++
+ 	lockdep_assert_held(&balloon_pages_lock);
+-	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
++	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !PageCompound(page))
+ 		set_page_private(page, 0);
+-	/* PageOffline is sticky until the page is freed to the buddy. */
++	/*
++	 * PageOffline is sticky on the head page until freed to the buddy,
++	 * which resets the head page's page_type in __free_pages_prepare().
++	 * Clear PageOffline on tail pages here as __free_pages_prepare()
++	 * expects tail pages to have a default page_type.
++	 */
++	for (i = 1; i < nr_pages; i++)
++		__ClearPageOffline(page + i);
+ }
+ 
+ static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
+ 				     struct page *page)
+ {
++	unsigned int order = compound_order(page);
++
+ 	balloon_page_insert(b_dev_info, page);
+ 	if (b_dev_info->adjust_managed_page_count)
+-		adjust_managed_page_count(page, -1);
+-	__count_vm_event(BALLOON_INFLATE);
+-	inc_node_page_state(page, NR_BALLOON_PAGES);
++		adjust_managed_page_count(page, -(1L << order));
++	__count_vm_events(BALLOON_INFLATE, 1UL << order);
++	mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES, 1L << order);
+ }
+ 
+ /**
+@@ -117,15 +131,18 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+ 
+ 	spin_lock_irqsave(&balloon_pages_lock, flags);
+ 	list_for_each_entry_safe(page, tmp, &b_dev_info->pages, lru) {
++		unsigned int order = compound_order(page);
++
+ 		if (n_pages == n_req_pages)
+ 			break;
+ 		list_del(&page->lru);
+ 		if (b_dev_info->adjust_managed_page_count)
+-			adjust_managed_page_count(page, 1);
++			adjust_managed_page_count(page, 1L << order);
+ 		balloon_page_finalize(page);
+-		__count_vm_event(BALLOON_DEFLATE);
++		__count_vm_events(BALLOON_DEFLATE, 1UL << order);
+ 		list_add(&page->lru, pages);
+-		dec_node_page_state(page, NR_BALLOON_PAGES);
++		mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES,
++				    -(1L << order));
+ 		n_pages++;
+ 	}
+ 	spin_unlock_irqrestore(&balloon_pages_lock, flags);
+@@ -135,8 +152,9 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+ EXPORT_SYMBOL_GPL(balloon_page_list_dequeue);
+ 
+ /**
+- * balloon_page_alloc - allocates a new page for insertion into the balloon
+- *			page list.
++ * balloon_pages_alloc - allocates a new page of given order for insertion
++ *			 into the balloon page list.
++ * @order: allocation order
+  *
+  * Driver must call this function to properly allocate a new balloon page.
+  * Driver must call balloon_page_enqueue before definitively removing the page
+@@ -144,16 +162,35 @@ EXPORT_SYMBOL_GPL(balloon_page_list_dequeue);
+  *
+  * Return: struct page for the allocated page or NULL on allocation failure.
+  */
+-struct page *balloon_page_alloc(void)
++struct page *balloon_pages_alloc(unsigned int order)
+ {
+ 	gfp_t gfp_flags = __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
+ 
+-	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
++	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !order)
+ 		gfp_flags |= GFP_HIGHUSER_MOVABLE;
+ 	else
+ 		gfp_flags |= GFP_HIGHUSER;
+ 
+-	return alloc_page(gfp_flags);
++	if (order > 0)
++		gfp_flags |= __GFP_COMP;
++
++	return alloc_pages(gfp_flags, order);
++}
++EXPORT_SYMBOL_GPL(balloon_pages_alloc);
++
++/**
++ * balloon_page_alloc - allocates a new page for insertion into the balloon
++ *			page list.
++ *
++ * Driver must call this function to properly allocate a new balloon page.
++ * Driver must call balloon_page_enqueue before definitively removing the page
++ * from the guest system.
++ *
++ * Return: struct page for the allocated page or NULL on allocation failure.
++ */
++struct page *balloon_page_alloc(void)
++{
++	return balloon_pages_alloc(0);
+ }
+ EXPORT_SYMBOL_GPL(balloon_page_alloc);
+ 
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
