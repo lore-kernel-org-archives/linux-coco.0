@@ -1,97 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793095400;
-	b=Pm1zHICu0xIM6otzs8pmfD+n4P16H/tQwS8hxrinDyxakg+qKK18n1QFfHzduCo44DgU
-	 guhy0W0ehkDIqX4KvQOO5dKb2Aw9gWcipVYTRfsIzbVZz5Ima9YoGz0pZqJztecIIffzy
-	 xhyarSGvazRhQnkDcBppRZOwYqwkp0dzFehiQQDCjzTuDYf0QefCdrgGO7m4va76lci4D
-	 rLGlkYdLSTnN+EdDkljGefCocRel8lAetuu349VGtOw0wdypBc1u4qW5SYHdRSGLeSdWb
-	 2oRrAYviFvAGK1MSTh3iB2JGfNxsv7nmqmr3t2LR/KSW4ClelefkPsI4ZnjZ+GZLXXw==
+	t=1793095680;
+	b=gdTnC/ilWzZOSGWIufQZNQ4fyo8eLCEjJZzhFjkzVa9Uj2cyNFnDGjvNoTVqRVeX8Vq3
+	 Y67393HP0QQO8ZEbyDukOukZvRP9kKWTA86+qLecYfSEkLJddaP1ewcRdOLpOdNYFSO42
+	 KTXlbq/4JuiEUiCYsR4DYy8hFtakOiCZ3KW/wNiXJ30Retdf2zACXGXEAeRAW87aCxPZI
+	 4haw1OccReobEj873zo1dZFNdG0QNmXmyjpcb8PAe/ITQesAphtRiEMKB3PvziojCiF8o
+	 qut+Ha2rzF/2L/uKr4+xKydjFo+dL0rBTlzyvfHG9/ZXPSBgb9YoAaxLUkEBw/01rvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793095400;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=B/ZpDq3DjZV/62zmns9uwG24EjevmhON4QmJ/2QUaFc=;
-	b=bSmPHZFgPYpTH/NcKXV12ZslpnAw5Wy1qtVEfboFIKx/2/yj0m0csZJ3SeZYPs9OWyiC
-	 wiJlINoMjvOjGxOeWMXSGMzaYg/I2PxVSpcEh1T67Y9e+RKL54DjGCio61vPq1vBapU6u
-	 KdCZ+L8ABN8e9pDU0OPEYYOJmy0GOnyyXf5BiobO30N9R4suGxoEkVGRqNVIOBW6waQXU
-	 Fjhh1k1R9Hfe3lNlSndtLYMO1+NUwgnPM0FUBxgfpThKWd+uA6UdldiRDNE4meTnEzmVJ
-	 4+Z1pG5KxP4XylD77jmldl3dToDTDhLvPwcb34bPPb5E4c0BKL1XbW57VV14bbtaSYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793095680;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Fy1/w0tKCkDMHDFcbllgMw30STzvQwiUbpmEywxPMxE=;
+	b=CB6lLTuuM0Gcqs+RD13JPCUMpVCWOOn1Wur2lG/OqQBtPMAswr9WdaswMWtA5aAu8aw3
+	 W/nK39VYEf0iUVbFieAhsHg9zKgT7sIBWM8oK5XUZVNOFrZVGkxcQ6L4yv+ajdHALoboo
+	 FLwTuiaDfb5YqGOCEvcvpPF1MOyhTqqy/mztVhJMjngfpRoHYIWUH12n4zYT3DdUXzrV9
+	 UYNdlJJRsB1YpbosH1Bl45pj3kLzZdiySjRBgF0XUAD9napBrfd1ras2HNTNmRAhkMmMC
+	 Q2JXI5h7KZyYRvSZN7U2QT2EDDC1/h+lPOYcNlBKQOxc7Mmfw9YV6B0HmKvJEeYjjiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ayw1f5Ok;
+	arc=none smtp.remote-ip=198.175.65.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC7C606A31A
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 10:03:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BC7C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c423b145922so528123966b.3
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 03:03:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793095393; x=1793700193; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=B/ZpDq3DjZV/62zmns9uwG24EjevmhON4QmJ/2QUaFc=;
-        b=UrWa6xLonU9Z54d6mWKr+cJ5Tq41nkmU3dMOo0bOwWR4k6yivrxZbghuCz7VHryo54
-         ibx0AJqAK1i2l/EPmB8DoLV5U4Snaq3W50fgD7rGJVDE/MQc7tQwwyxP0DwwZst66QVp
-         72RZjxTUF1ZRAA8osVqc6PqRjS4prabSWdwaWxIlCGj9RocApN/2fc+xH4fa2suImpiu
-         1AXBpAw1selYNss4NnMGXtKh8YdAKtuJvBjWe7QcQ8XfjuwJy/7WgnCfiLolW98lff9E
-         3+aBTJJeBPHZbg7DKdmDK51FiCclG4EbGy9PSfOtjrH+husLYOOzHdyAwRuY5NP13Bo6
-         zRwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793095393; x=1793700193;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B/ZpDq3DjZV/62zmns9uwG24EjevmhON4QmJ/2QUaFc=;
-        b=nWouW/LwmXsYL0ZYzUAOArU0FajEMeJMSyBjgQ8uu1XBBYnJwLGj9CrodumuKbW27I
-         Av/Xb5mMFGlG11HidpTHJPh323KlW8PJ07mdnQWDj3gs7RZeNyCG3WfdBeR5qr3H0ZzP
-         Klc7pzR2DTAQn9sQmitehzOX8CRidzgNW6uZvfS9neXmTUJLbnLEbhoGTXZspHd871z8
-         uk0enSwbHCoc0SnOStcEdwg7cjfTxFs+B0NVo20KrJ7TKJWW4QpCq+bijwo21doSdJgO
-         REgW0cyuupU7p3f8+pkrm/b/5p6bVHjeMVI1oLi0VFnYRtPAF5xYZ0mqFqH3KU1PPpdG
-         oxiQ==
-X-Gm-Message-State: AFq9FYI6mEcJn69kT0lgnYKalcXhRP0w5ez+FAMWVDuIdjxokYtPfWBd
-	79GfvgqL+JGpIgK7W+o5p/cQ2TSdlnr/p+KooCzRml6+vi5TtEZ6ZkYWETwLPBy6eOs=
-X-Gm-Gg: AYBFou3k8xWYkut5+mQ2hKgWb7/OKpKlGiEbh4AmJKfMaA19HfIZmPWKsYjkF5VdQC6
-	s36ul3leRXf0Ql51tZF/kc/Bs09s9BLEXuKTTv+bwRFg7PqJXen7uE2+tyrP34J8/suPNL+xsCL
-	01du5njr2l5Ax06L2oI8tmWm5Zkm8s0/X3pH4X5bqpsf8YD+tp2psoG4dkY5VRzzFMjtK/Auxp1
-	edwtP8T15pa1u0PqHR8lilJSr12pd+MNICc+ygYrbW5ZLTY5thLJKoYG9T4FpoI0jONcmyOGWYm
-	1mJi/j43jagbD6BxAt52jEKF9lm/CXi9PWDsDJ9OdzRydMYNbKnxsHFzc9zHVTRsOuSmWF3LRbF
-	F0fH46Jz2FrE3UlDNlhZoMS9l27d6BEITsIHalh8YKNEp8t8gcKNbyNhDYD1/v3AQFdK2JRUX2P
-	jYppkP0J+2HhDxVbWKf7RlfdB/C3INla2pqpdA1zkaoXvJ209zbhuDwhGfvnhAFcSE9mazWHTco
-	UfVG2xZ1yCgasl3GzruwbbNxDnng9CCPBcB2TYSmHq3jlKHNM6Kj+7oUxckfBv6
-X-Received: by 2002:a17:907:728f:b0:c3e:d18c:1d7d with SMTP id a640c23a62f3a-c46bddc42dcmr1033526666b.22.1793095392233;
-        Tue, 27 Oct 2026 03:03:12 -0700 (PDT)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd790afasm420098366b.68.2026.10.27.03.03.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 03:03:11 -0700 (PDT)
-Date: Tue, 27 Oct 2026 11:03:07 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 18/20] tdx-guest: Expose the native attestation
- service API
-Message-ID: <auB21VZhFg3sDcXz@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-19-jiri@resnulli.us>
- <179302367453.58760.3338436189030317197.b4-review@b4>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C141A606A31A
+	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 10:07:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C141A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ayw1f5Ok
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793095679; x=1824631679;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gs69Hr8NaS2oi94sSYiW5CguYSbtSLpu1VvGRgcWZZU=;
+  b=ayw1f5OkLZXXoyqt7hy13F9uCOtmDE838VFRrbRFOYv7t4kkZTX8fq3a
+   4+eUUdlRW3m3acFIyLGEGkCeTiGV2j+7YruRifLUYn4yja5qpi1F71udm
+   bOI0wc+YLQQnxt2zNx4+C8Bntyq1gLf/BNaiKDkTpx1pbWKh2E5JKRN1i
+   2/EP4ZdAftj5SX1DKaivqm2fHaPbuXy8DJtOs8u3ItVzhfRXq7u4UCWdI
+   myz55jVnU78XTyOwd0UzfqldY0W95gmwOhuYkdnmU08RxTR7l5JueVlwI
+   OEQpaCVZoE/eMY9tZiG+nZHveEFwyvwalLjDInagaKRgPxWZtrzlLLVYm
+   A==;
+X-CSE-ConnectionGUID: zpGFK5YwTxW16g+og1vAPA==
+X-CSE-MsgGUID: 44MMTnyqR9KfWkvc0MjG9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1672948"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1672948"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 03:07:58 -0700
+X-CSE-ConnectionGUID: lj3Az8n5RaypGRDzE2NWfA==
+X-CSE-MsgGUID: Aw7ZFwKVS6ysJa7lefFcnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4653034"
+Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 03:07:55 -0700
+Message-ID: <d4b5d0dc-64fb-46c2-a578-8828e14447a3@linux.intel.com>
+Date: Tue, 27 Oct 2026 18:07:52 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -101,16 +72,33 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179302367453.58760.3338436189030317197.b4-review@b4>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] x86/cpuid: KVM: TDX CPUID fixes
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, Changyuan Lyu <changyuanl@google.com>,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20261022210134.612848-1-seanjc@google.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20261022210134.612848-1-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
->> Share TDREPORT, Quote and measurement-register operations with one
->> in-kernel client while preserving the existing misc, TSM report and TSM
->> MR interfaces. Tie clients to service initialization and removal.
->
->The tdx stuff should just be an attestation driver, we don't need to
->make these kinds of linkages..
+On 10/23/2026 5:01 AM, Sean Christopherson wrote:
+> 
+> Changyuan Lyu (1):
+>   KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate when filling CPUID
+>     entries
+> 
+> Sean Christopherson (2):
+>   x86/cpuid: Mark CPUID function 0x23 as being indexed
+>   KVM: TDX: Reject KVM_TDX_INIT_VM if indexed CPUID functions don't
+>     match
 
-Okay.
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
