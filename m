@@ -1,83 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793180729;
-	b=jkAHw+hdRMPQFoF4GIHWN4eeSnYIRm2v0IMpTduPEdHFk/qLuadJ4hDxgLU7j2eh6nz6
-	 aY8BbXhhmlfTnTJLvNY8KyxrCRggF37Ri/y2051p9nyue8yDE/EtbwRU4LtmXLJwJuehk
-	 28ooKMa74yD+IAjNzbBfUgtpD03pepM3AVWk7Sk2yADCw5yOYtUMa+c1tW1Q4NRt+nYBF
-	 44cKuOpqkUi4vgPZFmzgiKUNrTql/8iKyQlIcqJtagf9FIHV4eIHaicpGJcmAGcbQ+OJ4
-	 aqvG1vK2NR7CTGoOyHyIoafehnQEin7LbUSFXwkBVVBiOfwrTHNwG3oXjEut8VK9gbA==
+	t=1793185350;
+	b=2tVCGBKwbvlNhNiwgYz4XcCGkDe8r3d7aR/XNWk7DpBygDfTYolNaL52b9C55d3vBTpA
+	 6J/LV3rZOv3AhWo/r7/jJXGfzwv7JLwhdgxNEThJwN7hIIzDFU+0Lg8Fx2ttpuBAdIlXQ
+	 sfBwO99I0k0KV/mCDiBVBVltYeRWxguo7Z/5bwLohCVOomTTMG0Z9qxldS1embo78sIOt
+	 7Nnl+mOltFIZIg8qxFvRdPpptbedYzTxgqUotNd38Tsoyks03fkXzPkhaHOBOqmvuAhm4
+	 9UVCJUti57MPRfRz/Y30y8N5lDz0g7e7CVcO4Ukwvww6aZxxOEEDOjEOxGcFq0Rc/dg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793180729;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=9aFo0L0jon7+/G9fXPa2tntqqWwFAcaJAliV5DNKX2I=;
-	b=Eia0Y+HS8lB6zed51AHHA8m95UHz3LgQhWiDxU3Lqf3iytaUc8kSN0G0HxejpvKLx7zx
-	 s9wVmkH5EAnm39Sl6UDVDeNVIWsUrcY/UMDQlTqVNQ+oT6/S7ggCvwesD9FYMnEBBTEre
-	 vvUVlmw1GqVD8VysqLFQPIt28Ju/8HzoDm0zkmgapjthFwapqR9HNKnAHPSK/I1y97u9n
-	 nUBDFebv5F+/EmuMy69PSlWode47ja9rJzfBygINkIrJyeyGiVdGgkFhr8T05yS8fw2Xy
-	 o/dYBx/hPlQr/bvC5wFxO0RO4HGSy++3QcuPcUolCvrSX/ANc9VfBKtLKPfIGLBGz7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793185350;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=AKrZ9kPw7ykqwP2X8oM4fKcwGPgA412bTp/Sj4hQS3E=;
+	b=Uv1aMxxhetaRji+BEU+jCdfNM7MwDi7o6AnGBkpxpGJcPMDdV1BkT06HcnU0sh9Dgkvy
+	 +q2R2kfYufXfNRjm2Q2DRn5yywOX0oSCqJpVLHoFB1cSJwQgoVbbJSShrWm9F6uqVQ/ns
+	 yuYWfojLA7vyvfiy1VZ+F/OeL5iJdaCe3IrxjzYRP+QdxFGqXFbo5MyECO1FtD1iawvc5
+	 OboWkihIHg3MM69aD4/Ju6HhQfuihEnnvWF+DnFwO5+ZMpg3GQPD0Z74kyif2p8hOB35t
+	 nxEteT4eaPSZI5rtIV8wdItC+tPgZGcsdbUU7o7XEHKkHkzHzMuV5ar3uQE1CZRnxRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mreYnfeF;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PwmzxvVq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B101E606A31E
-	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 09:45:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B101E606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5407B606A31A;
+	Wed, 28 Oct 2026 11:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mreYnfeF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793180729; x=1824716729;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cGgaP3xn8OVZ4sh0TYyonmgb9hzn2fCnVLUnNqvoSM4=;
-  b=mreYnfeFUU2db7sbnKH+7SqSvHHPAKcW97pFRloElVzcUbyXz3dDoiBz
-   fXxLZ+/oOdSMl+7OpSyCgQTfhxVfJ6TpsDYEKnMEiO70TAfU3475S778H
-   /F/9r1hTnanWwBKWC/sgNEGo+z6cR/iSUMNB/KLY/DTw+tI33mtk5vmYF
-   SCQmpKAzO1SZLUwgewmbZRqAPH7A8QIWe2zYUfz/KSRqOrPeELF+JMX+s
-   uKlnZlZGDIxQ9fQ4Z8bFZDi410gt68Phcqop3KCJfkIHJAFrEpvmZv6h9
-   GdyIpPtLKw7KyVXq7xpwiEnztViJaRJbggbxqzAlh7cjnJVbZlc234XkA
-   w==;
-X-CSE-ConnectionGUID: BarzZL8XSEKANzVTyOsHag==
-X-CSE-MsgGUID: Dvrcs070SsizsOo/WcR0CA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1927275"
-X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="1927275"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 02:45:28 -0700
-X-CSE-ConnectionGUID: mUyh5x4ZSYWR6L8bbgquqw==
-X-CSE-MsgGUID: FxKOblEDSm+28Ot7JQSR0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="6609868"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa013.fm.intel.com with ESMTP; 28 Oct 2026 02:45:23 -0700
-Date: Wed, 28 Oct 2026 17:39:23 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
-	bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
-	aik@amd.com, aneesh.kumar@kernel.org, seanjc@google.com,
-	pbonzini@redhat.com, chao.gao@intel.com, vishal.l.verma@intel.com,
-	kevin.tian@intel.com, chao.p.peng@intel.com
-Subject: Re: [RFC PATCH 15/15] virt: tdx-guest: Accept default DMAR entry
- during PCI driver attach
-Message-ID: <auHCy2idoZfKpdnC@yilunxu-OptiPlex-7050>
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-16-zhenzhong.duan@intel.com>
- <de19ab97-c86b-442b-be23-c921c0831542@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PwmzxvVq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1C41F01825;
+	Wed, 28 Oct 2026 11:02:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793185349;
+	bh=AKrZ9kPw7ykqwP2X8oM4fKcwGPgA412bTp/Sj4hQS3E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PwmzxvVqxbwY8PI7DG65Ltv9s4UT5o9Ffi/MCTXnQPw0H7YuOAVIDyG8VwE80PmrK
+	 lXpaO2UUTRj3jzwU+RO8qq6UzEyDLWRcb2NyFAyir6EaP9gkNstm0qqEZJ32ojXk1/
+	 er/968XF6IIqNR3e+lozlbtorYKxH4J1+KCePww487sibi4c6CuGfi3rMrLejDkg5P
+	 LCD2WePgeDzSgrevVPJbJ+OsJgU1raaKN89KfbMFDF9fHN7cjped3S7lFT/dBZ/TVZ
+	 OiHszTcR0ngQ2jzZ43dqG1gkgdrOIedkcwCqtryoKEqswQSi8VhHhAWRth1aBXPL5h
+	 kMCwMpg6ZJV9w==
+Message-ID: <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+Date: Wed, 28 Oct 2026 12:02:22 +0100
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -87,57 +51,87 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de19ab97-c86b-442b-be23-c921c0831542@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] Fix transmit handling on SCI/RSCI ports
+To: Borislav Petkov <bp@alien8.de>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>, "biju.das.au"
+ <biju.das.au@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Au Dang <au.dang.jx@renesas.com>
+References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
+ <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
+ <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+ <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 26, 2026 at 03:49:30PM +0800, Xiaoyao Li wrote:
-> On 9/24/2026 12:10 PM, Zhenzhong Duan wrote:
-> > Before a TDI can perform DMA to guest private memory, its secure DMA
-> > mapping must be accepted. This happens during driver load stage after
-> > MMIO acceptance and TDI activation.
-> > 
-> > The enable_dma callback issues TDG.DMAR.ACCEPT to set secure PASID
-> > table entry to present state and target non-partitioned TD.
-> > 
-> > The secure PASID table entry is cleared in unlock stage implicitly
-> > so disable_dma is a no-op currently.
-> > 
-> > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> > ---
-> >  drivers/virt/coco/tdx-guest/connect.c | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> > 
-> > diff --git a/drivers/virt/coco/tdx-guest/connect.c b/drivers/virt/coco/tdx-guest/connect.c
-> > index a9d41fd38b64..b328caac0a49 100644
-> > --- a/drivers/virt/coco/tdx-guest/connect.c
-> > +++ b/drivers/virt/coco/tdx-guest/connect.c
-> > @@ -427,10 +427,26 @@ static int tdx_devsec_run(struct pci_dev *pdev)
-> >  	return 0;
-> >  }
-> >  
-> > +static int tdx_devsec_enable_dma(struct pci_dev *pdev)
-> > +{
-> > +	int ret = tdx_mcall_dmar_accept(pci_dev_id(pdev), 0);
+On 27/10/2026 21:54, Borislav Petkov wrote:
+> On Tue, Oct 27, 2026 at 10:34:24AM +0100, Krzysztof Kozlowski wrote:
+>> Indeed that's x86 fault, so I don't get why Borislav complains.
 > 
-> after going through the series, I have a basic question on guest function_id.
+> Really, you don't?!
 > 
-> Per TDX connect API spec, TDG.DMAR.ACCEPT, TDG.DMAR.RELEASE,
-> TDG.TDI.MMIO.ACCEPT, TDG.TDI.RD and TDG.TDI.START all require guest function_id
-> as input parameter. However, the guest function_id is specified by the host VMM
-> on TDH.TDI.CREATE.
-> 
-> So how can the guest ensure pci_dev_id(pdev) is the value that will be specified
-> by the host VMM?
-> 
-> This is a strong contract, while this series doesn't mention it at all.
+> Looks like your mbox can take more mail then :)
 
-I think the contract is already built for legacy VM. QEMU made the
-mapping between the gBDF & the device.
+Someone from x86/tdx folks added such pattern, so it is not a
+contributors fault, that pattern hit.
 
-The TDX guest doesn't need a new contract to identify a device. Instead
-the VMM tells the firmware what is the contract on TDI creation.
-That's why there is a tdi_id argument on host side TSM BIND (though we
-may refactor the interface later).
-
-But yes I agree we discuss this in changelog.
+Best regards,
+Krzysztof
