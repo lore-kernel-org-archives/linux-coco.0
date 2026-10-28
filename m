@@ -1,68 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793214966;
-	b=EON24xyXAOGA/KytMuY2MgqaU7mrlPJAN9HPURWZz9vAHI0taMCJ0MiG/1fIgmwHloeP
-	 s7/Samgt16jK99nzYm8XgnLECOlJfmSOgaPdpi8TpsU/WdeHaqStjNvxTS+JiliMe1bhy
-	 VrxEDbmO/IM7TizqDIm7Q2RVZnB5NBAbbWjqJ5lWYbruY08cdyU4Rqxvn13+mSZD03pRr
-	 49B4z8qHjglKB7WjaKmwhETTlgGkfg0seeq2Kop10N/8s/eMAcQxWmB7FNrWmxxIwfbl2
-	 v+9WhsBIrX0NXiyTLJnvkFeG7/M89WCGzQHxMW3SWhuRcPeRDkWwkv5KEG6gCKA09RQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793214966;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=qGezakZ14m2S2fBQBFRj+wGiFP2dTv5zD8y12G0rUYk=;
-	b=BXwXZ2ofGIvJpXTwFXGiVNGcGhfVL7ySnxsO7Sp8f3aI1x6+VS5Kq6uXNE7seaGmyF4G
-	 y9+NPr7nWUVd8iWkZBwqRrxE+rPaYEk4/BLFnal5McdS+DTuVSkX4NUhqw/6czJviEQ6b
-	 rO6vv3OLZ7gidWEfjWuVcDzWs6pLQ78avgeuwGuqD8j63bVCUcdW8FSIMaHXjQP/82bdv
-	 VFLkOiedPwWbSfKpmtYFmhXcYekduP1EuSRpf3/l/0ftS8Xhc7c7ewwuEFkIPqD602R+r
-	 PiJ4M/Sxw5LSdE+kpzRz+dEDb4LqvZtNP3942uIvj1c8KEddIoX5iWVHPlSRn1Z1Drw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WTpmk2h7;
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.64
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793216935;
+	b=MIA5GjUgbAWHgQBMAmtjipPWy1TLGBsCOPX9AIaExE5kJMNIH/VPJbC7Yzfln4zI3DY2
+	 3wS7LsbW2BOfdNBG6/1pUhxR4O+QDmxc1jQMgxI05QGpsqqkCWh/h9WGJ+1vuw9MckYmX
+	 1S8gPCTb8UbPYstYvqE9SQdhLSPxsYPabTlZj58GLDwMaEg1LYW81jLp8UOstH5/fc/3y
+	 JHpY26pDqSJVQjwR0fvB87pfDorPaX8+22pq3OIDj9BWdtkK36YWWVKfkaysf/WrfiFgG
+	 1t6W+ikxmonmV/sCTRtnXcDEZzF0Kkg/6cMkXS34d/Ap4tJF0fpSc4ka5UW4SM4rI/Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793216935;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=oZ3rtw++Z/KIUuv5THoGOrT8+ZRVNw9dCKfCBdXT5TI=;
+	b=49FBgSTGjduNZlC5IocYUEFZi6HGneS2rmxuib5WJ7JX4QaCl2aJf/e77NTFfA2CYYsO
+	 RBnFpRFl7qPShwBvlY/K3C4xznGG9BM43EcI2lpe0mXxRBr/fkntOYhlhZs+6CHCxMMXX
+	 +3xXaSYjdHnGYzh7uu6NfUbKJU77eiK4rKimGp0HRx1PegUXXQdqQ/U0wcdLic9AZTdJ9
+	 sg9GqW0mQSbGVdkgD89Ng+92d6Uy3un1ugjqyHWETsM8Rkq4k8VWY+XBOfZqHXby0O0vg
+	 oFU31DNJx4c2uvlB127KbJ5ghthA0Y+G0sxFJ6VO9/pZMeg6ploK8IQDVqz9K5R2PaA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=xL5PgNfj;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.64
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013064.outbound.protection.outlook.com [40.93.201.64])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB25606A32C
-	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 19:16:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFB25606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF7E606A321
+	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 19:48:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FF7E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WTpmk2h7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793214965; x=1824750965;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=rRZl7q5Yb7g0I0jNr9cXRIGHWPDX6gfnH7Raa8Tf3Aw=;
-  b=WTpmk2h7GCigQjqCLBxWyahsrnr2uqPKkkZVDaJkHcVaZfxrQuljiUDf
-   cjqYYVTz3cNpH/1ODUzZXSwnyqMBJMPFOx34unWGoNcjkyCZjnz03e1f5
-   qldEzfIyf8kIRaPqHJGEcItNdR+8zExSx7l6K5MD2t85HLQoHcy9mEUna
-   ftI61v+YNp28T8hVPNUZXr6jQ7Y8Y8Dif8HrjU976ftNCKDPX/9yuopkh
-   yS8JQj6Ziwemod8q4aZhUymOvAz6FaXJ798CWNxr+l4Rgsb2L0z1CrDzQ
-   C8H2n/FgSqZrZ03N3bL2vg00Xrb0ysZcLiPguXUrpgyU9e+bBjAuWS2NH
-   w==;
-X-CSE-ConnectionGUID: //ZVNZf1Qw63RHxb2oE/JA==
-X-CSE-MsgGUID: +Vn/bphcRCCtL2L/6633qA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1859730"
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="1859730"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 12:16:04 -0700
-X-CSE-ConnectionGUID: 20RWCkcZQhGqvEM8MSfJZg==
-X-CSE-MsgGUID: FZXQX+YnQMKd+y8FCbeiDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="4987771"
-Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.108.227]) ([10.125.108.227])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 12:16:02 -0700
-Message-ID: <c57c45bb-5047-4aa9-9f06-6ac5f36ff3ce@intel.com>
-Date: Wed, 28 Oct 2026 12:16:01 -0700
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=xL5PgNfj
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r5Km59AhSR9LF3nFpLHsXS63IUl64N8GI7jp5jFbfxTegojlS/nVZm/suKIVBk8TrikBEM2vW5kolvAZvsUI43OIncEZbGi0Rqk3l9YfTqlnWIdNfio8EDC3wdE2FzFpkt+KEj86Pk6IGKC7yTAJGWDn1R7hn2GW5ks8B3hjt1I0rEB3bwcw+/4P9TEocDd9UqUAQH7CJYJBEtUR38MrCGO6uUv5hiktzlsEhxJyExpbKdxi1UZAHxFEl5J+tr+3p1625j2XjaF2jJ2J2kOXt4jzmqhJ9nIKKYb9/LIABOLnLMGfFQkT3KrvcFTQzXUTezSYAzz8BZ/uDF5atSSGSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oZ3rtw++Z/KIUuv5THoGOrT8+ZRVNw9dCKfCBdXT5TI=;
+ b=cslaYG1N2HqnEFHzyiBWk9UyZPUohgveJgN0nRchOURnhm2sS/dPdqx1FqVZzRUXn/isSMsUEskJDFGyiPaTjvzPb87CK3Zuu2vL9OZqq2CoSIfH6o7NrVb03FjzimZpiEyWIOm3pDF66k3ovgSIkicoTMpO9RCU84zk+GUpbYZ/W69KfSucCHyvQFV1bHI6CYaJicz6E9WUUe1H/GMQCxr5aA4YI0cwhhDVX/DkYIuLDwrdu12yj47q+l+Lke4YF6EZN8Wl8Mk3ZbC+h8Vl6xiVwaISbhNbEs3krlZBSG9E6TQKbimg/6iMaUbSejLVJWwlgG0ALxfWill/OsxfvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oZ3rtw++Z/KIUuv5THoGOrT8+ZRVNw9dCKfCBdXT5TI=;
+ b=xL5PgNfjvAXiwKClp6oGkAN1oBmTw0MB2EXgxwkob49VcIJTzwSTa++BpxLD9NXZA0Smocqi4i6O71QWZiN7tncXA4e86QV0aUVgVJDX9AvucD24g1PvzJzhi/5GqZ/HHt9Uo1NhCYvddhqldHu8vCBMKFAvtK0CplRrQ3bzR2s=
+Received: from CH0PR04CA0011.namprd04.prod.outlook.com (2603:10b6:610:76::16)
+ by MN2PR12MB4373.namprd12.prod.outlook.com (2603:10b6:208:261::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Wed, 28 Oct
+ 2026 19:48:48 +0000
+Received: from CH3PEPF0002457A.namprd04.prod.outlook.com
+ (2603:10b6:610:76:cafe::ad) by CH0PR04CA0011.outlook.office365.com
+ (2603:10b6:610:76::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Wed,
+ 28 Oct 2026 19:48:48 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH3PEPF0002457A.mail.protection.outlook.com (10.167.252.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.569.4 via Frontend Transport; Wed, 28 Oct 2026 19:48:47 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 28 Oct
+ 2026 14:48:46 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <darwi@linutronix.de>,
+	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH v4 0/2] x86/sev: Fix RMPOPT enablement on non-RMPOPT configs
+Date: Wed, 28 Oct 2026 19:48:36 +0000
+Message-ID: <cover.1793216372.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,119 +113,86 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org, david.quigley@intel.com,
- lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
- cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
- James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com,
- qinkun@google.com, pgonda@google.com, jic23@kernel.org,
- alistair.francis@wdc.com, ankita@nvidia.com, suzuki.poulose@arm.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
- dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- peter.fang@intel.com
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
- <20261027193629.GK1685504@ziepe.ca>
- <5f33aeed-a20d-4881-9ccf-a69bc308d348@intel.com>
- <20261027234658.GL1685504@ziepe.ca>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20261027234658.GL1685504@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0002457A:EE_|MN2PR12MB4373:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c00d54f-3764-4691-128e-08df352c7bb2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|82310400026|36860700016|921020|261028144727099003|11063799006|56012099006|261022105027099003|261022075727099003|261009223027099003|261021121427099003|261026140227099003|261021123027099003|10067099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	Z2mPeUzA0HbR9A2bRVjn4t/Ei8j3W5KAbygQQ3LUCWKihVKuRT/5us+zwCyps28Ac1kNEAWFNcr7l7o5T9sMTBkxlCb6+gqo0byY46Gh4+u8UK0m2PMnPgidY3UWBRZiERvveZGukk9OfH15lc753NG7q8ZXwbDbjKjNOZwn3u/k7pDU/vmipZU+lZBNo3fvDN43keDH8Fyrm1ReE1E3mM6bKI8f41qcN+4cNcZo3oWORWbn1OM7boMeIro/Q/+Dadd4IsKng56mOY0V6/JNLKzzCQG5Xpoy1PlgP+qhsjwXUCQQoaeeeZBjHVyp9krsPGXC5rNkmWllz5rc0VncyAXu8jJ3J9dKZwL833hO3C0pSV3k/G2GDpIgjTez+WbRuLauSVTF3GuZR5jDAEqYwop/boOYesX/qgm8C3Ygh3q4XXAziV4JMLSRgncW7xpXM3eehCPTXddVXY1HwCioRnR21wWTY2hSnYk3U/QKVdUpjMLn/JxI3AsfaLsmX7o/MCeTmwVj5CbGagDm+aARHhFeCN2tAtuNvMTC4fNS3louXmwdZ9dLhkzyfK9ALWRVSdbt7l95Wk3n2Kix+W1lenoGS8cOcD2jS6+CY1es1PwYDP/00Ix9aFIX0Um+YikIBiydzeYi+95orYKIsDsDjNssaqYEK+9GD8IfME04yxApasSF5vofpxN9B0JY13ziZCvYB/U40tFlLqmKM7/ZsR4a9Fj/8PYmmkfus+r1m6bBFmxDJign9ov9iqSTY/i1
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(82310400026)(36860700016)(921020)(261028144727099003)(11063799006)(56012099006)(261022105027099003)(261022075727099003)(261009223027099003)(261021121427099003)(261026140227099003)(261021123027099003)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	2RfyMCSmFVr/U7c+kKh9wUvZLcBsV/nu6kaELnpCT+wZiZkZxK/nw1prDOvrCZ9gPB4BmG0vLLxBu++9nHMDsROQmNGmk314+quMfm3TNWAUrb15aTTtdoGCoxQvNDWiG1GIdmSXLAEt2zdJjA6HBl1yM8t1J+w8K5d0b1pWSLmbBkbDXIcyOXeI6jZhO2zCBQgoANxgekVCpb5l/cs8fSSoYZ0TOVmC/z1iD1kDMGnhMK6sznfl3Jowyb3HTgbDaLPeFZ4/prDiCLRCW0sdYje85Il9PvkLArljZlgAWpOV2kI51+CUL5wW0+QfJlNbdUL2F7PuucU6/vlORr/PGxLs+iaGpXwaXKnjmm6HphCmsANA8AXxt7R1Srz8fUuCxn0kn86I1rU+CA22Fg00H5xTJBqs6DQuNAMej82aTiELdUYgghSe7l/ztRAdAvlr
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 19:48:47.9430
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c00d54f-3764-4691-128e-08df352c7bb2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0002457A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4373
+
+From: Ashish Kalra <ashish.kalra@amd.com>
+
+Two fixes for the RMPOPT series, both for configurations where the
+RMPOPT CPUID bit is advertised but RMPOPT is not actually usable:
+
+Patch 1 clears X86_FEATURE_RMPOPT when the platform advertises segmented
+RMP but the firmware has it disabled (contiguous RMP) - otherwise
+RMPOPT_BASE is programmed and RMPOPT issued, which #GP on a contiguous RMP.
+
+Patch 2 sets up RMPOPT only on an active SNP host by moving the soft-init
+(workqueue setup and the "optimizations enabled" message) into
+snp_rmptable_init(), so it no longer runs on systems where SNP is not
+enabled (e.g. disabled in the BIOS).
+
+v4:
+ - Patch 1: drop the inline comment on the common fall-through clear (the
+   rationale is in the commit message), and reword the commit message so
+   RMPOPT_BASE programming is no longer attributed to the "RMPOPT initcall".
+   No functional change; Tom's Reviewed-by retained.
+ - Patch 2: instead of gating rmpopt_init() on CC_ATTR_HOST_SEV_SNP, move
+   the RMPOPT soft-init into snp_rmptable_init(), which runs only once the
+   host RMP table is established (CC_ATTR_HOST_SEV_SNP guaranteed).
+   rmpopt_init() keeps its X86_FEATURE_RMPOPT-only gate and drops the
+   device_initcall.
+
+v3:
+ - Patch 2: gate rmpopt_init() on cc_platform_has(CC_ATTR_HOST_SEV_SNP)
+   instead of the X86_FEATURE_SEV_SNP CPUID bit.  SNP can be disabled after
+   feature detection (e.g. when AMD IOMMU init fails to enable it), which
+   clears CC_ATTR_HOST_SEV_SNP but leaves the CPUID bit set;
+   CC_ATTR_HOST_SEV_SNP reflects the final host state and matches the gate
+   in snp_enable_rmpopt().
+
+v2:
+ - Patch 1: expand the commit message to spell out the CPUID-advertise vs
+   firmware-enable distinction and how the configuration arises; drop the
+   trailing sentence; add Tom's Reviewed-by.
+ - Patch 2: rather than moving the announcement to snp_enable_rmpopt(),
+   gate rmpopt_init() on an SNP host and keep the message there (Tom).
+
+Ashish Kalra (2):
+  x86/sev: Clear RMPOPT when segmented RMP is disabled by firmware
+  x86/sev: Set up RMPOPT only on an active SNP host
+
+ arch/x86/virt/svm/sev.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 
+base-commit: 250ee734115bca1c1f7a38d838909aa83cce87ae
+-- 
+2.43.0
 
-On 10/27/26 4:46 PM, Jason Gunthorpe wrote:
-> On Tue, Oct 27, 2026 at 04:09:19PM -0700, Dave Jiang wrote:
-> 
->> There are two issues for TDX Connect. One, the device info is collected at
->> SPDM connect (TDH.SPDM.CONNECT), not at lock. TDH.TDI.BIND only returns the
->> interface report. So the measurements a TD sees at lock can be from well
->> before the lock. To get measurements taken after the bind, the TD has to
->> ask the VMM for a recollection with its own nonce.
-> 
-> IMHO measurements taken before lock must never be made visible through
-> this interface, it defeats the security property of evidence within
-> the locked session. I would expect the guest kernel TDX driver to
-> prevent this.
-
-Agreed. I'll change the guest driver so the lock asks the VMM for a
-recollection with a nonce the driver picks. Each lock then costs one
-recollection.
-
->  
->> Second, a device may take a runtime firmware update of equal or higher SVN
->> while its TDIs stay locked, unless the lock sets NO_FW_UPDATE. The
->> TD isn't
-> 
-> Sure, any of the live update things are not really relevant, the
-> evidence can change asynchronously and without notification, so we can
-> just ignore the issue. If the guest opts into live update then it can
-> only rely on things like min svn.
-
-makes sense
-
-> 
->>> I'm a bit puzzled by this optional challenge concept, I haven't tried
->>> to read SPDM spec yet, but it really has a way to omit the challenge
->>> from the reply? It doesn't just replace it with 0 or something?
->>
->> SPDM puts the requester's nonce in the GET_MEASUREMENTS request, and only when
->> the request asks for a signature. The MEASUREMENTS response always carries the
->> responder's own nonce, and the signature covers the request too. An unsigned
->> request has no nonce and gets an unsigned response.
-> 
-> Returning an unsigned collection seems like an interesting use case,
-> but why would you want to do that in the first place?
-
-I don't have a use case for it. That was answering whether SPDM can
-leave the nonce out.
-
-> 
->> The empty challenge in my provider means something else though: don't
->> recollect, return the evidence collected earlier. So it's less "omit the
->> nonce" and more "no new collection". Maybe that's better as an explicit flag
->> than an empty challenge?
-> 
-> I'm not sure 'no new collection' is an especially useful thing. Since
-> the kernel won't be validating the signature you still need to pass
-> the expected nonce from the prior collection back to userspace so it
-> can check it.
-> 
-> Is there some specific use case for this?
-
-Getting the lock event's evidence. With the suggested lock change above, the
-guest driver collects it during the lock. But the lock is a sysfs write and
-returns nothing. Userspace still has to read the evidence to appraise it before
-run. The device was already locked when it was collected, so the read needs no
-new collection.
-
-Userspace doesn't need the expected nonce passed back. The guest driver picks
-the nonce for the lock's collection and checks it before publishing. If userspace
-sends a challenge instead, that nonce is its own. The collection's nonce is in the
-evidence in the GET_MEASUREMENTS request that asked for the signature.
-
-> 
->>>> 6. tdx_attestation_test's discovery_and_construction_fields expects an
->>>>    inheritance chain of 4, but the TDX family inherits ctlv-attestation
->>>>    directly, which gives 3. In a real TDX guest it fails with
->>>>    "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
->>>
->>> I would have naively guessed this should inherent from some SPDM family?
->>
->> The TDX family is the TD's own attestation (TD report, Quote and RTMRs), with
->> no device or SPDM in it. In wip_attestation_all_1 it inherits ctlv-attestation
->> directly, so I think the test's 4 is what's stale. Jiri would know for sure.
-> 
-> I think TDX report/quote/rtmrs should be a different familiy from TDX device
-> assignment SPDM. They are completely different things.
-
-Yes. That's how wip_attestation_all_1 has it, and the device side is the SPDM family in the POC.
-
-DJ
