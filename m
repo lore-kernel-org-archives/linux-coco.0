@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.218.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793202008;
-	b=pQ7v/cvgQxAl3P9nULC2RT/VR7SU7i05hBafNjoGHqjAfpIfQz6aaNXiafxaDrwTQTPa
-	 bvDRJfhoisrdI7HUAE/fXrpJkIMugT1W+WpH/YHaAycNHrkvIfZIwXPhJHz85VZdFZmhU
-	 LNFJDCX2P8uBhS7+9U2gRMFG+RVWsspokjQdPwgPBYBYivEVkAPgQkhrfIFCWKHwsaBHL
-	 lkBRmUmq7HJcDi15yt1cs/3RtSK/L8nxYXutyACRaM0EVYjUrn8CrAMpKAsuYcM8wiGYd
-	 iPwTu9kU4TD2+WhbXdKyEZr3Y9qtMvu5iogtfN/TSREjTPMQex2xxOpb4G2F0+v/qqw==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793202064;
+	b=GcEVmOLu7/yGOM7XOVMtaamE7rkbQx0+a7ofHcYITrhVKE3ArC+C5fbHJ5Fteoyz91De
+	 S3xSyTvokGN+8h5T5au5mPim6ElI4LzxBuWhob6ie3SUPT/yFf6ANtmqsymS/9bSsi0h6
+	 Yr+9u42fdz+CGZUPYDiclPiBeO4boyGxS8TaEsNNgpn3BYxXrfLfMX9R/y3QemAPPNOCG
+	 m48qurybyxtSkNGOqJSim5bgv70pTkUF5CHLpebpx7EemCBfSfbvuZW6quyqz6F9RVaKM
+	 WileD6itUs3WHJvZNpcbpcpile1dWAfEnWrOztQr3mhQ8rw5ZwccMHaZuwqr+xURzRA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793202008;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793202064;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0L3UJe+6XjER+KzlgRD/7xotzxSyGvuQzLO/yjOCn+Q=;
-	b=QVOZ7kh3MKsrYgY+LYKzK9iCZwwIxMe0h+vRK2aFtEpCw9wOIPbF4JbgH2M+TidU0Gin
-	 6zsfgpma0Fk1xr8seiEqkhVwTpasoSbF0BAAUFudo/tVThkbn/pHV8QroNqEg2n+x0YKi
-	 l6S8qe3aEL84PgH/NmbuMBVkqI4+XUH3IOiFBh3KWLYJA0hiRFBx8Q8VqVqEtLrLBMK+A
-	 AVW1zhfM8Dr0af4LwT6zSgU41Ibesve/EtmtLDs3Qso59xV1y1TT6vOoQvcv85c14/DCH
-	 0FFvgOmmOfyvfD8eOEnlp1cYYD07b/CowobMIR35THTOe8WabO83dcU3j+K3QoRNadw==
+	bh=35HLfcrc/AjiCKvsVtxqxuglfLVc60GMP3of72tM8d0=;
+	b=d26wK7+Oly4afYdAHxT8Pb+WN2PJFIWT9lWYVfUftoJ7OypHxPi79yM1mGBlW/MB1Qux
+	 wu1TIW03ruDrxRNBTcCSoqV2pj+fCxnkXH3IgWAhRZlICbyL+SYTESWBgn+m8JFWx3UFS
+	 +cgxK1JtZZcpxGfNRSI6IkDq4bw6gJ/ZVXlKE0QyhYP9kNwtVl2xbpd4cOHs/J2h0wy7Y
+	 rwDs8o1d3JACWzjNw9vKZka1QRqfHg3XRKa8LjJDzHoqquQ2DJYlqMa0QZbSFYd9P51PB
+	 PjCrZj7DB8m4W90NCzjqEnaHcqJgOQQfhpFi7A1yCIEsZL5mFeki6ZHY5qzc2RVs4uw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B+Uj2jxJ;
-	arc=fail smtp.remote-ip=209.85.218.44
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="U5x6y/I+";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.44
 Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D59606A322
-	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 15:40:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3D59606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810E606A336
+	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 15:41:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E810E606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B+Uj2jxJ
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c450ab1483cso172267966b.3
-        for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 08:40:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793202006; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=U5x6y/I+
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c413dea9ca6so189548766b.2
+        for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 08:41:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793202062; cv=none;
         d=google.com; s=arc-20260327;
-        b=d42TqFVQ+wbKoi8rjc3Ooh0DbP9CzO/8eNE+O8ezqjfPiyAzKvRAtmHITzddSjYsXn
-         zTWqPDPLoIfy+lwCsFz2QuJQQiSaJYlfW8+GCFJcOiXy+m764DvODwJX+8j1R0TzfOX0
-         BMfVyGLRSQuVh+uq+Mywg26oa8cRBm99+U1GmhXk9Sscabk/ZNGOYsGCx65OpI5+I591
-         BfKtXrKiUipJRWEoHQmrOYuuLXRUSydjpN21sP/nc3syeufAEIOInqMVmiTTuwrwyFco
-         eT6ObL/hwqbzUtcGtdRKeXEEQUTZQItmPT9Z5aD5d7R84Fr7JJMqBoOMnQTYHJskAaJy
-         o0Yg==
+        b=QMBITWl8XBXrW8wocLGUCOe88rL1yzwe17UXPRc7oyHLxuHZ/RskuAK1Nx4bRy5R5W
+         qvg80YCfjb3LGmszORcf11UvYki/LYGUg3kZVDlwDa7eWv5ENJSnAzRc6Wdnz5sTyXpw
+         nDZN94cGbNGGTy45y2XguMKmGkf6NZnXdE6Hd9CfhWUy8HERovmPvG+O2p+VhozSJ+J9
+         4yqHwoay/6UmJT4FH8aoVctIYArH1LdzrTVYiFowD4kCx/uI1fP/uNk31HXGZ08+w8pa
+         /1LVkJhlUvfb8RHOQCWXpbGUOT3GfdCOxbtW/LszYXsonwVvUBDqS13UWXtvtgnsHw17
+         SEUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=0L3UJe+6XjER+KzlgRD/7xotzxSyGvuQzLO/yjOCn+Q=;
-        fh=mr1PoyoLJEou919VcwufQO5ocsB3OJE9t6jW79rvzTM=;
-        b=GvDew6LqwnLaGr/F84v8RPnczCE7pkMJI16m/z5B09C0fZFMnBu+R8Pjqx5GZg/zI6
-         IVd/8b6wuFtZyqA/9lRRz5Q7iBagyQ9GMtj1IGvVYzeNJqFMsXYkEXoHpJr3ALQs6GOX
-         P7IRonoJNEBtVL+XJiMA+7m0KThEJEnc/3ErE8bkwR3uKE7ikJKycOQvUj3An50AVJF9
-         29NkULE/mlTMZbFTX9r0qTn/yHzXRz7NFsG+7XyXAnyZR/gXalJ9kOtSMZh1wZHoqwRk
-         RNadFNGWUt/kNl6wZvws07WfSfz6rw6DeGOdJIPVLYCssXjTlD6VknVJ17CvR77PsmS0
-         OvBA==;
+        bh=35HLfcrc/AjiCKvsVtxqxuglfLVc60GMP3of72tM8d0=;
+        fh=XoQlAXlMWSvBZm60+jwyFYHT2alfx0D94SERaGOScL0=;
+        b=PTuxRk3To0jpGLnPFeL6PD5FhIncAFmht2cde7WgKf1GLTt4etlsNiLOIHaQ+eDLtT
+         9E6DsOTO1DU5HQJ8b4vkGfOLcpwbYn9APjZJA7rSrNFtXwY0UZhBbE3XgAUdnrPYBOhj
+         anDOSpcUSGpvyPN2pLp2mO58cy9IEJsNDzT/aEud48e39pTkM7K/p1zuUF6k6YLIPrXX
+         xdJ58zoF1WLwyowzYJf9ltqw4oOCmACuKQpEZmIzId8sfKp7Jz4e7TXQ3xkDke2sBpYk
+         A/9jJ73Gp3LQsb8tsULN04keyYZWNcMagXmJxLZQNtW1SAzonPQetJ33I39wN080h5Zc
+         E2/g==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793202006; x=1793806806; darn=lists.linux.dev;
+        d=google.com; s=20260707; t=1793202062; x=1793806862; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0L3UJe+6XjER+KzlgRD/7xotzxSyGvuQzLO/yjOCn+Q=;
-        b=B+Uj2jxJSJ8CknYYFVI0jCysTuf3YExrOhBc+gN4vatjrQDJqil9Mq7z41jeqSPSlD
-         9ha20TMB160wRmDuP1V12/jKxr8aV8B9sHL95eoikwOdhZ4h4YjGwFXD1S7S2nz/7Nys
-         3JVaPkPGn8WZvjq1vqz1gDcSjihMfzqabRjNmO4qo0D8C13n4qIy+s96SGTIDmZtkvDr
-         NiAsjyKkKLweOxDFNCDoMG95XxU5Vam+ZVacRKMEd04Zfrc6ofsD31wUB4ZLzWEMO60T
-         VTNb3z1+5TW8Va7QF0MVo0Jwlmg+hRv/kW0d399K8ubZdJbmNpcx6IaQiOTySL9GUhRU
-         HwzA==
+        bh=35HLfcrc/AjiCKvsVtxqxuglfLVc60GMP3of72tM8d0=;
+        b=U5x6y/I+SgkzclrFCXcxeYDhV6SGSF1EUL4CkO5cve20y6k3MDKYIMxzwlYSe3ddDV
+         u2KorleDKwhacC+dD6kEyMZAllE5LrZ4wJJeaik3Os5z3mT8yPFNuDm4u6zHFwcPuYEk
+         BFn6SM89CJHSIklLxD2lphwatCH2kLlMlU2fU0yM1mtb0SQAFBhKmU4leOKkG7sByU3R
+         vgY899KEOevA2cp0dVqwLBdrpedRx1hIHZuxIKOop5ir0Hhz3FMii2sXYjs43J9s4g3N
+         C1ay5ax7I68Fy2bSKdFnmCXXViZNM411YnPTDZ84CF8koCvDgyq/IinO+rcs9jXQH7f4
+         eAfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793202006; x=1793806806;
+        d=1e100.net; s=20260707; t=1793202062; x=1793806862;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0L3UJe+6XjER+KzlgRD/7xotzxSyGvuQzLO/yjOCn+Q=;
-        b=pnuDcAUlZ38p17Z5d0ieZrgKzj7wAjnbKzfAgRqTS9m8tVnJkZy0SiRfOhW3vzbxnQ
-         bHEVacPyeufexeKEnoKEPdnaw8obkYIgBeCE0AVvSyLHIgGKJUE8XFPd32hsaNQYuluq
-         KJK+b2Oxqq6L7sAoM6Z/2dvUfRdCVhE85aIwfxix+ADqpU8pl+yrc4uYvhKkAK/vH+Dp
-         idiQJQA4apxJajYjUME4nmUEAT5x1jZ2XohjQqVbVN3sDNpiA8qio7g8HPtVa5xX/bHS
-         rnsk3rsqVnkO38Oh8lkJrShZsXodEZqnAvhsGnngE6MOOYZjCZ8JcUZ5xws81VviFExe
-         GB7g==
-X-Forwarded-Encrypted: i=1; AKwUvBzccRKVvKXPezbFuO1ZbaRjtGNFyJVKor1F/ORKJjaIHuMEJlbr+4ru387GHlUzZcLYV0n2VOKAyJak@lists.linux.dev
-X-Gm-Message-State: AFq9FYILJ/5TpwCLGNIZDjZYvsEtGCeYGOb2nzVQtHfyElfMelh4G2T4
-	DVkUvuuGdrLpJszIhwKQbNL7+lQhKbNjFxW06zknouwVYqDXNkvkOeDxtyCbJm0F51QOMtDJYbQ
-	VzQuQpFbo+rpHG9zJxCGKGQ7+OGrH8oH6VfhAyJBt
-X-Gm-Gg: AYBFou0v/OzNfjXNd8R736dBqxILTY5tF3oK0DXxgIgIjo9q01U5M5GlP+BoZZS+BBE
-	fTYgZSDFQ/73O5hZrVinnlbgKFGskN0wiAPid0WzrjqBiC6EOBDYrW1z6WAFoFG3MjhuC1RbSMv
-	MU+vDeCj6EpwbGcSJbR5ZTJB+BSCwdm6un5oPuKHCtL1ypJgJcsbmYr7rUQtPG69HI/h4rsfRNi
-	AxQZueGduIborTqh+flWEq0TtcHHEAdHw71uxCnSCDLhyNBYooJt1vaReNuUFMwkE4Y2tYNrTXy
-	BjFA35OJucaqZmz1g4wbUsvnBiVH6vCh+Y8h7FuEDYwk/8zCJ4JoKwPE6hLhncFMvrvyxahJmEQ
-	2seeYXB9NSI3DVX7JaVIiIzIc1K52TjQlQo540oICcCmIqaeZIWqOQR2SBIM77bWFfw==
-X-Received: by 2002:a17:906:9f86:b0:c41:960c:8c62 with SMTP id
- a640c23a62f3a-c49bdfecbf3mr243566066b.30.1793202005586; Wed, 28 Oct 2026
- 08:40:05 -0700 (PDT)
+        bh=35HLfcrc/AjiCKvsVtxqxuglfLVc60GMP3of72tM8d0=;
+        b=RbRKGd3YqB+MFvRTjde87dC90WXo9Dk+AdtOZXZ++08890H7bCRF/07+mkE7/x6wvB
+         dMSuFrHk1Tkivi03I6Gu8YtPs3lRuJohVkJv45h9FdBuqAKGnvUoXkeucPeZOCFYm5TZ
+         /rWAuJEr+2LKAJVUleQ3y8laPmdPFSqmx9sgBj+RJnvOoHTZ+ZNHWYhEHX6jAQ6cCsP3
+         1P2TfNaFndNQBBIWeWNNZzVm7c5kIVFs6kWP3pDcodK6a539Fdn/NrYYPSwSHMO2Y7FY
+         cJEXYxc1r2dMa2yjWxwYdk+qhPVBbii9fnY7bcY4lTmTn7mIKAoO1dSx2YHlF2sPOnGk
+         j+PA==
+X-Forwarded-Encrypted: i=1; AKwUvBxT9xELxvKpKvlaxgvTO5zbuAfqP0d1c9EtcV5qvVZwnjFzZGrn6zlJBj57iZnc7fjq+pS3Sccvsrt6@lists.linux.dev
+X-Gm-Message-State: AFq9FYIq7yFvurDHKIrhqXinVwG6SpC1b7Mbw9PJCMJfYrUszBmTuDP5
+	rIWjSm6iesa58Oz5Ed/vv31GSafwsxMU8JsunnyEpd9lRyFM7pR8Q1oOJ7iDzBcHs6kH6sriL+j
+	5OQD3JzmJAjR9p27V15mw3B0Uf4j1nUAzV4k4yZ0O
+X-Gm-Gg: AYBFou2HlzOeiEGLKJ1+5nXfNcqkZUFkc6At+93hklvrKE4Py+wv+fXnv8JLsnaswhX
+	6U+uQlSLDJ7F2ugWi4iQ+VQKvvBDu3Z+DesN7hQCr1B5tDTvnLsZ0komunfYfCgHIWeMax61/FQ
+	/XbkP6cF9GR15RuTN1sIOjMhL1Ywim5bESnA9l/oPPvL2ISw/TAFtKwNU+KvBjUKCAvXr7nQFcw
+	ohdP0LW/g9fyaiD2I9n1sD8afg5st+9W6V6A+A7pw9TD2oQElCeiFS0J9TTZ51PxGGVsoOJhG6s
+	vOtB7AIPdHs0OsKHogrvJT5b11ZD6H7V2azPgpShxKk/P2P1snzYluCv4J3gAFI0esWf46wH8ly
+	1eGTBpAhQu7hcsVbleyZX3uTic8w+q6cmniJFJG82OjmNhFp3CUdvgovNsrvqfdfQYA==
+X-Received: by 2002:a17:907:3ccb:b0:c41:30be:4f82 with SMTP id
+ a640c23a62f3a-c49bdf82147mr200595566b.39.1793202061724; Wed, 28 Oct 2026
+ 08:41:01 -0700 (PDT)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -105,15 +105,15 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
- <20261027025616.1632690-11-kevinloughlin@google.com> <20261027052057-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261027052057-mutt-send-email-mst@kernel.org>
+ <20261027025616.1632690-11-kevinloughlin@google.com> <2976bc2d-2642-4448-9c1f-ec13e67e45d5@kernel.org>
+In-Reply-To: <2976bc2d-2642-4448-9c1f-ec13e67e45d5@kernel.org>
 From: Kevin Loughlin <kevinloughlin@google.com>
-Date: Wed, 28 Oct 2026 08:39:50 -0700
-X-Gm-Features: AclHuK_MLzRdQo76ylDi6PC5wwAQyJcXzBectQ_iPw892kOlvxApU7OSZmy7jAE
-Message-ID: <CAGdbjmJjBp4WPqkWs0KNLpH2ve+Q+y26yOg1PO4TJHwKfu1uZw@mail.gmail.com>
+Date: Wed, 28 Oct 2026 08:40:47 -0700
+X-Gm-Features: AclHuK9oWsApJE-SwbWIqUTDRpRi_a-FG1r_BRCTB7JJ3QabTlKp_kjVIFg_bKo
+Message-ID: <CAGdbjmLXhPkutP3yCNYghP_tkvHm2Sa+6aBHF1+9abaai-4bAw@mail.gmail.com>
 Subject: Re: [PATCH 10/13] virtio_balloon: add higher-order page inflation
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>, 
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
 	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Ard Biesheuvel <ardb@kernel.org>, 
 	Kiryl Shutsemau <kas@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -133,10 +133,10 @@ Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2026 at 2:35=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
+On Wed, Oct 28, 2026 at 1:59=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 >
-> On Tue, Oct 27, 2026 at 02:56:13AM +0000, Kevin Loughlin wrote:
+> On 10/27/26 03:56, Kevin Loughlin wrote:
 > > In confidential computing guests requiring page state transitions,
 > > unaccepted memory tracking operates at the EFI unaccepted memory unit
 > > granularity (typically 2MB / order 9 on x86). Inflating the balloon
@@ -151,52 +151,13 @@ On Tue, Oct 27, 2026 at 2:35=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com>=
 > >
 > > Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 >
-> I'm not too happy that this rides on the legacy PFN thing
-> which is after all limited to 44 bit addresses.
+> Sorry, not happening. There is no migration support for these (large) thi=
+ngs,
+> and there likely won't be any time soon.
 >
-> And given it is passing around 2MB chunks, then one 16 byte descriptor
-> covering all of 2MB would actually be more efficient than 512 4-byte
-> PFNs.
+> NAK
 
-Agreed. I debated initially doing this in a single descriptor but was
-trying to avoid also needing VMM changes.
-
-Regardless, after reading yours and David's comments, I honestly think
-it's better to just drop the legacy inflate/deflate and only include
-the free page reporting functionality if we end up adding some form of
-CoCo ballooning support. Beyond being inefficient-at-best here and
-potentially making fragmentation worse as you noted in another
-comment, the legacy inflate/deflate path is the biggest source of
-bloat in the mm/ side of changes for this series.
-
-> > ---
-> >  drivers/virtio/virtio_balloon.c | 87 ++++++++++++++++++++++++++-------
-> >  include/linux/balloon.h         |  1 +
-> >  mm/balloon.c                    | 67 +++++++++++++++++++------
-> >  3 files changed, 121 insertions(+), 34 deletions(-)
-> >
-> > diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_ba=
-lloon.c
-> > index 11f74848fdc4..d162c162b496 100644
-> > --- a/drivers/virtio/virtio_balloon.c
-> > +++ b/drivers/virtio/virtio_balloon.c
-> > @@ -182,6 +182,13 @@ static void balloon_ack(struct virtqueue *vq)
-> >       wake_up(&vb->acked);
-> >  }
-> >
-> > +static inline bool virtballoon_cc_needs_state_transition(void)
-> > +{
-> > +     return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
-> > +            cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
-> > +            has_unaccepted_memory();
-> > +}
-> > +
-> >  static void tell_host(struct virtio_balloon *vb, struct virtqueue *vq)
-> >  {
-> >       struct scatterlist sg;
->
->
-> Put all this, and preferred order, etc etc in kernel core somewhere,
-> and expose some sensible APIs that devices can use.
-
-Good call, will do.
+Yeah, you're right. Another great reason to abandon the
+inflate/deflate aspect of this series beyond what Michael pointed out.
+I will follow up on the cover letter RE: how doing so might provide a
+path forward for the CoCo free page reporting by simplifying things.
