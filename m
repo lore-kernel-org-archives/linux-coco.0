@@ -1,100 +1,130 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793211180;
-	b=fCij34E8WicnCIHckfYRPd3cw4zymgrjox+DsyLIvGIVrOXkC1sN5EpnOsRhkVLSS8Wl
-	 fCU6h/AnuVoNoDSFPJqNU4PHgpGMoQVVZOvBj0Kuk8gJLB5mhHd5ReCAT79oTQUcMdU21
-	 fq89Y42cLwt+Xj8DP6eOWkZT4cpWHfZ6BLG+hmhHY1tOUY7GN8FMeuKza8NtDtFA/SFxZ
-	 fsqGwJS+88MMGZAvSHKkfY6h+i9GCZS8gWJGA2KceEBaZW3vZQMTg3UC1pm743MfZ9uko
-	 o20FP/1eo9LPpI3rPP66XP5BoPT/PD+L8r6hN+n391aPSHuA0JEKywldlH7SDP71bfA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793211180;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793213672;
+	b=G8lYz4ErlT/rbaMmKoO/aBMOe8VnRsGvOos8tmGDULz6wwyRLVisCe5i2ZvDMvDZZmCz
+	 tzUR5gVuNfI+oiXwKXtg5LXJiy4mw8ZBebXz+Z7bQaWr+eqwlyt1eN/RJFfKMyohEuuZu
+	 YLZGJrNijhI51f80KbK738og8EmoaUGl6DFsGfYefndRHuHiy5pzbdkTed/5LbATNA49f
+	 Qqks/pciZQyRc3fqaU2FweiCyTZRxLdMfKoyA1jvuUADFBKsuNpkIYsk03/VRmvA+XEV/
+	 1C5rSfjrsxIi88pDPRbBZkYt4HbjCIr1aw1kqIfCd/ZGQFUdhzwjBY6v130ewz6nhJQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793213672;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ARyFxRSvqAD+wB2pvv1XS401e8GE7i3ocZP4rplHOIw=;
-	b=o5QC165DnvIBtMwMebcoBZ0vSHIODRYUyP8Die6OzuQq1d3J+uNYCLs/BpSBFjoV93yJ
-	 zPzWqYjz+L2/+2PhATfXiT6IyT29FGONI2zdHwkJhSdf1Ceb/FmRHjXeXE3Vf84QwRhLs
-	 qxK6q3XUjElsk7PxWWnFQLwuWJt4Z17LK4e7w3wFOjdC4FyBcJ0jtyphWitF2qBmMr4/t
-	 ifj2nCwZs27rr84spJn2fRqgf5lLB1ylwHdriW06JHeherj+o91d/HpreHBDzt3+9R4GR
-	 0ZmAapgT1pPj3BI+KowpQxVxsEw3gYz6BiCETxCbT8hZhxb7SHT6E58sV7jR4+ueu8A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=b7YvA559;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.178
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
+	 X-Mimecast-Originator:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding;
+	bh=0vc/BwRMumh6GCDfZk9HEhgcPOmsWkZc9E+U0h5Wqek=;
+	b=gTQNbomT0fxFh62A4+62XXdbFK8QLUkgwxam1/Bcjni1eC5Gafi5tI0KC4FIUQllzC+c
+	 ReQk3I8IuaHgd5WigRZ9fk6apP9S2PwxXyvIgZ3sG6FnqFWS/oF7PJBlx3MMarf5yy8Vm
+	 uEaivQi6o3PYstywUI/KPBuWZZaHevQNYQoNavruEENdnjDkwYVua1/LELy7NQxLsIQ9i
+	 WAve52s1pabcFnJ2D+uG0L+FkV8RpSDW/2A0cW7FSMwzdLDjy0NAnR5smpUZvM++1+QpP
+	 8kF8mn7hwWagX2DSKCzC4Gabx1BXR5iG6+J1YvxDxGviWnQpLyZAIVEpZEYCGLc3FdA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="EuckRQh/";
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C209C606A325
-	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 18:12:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C209C606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56976606A320
+	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 18:54:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56976606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=b7YvA559
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-8b10ac6ab7bso12136547b3.1
-        for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 11:12:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793211179; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bYZE1q0+bIHCYx7gGQY9JLyMTfVZiWRj7cgEZIybz1bh1QLo2hAhCRW4rqOn4Y8Lg3
-         trznnormxMvH2P2lW9a0ALpn4btqPDsWDTWWJeYNDkXrNFyOaF/SBzpxuH0+vRTx3e0k
-         IVl9WipONFNF/k6Flqmzz56aqg41x/ocNBs8b7QvOFiSe6Txpy2NT5SEqe3VvUyjC2Nm
-         Pq7bnkaZ7N7P/1epSETApzfB0o2oIr9UOtsm3wdxjptKBPZS5uJWCFG6QSPa2NvCXZQ3
-         IKEVtoRYyDk4kPf+SptqlFaFNOy7pbPOyrMs2/TXs7ZYWA6Cll9TB/B55vFRAUFV/PzY
-         RkLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ARyFxRSvqAD+wB2pvv1XS401e8GE7i3ocZP4rplHOIw=;
-        fh=54TC9zbBCNzhwRkuvHVvnjpwD6LzspOWFrE2JdJJYg4=;
-        b=stcs4KblmJbQlXmiONbWbuntYV/jffdmrutjBa/1cVeT9SEUUNJDOV5LVXpM/77gGC
-         nrhcVWXhCpQXugmeUuRlSFb5aMef8Frd+8LkgiGsR9wZhSd9xg4GZPtZIj/x0iH7iyjK
-         WxukFkIwZwHgS0MyUiWxEelh2ulcYvPKRqc+gMUV1FMvA0uavhmG9T0Sj1Oitp51PyMO
-         aw2ass4/6DRnshFXW7TajyQX2KBpGLQpRs1Per5dicMF18o0e+pQj0VJgntYVSYyXw2E
-         vMkuQl+eC0qlb8UyXscw5OYveEAs69Hy2wRQtSg1/c1a2l4V6vWmKxYSVmL8KlJAucTS
-         Ivlg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793211179; x=1793815979; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ARyFxRSvqAD+wB2pvv1XS401e8GE7i3ocZP4rplHOIw=;
-        b=b7YvA559LCEN/KAKghHyULmskdP43aPP/d1fdng57tH2S1w7rRWoFa/zEvHOODIDy8
-         dRnxWji5L5uZqBUXc8hPhOX0H+2skvDsr3OTjc5KuHwRyRfezURhgVQzz3cywFWWG9tP
-         ueCsF1LALVt1AywNpNGdWSovqn3LPX4NaJrz0x0ujwCIdUdKtcN7ygm7mhSxA2+K52Ke
-         0Gz4EvndwJA1gWyGtMTdHrXGiO5dJwG8efAZ+15RK8Duz+41o5rTXaBvVp0cH9PYZZDx
-         LHlLu/8S+M00AU+5EZsT63SuI0tt0TulKPnLbFRm00lFKJf06r/+0dfhGQTsz54N1TS1
-         XqJg==
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EuckRQh/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793213670;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0vc/BwRMumh6GCDfZk9HEhgcPOmsWkZc9E+U0h5Wqek=;
+	b=EuckRQh/vX6Rv2EuSqujU8lJJun/SUkyC6Qh2rfoMQq3qPnfosec12pC5sb9lOs6qL/1qb
+	nURwjjkqi1dJXpO5J3uLIGX+eHQ8vyeEtnWlhf+2brDDz47cEGzPozrj9HgceiAn4IsQVI
+	HEg3b9bnoEiE9os7FNiO/SgQk1ACvCs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-592-MJB4PQxhP7a4X048ui4CSA-1; Wed, 28 Oct 2026 14:54:28 -0400
+X-MC-Unique: MJB4PQxhP7a4X048ui4CSA-1
+X-Mimecast-MFC-AGG-ID: MJB4PQxhP7a4X048ui4CSA_1793213667
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a1fa972b4fso6611045e9.2
+        for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 11:54:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793211179; x=1793815979;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ARyFxRSvqAD+wB2pvv1XS401e8GE7i3ocZP4rplHOIw=;
-        b=qr29ROVlGOm753dExicxS2caukLyLJgEutA7+csB4QCSQDQbBSEeJ1axYbHXvSAw8L
-         dGFmjSXL/yKFqarGQ0zNAVXA1ZRUx1XRuldORC3kkoZz1P4VhYezqiMHF/Tr4jwzCKBh
-         jpwvxmqn3vFVCi2m+KmhJFKtOvPB9RDy9jOse8Vl4ACvfWOSFKocVSBcysEMt6iINyqJ
-         7lRq6me7+VYE31upKfht/Ptg3Xefk5hVlzjZnaE6jF4m4DoOHuTct9EVvZIUHr0VPGPv
-         HoQRyYWQnUfi+CQGx4ITx21qJl3VKUln83CDfr0e92HtxUYsRjPZ1Pf25KoNY73+y0b/
-         rCLA==
-X-Forwarded-Encrypted: i=1; AKwUvBwK5ozwIEVW2apYafn/WUgIHzTugd7OTXmrAw+sAefzT+RTuL+lviNXxi+B56YSLVC9HrxI93bzvQA8@lists.linux.dev
-X-Gm-Message-State: AFq9FYJKVeIWi00vbksMD843bZZoBXVjSCvF6gn0Cq0bbbjffkVXuo96
-	/0q/QN033GruZobAnv6EaCI3gukg9OpQm6z1C5TOIzsJIFaQgdH/TswYRAjRH8FXJTfeWrhZcia
-	G+MdU0XYl1Ps9ME6QmuBES9DLEvGcdvqOo8Ap8NJX
-X-Gm-Gg: AYBFou3MhEoANmLmre5UTcJmxT3h/C4bLBo8Rk3D45mPb1H4X2I2gQ42H78oLZsJb41
-	G97q0DvVfHlStiX49LQ9aDBcN3jFJ4EN18p9sphLM9k5DwE57lEW/V7n7NqIzj2AiwVvN6emUL0
-	PrcSDCJDwEhizjbRU+8VoQYxpJfsd1rdVezBpg+V6r7UEzVds1yyILzuMc38HeEhKjOOX7Zv9F2
-	oPkX9kE5e2I9GZ6UuCYvWWQFPkiBryWtoUyAYpiT3f/nn9AErIFXwR5SWSzm8BAkEXf/VTqhoou
-	EyjVfpz3fBkxAvzeQbNQPONn4PuMf9NBk+lIWgnPcPI5RpT6rob/5C+z7oG2GTOXKGeU0wRFy2L
-	WdevEpyDMgIi44sFpTEXWxdC7TnRtewsiwuzlQAhOL43NppSZbZGYwoDJC+LOeeeLODc=
-X-Received: by 2002:a05:690c:f86:b0:8ab:436f:6e7b with SMTP id
- 00721157ae682-8b1b5e93e9amr21228787b3.63.1793211178194; Wed, 28 Oct 2026
- 11:12:58 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793213667; x=1793818467;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=0vc/BwRMumh6GCDfZk9HEhgcPOmsWkZc9E+U0h5Wqek=;
+        b=jgsGTjeN+BlI7bv5XQSF1ohRL9H7Hnbp29Dg/BpkWMDdEfVY2ylpYX/LJVIdsd2TIX
+         yQRgQ/zfHOsI/bKQ88zZlZMXlBVNrkf4eaUPS413QOLYrCU0T0Hzn5bDsT0TV4C/wu++
+         uRLXb3Cnpv+Jt+hFHaEQ3e5WqJsVHSwuFyuumB+8eK/BjuXg5yY/+YVapeqi6ML0vYe/
+         d0eHU2Y0w+XdwBY5Z6W3p0Dg1uHgJpfa1YeOIRZjClRRqWvXIjrVxqgX6hvV6sKDsC1g
+         2sADBQSjetBMeEMcRTqwtSrDbsY3VASBn6Vm6H8w1Si7qnZ/i+08YY+AZCXnxwZGvR/z
+         xdTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzWTMNSvzHjnUX4FGlnup0u9YmENqaSS1YP1+PDwzwl2zpFdYcvnZ65SOenLJe8mk1GnxZFAgqqsFv5@lists.linux.dev
+X-Gm-Message-State: AFq9FYKo81KFNxKDJZu7nXDwIO400nFBznsy1p6ISQO0/t2eLwqm/aXK
+	ijSLenl5YFKlUNWIBZhmnvcq7SNHWs41KgpWnSxh6Ud+HsMSC6H0cr1r+foBitwV8EHPInXVB5T
+	DqQxocGTPiSDQeftJs12ZHn/ZObu70oJdqKM3jt57Yop1nhwtQNtWbPKhEQ8s4QA=
+X-Gm-Gg: AYBFou1EEJCtH3cMLALLm+kTlrUFjclTtLf+9do6jeGyy5n5ixMGgMLfhLfN+VuvmHX
+	IanbhGxxA5rJWr9bSl6eeMOh6cUdbwrtR7TliEee9Q9XtNzL33SRpJzaLXFgaI8Ys+9dqJp0b5y
+	iZewnhTac1eii8B6N2rlLV02iQNakn38rgfSmLAFfkGT4fO0AWblTfwDLRWfgvkaYRyZ2EANPGj
+	Fj9bC1HbiJ9vEXT319YoRK0Qby0ntkdYOFLKvd83cdSdanoMQjNFaPPEUKlRhIdSd3xaRnEFlUt
+	hJk5nkdy39+TcVOHIwpbvQNjGe3apwl6pCFop2wRNxquglimGCg6nS2jiypCc6bjUF/9frIELk5
+	0MQ1pwFJKHGxkHclIbG3k+fOBvqoFBFNjVS7oC7Yl
+X-Received: by 2002:a05:600c:524a:b0:4a1:efba:511 with SMTP id 5b1f17b1804b1-4a9674e6bf7mr73578545e9.35.1793213667415;
+        Wed, 28 Oct 2026 11:54:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:524a:b0:4a1:efba:511 with SMTP id 5b1f17b1804b1-4a9674e6bf7mr73577935e9.35.1793213666877;
+        Wed, 28 Oct 2026 11:54:26 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa80f04785sm10398775e9.4.2026.10.28.11.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 11:54:26 -0700 (PDT)
+Date: Wed, 28 Oct 2026 14:54:21 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Kevin Loughlin <kevinloughlin@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sidharth Telang <sidtelang@google.com>,
+	Punit Salian <psalian@google.com>, Peter Gonda <pgonda@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Jacky Li <jackyli@google.com>,
+	Steve Rutherford <srutherford@google.com>,
+	David Skidmore <davidskidmore@google.com>
+Subject: Re: [PATCH 00/13] virtio_balloon, efi/unaccepted: support memory
+ ballooning and free page reporting in CoCo guests
+Message-ID: <20261028145316-mutt-send-email-mst@kernel.org>
+References: <20261027025616.1632690-1-kevinloughlin@google.com>
+ <279a92da-772c-422b-8047-ad37dbae211f@kernel.org>
+ <CAGdbjmJ8qk7FCbGU85u9+db5_RtcrK2y_7TfNH+iuz+OJxebow@mail.gmail.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -104,70 +134,54 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261027025616.1632690-1-kevinloughlin@google.com> <279a92da-772c-422b-8047-ad37dbae211f@kernel.org>
-In-Reply-To: <279a92da-772c-422b-8047-ad37dbae211f@kernel.org>
-From: Kevin Loughlin <kevinloughlin@google.com>
-Date: Wed, 28 Oct 2026 11:12:47 -0700
-X-Gm-Features: AclHuK87kmeri51i0i8SscXVJiPFVq3oTJZMZ4FP6A_jqbPgcyRklPs7gnicX7s
-Message-ID: <CAGdbjmJ8qk7FCbGU85u9+db5_RtcrK2y_7TfNH+iuz+OJxebow@mail.gmail.com>
-Subject: Re: [PATCH 00/13] virtio_balloon, efi/unaccepted: support memory
- ballooning and free page reporting in CoCo guests
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Kiryl Shutsemau <kas@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Alexander Duyck <alexanderduyck@fb.com>, virtualization@lists.linux.dev, 
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Sidharth Telang <sidtelang@google.com>, 
-	Punit Salian <psalian@google.com>, Peter Gonda <pgonda@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Jacky Li <jackyli@google.com>, 
-	Steve Rutherford <srutherford@google.com>, David Skidmore <davidskidmore@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAGdbjmJ8qk7FCbGU85u9+db5_RtcrK2y_7TfNH+iuz+OJxebow@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ZB7vurHrsmokiBzF04PJFz29xdr32e19et7A7zDtv7w_1793213667
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 28, 2026 at 2:01=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/27/26 03:56, Kevin Loughlin wrote:
+On Wed, Oct 28, 2026 at 11:12:47AM -0700, Kevin Loughlin wrote:
+> On Wed, Oct 28, 2026 at 2:01 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
 > >
-> [...]
->
-> >  mm/page_alloc.c                               | 248 ++++++++++++-----
->
-> This diff stat should give you a good indication why this series is not a=
-cceptable.
+> > On 10/27/26 03:56, Kevin Loughlin wrote:
+> > >
+> > [...]
+> >
+> > >  mm/page_alloc.c                               | 248 ++++++++++++-----
+> >
+> > This diff stat should give you a good indication why this series is not acceptable.
+> 
+> Got it. I will keep that in mind going forward, especially if I end up
+> attempting a v2 that simplifies things.
+> 
+> On that note, I believe the majority of the bloat in mm/page_alloc.c
+> comes from...
+> 1. supporting the legacy inflate/deflate option
+> 2. introducing support for various page sizes to be unaccepted
+> 
+> (1) I can get rid of by dropping the inflate/deflate option, which I
+> think makes sense given free page reporting should be sufficient to
+> enable dynamic guest downsizing in cooperative scenarios.
+> 
+> (2) becomes simpler in part just by doing (1). For further
+> simplification, we could potentially restrict free page reporting for
+> CoCo guests to the current 4 MB MAX_PAGE_ORDER instead of supporting
+> any order 2 MB and up. There's a trade-off here for reporting
+> effectiveness under fragmentation, but perhaps support for 4 MB only
+> (and its relative simplicity) could be acceptable? Especially since we
+> would then maintain the invariant that all pages on the unaccepted
+> list are MAX_PAGE_ORDER?
 
-Got it. I will keep that in mind going forward, especially if I end up
-attempting a v2 that simplifies things.
+I'm not sure what is meant here.
+But if a lot of memory is free and it gets merged beyond MAX_PAGE_ORDER
+and then it's not reported, that's counterintuitive.
 
-On that note, I believe the majority of the bloat in mm/page_alloc.c
-comes from...
-1. supporting the legacy inflate/deflate option
-2. introducing support for various page sizes to be unaccepted
+> If I can sufficiently simplify the changes (especially in mm/), do you
+> potentially see a path forward purely for the free page reporting
+> aspect of this (dropping inflate/deflate)?
+> 
+> Thank you for taking the time to review, David!
 
-(1) I can get rid of by dropping the inflate/deflate option, which I
-think makes sense given free page reporting should be sufficient to
-enable dynamic guest downsizing in cooperative scenarios.
-
-(2) becomes simpler in part just by doing (1). For further
-simplification, we could potentially restrict free page reporting for
-CoCo guests to the current 4 MB MAX_PAGE_ORDER instead of supporting
-any order 2 MB and up. There's a trade-off here for reporting
-effectiveness under fragmentation, but perhaps support for 4 MB only
-(and its relative simplicity) could be acceptable? Especially since we
-would then maintain the invariant that all pages on the unaccepted
-list are MAX_PAGE_ORDER?
-
-If I can sufficiently simplify the changes (especially in mm/), do you
-potentially see a path forward purely for the free page reporting
-aspect of this (dropping inflate/deflate)?
-
-Thank you for taking the time to review, David!
