@@ -1,99 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.16
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793224324;
-	b=Ywcu1LjrNfHeqwhY17v6MYnl8fP/QSDRDa6xofCXvFgTf6c2Ti0SFZCDmaTg3YIBW4Dn
-	 2YCKqzITP7WIYXdGMMJGw+/jJ3gq1ZVITitjkZkpi90SzaEhQdW3TuSmiD9QXyNL7g+aa
-	 ECWSodtCRUa3gpWn0lNJOUqq2yGEoXFNeHvmpirQIuTkVdLMwdea9fdLVjm7B1g7cZDOC
-	 4VuJB568366w6PErtuXuGxMbdM0rkl4Q4WrVsQ62dQFGiGJjCSV4WQETbaG60pKj+0oji
-	 rDdzRn8X84dqeROieAP7REXBD14Khhv8n6cFx6k0E60a0UEuxjytoWs+ygk2YJZK3Nw==
+	t=1793224840;
+	b=DESaIEqbbDPfoGW46HRB9VnR76Fxysqv8Wxx2A58q7FxVM72fDR6ItHB4qIPaNP74daO
+	 TEKpAumveSBOiTcpP1xZtENRciCbW+vxgo+tpC+vM3ILCjJFyp/4bC0ZSVVc3V2KzE4Et
+	 92PRZrbz64KqvpuTIF9X55GZCF9CENSIPWbKkWKr4jivPz31jf87hYTyb9xqr7cbSqDn3
+	 j58SKMlxCpuSadKmar1g8wrKkVm4wCAkB2KxUnPRobCx7/ZsyJrPYdgQVqdmuZ2DTyZ1I
+	 rctA5NeBCJbqHhRC5RjsnIFOya/Wo92SYchVZpzDL4Q/YtwJXh7DplezSvErzMM0VBw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793224324;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=mPtExrnKGOMQtspuIP7yF8Ip7fswDzEEpF0H728OVnI=;
-	b=fcT268j3ifU7VbzNCQjS/a0HmBtq5dYduH12Qjh/q7Zth2D2/Uf16QehiI/lTaPfy4o6
-	 ox6X0/t/DkHBPxKHGXZ26OBosEl6ez1NUuV8H79+RD3zKU5ZRsqG65t4i8klp1w8QAqQL
-	 CCRKLLAT3yKtMrPqKFRDmChow6NOQyKctsrwMrqCneLZErGnmu6Ha5llh1ks3leMzEbF+
-	 42XY6z0wSgH1IncnpXZ6qE58O15ghOXbs614wSHiyv0Y9+zD4JQ75mYWsdjBYTEZCKkpR
-	 TYAH9HzRPk3P/HmN6GyQ1p3yseb7kvLmAfFwsRGhsqtbdh+uxVWVrAMh6xxPkH+6NJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793224840;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=ayLxb5ATDsQi+PFLsDuE2REZstAMumexA1ei+Dnz30I=;
+	b=scQnxYHbkW0cdsXhon6KLbcOtEQW+whPkriw06roemhZ1675EYDaO70n3NRtUyMJGgf2
+	 C+Gj0Xlgj2g+vzjCnpIrvKBHux8ML19jaa5A6yzzp4egXdsqdGdwMcPR4XUQj9+g9opN6
+	 iDPi+fefKMc/wk0faTgYFP/8XuNEd4knth6ploDjishP5WQCrChlwxc07bRA4H6oykR2E
+	 1lO39Cf39P29yZHdI4iwwiDMkIuwpLEcsyvlhQPCvl1LUNCZtxl7pRCYhvab8X/5WPTxd
+	 BmnYBGZYvhtpBgQByQ3xIB9VZaEs3w9zIDT2WksI5F4lq1WwkyAMpLmRei5KZf+WhRg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zrY5eEoK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.172
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=dOh7LeeV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.16
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010016.outbound.protection.outlook.com [52.101.85.16])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F43B606A31E
-	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 21:52:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F43B606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376C0606A327
+	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 22:00:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 376C0606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zrY5eEoK
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e9995ce866so13851645ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 14:52:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793224323; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FLbqJ6RaSoekHZhw551OC4uLvGXxeT8zmgw34CokVHBgzUXwhm6uiz2+jolSG7uoV1
-         0skfjMcO6KrBIOnDtPRBdvAvQtxY7D865NJi3sJTYIKAKYK2rnCHni01tOATiNRvAOyg
-         GZx5u+XMI2U4GOaWTVmG07ht5Xrq8GnwKqTSHaLoleNmsnhvYliOcO0Q/PvAIUU4v9LY
-         ElGVgVfrHLQkSE1TL2Kp2/vbE6gw3sSVppSlLTsn+5ldVHtd2lvjHJ/TVJNIsYxeqVDv
-         GqBI8sgOy+X16asl9H8mGZtw2XBDZ7mhx3ToaEZMkWYZ0xQszIkcOldRhftaZAaM0hlZ
-         N63w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=mPtExrnKGOMQtspuIP7yF8Ip7fswDzEEpF0H728OVnI=;
-        fh=Gj8FdtdBCOwzVgmHo42qVO47l6vMr+xgEOBGbW+sMcs=;
-        b=A/pzu+tanFxAU8KfNGqEQY+HTeQzUOHaHKx7f2QwHfuTj4ds6UjvhD17kWn+melguD
-         fN+ja6Os4fPEnuuHZ3re7w3t6ZWtjBwI1x4C9jvdgNFvExNIRMZwWMiagIV5OXAt1QYA
-         KdjKx9Dy2iXaPZcfpBVGn0Ym97wdNrP0QRTCjIKwrmMa2y4WBac4fvIYGWqNTdEkIlkL
-         Zm3JGYaOsxUaDLke+03FucapxtaAQ562lKmSB/NM8Cm6JoiCaQjX+xq0isq/XaEWBICy
-         On41W1RiLh04H1camnIUOvohn0OQqTBQVFqkNTrBzBxPNGHT+DfcJHxV6/bsjhXwdnty
-         ci+w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793224323; x=1793829123; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mPtExrnKGOMQtspuIP7yF8Ip7fswDzEEpF0H728OVnI=;
-        b=zrY5eEoKJ6w9OAAJZ3TxHctmHmU8iPUmsOozjIdApT1LvzNTUxQNZiNU4Ev+5TNtkN
-         eTziHH+sTTXF72rIIK+rHr0WnVPv8fQf24QuF1AmjkU3CqZvJMsnKnDFiABFxht6Cl4U
-         TSlyTxDDvPzHVdEmuy6wDpqG09KXN4sxivZjoy48GmG4X6R4l4cjJVZOwgC3N4Ka6vdK
-         Ujr238B0JBHZAOibirgUWG46WeyOJGAxE8EgFBo1Hf1LYsBBrP9CnMvpP6+/P05KTM+E
-         iAgwu3T0xfReD1xM2V13QfhG/DhkI+i6eGOchuI21Tqlk8bTclirEtjtqYrZhCW27RUL
-         BYbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793224323; x=1793829123;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=mPtExrnKGOMQtspuIP7yF8Ip7fswDzEEpF0H728OVnI=;
-        b=Pg9y2B5nNGt5gYfFRToTxAD3ow9suef0AZK9oIu1zBoozuYH3g4fVJf309b98E7DDt
-         9x+NTuf6FPjemzwFGd+xlyVn4ofjGBwnPTzvLtIWp4EHoOuCbv/yHaz8j9YQZFjZcGD/
-         /BMEymdmZe2uVh/cnWLEVOKedmA5VkxCMGnudKhm4KsxOZAoFf1KrKcjFQzX6XvQriEE
-         wmAYvbrltAiDYp4iNPgLxCDm8Eo5hdU6sSdHvSayOoBFokiBDHDf21j2rirQnXNyxv3Q
-         EYFQ/rEOy4fNb0pkxpsv5jdc6KpIgJQ1pmrpOqc0fB0c1VZwMc1UKm2bY2CLhBT6krT7
-         EICQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz7W4FXiRq2WngisGOMr6BwhHMA+wqUyoU++CZcvg0CM6nHKUPDjjOT6qJ7OlCSB3V4Ust07uy7n3mp@lists.linux.dev
-X-Gm-Message-State: AFq9FYJ+dSq+hTn+TqEbfTUUtuc6BqBBTLuNRhodq8PFE4dGo4QtEq5J
-	mLI9TawWk0X7ePo1Lovkc6RVP9az/38rh+hDYV9jdpUG3yhfqiZXsO93Ovhn9VJCW61W3jqPD1W
-	ZDIuwFZY5LEXqYwS6qtBIPlH2Wdznsxg=
-X-Gm-Gg: AYBFou0uJoGheqZ5UmXqcHm1tqM0fqmlwfmALvGds/pnYMsYFSlx+iY3JUcjR1ZTvuD
-	GMtGbdZUmqGhRY0utYaW2r8V2ZYvKPyopl/dZQ5xJF44A7KVdsj1dhbU/XiljzY7dNig1b4V3Nd
-	qxIs119ZnWF4a4+nQdrcP+Kdtaj49V9fJAI1K0fuR+k6OHHsQCkGdHA3/OwH/StAxElAlIZmdie
-	g2nEhaJTaif8ZQG5tafi+DwymYvkc/Ty4CD6EBPnkX0kOFNImqZWaVliNRnryedD9nHXhWLKazL
-	F59TvqQZQ+VBP77m9AG57AlCj/lfUkraX71KU9Uh/B9z8Y5K4SyOG6FvzndzLZkQXPInpbvT36e
-	GLx9HeFDZ61cVMjo6P4aa2K1BCoHEO4DUDsXs76Q=
-X-Received: by 2002:a17:903:94d:b0:2e8:1d5c:f6f2 with SMTP id
- d9443c01a7336-2eb003bd5f2mr34821655ad.24.1793224322720; Wed, 28 Oct 2026
- 14:52:02 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=dOh7LeeV
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eFqg9gfG8jvKMpNVFu5V/Av5sIodvzxXYBCLYGrlL12pCISm+afnTGQ/Go5HbSfR5XacpQNGiLm8zdRFZzyEpUhDWqGStI7tCm4Rm4PETTkqCgmX2AjI+uBdWSL1L1tbke4my9u0mSaJTphQJgvKapDHIpvAANfhc371qfP726PdIWyh7ZTIA4FpnNxcyWAe4QROOpjpQdC4iyg9G9Nd2TT7rlBFu7akX9FSI81WOQv7mQzPkCPZVNrmuxmqVKNJ0n9iAvgIFV28Q0RpuDW4ksrvMWfvhnkoKocsoOcT+XrRd2IhmQDdOhu0Tw3Zv4afYXvRpE7cDBPrbi4LUDUJ1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ayLxb5ATDsQi+PFLsDuE2REZstAMumexA1ei+Dnz30I=;
+ b=V4SdNp70qCU24GShxcUnpKNruMxsGMPo38zVYIh+grJpdkD6jvH3NgxcwUfOr6ZMCvSufX+sb2fHQ+7pNfNyy/da61WKUdjqO+naGKO7OUjj3caUD6IkjJPQNGC3gpEW0fdeklM5O7I5Jd81dGs9fnqb5KJgmNSB3uFCxXPk26fafpLJLjcABHnwdgLw8IkTYi0f7LZBpYICtWDPdDOm+ayF4bnXousUMnqFscpfz8I1g/qJa3kNcV1ShjkMHHso497iMBB0z3298DyKuOlUWtjNyuAgvrdhCfUg/T87Eb8vG+ym8HmviFvAKhjKh2frT0RZ8mUx6F7y7c8amBMQOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ayLxb5ATDsQi+PFLsDuE2REZstAMumexA1ei+Dnz30I=;
+ b=dOh7LeeVrxyJxz98pQrT7b+dfx+nQh8i00/5Sn3sYCA6ljhvnNNgUpik71SOAUOeedO7OkXO5NYGxfcU1LUFE8sw3gA0iNIJ5DPq8Pg5TSwN/+phWixSIw0l68MjuotfoQb9yJ3gDWVD7wzjXmvDvovaj3Q3XSV5FrTTQ7i5I/U=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS0PR12MB7771.namprd12.prod.outlook.com (2603:10b6:8:138::6) by
+ DS4PR12MB508551.namprd12.prod.outlook.com (2603:10b6:8:50e::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Wed, 28 Oct
+ 2026 22:00:35 +0000
+Received: from DS0PR12MB7771.namprd12.prod.outlook.com
+ ([fe80::9a3e:791f:33b6:3d8c]) by DS0PR12MB7771.namprd12.prod.outlook.com
+ ([fe80::9a3e:791f:33b6:3d8c%4]) with mapi id 15.21.0546.021; Wed, 28 Oct 2026
+ 22:00:35 +0000
+Message-ID: <cf750bcd-1ae7-4aae-aa8f-593d8248fea4@amd.com>
+Date: Wed, 28 Oct 2026 23:00:26 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] x86/sev: Set up RMPOPT only on an active SNP host
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1793216372.git.ashish.kalra@amd.com>
+ <331aeb2f29710865ec064bacf9edacaadde2b094.1793216372.git.ashish.kalra@amd.com>
+Content-Language: en-US
+From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+In-Reply-To: <331aeb2f29710865ec064bacf9edacaadde2b094.1793216372.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PA7P264CA0281.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:373::18) To DS0PR12MB7771.namprd12.prod.outlook.com
+ (2603:10b6:8:138::6)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,82 +105,123 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1793216372.git.ashish.kalra@amd.com> <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
-In-Reply-To: <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Wed, 28 Oct 2026 22:51:51 +0100
-X-Gm-Features: AclHuK-lLMUGo00CsLuRjBYLJYO8QfoO65WYw2V8BbtyozSJ3LTmNXJa2V5HQzw
-Message-ID: <CAM9Jb+gBzgwvtOkV32bNudAqb4sU5+40zuj54py+JoLVvV+naA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
- disabled by firmware
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, seanjc@google.com, 
-	peterz@infradead.org, thomas.lendacky@amd.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, 
-	Michael.Roth@amd.com, KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, 
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com, 
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com, xin@zytor.com, 
-	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com, 
-	nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7771:EE_|DS4PR12MB508551:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd9012b8-a72a-4d0d-b4a0-08df353ee4c1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|921020|261028144727099003|11063799006|4143699003|56012099006|261009223027099003|261026121527099003|261022105027099003|261026140227099003|10067099003|261021121427099003|261021123027099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	pfH6cM2jMtzDDsNqBXFfHSQnoEp3IzaPfIniQX2smjpQMYosar7iZmWtGRSrMsi804DBXf3quyX3a3wAfD4B7w0yILO1u+7c4JoC6abh5TGiGMRheh1bQ3RmvTSvv1J2aTtIM4R/+ZnEMQzjo/ZRPENPyPhQfq/wSYMoGg5bSrjei0ItjJBCQ7Ut13h9qoxTS3QIrcxpk4nKZ85bmZLKEyh1tSGOC/CHQ1VMqwIxIa9w2fmssZAzgjUcuK7G96IOFZMDBFAUXsq9MBXPgXKG3lp6JnE5OxV2XCDxhOklWXYs2v7KeDTlwytSnEyCc+eQ625UVFhpxRnYHaxKbcDdgW1V/grtHnjuY7Y8N3niSn+4IAUwlfqLiNuRV9M9mPzqF/60gVrsaR+tJrjjhubXuMLmOfvVDdLPh5L5OdNGJ6gdBdXYxvzh+hJRrtbhxqcpbwn7XVokwL1om/KqNDGGLxHFIxmAUvf3Il7R9DYFz9nsfTT6jCTNNdd3xny0U1BSc/pfpdmnSMoBsD69mX3F2+FPjnZKNjGsqg5JU+ItApb3HdpkSz9trIO1Wr87SKsPcrlrszSLKXpQdhXZIEShTj6K0GDJs7mEguA9bac4bZUDwIdXFWNuDUGIx+CAnWej8VTD7auokhhtGaxjVvA+GtpAUkiPB1aQ4G9xEVsl3eKhHWXZH0ziVo/W89cd9syD3fe2PC+gFHv7DBD7l0wsVA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7771.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(921020)(261028144727099003)(11063799006)(4143699003)(56012099006)(261009223027099003)(261026121527099003)(261022105027099003)(261026140227099003)(10067099003)(261021121427099003)(261021123027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QkpJWDN4aUN6OWJTanRQSnpGZC9UUFBFL1JrOVI3bDhqVm1lcjlCU0VGRTc0?=
+ =?utf-8?B?NHBWK1JBREdqd2lXci8zUW8xQWlndEFIaWc3QjBRZ0gxMWxhWldPS1NtbEVo?=
+ =?utf-8?B?dEY2ay9md0xhTTVENU8xSXpnQU5mWEVwZlROM2ZreG91WllML0UwZzBHZ0s5?=
+ =?utf-8?B?NzBBNDRiRDVFL2RFeER2SWsrbURuM0RaVTYybzM1T3VHaG9xaHdsSlJaQ3Nu?=
+ =?utf-8?B?dlJSVG9STzlkRUlYRWRidFVqUVJYRHljWTJWWHp3QXE3RW5NWFlaOXVIaU1O?=
+ =?utf-8?B?Y3VhWWVYZGhnR2ZCSVFXa1RHNStZZksyKzZiWjRuTlhINzJIdjJTMy9YenNQ?=
+ =?utf-8?B?VFNrL1dLb2xjMzdrK3pWM2pVRDhqaGFXMGZmV3NaQVNVQTR5UkdTTnJ1bmp6?=
+ =?utf-8?B?bTlJSmhtVUZKQmhBZnlhMVlOYVdDSXRDL3puOFlGeTBFcm9mczZhVkdGT0JU?=
+ =?utf-8?B?UWlHL0IySVlUb0lhYWVtQ3c3QTU0YjNXeWtDNXJZUUlDTnhYdUZFSjBmSWhj?=
+ =?utf-8?B?aWhjOGNQeGpJejlaeW9YZXhMNEtqTVd2cjZ6dkk0OEc4a1dDWEtqNXR6TzM1?=
+ =?utf-8?B?OWVscTRMZzUzSXFoNjZLaURwT3FjeHcyeUtIM01jUm9EZndYdUpaY2ZrLzdk?=
+ =?utf-8?B?MkEvL1NiK0VDcituQTNpbUFrVmZSNmFUS1lLMEY0YVBxZ3JySG1uYk5wdDJ2?=
+ =?utf-8?B?ZjNpdHNrbmlOYkFLMXVIYzJmYzBDWE1qaTUwSTFoR1NnZ0lTU0w2aE5OZ2hC?=
+ =?utf-8?B?QUh1b2lHR0J5bHBTNkVBV244TjJybmphVHgyb2poOGZHTE50UFVhRjYwdFp2?=
+ =?utf-8?B?ZFdJREI0dlU4bkZTQmRpZHlsT0h1UEkzZXRwbjZkRCtneDgweE5wNEZnbHFG?=
+ =?utf-8?B?YjB1NWFJUnR0N0w4cUxvRDF1YkwzSDBUM1lHQ0ZZZDhLY21kcktTSkZoS3Fx?=
+ =?utf-8?B?TGdIcFRPZ1RVRTJleHZpa0srRDM2Q2pBSDlZeU14S0hJR0JsTUZNemM1ZUZp?=
+ =?utf-8?B?aGlOQS9kK0RZSFdmcWhPdW9uaURtWVpzVVkvS05PRG11aHI3bExTajZJODJ3?=
+ =?utf-8?B?MlVXYTBYalc2SUxVaE1qK21vQlNXYXd3ckNPSUFiY1J4ZmdOeC9PRllvMUNJ?=
+ =?utf-8?B?eFc3OXNiaVFjY2w2Y0xYaEJGOXZPSUQzSkUyeUdlQTlscU04MTVhdkVoSzg1?=
+ =?utf-8?B?WFFuc2Z1cDlaOEpUVG9LMENpQmJ5OFllY0hVNVY3U0lJZGtPVEZjWE9NVXBv?=
+ =?utf-8?B?a0NTa3VzaThQWittV2svZU9pcTVRVDl6MzM2a0dubVdXNFc0b0pGdVJSRXZB?=
+ =?utf-8?B?eEoycFFFbklOU1FNdFl1VlhtRTJpblVOdytNK2hSODBCY2NjRzhmRUZjclRW?=
+ =?utf-8?B?NTJjM2lVNnlVWWVBV1V6bXA0QlhrSVF1KzNieGRYVXNMcTZLVkc4MTNYNHd6?=
+ =?utf-8?B?K2R4alpUWVdkUG9maVBmODBuZUdFSHY0aW5FUVlQNC9aZ3NTSG16Qzl3MWMz?=
+ =?utf-8?B?RDlSV0dSUDZUeWtKZ05JRjUraVY4dURqRUo4OHdma2V1RHhQYVBDdDVTdFRq?=
+ =?utf-8?B?ZlVLdEdqSlpjaHlTbzJnTlB4QmQ5TFdxNVVoaFpwNEh5T29IRjhoVGNTWW1P?=
+ =?utf-8?B?bHdoQTdNTFNUaExaRFZ5WEsrVWI2ZjFucG14ZURxWFFlbFhHMTdlcWR2WW9s?=
+ =?utf-8?B?Tm9YakU1OU14ZWJiS1EzSklyaDUzak56cHJFTzg2NzV5Umpkb1hHT3J6V0lI?=
+ =?utf-8?B?QTFRd3JycnFwMlJheUhPMXZKbm1PbHBpTFpSeS95WDdQTEljTTRCeWNiTWFJ?=
+ =?utf-8?B?TlRCSXNRc2dibnZYK0VabmJOZ3YxczBDdWVBZG5uaGZYcHMyY29Ya2FPOUFw?=
+ =?utf-8?B?WUdzMEJPaTRrd0NaK0xZakdEQk1wNHhnYVBFa0hrZUJsT05JMGkxL2pnb1R3?=
+ =?utf-8?B?a1g5V28vQ2JDenU3UVdIdW42bkE3WmdnWXRrajVwV2hNTzhiRjhESWtkb1BO?=
+ =?utf-8?B?SUZ5UmhtZ1pmQ2I1dXB4cjhrZUpVTEdtVW5LTUNRQTdXQ2RrQUJtcDVMNS9N?=
+ =?utf-8?B?RmhjampMSWhjWHFncmFjWmVEWVRGaHZBa2hTcW40dU5PQ2hrRkMyTlNCakdr?=
+ =?utf-8?B?SE1UNXR6eDF1cnFxK3JPOFhiM2ZnSm94WmlCZWhuRDZCdkV4cUp1S25mM29u?=
+ =?utf-8?B?QjRoUm44VHdwcTE0OGNiUFZUQlhBZ0RPTVNmNWRYeUo4end3eW5LaWd0dGx0?=
+ =?utf-8?B?dlBDNFRTWnZxM1lSNjJtSERTZDJ6ME1YaUhuOHFhOTQwRHFvZUMydHl3SGNh?=
+ =?utf-8?B?Ylp5VThEOTFsYmo3dWp5czFiSndDNHBISjZSVTBRNjdnSTZkdWcvQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd9012b8-a72a-4d0d-b4a0-08df353ee4c1
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7771.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 22:00:35.4590
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Vl2MzD2idvsEeO592xQW6+UjEr8p5xoqiaVwQ+G9x+AhL8nSBBLJ1lMvMFcOuOumsyAfDH6noP9tZiyiylNmJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB508551
+
 
 > From: Ashish Kalra <ashish.kalra@amd.com>
 >
-> Segmented RMP has two independent states: the CPU *advertises* support via
-> the X86_FEATURE_SEGMENTED_RMP CPUID bit, and the firmware *enables* it via
-> MSR_AMD64_RMP_CFG[SEG_RMP_ENABLED].  A platform can advertise segmented RMP
-> (CPUID bit set) while the firmware leaves it disabled (SEG_RMP_ENABLED
-> clear) -- e.g. through a BIOS option to disable Segmented RMP -- in which
-> case the system runs with a contiguous RMP.
+> rmpopt_init() allocates the RMPOPT workqueue and prints "RMPOPT
+> optimizations enabled", gated only on X86_FEATURE_RMPOPT - a CPUID bit
+> advertised independently of whether SNP is active.  As a device_initcall
+> it runs on every system with that bit, so on a host where SNP is not
+> enabled (disabled in the BIOS, or AMD IOMMU initialization fails to bring
+> it up) the workqueue is allocated and the message is printed at boot even
+> though RMPOPT is never used: snp_enable_rmpopt() bails out on a non-SNP
+> host.
 >
-> snp_probe_rmptable_info() clears X86_FEATURE_RMPOPT only when the CPU does
-> not advertise segmented RMP, or when the segmented RMP table probe fails.
-> It misses the advertised-but-firmware-disabled case: that path falls
-> through to the contiguous probe with X86_FEATURE_RMPOPT still set.
+> Rather than add an explicit SNP-host gate to the initcall, set RMPOPT up
+> where the host SNP state is established.  Call rmpopt_init() from the tail
+> of snp_rmptable_init(), which runs only once the host RMP table has been
+> set up and CC_ATTR_HOST_SEV_SNP is guaranteed (it WARN_ON_ONCE()s
+> otherwise), and drop the device_initcall.  rmpopt_init() keeps its
+> original X86_FEATURE_RMPOPT-only gate and no longer needs a separate
+> SNP-host check.
 >
-> X86_FEATURE_RMPOPT is a CPUID bit advertised independently of whether
-> segmented RMP is enabled, but RMPOPT requires an enabled segmented RMP.
-> With the capability left set, RMPOPT_BASE is programmed and the RMPOPT
-> instruction issued, both of which #GP on a contiguous RMP:
+> This is soft initialization only - the workqueue and the announcement; the
+> actual RMPOPT_BASE programming is still done later by snp_enable_rmpopt(),
+> which re-checks X86_FEATURE_RMPOPT, CC_ATTR_HOST_SEV_SNP and
+> rmpopt_soft_init.  An rmpopt_init() failure is non-fatal to SNP and is
+> intentionally ignored by snp_rmptable_init().
 >
->   unchecked MSR access error: WRMSR to 0xc0010139 ...
->   general protection fault ... snp_enable_rmpopt
->
-> Clear X86_FEATURE_RMPOPT on the common contiguous fall-through so it covers
-> both "segmented RMP not supported" and "segmented RMP supported but
-> disabled by firmware".
->
-> Fixes: 15d974be0a3b ("x86/sev: Initialize RMPOPT configuration MSRs")
+> Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Fixes: c6c6f156d192 ("x86/sev: Perform RMP optimizations asynchronously")
 > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-
 Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Tested-by: Pankaj Gupta <pankaj.gupta@amd.com>
 
 > ---
->  arch/x86/virt/svm/sev.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>   arch/x86/virt/svm/sev.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 >
 > diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index bd70c4d0b774..cd0412b9d251 100644
+> index cd0412b9d251..39d3943cdc49 100644
 > --- a/arch/x86/virt/svm/sev.c
 > +++ b/arch/x86/virt/svm/sev.c
-> @@ -827,10 +827,10 @@ bool snp_probe_rmptable_info(void)
->                         setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
->                         return false;
->                 }
-> -       } else {
-> -               setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
->         }
->
-> +       setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+> @@ -662,7 +662,6 @@ static int __init rmpopt_init(void)
+>   
+>   	return 0;
+>   }
+> -device_initcall(rmpopt_init);
+>   
+>   void snp_enable_rmpopt(void)
+>   {
+> @@ -726,6 +725,8 @@ int __init snp_rmptable_init(void)
+>   	 */
+>   	crash_kexec_post_notifiers = true;
+>   
+> +	rmpopt_init();
 > +
->         return probe_contiguous_rmptable_info();
->  }
->
-> --
-> 2.43.0
->
->
+>   	return 0;
+>   }
+>   
