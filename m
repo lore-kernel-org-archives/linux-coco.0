@@ -1,111 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793144823;
-	b=nYk2EcIn095nYgQQz8w988wh4sal87gWTYcwgxsHMg9pNuEDTAYUHhT0i1wOBz3eCs/K
-	 Hm92CDLHZaNxV63sEJ44vEkHWMGgaTzmULGpA+JQj8daO7y16eXMb2Qr+1sKn9txjxCPk
-	 0Lp5E1PhiNnC3XMlfliahfReoS8ab7I7VC6Bdvmtx8zjEcYgcZgEFXtNgpaHZZ4H0f/Z0
-	 3rjep7htU2Zmybt8ivNR9ArFzwyY+qE8tQiS1sMXMJiMykEWQo1otCw5UGn3+cjh567pl
-	 iunOPnil+D3iZjdzGMpoFRF3QXYGU4WSlXq41MfDTZFpzGc3aotqINAtMQXlNyV6g1g==
+	t=1793149385;
+	b=n8ihwGTXmaDuGOU81r5NUyftxyr8I4kSeYXySj60kmYSbuvBfl76+jN36mJilxSURwl0
+	 qV80HzVnRc6K7QdAOAAA72AUH/agPxkBAEZTDCtYTssqKTxXqqDlBvAODjMdyGIwcVCrC
+	 d9Sg0Boivqe0H3bSC7TkFNh5cKG5mUQfLQugf78mdJMKCfbuJsHZZ4eTa7RPatOJixdx2
+	 628JlqFjszOnGgESHSuhirVODhdQdAR5hbCHCQNX9tDF/j2sz3Hl2c8ZCDfTRrqZ85zIQ
+	 oDjmWG1kyjPVqEdjpxi5sBKOGhFF05F09Mt3+0lkvkqHKP1l61SjEPwMk28IpxUeR+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793144823;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=0jobZ6lKMJLYxxTCc8I8rfjGuzkz6VIrJqfxqZy7dVw=;
-	b=yIHICB3MHAeKkVU0MCYff+14Tkck5gAryQgS7vHVAIOR0kNj2Nx+6ufnJdz0xLc+W3WW
-	 h/Smys3pzk/I4hezGdkf6XXZ2b7LLMaz7iQmEhzP/JWFMC8Z8pbGSpQ283HV4C+ImXAq2
-	 AVds5PBITfhqhXrX/KDVVb+hZ8T3dg0zlUyYPh3RbliGaZ6lzoPkiz1raGUH9mkqfLaGa
-	 MEZjHmOcCyts/ui8ulrvLShOT1JG3SiVbZbtKiGHvKiqZDTjijbGBNgG5JH+rdd+o+sB4
-	 1OVGe+3b6luFnYiBzK25uOraZy6L32iXPpVcBa0Q6YhY9ztgoGAv2xoKcWmOxgSGGTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793149385;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Wz0YdSXpDNLtx4h2tQAhqJuxX/dyH0wnWDd/jbL8Pcw=;
+	b=25YpxPy39UqBuvJz3dtxF6zEuGwpY52apY9h20L7YS4PM/6I0us07zlSGPXfAx3zxiIT
+	 Opd5caUmSCOkWGvF+qmy3pUyE50H7VTHcTE5egyxex5G9Sa+DiWkEOvrfdG+ihqztdLk6
+	 SSOd142rUHr6aiHHxCPDQhiJJk3a4N5WbnqRuQBICYxNZTipFzQfRgNGPGhokLQBcoeSD
+	 R7kBTVTa0EJ+1slFubAZLZn5Kjz408HIAzvCE8XJotFOp5dQJObkV+F3J4FDNiX3EgyJC
+	 S28akBa3kDEVoUr5nBeVESMQEIZM8nno6Fhc1N8v8W/MxtM6GimVE/G7ve1D/XCGVlA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=GIEBLS71;
-	arc=none smtp.remote-ip=209.85.160.177
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I9Ogjadc;
+	arc=none smtp.remote-ip=192.198.163.17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAA6606A320
-	for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 23:47:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DAA6606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0EE606A31D
+	for <linux-coco@lists.linux.dev>; Wed, 28 Oct 2026 01:03:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E0EE606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=GIEBLS71
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-533778ab0bdso5761161cf.3
-        for <linux-coco@lists.linux.dev>; Tue, 27 Oct 2026 16:47:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793144821; x=1793749621; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0jobZ6lKMJLYxxTCc8I8rfjGuzkz6VIrJqfxqZy7dVw=;
-        b=GIEBLS71FdHNLNs4k8MsRzkKZKM3JR4IKM80CWkm6ZJ2WeeQOuq1o69qoBtSA3I0S9
-         ewm6gFqqm4Qym2ogjSlKgWguUHlWoEAtBtwzkYBHOGmj5xVwSXjZYCiszDA8DfHT+NEc
-         JJ2tYfEhsj+XCrU7NjcQUVlJGABqnfwiLRRoOdKokEAiM2pKk+MdUmsY35aGLz3k9JYs
-         7rJMgsY70624B++l43A/tm2NvJy2Scm9pRCyXcOluelhuHZhJHa+WJOxbr/vrTYsTVW8
-         bQQZNRWyUe3fGCVFxdpU1tSJ7JQJxqbtKuiRiNwE8/gUgPVoQg3LsZcArYX7ETblPRh5
-         D5Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793144821; x=1793749621;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0jobZ6lKMJLYxxTCc8I8rfjGuzkz6VIrJqfxqZy7dVw=;
-        b=yIl+lPKFKCx4zf467mDOK1XyYhQCiz62pYYNVB+YPsMgi0/vl+fDGilkCdaQyV089M
-         Z5tB/u5GA6IgQn9SwpnCUltXrYHSrkx15wfeR04XO2ZtzjlaMyiaawKxTD2gt/5RGcXZ
-         mnpawvaI4t9CtMTRq6Ab9bND+TD/GkPpz4vvWkhhBrpWsd1cWwStCyf/E8g39IVnWHXS
-         md4nJngLOfNmgPWuzPqKIxE6YGr/yl8aN1RYgQ5TyYt4Z9YCW0Uso7vOoGMiDXLkOE+4
-         KQTKrNeeZsqDPsi+lu7paSiBpASZwETlycIiAATlQCjoLASWG5WTp7Y08fjTuTrekzdo
-         Zhqg==
-X-Forwarded-Encrypted: i=1; AKwUvBytNccXyswNr9gg244Fp4KYGQLKErV1MictnzxDqrcHEpVWFta2GVEp5r+5sikvhWig/cdlO5R0YfT7@lists.linux.dev
-X-Gm-Message-State: AFq9FYK4whNhMuxwcRzwSiU58PM8v+2R2MIucKZOIlDESmvrUGD4uXWU
-	yOsXRxEUcphxOUJdwjSeE81/2ZJw7zNjQxeHgOZp2WOSZP4ymzQalqf9bufkRQsV5qk=
-X-Gm-Gg: AYBFou2rQvzBIT2yM6b+3gC+XLkiYBr1sBtZIUCf3k8qRkDMR6Z6695WPCIIT4Db/SQ
-	Q7vip0siByx54oD1KScyrzABE2U9E5F1vy/UY+rabhmz50FTTLoNB+yULxU5+yKGuUynW4XpESM
-	uchG5TplmMdTP6U8NE6+10kt9oDTYytdKizV3Tkb7SJdJq5nckisEtcMIeCPu/hw80CrtKGU0nL
-	1dszL8B/kwxk5xfqEKP4M/XpIPDl11icyOBCOzb0sDPrpJRGLtdskXPUOwQgE2aBNhIGJ0v6bRw
-	yZAn9cwYUwTwMBJzQinQmSAWNrGggYHyPOGj04WExpaQv5vQnPmPREC7Lb0PgJUIxEaSUCZ50vB
-	FbDfF5vdV/RihkqlhPDYrNLPKiS/SzGjt5dFahO816KImR3Nb0Wjzc92oxg+ncp51lNHgPmd22J
-	BFu9o0jGcB2oAd8BSL7ycMPTg8j9EVxaE+ybflckX2yYdCfcdEr6kLPA38ZHdHnQEn0Je1cwKqd
-	/RUYBgZt8LriK4fvjv/4/GV0lkZz95SHHuyidoi7OsocaWJgBTp5aHyLBJE9UJEaPDLCm4oOV3v
-	1uJbBa8b/pDyl/+YyNS3mEZB6BirWeg+zrql13N/uwuXpvL+LnInNQwOoY30e6P80KOtcF2Kkz8
-	0y7IqDKqhb1k=
-X-Received: by 2002:a05:622a:342:b0:532:8ed7:534 with SMTP id d75a77b69052e-53fcb7f9e76mr15856551cf.37.1793144820933;
-        Tue, 27 Oct 2026 16:47:00 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47a69129sm114200426d6.4.2026.10.27.16.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 16:47:00 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xLqsc-0000000BHke-3ly0;
-	Tue, 27 Oct 2026 20:46:58 -0300
-Date: Tue, 27 Oct 2026 20:46:58 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
-	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
-	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
-	dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <20261027234658.GL1685504@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
- <20261027193629.GK1685504@ziepe.ca>
- <5f33aeed-a20d-4881-9ccf-a69bc308d348@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I9Ogjadc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793149384; x=1824685384;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Q95QLA+NSKuPNR1/2vjDJmWj3Qoa9GjSZPLsndq/7GU=;
+  b=I9OgjadcflOIEJuY+BWynIz9XySUregJmsVhYFGCZ5VvF7EoQg3+wwXx
+   IOdoi/WsESX294m1g2OZRS20/dgtToHTAIamM2cVbzEq6oCTDMQpd+iQH
+   OwJ3n/A/RoHXXw26fjCJxuIG7oosePk3IcJTBnd3w0za2EnsnhlI4HJFp
+   wv1HLxIMCAKMsWsno29t6YrFE/pIEAPElDtWoC7XR7Km/jINTaqBFNVyD
+   C/LB9qsqq6ID1babl+uGA7BcmlGxkfutOtQXomipUSgZbnyjZO2rIurqM
+   upNPfiqz9YA5EN2fwBLRe9FJCHnFcp+c+axLoD38IxhhCQwuFrgKsvj/t
+   w==;
+X-CSE-ConnectionGUID: Vhuy0DZsSxiCCXOgUNoDLA==
+X-CSE-MsgGUID: +QXqUOi3SoqFsfhETXQwUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1875952"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1875952"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 18:03:03 -0700
+X-CSE-ConnectionGUID: Eo5wCF0tQMajE70H94A1iw==
+X-CSE-MsgGUID: nbva6OtmRcuqPm6GU7vzOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4646981"
+Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 18:02:59 -0700
+Message-ID: <f81cb4a0-2d36-4743-9c4a-22987c50d237@intel.com>
+Date: Wed, 28 Oct 2026 09:02:56 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -115,68 +72,78 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f33aeed-a20d-4881-9ccf-a69bc308d348@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
+ when filling CPUID entries
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, Binbin Wu <binbin.wu@linux.intel.com>,
+ Changyuan Lyu <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
+References: <20261022210134.612848-1-seanjc@google.com>
+ <20261022210134.612848-3-seanjc@google.com>
+ <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
+ <auCvuyY7tTg7ISwR@google.com>
+ <6c156bb3-a04f-4d4e-8611-b1e93359e8ad@intel.com>
+ <auC7VoynSWStxCg3@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <auC7VoynSWStxCg3@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 27, 2026 at 04:09:19PM -0700, Dave Jiang wrote:
-
-> There are two issues for TDX Connect. One, the device info is collected at
-> SPDM connect (TDH.SPDM.CONNECT), not at lock. TDH.TDI.BIND only returns the
-> interface report. So the measurements a TD sees at lock can be from well
-> before the lock. To get measurements taken after the bind, the TD has to
-> ask the VMM for a recollection with its own nonce.
-
-IMHO measurements taken before lock must never be made visible through
-this interface, it defeats the security property of evidence within
-the locked session. I would expect the guest kernel TDX driver to
-prevent this.
- 
-> Second, a device may take a runtime firmware update of equal or higher SVN
-> while its TDIs stay locked, unless the lock sets NO_FW_UPDATE. The
-> TD isn't
-
-Sure, any of the live update things are not really relevant, the
-evidence can change asynchronously and without notification, so we can
-just ignore the issue. If the guest opts into live update then it can
-only rely on things like min svn.
-
-> > I'm a bit puzzled by this optional challenge concept, I haven't tried
-> > to read SPDM spec yet, but it really has a way to omit the challenge
-> > from the reply? It doesn't just replace it with 0 or something?
+On 10/27/2026 10:55 PM, Sean Christopherson wrote:
+> On Tue, Oct 27, 2026, Xiaoyao Li wrote:
+>> On 10/27/2026 10:05 PM, Sean Christopherson wrote:
+>>> On Tue, Oct 27, 2026, Xiaoyao Li wrote:
+>>>> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
+>>>>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>>>>> index 271c2f94b8dd..37d088f6f7a8 100644
+>>>>> --- a/arch/x86/kvm/vmx/tdx.c
+>>>>> +++ b/arch/x86/kvm/vmx/tdx.c
+>>>>> @@ -2,6 +2,7 @@
+>>>>>  #include <linux/cleanup.h>
+>>>>>  #include <linux/cpu.h>
+>>>>>  #include <asm/cpufeature.h>
+>>>>> +#include <asm/cpuid/api.h>
+>>>>>  #include <asm/fpu/xcr.h>
+>>>>>  #include <linux/misc_cgroup.h>
+>>>>>  #include <linux/mmu_context.h>
+>>>>> @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+>>>>>  
+>>>>>  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
+>>>>>  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
+>>>>> +	entry->flags = 0;
+>>>>>  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
+>>>>>  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
+>>>>>  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+>>>>>  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
+>>>>>  
+>>>>> -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
+>>>>> +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
+>>>>> +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
+>>>>
+>>>> I think the WARN_ON_ONCE() is very likely to be triggered in the future when
+>>>> people run old kernel with new TDX modules.
+>>>
+>>> Then upstream patches to make that not happen.  Intel insists on treating the TDX
+>>> Module like hardware.  So, treat new TDX Modules like new hardware.  Upstream
+>>> support for the new "hardware" before it ships, cc'd to stable@vger.kernel.org
+>>> if necessary.
+>>>
+>>> Because IMO, the WARN is doing exactly what it's intended to do: alerting the
+>>> admin that they are running a potentially dangerous setup.
+>>
+>> For this specific case, does it mean every later patch to add a new leaf in
+>> cpuid_function_is_indexed() needs to be backported to stable?
 > 
-> SPDM puts the requester's nonce in the GET_MEASUREMENTS request, and only when
-> the request asks for a signature. The MEASUREMENTS response always carries the
-> responder's own nonce, and the signature covers the request too. An unsigned
-> request has no nonce and gets an unsigned response.
+> If you want to ship a new TDX Module that enumerates features in those leaves and
+> works as-is on older kernels, yes.  Again, this isn't really any different than
+> enabling new hardware.  E.g. a kernel from 2024 generally doesn't work flawlessly
+> on a CPU being released in 2026.
 
-Returning an unsigned collection seems like an interesting use case,
-but why would you want to do that in the first place?
-
-> The empty challenge in my provider means something else though: don't
-> recollect, return the evidence collected earlier. So it's less "omit the
-> nonce" and more "no new collection". Maybe that's better as an explicit flag
-> than an empty challenge?
-
-I'm not sure 'no new collection' is an especially useful thing. Since
-the kernel won't be validating the signature you still need to pass
-the expected nonce from the prior collection back to userspace so it
-can check it.
-
-Is there some specific use case for this?
-
-> >> 6. tdx_attestation_test's discovery_and_construction_fields expects an
-> >>    inheritance chain of 4, but the TDX family inherits ctlv-attestation
-> >>    directly, which gives 3. In a real TDX guest it fails with
-> >>    "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
-> > 
-> > I would have naively guessed this should inherent from some SPDM family?
-> 
-> The TDX family is the TD's own attestation (TD report, Quote and RTMRs), with
-> no device or SPDM in it. In wip_attestation_all_1 it inherits ctlv-attestation
-> directly, so I think the test's 4 is what's stale. Jiri would know for sure.
-
-I think TDX report/quote/rtmrs should be a different familiy from TDX device
-assignment SPDM. They are completely different things.
-
-Jason
+OK. Fair enough.
