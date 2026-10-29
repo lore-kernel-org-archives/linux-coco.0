@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.28
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.9
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793278263;
-	b=pA1cwN3smc3He0AoextAH37rhsH2sOg+UvhKnsXbmxGwQC7KyI0POStlltI4U8tarhJC
-	 QUkW6w+IWKGUu/pPeJ3Jp6kwdOrlvkahcuhCn8wGwdMYw1iOBfkTdPO527wGacbYa3JRG
-	 Z63U9mNiz1s2OM8uWGNkpExvqcmXJcTgdNKub2g4HW0vzTFeHcy+G3KaDRMJyxjpMo3qv
-	 cYkVKL/y9vRkLIzmdElhBO/xcxJZsfeGJn0gi8hHvsMu+OoyD1tkRGYJbNQKTQ0nNGLV2
-	 XvGlpO7A/xE9UNRJitjV0A4ffbs69VotrpzDBmTAIKjbmJBK8JHgzVU6gvu+cl3BboA==
+	t=1793278891;
+	b=lxWNYBDAT7oB45rNspNLmc70L8L3mluI1hn1nFy6Yezufo+4Gx/IoJk8LxhctmGxK7iG
+	 v/nRQOvue/uhHcwFI+B09JbBlU1/7mWZ34Q2TWlfw1c9r53uVDa3Wldh+mBEm57Q4BBHZ
+	 COqbJ+vBzx4ZewQc9FG6Otza2kJ9scz5v+Br+42/XorQt4fzrkIZE+97cj58oovzgYFYD
+	 mBCggK+hK0f1+H9yBtGeEWDCSu3kDGhCH3I8lxNXP8vcaQN+pBlvbaB0UR0CG++ATWUSP
+	 vNaLqHmpAcdoHL9LO9UFcfa9116Auf/UI+l2dtpn6/yPXJYkigrU9fXxckEy2F6u6yA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793278263;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793278891;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,75 +24,90 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=xJw01UFo4m9G5e/G5/+UZVXqQ8vUEhBi25GcP9A3jQ0=;
-	b=Y/Z2ePUwvYEdvc+uMVgNyXvCNPF2eGZIgzaLUMljZ8fpzilE+ETKCHNliSJqn7pEaBcq
-	 BynNLgN0OZV34dG/uDPe0AEooX4s8W6GqDQvkhg9DEESJ9YidWBq9gPLtdHxy/FmclL5k
-	 ftJ8gMBQomGkfDE6lgLfDENcNH/oDMqmSTByP4RDMSuyzLcUqCK56uAImJ3ywwqV2GnrP
-	 OWXjmYkzg1uwbGzJwm0pcsei35zfk93Xyd0DBq6Vbe2FnRTJd5Vf1uHGO2yoJ0nJNtqGF
-	 b4Y+J6e5hsK6U63trIlncr2Dvp2ThyKqj7d42GDB3xsbMCqmqhZfoYrX97QBqntaqbA==
+	bh=pGL36HlwN1k+w+419NuZ1hy+7P6yE5rxCQ3PsoCFGcU=;
+	b=rvlFCpEdpC0yd/W98IqhKH66rtQ2G5hQ9alejB47RWmLkWOl382BcXqAmN4491iAOWWY
+	 qfk0Je2e7Ui9BaH8at0ZwZsCRt5HVZStY7ZntKbWpZar02kWgfByCWkJxyQoTYKiMw6kE
+	 hLKK+w6vLr0s2WhYQnBG7o/zmto9NqTr4a/5Q3SgsIbj+JormGcuiSPhjFKKbpl316F5t
+	 zResqx9gX2F7+O/0blL3tOLBVDxJiexTLiK39dHm+raMR1V6sG2wPCRVzrBDqPNktU1AT
+	 tTRZY+8v1rXVIfMsgGMw4R/nDnwF+/kkv2NqW4A0mojXlJUW9358XxwYPrKqUCFfFOQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CdrcKsT4;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.28
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011028.outbound.protection.outlook.com [52.101.57.28])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="m15azft/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.9
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012009.outbound.protection.outlook.com [52.101.53.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F317C606A31A;
-	Thu, 29 Oct 2026 12:51:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F317C606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860A8606A329;
+	Thu, 29 Oct 2026 13:01:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 860A8606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CdrcKsT4
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=m15azft/
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xlp7aDVDy/RL+BUUCxfY5oDEfaNEMuv88pcvLDTty0m3e6wTAGZbim8n/9lehdMDN1q0/UiE3mUjINTgofD6OghoQ9hbTbCOiWzNvVJ9wvJpfd59L0MYooSlDCUNKJ+KUKvl+4Xw0kIRMIxqHo+x3lRmT0GcEEUgWgNEdUzTJKUZKR+MMAe7+9M3hew/AocT13Yx4ZSim+/652NBG/LjaqEOsD2P/EXuo15PTo2gyUepRcKC62Q+4flxH6bSNvB7+XBN4oEfdUDDEhwmlqO7OMJem6CiyLJLmoVZC0sa6BtNRxz/cCuPUO5jSaNtmeQEvRX+2gBWIzrLuEcjpR0FIw==
+ b=OwmR/YC1J7mvrUDJ6sLgPgE203B/B3QE9chJN0FVIU9Ipo59JPx+Rf+c70z545UqNGbI7zklaQtuu78z15YQ5l44Y0ggwwtMoRjjIggJZYLMylWYDjUH/zWakOL9tvbsYJikz7JIaYAw++QE+FU9qbDnkAw1TidWI9UYeysGuO2JJCy1qRP02Azfkm6UysuxqglEIyJlj7bsmcyM2mQwpCoQ1gzM6vAfJ8Bs/0JHRek0UHCYl0LvonzUh+5BESg2dp3kWeWcI677B3VaHGqjBK3+CRZDNVqFR6SvGMX60HgIs35dM3GPSTh/NakpLzYGApO1pG0ItkjE7uHgK1w+kA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xJw01UFo4m9G5e/G5/+UZVXqQ8vUEhBi25GcP9A3jQ0=;
- b=MwyPEHa7sH5mr4U0ZSnpScB3y6mAihcWDxu4ikOK1s96MjkrMSOytkp/EapspcO4kkow/EI146CQiwF3lfwzR6RUxRHmw798rQ6ig89xN5DqNg9hUATIm+b7al6mCJXlOKOtVsZhUXkwdHj8fjrH56MtWJzvV71Tj/blfVqs7B4s4nhcaZ40lMI2+EARcwNxhwpto01ljpExYcS7B9F2NTEK/aOjWM61tYuJKvmA+rRhHpDp5B7GA+xt4yjEXsxtBu0EjW39ZwXfIqJ+5Bgp4WaG9WpppPjOKSiI0iJ8/elXY/SmrFf5CBTASVtAcSJuvVHqXXcrOJAUQtb6e8pPPg==
+ bh=pGL36HlwN1k+w+419NuZ1hy+7P6yE5rxCQ3PsoCFGcU=;
+ b=Hcw9UXjWSP/IgvuPxSC+ExDIodiTObFgauBUHnDMrrhLQhHJRSTK11Yp29b5LI0gDbRhFrDnzeh2lktkNfhbPouMspfhC7M5VmlazMnTrkAcY3x15Xi/QxdIDxj9OqMqFnlMDj5GxMpF/ickDcGSztuxBp8Q5AWo4Rn1dCTa89ylpd7hhsuDoW3qTF7EfXHQcLFUC4Y1aS4FmN9mZEa+8HvzRTBKoLcsVT9gm/UkeasVKknHhrk5P+grwfBJtogzVfKBYJLwTMvMfYolKORvmIdPgOzhEHqplidTkAJabQeO3x8CHlOcQMaDXz6gWnXeDd0o922NTVJLqZsk+xqDwA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xJw01UFo4m9G5e/G5/+UZVXqQ8vUEhBi25GcP9A3jQ0=;
- b=CdrcKsT4wLUCXOVt+m9gOKre3sEQfL1W2vtV1fg3H7yHseSY/iAb2w7kHEzuMK+6Q8w+sRqHMAiS6yv7Meatl4gqFyEDzenHo6VuILsnwJ48OSuiJFjGAHYhrq60cc5BXMXq9918IIzeyUgPm9Qq1LQFblMpifyb++5GIaNM1aSTMte26GMRsDW2N40p6NIWj8o8Bu7qU/VylYZm8xqrP2CaXOHln8pUaXLyzypMZBM9osymGso13yOWMZyn03qcTYNoed8Xgp+/PIK++wSb6KBOXbJt0yupMZYTRlvnIFydFmlam3/p8gtfLZeu7Oge7mIx21AMq3Ks9AhUx0RljQ==
+ bh=pGL36HlwN1k+w+419NuZ1hy+7P6yE5rxCQ3PsoCFGcU=;
+ b=m15azft/W9jtgt2iKMMLpw+AfchZAJhbHW4CAKX45nSQWCLO2Rq4tFJTlcUs28Pv1se8le/uFHUmXt6hWs0e2dmYRKAPJPDr2vQ4/uc0SwLYOD91CZsjq6R23OYPp3rusXZ1es3pAiiKYnpZUPP8qX55U5oqM54hvNfblN00eZZFE0pzMHm8jXgSIdh0E9aKFVGo/5VM6//oBAw3cl/8g1mq/m412iPJvItFyCYpO/9PvjxdozZAmcqd/qGbu7oo3g1jzR0x6Tx3E6m094w/XPBZsG9YmuiY6wIKbl/im/pEzCRIVrE9va/df0HzHI4IMwd7iNdW/dMIdXx7usawDQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by IA1PR12MB6650.namprd12.prod.outlook.com
- (2603:10b6:208:3a1::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Thu, 29 Oct
- 2026 12:50:56 +0000
+ (2603:10b6:610:33d::12) by SJ2PR12MB8806.namprd12.prod.outlook.com
+ (2603:10b6:a03:4d0::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Thu, 29 Oct
+ 2026 13:01:18 +0000
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
- 12:50:56 +0000
-Date: Thu, 29 Oct 2026 09:50:54 -0300
+ 13:01:18 +0000
+Date: Thu, 29 Oct 2026 10:01:17 -0300
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v7 16/16] PCI/TSM: wait for vdevice contexts before
- removing a DSM
-Message-ID: <20261029125054.GG3040767@nvidia.com>
+Cc: iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v7 10/16] iommufd: Add the vdevice TSM request ioctl
+Message-ID: <20261029130117.GH3040767@nvidia.com>
 References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-17-aneesh.kumar@kernel.org>
- <sashiko-outbox-163687@kernel.org>
- <yq5atsmr44r6.fsf@kernel.org>
- <20261012130739.GM13920@nvidia.com>
- <yq5aecduq6i1.fsf@kernel.org>
- <20261013115953.GP13920@nvidia.com>
- <yq5a4ie4c1lw.fsf@kernel.org>
+ <20261008055955.4014342-11-aneesh.kumar@kernel.org>
+ <179321444123.2412245.6955528563980811144.b4-review@b4>
+ <yq5a1p98c0f5.fsf@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5a4ie4c1lw.fsf@kernel.org>
-X-ClientProxiedBy: BN9PR03CA0301.namprd03.prod.outlook.com
- (2603:10b6:408:112::6) To CHBPR12MB731189.namprd12.prod.outlook.com
+In-Reply-To: <yq5a1p98c0f5.fsf@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0335.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10a::26) To CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -104,131 +119,220 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|IA1PR12MB6650:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52dd5ac2-55a7-4f36-5d79-08df35bb460a
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SJ2PR12MB8806:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4c6c65b-a8f8-4045-56ab-08df35bcb8bf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|4143699003|261028144727099003|261022075727099003|261026140227099003|11063799006|56012099006|261022105027099003|261021121427099003|10067099003|18002099003|261026121527099003|22082099003|6133799003;
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|6133799003|22082099003|18002099003|10067099003|261026140227099003|261028144727099003|261022113327099003|261026130827099003|3023799007|261022115727099003|261021135927099003|261021130227099003|261021121427099003|261026121527099003|261021123027099003|261009223027099003|11063799006|261009221227099003|56012099006|261022105027099003|4143699003|261022075727099003;
 X-Microsoft-Antispam-Message-Info:
-	wh0SNQjQ4DL23X2vxA7+7BJ+ZE1F6xF9gawTyMrgpoj1ROIruT7CWmKgXXpx/Krw3umlL4qt0852cJajSxA4hbcS/HQkbOi7RJnvvqYHfossHJMPDYcjA6dmAqr1fb+holkgVxON8wBhyiZn14D5Y3XHrCvTZs+kqschcZTBlDvdUMQRESPmAW3X0GNSgfk6mcWUaE9cVSu7Fvcu7Ndt8EwZTMp1qmqjjWYx5LfNBYO7B9eeOPEY9oJTAttgIPcX3EutLEdGqXqiiQ1u3ujv1q3noEjN2EsWUmI94xHiO2j8VXpp2qKdZxXDn0TS8DBG2pFbmW2vc1Wx6PcmZ88fFWVUeQA9rpZ2Fy1dT++Ztb5Q/APFnjkYJ6GBfMXqir4o1QQSWYxZtKo92wLZ5vPJeZKWN5vVH/pTvblO9tSU49Qi7y+zt1hU6GVGoE/knn7lZe3uS1cFclGWl8oD1syRceXU/LNPoxTt/RfIH9yQ75VfLOlMUgGF1owdbaxOJIpZCIbKdwzIL1JBcXACHu+7uFRiFnRybIEq92ByDZT8q6bJ5va3rsDHEEvrL/Oem0JCmKI/7OKnMHpJyhGAE7hP2q39AImWgDn2BbUx0saf5LRjJzfUkJl8O6xC4YRQpSpYJcoILYNVxlpslA1El1UkzQvbV5Zm6kcGkgDWXJQ8D4A=
+	QVNpMD8U9SHu8boUvehsGOgW9U60Vq4WLXpoIE/Hp+Mbckyz7S+qbWfR42lU5QAwVU3XVUfORo7hr/LyWPtCBiNHopmgkEQFMpmSwKAtRC1MADPu2Q4SHunT1HHeESIln+Bya+RPDqkbFqKh4vlUK/pAVL/H5xafKie4j0xk4ItK6lAxpMRRMXN37w5p0H4JUVckWxZ8hVV3ptozofdP+wJLv5nOokBCYYC0q1IUWDzKkAPgklhQi+A3kew+HSI4z+J4fdblEknS4hxwESi+BXc9MmOP1H8LfyK10LrRJHHb+7Kf9HMuftTcqw/AOllM4+juixf2tr20/bHkMkn/Kb9Ux/XpFTUptWDGIpRjRZRHvokEH55GV+eIvK487sFhiWMr1sPxccyGmVddIyFqLSH5BixuKeIhNcIlWu/VLz9FsJdHKgI6AJgUUUzRwEuii70s1Byrr4O0oniNSt4eieTKJANNW1xyKB/O9iJ3S/yhxZn2QSThHXU+xuvjdBq7hFfRNekzCLLRhbdW9ZLNw094in05dFuZOPTqADXy2+Oj48e2Z3L/WQh9qgNa+UfKclq/aP9tiq4IhY1PrJNIhy36JBMTMPku6lvgKsPBgHo8FpEKu18PebmqlQZu5ajYbOfYFWloKquYEULMTQ9PtQSobO6bZJJKeO7nVLpHKZM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(4143699003)(261028144727099003)(261022075727099003)(261026140227099003)(11063799006)(56012099006)(261022105027099003)(261021121427099003)(10067099003)(18002099003)(261026121527099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(6133799003)(22082099003)(18002099003)(10067099003)(261026140227099003)(261028144727099003)(261022113327099003)(261026130827099003)(3023799007)(261022115727099003)(261021135927099003)(261021130227099003)(261021121427099003)(261026121527099003)(261021123027099003)(261009223027099003)(11063799006)(261009221227099003)(56012099006)(261022105027099003)(4143699003)(261022075727099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iia2fooSiDOR/iJEOIAHXZODhMwdePpvoQfnkmg14mDLkilMrTbQ1Y3Ktuqz?=
- =?us-ascii?Q?KdN9GVveE3nQmGAZy8BpzaV3hebNC8O9iDZJqhue7wX+g9c+QGsZzv+J8QCY?=
- =?us-ascii?Q?TG5otcOCxWQcAWNpZscO7mur+7Cql3FyBI/Ms5TmidddxYWmT9xSi/IIDiLr?=
- =?us-ascii?Q?/I6HzDCYSVzF34o9nFOAWG64OAOxb2wji6MIlCO/xT5dnsnr0h7EPozEsrn9?=
- =?us-ascii?Q?vAEuw0f1noIpwuNe/yKtZWsQI67XC5COTGbRNo2ho0vQCitB4ENC8QFqdZjn?=
- =?us-ascii?Q?u0RlWO38p9Ll7q7D2mt+oQayuScuhC+73gfaiCYp9kPb+Z8VhGPd5FoVFY2F?=
- =?us-ascii?Q?7U7ZxihYLVBg3WUZoxWkT1mtifsLF2ZQAL4WqW4DGdn8BsS6d2UohUydrNdr?=
- =?us-ascii?Q?+nVoKNW9M6DsY1InplB7tgDN3pMcY8Zd7l7POMqnVSUaR2R8KItOcGmYiqvi?=
- =?us-ascii?Q?j8RGAZm7GZ5KQkp0hYTRYaqbNqZp1mLKzUs0B4EHgmTvDBmuQ9nU0vWzEW12?=
- =?us-ascii?Q?xEFfCMUhJgEFsRnesFlENxk13UGMTogFxBupYnhoNgorvOB1+kFcW0ozfA2Z?=
- =?us-ascii?Q?1ARs/hvJUvsRh1D5sYIFOlKq95qb48sfuvVKMexp+zqDEq3LKZ1Y8vDo82z0?=
- =?us-ascii?Q?SBN6w+xlgN/4Luqu3MsjRF8eGhcmsGSdmn4SJAha7TSyY11UJHHS1qzxPRkY?=
- =?us-ascii?Q?ytkHJOqT6uFxL68/hTsOtjR17I+1RoFoOIlenN8T/ds1k7DIIpXOy/YGH16/?=
- =?us-ascii?Q?HG+SzTnOUsNZouRQYD3RiTRpehQyGdMiIQYoKB0hHxPS1cs0dcZldTNJ4me4?=
- =?us-ascii?Q?QmQbqOHk5LwYxbaH/mqt4jAwQ18H6RLmqvNH4lm+7sf/MvhwX8h3FMm7DA0/?=
- =?us-ascii?Q?k8uKUp/lYvANzL3icQSJ2k+tuG0Limgp77NBpD3byDOj5++H4Jx0urzWh7xj?=
- =?us-ascii?Q?47hpneHrUOGtKnSS6Vnvb04wLJ6YBbCJRoO3CSWVFX7S+EvohpN90uEqjeAD?=
- =?us-ascii?Q?hfZS2JRxIcPgyBqCK3TmcMQ56ZVq2VgN+986bkhx1M3IbG7RorHIo5+IlNoy?=
- =?us-ascii?Q?KPjS7A8i2gwmRYlLB8WUOLqOcbaGpCz3uCFtW6UPGSUNmQKpn6BH5aYH3DwN?=
- =?us-ascii?Q?5w9vWo6GJZ0KBzdfRoxHwrXRi0g41qlmPe6rFeYBI3ztZpq8wgU7xI3k5359?=
- =?us-ascii?Q?fVBwZl2a6kIeWaa9+6jMrTvjbCpOpS6X/QHRy0gBhoZCGUKEiY+oQDjvQuil?=
- =?us-ascii?Q?52E0Z6rt5ABhoLZhZwdkTvrpsXypBeN3s60s3PgeGNYMpFYucWktxulrWBaM?=
- =?us-ascii?Q?pKaNzf2V9Bsyq9/g1eJd9+EU9wwYnANTJCQ3ZvvwRfacezVqJLXdmdw+7CHE?=
- =?us-ascii?Q?r+XdJL1Kzz4gnKB00uDRz8XKcBp80HKAOx2ruf+Tj0I9Ok5omq+PUAXcC2Ix?=
- =?us-ascii?Q?CU0rvRUOfbMw9EA+tkqOkA1lUGWTl0BWEl6Br3D5K/r9Tz2dhl1I+VHM+oZx?=
- =?us-ascii?Q?+fZvjBs0Zi/1Ii+ksJylb5ddwGKL067gTyuHFazRp6UokcN4hD+Q9SqJeZbp?=
- =?us-ascii?Q?5a/oyUZ/6c2nOnRs3IipH3BO2Lt2l1BPcD99nWdMR8HsQkAHuKSYDD+5aC38?=
- =?us-ascii?Q?zhs8Fkw3KRhv6SmFLveGoJ7o83mswXgpifaV7J1ge7keq7xMNWQtS0cTDdoi?=
- =?us-ascii?Q?sB0zn/IRB9Is6FF8STBeuOkmeN8bFYMhfmgtIP0vtniYWq3i?=
+	=?us-ascii?Q?DLeuEOMewFu6Bzasd9Rh3uMkTBUhIr+L9AwN7G+H9bImjtk8238jiOlMwroP?=
+ =?us-ascii?Q?WYN4NsnpbJXjTXtmL7Sweu8+sSOxb33Tdvbg8SoLLbJqvUv/uKqgXFNurTb5?=
+ =?us-ascii?Q?QQXN5ESf/XL9buropmOcueBNy5Jsqe5v/3UeON+J352QrMCg/pQIx7i6RSW/?=
+ =?us-ascii?Q?StJy7YpmdKqUaCW5JZPJe5cLCGP74ly0wZvX5It/P1uk/j/+uWuB9EmKcm9/?=
+ =?us-ascii?Q?d0xqFQhEXF674cavJWN9/f4b4Vf3qUUPhpR4IM90v0I89PhAAtQBX2Bf2jl5?=
+ =?us-ascii?Q?KnE29eA2PeO/w4ol6VHWlAGlTIn9jx8mxXocRur1us5zkK8gY5ItPdgJtJUS?=
+ =?us-ascii?Q?zl8H/Wk4N2ODtF4MPCyNHSoEdm8H+DMSaMJMZFzEfuHa7tjd9q/cKZ7Jkmu/?=
+ =?us-ascii?Q?h5tTjNOFdAUkToFUTso4/mbGOdY5pUNXegZExaxSi62BQVhrLDmUePXLF9dO?=
+ =?us-ascii?Q?lEJZAEPx5m1uVFnABdAgvoQ9YYp0dh1op/tVTqjWWzo+9UrEED5JDQnsJB8t?=
+ =?us-ascii?Q?x5rNn8f5lpsl7r72uOl7wtOXeahCLPkilgHm3zJsqdRGEPxsQvzWMWDvq4n3?=
+ =?us-ascii?Q?AvY5ZCGyIPEVb2EH5UcczNkXuk3JTQj1XNZxOHUSBmoD4hRZbpFQK7l7mfVp?=
+ =?us-ascii?Q?1VAnE16XaL8hPGtbvQ+623nysPvhXq1syyYRoIFtZryIejuUSLKssoPfGOUX?=
+ =?us-ascii?Q?5PUXdHch3zhDBYdBsy1pSOQkn+NO7kohRA4sxJyVDo+shEPFRZlMsZPxeCBJ?=
+ =?us-ascii?Q?zoRcl3H9L8IOz3uIzRgCDfIK+lDMBsmKUl2EDX/k2uuRGercfkirCNzS69kz?=
+ =?us-ascii?Q?0DV6AptWLw21RSQcihMdLAKDWR0QOXnFBO7/Ec+iv3Y/i3z35oM3X+FxzmfT?=
+ =?us-ascii?Q?K8OTWzYIMTtvk/IP1HKB6Rk8cr/dWiXbKerS/Fl+P9FA6w37UTODrzcAVyxR?=
+ =?us-ascii?Q?uYmGmFlbDeU3X8PnnPya7vHRye+w3YRgi4M/aKJNetN2RFEhjsTAJJ0zIC8o?=
+ =?us-ascii?Q?ehnhcgH4WC7q2b0KWlHCeHe2YB/4ioi8WLtAI97rGnUzR04bSUL2eMbGoOJ8?=
+ =?us-ascii?Q?LJtsWULBsNQhAmZ86JJuLjjILWvGUTuS3yjW0bf6ZSxyaeFNcSZ7RNoMYZvC?=
+ =?us-ascii?Q?Ipk5rHa8PNUSeojpkQas7Y2BiR8aVPnPqgb3jIbUX0q43dLYRcLUSB9pow9M?=
+ =?us-ascii?Q?ev2y049b55kkiZRxGhg/fPOEKhd+u48+qQ4m0BtXREc66cCC3HPwxhQz9NqZ?=
+ =?us-ascii?Q?19cZIOQxjyGuCC9IRgIJ8KBqsdsYrNtdJePAnuB5/pia86fMxyPJd2AYZX3K?=
+ =?us-ascii?Q?KrVrptXc1OG8tVg6oHhySvy9N9JI6z2Q3mjp7l+JJHybiV9HG2Cdl9Un4cSI?=
+ =?us-ascii?Q?R69ee5bwuqf7btrPgmmzfHUEqmhLQR4G/hnKhDCoNq5IHjxoYclpodaGrriB?=
+ =?us-ascii?Q?wZ7IzGC5+tIYhEcgCeGMvz0lCqpkmrj2KiiNjdGqaqE3QnpCULXhUJtsqw6J?=
+ =?us-ascii?Q?P6e/E4Be2QPt46FMMfCLms+2SF+9MbE9xs+StGui4cNzOFdJPugftj95sPPF?=
+ =?us-ascii?Q?LNNx0b+LNs+293FnVdzPc9tLK1hZ9xBmW9qa4NEZTQkxa0gUET9gQ2Lds/pP?=
+ =?us-ascii?Q?rKHNAEzZzfJxvBftQ4MI2PubkGikjlE0rnRknBKiobo4wO9Bp/Jkpl7PzUhf?=
+ =?us-ascii?Q?1anP87jbPHuCdFEtl15emQZEUcypJ/ecrM8b6HkAQSfGPzxX?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52dd5ac2-55a7-4f36-5d79-08df35bb460a
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4c6c65b-a8f8-4045-56ab-08df35bcb8bf
 X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 12:50:56.0921
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 13:01:18.0758
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dUpABz9H3Fu80YRbFrPQLAzcks5Yy8rPS1zinAXEXBDGLPif4wqBfiTghk9olrO6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6650
+X-MS-Exchange-CrossTenant-UserPrincipalName: xT4Vsu+6unE8074pr1Ce3YrdZSmiJwwAmlpdVyXupuGFufnClLNRGjSQyKdtEDvt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8806
 
-On Thu, Oct 29, 2026 at 02:41:55PM +0530, Aneesh Kumar K.V wrote:
+On Thu, Oct 29, 2026 at 03:07:34PM +0530, Aneesh Kumar K.V wrote:
 > Jason Gunthorpe <jgg@nvidia.com> writes:
 > 
-> > On Tue, Oct 13, 2026 at 03:14:54PM +0530, Aneesh Kumar K.V wrote:
-> >> Jason Gunthorpe <jgg@nvidia.com> writes:
-> >> 
-> >> > On Mon, Oct 12, 2026 at 03:31:17PM +0530, Aneesh Kumar K.V wrote:
-> >> >
-> >> >> With this series, vdevices hold a reference to their parent vIOMMU,
-> >> >> which pins arm-cca-host. sysfs unbind is disabled, and the SMCCC
-> >> >> provider device has no hot-unplug path.
-> >> >
-> >> > It probably needs some logic like vfio has to prevent unregister from
-> >> > completing if there are active users. The module pin should prevent it
-> >> > from ever triggering, but as a safety precaution.
-> >> >
-> >> 
-> >> Are you suggesting that tsm_unregister() should return an error or wait,
-> >> as device removal does? Returning an error would be much easier to
-> >> implement by adding an unregistering flag to tsm_dev, set under
-> >> pci_tsm_rwsem after checking all pf0->context_users counters.
+> >> [ ... 300 lines skipped ... ]
+> >> +/**
+> >> + * enum iommu_vdevice_tsm_guest_req_op - Guest TSM request operations
+> >> + * @TSM_REQ_VALIDATE_MMIO: Validate and map a guest MMIO range for the trusted
+> >> + *                         device.
+> >> + * @TSM_REQ_SET_TDI_STATE: Transition the trusted device to the unlocked,
+> >> + *                         locked, or running state.
+> >> + * @TSM_REQ_SEV_ENABLE_DMA: Enable DMA for an SEV device.
+> >> + * @TSM_REQ_SEV_DISABLE_DMA: Disable DMA for an SEV device.
+> >> + * @TSM_REQ_READ_OBJECT: Read bytes from a device object, such as a certificate,
+> >> + *                       measurement, or interface report.
+> >> + * @TSM_REQ_REGEN_OBJECT: Regenerate a device object, such as a measurement or
+> >> + *                        interface report.
+> >> + * @TSM_REQ_OBJECT_INFO: Query the size of a device object.
+> >> + * @TSM_REQ_MAX: One past the last request operation; not a command.
+> >> + *
+> >> + * The request payload and response format depend on the TVM architecture.
+> >> + */
+> >> +enum iommu_vdevice_tsm_guest_req_op {
+> >> +	TSM_REQ_VALIDATE_MMIO = 1,
+> >> +	TSM_REQ_SET_TDI_STATE,
+> >> +	TSM_REQ_SEV_ENABLE_DMA,
+> >> +	TSM_REQ_SEV_DISABLE_DMA,
+> >> +	TSM_REQ_READ_OBJECT,
+> >> +	TSM_REQ_REGEN_OBJECT,
+> >> +	TSM_REQ_OBJECT_INFO,
+> >> +	TSM_REQ_MAX,
+> >> +};
 > >
-> > I didn't check it closely but the usual flow is for 'unregister' to
-> > wait until everything is done using it, possibly with a shootdown
-> > mechanism.
+> > This is still no where close to being well defined enough.
 > >
-> > I'm not sure we can implement a sane shootdown for iommufd's
-> > consumption of the tsm, but we can at least do the wait.
+> > Everything here must tie back to defined spec references, listed in
+> > the comments.
+> >
+> > I cannot guess what data is passed over any of these APIs, how things
+> > like "REGEN_OBJECT" select which object to regen, or what the format
+> > of those objects even is. The formats of req/resp are never specified.
 > >
 > 
-> This will require.
+> The request and response payload formats are specific to each CoCo
+> backend. Since iommufd treats the payloads as opaque and does not
+> validate their contents, what would documenting those formats here
+> achieve?
+
+Well if thats the case then no, this is entirely inappropriate.
+
+iommufd requires every single struct to be documented and
+described. We do not do undocumented opaque structs into drivers.
+
+So figure out exactly what needs to flow here, give it driver specific
+names for driver specific content and document everything.
+
+This should be done patch by patch as the drivers implement their
+stuff.
+
+If the data passed is different then it gets a different enum
+value. No sharing enum values for different structs because the
+drivers are different.
+
+You can say things like 'the content of the RHI message defined in
+XYZ' as operations.
+
+> The limited validation is intended to prevent this from becoming a
+> general-purpose multiplexer ioctl. 
+
+But we need that for other viommu use cases..
+
+> It restricts the ioctl to a defined set of guest-initiated
+> operations that the host forwards to the
+> firmware. The path is essentially:
 > 
-> @@ -116,6 +119,13 @@ struct tsm_dev {
->  	struct device dev;
->  	int id;
->  	const struct pci_tsm_ops *pci_ops;
-> +	/* Serializes user acquisition against unregister */
-> +	struct mutex users_lock;
-> +	/* Written under users_lock, read with READ_ONCE() by bus code. */
-> +	bool unregistering;
-> +	/* Registration reference plus users that must finish before teardown. */
-> +	refcount_t users;
-> +	struct completion users_drained;
->  };
->  
+> guest -> vmexit -> VMM -> iommufd ioctl -> TSM backend -> firmware 
+
+Yeah, I'm not adverse to this, so long as it is fully documented and
+understandable how each system call maps to both the guest and
+firmware interfaces it is supporting.
+
+> > The comment for this should probably be *enormous*. Every arch should
+> > explain what they do on every one of these ops, and it should be
+> > identical if it is structured like this.
+> >
+>
+> That would require documenting a significant amount of backend-specific
+> detail in iommufd. Could we instead require each TSM backend's
+> guest_request callback to document its request and response formats?
+
+It needs to be in this header, that is the standard.
+ 
+> > My guesses with no information
+> > 1) VALIDATE_MMIO why would the hypervisor ever need this? Guest
+> >    validates MMIO through secure communication to the secure world.
+> >
 > 
-> When a vIOMMU pins the tsm_dev, it must also increment users. This
-> requires a new users_lock, since all existing locking is in pci_tsm.
+> With VFIO PCI BARs backed by guest_memfd, the VMM can validate that the
+> IPA and PA values provided by the guest belong to the VFIO device.
 
-I usually call this 'registration lock' and make it a rwsem.
+Why? Who cares? It isn't a trusted validation, and there is a RSI that
+duplicates this?
 
-Holding the read side of the 'regitration lock' means the driver
-cannot be unbound during the critical region.
+> We previously also used this operation to ask the CoCo TSM backend
+> to map the device memory (the BAR regions). I have removed this
+> operation from the latest series because that responsibility is now
+> split between the VMM and guest_memfd. TDX and SNP still need to be
+> updated accordingly.
 
-Then ontop of that you use a refcount and completion.
+Right, it should happen automatically as part of lock.
 
-refcount can only be incr'd while holding the registration lock.
+> > 2) TDI_STATE I thought at least RMM did this with an RSI?
+> 
+> CCA uses RHI. The RHI reaches the VMM, which issues the ioctl to
+> complete the request.
 
-Teardown decrs the refcount, holds the write side of the registration
-lock and waits for the completion. Read side is always try so it bails
-once the write side is taken, preventing new refcount incrs.
+And then the seq numbers check that this went through OK?
 
-Most things use the registration lock, but long lived things would
-transition to the refcount.
+> > 3) ENABLE/DISABLE DMA, see #1, must not be done by hypervisor
+> >    See my reply to Alexey:
+> >    https://lore.kernel.org/linux-iommu/20261022123058.GC3008132@nvidia.com/
+> >
+> > 4) READ/REGEN/INFO, what are the objects? What format are they in? How
+> >    do you select them?
+> 
+> These objects are cached by the hypervisor. For CCA, they include the
+> certificate, measurement, interface report, and VCA. They are read in
+> response to guest requests. The requests reach the VMM through an
+> RHI, and the VMM issues the ioctl to read the requested object. REGEN
+> refreshes the objects/evidence at the guest's request.
 
-> I can add this as a separate patch, and then we can decide whether to
-> keep it. I wonder whether we can avoid this complexity, since the vIOMMU
-> already pins the TSM backend module and we expect unregister to be
-> called only from module_exit().
+> >    Does this overlap with attestation subsystem? Should attestation
+> >    subsystem be used to access the SPDM related data?
+> >
+> 
+> 
+> I had hoped we could use it, but I could not find an easy way to
+> integrate the two. We need a simple way to read these evidence objects
+> into userspace. I am not yet sure whether evidence-get can be used for
+> that, since it does more than simply read the objects; it also updates
+> evidence.generation, among other things.
 
-It is probably good practice to have a proper lifecycle scheme that
-does not only involve module refcounting. It will be easier to
-understand and use properly.
+It should not do that, the generation has to follow the locked state,
+not the evidence collection.. See my remark to Dave
+
+I think the bigger issue was it had to use the VDEV flavour not the
+PDEV flavor of RMM commands, and it isn't obvious how we switch from
+PDEV to VDEV mode on the hypervisor..
+
+> > I think this is probably a fine generic API, it should probably not be
+> > "TSM request" so that the other viommu people can reuse the transport.
+> >
+> > I would probably try to stick to exactly like the other APIs do with a
+> > single enum. Two enums for op/arch is saying already that the ops are
+> > not well defined.
+> >
+> > So maybe strip this patch out to have no tsm stuff, define no ops and
+> > just give a command transport into the viommu driver?
+> >
+> 
+> Are you suggesting one ioctl per each guest request ops?
+
+One 'u32 op'
 
 Jason
