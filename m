@@ -1,83 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793268307;
-	b=ZnB2ml6JTwc7yOHtFUczInB9mt1G6VXWL6BB4gv5tkKyHNT36cpIdM1FACE0zwlLXUa/
-	 vSuusy5bUAc4sxHK1Wk59yo7dh50MQxRjqlxtlLDgxR4WZDeE4l5kyAg+dErmu/Feon+o
-	 /61e/6OczgpSic/BdAJR12Sh3D5EV/Aa9Me+aqOeOFrLvuz9gf2IEc2GUmyqcZKz2/zvn
-	 RsruOONHnrdIqzDtOGb4dwwomJ1C50qlwHtZUU7sAe3tDLrRHf89FXGJ7H0Wk8hfefbIA
-	 ddv5w9JGOCwFqkUcYXSdhuglm8HdT/TyEzh+mGCyp1RMTLDOI+GxM/+stMRRN5t8zaw==
+	t=1793268474;
+	b=J16E7GQRhgQcinvrFevCIWfJt3unAP15Im5wnIech8GzlzzPhMJVZQzJOUb/s2A786jm
+	 Zy5m1qLHPHvif82aBAc7RjYdwYlcu/VSYMhyXjzNwz7qEUu5g/gF42OaoHNmdcgVijdce
+	 /uHFkxfKWHq4u/H4ZmtQyUQxyTWa2SKzjHaEmtN6V6ahG48Qd8H0w4168+WDiq0KhcykP
+	 Oc86IicmQKd1Cj7oB7/VIGvz+QWRUrVnE21ODT8+NLLITRjUsaIKCssiOehBuH9x9ua7I
+	 Lgsd/yPltPsRsPYvGlSpzpDFeNhkrpanXnqIlvS6dvb2htrmA+z6camm6z8Mb7Hew2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793268307;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793268474;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=HZ9giMsL3tTbnyDf/k62OFthNCmQXGHyiD+KvibTtRA=;
-	b=EhaAVwJEjQKRXzikIzYM4NldWjtz0AfmfcEK8n4jN8wu+fdibDMb4owFs44l8XzyxTDl
-	 gNDwbGSwHlo8YDeRPI2KosLeq4swt0P+H8Q0i3TOboxeoMq6PmOlM1aV+ODa/Cr8kexoR
-	 xP/VV0Xq0dw9NYwa8uHcmAEuWF8eVWhKpPkO4gtSoRNO/LYe7l1ZnVoNYfy6z0ykRKSBY
-	 s6ZIGDueGvaK7hN4qOigJaJS32ScDRUmBDXqajNKWD+eXv4Jf//xms2BjEZSGywLVHGI9
-	 wQYYyrvR4wa89fTfyEKosy/0O88884Y4ZS8xfkC2kDMgNKj02OIN8oz4ax+2mxomV6g==
+	bh=wgroa5qxrEZgRV1TzlPeAteJauIXp9n4MbPCfUIQ4C8=;
+	b=doZOdOcfockL49dd3T709IvBqceS18OkfBP+NSdlKsrz2ssvBFA8W9xceLdwWDKCkh7T
+	 p1DzTZn4BiiBzKa9djHskfOf7C1LUSF/UiRugSLjb3Yd0/qhVMuJ3MiPtJcO8NzH/d1YJ
+	 Ki2xPWgyo3MO4FgYP5jDwFyltMf3q3sEE+ibucYfH7+SVtgG514zQMznbd/OIeDR4xgai
+	 qktOncRmmCUXVDTLrivVSUDmEDEM7Tt7A5UXvyPI749s4qf7xK0dMoc+GL4DjJLk8ight
+	 raL7Xakrd4xHxK+oNMi1IxUOEcEeOUF9n45bXLvThfyMo/U+BZHzj+S0phHMQhqDXDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	arc=none smtp.remote-ip=209.85.218.44
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=adXFxVIq;
+	arc=none smtp.remote-ip=209.85.218.46
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDA8606A31C
-	for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 10:05:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFDA8606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5743606A31C
+	for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 10:07:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B5743606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c169ae1cb26so84678266b.1
-        for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 03:05:05 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=adXFxVIq
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c3f8d72d7ceso294979766b.3
+        for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 03:07:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793268304; x=1793873104; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1793268472; x=1793873272; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=HZ9giMsL3tTbnyDf/k62OFthNCmQXGHyiD+KvibTtRA=;
-        b=lq8W+cS17tDHpt0tbOot6GGbbRax9GS9mFdROMSRS4xNqUqyQUTjc8gR36oDdhrqlp
-         f2ZTcjmpbEpPLEUc9OGOJvVCo40IvkO0lstr3YVV4H9j1YiEnFAcNuDLM9GNca3wNl/L
-         NDSQAccmCHZNagbIw1LJdmLru3Mj2pq1GdRWc1OX1rU5UMzE5a30posmmkH/thGRPn+o
-         QPdaLJPjrdyd9W7FAaJkm7Yad1K8YOc4/Hh2Pd60eIqycYi8NXu/Wyj9Q4jLKKiACNsa
-         z6DSnyslQeyw+XKRTKFirDmhF53mZrcC/aSplZ7XiKXxrVCzv82jh9AhZ4vliczVusae
-         o7IQ==
+        bh=wgroa5qxrEZgRV1TzlPeAteJauIXp9n4MbPCfUIQ4C8=;
+        b=adXFxVIqqEp0IIxkJgXrfUUipAZ6gBZ9RWwXp3z4+B0z1VUMqAhOtZg+aTFH+qobb7
+         NrCs42qa6QZ+fMRcAcT/m/HdicfUCy/npXJ+mAnqQgDsQuxVMhtYt8JGR6JlypmzNiv5
+         5XA6LbBnmuP4bYZkrDM7FSppk9oeodCSXvbsg+bkqQeUjBFNq5X0ix3z5wUq39leaBwX
+         41lA5+5MilmnZTsN7uA+x5zEltuzbMC3LS9Qejy8ZJF3uppmfCsr7oFk+nCef+MXahi9
+         6BSisBdHAoH5IZ4vRe8wk2xVhxypyGwHjoXAgSngQ8FSVPbyqPMADj6BnU4qfufpbSxD
+         TavQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793268304; x=1793873104;
+        d=1e100.net; s=20260707; t=1793268472; x=1793873272;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HZ9giMsL3tTbnyDf/k62OFthNCmQXGHyiD+KvibTtRA=;
-        b=kdCupfusmBWqj3Q88zuWCm5j694NHsZ6fsnnN9EaXQJf0zxEMmgKEUdNYAGrtMyB7a
-         6IEw5iWesF+/5rMdsCrMP4q9XwDvrxBUeIR5nfDdu1huOG4BfXXw1MxApKKPnzOLHRtN
-         DmewWgtLLOZvqNK1p6GDUjRVj0uN2822xbgA3WHGVCSwiNiXRmmEqBvApvQZiSUqTyKh
-         49co4FlSR0La5ZQfrXZccGTrIcdesVAUG9566fBjq8St2sPqqeLvcY532QBMrmaJ0TKB
-         37OaZ/KWlPTAl2JHm5ih/PTlKZVWYAZbROPFjx29Re/ehSH787WTwKGXVjove/4+rvFd
-         ZxHQ==
-X-Gm-Message-State: AFq9FYLxFWtjRyMHJwsloW66yV/YHzR00kPJ7OXRf17JHru9sIwvIxvU
-	+pvei9LyL5kqy3ajY5CoCa6YgpffUnEI1KTlegdPzkpsrBjXCeOS61pwx1XCIxhzR9Y=
-X-Gm-Gg: AYBFou0S+SRr8x1ec2ZTOCe0V2ykqL1hxj6u5O0LINWXEdo8fQkm0VRJtl6cnmXcEh4
-	4rKO7IlwSHYJYHcyd5LLVEqOD4fIei3AT2Fl5IHu3T6vtQNGTg4DdmulayFL20QpG7xZ6hrrBmM
-	Yxz0MqIfT648qxWRf/wICF2TL2S6VcBS3Ap6Jkl9T9FX69uAcSomLcxIruuLPaB+Alt9txT3zwv
-	2YWA8gpgOJaNsuDGkR1aBT3epeTk9SiyDJMgt7gNukCPWAVQPGH3372m2KpBw+aHtbrwlZMnaLw
-	9WL8zJi2vm1DNpAinuQPfY4uYS12FJSEjqWZVBN7uLfkv6i/rw56BxUDRJDQtsLA0qBX9lOOvuj
-	1hcT+mDrhNBf8AFQzL15ePFr0D2R93w/FPiEb7OLcWCwCHgaCFi1aizp8WL2YcwguqsAYrexujS
-	2pRYsH7/fCF4UARag0uLMuBBCuYYci55M3UQQY/a/URJcs8ZJqB1p5TuOSgazh9WKkbQo/+WBKR
-	5J69FzQS97TXGSiAF4BsOLWiofkRyRJ+r1OkFtf2dL/MrL5ERLKYKsD84es1D1uj51Z9BeZUOx0
-	6udfPtgXdjLbtkHBbxrzBtg9s+458NZ1ZFqfBw==
-X-Received: by 2002:a17:906:ee82:b0:c25:4d9e:bb28 with SMTP id a640c23a62f3a-c49d10fc56bmr194240166b.3.1793268303706;
-        Thu, 29 Oct 2026 03:05:03 -0700 (PDT)
+        bh=wgroa5qxrEZgRV1TzlPeAteJauIXp9n4MbPCfUIQ4C8=;
+        b=N17Bfi6WwG7rZZqFOPdiHc38oLS4CP+QFxxO3Dqi4yxizbcRwwi3B42Wf4SdtFAhpE
+         qOVbRWq3CDjk1xbB2J+FjLppSI2ZZhC55gAE4FrXBuBf9+TI8RRwAwYAP5wFruRmP7UQ
+         CVunb/8dRCnRHzMRAT2zhruIdG4VKc9NSphpz7VPDlRndJY+woPPVCQBOdY5sqCFijbA
+         Yx1vRue5vGG6CfrlYEaUYJVRI2UDwPEOIhcWfFr1ji2TwlWDW9ppmKAyoPMWQ4MSH0cu
+         tTdAbrUGKi0bkmxQnn/Yia3wRArZ99kLbDtZmuHn8+Z5pIq2R6MKW7rXXSXc4QUsrFud
+         HW3w==
+X-Gm-Message-State: AFq9FYJZEbHu155fpzcEEGk10TwplEmJ1rR/dVDcKUmo0Jst0TrdZSED
+	xJ0VI+l7RCrFas3a5kT/jq/66A5bPnrrhsWGcxj6lrJb4WhHbbQpaM6SpOfl4EXU00M=
+X-Gm-Gg: AYBFou1FpXupw55HxVvbdnX7zBWYWssdralW8es1g5t9/qzf+GrtltherUxfXEeZqyS
+	glld3NiCB3Dt/LrP/NpAqtrZl9uy39LzIoBUl1H6aIkkmaa8VpuGAzro+4t4LqeUl0v6AcoosEM
+	fwKylgPrSg+8JBZ+jugB1r8rGYwk3ZU4WNyJjO1LBdmzW8+ll4riGduigNlYOufOyoBFNUo+9ye
+	WNn682MDrPSHpNPelJZKwygb3iY1MkJhTFF2+FJzKWMIQpexLm4seDQuKX4y4pm+lkHF3N3cG+c
+	2GkVUHonOjo0o4x2pYhCsg5Wd5vsx7v1/u0XOsuqo0WTXvzni4BlADn9qfu+/4/hi67V/jdnEOf
+	uwnPHQynjopvfe5j4ZPrVDZt88t4Y0oYCo7mt4XkEIc4ylWwx1zZ0g1a/GFXSwinQ2Fyu0bVVzA
+	jUGlw4tIomiyp9Up6FJBjHmN+fJr/N5izgwdMjFyNUqUSzauCbsL9nVCMdoW/vHXs8R6XZsrNhp
+	wSOXZyA6r8aY+LylmWP5gm5lonh5bvds/oHveZz25iu1SSza6SGWpD+ofaDJwdhP0DJFOX/LaqM
+	laFsVmocdRMQv2BMYlVoBp2SIi8NRYKABJqLFA==
+X-Received: by 2002:a17:907:9405:b0:c49:8d28:73ad with SMTP id a640c23a62f3a-c49be020e3dmr404569566b.49.1793268472113;
+        Thu, 29 Oct 2026 03:07:52 -0700 (PDT)
 Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd7abf6asm705408566b.81.2026.10.29.03.05.02
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd520838sm715397566b.31.2026.10.29.03.07.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 03:05:03 -0700 (PDT)
-Date: Thu, 29 Oct 2026 11:04:58 +0100
+        Thu, 29 Oct 2026 03:07:51 -0700 (PDT)
+Date: Thu, 29 Oct 2026 11:07:47 +0100
 From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
+To: Dave Jiang <dave.jiang@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
 	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
@@ -87,12 +90,11 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
 	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
 	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 14/20] attestation: Add the base family specification
- and generated files
-Message-ID: <auMX4kbsflE9kK3Q@FV6GYCPJ69>
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <auMahpRIeL-Dkytk@FV6GYCPJ69>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-15-jiri@resnulli.us>
- <179302367452.58760.3782556786585774917.b4-review@b4>
+ <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -104,52 +106,40 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179302367452.58760.3782556786585774917.b4-review@b4>
+In-Reply-To: <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
-
-[..]
-
+Tue, Oct 27, 2026 at 07:43:04PM +0100, dave.jiang@intel.com wrote:
 >
->=======
 >
->device-get:
->  request: {}
->  reply:
->    caps:
->      evidence?:
->        min-challenge-length: uint
->        max-challenge-length: uint
->
->Did anyone implement a variable length challenge? That seems a bit
->strange. There is also a very important crypto warning here that the
-
-Yes. TPM2_Quote accepts variable-length qualifyingData, represented by
-TPM2B_DATA with an explicit length. This varies per request on the same
-TPM:
-
-[1] TPM Library Part 2, section 10.3.3, page 136: TPM2B_DATA.
-https://medias.cdn.trustedcomputinggroup.org/production/Trusted_Platform_Module_2_0_Library_Part_2_Structures_Version_185_pub_c0a962a931.pdf#page=136
-
-[2] Part 3, section 18.4.2, page 158: TPM2_Quote qualifyingData.
-https://medias.cdn.trustedcomputinggroup.org/production/Trusted_Platform_Module_2_0_Library_Part_3_Commands_Version_185_pub_87a5c10230.pdf#page=158
-
-The PSA Attestation API, section 4.4, also requires one implementation to
-support 32-, 48-, and 64-byte challenges:
-https://arm-software.github.io/psa-api/attestation/1.0/api/api.html
-
-FIRME DEN0149 1.0 ALP2, section 8.12, Table 8.23, page 100, likewise
-defines an explicit Platform challenge size parameter in x4[31:0].
-FIRME itself does not mandate the specific 32/48/64-byte set:
-https://documentation-service.arm.com/static/699c3b70b60ef220b14ec14d?token=#page=100
-
-
->userspace use of the challenge must not create a "signing oracle". Ie
->do not pass naked network data into the challenge..
-
-Agreed that we should document safe challenge construction.
-
+>On 10/15/26 7:50 AM, Jiri Pirko wrote:
+>> From: Jiri Pirko <jiri@nvidia.com>
+>> 
 
 [..]
 
 
+>3. Jason asked on 14/20 whether anyone needs a variable-length challenge. I
+>   don't think devices need a range. A plain read sends an empty challenge, and
+>   an SPDM GET_MEASUREMENTS nonce is "NL = 32 or 0". Your TDX provider always
+>   takes 64 (attestation_tdx_evidence_caps).
+
+https://lore.kernel.org/all/auMX4kbsflE9kK3Q@FV6GYCPJ69/
+
+>
+>   A device needs exactly two lengths: 0 for a plain read and 32 for a refresh.
+>   struct attestation_evidence_caps only holds a single min/max range. It's
+>   checked on every request in attestation_evidence_request_decode(), and any
+>   range that allows both 0 and 32 also allows everything in between.
+>
+>   To work around that, my provider declares 0-64 and PCI/TSM rejects any length
+
+Perhaps just omit the challenge attr in that case would be the best way?
+
+
+>   other than the backend's nonce size, 32 for both backends I ran. Could the
+>   caps give one exact challenge length instead of a range, plus a flag that
+>   also allows an empty challenge? A device provider would set 32 with the flag,
+>   and your TDX provider 64 without it.
+>
+
+[..]
