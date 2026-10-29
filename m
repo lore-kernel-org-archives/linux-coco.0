@@ -1,104 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793266379;
-	b=siH5zR0vRCcAVobpQ5Mq6nOO+ur5hWj5VoBaQ8IT72gLFZx33kouGgRSk1QNyP7CQZ8I
-	 7RyA/T1ajdFSFNKS4YSsksyvmpHcR5Wh1lb+jeUv1XoC7aNVFzPsicAPogHA4t7mbu/NT
-	 tdQNJK86fw7lQS3m1XhffZEMP/c3XT9+U3L2iXLMjUBfm002LUiRIku/Tu242kWxNeihm
-	 GOtKfBNiiGw/vTG3odBzvO2NIC8iwQv946KffabMdcS0S1KPrTW5io8sO+ODxG7w55rDf
-	 XL+pjioK4S9UKoZ/iF+pH1k+iMnLdUfhrjD1l8a6pdNVhpD6LWiP8zLEsgn8aDrjHIA==
+	t=1793266665;
+	b=Eq9lzaH1zC3y6qPmVFHH8N7pTUyvYr4QEi3e97VpAudYAmfXtBLG2mQFLJKtk7zTxSNF
+	 MqhskGvUVXYazeq5chbY6BBSDqLvbqCX9q3KqIxgqysFEpLor1AtWJ7pIlGswUlMf6we9
+	 d532RcBkbMjni4yuG2AXmFPRAnZ3xel9AYvViSNAGQGPt297eZlTicIdczIHodXA4ry3x
+	 vzHrOhq8CYB2aHv4uwBQmS46WQiuQNa2EzfJLsEuubm4kFXUjmy20rXwfFaIxO81/QKoE
+	 t0WJXcztOSM03vDHBV75HzKVQnRNExsSlawgxzkq0v9vOmbRCdXHOEKCFsXB3+2s85g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793266379;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=25Xe2LGlhfjUVvHKZS8zB+EQgKUVnKIy/4iS8f7+DSY=;
-	b=pteJs3aWEi2EfGqYLLoAKqQ9fCPdHJesC0vB/sHv5t2oQTH/fbLA92IB5EKW/zbIbnEp
-	 FLu4mRdvY7dOgwJH5fe54RFSJdb+fx1AmUFO2c4U7S0H0NO/NDGcp1+LtsX2/UEBTG8RS
-	 5+AAl8CMBZTYLV86hwoOVvWpZvHdbyeat75UC6O37FIBtq1cJi5TqT1aroCfUPrKL/sfY
-	 /9O/pOIdcZKmEiuGe+IuUxGgs24UEFfSEbSQuZxNp3afi8qpRSak2jq6aBoymO2wbA/fT
-	 oK0QQ0tUZi6AqY639sw9E9RGM+fSuUYU7g7Md+ie7pnFlkNLiIweUuwpsCbWaJzRxbw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793266665;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=b1L/YgA0unso+/Lv8s9MhtgPB5X7wkfHZu4ut24TmCk=;
+	b=YGULWsnAegFdkuZ+MwhXT0AtaXSrXoYLBV13KypWv2uehQo3SCZ3ZgHkTT3DtbuBrP3+
+	 FNAUefGK6G8DrrracbGIADNxIW0h5G93A9mMENlQo0khnH5cp7Y8gqUfR3qTL4B8nTwh0
+	 jd4NgGXhxhcQ5JVrCb4RY6wnpLqhrMGgjWU0D/+22qUGrhWEoJf+HT7os9iRKyMWwn5X4
+	 uCHuzOmWonaboU0J9nHe1mqBrowNdQuxHk+ywsKcEKvApN3gMCZ1kGZTpChkmHXd42jx9
+	 ir9XDXU3j4/dDpoVwFmul9E/2v5NWjImf0Yw+J4vaFh0F+vbFufytLK9MLFGLCwqalQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=pS1Ijqgo;
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYVH+Mm9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA375606A31F
-	for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 09:32:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA375606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAA160A2609;
+	Thu, 29 Oct 2026 09:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=pS1Ijqgo
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a2167bd087so19101025e9.3
-        for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 02:32:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793266377; x=1793871177; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=25Xe2LGlhfjUVvHKZS8zB+EQgKUVnKIy/4iS8f7+DSY=;
-        b=pS1IjqgoyvIk2Eia+xOg+bymLiOvvsUc2xy2qdTtDXBVk42qPmCNNJNiZDJB00WxkQ
-         pKAe3BwvG8D5VF6II9XXcn4RQ1ImdSo6CQNAk6P5aRrohYsLaCbbmTI2Bx2n3UHPaMt/
-         dnyy3mSMwIriPmCZ4QRpWrVTSAa+Ci1MbJQmCgailrEMEQqY/dFVzRbiQzK1teuSlhHt
-         lRodEzB7vJDmEfCOU81JrZYecVgnYfDXC6KtHz34W7ZjT/xYmQd+0F+0pyL2mJURlB97
-         QDOeMskkv2NE22pS5tTnhiSodMH+yjNkS2OS/0L/iF03Rr2jzrolU+ZWXLhAyimF0TwV
-         91uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793266377; x=1793871177;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=25Xe2LGlhfjUVvHKZS8zB+EQgKUVnKIy/4iS8f7+DSY=;
-        b=Yl/F0luXpYcBfYPpsjTKfFx1/O5iSZvGyWHhBgRIkhv3zgFHx39iC4QKnAxrPuWsbv
-         2RsFIoRJjtQbLnYR2o0vmKbikBAOfcx/QtPJXSb7KEOOYn1iMxEk20v65NKheOBImANw
-         kVN+lw+9ng2piK236z0ayMpavjEPWQsgEIPhNYgcOQfXx1rkILBgtMGAIyQ9d/8k+3Zt
-         hADOKXKR76So/u8Dl4sfGaA+AJLt4pMctPi61Gqo+OIld4FxSILN4JzVK5izg8MANt7N
-         xQpDhxULBDTZmBMwKIB5TA17sOIb5/WsqQdIEuZANjauYZ7lrVJtsAIjkh36tmxPcPTk
-         pELA==
-X-Forwarded-Encrypted: i=1; AKwUvBz9C3MQ19inycH8ynTBzILfPhvo1su+itjvOKUst+q11OL7beoOMZsjY+ISKTg/tX5ZtqkBU+2/gfru@lists.linux.dev
-X-Gm-Message-State: AFq9FYLz44ccp3qwI2JmV5H3+N1ZDQ4T6QHTts0V+QqrFvfDLT6P5+JQ
-	pzpS1LUEKjvJqxiEXUb7h+l3WJHQE5PV3hL5ZFBUIQedxtiXb2D5KsdvGc6ruG+oTmc=
-X-Gm-Gg: AYBFou3+YGkr6FbVuRC/p0KWYe/LPZjbnNkw1sE2aJKedyZYpaU3Af9wDPLreUyvPV3
-	YNPn06RUQXtdq2W7r+OczpclWDHeI5Cv8ZIITJF/tcVBROHu67USDK8QHXWErqDtokkeBFGFga/
-	xbHht/Mi1lmfu5BUFyhk8YYA8snURSyWMqOxFD4iW3hodeqCtGNn5m2Wd8bn5tgwiyH2+qWKQuw
-	cn3E3OfvuM5UZs9bLkz0hzz2rMt9QKxbkokyHH/r8MzkwdCX7YR1Ao4GhCOTq5vI+8DkZOL9yb0
-	JujwnHI59oO89w28KA25UirbqwObGXBIRgE356lP5v6z1uC+hfOmq/H0lcmKt2ngRRTkpCJKErh
-	ofKSVCxVKqvwCxcZ9HGcS/qGlr7EnKmE0vdH73GSgAMl/dZ0XC5ffcqBvIN0NQPLYR/Ak/W/fzm
-	zvxn6PXJMOP0fAg34vyVtSoR+Gw58l5XqmOcHlGgl7JHdVaj8GAX5owPtZBBRZapEfAY+qa7bqP
-	o8RRgDu0uCJEkDdRmxAulirjNW46Y9dwBkkSoQuO5Xw5ByG2QjT756tMt6J44VrnM6DBtiYYvVD
-	gUpnokL4z1x4BheovmLwK4+AWy4O6eTAJ5KedA==
-X-Received: by 2002:a05:600c:1909:b0:4a2:1e1:d55 with SMTP id 5b1f17b1804b1-4a9675dc5cfmr104826795e9.28.1793266376792;
-        Thu, 29 Oct 2026 02:32:56 -0700 (PDT)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa80285b2dsm52889635e9.13.2026.10.29.02.32.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 02:32:56 -0700 (PDT)
-Date: Thu, 29 Oct 2026 10:32:51 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Dave Jiang <dave.jiang@intel.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <auMSPNNXZv1f43v7@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
- <20261027193629.GK1685504@ziepe.ca>
- <5f33aeed-a20d-4881-9ccf-a69bc308d348@intel.com>
- <20261027234658.GL1685504@ziepe.ca>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYVH+Mm9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D2D1F01829;
+	Thu, 29 Oct 2026 09:37:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793266665;
+	bh=b1L/YgA0unso+/Lv8s9MhtgPB5X7wkfHZu4ut24TmCk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=GYVH+Mm9omq5BAsPPLcumqvOBUW7yKv6qRkJyIck5tFwfRa1tUfjtE1geDCpsmBEP
+	 2RwHK9Cy8sS2rBXuKXJvctC4Bq6C2jK6S/gBMA9x1sxt6ydKYVAFfAqpCKD+Lbm+RW
+	 CTkFLp+EHxcq2Q+0N+MiEyq8LgEaRZKBHMQZslmLTNkQz52CiV4VANY5UuxTSJYiXc
+	 HSEiViC0iMwJEQOI2/cy1vL8wqYF36gfQSfNXAqFM2CsYJ00Xwib/fXPCJXdfkBwli
+	 uFbEJD7BvWk6qn89ZMam6ipKB0JOazajL/SM6VxCjG3IQq3Hghn8AUsKjF5s6ntxKr
+	 WS9/dwDL4KSwQ==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v7 10/16] iommufd: Add the vdevice TSM request ioctl
+In-Reply-To: <179321444123.2412245.6955528563980811144.b4-review@b4>
+References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
+ <20261008055955.4014342-11-aneesh.kumar@kernel.org>
+ <179321444123.2412245.6955528563980811144.b4-review@b4>
+Date: Thu, 29 Oct 2026 15:07:34 +0530
+Message-ID: <yq5a1p98c0f5.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -108,33 +84,186 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027234658.GL1685504@ziepe.ca>
+Content-Type: text/plain
 
-Wed, Oct 28, 2026 at 12:46:58AM +0100, jgg@ziepe.ca wrote:
->On Tue, Oct 27, 2026 at 04:09:19PM -0700, Dave Jiang wrote:
+Jason Gunthorpe <jgg@nvidia.com> writes:
+
+>> [ ... 300 lines skipped ... ]
+>> +/**
+>> + * enum iommu_vdevice_tsm_guest_req_op - Guest TSM request operations
+>> + * @TSM_REQ_VALIDATE_MMIO: Validate and map a guest MMIO range for the trusted
+>> + *                         device.
+>> + * @TSM_REQ_SET_TDI_STATE: Transition the trusted device to the unlocked,
+>> + *                         locked, or running state.
+>> + * @TSM_REQ_SEV_ENABLE_DMA: Enable DMA for an SEV device.
+>> + * @TSM_REQ_SEV_DISABLE_DMA: Disable DMA for an SEV device.
+>> + * @TSM_REQ_READ_OBJECT: Read bytes from a device object, such as a certificate,
+>> + *                       measurement, or interface report.
+>> + * @TSM_REQ_REGEN_OBJECT: Regenerate a device object, such as a measurement or
+>> + *                        interface report.
+>> + * @TSM_REQ_OBJECT_INFO: Query the size of a device object.
+>> + * @TSM_REQ_MAX: One past the last request operation; not a command.
+>> + *
+>> + * The request payload and response format depend on the TVM architecture.
+>> + */
+>> +enum iommu_vdevice_tsm_guest_req_op {
+>> +	TSM_REQ_VALIDATE_MMIO = 1,
+>> +	TSM_REQ_SET_TDI_STATE,
+>> +	TSM_REQ_SEV_ENABLE_DMA,
+>> +	TSM_REQ_SEV_DISABLE_DMA,
+>> +	TSM_REQ_READ_OBJECT,
+>> +	TSM_REQ_REGEN_OBJECT,
+>> +	TSM_REQ_OBJECT_INFO,
+>> +	TSM_REQ_MAX,
+>> +};
+>
+> This is still no where close to being well defined enough.
+>
+> Everything here must tie back to defined spec references, listed in
+> the comments.
+>
+> I cannot guess what data is passed over any of these APIs, how things
+> like "REGEN_OBJECT" select which object to regen, or what the format
+> of those objects even is. The formats of req/resp are never specified.
 >
 
-[..]
+The request and response payload formats are specific to each CoCo
+backend. Since iommufd treats the payloads as opaque and does not
+validate their contents, what would documenting those formats here
+achieve?
+
+The limited validation is intended to prevent this from becoming a
+general-purpose multiplexer ioctl. It restricts the ioctl to a defined
+set of guest-initiated operations that the host forwards to the
+firmware. The path is essentially:
+
+guest -> vmexit -> VMM -> iommufd ioctl -> TSM backend -> firmware 
+
+> The comment for this should probably be *enormous*. Every arch should
+> explain what they do on every one of these ops, and it should be
+> identical if it is structured like this.
+>
+
+That would require documenting a significant amount of backend-specific
+detail in iommufd. Could we instead require each TSM backend's
+guest_request callback to document its request and response formats?
+
+
+> I have a strong guess almost none of this is actually general, but
+> lets find out.
+>
+> You can also put enum kdocs directly before each enum which helps alot
+> when they get as big as this stuff has to get.
+>
+> My guesses with no information
+> 1) VALIDATE_MMIO why would the hypervisor ever need this? Guest
+>    validates MMIO through secure communication to the secure world.
+>
+
+With VFIO PCI BARs backed by guest_memfd, the VMM can validate that the
+IPA and PA values provided by the guest belong to the VFIO device. We
+previously also used this operation to ask the CoCo TSM backend to map
+the device memory (the BAR regions). I have removed this operation from
+the latest series because that responsibility is now split between the
+VMM and guest_memfd. TDX and SNP still need to be updated accordingly.
+
+> 2) TDI_STATE I thought at least RMM did this with an RSI?
+>
+
+CCA uses RHI. The RHI reaches the VMM, which issues the ioctl to
+complete the request.
+
+> 3) ENABLE/DISABLE DMA, see #1, must not be done by hypervisor
+>    See my reply to Alexey:
+>    https://lore.kernel.org/linux-iommu/20261022123058.GC3008132@nvidia.com/
+>
+> 4) READ/REGEN/INFO, what are the objects? What format are they in? How
+>    do you select them?
+>
+
+These objects are cached by the hypervisor. For CCA, they include the
+certificate, measurement, interface report, and VCA. They are read in
+response to guest requests. The requests reach the VMM through an
+RHI, and the VMM issues the ioctl to read the requested object. REGEN
+refreshes the objects/evidence at the guest's request.
+
+>    Does this overlap with attestation subsystem? Should attestation
+>    subsystem be used to access the SPDM related data?
+>
+
+
+I had hoped we could use it, but I could not find an easy way to
+integrate the two. We need a simple way to read these evidence objects
+into userspace. I am not yet sure whether evidence-get can be used for
+that, since it does more than simply read the objects; it also updates
+evidence.generation, among other things.
 
 >
->> >> 6. tdx_attestation_test's discovery_and_construction_fields expects an
->> >>    inheritance chain of 4, but the TDX family inherits ctlv-attestation
->> >>    directly, which gives 3. In a real TDX guest it fails with
->> >>    "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
->> > 
->> > I would have naively guessed this should inherent from some SPDM family?
->> 
->> The TDX family is the TD's own attestation (TD report, Quote and RTMRs), with
->> no device or SPDM in it. In wip_attestation_all_1 it inherits ctlv-attestation
->> directly, so I think the test's 4 is what's stale. Jiri would know for sure.
+> Update the comment to explain all this, don't need to answer here.
 >
->I think TDX report/quote/rtmrs should be a different familiy from TDX device
->assignment SPDM. They are completely different things.
+> We really need to do these defines along with implementations, that
+> probably will settle alot of the questions above.
+>
+>> +
+>> +/**
+>> + * struct iommu_vdevice_tsm_req - ioctl(IOMMU_VDEVICE_TSM_REQ)
+>> + * @size: sizeof(struct iommu_vdevice_tsm_req)
+>> + * @vdevice_id: vDevice ID the guest request is for
+>> + * @op: One of enum iommu_vdevice_tsm_guest_req_op, excluding TSM_REQ_MAX
+>> + * @tvm_arch: One of enum iommu_vdevice_tsm_guest_tvm_arch
+>> + * @req_len: Size in bytes of the input payload at @req_uptr, at most INT_MAX
+>> + * @resp_len: Size in bytes of the output buffer at @resp_uptr, at most INT_MAX
+>> + * @req_uptr: Userspace pointer to the guest-provided request payload
+>> + * @resp_uptr: Userspace pointer to the guest response buffer
+>> + * @out_tsm_code: TSM-specific result code returned by the TSM implementation
+>> + *
+>> + * Forward a TSM request to the TSM bound vDevice. This is intended for
+>> + * guest TSM/TDISP message transport where the host kernel only marshals
+>> + * bytes between userspace and the TSM implementation.
+>> + *
+>> + * The request operation is guest initiated. The vDEVICE implementation
+>> + * declares the TVM architecture and operations it accepts; iommufd checks
+>> + * both before forwarding the request.
+>> + *
+>> + * The request payload is read from @req_uptr/@req_len. If a response is
+>> + * expected, userspace provides @resp_uptr/@resp_len as writable storage for
+>> + * response bytes returned by the TSM path.
+>> + *
+>> + * The ioctl is only suitable for commands and results that the host kernel
+>> + * has no use, the host is only facilitating guest to TSM communication.
+>> + */
+>> +struct iommu_vdevice_tsm_req {
+>> +	__u32 size;
+>> +	__u32 vdevice_id;
+>> +	__u32 op;
+>> +	__u32 tvm_arch;
+>> +	__u32 req_len;
+>> +	__u32 resp_len;
+>> +	__aligned_u64 req_uptr;
+>> +	__aligned_u64 resp_uptr;
+>> +	__aligned_u64 out_tsm_code;
+>> +};
+>
+> Should the viommu_id be passed in as well, or we know it implicitly
+> from the vdevice_id?
+>
 
-correct:
-1) ctlv-attestation-tdx
-2) ctlv-attestation-spdm
+We get final callback via
 
-The spdm instance is backed by particular implementation/transport.
+vdev->viommu->ops->vdevice_tsm_req
+
+>
+> I think this is probably a fine generic API, it should probably not be
+> "TSM request" so that the other viommu people can reuse the transport.
+>
+> I would probably try to stick to exactly like the other APIs do with a
+> single enum. Two enums for op/arch is saying already that the ops are
+> not well defined.
+>
+> So maybe strip this patch out to have no tsm stuff, define no ops and
+> just give a command transport into the viommu driver?
+>
+
+Are you suggesting one ioctl per each guest request ops?
+
+-aneesh
