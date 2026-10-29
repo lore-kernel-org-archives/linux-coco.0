@@ -1,110 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793283391;
-	b=en2SKkipaTPIFRquA1fa5uxqb/hvmWqNobg1j95S32I+/t+Gdmqvlax8hDtP7JZyRwQi
-	 hNfDdoJVZmQtekdnYX09LT8C1j078P/2amNAGte60E0F/5RcnXqM0IZkXYtmAZiX3iIeR
-	 4CuhplmupdII6T5KY78K54H5bsp+zhtS/OYRR7mC+hYG+YflFePSiFxZe42vkidrs0QKK
-	 cA7W3irtZtXv5ce+Q0ErSqB0L5beuM5xheo+q1i6MZ1ax/3LqHgf31MMU9pifx3+yv8DQ
-	 D6pSN0GH2OQ71s1ZE92LfdktEHKdL69xnxE2/I/5KqU9r62ci+h9VXYOkbYYJGP9rCA==
+	t=1793285098;
+	b=s+dixC2kidzhXlCoBsOe0KrywF0aNtOfLW4xH72PVMcJR98LBj+WhMGdVlXlQ74gEe2z
+	 ZXbUnkZYL8AySuFKkXQFxuyNx3e5V7tDd4AQ64X2+BZmreC8/KPnOuiFiCknkjL9EjkB+
+	 i61XGm6D42cFNDSO9l7b9eqHB+V1YRfpFTWMW/kTVqRnW+5chl2smqH5qHDTVXKyUbsrP
+	 h8j5lk8LJ2KhAARi+5yZ+SeShOrsyLXSqeC5IvNCxK/AtFG5I1KGCRv1pAxse42w7S5uX
+	 4h9n+qt65BFV78c5DAh5/9ORcYwaUJ2yPM7i/a2yt04nezCb6mf7Tws10H1A+oevHeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793283391;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=v0w3vTM41MmYY5jFFnm91zARv8a41r8bbrucc1w3RPo=;
-	b=UFGrD6ML6rXuQQCqKZT+E8zd2YvYz+p8V6S8ybto85X8gaeprYCy3lW3nfhYIg1xFNB/
-	 o/qFzXX/ZR8HP1A5nJNha62AAxyb6EQnP32RORvZHUMMGqFIJS75z88+pbjYzn5uyP/jP
-	 Ule01VbOCpPfiupA4kBIvO5FhykvALV6Ygr+gDtUrpH6XCgemMzdMvbGjrNweabZpoua3
-	 EiDlnfvnHKqt0LdHN31kZLGibDUoPb8lAobJF0bdihpIg2KmQpPxZlAkjI+Qr0seM+NQe
-	 7txDPBRItZ6FQIGh7WezLAtJdXbdDFPqBbyApx1ZA/AgZmuWeolpVftFXrAmexTJQNw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793285098;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=Mjl+ShVIlCaGoshBGxSH8zD+Sbyo60ZzNSNREUds4Cc=;
+	b=Hs41OtJA9O7dxvd2mkZS9U+PffYEWi5HsaKSNQgsu+h5jF+V6SC5qfkwugPjr6odtpYk
+	 gP6rFV8tXmBZgvR6XO7MY4PwUMTjG7qc+EB7mYXw6RtGc2HGguncnlXTiPULxMisk37k5
+	 m+/DMYc4Wqg1zhLU6ueeDDSxzqU6sfNdaIXtGNJ0OUq2XpubIQ3GNm+28shx9AmkTQlOl
+	 QrKHYYRp42T5tOuNXV1prkD4UzJ9y+qSIvdQ++RaxLx1LGzwfdS2GGYeQeapdC/q0krhI
+	 pRgB2I6fYro6eLzB2/LOmCnicNLsqvzjfFy+zvYlnEgQQLHE6paPPct1m2VBK3XaUZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=lCwIvBDg;
-	arc=none smtp.remote-ip=209.85.160.177
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoNyx8WY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476F7606A31D
-	for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 14:16:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 476F7606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283E4606A32C;
+	Thu, 29 Oct 2026 14:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=lCwIvBDg
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-533797e72e8so13691801cf.2
-        for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 07:16:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793283390; x=1793888190; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v0w3vTM41MmYY5jFFnm91zARv8a41r8bbrucc1w3RPo=;
-        b=lCwIvBDgFvY+9XL/yhtBHsRfeTvxPLT5In+Ig2hAbxhOQXBT9W66bw03OQdnEKWxGA
-         VI0JIoGDZvi0xznzc2SUzNnDpzhVRkywGkZ2vubKdsqd4lSUMxQgXjwfCPc5QQwx6QjA
-         FMC5jl1RWoqvW7HhPuSFqlKfc9DX9jGr0YdyyhThIIJUUjX5WrwzR7afmRrv1eCyq2Fq
-         SOPInWXiCn6chdp8f/xdymf1DH+Z01aPIkiv5D4yWCzER5MzlNrdYYOB5MTw5MNGcEqO
-         kqLAGYgXacukCILg3vkIGHvLI3YQ/MNm2RIMFYsVlgONLeCReUxadBwMLfukeuWe+82G
-         TKaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793283390; x=1793888190;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=v0w3vTM41MmYY5jFFnm91zARv8a41r8bbrucc1w3RPo=;
-        b=NPjHhftq/NOY3w15IoTlBTMUEgojppdScgaMUfrfKt+Kwb5tRBwAPykdBXiygiLYT6
-         0F2jy1Z1q7FqhquA8pijYPmF79ThYz7uiSmOIFsUIcNSB+fJBsjIJoOvuzttW0KzGHk3
-         p395bjITBmOlmr8YQtETyCGSR0vkKgPWZUrwL7z0aXssUMZCSBc6SyFzaQkhjlwQ/ZOc
-         3dBRooVYsE77IZ84K5MDf3q8X6RFAx9Zmwm5Lfk/V6D9CUUx27nT/hvxLRp9q9kyNCW6
-         Xr2X75B7nctUypoUuSNICB9D+4Gvb0HaFp8S5Uuwb772fmU4JX92n6neiqi4RKv7ujBg
-         /DMA==
-X-Forwarded-Encrypted: i=1; AKwUvByvOPimD6Jgi9NJ8oV8aGybWk3L1ZyDNFp4YH7GozMwIXhPaLY/gNaS1uc8PU8whsgBJeER5b+fKr/7@lists.linux.dev
-X-Gm-Message-State: AFq9FYJ5Z/SbiInyZBidPcYy0HZJcBqTOettWiLqx3/BotvPcpcOQ+xu
-	tsmkqLO+z0zQYcvfdx1QRLat32t89aHUYhwlc3iQuhoBZ9fbHcGuzDQfdYRoxjDqOSI=
-X-Gm-Gg: AYBFou2685BNXrW9A9lwflw3In3ShGekfk26nJSv75VnNz/DrYJd6q4W3ATe3ZSvvk/
-	a7Be+jVgrRatXRsTvZ5Moli+ccj57J1KBZp2SZH3EyGCn5K01Nrx80yhCiMT49mVuvZhREW1Cvm
-	MrDfPVpykHD8tBhLPSaXj7PA/H0fCBsQn8DV5fqWdmGOgL+bmjDGcapCjJ3pAufFRWmHBMh4JId
-	1Vd5NfgR4gStDFxSSEQqZxfiBQv5T5OHyiq0AQDFpOXo5r88lO8j8eqc0VM+tSc4/lg+QpliKDh
-	fTkRDQg8vBK5tiCDWs7AU6Qrmg2EERHQ3v67tsxa7gmMyFjSsPNO4urtMf+bdOFH5LBPOnHA/ec
-	P68LQxctBgsdEibxTxiNd7lMYrWI/lEAq4YNIcT10TrYTOhEXng5yBJ9jKaIkxWb6qfIT5UCWZA
-	TPTIQk+s51Lw59GeW2iRmV6PDpdPx7Z5yKLIWEuhPi6Gu/c83QztOMibIUtIhnkZny+iin9wyP1
-	bjfqwhcMIPq27YhZsoXum/vmpkuCqz/SbPNJCWbzneEOX/Rc6KDgtnX38b4AreNHMSOKt6ftOTy
-	Z0xnIxyR1tctn4dhuA6SPRSTgjn+6xzsSY4zQCQnlY+ZsloFRbONvV5ljwFGD3JuK5LIJHhLkGN
-	SV8/yTP3lyiY=
-X-Received: by 2002:a05:622a:5c14:b0:533:21c6:f4e2 with SMTP id d75a77b69052e-53fcb20dda0mr85167991cf.20.1793283389957;
-        Thu, 29 Oct 2026 07:16:29 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c7f6ef1b7sm45505406d6.7.2026.10.29.07.16.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 07:16:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xMQvb-0000000FihF-2QML;
-	Thu, 29 Oct 2026 11:16:27 -0300
-Date: Thu, 29 Oct 2026 11:16:27 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
-	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
-	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
-	dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <20261029141627.GP1685504@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <2a2a5d93-1c10-4533-8709-437ceb6a3f94@suse.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoNyx8WY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DC31F031E5;
+	Thu, 29 Oct 2026 14:44:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793285097;
+	bh=Mjl+ShVIlCaGoshBGxSH8zD+Sbyo60ZzNSNREUds4Cc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=hoNyx8WY4+9zizzeohkQQ9oWfFSHuWY4H/EcNHlrJtsJj5e+Gw3yNiPvPUbBYlgEh
+	 mk7cHe3t6TM19lpAjbM6oRkUpvNIvrMRBi0nJsaJdehyoIY2IE71iN+cmO48i9c7md
+	 KYYQ5dmfydaVL3bOZ+WUIrvoftRxEIpWEvBkRRCPzwB1diIpmYPpOrtCZZ8g1Inv+L
+	 1fxn/V1PIMX7Ejp63Rm7Nzdl85TI91nGdh/Dm+8VIvNdsBe851pa3ltQ1m5Bg7PxM/
+	 3yQK8pvmdfXocM7y4i4fyxggHx75ZZ3h/0KpXuKFZ1X+OGHQWVmde8TLDiGYY0oLCP
+	 WzH4N85mS25XQ==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev
+Cc: Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Will Deacon <will@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [RFC PATCH v2 00/13] KVM/VFIO: guest_memfd support for device
+ MMIO resources
+In-Reply-To: <CAEvNRgFb5zLkTph_9k3io=7UD6S-j3QPnjE3qVTvzeGZxEJSHg@mail.gmail.com>
+References: <20261017073149.1303738-1-aneesh.kumar@kernel.org>
+ <CAEvNRgFb5zLkTph_9k3io=7UD6S-j3QPnjE3qVTvzeGZxEJSHg@mail.gmail.com>
+Date: Thu, 29 Oct 2026 20:14:47 +0530
+Message-ID: <yq5ay0bga7mo.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -114,75 +75,152 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2a2a5d93-1c10-4533-8709-437ceb6a3f94@suse.com>
+Content-Type: text/plain
 
-On Thu, Oct 29, 2026 at 09:37:20AM +0200, Nikolay Borisov wrote:
-> 
-> 
-> On 15.10.26 г. 17:50 ч., Jiri Pirko wrote:
-> > From: Jiri Pirko <jiri@nvidia.com>
-> > 
-> > Linux has several attestation interfaces tied to individual technologies.
-> > That makes evidence retrieval, measurement registers, device state and
-> > kernel consumers provider-specific.
-> > 
-> > This series introduces a common attestation subsystem. Its goal is to
-> > support platform, TEE and device providers through one model, including
-> > TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
-> > This first series implements the common subsystem and a TDX provider.
-> > Existing native TDX tsm_mr and tsm_report interfaces remain independent.
-> 
-> Wasn't config-tsm supposed to be this common attestation subsystem? Was this
-> discussed when the initial config-tsm was proposed? Why is this coming now?
+Ackerley Tng <ackerleytng@google.com> writes:
 
-Maybe but it was far too narrowly scoped to do that. config-tsm
-doesn't even include MRs, they were awkwardly pushed off into another
-different spot. It just doesn't seem to meet the need, and it can't
-sanely fit SPDM.
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+>
+>> This series adds a guest_memfd device-resource framework for exposing PCI
+>> BAR memory to guests. The intended use is confidential device assignment,
+>> where KVM needs to coordinate private device mappings with shared access
+>> through VFIO. The Arm CCA backend is provided separately; these patches
+>> contain the guest_memfd, VFIO and IOMMUFD interfaces it uses.
+>
+> Thank you for this revision to guest_memfd + VFIO support!
+>
+>>
+>> The guest_memfd framework and Arm CCA backend are available together at:
+>>
+>>   https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-da-gmem-backend
+>>
+>> Userspace creates a device-backed guest_memfd using the ordinary VFIO
+>> device fd as resource_fd, with GUEST_MEMFD_FLAG_USE_RESOURCE and
+>> GUEST_MEMFD_FLAG_INIT_SHARED.
+>> The resource mapping superblock selects its
+>> provider; get_pfn identifies PFN-backed memory. Eligible BAR intervals are
+>> registered as guest_memfd memslots.
+>
+>> File offsets use the existing VFIO
+>> region-offset namespace,
+>
+> Yes, this is great, thank you. I think we should have guest_memfd and
+> VFIO share the same offset to PFN mapping.
+>
+>> allowing one guest_memfd to cover multiple BAR
+>> intervals.
+>
+> Yes, this is an advantage I see of using guest_memfd to wrap VFIO too,
+> instead of requiring separate memslots for each shared/private range.
+>
+>> The device-backed guest_memfd fd rejects mmap and fallocate;
+>> shared guest faults obtain bare BAR PFNs from the provider instead of
+>> resolving the memslot HVA or allocating folios.
+>>
+>> IOMMUFD resolves and pins the device's existing vDEVICE after its backend
+>> validates the VM association. Its MMIO mutex coordinates conversion and
+>> device state changes. VFIO supplies BAR PFNs, validates eligible ranges
+>> and excludes dma-buf exports while a guest_memfd provider is attached.
+>>
+>> Without GUEST_MEMFD_FLAG_MMAP, attachment rejects existing VFIO BAR VMAs,
+>> and new VFIO mmap calls. With the flag, existing and new BAR VMAs are
+>> allowed through the VFIO fd. Attachment invalidates existing BAR mappings,
+>> including huge mappings. Subsequent faults use base-page mappings so each
+>> page's shared-range attributes are checked separately. Mapping the
+>> PFN-backed guest_memfd fd remains disabled (We can decide on this later).
+>>
+>
+> I saw your other email regarding how to handle read/write/faulting
+> (mmap). I still think we should have all these be blocked on the wrapped
+> VFIO fd and have it handled through guest_memfd.
+>
+> The gmem_device_host_accessible() function in this series has a comment
+> that explains this, which is that the shared/private attribute is
+> guarded by filemap_invalidate_lock() in guest_memfd, and so having
+> providers call back into guest_memfd is probably going to cause locking
+> issues. That's also what I figured when I was trying to implement the
+> integration with the sample memory provider in [1].
+>
+> [1] https://lore.kernel.org/all/20261022-gmem-alternative-providers-v2-45-5dd1dc6c660a@google.com/
+>
 
-> > Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
-> > Compared with sysfs or configfs, CTLV executes one validated request
-> > atomically instead of assembling a transaction through several files.
-> > Compared with netlink, an opened device fd directly identifies authority
-> > and lifetime, can be delegated normally, and owns its event queue. CTLV
-> > also provides:
-> 
-> Assuming we want to go through the route of CTLV, do we really want an
-> attestation-specific  interface, or most of this functionality can
-> simply be
+This series uses a trylock to avoid that deadlock.
 
-CTLV is not attestation specific..
+static bool gmem_device_host_accessible(struct guest_memfd *gdev,
+		u64 offset, u64 size)
+{
+...
+	/*
+	 * Keep guest_memfd attributes stable against conversion while checking
+	 * host access. This check only reads attributes, so a shared lock lets
+	 * other access checks run concurrently.
+	 *
+	 * VFIO callers hold memory_lock, but conversion takes the invalidate
+	 * lock exclusively before taking memory_lock for writing.
+	 * Waiting here could deadlock with conversion. Try the shared lock and
+	 * deny access if it cannot be acquired.
+	 */
+	if (!filemap_invalidate_trylock_shared(inode->i_mapping))
+		return false;
+                ...
+}
 
-> implemented as a specific genetlink protocol, utilising all the existing
-> hardening that has gone into netlink's infrastructure to marshal messages
-> from userspace to kernel space?
 
-Been there, seems like a hard no:
+Isn't it much easier to have the provider gate PFN access using the
+callback provided by guest_memfd when sharing the PFN, rather than
+supporting every ioctl exposed by the provider fd through guest_memfd?
 
-https://lore.kernel.org/all/20260721182046.16219426@kernel.org/
+We should probably also get feedback from VFIO and VMM developers on
+this. I wonder whether they would be comfortable switching to
+guest_memfd as suggested here.
 
-And then later this:
 
-https://lore.kernel.org/all/20260921131911.532d81f4@kernel.org/
+>
+>> VFIO BAR read/write, ioeventfd and userspace mapping faults check the
+>> requested range's guest_memfd attributes.
+>>
+>
+> Thanks for calling out ioeventfd, this is one other backdoor to possibly
+> access guest-private memory. To avoid calling back into guest_memfd to
+> check shared/private status, I have these suggestions:
+>
+> 1. Treat the ioeventfd setup as yet another "mapping" alongside stage 2,
+>    host userspace, IOMMU page tables. For IOMMU page tables, guest_memfd
+>    will have to do mappings eagerly on conversion to shared since the
+>    IOMMU cannot handle faults. We could also "zap" the eventfd-to-VFIO
+>    connection on conversion to private and "map" the connection back on
+>    conversion to shared.
+>
 
-Plus netlink being based around sockets and net namespaces is a very
-poor fit for something that has nothing to do with net namespaces and
-really wants a DAC security model.
+I am not sure how scalable that is, since each new provider would
+require another set of ioctls. Also requiring the VMM to use guest_memfd
+for PCI BAR access in CoCo configurations and the VFIO fd in non-CoCo
+configurations adds unnecessary complexity on the VMM side.
 
-> >   83 files changed, 18084 insertions(+), 28 deletions(-)
-> 
-> That's an awful lot of code to just move certain binary blobs around
-> (Judging by what config-tsm is doing ATM).
 
-Yeah, netlink is alot of code.
+> 2. Take a shortcut for now and say that if the VFIO is wrapped by
+>    guest_memfd, always block ioeventfd setup.
+>
 
-ctlv is trying to solve a bigger more general problem than just
-config-tsm.
+I am not sure that would work, because every CoCo configuration has some
+BAR regions, such as the MSI-X table and PBA, that are emulated by the
+VMM.
 
-Attestation is simply the first user as it has some complicated data
-structure that suits it well.
 
-Jason
+>
+>> This series depends on:
+>> * Ackerley Tng's "Allow guest_memfd to be created using a resource (pool)
+>>   fd" RFC, which provides the tmpfs resource-provider API:
+>>   https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
+>> * The IOMMUFD/TSM series, which provides the vIOMMU and vDEVICE interfaces:
+>>   https://lore.kernel.org/all/20261008055955.4014342-1-aneesh.kumar@kernel.org/
+>>
+>
+> For easier testing, is there a VFIO sample we could use? How about mdpy?
+> Is mdpy representative enough for selftests?
+>
+
+
+All my tests use the full CoCo device-assignment flow with kvmtool.
+
+-aneesh
