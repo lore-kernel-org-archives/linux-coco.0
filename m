@@ -1,81 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793248141;
-	b=VxRuxd3Iz5SDz+2MNpyoTexv4K0bHWoMdNNIt5oH7sK54Jr2z6MGFcmm9/XvGeFjwtXW
-	 /eeYQXJK/WQUjaVuOwM9YEEipwmUZexpTHIodguzUgxYfduFs2K5kVBNpgD+noGomxOC7
-	 WIM4aaP5dpzLJAnc5+lv4TvGIDOr8mAWGqw/RsmmcAgDhqtG60RkPCaE4g5OhbhsIpASS
-	 vUeC38tx+WR5vefJIgTdaRYBZWyrSzmVCOoLTfFdmZTXdxoJ15lEIuvjhDRQFE586YjJE
-	 TyCzNWdlxGX6YG6vagJShVAnFevpxvg9PYngqFAsjkweW9vpZn91a2clbdb6Ot1jkHg==
+	t=1793251813;
+	b=pCWD0jeTV5JKDwsu01emfRfKG0iQTqJsnuCTUkvU+Gh3VAvKVH+Dz4j/PrsPJ7HaSeiD
+	 lwzsE6adR2F7JxfckhejJ1B1dF4p8uGkdnEYIqzHAIXMu1nXmaAUVBP6XkM96cDaSEO1B
+	 z8zGDFX3Y9c6H8/5kY7rxH2YaAQr1Z6HSdj+T0Kw1YZ74mq6ogJSyk1x0oIjo7K+snjQw
+	 A0+iN5sroopnYFLD4jhDTHQ/EPaKtR6Bn8xC38eQU2r6PIBXRyu1jNqzjY5svj7Hh1R38
+	 PrUwME+8Kg9cRBalEZn9J9eIIFLt8uFiiGnVp0ER2PXLmSp67BtfU57y4InWMXmLRXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793248141;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=rzYTe3CAmln9p4nHbX2TG5gIE9RDWcbeR5wsihoOolA=;
-	b=JWLnfZRzA4LJvWMFzkjgopLwIrsAAnQu0Qbz7thgqeYPiGZ+sNuN3t/nfw+U2YMIhdLI
-	 nI71+xbLCfibuw4zA1SDNAej3cRpSY4/CUgvZ4a9nim7C7KlNO3aoZrXEk07b4TWuKoyE
-	 5EOc0fzW1K3wdYyccuqMkpZPa7C0WhUpD66IyqH3k13Qx331gt2IjVK5wurRnCVTz2k+h
-	 pEYWNHOnkx3j5ZunNZWw78MTtZg0scb8+zgZDnmXTaG1MQnE8dEcU752ABN90kI9pmRcq
-	 CuchbrlcceCtRWPOz5b0DBBVd1FevGuNdlxlBUOpCbQY4NjQSRq5mmzjYrrj4vAlWIw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793251813;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=eRsa7Nuxwuuj+/qV5ip5IGQIJP2OU2Hvd4m6ivmoiEo=;
+	b=jT0x6Dzi59rE50zQLAOAUwILsY4bO0uEafo/cr2/D/j/yLkXs0JuTiSjaMs7c7Olay2b
+	 zJMBgEf0JyNJ1hu7K9ImTIiemvKe5q/fHEz5YQfgInq4Ro9e0xsSAosN4+oq7RrKhguOR
+	 1SgVo/uKzqGsruUUoHgh1kAUgYT2HqLuwXOs7b4M5mCElUCVsbQC34ZyBmUZ9lPNsr83o
+	 A4XVa3pRutUqTPCZq0i14MAzAytUiD1teHrON7gxrWeVqFBBlo6zQaFq1JlnA0xZw/mig
+	 0D6wwOlE4kxGXdFpaglrRwc/uakAZvLUJJzxJuQi7DjeppdFvX712SLrG0T0DSK/Jqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVFqIl7i;
-	arc=none smtp.remote-ip=192.198.163.9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WHxtq9Zk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63068606A31D;
-	Thu, 29 Oct 2026 04:29:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63068606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B12606A31A;
+	Thu, 29 Oct 2026 05:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVFqIl7i
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793248140; x=1824784140;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Jwzke+C5vjNMWt9GhijAMYGap9eff9wd25DcLISYkNM=;
-  b=mVFqIl7iGKaU6y5yzwOWRTSpigVTMq6021gq5g+lUkPLc33FkD1KrtPA
-   q6Ae0sJHopZaFv4n0E46U1YAInSyOHbKHqlim+01KVGaLLUH5H3J810lH
-   yfEgwlazIGpLZSQa/f2n2nKxPPSbdvLzjjIC18ejwnRq9u7Gf7cmfCPrg
-   0ZTV/SYoSwhwnHMJW5oBpkUOBohQUusSdZFfX2YGj02pGsG7ZqiwXczsE
-   59ugmbNGhGL4K5kWGtfKseZ+9bmfmpwfONgr6586EFfc00h/JmT6mJ/j0
-   tG1TWMfYTcbiCvWw9xc17utn6ciuxAyssqdVGsGEgC45Jm24WTAVgx68c
-   Q==;
-X-CSE-ConnectionGUID: q8+8PIImTSaVcwj1Sj8y1g==
-X-CSE-MsgGUID: A79Kc930Q4+dLCBJhK/WwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1864189"
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="1864189"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 21:29:00 -0700
-X-CSE-ConnectionGUID: osN9a3PLRlOOr9m7+NTyIg==
-X-CSE-MsgGUID: mvmHAIL2QW2K62VmmX1+6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="5143691"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa002.fm.intel.com with ESMTP; 28 Oct 2026 21:28:59 -0700
-Date: Thu, 29 Oct 2026 12:22:52 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, sashiko-reviews@lists.linux.dev,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v7 09/16] tsm: Remove the device from lookup before PCI
- teardown
-Message-ID: <auLKHDLCg5XKDIWv@yilunxu-OptiPlex-7050>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-10-aneesh.kumar@kernel.org>
- <sashiko-outbox-163673@kernel.org>
- <yq5a33ub5lgt.fsf@kernel.org>
- <20261012130109.GK13920@nvidia.com>
- <yq5ald82q934.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WHxtq9Zk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A6E1F01825;
+	Thu, 29 Oct 2026 05:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793251812;
+	bh=eRsa7Nuxwuuj+/qV5ip5IGQIJP2OU2Hvd4m6ivmoiEo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=WHxtq9ZkHpkGaJZ+D3E+m73w1q/uxVP0mkcrYxNJhOWOoSZn7dM2kVPFOab4xIQPS
+	 YoTSOnVOHffrGm+Zat0RtURppiKMZXXZCybQv66lcGaV+8Yx0ZbYoqu2zSYfL6Zl1k
+	 TQotYYsSVxRS1lu+oD6RVNFumlSTwgGb5x91ZZtcHj3HUozwlNnb8iFsFbbPzfyQAS
+	 Y8LLZnHC+Z9RPGfDQL655OpEe8bntUKtUC1pwQmylHU2eN67DEBp8h5DiksHiVHjbj
+	 vPYjBkK1FMLxTCAdm03hn2IKvpTA0hVl+ruFg+TLsMw4PPWn/ECifUVP+3Q7raoRka
+	 y+MQ5hThU423A==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Dave Jiang <dave.jiang@intel.com>, linux-coco@lists.linux.dev,
+	Leon Romanovsky <leonro@nvidia.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Kevin Tian <kevin.tian@intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev
+Subject: Re: [RFC PATCH v1 08/11] PCI/TSM: Bind CTLV attestation to
+ connected and locked contexts
+In-Reply-To: <9ff72d51-3933-4f2e-a854-c0f9695c0c04@intel.com>
+References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
+ <20261028152618.1356860-9-aneesh.kumar@kernel.org>
+ <9ff72d51-3933-4f2e-a854-c0f9695c0c04@intel.com>
+Date: Thu, 29 Oct 2026 11:00:03 +0530
+Message-ID: <yq5ajyn1axb8.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -85,179 +77,78 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5ald82q934.fsf@kernel.org>
+Content-Type: text/plain
 
-On Tue, Oct 13, 2026 at 02:19:03PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@nvidia.com> writes:
-> 
-> > On Mon, Oct 12, 2026 at 02:44:58PM +0530, Aneesh Kumar K.V wrote:
-> >> sashiko-bot@kernel.org writes:
-> >> 
-> >> > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> >> > - [Medium] tsm: race in tsm_register() error path leads to UAF and NULL pointer deref
-> >> > --
-> >> >
-> >> > commit f9b77b7469552ae6078c3a47333908a88eec2474
-> >> > Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> >> >
-> >> > tsm: Remove the device from lookup before PCI teardown
-> >> >
-> >> > This commit modifies the teardown flow to remove the TSM device from
-> >> > lookup before tearing down the PCI state. It also adjusts the setup
-> >> > flow in tsm_register() to handle PCI registration failures differently.
-> >> >
-> >> >> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
-> >> >> --- a/drivers/virt/coco/tsm-core.c
-> >> >> +++ b/drivers/virt/coco/tsm-core.c
-> >> >> @@ -56,26 +56,25 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
-> >> > [ ... ]
-> >> >> -static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
-> >> >> -						 struct pci_tsm_ops *pci_ops)
-> >> >> +static int tsm_register_pci(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
-> >> >>  {
-> >> > [ ... ]
-> >> >>  	tsm_dev->pci_ops = pci_ops;
-> >> >>  	rc = pci_tsm_register(tsm_dev);
-> >> >>  	if (rc) {
-> >> >> +		tsm_dev->pci_ops = NULL;
-> >> >
-> >> > [Severity: Medium]
-> >> > Does this unprotected write to tsm_dev->pci_ops introduce a race condition?
-> >> >
-> >> > If pci_tsm_register() returns an error early (e.g. if a driver incorrectly 
-> >> > provides both link_ops and devsec_ops, returning -EINVAL before acquiring 
-> >> > pci_tsm_rwsem), a concurrent userspace write to the connect sysfs attribute 
-> >> > might trigger connect_store().
-> >> >
-> >> > If connect_store() evaluates is_link_tsm() concurrently, this lockless 
-> >> > assignment to NULL on the error path could cause the compiler to reload the 
-> >> > pointer after the NULL check. Could this lead to a NULL pointer dereference 
-> >> > when accessing ->link_ops.probe?
-> >> >
-> >> >>  		dev_err(tsm_dev->dev.parent,
-> >> >>  			"PCI/TSM registration failure: %d\n", rc);
-> >> >> -		device_unregister(&tsm_dev->dev);
-> >> >> -		return ERR_PTR(rc);
-> >> >> +		return rc;
-> >> >>  	}
-> >> > [ ... ]
-> >> >> @@ -96,15 +95,22 @@ struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
-> >> >>  	if (rc)
-> >> >>  		return ERR_PTR(rc);
-> >> >>  
-> >> >> -	return tsm_register_pci_or_reset(no_free_ptr(tsm_dev), pci_ops);
-> >> >> +	rc = tsm_register_pci(tsm_dev, pci_ops);
-> >> >> +	if (rc) {
-> >> >> +		device_del(dev);
-> >> >
-> >> > [Severity: Medium]
-> >> > Can this error path lead to a use-after-free if PCI registration fails?
-> >> >
-> >> > Since device_add() is called prior to tsm_register_pci() in tsm_register(), 
-> >> > the device is already exposed via class_find_device(). If a concurrent 
-> >> > connect_store() finds the device and proceeds to pci_tsm_connect() before 
-> >> > this error path cleans it up, it will attach the PCI context to tsm_dev.
-> >> >
-> >> > When this error path calls device_del() and returns, the __free(put_tsm_dev) 
-> >> > guard at the top of tsm_register() will drop the primary reference to 
-> >> > tsm_dev, freeing its memory.
-> >> >
-> >> > Because the attached PCI context stores the pointer without taking an 
-> >> > additional device reference, wouldn't this leave a dangling pointer in the 
-> >> > PCI context, resulting in a use-after-free on subsequent accesses?
-> >> >
-> >> >> +		return ERR_PTR(rc);
-> >> >> +	}
-> >> >> +	return no_free_ptr(tsm_dev);
-> >> >>  }
-> >> 
-> >> 
-> >> I think this problem already exists upstream. We should delay
-> >> device_add() until PCI/TSM registration succeeds. The kobject event
-> >> should also be emitted after device_add(). I will add the fix as a
-> >> separate patch.
-> >
-> > Sigh, trying to do all this stuff through sysfs makes such an
-> > mess.. Nothing gets to be atomic in sysfs land so..
-> >
-> > It looks like this ordering is to ensure that when connect appears on
-> > the pci device it can immediately be used with the tsm that triggered
-> > it's creation. I'm not sure this is valuable but I haven't worked out
-> > how a userspace is even supposed to exist with all these troublesome
-> > races.
-> >
-> 
-> The issue is theoretical and does not arise with a single link TSM
-> driver. The PCI device's "connect" attribute is added only after
-> pci_tsm_register() succeeds.
-> 
-> The race can occur when registering a second TSM. The "connect"
-> attribute already exists, and userspace may try to connect using the new
-> link driver, for example "tsm1". connect_store() then looks up ID 1 and
-> can find the new tsm_dev in tsm_class because device_add() has already
-> completed.
-> 
-> The proposed fix is to reorder registration so that device_add() is
-> called last.
+Dave Jiang <dave.jiang@intel.com> writes:
 
-Yes, since the cleanup path is changed to:
+> On 10/28/26 8:26 AM, Aneesh Kumar K.V (Arm) wrote:
+>
 
- device_del()
- pci_tsm_unregister()
- put_device()
+ [ ... 232 lines skipped ... ] 
 
-the initialization patch should be:
+>> +	ops = tsm->tsm_dev->pci_ops;
+>> +	if (!ops->refresh_evidence)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	ret = ops->refresh_evidence(tsm, type, 0, (void *)challenge, length);
+>> +	/* Even a failed refresh may have changed device state. Retire all verdicts. */
+>> +	if (ret)
+>> +		tsm->error = true;
+>
+> Does this make any refresh failure fatal until unlock? The CCA refresh
+> in 11/11 says "failure preserve the old cache", but with tsm->error
+> set I don't think the cache can be read or accepted?
+>
 
- device_initialize()
- pci_tsm_register()
- device_add()
+Yes. The generic layer treats an evidence refresh failure as fatal. The
+backend can decide how to present that failure.
 
-> 
-> ie, changes the sequence from:
-> 
-> 	rc = dev_set_name(dev, "tsm%d", tsm_dev->id);
-> 	if (rc)
-> 		return ERR_PTR(rc);
-> 
-> 	rc = device_add(dev);
-> 	if (rc)
-> 		return ERR_PTR(rc);
-> 
-> 	return tsm_register_pci_or_reset(no_free_ptr(tsm_dev), pci_ops);
-> 
-> to this.
-> 
-> 	rc = dev_set_name(dev, "tsm%d", tsm_dev->id);
-> 	if (rc)
-> 		return ERR_PTR(rc);
-> 
-> 	/* Complete PCI registration before exposing the TSM to class lookup. */
-> 	rc = tsm_register_pci(tsm_dev, pci_ops);
+>
+> The cached evidence is still the lock's evidence, collected after the
+> lock. And per the cover letter a failed refresh already invalidates
+> the earlier generations. Should the backend decide instead, and set
+> tsm->error itself when it can't tell what happened to the device?
+>
 
-Maybe we don't need the helper any more, open code pci_tsm_register(),
-align with tsm_unregister(), seems clearer to me.
+For the CCA backend, evidence is replaced only after successful
+validation. If validation fails, the cached evidence remains unchanged.
+However, we could instead discard the existing evidence cache when a
+refresh starts.
 
-> 	if (rc)
-> 		return ERR_PTR(rc);
-> 
-> 	rc = device_add(dev);
-> 	if (rc) {
-> 		if (pci_ops)
-> 			pci_tsm_unregister(tsm_dev);
-> 		return ERR_PTR(rc);
-> 	}
-> 
-> 	/* Notify TSM userspace that PCI/TSM operations are now possible. */
-> 	if (pci_ops)
-> 		kobject_uevent(&dev->kobj, KOBJ_CHANGE);
-> 
+>
+> Also, this builds on struct pci_tsm_evidence from Dan's March posting
+> [1]. The TDX guest RFC [2] and AMD's SEV-TIO guest RFC [3] both use
+> device_evidence_create() from his July posting [4]. Is the plan to go
+> with pci_tsm_evidence and drop device_evidence? Would help to know
+> which one to build the TDX guest side on.
+>
+> [1] https://lore.kernel.org/all/20260303000207.1836586-1-dan.j.williams@intel.com/
+> [2] https://lore.kernel.org/all/20260924041032.1096569-1-zhenzhong.duan@intel.com/
+> [3] https://lore.kernel.org/all/20260916115159.1938195-16-aik@amd.com/
+> [4] https://lore.kernel.org/all/20260705220819.2472765-1-djbw@kernel.org/
+>
 
-I'm good to the analysis and good to the fix. I was confused why the
-original patch refactored tsm_register_pci_or_reset() with no functional
-change. But with this proposal, the change becomes reasonable.
+The include/linux/attestation.h do cover
 
-I haven't finished the series yet and am not sure why this fix is needed
-in this series, how it affects the following patches. But it is a good
-fix standalone.
+enum attestation_device_trust_state {
+	ATTESTATION_DEVICE_TRUST_UNSET =
+		CTLV_ATTESTATION_DEVICE_TRUST_STATE_UNSET,
+	ATTESTATION_DEVICE_TRUST_NONE =
+		CTLV_ATTESTATION_DEVICE_TRUST_STATE_NONE,
+	ATTESTATION_DEVICE_TRUST_ADVERSARY =
+		CTLV_ATTESTATION_DEVICE_TRUST_STATE_ADVERSARY,
+	ATTESTATION_DEVICE_TRUST_AUTO =
+		CTLV_ATTESTATION_DEVICE_TRUST_STATE_AUTO,
+	ATTESTATION_DEVICE_TRUST_TCB = CTLV_ATTESTATION_DEVICE_TRUST_STATE_TCB,
+};
+
+I am still unclear how this will interact with generic device trust. We
+can only determine that after reviewing the device trust series.
+
+Leon,
+are there any plans to post it?
+
+For the current PCI/TSM CTLV implementation, however, it makes sense to
+treat evidence as local to the TSM and keep it in pci_tsm_evidence.
+
+-aneesh
