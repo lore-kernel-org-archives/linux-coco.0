@@ -1,71 +1,145 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793285098;
-	b=s+dixC2kidzhXlCoBsOe0KrywF0aNtOfLW4xH72PVMcJR98LBj+WhMGdVlXlQ74gEe2z
-	 ZXbUnkZYL8AySuFKkXQFxuyNx3e5V7tDd4AQ64X2+BZmreC8/KPnOuiFiCknkjL9EjkB+
-	 i61XGm6D42cFNDSO9l7b9eqHB+V1YRfpFTWMW/kTVqRnW+5chl2smqH5qHDTVXKyUbsrP
-	 h8j5lk8LJ2KhAARi+5yZ+SeShOrsyLXSqeC5IvNCxK/AtFG5I1KGCRv1pAxse42w7S5uX
-	 4h9n+qt65BFV78c5DAh5/9ORcYwaUJ2yPM7i/a2yt04nezCb6mf7Tws10H1A+oevHeg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793285098;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=Mjl+ShVIlCaGoshBGxSH8zD+Sbyo60ZzNSNREUds4Cc=;
-	b=Hs41OtJA9O7dxvd2mkZS9U+PffYEWi5HsaKSNQgsu+h5jF+V6SC5qfkwugPjr6odtpYk
-	 gP6rFV8tXmBZgvR6XO7MY4PwUMTjG7qc+EB7mYXw6RtGc2HGguncnlXTiPULxMisk37k5
-	 m+/DMYc4Wqg1zhLU6ueeDDSxzqU6sfNdaIXtGNJ0OUq2XpubIQ3GNm+28shx9AmkTQlOl
-	 QrKHYYRp42T5tOuNXV1prkD4UzJ9y+qSIvdQ++RaxLx1LGzwfdS2GGYeQeapdC/q0krhI
-	 pRgB2I6fYro6eLzB2/LOmCnicNLsqvzjfFy+zvYlnEgQQLHE6paPPct1m2VBK3XaUZg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoNyx8WY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=40.93.194.37
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793288013;
+	b=CwXpCL94LconegKWWMcvxZOxg05kYhoLTSB4Uvjv/vwZsMj7cW9dJZQ6eM2PoEeYViRw
+	 ylT6fUfJnqpgjGoQQ/wyzV3tbFqSDoWg8UwYrkbQg5lGpAZf6QIL9TVzmVGlKDbKlKviu
+	 311dQtK658y5SaManRS0q8S3aXJkl8rt9CeubbQ8A7kB7yJgUR31OJDefoqajjsDGRTwE
+	 WJs9RmpQIgP6GXEPjAdU4xlOjhPow24hv+qViLLvt+UXS8Q7hqrjrxguX0LdQT3kqKPk2
+	 NE/Xpr7Oasl8YqZEN181sUPB3556OsJZvgKpSoifkrFEUN9C8UOnsu3D3LNxJGegnNA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793288013;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=JjG+zp4lmBM2ynS4sA8trmdABzNwBT9TGM57029ZnpQ=;
+	b=HfCHFkI4/lWcvSs/j8RQ+1opD3iAOhnwGsZx5SJnXLYC6LyWrjCzAm82ZBzsJ2umj1dF
+	 x5cqMFxb7GTejqX86+hKDAyRhO/I+yhAh9FHK+ZHPyoa87BV4z/7OWBri4VYFd8cNxsST
+	 EQGxDDaiiJNC96QQnWA3OzA9X8JCYGZGwy6vAQWQ9Fo2c+uzyZUEH/KA1jfJ3j/VdN25x
+	 irG05IYp6YxoE8M6Ozkp9fJ8wJxyvAqYRifIoLpFR3etPGtb3Y7RqIPQhfDG+EiJ0B/OT
+	 ffmKYeT7fQTJ60Dvfz87IVnR+pujZjpcQe82KAfMpxy2Nezt3Sml5u6cqldUuf/9gAA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=E0uQpz9Z;
+	arc=fail smtp.remote-ip=40.93.194.37
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011037.outbound.protection.outlook.com [40.93.194.37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283E4606A32C;
-	Thu, 29 Oct 2026 14:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FECF606A31A
+	for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 15:33:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FECF606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoNyx8WY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DC31F031E5;
-	Thu, 29 Oct 2026 14:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793285097;
-	bh=Mjl+ShVIlCaGoshBGxSH8zD+Sbyo60ZzNSNREUds4Cc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=hoNyx8WY4+9zizzeohkQQ9oWfFSHuWY4H/EcNHlrJtsJj5e+Gw3yNiPvPUbBYlgEh
-	 mk7cHe3t6TM19lpAjbM6oRkUpvNIvrMRBi0nJsaJdehyoIY2IE71iN+cmO48i9c7md
-	 KYYQ5dmfydaVL3bOZ+WUIrvoftRxEIpWEvBkRRCPzwB1diIpmYPpOrtCZZ8g1Inv+L
-	 1fxn/V1PIMX7Ejp63Rm7Nzdl85TI91nGdh/Dm+8VIvNdsBe851pa3ltQ1m5Bg7PxM/
-	 3yQK8pvmdfXocM7y4i4fyxggHx75ZZ3h/0KpXuKFZ1X+OGHQWVmde8TLDiGYY0oLCP
-	 WzH4N85mS25XQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev
-Cc: Alex Williamson <alex@shazbot.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Will Deacon <will@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v2 00/13] KVM/VFIO: guest_memfd support for device
- MMIO resources
-In-Reply-To: <CAEvNRgFb5zLkTph_9k3io=7UD6S-j3QPnjE3qVTvzeGZxEJSHg@mail.gmail.com>
-References: <20261017073149.1303738-1-aneesh.kumar@kernel.org>
- <CAEvNRgFb5zLkTph_9k3io=7UD6S-j3QPnjE3qVTvzeGZxEJSHg@mail.gmail.com>
-Date: Thu, 29 Oct 2026 20:14:47 +0530
-Message-ID: <yq5ay0bga7mo.fsf@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=E0uQpz9Z
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dt0/9PONiJN+JNI/rsR8I7Qsog0iuqhl7sl4n3TpfD5KUVXVxNfxWXt0gFurnUf9ViFWMUFHOedNCpV6RMEASv8z4LlyhP2vFeZETxG2U7m3d40qT4T1iBccl5jgMqCe/5XS6lwc8cOz00AW4FhYSy16OhKbc6nauYEO6m8vOlMRGOvQbgOkAbDJkTpSARy/apt947opIcbx2yzurYOD/+oMOjCoXpczBX5WzwZkADn+eYEd/uDMM6V05mk9AzhnSmnxKfznXUsHWnPy4lTmYrPIR2ELy1Ml7OG+UE4um95HmonGqzK1XHWMzpA6pV8YE3L35LrNgoVbjzxAVUsOjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JjG+zp4lmBM2ynS4sA8trmdABzNwBT9TGM57029ZnpQ=;
+ b=qdx735pOD1WD01odK62EYWE+UEuGCqnJDQsiMTRiUEIdmd6ymcmBMc8mwa5cpZudtXXj6awXfd3F/AWBq8jBCUVskAvldNxM8BxoZfVwbZHonjTEghxwc54JwMIYKdScG54n0b6wqyzkpqn80O0HaJ8fZj7h0HfKX4xf4HTuL2pzKfFjfecHOA3uI5NOdZikPZyusf1UjRQ5n4eUirXyxLDx8Pwz3WrQX//Z7lSBloe3KlMfRuhr055yIsL6kX5doOm5JqlJ1fhEEb7QbZHAGNjXtOXTlPQp8J//j8FrscrUkLJ038pFDBcrMe0Df1km6XJDyaLApCZjyB4hE4Mlbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JjG+zp4lmBM2ynS4sA8trmdABzNwBT9TGM57029ZnpQ=;
+ b=E0uQpz9ZYFGAtxjfqwtKi90y80kb4JYew8iCpOiK3ek3huqpFPjAqL9BXtL/iTfWK9Hk4w7T2zrr1cNBph7pRmIbYLPdzfWcSWjJGXYHxiBznNtPND4UUXn9DoCXQGa7IQnaXwuVziEbJ0ZxSHztcQEi65ImmqYoOn8JA1R6Ktk=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com (2603:10b6:806:32d::12)
+ by CH3PR12MB9249.namprd12.prod.outlook.com (2603:10b6:610:1bc::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
+ 2026 15:33:24 +0000
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46]) by SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46%6]) with mapi id 15.21.0546.021; Thu, 29 Oct 2026
+ 15:33:24 +0000
+Message-ID: <04a438a0-6c21-4ec9-848d-7dacb59c7f18@amd.com>
+Date: Thu, 29 Oct 2026 10:33:10 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] x86/sev: Set up RMPOPT only on an active SNP host
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, herbert@gondor.apana.org.au,
+ davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1793216372.git.ashish.kalra@amd.com>
+ <331aeb2f29710865ec064bacf9edacaadde2b094.1793216372.git.ashish.kalra@amd.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Content-Language: en-US
+Autocrypt: addr=thomas.lendacky@amd.com; keydata=
+ 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
+ WiyqywZI5g==
+In-Reply-To: <331aeb2f29710865ec064bacf9edacaadde2b094.1793216372.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DSSP220CA0005.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:8:3d3::13) To SN7PR12MB8131.namprd12.prod.outlook.com
+ (2603:10b6:806:32d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -75,152 +149,125 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8131:EE_|CH3PR12MB9249:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9df8dc7-1fdc-4a26-d8d2-08df35d1f84c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|921020|261028144727099003|4143699003|261026140227099003|11063799006|56012099006|261009223027099003|261022105027099003|261021123027099003|261021121427099003|10067099003|261026121527099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	u/FYQazXzYj/fwyMIrcG4kxFud4dRXKvzlJy69wKnsFk8C8EXa3wAP2sjO1DxluDLm5hvI4Yvomb2kHp5QatOokVcmjGXLCIxoJUoH3TRt3o42l2dK4CpXBnmmYbM9WBLycl6cOWP7WARieud4keKfMtzx5YOTOj0yeg5KVyK+R/n1Zayce4mpV1Q7tuZtauQdzV5Zsh8FNGZd7Mn54IBsLN0JP+vj26QzHouoxI255KrY8sJ3YhL0IUGdZA+ugydd4Kssbc1CK1jY+iWf7gNxuKZwbkZ5SFgG/DLKEcO72Br93xQ2Oy6BET1eVKrgIwh4VIkChu3cs9O5T/zB4xfy8Gg7iAU873cYdjpOKxDVNRn8eY5ffpJmgOpWuLOD3Tj4uUgEQJshow0cw9BX/TINtdkXcl00C6lsM1KX0as38yKiI7YNDqnYksrC0c7QQAgowkLEfyF3n4LrOlv49/uIF8e1yTT1CbaFSh7qqlcQ5984s7GhLr0/RF6ikAOVTdsitBonRFqcz+Ury0dEUjmGe7VnG3Q7Wf0ioQjlLD0RRweKgSU8b8/0N76c/RwZK84xinGoZ/Uq/U7cWpQDylU+RhiwAWiGvw5UL5gmPqAO0LSYD/CUL8FqaiBOrNv+7WP7Nq1++Mfd1pCuouzIzFHC9pYUNNJIPL4PcjVW/Eau+sebjEH1mTCEFlS1zmHUCda8fsp5sy0kRMgvkg7s8sLQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8131.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(921020)(261028144727099003)(4143699003)(261026140227099003)(11063799006)(56012099006)(261009223027099003)(261022105027099003)(261021123027099003)(261021121427099003)(10067099003)(261026121527099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cmVIaVBpNG51YWdveUJrMmxZZGVaSUZtMS91SU1Sd0Q4YThmUU1JZStVd3Zr?=
+ =?utf-8?B?Ym4wbDZOK01qYTNPMlpRM2drMDREQlBDZWtPSU1GZEEzbmVCc3F3L3VCanZr?=
+ =?utf-8?B?bHpFc1lmZnVva3NMaUtWWjg4ekc0Z0pZblovRDhEZlU2REY2aCsvQ2src0dm?=
+ =?utf-8?B?UkllcXpPdG1QUmRhWnlPQ2NUS2E5TG8vcWVCUGhpUGtxanUyWHFyellPMi81?=
+ =?utf-8?B?SVRKOFdtUzhTZDM4eE56TGpCRGsvcnZ6SE9QK3ZyK0lqVVlBWEhBZURMdVpQ?=
+ =?utf-8?B?aTU5aWVMdXJhaWs5QjZpeW9ydGhkWWlvMXdYcjBvaUVGei9iRlBlUVdxODh4?=
+ =?utf-8?B?QlpjcEpKZEF4c3hzU1EwT0hiUDdWRk9VTys2T0Y0UVVkRHlvVmszenM3OFVK?=
+ =?utf-8?B?aEtkdUQxdVI1L3hXMDVzZFg3QTF3Z3h3RlJMQ0Y2S3lRTGE2YU04Uk1NcHlP?=
+ =?utf-8?B?aWlaQ0JLNHd3eFRQVFhYOVRZb0k0OUZBa0d2QmVGWC84a2ppSFpFSzlHVUho?=
+ =?utf-8?B?U2Nkb2N0UXVOSVlRTEZkUk1tcU9lY3d5S2dWYml5RFRzRk1iV0J0VUlUckNM?=
+ =?utf-8?B?VzJvcFZVbk5vV3VwZGtJaDRRZmFPNG0wOHB5Zkt6bHc3UVR0d2huRzNMMUhL?=
+ =?utf-8?B?WjhCSG5jSktyd2FHRDBDdmlSOGVrTVJ6bEJzWUlrckxhZmc0TStEdm5DRDlZ?=
+ =?utf-8?B?bTZQa25XNGh1aUxhSmJpNnc2WWlmakhMQzNCbVIwVW5vMENYaUxMQWQxMTR5?=
+ =?utf-8?B?WUo1bDhDbzVtdjJZRldVcnJsVDlkT0wrd0twZnhvVE5LUzNta2x2UHl6bWhr?=
+ =?utf-8?B?NkhGdEdTM2xyS21xd1RwbWRoKzJzcDhLcHhsN21rS2x0V1MxZW1FRFJBQUpY?=
+ =?utf-8?B?ZHR2NFFDSVFId090ZjVnU2dWUjlwK3RMYm9Ed3BFTEtERGlQM1NUcEliYmZw?=
+ =?utf-8?B?R0NDYUk0SHFVUy9vbHBYQnA4dllYMmY3RVlqb1JGcjNtM1pNV2JSdDM0Mkdq?=
+ =?utf-8?B?bjF1N0N0NXRwWXlHaHRZQkkrNFpJR3dTSk1rd1RYV3VXQlpNS044RHRYZ1pD?=
+ =?utf-8?B?U0tOS3NXYWhiV0hJc09zMEZ6anNRWFZtbnFOczJGdnplYUVhNXM4bDU2OEFG?=
+ =?utf-8?B?ZldlaVM4MVBhcnhEL1cxbHA5Mm9zN1BudkZpUXBTRjdnTGNPUGJ2aFNyZUFS?=
+ =?utf-8?B?S0t6N2IrU1pQSHF0dk1jb1lOd3pXbDlTTWFWblVwT2FKblM0MnpCVjMrOUVW?=
+ =?utf-8?B?VkNNZVZBcitkOXF2ZHlpZXBWN0JCT1FoNituemh6SmV4UGt5bldHZGtvUExm?=
+ =?utf-8?B?ajlOUzQ0ZGVxTm5ESlhneUF5aElpL1FYeGY2Sm9Jc3I2ZWR5UmVLTU4rc2d5?=
+ =?utf-8?B?YkRxc0lJekxaaUxRdldadloveFd1Lzd3WkhUL2xLbDZGeE1JVjFONUU1Qmli?=
+ =?utf-8?B?RTE0bjl4U0JnTUpXd1lnRW5saXoxNnAvTGpxc0NkKzhPYVNQeWVSNWRtNjI4?=
+ =?utf-8?B?cFVDODlTd2dlbjNUN1RpYUZYbGM1MHlCWW82N0J4RDN1M2FTVHZuN2FRWjZB?=
+ =?utf-8?B?ak54emRnUElPbDNRRHVVWUxXMnZCTTZVeFYwVlFBUGZkU0pyNlBWLzdCMVgx?=
+ =?utf-8?B?blYyYk5IaytBQ2M4WVNqdWlaK2VqNkJBZm96b2htVzcxeUFML1lpSWRzVXVh?=
+ =?utf-8?B?VW9GYjlRY2t0SHFiRnpmMWJSZ09LbTNBeHZvU0RaYmNQSW53Yk9GRTB0Mnpv?=
+ =?utf-8?B?dms0TSszK05YdjlBSWNINExvbVpHNzFFd1d6MlZxSHRQcElieTZiYUd6L05R?=
+ =?utf-8?B?anFuUUJHZlJ1eGp1eFNPY0N6Z3EwRVdqSmNoc0EyRkl3cEdXSnl3ZXVObzMr?=
+ =?utf-8?B?T04wS0ZYc3Q3cURSMWRXTjBKMVFuWU1hdTcwYXF1VzBuMFVpNTgxYUp0MFdW?=
+ =?utf-8?B?NXNlRVVhRmtWL2FDSjk4eTRmMzV2L1pQTGV3bmdPWlRvMTQ1K0RKc3lYbDlJ?=
+ =?utf-8?B?RTNoSWNVN0QxZXVJOTkrdTU1Mk4xM0pRUy9hNEI3eFlmWTJNd3pVT0o0cUti?=
+ =?utf-8?B?bmVDcXphQ2lvcTEwMklxMnc3ZTU3Ym1lR2tBeGN3VTMxWjgrbHdFWFRabzJp?=
+ =?utf-8?B?bHZyS2IyS2NqWmV0VHJDUGV5WHBMdlBhN25uRFJlb2NBM2I5VmJ5Nzc4Lytx?=
+ =?utf-8?B?bnVMQmEzTmpiVmRWa3JOZGNDM1hrTWdpSmh3N1QybThTL1hOa0VSeUlPZmZQ?=
+ =?utf-8?B?ZC9rUUQ2OTl0bTcxS0lVbnkwZU5PZzg2M1o4c2hqZ0JmT3VKK0Rna1Z5enlG?=
+ =?utf-8?Q?zzeQWoHGRLH8wirBnw?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9df8dc7-1fdc-4a26-d8d2-08df35d1f84c
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8131.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 15:33:24.2132
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WdMCJrM6e7q8ZYBOFAn65m0Nh6tRyI5PJUU5JmPAKLYmU4qP3ceX0acjeK43C9uGdC75iDvEhWYp5cYWzBh5kw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9249
 
-Ackerley Tng <ackerleytng@google.com> writes:
+On 10/28/26 14:49, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> rmpopt_init() allocates the RMPOPT workqueue and prints "RMPOPT
+> optimizations enabled", gated only on X86_FEATURE_RMPOPT - a CPUID bit
+> advertised independently of whether SNP is active.  As a device_initcall
+> it runs on every system with that bit, so on a host where SNP is not
+> enabled (disabled in the BIOS, or AMD IOMMU initialization fails to bring
+> it up) the workqueue is allocated and the message is printed at boot even
+> though RMPOPT is never used: snp_enable_rmpopt() bails out on a non-SNP
+> host.
+> 
+> Rather than add an explicit SNP-host gate to the initcall, set RMPOPT up
+> where the host SNP state is established.  Call rmpopt_init() from the tail
+> of snp_rmptable_init(), which runs only once the host RMP table has been
+> set up and CC_ATTR_HOST_SEV_SNP is guaranteed (it WARN_ON_ONCE()s
+> otherwise), and drop the device_initcall.  rmpopt_init() keeps its
+> original X86_FEATURE_RMPOPT-only gate and no longer needs a separate
+> SNP-host check.
+> 
+> This is soft initialization only - the workqueue and the announcement; the
+> actual RMPOPT_BASE programming is still done later by snp_enable_rmpopt(),
+> which re-checks X86_FEATURE_RMPOPT, CC_ATTR_HOST_SEV_SNP and
+> rmpopt_soft_init.  An rmpopt_init() failure is non-fatal to SNP and is
+> intentionally ignored by snp_rmptable_init().
+> 
+> Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Fixes: c6c6f156d192 ("x86/sev: Perform RMP optimizations asynchronously")
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
->
->> This series adds a guest_memfd device-resource framework for exposing PCI
->> BAR memory to guests. The intended use is confidential device assignment,
->> where KVM needs to coordinate private device mappings with shared access
->> through VFIO. The Arm CCA backend is provided separately; these patches
->> contain the guest_memfd, VFIO and IOMMUFD interfaces it uses.
->
-> Thank you for this revision to guest_memfd + VFIO support!
->
->>
->> The guest_memfd framework and Arm CCA backend are available together at:
->>
->>   https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-da-gmem-backend
->>
->> Userspace creates a device-backed guest_memfd using the ordinary VFIO
->> device fd as resource_fd, with GUEST_MEMFD_FLAG_USE_RESOURCE and
->> GUEST_MEMFD_FLAG_INIT_SHARED.
->> The resource mapping superblock selects its
->> provider; get_pfn identifies PFN-backed memory. Eligible BAR intervals are
->> registered as guest_memfd memslots.
->
->> File offsets use the existing VFIO
->> region-offset namespace,
->
-> Yes, this is great, thank you. I think we should have guest_memfd and
-> VFIO share the same offset to PFN mapping.
->
->> allowing one guest_memfd to cover multiple BAR
->> intervals.
->
-> Yes, this is an advantage I see of using guest_memfd to wrap VFIO too,
-> instead of requiring separate memslots for each shared/private range.
->
->> The device-backed guest_memfd fd rejects mmap and fallocate;
->> shared guest faults obtain bare BAR PFNs from the provider instead of
->> resolving the memslot HVA or allocating folios.
->>
->> IOMMUFD resolves and pins the device's existing vDEVICE after its backend
->> validates the VM association. Its MMIO mutex coordinates conversion and
->> device state changes. VFIO supplies BAR PFNs, validates eligible ranges
->> and excludes dma-buf exports while a guest_memfd provider is attached.
->>
->> Without GUEST_MEMFD_FLAG_MMAP, attachment rejects existing VFIO BAR VMAs,
->> and new VFIO mmap calls. With the flag, existing and new BAR VMAs are
->> allowed through the VFIO fd. Attachment invalidates existing BAR mappings,
->> including huge mappings. Subsequent faults use base-page mappings so each
->> page's shared-range attributes are checked separately. Mapping the
->> PFN-backed guest_memfd fd remains disabled (We can decide on this later).
->>
->
-> I saw your other email regarding how to handle read/write/faulting
-> (mmap). I still think we should have all these be blocked on the wrapped
-> VFIO fd and have it handled through guest_memfd.
->
-> The gmem_device_host_accessible() function in this series has a comment
-> that explains this, which is that the shared/private attribute is
-> guarded by filemap_invalidate_lock() in guest_memfd, and so having
-> providers call back into guest_memfd is probably going to cause locking
-> issues. That's also what I figured when I was trying to implement the
-> integration with the sample memory provider in [1].
->
-> [1] https://lore.kernel.org/all/20261022-gmem-alternative-providers-v2-45-5dd1dc6c660a@google.com/
->
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-This series uses a trylock to avoid that deadlock.
+> ---
+>  arch/x86/virt/svm/sev.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index cd0412b9d251..39d3943cdc49 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -662,7 +662,6 @@ static int __init rmpopt_init(void)
+>  
+>  	return 0;
+>  }
+> -device_initcall(rmpopt_init);
+>  
+>  void snp_enable_rmpopt(void)
+>  {
+> @@ -726,6 +725,8 @@ int __init snp_rmptable_init(void)
+>  	 */
+>  	crash_kexec_post_notifiers = true;
+>  
+> +	rmpopt_init();
+> +
+>  	return 0;
+>  }
+>  
 
-static bool gmem_device_host_accessible(struct guest_memfd *gdev,
-		u64 offset, u64 size)
-{
-...
-	/*
-	 * Keep guest_memfd attributes stable against conversion while checking
-	 * host access. This check only reads attributes, so a shared lock lets
-	 * other access checks run concurrently.
-	 *
-	 * VFIO callers hold memory_lock, but conversion takes the invalidate
-	 * lock exclusively before taking memory_lock for writing.
-	 * Waiting here could deadlock with conversion. Try the shared lock and
-	 * deny access if it cannot be acquired.
-	 */
-	if (!filemap_invalidate_trylock_shared(inode->i_mapping))
-		return false;
-                ...
-}
-
-
-Isn't it much easier to have the provider gate PFN access using the
-callback provided by guest_memfd when sharing the PFN, rather than
-supporting every ioctl exposed by the provider fd through guest_memfd?
-
-We should probably also get feedback from VFIO and VMM developers on
-this. I wonder whether they would be comfortable switching to
-guest_memfd as suggested here.
-
-
->
->> VFIO BAR read/write, ioeventfd and userspace mapping faults check the
->> requested range's guest_memfd attributes.
->>
->
-> Thanks for calling out ioeventfd, this is one other backdoor to possibly
-> access guest-private memory. To avoid calling back into guest_memfd to
-> check shared/private status, I have these suggestions:
->
-> 1. Treat the ioeventfd setup as yet another "mapping" alongside stage 2,
->    host userspace, IOMMU page tables. For IOMMU page tables, guest_memfd
->    will have to do mappings eagerly on conversion to shared since the
->    IOMMU cannot handle faults. We could also "zap" the eventfd-to-VFIO
->    connection on conversion to private and "map" the connection back on
->    conversion to shared.
->
-
-I am not sure how scalable that is, since each new provider would
-require another set of ioctls. Also requiring the VMM to use guest_memfd
-for PCI BAR access in CoCo configurations and the VFIO fd in non-CoCo
-configurations adds unnecessary complexity on the VMM side.
-
-
-> 2. Take a shortcut for now and say that if the VFIO is wrapped by
->    guest_memfd, always block ioeventfd setup.
->
-
-I am not sure that would work, because every CoCo configuration has some
-BAR regions, such as the MSI-X table and PBA, that are emulated by the
-VMM.
-
-
->
->> This series depends on:
->> * Ackerley Tng's "Allow guest_memfd to be created using a resource (pool)
->>   fd" RFC, which provides the tmpfs resource-provider API:
->>   https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
->> * The IOMMUFD/TSM series, which provides the vIOMMU and vDEVICE interfaces:
->>   https://lore.kernel.org/all/20261008055955.4014342-1-aneesh.kumar@kernel.org/
->>
->
-> For easier testing, is there a VFIO sample we could use? How about mdpy?
-> Is mdpy representative enough for selftests?
->
-
-
-All my tests use the full CoCo device-assignment flow with kvmtool.
-
--aneesh
