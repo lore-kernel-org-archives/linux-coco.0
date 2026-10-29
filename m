@@ -1,80 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793266665;
-	b=Eq9lzaH1zC3y6qPmVFHH8N7pTUyvYr4QEi3e97VpAudYAmfXtBLG2mQFLJKtk7zTxSNF
-	 MqhskGvUVXYazeq5chbY6BBSDqLvbqCX9q3KqIxgqysFEpLor1AtWJ7pIlGswUlMf6we9
-	 d532RcBkbMjni4yuG2AXmFPRAnZ3xel9AYvViSNAGQGPt297eZlTicIdczIHodXA4ry3x
-	 vzHrOhq8CYB2aHv4uwBQmS46WQiuQNa2EzfJLsEuubm4kFXUjmy20rXwfFaIxO81/QKoE
-	 t0WJXcztOSM03vDHBV75HzKVQnRNExsSlawgxzkq0v9vOmbRCdXHOEKCFsXB3+2s85g==
+	t=1793267240;
+	b=Va+WHDAIAhVoUS0LjTrgvfngYK2ncoax0MBiCqKRLCZSDt5XdTV0SgbJAOY+qKj8KsmI
+	 74/Of7u3XZdjjgoDV1/Ah1YtOC5PHdahVTt8P/eAHSHhYIMfjkjKtDuFXuqmRfA5nHOyt
+	 kaK6UaizmGa7GrZSI9xiYLGqsqnn/tmuPZh7F2V5XAuXFO6I6bFfRCWcMuiPD2T+UixL/
+	 vVNoIN+Y9+CUpjnY6dsO4K7WL0SKOtehDUWLllqy5k4IllseyGjVDIKn/N3tfLJxPNPKR
+	 WYq4KfwHfokesD7EVwaMvzl9ooRIEYsz3X1DZhZPEUE1M/wCDADPdTX8Wgz+5a56gHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793266665;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=b1L/YgA0unso+/Lv8s9MhtgPB5X7wkfHZu4ut24TmCk=;
-	b=YGULWsnAegFdkuZ+MwhXT0AtaXSrXoYLBV13KypWv2uehQo3SCZ3ZgHkTT3DtbuBrP3+
-	 FNAUefGK6G8DrrracbGIADNxIW0h5G93A9mMENlQo0khnH5cp7Y8gqUfR3qTL4B8nTwh0
-	 jd4NgGXhxhcQ5JVrCb4RY6wnpLqhrMGgjWU0D/+22qUGrhWEoJf+HT7os9iRKyMWwn5X4
-	 uCHuzOmWonaboU0J9nHe1mqBrowNdQuxHk+ywsKcEKvApN3gMCZ1kGZTpChkmHXd42jx9
-	 ir9XDXU3j4/dDpoVwFmul9E/2v5NWjImf0Yw+J4vaFh0F+vbFufytLK9MLFGLCwqalQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793267240;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=ln7ETxCnDGUOhcBIhAMeXSU0zs0khHi7wfl/J1q2waY=;
+	b=miHqLCQfL92uYVi53qt1SBNJnBW17vkZUnriOeicdx1oExofTLZjxrXvLWiGQ94+MQsB
+	 hNBPQB1DnfDNhBvYiw/2TjkJYfM/YDKgGxVRWD3Vlb3wDMwVlrEkLUUbfitiBWLCkYhb4
+	 BAUCt2w8zoimOYpnAIKaKQRp9mrUw41msSoqt1CtgNUyRd5KU/KKaLT6Ia+SGpdaeMuJP
+	 JmQoHv50s89P+yraiJ2ZMYlAr1aQSKCLt23ACxU5fOcCxKUJi6UT5hPtSptAFSuMyvssf
+	 byjNSDvhUHRN89DlL39A/KcXaL9RQgetVr+lEGEqCQw0ULykcaxkKhcNxERVkLRG7cA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYVH+Mm9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ma6mMbWu;
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAA160A2609;
-	Thu, 29 Oct 2026 09:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AAB606A320
+	for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 09:47:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3AAB606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYVH+Mm9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D2D1F01829;
-	Thu, 29 Oct 2026 09:37:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793266665;
-	bh=b1L/YgA0unso+/Lv8s9MhtgPB5X7wkfHZu4ut24TmCk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GYVH+Mm9omq5BAsPPLcumqvOBUW7yKv6qRkJyIck5tFwfRa1tUfjtE1geDCpsmBEP
-	 2RwHK9Cy8sS2rBXuKXJvctC4Bq6C2jK6S/gBMA9x1sxt6ydKYVAFfAqpCKD+Lbm+RW
-	 CTkFLp+EHxcq2Q+0N+MiEyq8LgEaRZKBHMQZslmLTNkQz52CiV4VANY5UuxTSJYiXc
-	 HSEiViC0iMwJEQOI2/cy1vL8wqYF36gfQSfNXAqFM2CsYJ00Xwib/fXPCJXdfkBwli
-	 uFbEJD7BvWk6qn89ZMam6ipKB0JOazajL/SM6VxCjG3IQq3Hghn8AUsKjF5s6ntxKr
-	 WS9/dwDL4KSwQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v7 10/16] iommufd: Add the vdevice TSM request ioctl
-In-Reply-To: <179321444123.2412245.6955528563980811144.b4-review@b4>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-11-aneesh.kumar@kernel.org>
- <179321444123.2412245.6955528563980811144.b4-review@b4>
-Date: Thu, 29 Oct 2026 15:07:34 +0530
-Message-ID: <yq5a1p98c0f5.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ma6mMbWu
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso2403056eec.1
+        for <linux-coco@lists.linux.dev>; Thu, 29 Oct 2026 02:47:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793267239; x=1793872039; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ln7ETxCnDGUOhcBIhAMeXSU0zs0khHi7wfl/J1q2waY=;
+        b=ma6mMbWuOGKIhwn/Cj9IbKRoAimpPQyOWVQ1ipTh1+tLhgnRkiJPJtbKMPJ4jkiBd6
+         hxCr06bRF4A8vK0MY1bxYsgp/hwt2jbdpuUZqPK7n1Z6FECjLX+NWqipG2G6hgV11Aod
+         kZ/w7AU8mBy6X2zMoa/RPN4tvd5i6x6KL5RA/OKwrFCFK2unQgUlY+WXuubUB9+bEu3I
+         nESIxq3FuVYtLFOXIm/bbd3TSot1etUB3tkryHIUVO+pQ8iOVoS2u8+pU/MRA1prikkk
+         IxIla8BksVeIg2Ac73wbuFQ9IK4hMzW0ipm8Fhr4NCn92UKpeM4PFC2VQLRO0CdGiy+3
+         g5RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793267239; x=1793872039;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ln7ETxCnDGUOhcBIhAMeXSU0zs0khHi7wfl/J1q2waY=;
+        b=yt3nWkQ7PAbU2DXTHl0V1IZQWx3cRkBG+iKmIaTMRyrhAFhVoSdDMxtIfdDfv8wegb
+         pDhL7xoEUrXy4xfP3sfoskoW9cU/jhusMJu3YflsqMDS5ur3FOpnBeg4qq76ahFhYhiL
+         UmewRXSjp/ifJGmApCbFaUwQapbI0X5zmBksZZkWh95CvKscsomFw8mpSm6rSl3soaVY
+         iCcZLe/eGf4L9x+9Ai9YmScrndw81ybQFeCUinf6s5jmY68WstYtIB62TO0guDN+IGOY
+         8IfTNSKy86saQfwtknvm4mAa50CyB2sP9c6cJUuaHTuEp0C98cQKfAquZGzf2vui3igt
+         OlaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxCjuF/eJOW5fJwDAdqYLfq9PhYwNY9YrJ7e56WESUW5b9Yk0jlvUeITedt58C2JToqwhKuzNNLvqS+@lists.linux.dev
+X-Gm-Message-State: AFq9FYIq8UHHCMbA+Db5nQ6E/bQCFRQHMNLemCTzH60rqz7WE/RZjv+y
+	JSToFY4puWOGbFGTnqRxQg/OpCu6eOtQaiW3tSDzHsak3Wzp/+Zn5OD7JBxnyq4oDXA=
+X-Gm-Gg: AYBFou08APT01WHqDv3gIiydLIDSC6Uf2LC4BmI8llIbo/z9m4BCUhq/FA0+00XVsQc
+	4bCqigzyfRIw1aRfjnuYgSFjyvIPiPkbyya1y5eoF7JEi7tBztFMBip9iMit1Y5cYWlIL3tLxsC
+	OhBLiA12+7y74H2AIV6U2AqdiO3cp/CkLpi6UtroX5gKs5gaSchh0aMKEV8gj/d4VMJDKDXXKVY
+	52GyV8T1x9xI7pr/gOIDTcRAhR1Pc/AIEpQap+pj5+uzy34WUrBXw7sAzrmY/Xoki7DXIPENbMf
+	FdQFmojHmYiAZ10BYmTP7TuXtFyxJpF5jEJgIQtqFxEhz6kRn1e3BnBEGqadiKDDT4iysgw4M4o
+	azoiXsCs7WFmbZXYIU54t0/jOosoB0Ry/a8KB9l0DUaq5d8g/xI3omOAsPJ3PGpdvdJwPjd032W
+	/gt7ISt0Qt91NRSwomZZ1gGaGMxouKK+suYjfJJrCm/lPtES0gFFUSUdBXGztnP3qYn3EzKJ+uo
+	rTQJW0pbDax/CRwo4Eu3S0uvJxwlI8r121xuzMK0dqyTl0TQqIuo3nTCmuaSOZhzSLdAaf9T3QY
+	HlS5sfzTPlPFvL5WPI2zOdGKpsyEsZ2YxLHKbhoyOA==
+X-Received: by 2002:a05:7300:d80e:b0:351:7e5d:2de9 with SMTP id 5a478bee46e88-36a1ff846e3mr7012686eec.1.1793267238675;
+        Thu, 29 Oct 2026 02:47:18 -0700 (PDT)
+Received: from iZj6c0kydq3fvfrtx5kta5Z ([47.86.51.122])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a237bc445sm14464245eec.1.2026.10.29.02.47.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 02:47:18 -0700 (PDT)
+From: Challvy Tee <challvy.tee@gmail.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	dave.hansen@linux.intel.com,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	vishal.l.verma@intel.com,
+	kai.huang@intel.com,
+	Challvy Tee <challvy.tee@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module is not initialized
+Date: Thu, 29 Oct 2026 17:47:05 +0800
+Message-ID: <20261029094705.896693-1-challvy.tee@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261029080731.890996-1-challvy.tee@gmail.com>
+References: <20261029080731.890996-1-challvy.tee@gmail.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -84,186 +105,93 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+Commit 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and
+kdump") made native_machine_crash_shutdown() call tdx_sys_disable(), but
+tdx_sys_disable() has no runtime gate: its only guard is compile time
+(CONFIG_INTEL_TDX_HOST), which is enabled in most kernel configs.  On a
+system where the TDX module was never initialized, kdump now issues a
+TDH.SYS.DISABLE SEAMCALL that it did not issue before, and the crash
+path never reaches machine_kexec().  The capture kernel is never entered
+and no vmcore is written, so kdump is completely non-functional.
 
->> [ ... 300 lines skipped ... ]
->> +/**
->> + * enum iommu_vdevice_tsm_guest_req_op - Guest TSM request operations
->> + * @TSM_REQ_VALIDATE_MMIO: Validate and map a guest MMIO range for the trusted
->> + *                         device.
->> + * @TSM_REQ_SET_TDI_STATE: Transition the trusted device to the unlocked,
->> + *                         locked, or running state.
->> + * @TSM_REQ_SEV_ENABLE_DMA: Enable DMA for an SEV device.
->> + * @TSM_REQ_SEV_DISABLE_DMA: Disable DMA for an SEV device.
->> + * @TSM_REQ_READ_OBJECT: Read bytes from a device object, such as a certificate,
->> + *                       measurement, or interface report.
->> + * @TSM_REQ_REGEN_OBJECT: Regenerate a device object, such as a measurement or
->> + *                        interface report.
->> + * @TSM_REQ_OBJECT_INFO: Query the size of a device object.
->> + * @TSM_REQ_MAX: One past the last request operation; not a command.
->> + *
->> + * The request payload and response format depend on the TVM architecture.
->> + */
->> +enum iommu_vdevice_tsm_guest_req_op {
->> +	TSM_REQ_VALIDATE_MMIO = 1,
->> +	TSM_REQ_SET_TDI_STATE,
->> +	TSM_REQ_SEV_ENABLE_DMA,
->> +	TSM_REQ_SEV_DISABLE_DMA,
->> +	TSM_REQ_READ_OBJECT,
->> +	TSM_REQ_REGEN_OBJECT,
->> +	TSM_REQ_OBJECT_INFO,
->> +	TSM_REQ_MAX,
->> +};
->
-> This is still no where close to being well defined enough.
->
-> Everything here must tie back to defined spec references, listed in
-> the comments.
->
-> I cannot guess what data is passed over any of these APIs, how things
-> like "REGEN_OBJECT" select which object to regen, or what the format
-> of those objects even is. The formats of req/resp are never specified.
->
+Having the TDX module uninitialized is an ordinary state rather than an
+error.  tdx_enable() returns -ENODEV early when
+X86_FEATURE_TDX_HOST_PLATFORM is absent, and it also bails out if
+init_tdx_module() fails.  Any guest whose host does not expose TDX is in
+this state and logs:
 
-The request and response payload formats are specific to each CoCo
-backend. Since iommufd treats the payloads as opaque and does not
-validate their contents, what would documenting those formats here
-achieve?
+  virt/tdx: TDX not supported by the host platform
 
-The limited validation is intended to prevent this from becoming a
-general-purpose multiplexer ioctl. It restricts the ioctl to a defined
-set of guest-initiated operations that the host forwards to the
-firmware. The path is essentially:
+The syscore path is implicitly protected: register_syscore() only runs
+after init_tdx_module() succeeds, so tdx_shutdown() cannot be reached on
+an uninitialized system.  That is why plain kexec still works and only
+kdump regressed.
 
-guest -> vmexit -> VMM -> iommufd ioctl -> TSM backend -> firmware 
+The crash path calls tdx_sys_disable() directly and bypasses that
+protection.
 
-> The comment for this should probably be *enormous*. Every arch should
-> explain what they do on every one of these ops, and it should be
-> identical if it is structured like this.
->
+Reproduced with 'echo c > /proc/sysrq-trigger' in VM guests on Intel
+Sapphire Rapids, Emerald Rapids and Granite Rapids platforms, in every
+case on a kernel that already contains the change described above: the
+capture kernel is never entered and no vmcore is produced.  With this
+patch applied kdump completes normally on all of them.
 
-That would require documenting a significant amount of backend-specific
-detail in iommufd. Could we instead require each TSM backend's
-guest_request callback to document its request and response formats?
+Three negative controls, all of which produce a vmcore as expected: the
+same guests on kernels without that change, guests on platforms without
+SEAM support, and plain kexec on every platform tested.
 
+On a host where the module did initialize the new gate is a no-op and
+TDH.SYS.DISABLE is still issued, so the poison clearing that the above
+commit was added for is unaffected.  We do not have a TDX host to test
+on, so this part is reasoned from the code rather than measured.
 
-> I have a strong guess almost none of this is actually general, but
-> lets find out.
->
-> You can also put enum kdocs directly before each enum which helps alot
-> when they get as big as this stuff has to get.
->
-> My guesses with no information
-> 1) VALIDATE_MMIO why would the hypervisor ever need this? Guest
->    validates MMIO through secure communication to the secure world.
->
+Gate the SEAMCALL on tdx_module_state.initialized, the same predicate
+tdx_get_sysinfo() already uses in this file.  Putting the check inside
+tdx_sys_disable() rather than at the crash.c call site also covers the
+syscore caller and any future caller.
 
-With VFIO PCI BARs backed by guest_memfd, the VMM can validate that the
-IPA and PA values provided by the guest belong to the VFIO device. We
-previously also used this operation to ask the CoCo TSM backend to map
-the device memory (the BAR regions). I have removed this operation from
-the latest series because that responsibility is now split between the
-VMM and guest_memfd. TDX and SNP still need to be updated accordingly.
+Fixes: 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and kdump")
+Cc: stable@vger.kernel.org
+Signed-off-by: Challvy Tee <challvy.tee@gmail.com>
+---
+v1 -> v2:
+ - Use the real commit id 5b25f249be32 in the Fixes: tag and in the
+   opening paragraph; v1 went out with a placeholder instead.
+ - Drop the claim that nothing reaches the console.  panic() prints the
+   message and backtrace before __crash_kexec(), so they do appear;
+   describe the failure as the crash path never reaching machine_kexec()
+   instead.
+ - Drop the paragraph that explained why guests on platforms without
+   SEAM support are unaffected.  It asserted a mechanism we have not
+   verified, and the negative controls now carry the same information.
+ - State explicitly that a host where the module did initialize is
+   unaffected, so the poison clearing the fixed commit was added for
+   still happens, and say plainly that we have no TDX host to test on.
+ - Restrict the syscore claim to kexec: tdx_suspend() does not call
+   tdx_sys_disable().
+ - Resend with the full get_maintainer.pl recipient list.  v1 only
+   reached stable@ and missed LKML and the x86 maintainers entirely.
+   v1: https://lore.kernel.org/all/20261029080731.890996-1-challvy.tee@gmail.com/
+ - No code change.
+ arch/x86/virt/vmx/tdx/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> 2) TDI_STATE I thought at least RMM did this with an RSI?
->
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 96ced0494b68..a7eae7492c1e 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2321,6 +2321,9 @@ void tdx_sys_disable(void)
+ 	struct tdx_module_args args = {};
+ 	u64 ret;
+ 
++	if (!tdx_module_state.initialized)
++		return;
++
+ 	/*
+ 	 * Don't loop forever.
+ 	 *
+-- 
+2.52.0
 
-CCA uses RHI. The RHI reaches the VMM, which issues the ioctl to
-complete the request.
-
-> 3) ENABLE/DISABLE DMA, see #1, must not be done by hypervisor
->    See my reply to Alexey:
->    https://lore.kernel.org/linux-iommu/20261022123058.GC3008132@nvidia.com/
->
-> 4) READ/REGEN/INFO, what are the objects? What format are they in? How
->    do you select them?
->
-
-These objects are cached by the hypervisor. For CCA, they include the
-certificate, measurement, interface report, and VCA. They are read in
-response to guest requests. The requests reach the VMM through an
-RHI, and the VMM issues the ioctl to read the requested object. REGEN
-refreshes the objects/evidence at the guest's request.
-
->    Does this overlap with attestation subsystem? Should attestation
->    subsystem be used to access the SPDM related data?
->
-
-
-I had hoped we could use it, but I could not find an easy way to
-integrate the two. We need a simple way to read these evidence objects
-into userspace. I am not yet sure whether evidence-get can be used for
-that, since it does more than simply read the objects; it also updates
-evidence.generation, among other things.
-
->
-> Update the comment to explain all this, don't need to answer here.
->
-> We really need to do these defines along with implementations, that
-> probably will settle alot of the questions above.
->
->> +
->> +/**
->> + * struct iommu_vdevice_tsm_req - ioctl(IOMMU_VDEVICE_TSM_REQ)
->> + * @size: sizeof(struct iommu_vdevice_tsm_req)
->> + * @vdevice_id: vDevice ID the guest request is for
->> + * @op: One of enum iommu_vdevice_tsm_guest_req_op, excluding TSM_REQ_MAX
->> + * @tvm_arch: One of enum iommu_vdevice_tsm_guest_tvm_arch
->> + * @req_len: Size in bytes of the input payload at @req_uptr, at most INT_MAX
->> + * @resp_len: Size in bytes of the output buffer at @resp_uptr, at most INT_MAX
->> + * @req_uptr: Userspace pointer to the guest-provided request payload
->> + * @resp_uptr: Userspace pointer to the guest response buffer
->> + * @out_tsm_code: TSM-specific result code returned by the TSM implementation
->> + *
->> + * Forward a TSM request to the TSM bound vDevice. This is intended for
->> + * guest TSM/TDISP message transport where the host kernel only marshals
->> + * bytes between userspace and the TSM implementation.
->> + *
->> + * The request operation is guest initiated. The vDEVICE implementation
->> + * declares the TVM architecture and operations it accepts; iommufd checks
->> + * both before forwarding the request.
->> + *
->> + * The request payload is read from @req_uptr/@req_len. If a response is
->> + * expected, userspace provides @resp_uptr/@resp_len as writable storage for
->> + * response bytes returned by the TSM path.
->> + *
->> + * The ioctl is only suitable for commands and results that the host kernel
->> + * has no use, the host is only facilitating guest to TSM communication.
->> + */
->> +struct iommu_vdevice_tsm_req {
->> +	__u32 size;
->> +	__u32 vdevice_id;
->> +	__u32 op;
->> +	__u32 tvm_arch;
->> +	__u32 req_len;
->> +	__u32 resp_len;
->> +	__aligned_u64 req_uptr;
->> +	__aligned_u64 resp_uptr;
->> +	__aligned_u64 out_tsm_code;
->> +};
->
-> Should the viommu_id be passed in as well, or we know it implicitly
-> from the vdevice_id?
->
-
-We get final callback via
-
-vdev->viommu->ops->vdevice_tsm_req
-
->
-> I think this is probably a fine generic API, it should probably not be
-> "TSM request" so that the other viommu people can reuse the transport.
->
-> I would probably try to stick to exactly like the other APIs do with a
-> single enum. Two enums for op/arch is saying already that the ops are
-> not well defined.
->
-> So maybe strip this patch out to have no tsm stuff, define no ops and
-> just give a command transport into the viommu driver?
->
-
-Are you suggesting one ioctl per each guest request ops?
-
--aneesh
