@@ -1,87 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793350420;
-	b=L8ncoF8/I7SPP/qB412s7+KVEjeuY3fCRBQwy6ck+JYn9O8us2NhLUrMT2k87LGI9DU/
-	 u8G9kRjwnV9i52RgdwspDPQSWX3e0taDYfH6stxurfaLQaNuBK8wEIrwK4CWmwNCKuLV/
-	 a1mYY6Bhc/+h9MlpR8TDWT/4RQv0YG2mqzrCdxqSNs5OoMoKIeN+I4fzvyb7ULDcqXMzR
-	 RVDQH39PPOlFNOL1KthQjRwSpLNG1fqj9dshoDz7tohLzI+yDpb3n6Sbu5lThzXcrfXRG
-	 jc0V0TYgeKjQiINc+sJ5RinZXuWD3m7etAujWLD0IgUlr9nRAOHNfRbuucCT34FU9/g==
+	t=1793353215;
+	b=CGIE9e4t66iyXH2m7aDyGTaHl4Vf1r8NxZhQGncUvMZpOuIIotIoYkNPSVgDxzAwcPbE
+	 2XH+5aficDxUk+/6qDysBxCSSZzGWamkxCtQgG1PmkAjRObP+U/bjl5ilAmFWaimlyPP6
+	 uvk6kBiDNRPeUkDCfE/ZOR2F67RyNonLgV+AfoyAaRnjKrPyTTaERwFD9E3qhNNEGJ/p+
+	 7pBHBEbCqNTWz3B4aNfsxiKVvIqR1NIEXxAF1zzen4yzFGce72YcTh09vBfxXc3f4amQt
+	 /FTPoLYC+1j5DQRn1QS9baE8MsrcpYqT3iuu0gkT0ftlCiVEMXDRWOuweEt/YUht55A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793350420;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=jHWa1WYOXlIaOcw1Lp9xeyazxvpFG7/2YuPJf/sHw6E=;
-	b=E1VvosHb0W81vvaNASuIwjGqsT3tO//CN6JGKGFgntBNHJLFWDQST1OoyvjNnjmBPo3E
-	 ksA/3dr7GRq11qJqpfBPFONC+YCU5i1YE7JuxEkcrjFpmCtedklZAeACqCogsyemKnACz
-	 JsAZ6yNAhhiOqeQza6qQhKiOtZsa5z/spV5ajWrH05K4Tx2FJIE8IttQuFk/SS75/GgGe
-	 4qY4KS5s1APVuA9+WcU/T5XqsS6R12GtEGOlR4OFGqtchLRS8ZSmJgMd5EzU9FCfflOhY
-	 scjd3L75J0Q0GRVTyHpZM+WRaxyEpU4jLTuu23OVR6xIVq5NhopFCs5R8+L5E25Z5vQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793353215;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=La278T1NrCS4XO98Q/cTkbnnx/6adToIXrUcsW5BqDY=;
+	b=u/2YSHU2zZHjkQCyDzSM3HBMwd7T7EhKH1WKy+G0QNxXiz/yJdy7Chm88z0UhjVzin5r
+	 D3DEdJ8/NCd1Ne+XqNiCblClY3LkFzxpliPyWfRlEfY2A4CNv3XP7caZ7dlLaQjHQwTdc
+	 MxnuiDrUGMYG61LWn8jrMhAhW0O9h/pDG9TvSDRE9/6wRXi4ld8Sf19LvIKDob1e+Jdqb
+	 RNaovVpaNv3gWmlzAbb4CozewBqJEj4gGDmUvktZjPIM/hH2oa562n1014QCHeV0/KjVi
+	 F/nwEKzKMzewgBJsn+3nRyWSa510Dux6pr98sLNFjn7+k5brg3i0ulrbc0T74xRW9fA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MsNNUa8M;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	arc=none smtp.remote-ip=209.85.167.50
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2028606A325
-	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 08:53:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2028606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MsNNUa8M
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793350418; x=1824886418;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7R5Q6OLG0Hv3DZ66D3ka0yTibw0AspYJGmy+QxvysnA=;
-  b=MsNNUa8Mh1JCAXWAJQf5feml8G+/Pqr8jsVKbaVGy3nqaK+u05gUD/lT
-   FV7AaOqRyY61dF+kZM6I0K6Jjv+NEs1cDJdSNkMM5Yzly+LzoGH0x+Nm0
-   wpQotsOWSIG19sqLRQYcS1NllK0k+rc9zoAbOsbeXUH3g1MhVar+34C/v
-   8InMJ3/QAKF6ykTanYH8QuUpsy/yBuisS99szKL6XFrqcsJcM0HLiI1TC
-   +krbMbkbPC90RR3HMtw/Uk9TwiTVj1UdbN/UR5IP/DAwuX+RGjDgSHAVR
-   WZuLN6fwho287//oiEQdoQlIQcVYYUFadFl4aHIYxXWSO5oefY9Idi+KL
-   w==;
-X-CSE-ConnectionGUID: avBV8EGVRJix/pMOIDIl0A==
-X-CSE-MsgGUID: pg/l6gZ6RF2tluwB1SiN6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2122583"
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2122583"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:53:37 -0700
-X-CSE-ConnectionGUID: p6DUTeyPSJuFejtWv2w6zQ==
-X-CSE-MsgGUID: okVd9qIKSFGnMHvJyl/Vhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="7199528"
-Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:53:38 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: yilun.xu@intel.com,
-	arjan.van.de.ven@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [RFC PATCH v1 3/3] x86/virt/seamldr: Support multiple sigstruct pages
-Date: Fri, 30 Oct 2026 01:53:00 -0700
-Message-ID: <20261030085304.3886520-4-chao.gao@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261030085304.3886520-1-chao.gao@intel.com>
-References: <20261030085304.3886520-1-chao.gao@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1357606A324
+	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 09:40:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1357606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be4b61fd3dso455076e87.3
+        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 02:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793353213; x=1793958013; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=La278T1NrCS4XO98Q/cTkbnnx/6adToIXrUcsW5BqDY=;
+        b=MB3nq/ZN7VmeL+tDwkbUiNOeju4Ke6wJqwVdI4FkybFFoy8bShdAI5103CFeqfojEW
+         L/ipkC1DHPsq9bkhIVqwi+gze8ILchEE8h9/TqQ7nbnY8tbDFoRL95zvEv1AqbSOTJNY
+         d5ewh3tCRB4RWYUx2KhZQiWPqKLQZLDIXuXpE/SsfDQIHiHKWS3eY6fwZzPxZ90YA8C4
+         U0P2apch0ypCvvKq84wUtBJ+i5ARL7YiJI7Vt1ZAvhSm9dCVAyCJS6qR3KVZTwaIWBGd
+         Wpy+BgNouFENCtaHXDOwIc1liJPMdi4ZacAGdzMdpuem5FtgdhVXLzkzaGbt3pcsdiR2
+         IqfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793353213; x=1793958013;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=La278T1NrCS4XO98Q/cTkbnnx/6adToIXrUcsW5BqDY=;
+        b=kBIOJ0v12nbcJNl67cpY6jOTUAis2RGPGhE/MvpxpdyFSjfTwqkj/HFGbcUIIBeyjS
+         vHU+JC09vD00HSC/dd1QsqugEQG0xAHiavOa5QemWDwgM0lFlfZC/0pCmK9HizEYWW54
+         6eVHTg0KfGJidh07JbKR6SC+kunsZ0EevEMkSgSAeurp6W2vGbMUErBQ0Qw5dYVCVHMn
+         Ie4cFWgFkQzyx4l1HDxM2C/krNODGd56X7tSKHrxvTo4JoASyTj0GVkD8Fs0Frsg5Nex
+         bM6Wyj0oaEJOyQHtvePzDEvA2cNdiHWjiiicuaCHDRgHFvybutIgQUL19AJiCcNEdnpl
+         hUUA==
+X-Gm-Message-State: AFq9FYLmbbdogK5Kj/gbAJS7TfdY+ugWSeHQsssKHnHlW9yN/oEr4Gbp
+	QvupZMXJQUcT2GODEhXpe9xn0zRr+qj6P5wV2gbM8JnS/c/QIOkATpd1xEjqjcTkuOw=
+X-Gm-Gg: AYBFou3fQfcoGU/AF+wYyznLYLSZ9ZWoS8cM5J8XqigGoRSS3TnPYpsHAjaF3qdsCXd
+	x1vZAdKEV8ij+AA7BNmh8vl6VLsnc3IJht1aoQN4zMtB5+PlHLNMzzi+I5wdVRSLdCyMX4y2v50
+	XsIU7HmaR5T5UGYiXNQW9iuRKFYb6Od7HrgKsIxA+D0C8VK1oJd1zpdKLkFarRjXlT8GFIgR9Ob
+	SrikdOHGO2ZDO77NYV/7HAPISbNRk2UafvbtyaUFdz7voHZkg8r5X/qe9vQyu/vgPpGztHR/hzc
+	qmvX2PztQ61zvbo80F7xstgP3NaBvbTwEMUlm+lLx78qlfzHh7zAQ2hHXR9e/Qh+cOB6c2gGOP2
+	ZgaeJi4ayu7PduRXkkUEUwgaDSsbIwdU0MGD+fzTwqvlPBJ7/m7c3jgnd7Q2H1GJ2Nw4Px2rcHG
+	MyvBBoN5Fvy+EC+p9BlCbAOhRrH1irsG8vwy5hQApLxNIem0F8One4J5gG2aW3UPPP4qzOHrvt9
+	0plnNZUxzChhRPTf7seE/5/t+9+L04MHco/N7J5cp8RBTJsLhABrm/EexFkzpQtM6BYKLcN/gAq
+	gWgQDXBvmYDwFJpv998M6MWKb4lv/KonldciEA==
+X-Received: by 2002:a05:6512:668b:20b0:5bf:da1f:c390 with SMTP id 2adb3069b0e04-5bfda1fc9c2mr262942e87.36.1793353212517;
+        Fri, 30 Oct 2026 02:40:12 -0700 (PDT)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfdc08ea60sm221364e87.33.2026.10.30.02.40.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 02:40:10 -0700 (PDT)
+Date: Fri, 30 Oct 2026 10:40:05 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
+	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
+Message-ID: <auRl4VzVljAQ1Suy@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-12-jiri@resnulli.us>
+ <179302367452.58760.11808905856343064399.b4-review@b4>
+ <at9nsxtGOl3N5PJR@FV6GYCPJ69>
+ <20261026161220.GA1671235@nvidia.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -91,83 +103,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026161220.GA1671235@nvidia.com>
 
-Each TDX module update image carries a sigstruct, which is passed along
-with the module binary to P-SEAMLDR. 'struct seamldr_params' has a single
-physical address slot for it, so a sigstruct can be at most one 4KB page.
+Mon, Oct 26, 2026 at 05:12:20PM +0100, jgg@nvidia.com wrote:
+>On Mon, Oct 26, 2026 at 03:52:30PM +0100, Jiri Pirko wrote:
+>> >device-get:
+>> >  request: {}
+>> >  reply:
+>> >    caps:
+>> >      evidence?:
+>> >        min-challenge-length: uint
+>> >        max-challenge-length: uint
+>> >        max-total-output-length: uint
+>> >        objects[]:
+>> >          blob-class: evidence-blob-class
+>> >          format: string
+>> >          representation: evidence-representation
+>> >          max-length: uint
+>> >      mr?:
+>> >        mr-flags: mr-device-caps
+>> >    info:
+>> >      $extend: device-info
+>> >
+>> >So.. how about could we drop the sets, use a direct description of the
+>> >layout and do something else for the ID numbering? Maybe the numbering
+>> >can be solved directly by only listing the names in:
+>> 
+>> I didn't want to have a lot of duplications. Netlink show us that the
+>> same attr, or attr group (or nest) is often used in multiple ops. It is
+>> not good to repeat them each time (multiple obvious reasons), so I came
+>> with the sets and groups. But I will think about how to make this
+>> possible to be formatted in more readable way.
+>
+>If a "record" is re-used in multiple places, then sure, put it in one
+>spot, not disagreeing with that.
+>
+>That can still work out with a clearer top down flow, more like C:
+>
+>records:
+>   evidence-object:
+>          blob-class: evidence-blob-class
+>          format: string
+>          representation: evidence-representation
+>          max-length: uint
+>
+>ops:
+>  device-get:
+>    reply:
+>      caps:
+>       evidence?:
+>	 objects[]: record evidence-object
+>
+>Jason
 
-TDX modules are moving to a post-quantum signature algorithm. Its
-signatures are far larger than the ones in use today, so the sigstruct
-no longer fits in 4KB.
-
-The P-SEAMLDR ABI was extended for this. It now has four sigstruct
-address slots instead of one, for sigstructs of up to 16KB. A new
-'version' value of 1 tells P-SEAMLDR that this layout is in use.
-
-Extend 'struct seamldr_params' to match the new ABI.
-
-Set 'version' to 1 only when the sigstruct spans more than one page. Old
-P-SEAMLDRs reject version 1, so this keeps updates with a single-page
-sigstruct working on them.
-
-Do not query P-SEAMLDR for version 1 support. Userspace selects the
-update image and is responsible for ensuring the module is compatible
-with P-SEAMLDR.
-
-AI was used under supervision to review code and workshop logs
-
-Signed-off-by: Chao Gao <chao.gao@intel.com>
----
- arch/x86/virt/vmx/tdx/seamldr.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 09c8f6e30e9f..04681e67072f 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -32,7 +32,15 @@
- #define SEAMLDR_MAX_NR_MODULE_PAGES	(SZ_1G / PAGE_SIZE)
- 
- #define SEAMLDR_NR_MODULE_PA_ENTRIES	496
--#define SEAMLDR_MAX_NR_SIG_PAGES	1
-+#define SEAMLDR_MAX_NR_SIG_PAGES	4
-+
-+/*
-+ * The seamldr_params "version" field specifies the layout of the
-+ * structure. Version 0 supports only 1 sigstruct page while version 1
-+ * supports up to 4.
-+ */
-+#define SEAMLDR_PARAMS_VERSION_0	0
-+#define SEAMLDR_PARAMS_VERSION_1	1
- 
- /*
-  * The seamldr_params "scenario" field specifies the operation mode:
-@@ -66,7 +74,7 @@ struct seamldr_params {
- 	u32	version;
- 	u32	scenario;
- 	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
--	u8	reserved[104];
-+	u8	reserved[80];
- 	u64	module_nr_pages;
- 	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
- 
-@@ -232,7 +240,14 @@ static void populate_seamldr_params(struct seamldr_params *params,
- 				    const u8 *sig, u32 sig_nr_pages,
- 				    const u8 *mod, u32 mod_nr_pages)
- {
--	params->version		= 0;
-+	params->version		= SEAMLDR_PARAMS_VERSION_0;
-+	/*
-+	 * Use version 1 only for multi-page sigstructs, to stay
-+	 * compatible with old P-SEAMLDRs that lack version 1 support.
-+	 */
-+	if (sig_nr_pages > 1)
-+		params->version	= SEAMLDR_PARAMS_VERSION_1;
-+
- 	params->scenario	= SEAMLDR_SCENARIO_UPDATE;
- 	params->module_nr_pages	= mod_nr_pages;
- 
--- 
-2.52.0
+Okay, I like it.
 
