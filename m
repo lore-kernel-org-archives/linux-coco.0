@@ -1,100 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793369339;
-	b=sNGiDU9E+iNqx2A/x5rKf5EJj8FZcNAvqQzM2cjLDTMz9HTVQf+OftagKmOl9Bf34lnP
-	 CtKWvU5W+SKLa8gzLz6wsW+ocKXANbeHBgXhoFOoD8MRdBtRSzrkWi0eBabDEzUFyHq2b
-	 kO1Igug6HIqGT25PqtlkzABaKeTE1Ohv11S4eXkfOZcFXqk+OSUDXGlbkNvhy7ZCoMrsW
-	 F8xUXVDLyNfnsXT6+jQEyksX/UlAb3OK3bFCPNX394wAxeSerWWTzzmlAP3l5aMTAancU
-	 1bu+bWq4O6Fr6FVd1ZKBAy5hpeHs8iBNvFkef6GrV37hYFlzpBGN+DNXkrYip0eI3oA==
+	t=1793369859;
+	b=1D28VkP4aHkAU+EiJIxQs8LL3+am2xAe6AZUiEZ8Jjb0roSGeDPKgOztZmXoGFEN8v5p
+	 8SZw44N3+88tlDbiuhXkjLEZa/vBXSVnQxcnJCa+VX2Sqwyb7XUu8Y7QOxtHp5X0A297r
+	 +0IWgji1RevhLKRDraFKYqyYed94UlCmXSOzq49mCRkDi4p12RtO9DG4cKguT+MdExTjB
+	 WpmfvEAkid+IK/VthjtjX5HWvLCl9DlzOcE1bovMKSbYc/nb3x9mH3TjSpTFzHPaP9q2t
+	 B01awbTT594SGddhdja2os0WAZh55AGKHp7G1c5OnjeiiEXMsR6MRblZCb5Lf/vqMTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793369339;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=zCF/A13vIjO+9DR3ZIgrg0bWRmU50vlNeLEYnFpFx/0=;
-	b=0xTvzh5eFnXlmzUHGKkSg4wACrbgZkTMFf9AvP3dK6gs2Cmtg+5ztnKlufj/ccVqXlr6
-	 uzeEMH575+TzTWxvcpfgX/OHDUIm/buqttoWAfWYTgBS+Oh5jX1hsY8THz6F2L0tLZ7jM
-	 sPrkxfyiK2iUbhWq7Gm7rUzL5Rd54guzH5TitOF0cI5G1VXvSsNU2CsyIwtwokQm79L48
-	 Q3cgjpB3BLC50EKW1e9GXTr6qznUtL7QeAQWUMnTs/rTkSMau71Qoxecrxui04626qEkE
-	 jf/UQ3puSlAl5bHkXjAad1QXi3GnM0Nk0M3q76Bjhcez1mJqSHQYlSvzcTq/zcbG1HA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793369859;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=pp89CosNGJWyUxsrCd5hI9uKSpZ0bqhKqDJjb+BkBrk=;
+	b=rkkW57GKDL+R0DQLT5wf1vWcrU8UtC4MNooxwfULL61mqmWhUKoIo46w21uQ1qAk/ur4
+	 EJ2SetgOsR1gLJ6N6LwBBQRQyj0Rvyl0TOeEI0iMn4ult/CWxMKUm1N3XUaGPsLS9/D8j
+	 pnjynJRusD5Pw2UqBJj5mVQAnynpr3Kll7fCnxhP2i+eZwJAEuv4+Bu6i9BLPztLmw+5Y
+	 IyBXrGPNUaHvayGOJWUozKiTjp3sAGLbRAa2SeJJTpKiDqfr0sHdOBrdz9TmefV28fe+9
+	 XqlwGe/MiXbyvv9V2E9PuVY703VZXfnH2/LBDvc6JvFhams9l3k4gCfWkKVssbeG77g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=yTzkdy9e;
-	arc=none smtp.remote-ip=209.85.208.177
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="FtSdV5/e";
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FE5606A31A
-	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 14:08:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41FE5606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5166F606A31C
+	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 14:17:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5166F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=yTzkdy9e
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3ab3dd9667dso6482291fa.1
-        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 07:08:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793369337; x=1793974137; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zCF/A13vIjO+9DR3ZIgrg0bWRmU50vlNeLEYnFpFx/0=;
-        b=yTzkdy9eitMqOy2kzOfvIRsqaOJQ2G9d2+Bf7ACC+eL7OAdgZcQJyd7+JxuCrucmTm
-         5PXQglR3d92hFN3lC+Pw3gKxkdkWwpRJJdiBk+qsAXVCKA9rpvPeRqzNvWE0kO8cefxI
-         ji5HCTWgQsKPiHaRyfuda0QtbEVNjgWlgq11FuDqNml4abtvFIAzlTl2NtOC0U6jD14Q
-         2fDL+x9xPAAwsTQjMgvfhTg8h09jStOQRZwsvMo5dBRS80fsQZC5U4691YFlG6ZWh1Gs
-         aq8ICIymXmJw6AStiKYZSTMYM/lNlJVpdJ9ZZNqLfU8Y6fSTBhD3eDUCeRkfFRIL5WvC
-         kaFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793369337; x=1793974137;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zCF/A13vIjO+9DR3ZIgrg0bWRmU50vlNeLEYnFpFx/0=;
-        b=xs0KeuVjeOepVPwsgKBg8EnkG4E5qeWchWYgqw4//+1MQ9UVw9WqxTsGz2D9aiW6WE
-         MGfb9/sadrjVXLgKjO3GQt1lybFVTuuRNi16kuGynM558dFq+7/Qk5tz8oZ4DPRKqPY0
-         wpfUgMcdouun6erOAy1rvd4lneRtjac4+L2tBoFPw4XJ+0vcZkOSlusD4caFAQms4CZl
-         62jeB/sszMuDRndOjgD2AI3Lp3qTTZWgGXNYrXZBIM0B4+KvR3AOs2w0Dg7z6IENPJGZ
-         MzSpqjCzGsvTITkYIQUb7jzaY8Tm+Cfw4Y8wmwCOVqJIh0sCI3/KvELn4hRSO048AV7O
-         8kFQ==
-X-Gm-Message-State: AFq9FYJQ4LFBScCQ0erFKG1X1BiNdyV6cn/FkMhtr876hnkANMakl5rf
-	FbuPevFBshiYYljAxbeCq8sF+v1nns8V6kUZU1wzNyjCN/DiqN9x0bkpYrzLbWDUbOA=
-X-Gm-Gg: AYBFou3QGRwHRyDUSgMNMJnmNptLkLKwY2hekazV459GlqfaiAOx+1y2iw4O94Y0+kE
-	Ng0aBYo/0ePv6vU22rvvHL3+kZY0mjMVTS7oXSpnvexZ2zxBp4JoOwy1vm+6hvDSgYbsl8q53V3
-	lkb7Le62mRj5bLwYB8XkKPHLBEXwzkt7Ftjl+C4oPtFGMws/UDrrRaoq9zEez6n9PT3lmgAK0KO
-	h0mG7Stj9j+izPU+jh+lQXKG/6fKpjysr4ZGHsraXCuqCGPAT6dyg3Zu1ZCG/TlvU0TWk0ndzUC
-	6IDtWt6WaWtS/Z9fodaVxynMPbDHMRHfUsS9ID3dmJvRUJsBhuvOAdQ2sLbwgQU5uStlG22yVFL
-	stImVVm3YNltcq6cjaKdxNeCGdRAZOwFHXO5w6mde6xVCZxXy68j2UyjE5doOAd46NazetvWbm/
-	h6OEvhWDUsqnYdJGE7mHYG/rniBXjp4H9gIpeXlzogEKNxq8sboveEL1KX27LEswFpmJn4BqUhd
-	MP7cYj4uKXjPn8VQfZl1M5xYLDnZiTqZJ0Z4J6J5lWK6T4PBmCC+9IlGpbQ3gXmYpPfOzWM6fWl
-	PUo8Ahiw8U+UwVWFVVYIoyum9XufGnVZatF4uVQd
-X-Received: by 2002:a05:6512:1314:b0:5bf:c27b:8e52 with SMTP id 2adb3069b0e04-5bfd9582a06mr842560e87.65.1793369337326;
-        Fri, 30 Oct 2026 07:08:57 -0700 (PDT)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe0737065sm2501e87.42.2026.10.30.07.08.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 07:08:56 -0700 (PDT)
-Date: Fri, 30 Oct 2026 15:08:52 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Steven Price <steven.price@arm.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v1 08/11] PCI/TSM: Bind CTLV attestation to connected
- and locked contexts
-Message-ID: <auSkHORl2mg_FiOf@FV6GYCPJ69>
-References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
- <20261028152618.1356860-9-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FtSdV5/e
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793369857; x=1824905857;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pp89CosNGJWyUxsrCd5hI9uKSpZ0bqhKqDJjb+BkBrk=;
+  b=FtSdV5/e/IW2twZO+F0VCWy07Nr0T+91x+lheNaBPeF5t/tb9EwmRaSy
+   50ky3yhNhidOeSH8z+1DWOq1Rhx+yf4WcdYWVjOBLfccBrmny9YKqCKat
+   pM3NlrSJMrNxH83/JQPRzGFQ8cR3W2sQJ0dYSNlco363eBruGN3Jd5dBk
+   Fd0zKCv0t0RKSWkpp6iu6/NJLu8qBn8m/1VWQ87hX/GHcF1zkaNSpQyVM
+   PqwC0MqNd7r0EilLYPjO+MTUemrH18A6+/DTw/ODk0y1b6Q604C1F5K0t
+   i3bVYQ6ZwUmz1bt4XjA3/R5EvZWARE6pg7A8hRg5hkb4pJDGK8XhjNOsl
+   Q==;
+X-CSE-ConnectionGUID: ljI2cIgGROaYDmucR8Jdzg==
+X-CSE-MsgGUID: 9RuQw5p1R+aJR6owSx1+Yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2016214"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="2016214"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 07:17:36 -0700
+X-CSE-ConnectionGUID: Gojz+ErxRPikYftHvQ4zjA==
+X-CSE-MsgGUID: VC54mBoTSsqpYZvmyXhiqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="5580479"
+Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.109.71]) ([10.125.109.71])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 07:17:36 -0700
+Message-ID: <cfc2bdf7-7f91-44f3-8f3b-e2bad55e9b60@intel.com>
+Date: Fri, 30 Oct 2026 07:17:35 -0700
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -104,62 +73,85 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028152618.1356860-9-aneesh.kumar@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
+To: Borislav Petkov <bp@alien8.de>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+ Biju Das <biju.das.jz@bp.renesas.com>, "biju.das.au"
+ <biju.das.au@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Au Dang <au.dang.jx@renesas.com>
+References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
+ <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
+ <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+ <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+ <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+ <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Wed, Oct 28, 2026 at 04:26:15PM +0100, aneesh.kumar@kernel.org wrote:
+On 10/29/26 19:33, Borislav Petkov wrote:
+> So switch the x86 TDX patterns to files and directories (N:) type
+> patterns and group them by path, for less false positives.
 
-[..]
+Thanks, Boris. This can probably just go in the urgent pile ASAP, right?
 
-> 		available authentication methods for the device.
-> 
-> 		When present and the tsm/ attribute directory is present, the
->-		authenticated attribute is an alias for the device 'connect'
->-		state. See the 'tsm/connect' attribute for more details.
->+		authenticated attribute reports the TSM name only after secure
->+		session and stream setup succeed, otherwise an empty string.
->+		Connection control uses tsm/connect and tsm/disconnect.
-> 		This is a "link" TSM attribute, see
-> 		Documentation/ABI/testing/sysfs-class-tsm.
-
-[..]
-
-> static ssize_t authenticated_show(struct device *dev,
-> 				  struct device_attribute *attr, char *buf)
-> {
->-	/*
->-	 * When the SPDM session established via TSM the 'authenticated' state
->-	 * of the device is identical to the connect state.
->-	 */
->-	return connect_show(dev, attr, buf);
->+	struct pci_dev *pdev = to_pci_dev(dev);
->+	struct pci_tsm_pf0 *pf0;
->+	int rc;
->+
->+	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
->+	rc = ACQUIRE_ERR(rwsem_read_intr, &lock);
->+	if (rc)
->+		return rc;
->+
->+	if (!pdev->tsm || !pdev->tsm->dsm_dev)
->+		return sysfs_emit(buf, "\n");
->+
->+	pf0 = to_pci_tsm_pf0(pdev->tsm);
->+	if (!pf0 || !pf0->stream_connected || pf0->base_tsm.error)
->+		return sysfs_emit(buf, "\n");
->+
->+	return sysfs_emit(buf, "%s\n", dev_name(&pdev->tsm->tsm_dev->dev));
-> }
-> static DEVICE_ATTR_RO(authenticated);
-
-I had in mind removing this attribute alongside the staged connect
-change and reporting authentication state through SPDM_GET.
-
-This instead retains the attribute and changes when it reports the TSM
-name. Could we settle that together with the SPDM_GET interface rather
-than maintaining parallel authentication-state queries?
-
-Jason, what do you think?
-
-[..]
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
