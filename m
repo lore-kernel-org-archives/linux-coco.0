@@ -1,97 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793371210;
-	b=fUxJ04mp1m0ls2uYyjMQb2QVtZ7M9B3w6w0TiM9mZNrW2S3+fF9bjVZrtotUhE9gfY/A
-	 D5mGkKydtJRnIRJmr6Z/ddFUVX6Oxzs8sx+RTx+GCcukyUfP3Mvebr6oeb/UoAXHzI1Th
-	 9Q9aXgH7+1heP/16QEpjl73ByXVddaPIXXm3e1+KivBjjFoJqhuBqI58ozuOUUVyAN3e1
-	 wo9LAOokwsDqLSe8PcYZqb4Jt9cicgjqUqLH2dOBGjsWjvvD3nFaSN0Q854SHV6p6kzjf
-	 26GtSBKHXvTS3UIW8bIbUM08CyTL0zLSE6GTjMw6w9/elHe6NEAFYrNBYorWZ5TvvSg==
+	t=1793372580;
+	b=5mKygdVNT1c8PHuJRzfrwribWcRR0eW3Fimfp3yg8KQOZRcUMr5t2d4GLQjho8Zf/BNp
+	 cE73mvERQT0FtHwbldYt2rcuqePyPycjDPKQl4FmYtL8jrfPQOC8E+oW+ZWYYAwbda2h4
+	 UMle2QEsR8rKGc+ElPkLrRNSlSYM8H5Si27490vzfWfUZJ0ETbaxavVpG9g6mCqKSDnFy
+	 DPB/P42fE06+Afy+UTx/T1WcHpAOTcbu1rWeiKyOy1PVU0jAz8CBXKeASh3UYUI2hN9lo
+	 0JjgRu5jrhtGC5WdHS/xlGg1VoVES6Dr/S7QNSOGqf5x4EEg8ppK4L4d1RMqU6GFd9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793371210;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793372580;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=fcq75/n5to7KVPQGZLdMt4JCssKTlOZI1ZlvEz8dUiA=;
-	b=on3artDbufN7PM/g/ltyVQFBI69TV4Ow/S5UGmBL1wWHLvd92E9RNbBCcrlLcIiDmfi/
-	 ET00Uk8kuObJ/NipZlO/IcM1vZNMaT0DQjf4hBcy8byjPVUCK8eE2QTiD86s1eRc70CvK
-	 TID4QvuEzcre8DFaWs7VvHOL/oPFv+aZZ0KjYrtvwcFShdkMCdQET1cd96jQgOYcMfFWc
-	 dA/GbQtHt0XRhsMvt5fBgjv1F++fqyhQV6LmOpxnVJXNws95rFlZ4g7cRGB1npNo/LOfe
-	 o3Gyouti9QSBzXDRZcUIeMv0lUG7DVbPJcsTDKGt4AKSgRrtGF24N9xuiT9UueN7QKQ==
+	bh=LD3FTctKH+htDtI40/USwM/+YwDf042Qy6l0BgbuGzY=;
+	b=fL4hytg04NwmktaB5sLp+ReaM4zDOnb6rv7FkUGwF6uxqBKpGeKgn2VoROjnQ7PgZwpR
+	 MZ4sginyPlqNGXQEzwiSWlZvO91d3CEe6p2mhH0TR0oD+5NAG0w6haloTCoAAWX5xmsqi
+	 RkexU5ATlKH1MS1hZqaxJNA267glYkGhBE1/Lzc4tRzR+MMLgp3lGmCCZhIhvVAKTvLrM
+	 ujN6HeFpK5gJy2o7hJLRLBsSh2jzWFvDwQ7nmbnyLveZz/P+USOrWEasPZnUhT/0HB8oE
+	 WvLWAhhE/iEk3nEm8lqJ83by9TdrdbzwVBvYHPrRk9fRkOK2Pa1UpCrt6Z/m7RuVTVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=opnizZ+2;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=dZpcezAx;
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2290F606A31A;
-	Fri, 30 Oct 2026 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FA0606A31D
+	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 15:02:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5FA0606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=opnizZ+2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220C81F00A02;
-	Fri, 30 Oct 2026 14:40:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793371209;
-	bh=fcq75/n5to7KVPQGZLdMt4JCssKTlOZI1ZlvEz8dUiA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=opnizZ+2dNikd4k65O8cRdMCDWoFnGzGm8H06Tue87Fz2IY3Vl4g9tTezUqcwc3wT
-	 2S6k8/wdhtbqKtvti1EgHreItj+UG5ZBkRBY+ay1FJ2DMCO5RncXnTjV+pURh7ZIro
-	 XNZv6YTMLXemRfd3n+9r7A4h6KNmwKrYIG57sbEnbATY6K2ZIueRLWVNpW++DnTT2g
-	 6j9cPgPuREHbNQ8UMD5t+M3B6xIbKyPezo5ElEInFyan2i1LKH1bgSwTQOQiILbWLB
-	 6bxDTx1NypaHLyEF3TNygCKFE23hVT/x+Laf/8uav6MskOgnGXulWrMLVw1+eFCQcs
-	 JzKAKQeuxklMw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 235AC198003A;
-	Fri, 30 Oct 2026 10:40:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 30 Oct 2026 10:40:06 -0400
-X-ME-Sender: <xms:Q6zkahjpOj4ZSaCUZVh_bd9rI2MnpdmCfUnAYYGcnjInOD05oNfb1w>
-    <xme:Q6zkajbGIHULW1k9syjh4YXvBPDt66fdFnIS_5PV7amJHak8pByIxZZQLkztpXdqg
-    fBfkYOiqdNcPpFxCXn01p-8P6XxaWhRqh2_6Mpdfuqf9J6cdP6E3bly>
-X-ME-Received: <xmr:Q6zkatHdsrPk1n_nDjoGF_qe5L9NFTQJTTaIt6u1UONBAAPWdR3k-2pAJpg>
-X-ME-Proxy-Cause: dmFkZTGcH0aYPKX2YJAbVL0xyGQh0oSkJL6yLpuefE0X4Co1hkT5qUmJcZVHIEtIcIYX8y
-    WY5Zc3yBQ6YcnmYlYpaq8uBDxFkI0uDlEyFyz2fkaB0ItzM9Er4N7JxO3vfQJMxLdTL27+
-    TmMFq2gr7DbfJSNquyE3MQwnLRvpN3yKRyBeYNa3/4AwiM4h5DMNmwfBgZNYE7hNq2lNj0
-    +qtXQ59/RfdGZcvFx3q0A4FZ2SwR8jIBm0jzU0fu/zsiosCzA5z+wHByYBr+XXSJ3DblCg
-    yQgwRKwYdunH7rAOmH+JqasmO7UVYI3li7f/5VtJjFYoAwzKBFo+m6ITJ3x7qhmL8urmqt
-    JYUmMRS3ow43Y9WEUMeuKWWOQ9DfLPeFvYXAp+mtXgXuec1e7OHrWVWY9Tf2yNa3DOy3UV
-    sqoUk30o91JUgvRkm0ONxH84/jHYWY2nVdJDZjdX7y+43j1c9kEqJEE9fsKasLBd5HVGzC
-    t8jd1lK9ja1hdBTqwKQSs2bBKzFC7Qtj2kifCEtyVFxIswfC8PyClvOMtMs7pIouk9oQxv
-    MKSaifVFxabUBf9lJ4Qct3v64EREhYGltHSWCWcfdX2M+2ZuOJVne0k8rqE2nQZs/i+Fap
-    yPAiUFR9GtpE9GVbrI295I/j7SS4UlsixVV6g3a6EdbJFDjwz4uOWGa6XYLg
-X-ME-Proxy: <xmx:Q6zkap-66JLgSuqW2cp6D03ZHrfBFlScV2mKn7rB9A1LacGBqwA4XA>
-    <xmx:Q6zkaqWb8s3rqXdJpGxh4w_EH5O13ebU5WMLHaomzoyCOAH5caYKYA>
-    <xmx:Q6zkatboXt60IeNosoJWbYRrnnuFTz5pw0csjmwaWXvlhMWJjRETmA>
-    <xmx:Q6zkanX9bgrJNDTkdR4HfJK1PP2V6QpuGzibD7EiQi5SI7BlwJMzaQ>
-    <xmx:Q6zkakLU1l40MFtuUcUwTiJiNuzkjkEeC9docC7gsfxkRmed_bPge6oA>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Oct 2026 10:40:02 -0400 (EDT)
-Date: Fri, 30 Oct 2026 14:40:00 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, "biju.das.au" <biju.das.au@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Au Dang <au.dang.jx@renesas.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <auSrwtQgJRM09_ve@thinkstation>
-References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
- <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
- <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
- <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
- <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
- <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=dZpcezAx
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a5087a5348so6262725e9.0
+        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 08:02:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793372577; x=1793977377; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LD3FTctKH+htDtI40/USwM/+YwDf042Qy6l0BgbuGzY=;
+        b=dZpcezAxZyLDW2VhP8lxjBNWPh1Eu2uy0Km2l8dMPwf3//B45+L6Tqkv0IoUwbVutR
+         zM3ndGIE4Q72wObF1mFzM5ze8P1u+f8jVvY2PYq+eA3dgOjW0Qjd6mTe5lcOtne9Wlk+
+         +ZCFwHwkiqgExBj6bqQg4rJbjeOQ3EFux7WPZjXuRGnZjEDgve45pUfu8PyRsuDRN5VO
+         K2npMnbDFJ1cp40+qbLlSL5/5gBZm/MQfSTlJsb/s7mmM+kBKiUkWZfHWVkJGzGQjNWa
+         JphYjJawCdUFpuzNFC39mjERISudCteBXEmPADOTuzMv4WqSd0+6p/1LMVn6REAnGV7U
+         jQwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793372577; x=1793977377;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LD3FTctKH+htDtI40/USwM/+YwDf042Qy6l0BgbuGzY=;
+        b=i9h8m9umCSFcYbbmr9DaVHEqrw/7s1xt66PcE6qecd+yhtqtxAQRbmTWrFfKHuza+p
+         lQNLwmbiiW/0JsPtQd0L2Tlmw17xn5FVDcUnrt8XpfS1SU4/Qz4vIRnNFs0gRfuBrdvA
+         2zzzlCw42UkHc7gpXX0o2sOeJVqHr4fmnIycDkW+iFmvjKOG4SX4c1ZNgc/3TXiFrxoV
+         Ij1LSUUfPIqkSHBmuex0+9IpmlKgJPn94k+w3RL0nQNY7cvhj3oT3hCwmQxaWLZ2jMMX
+         u3d+kAiQsmwT88Lz0k8gvONQEIX+iu3YnAYIkkrYVPfacFv8LpCZ/DkfafhwaK9EFOPX
+         pElA==
+X-Gm-Message-State: AFq9FYJxLwyvVSaWqhvwF7pPSSUDS4OkYt8PwX8LMjZykABC/NTKC+J8
+	CPjzMKCyuCvCgliOk94g5aNg0eWKUl33oJqmuKulvZgEOyeRWth2apRJAFU6Wl7uajk=
+X-Gm-Gg: AYBFou0UOuYy59SBStzd+bheKBUYwt2Gr/AMQHayvF37ENV2x4iKZSVjSoB1RN4koJ6
+	fTdafKZsUPmoH5LpEN8+GsP0iBKfS1Gae+3Sfl469QYZVAypgGO3mhyBPyEJugsRZo5BoK5+boN
+	CCWkGOkBudzBrFDy3GpzhTunb5pTovUP4n0DDSqTOG4d9rVn/Tsy6pxNo8HHp0Ams25Aa1kEBju
+	k0QnuW+mp9I0NAKWFXoCXpVoAtT+D/uOTbaU1pdA3WoacLqiAkDfBsc+lo/GC6aklqac7v1QZ3e
+	wVvKEHOKt9+RGqnZJQg7cSshOXtN6ofprP7lzxBNOzP8pp37DP4sr0F2qPPwLDhzEJu7fOYPvE4
+	wsP3LdcfLDaSgbZHgJie+rL4gjqqMGr1ff4jrXimYpbvoj2P/e7FdamirxKkiGcLYtu3vm5bbGv
+	kzCXldrUKHF1UGgIrA7yTwFRuytvL/wY+OOrheD3Dgkq+d3vYBcJTW2PWqYNfnIb+zs1r0WbN46
+	0lzG7v++BSdNKTHa78Nad7hrby+TIt5oy1GBrSPM4YsaI/DXZi713GzmWBZPJzFT5U8cfIrcaRA
+	kHwWdabvFZfMTCfT4AonUkpiQ928V0QUr34laGwN
+X-Received: by 2002:a05:600c:a00d:b0:4a5:e6fd:65e5 with SMTP id 5b1f17b1804b1-4ac19705d57mr55863395e9.31.1793372577101;
+        Fri, 30 Oct 2026 08:02:57 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b81c74sm3623785f8f.36.2026.10.30.08.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 08:02:56 -0700 (PDT)
+Date: Fri, 30 Oct 2026 16:02:52 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 14/20] attestation: Add the base family specification
+ and generated files
+Message-ID: <auSxhgC30bubNJpI@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-15-jiri@resnulli.us>
+ <179302367452.58760.3782556786585774917.b4-review@b4>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,23 +107,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+In-Reply-To: <179302367452.58760.3782556786585774917.b4-review@b4>
 
-On Thu, Oct 29, 2026 at 07:33:38PM -0700, Borislav Petkov wrote:
-> From: "Borislav Petkov (AMD)" <bp@alien8.de>
-> Date: Thu, 29 Oct 2026 19:25:27 -0700
-> 
-> A K: is a content regex file pattern which matches any text in a patch
-> so if a commit message contains "TDx" as in
-> 
->   the TDxE (Transmit Data Empty) flag
+Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
 
-K: matching is case-sensitive, so the TDxE prose never matched. The hit
-was tdxe_auto_clear, the field that patch adds, in the diff as well as in
-the changelog. A keyword can't tell that from TDX code, so paths only is
-the right fix.
+[..]
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>> +++ b/Documentation/ctlv/abi/ctlv-attestation.yaml
+>> @@ -0,0 +1,184 @@
+>> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+>> +%YAML 1.2
+>> +---
+>> +# Checked-in ABI snapshot of the ctlv-attestation family, written by
+>> +# "make -C tools/ctlv abi-update".
+>> +#
+>> +# The checker compares this family's declarations and inherited stub fills
+>> +# against this file. Updating it is how a UAPI change gets reviewed; an update
+>> +# that removes or renumbers anything, narrows a bound, or makes a placement
+>> +# required is an ABI break, whatever this file says afterwards.
+>
+>Have the generator emit a line showing the original yaml file this was
+>generated from?
+
+Okay.
+
+[..]
