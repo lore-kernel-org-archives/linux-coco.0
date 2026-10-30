@@ -1,109 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793375040;
-	b=EBchKVWnHyJNydJII/bbXHMCwAAxCZQ6gBlTz5zvkDPq0zf2H4EpBMxxByXtk5br2A36
-	 He29Uo+Kutc9gTyG03qVQFFUv8kI2NZ7EjKnT59n3pyPXxzlNTVV+pmx633VppPTGmHQt
-	 v9Iycx2is4TXjS/4SDEARJ5ttGcq3Ok5ye1gn3hpFo85TKZRdx6EzbBtbiDXP6S8em2gQ
-	 l77/yE9+/J3vVaWHd4Iph+JpeUvB8i7CU3+VYTtY80nBGkRGFqQ4rvTcVCXqCy5IrJQhW
-	 O56Ti4F0TbZYJTDxK8GZkjogAIhLL5wZdZX7lvl3viA26oqKjEwnm9t44ovXySGgFQg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793375040;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=lOBOQo/hnirY9ytpckvRzdGVTdDTp4PuY4spWbuCAoE=;
-	b=vXn5PALd65BhZzES8TOuQlkpTHCBrVKdR7jMSw9llka9AZpMqCcajGzXhXPOpp27ASSt
-	 F8ayabvB3SuZb/W5VYO3/En6LCGaTF4foCIKYY+QjNLRYRv07OalSD5dbYkq78iSWJe5J
-	 nm5NxHWhrSvOffGgVBDvfFXDnOmGr1Imm85tShrav9M6ojR/LpsXkBwsUMCembISkvOhP
-	 A7VxynWlTvELVu4ZyomgQyQ5kppk5jODvb8piPE0xz7+trLJVg6w7WzitQJLyae6ZSaIb
-	 r3cux22xsu8etYoc/HC+h7BrpElVqUC8XDTC1JaS4iPq5vWsd+orH89nzdRoYcqh/nQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=mMD9Bkvd;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.42
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013042.outbound.protection.outlook.com [40.93.196.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.179
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793375342;
+	b=Zen8ucWRr0et/KTXhvSRycIIJKnAKosvKuqNJpT2NhCyVFvUr6KCeuaogVnE/u99UUOn
+	 SJSQVZaeBMlLgbZ5kDBX5nFEcL0AInBTXEMtEjJj98nWsi5KDgABcR7ivFHTBkxWbjRbH
+	 UyDWF/SfGNDwleYiMIvVfPPDnjRBtyt8bV/RJpAnaxG2f7EFuvl0/DHax74l1xZTGYdRc
+	 qD3exIXRfrjXPukIQGY+65rCQMAd5Nocud0uQkPM5r/x9LcdHPbzS/YQbAFCdhYxYbeSh
+	 5XBGierg7SAimjxqUEWZ0OeHgD9tVWVn6C78JgmgQn9inSaV6zY6hKenbMFd4f7iQ0Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793375342;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=d0SM8LOepW7XUMwU+ZDps/Wc1zMBVt4O8GKS2q6Z4u8=;
+	b=UQSNWvT9ZZ2YxkjlHEoYNGu1FqgiKqNJK4J47yJyK6nt5yBeq3B86JPdqOt2eN50AsKW
+	 K8bwhq3gE2b1t4TlJ7ZOnFf8ZDncl4MnO2IDNJ1MLzSQ9/FcA5nEFXlq6dajM2BxjvssC
+	 K6NAr3IhoAcJWSjjD+gTnr9X1tuPD+/UCt1pI3+7J43M1itbvX0LXd7x6PoVbd/UOq32B
+	 ceGZiGXM0qNZ5GRCB4l9jaRFcZjR9DlN7OCKmNnEMtSFWQBAyJBW7gtDQ+o1AoDJD1+pc
+	 5juzym2/5JdSKVGeBKHd61Wkack4XMe7XPwwFbqmPrQXNQA+juosnE6iwKE6CggbEaw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=injfLSpH;
+	arc=none smtp.remote-ip=209.85.214.179
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBE1606A322;
-	Fri, 30 Oct 2026 15:43:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFBE1606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE99606A322
+	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 15:49:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDE99606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=mMD9Bkvd
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yp4lBzNeA8M0pRlq1yWTe9qUVglIFD+1YQFe1WPKnLgTxxgpDkPiKRuKAV6g7nCoroNg5KIzKkh+ljeAm/NiDTSDLo00QSrn1ooqLySxcZV4Ji+zgY+VPHjP+CjGvnw9squ8uU7sLlU7fcXFm7HgUv9gW+HpyrpUcaoBHUFw/sBMHTwjIKw5DhuhmXs/ki1Oql5H4lWgggF0y+7TBmZsXQxtWb1Rgn2HA1dMVKdWddEOBlvAK2FmoPgQHkQpOfReAH0grknj9i7ZxjL6KFzabLELxLmYEbrEEFixCrNIzPNJeakRj2hkZ2DKvjqaz43HHIx2f7jiSt4WUXWketRbqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lOBOQo/hnirY9ytpckvRzdGVTdDTp4PuY4spWbuCAoE=;
- b=tHt7IGiiJCw3NiMQdQRMAJS6z5dr5MJiAwqOpeLDvTzzuW757/IliRE4p2j3gPolsMuon4pfy7KuluDiWACt+C09Dk0fNWiHPgsv3H2WMnqEns0z+i6k/HIIkDtSYlTzcI4IPHNgmwlTCRasG1E1neHXTj4QlsdFhD9uDKoaYR7SGjHrlPXBv/eRtoX55WKGxB2N3foOOzjIP6LbMw1QSbavURNZIWYGEmbJQigB5WbiOHxBS551etxloyD97kwD4FUTyn49dEMRLwOJxjKdMNn+Dbw7LB5hkWcarLFAstLcqOlBwGNqKJBHr0wBy8Xf540Lc5kh5BhwziI0tK0ySw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lOBOQo/hnirY9ytpckvRzdGVTdDTp4PuY4spWbuCAoE=;
- b=mMD9Bkvd6hkSlOhDpOllM7aJtdo0pAoN33P8KHUL0rMRTXNP83j+mePLJWlY7bZH7tHPi8tGVshKRwaj9N7iC61xx4aIzUpOvGesJiSqD2GCsg072OMkm7RCqgcFmiE8c4Dw7TLIv5YRoQZCK8mkD6hYlDlSVET3tdha8AExVRUKz7m+jyw5viVR5Rmeb7/t22Xm31bCVtaQTPgb08ipq5g9fGcewAZTsT3cCIi1pFh89qX7u3JmHqvExIguus8uae96jVEbTHNEsP2zdouQahK+c8ppAIcLd5iU+VTj1+nMfjO+8OeoiX+RspPmmtidLIMO3ZvKwZtD2mL+JD2IIg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by CY5PR12MB6551.namprd12.prod.outlook.com
- (2603:10b6:930:41::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Fri, 30 Oct
- 2026 15:43:54 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0569.009; Fri, 30 Oct 2026
- 15:43:54 +0000
-Date: Fri, 30 Oct 2026 12:43:53 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev,
-	Dan Williams <djbw@kernel.org>
-Subject: Re: [RFC PATCH v1 06/11] PCI/TSM: Describe the PCI attestation
- control family
-Message-ID: <20261030154353.GN3734323@nvidia.com>
-References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
- <20261028152618.1356860-7-aneesh.kumar@kernel.org>
- <auShvL2m00S70H3d@FV6GYCPJ69>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auShvL2m00S70H3d@FV6GYCPJ69>
-X-ClientProxiedBy: CH0PR03CA0239.namprd03.prod.outlook.com
- (2603:10b6:610:e7::34) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=injfLSpH
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e96502e447so8384295ad.1
+        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 08:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793375341; x=1793980141; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=d0SM8LOepW7XUMwU+ZDps/Wc1zMBVt4O8GKS2q6Z4u8=;
+        b=injfLSpHBv3MZ6dRlVOEAHIfNI/VXZ7gLnjNwyHRQva9O/m8G+qs9goJlE0/WwwC9z
+         bECublmeILUgikfurBxSn4MFEjDCnCDOe7fAG99pqXDwd1r+kj8ssGJCZAqlHGFWHIBt
+         58Fg6ywEVuCt8QnPtM5mjR+tLnER3n6y9cWUSzVv52yOBkdR1nI/j56GcPr/yev2k4ss
+         hUM+bETD0ktBlzB7Om4AE5HwOjS2U6nCA9IP9gbw3ZSvmb6YVGF9sMyvmPy75GOdmMWW
+         XowVe+0BAVBVHeb7uzroGwRGOAmQc0BywXrhSwc/VuhUxPua4ud8hEnKQxxqHhKDT6TC
+         o3cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793375341; x=1793980141;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=d0SM8LOepW7XUMwU+ZDps/Wc1zMBVt4O8GKS2q6Z4u8=;
+        b=fUbPDCX/9X1fJphshX/oG5M4clh3fwCChXVlPwdCNsk5x9cSXg3JmOPRjJ/oJIVjrX
+         v1ma1raO+0pcbz/nB5IB1tG/Vzi5GK9B3MzRrjIPtVeg0bzp1NsEQEuoVHt7R2qMpixX
+         W/A+cpFxR9v0xsK+WGXTm2GgNRwXe8HJWgBT8uVsIyVub+YxvQqu42LPmpmQr0+CQA1r
+         LMrylG1EAZIKviVPEYtxgYcUOgv/YkPKuDAa5CA8c3gFWF5So+wV6v9sq14eQJPr7wTF
+         /AhsNjTdrhs35pvckRibCcmlpNJbfxBPvNlQuT/jw3aWtIhrMeeUXGvU+JEWtt4Gz0Lq
+         +E2w==
+X-Forwarded-Encrypted: i=1; AKwUvBwr1qADlRoW8Hf7ZF+NQwu+caBkErpZ2IgPCLc8elNAZqm8iENRP6JfqjtI28yfjeD0OG92p3ZBMCJy@lists.linux.dev
+X-Gm-Message-State: AFq9FYI1iKA+uCKSf1HtO12B5eFOkzR9wwvcNvITrt2HlJNg0OfwGbXW
+	YJDVIm2ILwuz30fvnUQhA7Y1ukejEmAOXM1805G2n1tqrRh0PbyE0Fpf
+X-Gm-Gg: AYBFou2eW9r1KvydZXR5f6BerQ795NE3BeD7Nw3ePDRBzCwXQnqmYdsQaEovjk9uEJU
+	NCqkWSwpXdfDr7WxRvvycr29WY0UuuWtaiFOgb13KIxsv9eVNQpopBeb73p1kSA+ZMpR1DKRwJW
+	SxQynbxHhT8UVvMueS70CyYawM6r+gI44P8cXmsCk6WKp6jrTy0oJ/oNZ/Z04esGryLxEMLNyYI
+	EMNUj/uml/JP9wxgqh2DDnIlK2Ygftb1l75tqiRmtuj2/znID4ydTlwM5+fvkfly7ulxES4f6p4
+	r5iWrRENt6GSrlimDyEL/gLTUU9bUyvt2o/lNomQGAa39/5LapWnTjqLP50Gbi+jHynW3zNQRPx
+	i56oGw6p5ifA5DYLzlmrVC8KaFSlp9fqCi7uLlODDYHqFYlRFB2bG4KdFLSXuCd0zbsEeH5pSLl
+	FpItYv2XkNCBBAGoh4o6AOdCZFqYD72zzyaoSV0/KoQCBOa6XTNx64ypopruSclRdqhqM55/Yxm
+	FZ3COgVrOjwz2D5NjxuO1aJGNepKLh+WLnY07t6NTM0lw69PzpbOqTNCwhemm1jr5VONE1oMaHs
+	ycYO5t0qjTV6ogFvRjrFIgp/FxmQl6fPQy+kiblp22w=
+X-Received: by 2002:a17:903:3c6c:b0:2e9:73db:3c78 with SMTP id d9443c01a7336-2eb3649bef0mr30087255ad.17.1793375341157;
+        Fri, 30 Oct 2026 08:49:01 -0700 (PDT)
+Received: from iZj6c0kydq3fvfrtx5kta5Z ([47.86.51.122])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39248621sm9426235ad.28.2026.10.30.08.48.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 08:49:00 -0700 (PDT)
+From: Challvy Tee <challvy.tee@gmail.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	kas@kernel.org,
+	dave.hansen@linux.intel.com,
+	rick.p.edgecombe@intel.com,
+	vishal.l.verma@intel.com,
+	kai.huang@intel.com,
+	seanjc@google.com
+Subject: [PATCH v3] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module is not initialized
+Date: Fri, 30 Oct 2026 23:48:51 +0800
+Message-ID: <20261030154851.907726-1-challvy.tee@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <auM3KKutfutAqgWG@thinkstation>
+References: <auM3KKutfutAqgWG@thinkstation>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -113,92 +106,104 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CY5PR12MB6551:EE_
-X-MS-Office365-Filtering-Correlation-Id: d89e82b9-b91a-475c-471a-08df369c9a8c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|261026140227099003|4143699003|11063799006|261028144727099003|56012099006|261026121527099003|261021121427099003|261022115727099003|10067099003|261022105027099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	DJ08YWqAPgmPXb8bM1gTXTMi1Q9+Cf+zyqFWnuPsWtuZe2Rc+xWJ7ZjUlQnTbu2CfLix29C920FE6dr1MkQMhgMHuTW6R0ZwcAnEhcoLiH3cqVZK0ZsOGdaG0mV8cqDA70nQNiKgLuFfH02q4seLetsmYdUhpCKzKRvEPV09vDh7zZIG2GaabFt66ac1psx7XJRAm3g8wr6W26aKwYUgichLUZQCCZniG/tRxdLRmNYjh5XvTYUNgHXGwlYrYDjbDCpT/Y7Q/wBPJnk3DICGcyXS+hXL71BU4re4gzcfABcmquQtIDrPbcVQK4XVhmQYAt8Mx1QRavo2AxDFghcdA6UEtXhD3jkgnozqfFWOfvGD5FfuzdEF7l805oJR9fobmhvkoml6YxSJbhJqs+1X308TL+3da+xS+JIL3cljLY3RssuyOidBiSY9a8u6dCN6k0uOy3shGDJXcyalyfZSFkse3E8LLgdvuCr+2KmEe6qHx/XKhn5RuVto+V1iytPI39bDcfLdrQT6Fj9/3xwXd7ibewU/DQzMHMP+lMU39CPMvvaVn/iC2dBvUZZj6LFjluVC5HyizCRwQJDLBIARxY4Og9JE+aRybHArMLqCvb3tHECMYiYbvZ3czwu5fMU8yFk4JGWD9nkWD29/7vLuomwSBnymaQWPgTc9dKnHT3I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(261026140227099003)(4143699003)(11063799006)(261028144727099003)(56012099006)(261026121527099003)(261021121427099003)(261022115727099003)(10067099003)(261022105027099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aRduBhRSh7kGfswA+qfkLwHiAqm8KShTiVw39Wyg8vXbpEkXSiAtS1lmgQxk?=
- =?us-ascii?Q?PBTp8PdNcCFWhEwZJVTxlyHQ6lWcaIp0nIZGDIIyovSboxcLK7pdVLDEkQ3k?=
- =?us-ascii?Q?4A2tLEKhVUNsbJI12Y9ueplNq4l3bGx0wUYKiFdPk5KxvYpZmxQGwLQY2sA+?=
- =?us-ascii?Q?9FeVmSKeo6PymfXOr4fwLPU95vEGSefNQ5lZ5+rtle89S73DN20Okx8/AP/a?=
- =?us-ascii?Q?f0hKNjX4aWBf4CxtJI8cwtbMSuXshB+EKlwhQ7Hw1O98gyZx3+TJQ+thz6Ul?=
- =?us-ascii?Q?I2h2tQF6mE+BoZ9mvZFfio36zAYkxGjAnwBEV+MgiEZkRSk+EBmPUzHkwanp?=
- =?us-ascii?Q?dTLIDOO8r8wRUMDaCG3AsPJ0T6UYxgeY3zU+ATZBDkP6bFAaJWan9wi6SLQA?=
- =?us-ascii?Q?saLTVLSs51vtauRO+PZ22ukkxI4KbLyhTOEkHJox2bG8zysADqTywckCq0aZ?=
- =?us-ascii?Q?aymQpIX3n22nEAPa7g5qb6DisKayCecBeA4flM2OwPF8frfEHD+RlxVhTZ0A?=
- =?us-ascii?Q?N+olH15EP7Ft5BaWg2NrYLc+TjFTd//UGHZYT3kRTP8XrYjdATe3IOUopZug?=
- =?us-ascii?Q?9IogO7jzhWcv3KsvwoZD/8WeHy77t0coTcYGUurzlpgFr5l0NwrD6/achOgY?=
- =?us-ascii?Q?nEcMihkLoFGBQ+6PKxs28X9wzauYxe57nfHQLMR9wVpZt1qdzv/wnaeIRTrx?=
- =?us-ascii?Q?9X7ferc7RaJJQiN/SND4h98kaAdVuh85vjLYRy7DbrFH1LpG2VY/TIiJt3E/?=
- =?us-ascii?Q?ulojmAr4d0mmqHgB4QQjzVA9Hk6NG7C7e+6o72Dx/qmo9A6w/YNp6mzuoDAL?=
- =?us-ascii?Q?HbyW7tsHQyRU06nzBGKN9N91by5ku3iq32lX+XCJKeqbsAx++opyAc7Z60Z9?=
- =?us-ascii?Q?fOU9MWGppa2iutmZvAJlfNboXYcsWpiR7ivaG2mnjdvHluea2+4V8aB2QXgt?=
- =?us-ascii?Q?mlikelYjYXCSgCp9sFiPvEoCvxmIDLzWqG0D1LSP7nhkdvfO3NqonF3Dg2uq?=
- =?us-ascii?Q?cChANrccpJK0eK1lHgfiK2uk42IXyaYL21qZxqN2mIiFrt59UX9Mapmw52BB?=
- =?us-ascii?Q?OlVgl0xTvYNYr2GV14Dwqji2w27raf7Mtci/UhZDlbaFEXEdWsFWWKGKcMUA?=
- =?us-ascii?Q?nIQJSI0qv5Bwvd+7+Hk0lpCthjNJMNthz4NlxYiCNa19jisVICGCUxeBFEjj?=
- =?us-ascii?Q?TPDXIa1nyXPyUTuahsGzIzP7VttOM+5yk2z60Lgv4v7J5fFeWX73E0CRnHn9?=
- =?us-ascii?Q?qn1kresg+b+cdCGOcyOZXqWPcpGTmJkrAQhJnSwSa5jPgth3rBEcOLIeiScB?=
- =?us-ascii?Q?egR0ff57Ywx+dQdH/tr2o2rNx0UhhNtCnu1ZA1PhM/MkkJ9Hvz1bGFz3ZyGd?=
- =?us-ascii?Q?hDDPVRcCjrtcjW9Vg67wTU1bXP/oL2e7+FhpJ3DhgVWrpEjnwnljLfx9uWwY?=
- =?us-ascii?Q?mrEVQNDHeKnW+1CvUPqs8+9fxJDAXv+9aSnYnusfIdP0cC+hTfwKPtE+qBbi?=
- =?us-ascii?Q?gMl4kYjJ0qT6+Yz4fJJmcoPyf+h6+HqhAyN6utU5+jev4SGHwL6oeJWzQmZe?=
- =?us-ascii?Q?IrT1aNpTY7R+McDH/YR2MEQWRnk9bUaIB3mPfGm6ZqUJYhRkL50PbvcRBDX9?=
- =?us-ascii?Q?QBmJ59qFZemH5dPLsNP4YaydXIH4BhSJRuz1H6LLvO+YOHG3pkrAGzUzmUDp?=
- =?us-ascii?Q?iUXrn2cgNG4a94k80Fc2Ru+LTqKX3du+dGmzGUPaVWtajRLx?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d89e82b9-b91a-475c-471a-08df369c9a8c
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 15:43:54.6305
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lZUSAea94RR9ynCaDvtdepTO+FFSscNjZb98haWbrZoD4T5LuVuApn9NnDpcTUil
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6551
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 30, 2026 at 03:01:29PM +0100, Jiri Pirko wrote:
-> Wed, Oct 28, 2026 at 04:26:13PM +0100, aneesh.kumar@kernel.org wrote:
-> >+    type: action
-> >+    fd-access: read-write
-> >+    availability: dynamic
-> >+    optional: true
-> >+    request:
-> >+      attrs: refresh-request
-> >+    reply:
-> >+      attrs: change-reply
-> 
-> This differs from what I had in mind: a transport-neutral
-> ctlv-attestation-spdm family with SPDM_GET and SPDM_AUTHENTICATE.
+Commit 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and
+kdump") made native_machine_crash_shutdown() call tdx_sys_disable(),
+whose only gate is compile time (CONFIG_INTEL_TDX_HOST).  A kernel that
+never initialized the TDX module therefore still issues
+TDH.SYS.DISABLE.
 
-Yes, we should try very hard to keep all the SPDM stuff as transport
-neutral as possible.
+In VMX non-root operation on a SEAM-capable host, SEAMCALL causes a VM
+exit instead of a native #UD.  KVM injects #UD only since
+commit 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute
+SEAMCALL or TDCALL"), first released in v6.18.  On an older host the
+VMM gets KVM_EXIT_INTERNAL_ERROR and the vCPU never resumes, so
+machine_kexec() is never reached and no vmcore is written.  Kdump is
+thus broken only in guests on SEAM-capable hosts whose hypervisor does
+not handle the exit; plain kexec is unaffected because tdx_shutdown()
+only runs as a syscore op, registered after init_tdx_module() succeeds.
 
-> SPDM_GET would report discovery BaseHash, discovered slots and their
-> certificate digests, authentication state, and the effective
-> authentication slot. SPDM_AUTHENTICATE would take device-generation and
-> the selected slot. EVIDENCE_GET would retrieve CERT_CHAIN with
-> blob-instance=slot without selecting the authentication slot.
+Gate the SEAMCALL on tdx_module_state.initialized, the predicate
+tdx_get_sysinfo() already uses in this file: a kernel that never
+initialized the module has no module to disable, and where it did the
+gate is a no-op.  Doing it here rather than at the crash.c call site
+also covers the syscore caller and any future one.
 
-Do you have a mapping to ARM RMM operations already you can share with
-Aneesh?
+It also decouples kdump from the host KVM version -- a guest cannot
+require its host to inject the #UD.
 
-Like I said in the other email I imagine a pre-discovery phase to
-learn the slot number (with rustspdm), a connecting phase using the
-slot number, then a post connect authentication to inspect the
-certificate chain and evidence.
+Fixes: 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and kdump")
+Cc: stable@vger.kernel.org
+Signed-off-by: Challvy Tee <challvy.tee@gmail.com>
+---
+v2 -> v3:
+ - Rework the changelog around the VM exit mechanism from the review
+   and scope the impact to guests on SEAM-capable hosts whose
+   hypervisor does not handle the exit.
+ - Shorten it and move the reproduction data below the fold.
+ - Cc the author of the KVM commit now cited.  No code change.
+   v2: https://lore.kernel.org/all/20261029094705.896693-1-challvy.tee@gmail.com/
 
-The certificate chain should be available at the first phase and the
-subsequent stages should not allow it to change, ideally..
+Hypervisor -- KVM on all five (CPUID leaf 0x40000000), across three
+clouds: Alibaba Cloud ECS, AWS EC2 and Tencent Cloud CVM.
 
-Jason
+Host log -- yes, from the Alibaba ECS host of the Emerald Rapids guest:
+
+  KVM internal error. Suberror: 4
+  extra data[0]: 4c
+  extra data[1]: 2f
+  RAX=0000000000000045 RDI=0000000000000045 RIP=ffffffff855422fe
+  R12=8000020300000000 R13=8000000300000000 R14=8000020200000000
+  Code=... 4c 8b 5e 28 <66> 0f 01 cf 72 05 ...
+  check runstate transition: 'running' -> 'internal-error'
+
+Suberror 4 is KVM_INTERNAL_ERROR_UNEXPECTED_EXIT_REASON; the two data
+words are the exit reason (0x4c = EXIT_REASON_SEAMCALL) and
+last_vmentry_cpu, i.e. kvm_prepare_unexpected_reason_exit().
+
+RAX and RDI hold 0x45 = TDH_SYS_DISABLE and RIP is at the '66 0f 01 cf'
+SEAMCALL opcode in __seamcall.  RAX still holds the input leaf rather
+than a status code: the SEAMCALL never returned.
+
+Reproduced with 'echo c > /proc/sysrq-trigger'.  All five have
+CONFIG_INTEL_TDX_HOST=y, kexec_crash_loaded=1, a kernel changelog
+naming both backported commits, and "TDX not supported by the host
+platform" in dmesg:
+
+  Microarch          x86_vfm  Cloud          Kernel             echo c
+  Sapphire Rapids    0x68F    AWS EC2        6.12.0-278.el10    no vmcore
+  Emerald Rapids     0x6CF    Alibaba ECS    6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    Alibaba ECS    6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    AWS EC2        6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    Tencent CVM    6.12.0-278.el10    no vmcore
+
+Controls, each producing a vmcore: the same platform on a kernel
+without 5b25f249be32 (tdx_sys_disable absent from kallsyms), platforms
+without SEAM support (Skylake, Cascade Lake, Ice Lake, AMD), and plain
+kexec.
+
+With the gate applied kdump produces a vmcore on the two Alibaba ECS
+guests; the others have not been retested.  No TDX host was available,
+so the no-op case is reasoned from the code rather than measured.
+
+ arch/x86/virt/vmx/tdx/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 96ced0494b68..a7eae7492c1e 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2321,6 +2321,9 @@ void tdx_sys_disable(void)
+ 	struct tdx_module_args args = {};
+ 	u64 ret;
+ 
++	if (!tdx_module_state.initialized)
++		return;
++
+ 	/*
+ 	 * Don't loop forever.
+ 	 *
+-- 
+2.52.0
+
