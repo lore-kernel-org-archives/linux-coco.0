@@ -1,106 +1,135 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793395143;
-	b=ql1hWLKcFqjURJI61HsZZGsSnkCH5CdYIzBhlE9BI5bp/rsqdVkXpglLyWTe9/Ql9m5R
-	 6MG3EEFemRxZSfroZti0E2cEVg7vohTrOE4Ttu5mk5aOEjr5z4B9/+NBLKik2XN9lbTqC
-	 MDOTD8tlnbt+2totjS1FVmr9dZ16eGIDisRdetfh+6khe3BbbVqSjTTKqEcPExsNH7/o7
-	 xSYtpdBwoEaCHkNFsrGiBdx5WOT2Xwj1Ihj9tpObdfD59Cj03XQtnUNk6jOfpLy7ZYdzj
-	 zlh2YRpfsfwFggPx1k2TY/dw7tzB8Mj+LWa47yvqKEAQpNAblUjdrVYwYatYYLOuYAA==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.19
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793398096;
+	b=Z1asmcsjeUjIO9oYCNZE1cvfSWWHWioWAgZMIJ4qQRR+HrC6hr79rQ21/MRADVotVA3f
+	 Y1BsOGMA/ok15aScvl9HFdhGcx9gi7jB8lc1WrZTK4YEhbO8/CPqJTBSmxaJpZCPvllr6
+	 epBoMdanN2M72bMePnOzwvfQ3uWlyzvXdBLUIlSGMXTlJdyZzbMoxnTDkrpPtuxFhg4Kl
+	 cc2KQO5jhVPCbbHk4nEOBGhCqKc61vlVcbNp6q86CeTsJtN1K+joCUpYqaEkIvEya/xrJ
+	 IGYBL1XhUpXtIRIqTDaGKhTtM8+ksN15xEcnUp7+vJXvICOdiInDut4doO36LVt1reg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793395143;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=HU3pvitpwZLUJMJVILFp+Zu6v1bdImGs94yE/HOyndg=;
-	b=ZBgcIUeMP/27B4BlW4hhv4f4pUsUF1RsfG9fbIhvnjV/VV+w5dEWlYTdzc3TS8qo5Nrv
-	 mrEGR4LzR3hIpzOXWWQDeaEmRrm55CXRYMVCnGqcf09oC31EXmZ5HQk/zyaog/XqxIS7Y
-	 JzXMa0D2oTP1DgWA7Cb8xyXKLL8oVAiyFZs9qwYHzuRAawJ5MekexWOMBj2aG1YUaM071
-	 IBAkn+pw8hsAuWQ6wdf9ztEnbGajlqK4dSqcO3IldiaZStUpn24yYxQY5TwnxA3vw/+cu
-	 ZVGeSJ55wHKF8ffbeP6f0pDhMTXRJRsWhhyzeIhvO5xZcS1TdwcuvHQSEawQjNEhRAw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793398096;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=4xkAlUaGSnm/5CyQJDbUGTE3ltA70WSJ2qsT+bzFgZQ=;
+	b=EIMzvf/mhsJeCqKBbN96j7r2snkfEP+GbVbizDaHr0HgycX/Wi22TihNW2T0ycs1eIzJ
+	 eHWdNA0SHTcx3tjUVhYhbmhzWGW28//VPszPT2llGfHFPTJoz+Q7crqwvzJlAXStG/DV1
+	 pzvfyQGOEahE6f8n9M8QoBgEXm38EPergvYcJSOWE83KciyFftsTBU0aJAB74XwfkDYGT
+	 6+8oJKBCCWUEQANrweOycx/YGCxgilU7xTk7ByYGVFhxoDDAmnxOovOfvRsAcFfVbEQ3w
+	 +gS0msKuhM+0L7q5Rk9LykFtCVLSuZU8mBcET7pSVhyrtiThNgatWU/Fy2ih+Gc8IEg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dIB2Yomh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BDixnfyo;
+	arc=fail smtp.remote-ip=192.198.163.19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC350606A31D
-	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 21:19:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC350606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739D9606A322
+	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 22:08:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 739D9606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dIB2Yomh
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91c5e31bea9so18350716d6.1
-        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 14:19:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793395142; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GDzXR+62BKD/2rwi5mfHRgpu77fiWA5vI6ukw99UURI3lUHFbtqqhXDjpILti3CoMw
-         dNiLAIfIYMisTJWIYz5Cr+tPe1gNUHlkGyM3xtB36w7ZS0oY+q2GIuXcK9/O89qq2+C2
-         tyRrBb9WuPzr1tBtlzYz+EexqFhilWtyAtsyT6eQLDUtmXasH3imIowrcRTPt1aZyPZ0
-         I/S36oaDSAvsDXZ2g616Fda/1JBrOrkW4x1KE/vyES5iUxIGSxWkXEDCAj5voz3xnoRQ
-         nAEXLGA3jOQALqImFEyjzhREPDhEUQCyHMKogetLbhuEaTUtLaufhNdmRG4CkPp4vUE6
-         WZMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=HU3pvitpwZLUJMJVILFp+Zu6v1bdImGs94yE/HOyndg=;
-        fh=HE+/4/3XYZs5GrpTl/knbUGf3YYaJSA1pqzjuYnAdOw=;
-        b=WTz9Hq731ghYLEoAzsm2kxUHQIelR7fw/ODLMhV1D3YpToiyDbJG53vUEClsWxEX6o
-         GBKC7Es8X6/ibzqDse3mg302mUyuTdDekU6ju5wZGgQJx4cvzB/CyzmqyWPnY9BtKHIm
-         Y3UKzK8n2V7lGdoJ9Q82DW3ngFymuwub4vUsyiG+e3qZJf9d+XG6kstgUtfl2slEe6w9
-         xUuRzr7uu0TlyrDK0OuufYUB6gP/HyUP6bMQfMlINIFO1eC5k/+fDwoKGKGzeHxOssm4
-         lTSmuvRdYaba7DjS0UGVSPZt8RiBO7en8hQhaUTP+eJsKtw6eJQRckXfPyaPKApUjdQ/
-         NNPA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793395142; x=1793999942; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HU3pvitpwZLUJMJVILFp+Zu6v1bdImGs94yE/HOyndg=;
-        b=dIB2YomhttqFpyro1ApK4LTiU968266c5ZO4LOm/iRURcPtEckqyO4+blAdV9acpMW
-         JZ92DvWKbO1BNZjpTb4O3aNi2knj6vKNYHh2FJYP/mTtMWGZcp1G47efjR6iXjVMbUTn
-         ZWbEC3uiljE7a6U0YFeBft610grI94+ZQSqV2KDy9zu7IaQXQVPhKIJDfJJjsqIOezLS
-         1cnGlzxUqbQD4gO5rhKNFFCNdIYQSeAoFfDarxO+dJgWRYvKWE9Tmt1/tEmFFsNVl4Ss
-         2Lj4ykNzZQeu+zb2liSdeMYs3juBlhn14Jx0pvPnGLQ38i4vX4Ulz7hrdFIUnHOVDe0w
-         qP5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793395142; x=1793999942;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HU3pvitpwZLUJMJVILFp+Zu6v1bdImGs94yE/HOyndg=;
-        b=nRuecMR/17BXB8cqD2L8zzNKGJdCwvl4xsHYe/RiZU9oB0Fz6L+tQA+gnE586hXMSP
-         0+OvgeW+ASU4y6oaySusBuEvbFCHIjdJziRZrLK4VYStbjn9+/jE8R2GR0qHDiRD/g9Z
-         689bFkFSemCPbp9HMEgmqnnn+8ZTE4Gp1WSkevDURND0l41avMkos+K4nLvWx1h1IOfd
-         tl0lvtLQXX2IJToYTPtc4um7vQ6A5gPiDz05TI2JVcKseVj/UfjRJP1HGVI5FWyMNJqn
-         Of85eusAW8YfbzhCfdvTSy2Wpr9DKsEyeUQF1dlUCjiTauaCgfeeb/hWwaedjeWBAi/L
-         QnqA==
-X-Forwarded-Encrypted: i=1; AKwUvBzll2mZhz2c87D30ypWtTXkUMPCGV8UbYFuOYTUU8zwuZR65MUXMnKkQsme1sxlPltBwlJSe3JYLxmq@lists.linux.dev
-X-Gm-Message-State: AFq9FYKhJkToNwRA9KnsPrwLnCAybQhGheJzzxJwdnIQ05gh0xeGjV3t
-	Yvb3GGb1ZN2xWGPtwjjqQp6UFrA+Eo3Wn1B9kWS6Ry6E19Ms1e/t8NCvZ7ZqWah19z8jwg1sYrx
-	R1ozm3NpeizgJiS02D8lDJQa0U+0YBSV0xeTm0EMi
-X-Gm-Gg: AYBFou3NnrJjW2cjBvuUPgKtNXD8c3duJslZdePCFUvUo1uLm8X72dq3vzYgWlXPRDR
-	fG2lRPikd8ZrzdiUgpzqbNEQCqQbJ8aYDAp/5FFSC05z7b5JZBJVIYlsTdmaE6A9j9YY1uNxQeu
-	P7Jls+gYJ1Nft33GHTuCJ4R3BvV2oUxwqG91q1BkwmFvIS0rIBuRwRuqs355kuUm3Y561wf1Vin
-	t5C4iKaZ0GJ5e1tzOrPDK9eGbGrT1L6vMHrxiSbStspaXasWvnHmYQZfETlq2Whx9lFL/lnWGA8
-	O/4PsMvhs/MhgtgUa8WMBvP5KyiJto63FFS3ETong589mR3lTl6TZIheaxCTNsBxwu+Xth9f+sn
-	oMX6la6F8JKAl7P5u+Qqg8YJeFlNH+/Wc6FUs2vdrOTHV3TdWv3hVMLYX/5tko/+g+ZiqidsG4K
-	6S0CMk2NJe7ShdrfCrgn1qgw==
-X-Received: by 2002:a05:6214:240a:b0:91c:450d:8f34 with SMTP id
- 6a1803df08f44-91ca4bce34emr58846786d6.46.1793395141110; Fri, 30 Oct 2026
- 14:19:01 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 30 Oct 2026 14:19:00 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgEh3E7NBc5_3Wq66Fss-mAYT6+4FWP5+=Co6+OVfVnQQQ@mail.gmail.com>
-References: <20261017073149.1303738-1-aneesh.kumar@kernel.org>
- <20261017073149.1303738-3-aneesh.kumar@kernel.org> <CAEvNRgEh3E7NBc5_3Wq66Fss-mAYT6+4FWP5+=Co6+OVfVnQQQ@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BDixnfyo
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793398096; x=1824934096;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=HH4/V/2eMXM+7fzfHVcualgICbdzkUa1dj7m5DIMjGU=;
+  b=BDixnfyoSskqhHUGqZ1A8Ec87of6PaE0Yzi0O7LZXGOS1dPNCekkjefB
+   1ZfaokEt3WScg1fZpcBrWXVaaUjViUwSisdDGPFUASQC7xtysug811OV9
+   Gh8zOv9AtQBpV+gZVHYd91Mdic8Cux//f+f39CQqYLi/pZma5lpwQqiDs
+   VdXKfRzLF0v0SF51mpiQnX+NR2YQl4IFWaPGht0woomjIwNcPWHCq0Zdv
+   VaM12t+qeFC3xxYLfCWdFGhDspOwCmfP1tRnFYLPcB5NEVqIXGylXWdWl
+   fU4LLsD/hvLa/q1jdMaZh7zMXz9irCrhUEiN2+9Uae6os04V8EFKxsXrZ
+   w==;
+X-CSE-ConnectionGUID: mCt+pmtpR/Ww3KdOm43pBQ==
+X-CSE-MsgGUID: 5UPGfMnbQO+qQK5NsjCj4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2273880"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="2273880"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 15:08:15 -0700
+X-CSE-ConnectionGUID: c8F0YIlkTvelfFwqzlp09w==
+X-CSE-MsgGUID: GX/dn1pAQcObbHaAxvha3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="7365449"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa013.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 15:08:14 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 30 Oct 2026 15:08:14 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Fri, 30 Oct 2026 15:08:14 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.30) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 30 Oct 2026 15:08:14 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hKUbisRWOquQctI42D6TuqwssImm9xikiBMgbkRzD3sZd5ovEr5Gf34xKukf1yZu6rDyEkaN00ELLa8KDkZbPalqGRRW47KgXM3HX6huyj7XNOs2IjUMgSKhaxIbDppPjJosPs+7RPadILrpgXq1RXYfTpb5wdB6dHLYywLxfz1bI6L+R3eL1PHfMeBQf9T+3JIvzdcw6KvZEbcrn6dUSF5oIYUj+tbbXgxE37Jqx6xYYr6puw828gcEPfL9HMJEGboIAKtYoSqoRUkNXVdx+y2dwydQc7/jmTsvkRXcnplMkDxdHdcAqrPk8fQTVpPAjJfTGwdTJPBaWEeFMwpgUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4xkAlUaGSnm/5CyQJDbUGTE3ltA70WSJ2qsT+bzFgZQ=;
+ b=hx44q1ytMaiZvp2DmWvVM6h7oGL/OJEfB/FXmBzqvDNx2P0ALoeAAhkAxffw+IUZ04vvesv4k0givpEJkXsZmo6iyJqH1DLrSM/7f20Oftltq/zmiOw7Ae95KO1N61SSfsQJa70FlzebRf+ZoofL8n3tCk+1uoYOziF/qnyJNbGJGyz1zIa1jwBmQOqVQ6SrMRVda9hjKw635RyKqSqP99o2Ku+w5VrBYoWiBgCbxpk5Nte7tWdAQkKPPX2d2MGEY4cDmdgU2iXq8nYRpmo1O+kbEaIVvr+Ovmsy4nA3TOTCjdy3Ott6K7nj+RwRf6H6wDl2PZlxLJiHKBfzybq0Lg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20)
+ by PH5PR11MB880693.namprd11.prod.outlook.com (2603:10b6:510:501::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
+ 2026 22:08:13 +0000
+Received: from SJ2PR11MB8370.namprd11.prod.outlook.com
+ ([fe80::b6cf:ce77:3cdf:7cc]) by SJ2PR11MB8370.namprd11.prod.outlook.com
+ ([fe80::b6cf:ce77:3cdf:7cc%6]) with mapi id 15.21.0546.016; Fri, 30 Oct 2026
+ 22:08:12 +0000
+Message-ID: <3ebc7028-c559-4add-800a-614b29d66ba3@intel.com>
+Date: Fri, 30 Oct 2026 15:08:09 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
+ mode at boot
+To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
+CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+References: <cover.1793392128.git.babu.moger@amd.com>
+ <c1e5ef23e83ea663e9aa969e301fac20723a988a.1793392128.git.babu.moger@amd.com>
+Content-Language: en-US
+From: Reinette Chatre <reinette.chatre@intel.com>
+In-Reply-To: <c1e5ef23e83ea663e9aa969e301fac20723a988a.1793392128.git.babu.moger@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4P222CA0017.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:303:114::22) To SJ2PR11MB8370.namprd11.prod.outlook.com
+ (2603:10b6:a03:540::20)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -110,162 +139,140 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Date: Fri, 30 Oct 2026 14:19:00 -0700
-X-Gm-Features: AclHuK8aNtmB7JK_qHjJeH9V34MC2DCp5vnYn4fAUI82UUtxS3pHz4MfNJXrVPA
-Message-ID: <CAEvNRgFEKqVZcNYCL0LpB6BTyBFe+ot1x1nFfEqOrSTsu134PQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/13] KVM: guest_memfd: Support private/shared
- conversion of device memory
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev
-Cc: Alex Williamson <alex@shazbot.org>, David Woodhouse <dwmw2@infradead.org>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, Will Deacon <will@kernel.org>, 
-	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Steven Price <steven.price@arm.com>, Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR11MB8370:EE_|PH5PR11MB880693:EE_
+X-MS-Office365-Filtering-Correlation-Id: dccf91c8-b0e8-42f2-255b-08df36d24a17
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|11063799006|4143699003|56012099006|261009223027099003|261026121527099003|261028144727099003|261021121427099003|261022075727099003|261022113327099003|10067099003|261026140227099003|261022105027099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info: dycCBpE99BcrZIMtvki+EwBeSbNMuohoKouqjg5Bmfko7VglhKygjmCC8n2lgEAJBGcPGDLHQDiRAe72P9uofyKdSQalN/uK/jDxuVHKgrtnqhnyp3sAravCEdLrlHQYDdF6SuEVMmsqeP3Sv21BEBcHyElxCV+CDlaswv5BoGpJ5xo+Ac7aG2s1HYxFoC4J8LOwUoN+X0WnmpqE8NBnLl4jve1z2it297rLPwYdThvaznE9oeUysUxdb0QfdyxW9f65//GkloZbVTaNivyIls1b/7AP5mpOx77ZEaAoRjBa42oTHJVLXP30QYlTsxPAhaIOYvX9F28CXZdz5Z5HfANkzwqYRxWpYEeMF1qD+toz6+JYY83XdUytIuVb49tFL2U4rNntCLxokIzj4cwI1/cXDpWIsl78oPt+/waxWffqYwuA5p/2A7MKygakewfIG+83ANfvSTbis+PbfW6/ZDDojnxQMJ7gxPRVws4O4VsUZ2dp7ZkHI+cMImWWJVQc5Vn2IMvqjaJPdUyhpufswbTxzVsqE6k9URPdbW6jc0KybAdlP7VsCoumjS1Pp6zlpG9pnWa1gWZDJ2OJ//t7Z/E/PP38le2tEWKckE/OG8+Cz9Z+S58Yf9PuUEOUAMCR
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(11063799006)(4143699003)(56012099006)(261009223027099003)(261026121527099003)(261028144727099003)(261021121427099003)(261022075727099003)(261022113327099003)(10067099003)(261026140227099003)(261022105027099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ajFramRrdHBuOUlIRWFMRTFQU3VobkNxUXdSQXdTMllLQUJiTjAvWnJ0Ri82?=
+ =?utf-8?B?OWVZMWYraHhxZ0Q1WGZPNUg0Um50elpLNlVKczh1Q2RwZTFyeTVJS3hzaS80?=
+ =?utf-8?B?bCtrQ3A5QmVIMUtOTnpOMklCNGkzVlcrOGtNSEcySzNjbkxsZVRJQjdXTkFh?=
+ =?utf-8?B?c2pjS2RmMjEyY1JnaXJjZDNnQlhYQVI2U1VXTC9ML3BUS3djblkzbVFkS3pa?=
+ =?utf-8?B?ekJlZDlML2dDS0JGNzJDOGR4NFpONHlxZzZCeHNaRzFUb3ZuZWNwbGRvMnlX?=
+ =?utf-8?B?S1p6WC9LU2FhUkhjVVJmV2N3OXc3ZlNSS2dmbGR3czBkSlRwNDJrNkFQdW9k?=
+ =?utf-8?B?Nll3UnI0ZmlQNElnWHYva3B6OVFXRDVZUk5ad3NlNHM4UnpmVlh3QXdablFJ?=
+ =?utf-8?B?QkUyUXoydkN5ZlhlQzV5bnNGTjlwNHhlVnREaVBYa0F2TTIrWi9WZnQxSkFD?=
+ =?utf-8?B?TmlHTklpaUFWSUxpbnRCdURUVHlibkRnL2hWVjdsWFpBNDQ3cTdYaVQzNXFF?=
+ =?utf-8?B?eFRRbk5BakxyUmxITC9tVUtLQkxxc3dJN2p6eEZiR2hIZUFJT3A0ZmxUVEx2?=
+ =?utf-8?B?WEhOV0QzSWpYZDZVK2p0TGVLZEdiY0w2VlRxRG1WQmRhWFlkcnEyNmRjU0pH?=
+ =?utf-8?B?SHBENVI3QXlZem5BZ0NmSWVvL0RzNGJTeG45VXhBWjRvYlpUeFh1dFI1NFdz?=
+ =?utf-8?B?L2Z1b3o0WHlhZ0ZHN2NFOGRqSk1tN2J5eUFDTTZ0YW9BelRPRlhnTGFZWDEz?=
+ =?utf-8?B?VDJEV3VpU2oxZFo3S09FOGhPS1FrZ3RuZ2g3QzRkS2NxcW9pWkw3RlZmQWtz?=
+ =?utf-8?B?dGFzekUycmUrZWZxUWdINEc0MlpnUi9uSTRSWWhrcUw3QnJ4dUpYUVQwN2ZN?=
+ =?utf-8?B?VjRDZnlTak5lZGtZaXVZaVlUaGZnNENwcHMvVlJZQnV6VmVKLzNlU3dkVGhM?=
+ =?utf-8?B?S1Z5ODU1ZE9XNlJVSEhCMlBtMkpIY0Y5TXZQZGdYaDFubVNWR2RLYm9pZVZ4?=
+ =?utf-8?B?VHlMRU9DQ3cxOE5JZkRhbVd6dnZLRi9jSWJJVjdGWmtWd2tleWVQaEtYcnoy?=
+ =?utf-8?B?ZU9JZFFCV3g5YzFobkRTVThndXM0K1ZtbVBmdk5xL3JtRGlHMlErakQ2bkIx?=
+ =?utf-8?B?aEhoYWVhZ1hzS25KYnV0YmFibElEVTZlMis3SU1zbDZaeXE4Y0FuOGtRc2c1?=
+ =?utf-8?B?UjJIRXkzMENBMVJBQkxWcmNleWlHbG5KVkk3bnNaTU9OenlGc1J3WGR3VmZL?=
+ =?utf-8?B?bWRweHduaUkvYWl5cnZDWXBnQjBCbFFRSlF4RGZzQ2M4OUZwZDl1QjBrZWlo?=
+ =?utf-8?B?Q1BvbU5kNU5QcXk3WkYrSElyQy9xSnltSGhPN3VpSzhkL2lnVDFrcVU5TFdu?=
+ =?utf-8?B?OUptZjNBWWFsUWpsYjlvemRKUnd0MHBVQnlIcEJma0hNaFA4OUxYZklPU3Fs?=
+ =?utf-8?B?Yit1WDdHTGJ3T01rRFFtV0RnSUFscWpsMklCdHNkQTBDZnY5dCtxQzk2Yzlq?=
+ =?utf-8?B?bi9pZlB6WVd1VnY4ZXZ3NTRyN0JsanhLK0IxclFWMUJjVndSbXlVdzB4aStY?=
+ =?utf-8?B?L3NNdmhkUmFkVUtPMlAwV3JmcVI5NEw3TmpjVkowbStnK25GQ2lvZis3alN4?=
+ =?utf-8?B?Y1BjR0orSFRxOEp1V3Nkd3U2S05YKzlqSmRRQmRJR1d6bFdlQjdFQ0QxYjZs?=
+ =?utf-8?B?N0lzVWRDWmZ0YnFCY3E2bUlhWDl2Vy8wODhGTG84VGpHeDJaR1JHRVZaeUw2?=
+ =?utf-8?B?YVVKMlBXR3BuUnVqVlhKa1VkQkd0b280L3V4UTFEeno3cnRseTFaY2ZrZHRW?=
+ =?utf-8?B?NzZtdkd6MEhOMk0vVDJwT0QxZyt1dVhaTk5YL0J5NmdPL3Q4OGpoTlNJTm1J?=
+ =?utf-8?B?UFNvUWZoaWRPRzdjTVVDSEUydi9wSDE5MjRsNFhmeTZvV2t2S20xeXdZdjVV?=
+ =?utf-8?B?ZmNHbzRNRHl5aDZ4R2hUVHNtWFhQTElwdkx5WEFOLzFETGlMTUFXK0pJTytz?=
+ =?utf-8?B?NXh0bWpXUlRDN2FVc0VBZW13MHlwMExkbHJ0WC9PWitQK2xTVk00ZStBeFlR?=
+ =?utf-8?B?WFN6cXdHRUI4a1dIVngyZ05nRE5PdmtKNnBrTnVTeHI4blNCVitpd2pVemM0?=
+ =?utf-8?B?cW56aG1KNzAxUlVTRUhOclRINGY5TTVLc3A5SGtiajQwWWJCQ0Y1T3lRVU9a?=
+ =?utf-8?B?cXZqbHZwSmxPYmszdWIxTGJTcldWMFNZMDJkMlRpNW9Kb09qVDA4dEVhLzNr?=
+ =?utf-8?B?QlVHR0RqRGNONVRCMWpKUzB4UENiVTZIVkJwTHNKSDJxaE1DY0JsT3U5OWpG?=
+ =?utf-8?B?TitSRnRFMis0c0lSOTd0SzVneTl2RUlsNHU5a2Y1bmVtWEZvTHZPTE1DcDZ6?=
+ =?utf-8?Q?NpcSPafeLpvoNfos=3D?=
+X-Exchange-RoutingPolicyChecked: upghg7zm2OIU3PIYQ8NKWuZ2luXCCQO1DbvrzPR1UkAyk4Fp1yCLcNLgSoQSlwTeEl7oEmW0xJT34dTPc2ZrvszcZXFQQUonmdgRocYlNAqI4TYwUM9hPof9vyWOtcwOhcy0fklAx9JO7N9XySDnnal80qFl3PLuvgNHNXiuI05+FcGpo88jLJjHVDQgAKmn2bW/svqgkAz88HCKcUnJkkw3tswln398PColvntBq0H7LcO0C1c36WTSPDumyDA6IXoELqqhoLYzS9uvS4dSq1For4q+TSnVankSdg+sR5yxT6XviLlRvL5CLD/gH6hJ/lyuyDuaaPlZBT7gVwSXBA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: dccf91c8-b0e8-42f2-255b-08df36d24a17
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8370.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 22:08:12.5722
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ER4ZTqAWCUdWCsczdm8kBKmLn6V1p7UpC61ViQSkCkjVsh8ZDi9FDjHyEoiIq2EO6tiercdEmP/0Hdl3qFQKJjYFNvvzSfmBAG3SgLHpbHA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH5PR11MB880693
+X-OriginatorOrg: intel.com
 
-Ackerley Tng <ackerleytng@google.com> writes:
+Hi Babu,
 
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
->
->>
->> [...snip...]
->>
->> +static int kvm_gmem_device_convert(struct inode *inode, pgoff_t start,
->> +		pgoff_t nr_pages, const struct guest_memfd_device_request *req,
->> +		const struct kvm_memory_slot *slot)
->> +{
->> +	struct gmem_inode *gi = GMEM_I(inode);
->> +	u64 attrs = req ? KVM_MEMORY_ATTRIBUTE_PRIVATE : 0;
->> +	bool prepared = false;
->> +	int ret;
->> +
->> +	MA_STATE(mas, &gi->attributes, start, start + nr_pages - 1);
->> +
->> +	filemap_invalidate_lock(inode->i_mapping);
->> +	if (__kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs)) {
->> +		ret = 0;
->> +		goto out;
->> +	}
->> +
->> +	if (req && !__kvm_gmem_range_has_attributes(inode, start, nr_pages, 0)) {
->> +		ret = -EEXIST;
->> +		goto out;
->> +	}
->> +
->> +	ret = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
->> +	if (ret)
->> +		goto out;
->> +
->> +	kvm_gmem_invalidate_start(inode, start, start + nr_pages, KVM_FILTER_SHARED);
->> +	if (req && READ_ONCE(gi->device.kvm->vm_dead))
->> +		ret = -EIO;
->> +	else
->> +		ret = gi->provider_ops->prepare_conversion(gi->provider, req);
->> +	if (!ret) {
->> +		prepared = true;
->> +		if (req)
->> +			ret = kvm_gmem_device_make_private(inode, slot, req, nr_pages);
->
-> Is there a way to avoid making private from within the conversion flow?
->
-> kvm_gmem_device_map() below already does it as part of vcpu_run.
->
-> If we do the above, we'd be aligned with regular conversions, where
-> to-shared conversions eagerly update arch state (make_shared) but
-> to-private notifications to the firmware are done lazily.
->
+On 10/30/26 1:28 PM, Babu Moger wrote:
+> The mbm_event mode assigns hardware MBM counters to RMID/event pairs.
+> It is intended for deployments that need to manage counter assignment
+> on platforms where the number of monitoring groups exceeds the available
+> hardware counters. Hardware counters are scarce on these platforms, so
+> mbm_event mode suits workflows that monitor a subset of groups at a time
+> and rotate assignments as needed.
+> 
+> x86 resctrl enables the mbm_event mode by default on hardware that supports
+> it. This breaks the pqos tool [1], which assumes the historical default
+> mode. It creates 16 or more monitoring groups and uses two counters per
+> group. On a platform with 32 counters per domain, that exhausts the
+> mbm_event counters pool, causing additional groups to read "Unassigned".
+> pqos interprets a non-numeric event read as zero bandwidth and reports 0
+> MB/s for those groups:
+> 
+>   $ sudo pqos -m all:0-4
+>   CORE         IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
+>      0        0.69         16k       192.0         0.0         0.0
+>      1        0.40          3k         0.0         0.0         0.0
+>      2        0.44          1k        64.0         0.0         0.0
+>      3        0.39          1k        64.0         0.0         0.0
+>      4        0.43          1k         0.0         0.0         0.0
+> 
+> Leave mbm_assign_mode in default mode during initialization. Default mode
+> uses one counter per monitoring group. On existing AMD platforms, the
+> default active counters pool is 64 and may be larger on newer hardware.
+> The active counters pool is the number of counters that the hardware can
+> actively track in default mode.
+> 
+> Deployments within the active counters pool receive accurate bandwidth
+> measurements in the default mode. Users can create more monitoring groups
+> (for example, 4096 on current hardware) than there are active counters in
+> the pool. Beyond that pool, readings may be misleading or report as
+> "Unavailable", with no user-visible indication.
+> 
+> Default mode is still limited once the number of monitoring groups exceeds
+> that active counters pool. After hardware re-allocates a counter, a read
+> may return "Unavailable". pqos still treats "Unavailable" as zero.
+> Successive reads can be a count, "Unavailable", then another count. pqos
+> treats those jumps as wraparound and can report an inconsistent rate:
+> 
+>   $ sudo pqos -m all:0-4
+>   CORE     IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
+>   0        0.76         60k        32.0         0.0         0.0
+>   1        0.45          1k        32.0         0.0         0.0
+>   2        1.57        107k        64.0         0.0 17592186044184.9
+>   3        1.62        276k      4928.0         3.2         0.5
+> 
+> Users that need stable measurements beyond the active counters pool should
+> use mbm_event mode and rotate assignments as needed. Enable it with:
+> 
+>   # echo mbm_event > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+> 
+> Fixes: 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
+> Closes: https://github.com/intel/intel-cmt-cat/issues/311
+> Signed-off-by: Babu Moger <babu.moger@amd.com>
+> Cc: stable@vger.kernel.org
+> Link: https://github.com/intel/intel-cmt-cat # [1]
+> ---
 
-I was a bit confused above. IIUC to handle
-RMI_EXIT_VDEV_VALIDATE_MAPPING, the conversion is not done from outside
-the kernel, instead it is done in the vcpu_run completion hook.
+To help future readers understand how we landed on this I think it may be useful
+to add a link to the decision that resulted in this fix. For example: 
 
-Can we make the flow that userspace is required to do the conversion
-request from userspace after an exit due to
-RMI_EXIT_VDEV_VALIDATE_MAPPING, and then just do the delegate + map +
-validate in the vcpu_run completion hook?
+	...
+	Leave mbm_assign_mode in default mode during initialization as decided in [2].
+	...
+	Link: https://lore.kernel.org/20260804191608.GDanI6eK2Q07w6pNcb@fat_crate.local # [2]
 
+| Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 
-The rest are a little outside the guest_memfd field, but I'll make the
-suggestion anyway.
+Reinette
 
-It looks like delegate and map don't need the vcpu context, only
-validate does, so validate has to be done in the vcpu_run completion
-hook.
-
-Delegate needs the host physical addresses, so we'd need to translate
-the IPAs to PAs, could that be a VM ioctl? It could look up the memslots
-and translate IPA to PA?
-
-RMI_RTT_DEV_MAP also doesn't need the vcpu context, IIUC it does need
-the VM context so it could be a VM ioctl too? If it looks up the
-memslot, it'll also find the guest_memfd, where it can find the device
-information.
-
-I'm just thinking that the vcpu_run completion context is doing too
-much, and there are so many possible errors that could be better
-communicated to userspace if they're separate ioctls.
-
-Or perhaps at least delegate + map could be one required ioctl call by
-userspace before doing vcpu_run to continue after a
-RMI_EXIT_VDEV_VALIDATE_MAPPING exit.
-
->> +		else
->> +			ret = kvm_gmem_device_make_shared(inode, start, start + nr_pages);
->> +	}
->> +	if (!ret) {
->> +		mas_store_prealloc(&mas, xa_mk_value(attrs));
->> +		kvm_gmem_device_update_private(gi);
->> +	} else {
->> +		mas_destroy(&mas);
->> +	}
->> +
->> +	kvm_gmem_invalidate_end(inode, start, start + nr_pages);
->> +	if (prepared)
->> +		gi->provider_ops->finish_conversion(gi->provider, req);
->> +out:
->> +	filemap_invalidate_unlock(inode->i_mapping);
->> +	return ret;
->> +}
->> +
->> +int kvm_gmem_device_map(struct kvm *kvm, u64 gpa, u64 size, u64 pa, u64 vdev_id)
->> +{
->> +	struct guest_memfd_device_request req = { gpa, pa, vdev_id };
->> +	struct kvm_memory_slot *slot;
->> +	gfn_t gfn = gpa >> PAGE_SHIFT;
->> +	struct file *file;
->> +	int ret;
->> +
->> +	if (!size)
->> +		return -EINVAL;
->> +
->> +	if (!PAGE_ALIGNED(gpa | size | pa))
->> +		return -EINVAL;
->> +
->> +	/* Caller holds SRCU across the pending architecture request. */
->> +	slot = gfn_to_memslot(kvm, gfn);
->> +	if (!slot || (slot->flags & KVM_MEMSLOT_INVALID))
->> +		return -EINVAL;
->> +
->> +	if (!(slot->flags & KVM_MEMSLOT_GMEM_DEVICE))
->> +		return -EINVAL;
->> +
->> +	if ((size >> PAGE_SHIFT) > slot->npages - (gfn - slot->base_gfn))
->> +		return -EINVAL;
->> +
->> +	file = kvm_gmem_get_file(slot);
->> +	if (!file)
->> +		return -ENOENT;
->> +	ret = kvm_gmem_device_convert(file_inode(file),
->> +				      kvm_gmem_get_index(slot, gfn),
->> +				      size >> PAGE_SHIFT, &req, slot);
->> +	fput(file);
->> +	return ret;
->> +}
->> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_device_map);
->> +
->>
->> [...snip...]
->>
