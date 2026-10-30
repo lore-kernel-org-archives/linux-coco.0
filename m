@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793369058;
-	b=0cFaAfpWMuqrhj47FOO+YatJ0AgXHTSQFu0S31tL/n9HhFVTTytiMRDL8U+kczAlnd+b
-	 NpuHzhB7QVBfaZlzhjDMelURK1hfYd4yFz0ofn4rzff23DjZjHWeuZxuL/10Biw+FXQ6G
-	 g8uXD0OF0YDEe3nC7L6Jz3/lrWY0QQRgrTlDwWfQN0HBnIGJ14CT9U8AiJKHiFu4sS3HG
-	 j3Is4nyd2fvEwMhARyuHgvijrPwpQzpg7MWzDZ31GAPykckJgrl2u9KfA3DY2bXibgBAi
-	 S4jTCOOqJBwqc/sR1guMPbTPPOMpu1MgIPMjTTOPJKumrsXQ6PqeGBldp8e/N+5ydwA==
+	t=1793369339;
+	b=sNGiDU9E+iNqx2A/x5rKf5EJj8FZcNAvqQzM2cjLDTMz9HTVQf+OftagKmOl9Bf34lnP
+	 CtKWvU5W+SKLa8gzLz6wsW+ocKXANbeHBgXhoFOoD8MRdBtRSzrkWi0eBabDEzUFyHq2b
+	 kO1Igug6HIqGT25PqtlkzABaKeTE1Ohv11S4eXkfOZcFXqk+OSUDXGlbkNvhy7ZCoMrsW
+	 F8xUXVDLyNfnsXT6+jQEyksX/UlAb3OK3bFCPNX394wAxeSerWWTzzmlAP3l5aMTAancU
+	 1bu+bWq4O6Fr6FVd1ZKBAy5hpeHs8iBNvFkef6GrV37hYFlzpBGN+DNXkrYip0eI3oA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793369058;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793369339;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=LSIZZe//120Y6NC9XSNUIlM6NMk9sTlvtQB3HWbcsOY=;
-	b=XBNeJVVTtocbS2XzMgRkhr0p3+lpb7H5uZ29nl5//O4wW18gJdX6sTmLqr1sPqzgr0oC
-	 LburF9Dw/KSIwf5St3by/RZDiuLohnyJ5naBam9Ip7PmvvZpI9pl6Vp58Wnvli+2CIllK
-	 LtjZLHPuoLTZ++6/qzb95UKuWHO6qu8DoQ9U3Y/h3DSCG9wNPuil+wCkR1lct3ewb57ck
-	 VG3zWz4Rc/R04tvskkoX/tPD8CrABmB0uq8sUOQBRelkQfiM7QH1ivcSxWbZgbVC9CWdQ
-	 lpWi6KEE0gYh1MTlo+KwfcgRs36ttWulcgXhvoOGcvyDmU2lIHPeboWoh3bcI5ED7wQ==
+	bh=zCF/A13vIjO+9DR3ZIgrg0bWRmU50vlNeLEYnFpFx/0=;
+	b=0xTvzh5eFnXlmzUHGKkSg4wACrbgZkTMFf9AvP3dK6gs2Cmtg+5ztnKlufj/ccVqXlr6
+	 uzeEMH575+TzTWxvcpfgX/OHDUIm/buqttoWAfWYTgBS+Oh5jX1hsY8THz6F2L0tLZ7jM
+	 sPrkxfyiK2iUbhWq7Gm7rUzL5Rd54guzH5TitOF0cI5G1VXvSsNU2CsyIwtwokQm79L48
+	 Q3cgjpB3BLC50EKW1e9GXTr6qznUtL7QeAQWUMnTs/rTkSMau71Qoxecrxui04626qEkE
+	 jf/UQ3puSlAl5bHkXjAad1QXi3GnM0Nk0M3q76Bjhcez1mJqSHQYlSvzcTq/zcbG1HA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=HIMqx8gI;
-	arc=none smtp.remote-ip=209.85.167.53
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=yTzkdy9e;
+	arc=none smtp.remote-ip=209.85.208.177
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331FD606A31D
-	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 14:04:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 331FD606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FE5606A31A
+	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 14:08:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41FE5606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=HIMqx8gI
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5ba3b1199f6so829119e87.3
-        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 07:04:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=yTzkdy9e
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3ab3dd9667dso6482291fa.1
+        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 07:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793369055; x=1793973855; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1793369337; x=1793974137; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=LSIZZe//120Y6NC9XSNUIlM6NMk9sTlvtQB3HWbcsOY=;
-        b=HIMqx8gIoFZBSwwRqIYgolAuYqstkwn7nWmeLP0qy3sMD8WW7gy9VtETYm7Dpp0Li3
-         KZQV0G7KehFx4D4vVNue9rmsrYiN25DGJsgtWzTaj+B4wL5fXq4Yi4DAjhfKTMJjIsBi
-         hcisWMydg5ciEY6uOrlGh1wz9nWkDN42E0UYWur98ASlw7dfgxnoIg5f12pfpXkx88P8
-         CmsMqDewJwcDnRkkpDFuCccDsDJRx+BdprXgl/QQQ9M/K930WXzJE+i5znuBfx1/nVzV
-         IiRk0pvtWEfb8PoCROFKs0HOt4vW740iIm14D7I5V/uBBs5OdZuD6BNRVJ1JhUKQq9RA
-         VRbA==
+        bh=zCF/A13vIjO+9DR3ZIgrg0bWRmU50vlNeLEYnFpFx/0=;
+        b=yTzkdy9eitMqOy2kzOfvIRsqaOJQ2G9d2+Bf7ACC+eL7OAdgZcQJyd7+JxuCrucmTm
+         5PXQglR3d92hFN3lC+Pw3gKxkdkWwpRJJdiBk+qsAXVCKA9rpvPeRqzNvWE0kO8cefxI
+         ji5HCTWgQsKPiHaRyfuda0QtbEVNjgWlgq11FuDqNml4abtvFIAzlTl2NtOC0U6jD14Q
+         2fDL+x9xPAAwsTQjMgvfhTg8h09jStOQRZwsvMo5dBRS80fsQZC5U4691YFlG6ZWh1Gs
+         aq8ICIymXmJw6AStiKYZSTMYM/lNlJVpdJ9ZZNqLfU8Y6fSTBhD3eDUCeRkfFRIL5WvC
+         kaFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793369055; x=1793973855;
+        d=1e100.net; s=20260707; t=1793369337; x=1793974137;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LSIZZe//120Y6NC9XSNUIlM6NMk9sTlvtQB3HWbcsOY=;
-        b=VfGKCC1pKdRy4Tjf8kF7YWlxt/RkqHRXf4VKxSkp0jY5ZpQa2qtN6gyGSNSewRapLw
-         g4152n+RtZ7/a6yLc6ZqppElaYX6c6GI0uF+bghA0oMxsSbHNR6j0K2CVToje6vwZMtF
-         ceMjNyM5Xhk6nL/EJfFwt1Oj23n9byb6fx0niyqozl/3D07Uf+G86oZAU+sZxg410ztw
-         5jTGtoRu7pkYfEjeB8kJwhfmM6YsbtN3DvKnE3gseFkfWhrqYO163Y/sn7Pm3bdhkJWU
-         OUzRxjLeK8QRzNc8cJi874Pt3keAzjhsDlaAbG4ga+4S/SgGvrnZCU5IeJ/spS5rz7e2
-         yGhQ==
-X-Gm-Message-State: AFq9FYJZQ42TIejKTHNOWU0GYMymKHGXXdEolstwNlgDvgDDeOy8Jnky
-	MYIAXMScNaMsAh2AwJXxqsVCoStnfTGxn+tgz+EWzD0j3NtUC7YHkAET9xriBbaKfxU=
-X-Gm-Gg: AYBFou0TbzTKZAYDZQYmxgzIlmlmRuee6k4OgTSHt9CVwb1vruWvz8f8vD/pESCnucn
-	36tUZiRI7XjWf8TgbP1Drh2Bl60W9DbvFObBSRsZcZMflyRvP61Z3bz86U5B2Kxcf7HCilsJmlZ
-	+REg31+fbcScxmRxNlR2StY5nojMg3xBhDyTEBP64ei3qIKIJYRrJONFzdXeno0kEEjhjBwOPKp
-	1X5+mirY6Q6Yubwyusvxx/yTLzVLubYbY79c56GAD1G8BqtutU4hG+5iR30JVU330XsOnhBAsI8
-	M49NUtqTCck5VMUW+7e1488Jo7gmjIyIUbylqkWCflf28rqsd5/x2dp90w79jlPGIqNm2HNn2DL
-	mjCpUE74yeJFvrcQggFRuOupY3ykp3bTizOh3+BgA7/JpHxbvsawpYVO+GvRJmfABxkhkS7xYrF
-	9glq93zTA3amLnvqfbSB9iQIBJj3xNcdJxLWHfovoV6oJS/7gZnfGl59O+TLsSfSgncmDiBzxbf
-	JrntBE7IEAXj1uyZhj+FzR9EmT1FS7At/0v78f+gEEKu6uFLmPXvPZ4ofwmf6uDhX7POAv4NzMI
-	23MXLQ8+yHRCQiCgpcP0Kvn7/j38xMDRn1KU/B/1qhZ8uDIPhgl2E+gmVaLR2g==
-X-Received: by 2002:a05:6512:3f14:b0:5be:64aa:af1 with SMTP id 2adb3069b0e04-5bfd951d51cmr751831e87.3.1793369055245;
-        Fri, 30 Oct 2026 07:04:15 -0700 (PDT)
+        bh=zCF/A13vIjO+9DR3ZIgrg0bWRmU50vlNeLEYnFpFx/0=;
+        b=xs0KeuVjeOepVPwsgKBg8EnkG4E5qeWchWYgqw4//+1MQ9UVw9WqxTsGz2D9aiW6WE
+         MGfb9/sadrjVXLgKjO3GQt1lybFVTuuRNi16kuGynM558dFq+7/Qk5tz8oZ4DPRKqPY0
+         wpfUgMcdouun6erOAy1rvd4lneRtjac4+L2tBoFPw4XJ+0vcZkOSlusD4caFAQms4CZl
+         62jeB/sszMuDRndOjgD2AI3Lp3qTTZWgGXNYrXZBIM0B4+KvR3AOs2w0Dg7z6IENPJGZ
+         MzSpqjCzGsvTITkYIQUb7jzaY8Tm+Cfw4Y8wmwCOVqJIh0sCI3/KvELn4hRSO048AV7O
+         8kFQ==
+X-Gm-Message-State: AFq9FYJQ4LFBScCQ0erFKG1X1BiNdyV6cn/FkMhtr876hnkANMakl5rf
+	FbuPevFBshiYYljAxbeCq8sF+v1nns8V6kUZU1wzNyjCN/DiqN9x0bkpYrzLbWDUbOA=
+X-Gm-Gg: AYBFou3QGRwHRyDUSgMNMJnmNptLkLKwY2hekazV459GlqfaiAOx+1y2iw4O94Y0+kE
+	Ng0aBYo/0ePv6vU22rvvHL3+kZY0mjMVTS7oXSpnvexZ2zxBp4JoOwy1vm+6hvDSgYbsl8q53V3
+	lkb7Le62mRj5bLwYB8XkKPHLBEXwzkt7Ftjl+C4oPtFGMws/UDrrRaoq9zEez6n9PT3lmgAK0KO
+	h0mG7Stj9j+izPU+jh+lQXKG/6fKpjysr4ZGHsraXCuqCGPAT6dyg3Zu1ZCG/TlvU0TWk0ndzUC
+	6IDtWt6WaWtS/Z9fodaVxynMPbDHMRHfUsS9ID3dmJvRUJsBhuvOAdQ2sLbwgQU5uStlG22yVFL
+	stImVVm3YNltcq6cjaKdxNeCGdRAZOwFHXO5w6mde6xVCZxXy68j2UyjE5doOAd46NazetvWbm/
+	h6OEvhWDUsqnYdJGE7mHYG/rniBXjp4H9gIpeXlzogEKNxq8sboveEL1KX27LEswFpmJn4BqUhd
+	MP7cYj4uKXjPn8VQfZl1M5xYLDnZiTqZJ0Z4J6J5lWK6T4PBmCC+9IlGpbQ3gXmYpPfOzWM6fWl
+	PUo8Ahiw8U+UwVWFVVYIoyum9XufGnVZatF4uVQd
+X-Received: by 2002:a05:6512:1314:b0:5bf:c27b:8e52 with SMTP id 2adb3069b0e04-5bfd9582a06mr842560e87.65.1793369337326;
+        Fri, 30 Oct 2026 07:08:57 -0700 (PDT)
 Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe072c9b4sm870e87.37.2026.10.30.07.04.13
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe0737065sm2501e87.42.2026.10.30.07.08.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 07:04:14 -0700 (PDT)
-Date: Fri, 30 Oct 2026 15:04:10 +0100
+        Fri, 30 Oct 2026 07:08:56 -0700 (PDT)
+Date: Fri, 30 Oct 2026 15:08:52 +0100
 From: Jiri Pirko <jiri@resnulli.us>
 To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 Cc: linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>, 
@@ -92,7 +92,7 @@ Cc: linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
 	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev
 Subject: Re: [RFC PATCH v1 08/11] PCI/TSM: Bind CTLV attestation to connected
  and locked contexts
-Message-ID: <auSjbga8BFsUWwOc@FV6GYCPJ69>
+Message-ID: <auSkHORl2mg_FiOf@FV6GYCPJ69>
 References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
  <20261028152618.1356860-9-aneesh.kumar@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -112,40 +112,54 @@ Wed, Oct 28, 2026 at 04:26:15PM +0100, aneesh.kumar@kernel.org wrote:
 
 [..]
 
->+int ctlv_attestation_pci_state_get_action(void *priv, struct ctlv_op_ctx *ctx,
->+		const struct ctlv_cursor *request, struct ctlv_cursor *reply)
->+{
->+	struct pci_tsm_attestation *pa = priv;
->+	struct pci_dev *pdev = pa->pdev;
->+	struct pci_tsm *tsm = pdev->tsm;
->+	bool accepted = device_cc_accepted(&pdev->dev);
->+	bool ok = !pci_attestation_reply(pa, reply);
->+
->+	if (tsm && tsm->dsm_dev == pdev) {
->+		struct pci_tsm_pf0 *pf0 = container_of(tsm, struct pci_tsm_pf0, base_tsm);
->+
->+		accepted = pf0->stream_connected;
->+	}
->+
->+	ok &= ctlv_attestation_pci_pci_connected_put(reply, tsm && tsm->dsm_dev);
->+	ok &= ctlv_attestation_pci_pci_locked_put(reply, tsm && !tsm->dsm_dev);
->+	ok &= ctlv_attestation_pci_pci_accepted_put(reply, accepted);
->+
->+	if (tsm) {
->+		ok &= ctlv_attestation_pci_pci_tsm_id_put(reply, tsm->tsm_dev->id);
->+		if (tsm->dsm_dev)
->+			ok &= ctlv_attestation_pci_pci_dsm_put(reply, pci_name(tsm->dsm_dev));
->+	}
+> 		available authentication methods for the device.
+> 
+> 		When present and the tsm/ attribute directory is present, the
+>-		authenticated attribute is an alias for the device 'connect'
+>-		state. See the 'tsm/connect' attribute for more details.
+>+		authenticated attribute reports the TSM name only after secure
+>+		session and stream setup succeed, otherwise an empty string.
+>+		Connection control uses tsm/connect and tsm/disconnect.
+> 		This is a "link" TSM attribute, see
+> 		Documentation/ABI/testing/sysfs-class-tsm.
 
+[..]
 
-I had in mind SPDM_GET for DISCOVERED/AUTHENTICATED and the selected
-authentication slot, with guest TDISP state coming from
-DEVSEC_STATE_GET. Instance lifetime already follows connect/lock and
-disconnect/unlock.
+> static ssize_t authenticated_show(struct device *dev,
+> 				  struct device_attribute *attr, char *buf)
+> {
+>-	/*
+>-	 * When the SPDM session established via TSM the 'authenticated' state
+>-	 * of the device is identical to the connect state.
+>-	 */
+>-	return connect_show(dev, attr, buf);
+>+	struct pci_dev *pdev = to_pci_dev(dev);
+>+	struct pci_tsm_pf0 *pf0;
+>+	int rc;
+>+
+>+	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
+>+	rc = ACQUIRE_ERR(rwsem_read_intr, &lock);
+>+	if (rc)
+>+		return rc;
+>+
+>+	if (!pdev->tsm || !pdev->tsm->dsm_dev)
+>+		return sysfs_emit(buf, "\n");
+>+
+>+	pf0 = to_pci_tsm_pf0(pdev->tsm);
+>+	if (!pf0 || !pf0->stream_connected || pf0->base_tsm.error)
+>+		return sysfs_emit(buf, "\n");
+>+
+>+	return sysfs_emit(buf, "%s\n", dev_name(&pdev->tsm->tsm_dev->dev));
+> }
+> static DEVICE_ATTR_RO(authenticated);
 
-Could we use those state models instead of adding another PCI-specific
-connected/locked/accepted model? Also, pci.generation appears to be the
-common device-generation under another attribute name, not a separate
-counter, odd.
+I had in mind removing this attribute alongside the staged connect
+change and reporting authentication state through SPDM_GET.
+
+This instead retains the attribute and changes when it reports the TSM
+name. Could we settle that together with the SPDM_GET interface rather
+than maintaining parallel authentication-state queries?
+
+Jason, what do you think?
 
 [..]
