@@ -1,98 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793389820;
-	b=SxVy2hzVameusDk6W7qq2QXwrP4xSXCoclVaiWjwS2hnAb3R4lfusNSDHpmYLu6W83eU
-	 p04kDjH/n6KxIcc6StRFSDe5IWtUwluinexPxqzwMHRwrYaFfCYvQznGrXwTh2h1trzr8
-	 Emfe2GRSlJVK3VmnnVUOz/FSCCSE+iGjcv8BE9df3gSpOZYxk+EwGlpPDaKoeqwztXLo7
-	 rg1VDgiowYyin7wqN3aprQlR9lmieSAwTy9QWR4nJkKECK3lvBAFKEiDaIl70GsoBtQj4
-	 XKrDRrhlOVz5iqYCP7dt/1Baw7tguvM9sqYqlr0BW/jeSVJuISStO8akISEN9IO8Tow==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793389820;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=sEaAj7L7ItwQxArcMJg/ysXYsqtPbJ9UNO11ET+2E+g=;
-	b=hdonXNSGUcedoy7aoZ8l2IGH/qDpePzahhnyvOog7TMC5MBEiSS1OdA9d9PQuaxeluo7
-	 UboF55luBHl9o//R4qp/u68VQo5fjqG//2JgM0y8Hfb0xFE00xjQm2eSlS9mdnUKUz5zN
-	 wwKVs2+NwbEKjeXYHsrHrdJfo5uw+mT6FfnMyUuxdiPaz7ZnGfNFvCIFW04j/DmJh+dME
-	 zrlWmj9Rbj8Qo41T8UcaZ+2rKRf8K17GOEk+Q1JozfzoEiDZdriclWJzFWQzVb0wMfv/K
-	 zTfSx/v4+0eMzJvYz0MphpmUAsq3/uDQCV1HGvebFK1O9RPt2gRK3g9AwRQAjA7IGPA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=XJp6JKJy;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.36
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793392148;
+	b=Ns9mxZeyqSL4aeLp8inMUQ10+qtn8c7y0BaCXVF2ojWA4CnKjj113pOammIoilIMD8SK
+	 0wOLTeAhjTNzkfVnsDeZ9pX+oFw8thUg53QicCzDKfMJLxuW1TGyERvOHCnWFxgIN6DtH
+	 1GEZuzQLSvsOJy6hMP+PbAesJdrv5Zwef3vS1tPDbRHx/A0E31pEZIRj+ockoxM793UaC
+	 6T173kDnP7gfdsBW7KiDtrLaOFB9RxRe4/GXBUP5cSLX/UMoRSNhTpcp1Z7FOi4swuXR8
+	 yVZXQqaSYn4cqF+8z4zh34+sTV6u/Nf8HlXb7ylcpnhZq1YfKG3JQ3pMdn4dgYAM6BQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793392148;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=EmaNip1TOWik2L9R1iLAFI2USINzDSLi+XTwnV4jqZI=;
+	b=A9EfJ21jyryc1pLaJ3GIrAUS7INCmwSKlBgKuM9XQKoTdLfVzGdwt/3bEwMQlQTlpC4B
+	 1V6OrBCRsscBAwhqvaxAviLCMQJA8Xx2O9KxBf7lcvXu7uVwCqLREjHChsv1Z256FVOLW
+	 XuR4meOobGlZcVqsiMUREU/p9LxCUMf4Kk6RONkLbwBmvJtlnL/XNu7eE1FsEqcM1hIPo
+	 KeVmK0rd+UbrtMDNCSmyp4llFv1mZCYPaD6kxh/O7kvAe/5AKwJu4NMe/TDp359y+RCJs
+	 PO99EjnCNhfE+fFMaywjpNWL0J4OxLRpD2ppwJd1KevdzcS/k40zJy2DucsudY/S9Gg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="SsfF/JSO";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.36
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013036.outbound.protection.outlook.com [40.107.201.36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E472606A31D
-	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 19:50:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E472606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B4A606A31A
+	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 20:29:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07B4A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=XJp6JKJy
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DCA2140E03BE;
-	Fri, 30 Oct 2026 19:50:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BWhGogmD7hSx; Fri, 30 Oct 2026 19:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793389814; bh=sEaAj7L7ItwQxArcMJg/ysXYsqtPbJ9UNO11ET+2E+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XJp6JKJyqgvz0ecw98cfcEZk49v6hdXNUj7ge7teuEu+TL25s3vUwNdmhs0OqcQsJ
-	 Ej+1WU7hhZKyYZZEPXWqsbKqforvRvs6tPqDkCK3f0jeWJYELj5Z6m0c+CzyxYdnEL
-	 1srqs8AqGzjlat5zA+DDfI/KA+suUXQf0yW08sSFxBcqT0YHUMNq0UKagg5ygeyP2n
-	 yVZfbr7oV0O45RjO+DMMRumpJGmSPH5S2N/+rppol15KnxGr0nARD7UaAoA3vybGns
-	 EFICC/6X2EUdLm/nwhK/RQHVGjqf5zys6O0UwWfPrXMl0pLSYqeeY6zLazpYmCYiAk
-	 Na+COgsVUPX+dkqD6WR12vgKzc8ZgCbLVV22k/+HqeFi2xdFiTqsy/BA9mdgfOsffp
-	 nvNSNG78osxwqNIHw3Edb3YoVpuaOXp6kup0cDpIA9xLDXdxxF/v0uThh7qKfbVDUW
-	 Dtb0xSlHI0+O5eijPY9u5jRBi/iiHIy0O8uc82Bfkvk1/zFStKe/1NbQcoiqk1Opsm
-	 nKl+vPDm173jGUP6QCN5dmCh/gidr2ozAyPNfyt1biD1DDTW5w3GnDEF/ezy3SX4HB
-	 cxfb8hYkycI4AH/QMMeEGENLkmp6XD5UazcdK1eQ2Mewoo5+G6giP9oZ2sVMH4SpgK
-	 Imk18ki9Gq0fUbtHjJPXIR7g=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3893140E02B7;
-	Fri, 30 Oct 2026 19:49:57 +0000 (UTC)
-Date: Fri, 30 Oct 2026 12:49:53 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Joe Perches <joe@perches.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	"biju.das.au" <biju.das.au@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Au Dang <au.dang.jx@renesas.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <20261030194953.GEauT04SAhyseued3N@fat_crate.local>
-References: <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
- <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
- <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
- <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
- <7d35e2db2da34735760a08a6f103abee075413c8.camel@perches.com>
- <20261030182031.GAauTf71ujnYNQPluW@fat_crate.local>
- <f0bbfcecd63e11fedc4a745aa357fd8c529df097.camel@perches.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=SsfF/JSO
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=teuObmaOFzZc+YfLZPRUwD6N/5IG795JA649mFp9aoQKLb5xvRBCg9zAi2KkiY6K0XUNf7xZft8D6rX2x0FXOBAgJYZKOzMaV4mco3VywFujc14nm8DN6QZlj9UVQTPlvZu/BVbHQZ7jtTgq1I7t9Du0ATvAIQW9zqQ7CV49+sh6zHY0M3nK55xMfJrgT8Kdta4flw3+WN6KR/0yLwrV3ojdybLILu1zIBIbp6v8zsZCbww6x5hQEIMfGWuVxM8rHzotTBu+NDRWr0pvqdP7OjjiVARJL25+rxmRihkysW/Tg2iRw/tnPmYmYP0Z1sDFndribfDayPrZvusOP41ndg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EmaNip1TOWik2L9R1iLAFI2USINzDSLi+XTwnV4jqZI=;
+ b=ZrFVcVH2gIPA5l8dURmhTepUGeHZgmYXwyjZ2ZtnyJpzCH3YdhTe4CppZDYuJlzP4BwTqKKCnML7e/1gRtYJNK8gNek/2YWp+cyVTAumymva7N/Lv7IjhMQJhNZPF4oDVSu7RJ9eds2ltcaEqFL/yuvxWCdSRfrIrmb5BGTGPTiUGHrkuDY+fTbhRMHzjhkxZKdImJZKf4THoNLBTMzCE0erqZA6Ik2CbBvSbkQTHXL4mAGpZH9GhEysztJywL+4/8UddW4zpSet1mDXqL33CAtr520V8EnyFkeJDZMFTiw6TU41DtayQenPdrgoL8mEw9zXtbwa4jSUx0UNeSJ/tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EmaNip1TOWik2L9R1iLAFI2USINzDSLi+XTwnV4jqZI=;
+ b=SsfF/JSOqHlo+o1hSnFgu6iK4KNKqyVAPjUfq/pG+9cXhiYrR+eajBeHFYKSYhuvFSDNUWO50ttiw86RxPsBArvnQcVQVOMxUCY8YiLwy53fXG2OWPTIWDdpXdsyKwHF7U/fEGmvnMOOmi5PF/UeH5I0qdiKtoMC4yAy4i4WlQI=
+Received: from CH0P220CA0021.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:ef::11)
+ by CY3PR12MB9654.namprd12.prod.outlook.com (2603:10b6:930:ff::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
+ 2026 20:29:00 +0000
+Received: from BL6PEPF0006C3E1.namprd02.prod.outlook.com
+ (2603:10b6:610:ef:cafe::9a) by CH0P220CA0021.outlook.office365.com
+ (2603:10b6:610:ef::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.7 via Frontend Transport; Fri, 30
+ Oct 2026 20:29:00 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0006C3E1.mail.protection.outlook.com (10.167.249.231) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.569.4 via Frontend Transport; Fri, 30 Oct 2026 20:29:00 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 30 Oct
+ 2026 15:28:59 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <babu.moger@amd.com>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
+	<bp@alien8.de>
+CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+Subject: [PATCH v6 0/2] x86,fs/resctrl: Keep default MBM mode at boot and fix ABMC programming
+Date: Fri, 30 Oct 2026 15:28:46 -0500
+Message-ID: <cover.1793392128.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -102,23 +109,142 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f0bbfcecd63e11fedc4a745aa357fd8c529df097.camel@perches.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0006C3E1:EE_|CY3PR12MB9654:EE_
+X-MS-Office365-Filtering-Correlation-Id: 470f7ec6-289a-4203-3703-08df36c46e88
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|7416014|376014|1800799024|6133799003|18002099003|3023799007|13003099007|56012099006|11063799006|261028144727099003|261026121527099003|10067099003|261026140227099003|261021121427099003|261022075727099003|261021123027099003|261022105027099003|261009223027099003|260925022911599003|260925021311599003|260925021911599003;
+X-Microsoft-Antispam-Message-Info:
+	Dn2CI/aBpbeQx3O6yP9SZMJrKKnhG2GGlB2KPDxyL7zpgoOl8TNADyCJRtdq0C6uS37rXSHe9sbUHFoZrL4r2rVWVwCEYBVYz7W9aUZe5owlW9w1Cc5QzM9X47RqiB66UKIE63buqqHgWMLhrBr/T0iAz7wcpZLckpTCYW4IUd/ZieQdBXevloIDaiwK5Yb8NpibEjmoOe8H/zNw9P35eJ2trSBN2K243t4207KCR8ERx3RCDyyiCLaqUGGarq/IPknyPZ8asdNG4w6YHV99Dpyg4t8e0HOimHyPSy5MsTEffGs9+X3Ye1+K7ufyH+zEcdVZ18v6/EEV0Pgksff50zDiY9Jx1fpi0MpADpavoqxHuMR++aDKZa3z2Xfn+AJUfaAugBxCbDUfCwUxA/bpqzAsLD2v3AMS8+nJUqey4uaIqUk1VPHGSaxLC7xbiYoZQqSs6tC42++iyTAJT+Buzk5LgEbj0oq9HSiNhxvguKT9dlUosnUiK3ueqjEC1EP0RApIAEdyAMZtABWajgSJ7A==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(7416014)(376014)(1800799024)(6133799003)(18002099003)(3023799007)(13003099007)(56012099006)(11063799006)(261028144727099003)(261026121527099003)(10067099003)(261026140227099003)(261021121427099003)(261022075727099003)(261021123027099003)(261022105027099003)(261009223027099003)(260925022911599003)(260925021311599003)(260925021911599003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	zzGelTDW1+eCmlQC0OEkKEDxpQ3ONxYC22xrlcPpKWqYOQ/7H/XupQP0rdw1BS6DmTeYG6nxEdKaxPtS7Wl0Frf/6JytuEJT3ue+Yj18njrBBUppbMJYi2u8yFWtl8nBjPeskPQt4dqzm3Lm71Nt0uv8ciXyCLauPmiPCR7KChWwO4dTjrhRS5+k2AA/PmBNhUCAVfJOUiPddxV9q2VmxNMwe1KhLpHNytS4dgNCKPNetieUCqzPfzLGQc/gIjudIOYRWXwjNjIh14FcLHY6ThNo2G7DHYmYYNWeAeHVbJ6GjQfRlyd708fUTd89g0r7kOSPca0PAOyTM2ctwe4clP9SoyNoGzFs3MjpJvBqwcpXkcee3bo9cp+f675L5aloWRVuH+eb64C1UCIGGfHPjArQpPt6GCPiSnqrMbh9DgnddCkuy13ekg0zoiCueHqc
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 20:29:00.5375
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 470f7ec6-289a-4203-3703-08df36c46e88
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0006C3E1.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9654
 
-On Fri, Oct 30, 2026 at 12:40:05PM -0700, Joe Perches wrote:
-> 	   scripts/get_maintainer.pl has different behavior for files that
-> 	   match F: pattern and matches of N: patterns.  By default,
-> 	   get_maintainer will not look at git log history when an F: pattern
-> 	   match occurs.  When an N: match occurs, git log history is used
-> 	   to also notify the people that have git commit signatures.
 
-Aha, ok. Will change.
+Hi All,
 
-Thx.
+This series restores default MBM assignment mode at boot, and fixes ABMC
+programming for more than 32 counters.
+
+Commit 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
+enabled ABMC at boot. That breaks the pqos tool from intel-cmt-cat [1],
+which treats a non-numeric event read as zero bandwidth. pqos creates 16
+or more groups and uses two counters per group. On a platform with 32
+counters per domain, that consumes the pool, so further groups read
+"Unassigned" and pqos reports 0 MB/s.
+
+Leaving the mode at default does not make pqos correct. pqos still
+treats "Unavailable" as zero. Once the default-mode counter pool is
+exceeded, hardware can re-allocate a counter between reads and pqos can
+report that as a wraparound. That shows up only after the pool is
+exceeded. Default mode uses one counter per monitoring group. On existing
+AMD platforms that pool is 64 counters and may be larger on newer
+hardware, so common deployments stay within it. mbm_event mode uses two
+counters per group, so the same 32 counters cover only 16 groups.
+
+mbm_event remains available as an opt-in. Users that need stable
+measurements beyond the default-mode pool should enable it and rotate
+assignments. The limitation of default mode is documented.
+
+Patch 1: widen cntr_id in L3_QOS_ABMC_CFG from 5 bits to 12 bits, and
+limit the enumerated counter count to 4096, which is what that field can
+encode. The APM [2] at [3] will be updated for the expanded cntr_id field.
+
+Patch 2: leave mbm_assign_mode as "default" at boot. Counters are not
+assigned automatically. So, update resctrl documentation to replect that.
+
+Based on tip/master:
+  6b27d3127c05 Merge branch into tip/master: 'x86/tdx'
+
+[1] https://github.com/intel/intel-cmt-cat/issues/311
+[2] AMD64 Architecture Programmer's Manual Volume 2: System Programming,
+    Publication #24593, Revision 3.41, Section 19.3.3.3 "Assignable
+    Bandwidth Monitoring (ABMC)"
+[3] https://bugzilla.kernel.org/show_bug.cgi?id=206537
+
+v6:
+ - Patch 1: No changes.
+ - Patch 2: Minor changelog and mbm_assign_mode documentation updates to
+            reflect that auto-assignment on MBM event switch is not enabled.
+
+v5:
+ - Dropped patch 2 from v4, as auto-assignment is not a requirement
+   and should be left to the user.
+ - Patch 1: Added Reviewed-by tag from Reinette.
+ - Patch 2: Fixed a few typos.
+            Auto-assignment is not a requirement based on our discussion.
+            Updated the resctrl documentation to reflect this.
+
+v4:
+ - Patch 1: Updated changelog(from Reinette's input).
+ - Patch 2: Changelog update (Reinette's input).
+            Function comment update for rdtgroup_assign_cntrs().
+            Tag order update.
+ - Patch 3: Introduced mbm_event counter pool and default active counter pool.
+            Removed duplicate texts in resctrl.rst.
+            Re-arranged the tag order.
+v3:
+- Patch 1: drop the 32-bit u64 change and the bw_src widening. Cap the
+  enumerated counter count at 4096 instead of truncating the CPUID field.
+- Patch 2: clean up comments. Add Reported-by, Closes, and Cc: stable.
+- Patch 3: document one counter per group in default mode and two counters
+  per group in mbm_event mode. Describe the default-mode pool and the pqos
+  wraparound once that pool is exceeded.
+
+v2:
+- Added patch 2 to address Sashiko's comment regarding the documentation
+  issue. In fact, it exposed a real issue. When switching to mbm_event mode,
+  existing monitoring groups should be assigned counters whenever counters
+  are available. This provides a smooth transition between modes and aligns
+  the behavior with the existing auto-assignment mechanism.
+  https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
+
+- Combine the two v1 patches and add patch 2 (assign existing groups
+  on mbm_event switch; Sashiko review).
+- Keep boot-default separate from the encoding/truncation fixes.
+- Document the default-mode counter-pool limitation.
+
+Previous versions:
+
+v1: https://lore.kernel.org/lkml/980f39d3a0e0d9f73925e362f835aeef070a1bc5.1784322818.git.babu.moger@amd.com/
+v2: https://lore.kernel.org/lkml/cover.1788545152.git.babu.moger@amd.com/
+v3: https://lore.kernel.org/lkml/cover.1790976400.git.babu.moger@amd.com/
+v4: https://lore.kernel.org/lkml/cover.1791589412.git.babu.moger@amd.com/
+v5: https://lore.kernel.org/lkml/cover.1792627082.git.babu.moger@amd.com/
+
+Thanks
+Babu Moger
+
+
+Babu Moger (2):
+  x86/resctrl: Fix ABMC counter programming
+  x86,fs/resctrl: Keep mbm_assign_mode in default mode at boot
+
+ Documentation/filesystems/resctrl.rst  | 87 +++++++++++++++-----------
+ arch/x86/kernel/cpu/resctrl/internal.h |  4 +-
+ arch/x86/kernel/cpu/resctrl/monitor.c  |  4 +-
+ 3 files changed, 55 insertions(+), 40 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.43.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
