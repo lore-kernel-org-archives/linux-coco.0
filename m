@@ -1,107 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.182
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793400299;
-	b=ZZbPYZ+BECdpih8lKFhqEHDZx/VAtvwabAdO0K/znztesuyXVitjH4AXgV/lZq51gIpA
-	 7cU6VVK+As8yCF7p00XghIEqGaY9ETYYO/xOZ53spPmYjWbm4+MXaGECRqUCoS9BmaHL8
-	 txfxFaZOitbi1iETMSeGQfb0ZLfpX+dx3wgzAAAs4rMzDA+ev5dttiX1Qxx8Hz/YBbEcx
-	 bSQrrcEC+iDk1NwDs2XnYL+ufSRo/SC+JG0/FuV949zOnfxH9TKVsk2bLsd+XFW4fersT
-	 xyRHlh92giWsumJBtofS8zk6jiPEZsbxs4XfNwnAb1jZpSooN35gvIzbZfFY0hH5KKA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793400299;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=NYbItPhQApEJbZKga/APWqgHEBqrEwP9FLrG/rlKxD8=;
-	b=J7McAxhpxuENl3SRD2AsrkOeTr5wj9rnFggofy7SSkLjoOeJIkCpA/SzmkiIVnlagZFI
-	 XXXlzK1oizH+OnMkBhPT9k9upHe5+n1XrU6PfoppT0qaGNS+OuWAzoTILwFFhoEQS9S3a
-	 cvomwPSkt6vTJhTrMUjnPITEdK+dj16EcISZAqVgQ9tj8lKXJriJQauf9VwGw4apAbP4g
-	 E0Wh3GsuSMOpsfdQ3U/iWnAS3mh5DcVnJzQBS1c6nKkKjnqgIUTjcDv1zlzspvxQKEHPn
-	 QvSMdwN8LgBH/zDdbRLA228uIiBRs4OglwxX1iM9Xpz04PqJCMl1aMZjsCLmfBLYEnA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AQlexJGn;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.182
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793408894;
+	b=yrAW0RwYQtgs/m1yFEk9aapYub1n0bec2o8zMInJq4a18+txdbuJkjYF6Suu4F37n+eg
+	 1gySEvGpNRcyDEIVyRjvcqWfbJ1i2JPvGDyJRrUJ9wLOlYXL9ANoFMtZk4FMkuycCwb9Z
+	 0jvSCS52hPAqpMhUjiuWSPomWtK+ySsGmMUObH1c9jDZVOQjsaZBfI/qT1uuzpkS2KjDM
+	 XIZnAAaLX8K/gTQIFyj1vp3XoKTAxS8GiajZ/iGMf5twVZoJCwqWFJXzpoUVgY6nWvv31
+	 KDceXZZ8XBhBQGs63Cbu9Ih5SUvRWrXky4BHErK0VppavkPFP9DCJG70W4wB3ChisJw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793408894;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=UBGwpvxng8YWkU7ZTvAl2v1tzqyQSCQj5Ob46jz5lV4=;
+	b=S4ndqW78L3UsZI0R1zD+pYwyQtbL9LrurMo5u7FR5b8iZtlKfCwUyvGO6dVRUtahRAeA
+	 6CMrhS+B1bSTFiEPXu/tCg2XCIWtmPhAFsNf/aI3oi3hYkm29g5H0Qod97JbQ44mgR1YS
+	 bem1jnj/S0qsSx9pZ5LnmfR1786mXGli2H7YK4vJmsvzfVKIbZuqVGi8ct14CQ3WIiEwV
+	 LkAOEkaJLNqu2/vQZabkb6oHpK12dDS3N1SmtPhqV+k1jVXrZjePookN4pPhQr0+o0d4y
+	 jmDJ0gW4+oJWAwVlRgGnN+zm8USi/QxAYnPATk0gDUdGYefwI4NenxOEcPUOJEd0fhA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jnyaiDsG;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB587606A320
-	for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 22:44:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB587606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8D6606A31A
+	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 01:08:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C8D6606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AQlexJGn
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f079a63b8so122148785a.3
-        for <linux-coco@lists.linux.dev>; Fri, 30 Oct 2026 15:44:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793400298; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PnzXOrIW8SALGJerZ5arkvwxomDz84ACD0van/5/cjspxGBsFh6N9JZN6sUH4Ttdb7
-         uamtu5/BgMNbqI8ETDoMAAz5ltC0Aeh2GkA9Wmrktl3RsHL3duCjDeVEZlnmhjBtLhn6
-         sQoei8EpSyCRje0Kjwt/cKGXzmGqfWmE/gWRShM8DOCN9N52eEcprgUWT//AjnxT8teF
-         /gjPkZllrFaXt/AsFU8YGEWwX/SOCw2te9R1J4FzCJrukMZR8bcnSeotetzQcSalm8O8
-         O2vjac1qjSuzfFpZUqEPXOE394mGgXY1YvIqXs2DzkKpxZAlcR0jjDnHUOomX/dkprd3
-         Gc4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=NYbItPhQApEJbZKga/APWqgHEBqrEwP9FLrG/rlKxD8=;
-        fh=axHByuEO+wxSmQ2U2ZKlFN7cWIk/kfiVEyUXvKQ4M9A=;
-        b=FfpNi+kgHJYphEX/vmgczqIYYeMSkYJ+J1PKx5/WliJpGHz13UAKSEdTJw99Y0Xgop
-         NXjKg4yamE9zJzK8nK9++M0zqLZs0JdExNrbWqrg6RfTQwNkWiXfhzTpWh60zo2h2/2z
-         0Ii6e7sbLUtEu1cp5QTfFFtp5M3X6HmzcUpEiB506I+8OS/SA9p8OIfRsP2xijwQmAEA
-         b9JFTYfXrPN60AOt80ykaQQvPWrq8B48x4PriA/bIQALBOjhx0U1tRyBP5aDIye9Ou3F
-         CmjBYr9e5gQi7eZJRC3iJcdPJfDrRiA78egXw2BQSW8lLzhX8H7RiMyAFjmFS8okBSP2
-         CnNQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793400298; x=1794005098; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NYbItPhQApEJbZKga/APWqgHEBqrEwP9FLrG/rlKxD8=;
-        b=AQlexJGnqwgyK/J4WlzIYgsBi6ad2vrDlfymYN+RjMFh+nTd+esYMCCyX2jg16e0sD
-         JDRfhf3391NK7UA/tTzJeBNOOz4QzeH9eYj5jK4ZVEWqooiZUUm3vdGYfT4KX+sR5cV2
-         CUseiC5PmwDrKnURHzkqVaUxgQNIj+eMY6lWV5kEcgeGM4eFU2v68RiodxidZxf4u1m0
-         rywaBQdgrwOfeL1IMjiIEWdkgteyAFFToGwcqz+ZXydYkEkPyMtWMU3LZeSDwJMYvQBw
-         ytoBWbVlMN/hWeyMeK6kqGVSipM0Ar+c5MsFst5GuQINqeCh02iVqUcj2YlKs9LP+9oQ
-         Tqtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793400298; x=1794005098;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NYbItPhQApEJbZKga/APWqgHEBqrEwP9FLrG/rlKxD8=;
-        b=irtCRUuS7qaQQ2FUoBhVqRjHX1wVQKIuLlxiEImS3GM1FaXpXxv/sWR7YsvBk9tn7F
-         Bw3zefCo3ahVCcplt4v0QDaesSymVuGgw7U1TdMt5FPAkCfV7NM3ymi8O47RxMbI0dde
-         yRukWFHxOqLlXRwycQ7636emjbNcnvako9sQ0z1tONwnAb+jIA0jgzYFTfVxxyVHo0G8
-         79Mh4+qJpy7Cl2uscEVq6oocFuTAbGYeObHB45LLjF5oTsrWtIVhDn2jgij4248axX91
-         EzHv8zAP9y3/CNrUPmasSwmMXPbGxYT+T4tCTbp5vkBZvUhR81wPnKS9KsPn3GjnJ434
-         8J3g==
-X-Forwarded-Encrypted: i=1; AKwUvBx9XKJTSP+gR8I4kk1zP/oa9dw8W1LSTRs4yyVQSoNH4g3xcyXcBQ/2cjtShPliOxOuqqTwEYXPsv7I@lists.linux.dev
-X-Gm-Message-State: AFq9FYInsndDhwQ1Qc8l2Gs0dMkf6g9Cu6BdYnfM/Lv0KH9vnXEPpUx9
-	s+uECF11oPNUjxbQygTNNwyUmVyMVRfHQPnznxkWF+bU3VPu6NbXn8nctetqkc0ch4ivJSdpwTX
-	uEPd+KFUSqc7+i/3Heae07MFb75MqrXDvoDy8/FnF
-X-Gm-Gg: AYBFou0+7KK7nvHajr6cQtyWTkDiCvfcUevg0nwSZ7z1SjVb3AeJECDoUCK4Sit0bu9
-	g16wAe4o+eO3FprQoZV2onG6NOhVa/e7L2h9wh+/Q/TOAZlkKYhHsBRb6PgDU8pGaBL2h3ntnVC
-	lxh7UFbBNxg/FSgVCTzn+HdZLhJCH3zptOybWj2TDcCZU6blF9T1CQMCMgc/FMxDL1RCheoptw/
-	/c9LaDmwq5feOpC9uitBTDN2bTspJ1YVOOIp2b9WXlWbgL0BUXF7xsKnklkW6w7SJzDZucsG+LA
-	34euALqtynztInjQsgHkGe/Dxf+RkW7WXcCEu26EWGGYOwn3dLwrZ6ZaCstBIK5v0ElWYJzrqNQ
-	+mLhqFb+AnAdHYFmMSRPSEKjueF0Z0CTD4IBRwwsRQIgFBSHcCC4EhumCWwx0nAXyOaI3v5HYig
-	gpKCqg5gLOgv0S4EytOoS4dOM=
-X-Received: by 2002:a05:620a:4594:b0:93e:c12c:4409 with SMTP id
- af79cd13be357-944217cece5mr652996085a.69.1793400297298; Fri, 30 Oct 2026
- 15:44:57 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 30 Oct 2026 15:44:56 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgFEKqVZcNYCL0LpB6BTyBFe+ot1x1nFfEqOrSTsu134PQ@mail.gmail.com>
-References: <20261017073149.1303738-1-aneesh.kumar@kernel.org>
- <20261017073149.1303738-3-aneesh.kumar@kernel.org> <CAEvNRgEh3E7NBc5_3Wq66Fss-mAYT6+4FWP5+=Co6+OVfVnQQQ@mail.gmail.com>
- <CAEvNRgFEKqVZcNYCL0LpB6BTyBFe+ot1x1nFfEqOrSTsu134PQ@mail.gmail.com>
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jnyaiDsG
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1079B40E02B7;
+	Sat, 31 Oct 2026 01:08:11 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bjktjXMRBRaY; Sat, 31 Oct 2026 01:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793408887; bh=UBGwpvxng8YWkU7ZTvAl2v1tzqyQSCQj5Ob46jz5lV4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jnyaiDsG1rK1Fyz9AS6XoWn5oQ4piwfCFwEVlyVXpiG2JJxf0XoFVS3USSHGZcIOh
+	 /2ehUaczjNbZyKNE3VVPLEpfx+ygcZC5wZI5uoq3Em2PL9t/xgyIUoPqrbFVsvpgJu
+	 LTXEnkhIfxSX4zXaLUGViZPA/62w59/kCr4G3UImLFfxbdSq/WoxL99bAILTx2YFCG
+	 /qj51yq3v9KXNRZqJtmg9q0Bs8t+L6XsIfEwZnYDxKgIfE7A7k3ZeiNTppZ7Tlno2M
+	 egldhHCqqZ3aKQn3gbI9H56yRfmdhiHwXPezHnJlRDC3JF7euQYMQBfH64ycnEswMF
+	 3gDuNucCUM4vVeTSk9H30c+t2TD+twyXTj6KnVQ4kEpSeIWZCCYeAmblA5+LwfJvco
+	 bgWK8XXnE0A2HT1Cch4WiWu13EL+bYLgax6cIMcFzR/aMlNExVwleNBTR2ChjE/47t
+	 XBs33kNw3exH9k7Kb9kq6Ez3viUjk0TGbbZKEpvJJ8dFqmKDwK0r7okGRbJd38gGgF
+	 kTYUOCk7GhEdiBxdW6CMzDt0XK1vms9hYrvlmP/HorQ9ev6mH4T1uD6tZ5+tg5p1wr
+	 Wh2QJJX2na94Yl/D/sut+jaSbPDD2prSgU/acl1gMHrmQy3VlxhDTyRss+Cq2Sz0u4
+	 Ka1T2u4fyXQjDlwhsYRDaVfo=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E386840E0298;
+	Sat, 31 Oct 2026 01:07:47 +0000 (UTC)
+Date: Fri, 30 Oct 2026 18:07:44 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Reinette Chatre <reinette.chatre@intel.com>
+Cc: Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, x86@kernel.org,
+	Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
+	mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+	kas@kernel.org, rick.p.edgecombe@intel.com,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
+ mode at boot
+Message-ID: <20261031010744.GFauU_YJdX2eV6GoHV@fat_crate.local>
+References: <cover.1793392128.git.babu.moger@amd.com>
+ <c1e5ef23e83ea663e9aa969e301fac20723a988a.1793392128.git.babu.moger@amd.com>
+ <3ebc7028-c559-4add-800a-614b29d66ba3@intel.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -111,77 +87,28 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Date: Fri, 30 Oct 2026 15:44:56 -0700
-X-Gm-Features: AclHuK9AHtuqcVSSdHgG8WAhHla8voZ5Eh8lYfAwHP3Alygt10O_4piQhjU1tlA
-Message-ID: <CAEvNRgH5TH8MDaRQaVczv4m6fJZKVmf=MtKzhmHs_px8+r=8bA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/13] KVM: guest_memfd: Support private/shared
- conversion of device memory
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev
-Cc: Alex Williamson <alex@shazbot.org>, David Woodhouse <dwmw2@infradead.org>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, Will Deacon <will@kernel.org>, 
-	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Steven Price <steven.price@arm.com>, Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3ebc7028-c559-4add-800a-614b29d66ba3@intel.com>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+On Fri, Oct 30, 2026 at 03:08:09PM -0700, Reinette Chatre wrote:
+> To help future readers understand how we landed on this I think it may be useful
+> to add a link to the decision that resulted in this fix. For example: 
+> 
+> 	...
+> 	Leave mbm_assign_mode in default mode during initialization as decided in [2].
+> 	...
+> 	Link: https://lore.kernel.org/20260804191608.GDanI6eK2Q07w6pNcb@fat_crate.local # [2]
 
->
-> [...snip...]
->
->>
->> Is there a way to avoid making private from within the conversion flow?
->>
->> kvm_gmem_device_map() below already does it as part of vcpu_run.
->>
->> If we do the above, we'd be aligned with regular conversions, where
->> to-shared conversions eagerly update arch state (make_shared) but
->> to-private notifications to the firmware are done lazily.
->>
->
-> I was a bit confused above. IIUC to handle
-> RMI_EXIT_VDEV_VALIDATE_MAPPING, the conversion is not done from outside
-> the kernel, instead it is done in the vcpu_run completion hook.
->
-> Can we make the flow that userspace is required to do the conversion
-> request from userspace after an exit due to
-> RMI_EXIT_VDEV_VALIDATE_MAPPING, and then just do the delegate + map +
-> validate in the vcpu_run completion hook?
->
->
-> The rest are a little outside the guest_memfd field, but I'll make the
-> suggestion anyway.
->
-> It looks like delegate and map don't need the vcpu context, only
-> validate does, so validate has to be done in the vcpu_run completion
-> hook.
->
-> Delegate needs the host physical addresses, so we'd need to translate
-> the IPAs to PAs, could that be a VM ioctl? It could look up the memslots
-> and translate IPA to PA?
->
-> RMI_RTT_DEV_MAP also doesn't need the vcpu context, IIUC it does need
-> the VM context so it could be a VM ioctl too? If it looks up the
-> memslot, it'll also find the guest_memfd, where it can find the device
-> information.
->
-> I'm just thinking that the vcpu_run completion context is doing too
-> much, and there are so many possible errors that could be better
-> communicated to userspace if they're separate ioctls.
->
-> Or perhaps at least delegate + map could be one required ioctl call by
-> userspace before doing vcpu_run to continue after a
-> RMI_EXIT_VDEV_VALIDATE_MAPPING exit.
->
+I can fix that up when applying, yes.
 
-The delegate+map actually seems really similar to the
-KVM_ARM_RMI_POPULATE ioctl. KVM_ARM_RMI_POPULATE already calls into gmem
-using kvm_gmem_populate(), which can do delegate+map, can that be
-reused/extended as part of RMI_EXIT_VDEV_VALIDATE_MAPPING handling?
+Any other Links I should add? I don't have a problem with leaving enough
+breadcrumbs for the future...
 
->>>
->>> [...snip...]
->>>
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
