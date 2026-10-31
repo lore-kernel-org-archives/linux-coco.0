@@ -1,74 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793465038;
-	b=t+0tusJ+c1Qj8KraKNgtjSM1JFGxUft00bcgN/WxgNWrcQNscEKOVaF2LEJObXz5KNUs
-	 WUb0jstqq2rRJGuUWpveP7kr/JHig9OW/cHVuXGjbLbHlrRp6QIS+HiKk2y0iwBLg8wNd
-	 Sorx8mvTjlhXBWlFlB+FpbhWIwsfwUOyu7/8EYdMYKj/gaemw7SmzaL1jLGNDnoZJmSdR
-	 8bmuGlyhD1/axKEKZ2ZBFaZ+wrP0yuw8NNHfxmgCYhGe2ANULVk+b2+lOtEzHzjThjBYK
-	 oZA2gjQYZKARLKxvnEUSyMkPvpuX/PZvzzxjIvH4SWsVyQrWkugQt2j7FW4Xdx3xw6Q==
+	t=1793478496;
+	b=KD+qAIHpqnbeZsK5uFONQg2UyCneMtvqHd2lmNpmZtun8IRazX751Et9mYWLE7xS9X8X
+	 BHSO7nqlIIdS5W2khSYMh3qWP4Hpv7Ws48jRW1nPB06VJhc8OPndQAVeJJgycZMXaELKn
+	 49xC0p/EUDQ+XA9QPq5/He6WMQTVr0KnoCTKiIiJQ7m28l+zTsMQHANXUPkYfGjclX5aN
+	 a1YzWx+ZT778hdMrMWFEscWXxPW4YzgsqewsfZH+l+8cSaV9X4uvkhuK/R90dUGDX4ZHL
+	 B8tZ+XfW9A/42pGBOfuISJSXKT+L++FZdFzMC6cbYX9a2QF/g9DQUHLYJLqWMWvLinw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793465038;
-	h=DMARC-Filter:Received:Received:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-Spam-Status:X-Rspamd-Server:
-	 X-Stat-Signature:X-Rspamd-Queue-Id:X-Session-Marker:X-Session-ID:
-	 X-HE-Tag:X-HE-Meta;
-	bh=2qB20Z5OO2PNW4tv0VUCGMSLze3zUhNo7SG7JE4xwdA=;
-	b=dtnp2T2U/e1YlJa45NsF5eaB9Jnf8zWNTbxI0pr2HCdjzcGXoDFr293xY6wBFFDOaVKs
-	 /N/LkI+p7iH9iT4SgwpvUY0HZ24wyOZ5oHQqd8vB41+AcmyJxxB5CQwnUZQgDpKtJAhE/
-	 H3u+CC+yc6iHISZR2E7zvl7p35VqEEo6sPOx1sIjM1jfSbJA+N58ZcrXNTMgOWE/JE+DZ
-	 j/888rh36Yhwd1cNMAS47uS0wQNQmT0yJ9FxsA0tZgpmiJBV81W2+utZ0Q+YR9u9Sbzke
-	 ivam5tQKlWuT8wWTDgShazDpXIVOaJO7Q+hVHaAWI/Ib1rLAjU/G0oy10AA2whgeYSg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793478496;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=iREJnj1dRudypne7M94cfs97N8m2yOo1WUEkEn9vXIQ=;
+	b=luwYeue+yNdv9L9eRou4rzWaP3ByeIdpgx2ULanuVE04fj2T9qwBWMsyDGIEboYDMy+h
+	 5ZfG8zJD2d7WNCsZNhqOZ5FTphLUS/Hzj3Kyv5Cdv7uScxXd+KRHUkZoJ1Tw29mHHjLmu
+	 RiqCTXQLpk9YKWllQPtzVqbONhndFQBQX3TVYSRsQsXSyUrW/t3/9gztybVfjUjhgBstK
+	 qhOUwNCcMNd4pkaQ4pEOFxppMa/XPtahG0Dy3KBd582hd0cXj/zzPHaxV8M1xL2cegmOe
+	 is+98zZm48B3xaZ718Fk649MxQICieMgEMjJ2U5kacsaONnvbnHD7+gi8EkbUJ40Y/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=perches.com;
-	spf=pass smtp.mailfrom=perches.com;
-	arc=none smtp.remote-ip=216.40.44.13
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=GfwnDjGs;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D182D606A31A
-	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 16:43:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D182D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42C19409E2;
-	Sat, 31 Oct 2026 16:43:50 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf10.hostedemail.com (Postfix) with ESMTPA id 8D14E30;
-	Sat, 31 Oct 2026 16:43:45 +0000 (UTC)
-Message-ID: <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F930606A31A
+	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 20:28:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F930606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=GfwnDjGs
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BAFAD40E02B7;
+	Sat, 31 Oct 2026 20:28:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id d0DInQcl9Vsc; Sat, 31 Oct 2026 20:28:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793478482; bh=iREJnj1dRudypne7M94cfs97N8m2yOo1WUEkEn9vXIQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GfwnDjGsTTSvrYvL9jD5KoRtqPnFWR7pNmGeUe1LQ8+mKgzDwoPvY5MGnwWyx8jue
+	 DHbOegJ/qfwq6V1M6jF651IJGrylE/eIFPk/7hM926G4MfH0CrWvfMpTgrNAWHKM93
+	 OH/SFBACY7wFCyoPDFLdsAwWDUg7aXGUTrJ5eXcPjJVfn1fX7smbieNQ1lrvJoZA0J
+	 gq4oxz/olxQGhln696QmLr58NQeUDs2JfM7ayKSx+2/9wnKGD4pjDNOScY4q5Nobak
+	 2JQ0NdgHgYXL5TlBWnqhi6uDE4LFN4mi6i3BeNWSQ3/Id66O7RWWGaZK6zhf7+DUoj
+	 XaTQFh8CJ0GRgfLXLEqaqZBPZE1jOeSynmMtJ86cYwYY0LwdqklC1llpUiqEuB48bC
+	 xXS+rh3HJ8GYjepifmhRA4Ho3z5efricr9IBpxl1Aw1H1Ge93mvuizIdOMH1XzvS/O
+	 9W7Pgj2qEYwqnsZKJX9xUDckGeYfGZdl5QSQwGRfiaDw+TRKuDmoZ7bKbJjXod2Fz0
+	 71ZMb4UsA9DnAiSo+xAAAuqdddBXxnhCN5uNdnRkA7jtbTvqJwP/sHVatcBm3MVLYm
+	 s/JtuuL4ZJoqugV64RoQl0ZTujkiXuyR9n3kl3wPYOl3VPzanfZwF11aRQqwyZmPZz
+	 AU2r622K6p4eTzOd0O6imPCY=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E677640E016C;
+	Sat, 31 Oct 2026 20:27:44 +0000 (UTC)
+Date: Sat, 31 Oct 2026 13:27:41 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Joe Perches <joe@perches.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
 Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-From: Joe Perches <joe@perches.com>
-To: Borislav Petkov <bp@alien8.de>, Kiryl Shutsemau <kas@kernel.org>, Rick
- Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen
- <dave.hansen@linux.intel.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Biju Das
- <biju.das.jz@bp.renesas.com>,  "biju.das.au" <biju.das.au@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman	
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
- "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
- "linux-serial@vger.kernel.org"	 <linux-serial@vger.kernel.org>,
- "linux-renesas-soc@vger.kernel.org"	 <linux-renesas-soc@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,  "linux-coco@lists.linux.dev"	
- <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- Au Dang <au.dang.jx@renesas.com>
-Date: Sat, 31 Oct 2026 09:43:44 -0700
-In-Reply-To: <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
-References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
-	 <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
-	 <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	 <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
-	 <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	 <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
-	 <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
-	 <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
-	 <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
-	 <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
-	 <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+Message-ID: <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
+References: <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+ <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+ <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+ <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+ <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+ <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -78,69 +102,51 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Rspamd-Server: rspamout06
-X-Stat-Signature: cz19ooi49e8kna7me5cxdfeognint4ao
-X-Rspamd-Queue-Id: 8D14E30
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+aPwco/IotqFsTCHguuiIZ71NEMlq/oig=
-X-HE-Tag: 1793465025-286637
-X-HE-Meta: U2FsdGVkX1+7oQJ8xZbPzF3WUzJtxPMOp4ITyHXTuBqjUwjvWCL8pBnLSLvJ6P0zSuLxo6wFO7RN6RtWjz0Dd3+Fp0tsyGSgSYJQm7LqbZsSbe7+icfF7JAurJ13t8RbUmVfWj9blGLVueeiSOt3v9FUAPxaFjtPpztPj6aySPsRhOfbpZ1wPEpAMCR6Cm4JTzr38J0YNJO32IGcvTDTp7k+TjjpoORr4BqcJYvhG2oto0Cp9TRmqNrU0yqH1w+F8tcRm5C91rM/OCOcwGT7GAZ37awfxD2pryYnFYjKs1KCnJ5mYfL3hXLHEt9C92e5kuLNELHnFkXZP0MgVhpC/ORI5IckZIpVH/+vjzgGJQbwIjmbPDcTmA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
 
-On Fri, 2026-10-30 at 20:01 -0700, Borislav Petkov wrote:
-> From: "Borislav Petkov (AMD)" <bp@alien8.de>
->=20
-> A K: is a content regex file pattern which matches any text in a patch
-> so if a commit message contains "tdx" as in
->=20
->   has_tdxe_auto_clear
->=20
-> for example, see
->=20
->   https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp.renesa=
-s.com
->=20
-> get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
-> obviously is a completely unrelated patch.
+On Sat, Oct 31, 2026 at 09:43:44AM -0700, Joe Perches wrote:
+> It's not an error in get_maintainer.pl
 
-It's not an error in get_maintainer.pl
-and V2: no changelog
+I'm open to suggestions.
 
+> > +F:	include/uapi/linux/tdx
+> 
+> No file match.
 
-> So switch the x86 TDX patterns to files and directories (F:) wildcard
-> type patterns and group them by path, for less false positives.
->=20
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Link: https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_cra=
-te.local
+Works:
 
-nack.  Bad file pattern below
+./scripts/get_maintainer.pl -f include/uapi/linux/tdx-guest.h
+Kiryl Shutsemau <kas@kernel.org> (maintainer:X86 TRUST DOMAIN EXTENSIONS (TDX))
+Rick Edgecombe <rick.p.edgecombe@intel.com> (maintainer:X86 TRUST DOMAIN EXTENSIONS (TDX))
+Dave Hansen <dave.hansen@linux.intel.com> (reviewer:X86 TRUST DOMAIN EXTENSIONS (TDX))
+x86@kernel.org (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
+...
 
+because it is enough to match the beginning of the string:
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-[]
-> @@ -30347,8 +30347,11 @@ L:	linux-coco@lists.linux.dev
->  L:	kvm@vger.kernel.org
->  S:	Supported
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
-> -N:	tdx
-> -K:	\b(tdx)
-> +F:	arch/x86/**/*tdx*
-> +F:	Documentation/**/*tdx*
-> +F:	drivers/virt/coco/tdx*/
-> +F:	include/uapi/linux/tdx
+$ perl -we 'print "match\n" if "include/uapi/linux/tdx-guest.h" =~ m@^include/uapi/linux/tdx@'
+match
 
-No file match.  Probably should be:
+> F:	include/uapi/linux/tdx*
+> 
+> but as far as I can see there's only a single file there.
 
-F:	include/uapi/linux/tdx*
+The idea is to cover everything that starts with "tdx" in that path when new
+headers are added without the need to touch the file pattern.
 
-but as far as I can see there's only a single file there.
+$ touch include/uapi/linux/tdx-host.h
+$ ./scripts/get_maintainer.pl -f include/uapi/linux/tdx-host.h 
+./scripts/get_maintainer.pl: file 'include/uapi/linux/tdx-host.h' not found in version control 
+Kiryl Shutsemau <kas@kernel.org> (maintainer:X86 TRUST DOMAIN EXTENSIONS (TDX))
+Rick Edgecombe <rick.p.edgecombe@intel.com> (maintainer:X86 TRUST DOMAIN EXTENSIONS (TDX))
+Dave Hansen <dave.hansen@linux.intel.com> (reviewer:X86 TRUST DOMAIN EXTENSIONS (TDX))
+x86@kernel.org (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
+...
 
-F:	include/uapi/linux/tdx-guest.h
+-- 
+Regards/Gruss,
+    Boris.
 
-> +F:	tools/testing/selftests/tdx/
-> =20
->  X86 VDSO
->  M:	Andy Lutomirski <luto@kernel.org>
-> --=20
-> 2.53.0
->=20
+https://people.kernel.org/tglx/notes-about-netiquette
