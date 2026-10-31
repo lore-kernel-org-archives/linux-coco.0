@@ -1,97 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793415700;
-	b=pfi2VNYIvZcVykQvvFlv1WCzi2N338NPvLK4mfkHtceTfZ4VwcvOA+pJYqktDfF1VLHj
-	 jw3yK1gJyn8V1RzA5pvVeblau2VxU+KtLnho/EbC5Meh/2s50vjwZFOfmu3ilVaJrFt5u
-	 94QpLedAbf++oG539RN89AE26xRGAw5yt97GWDP5+icZSgXr6jKGmx8cbSpNQLyFgLBr1
-	 bWZUuBju1+9X2KXAPUWDpNoDL0I5LOWPqNysI0oI3IjvIDWJ1hV35WmT2tLTNRFGSJwLs
-	 K29b5l5J3/ph5HvvCY00Z6RJ53Drn0jdg/Vnl+fPo9lrZeZhD6mgEJHfO+pnSnpzPTQ==
+	t=1793418448;
+	b=Y4jgYy8OyYb/wWa84PRZOBD+PHRupct4mIk/k483pgbPTbnxHtk0uKo4s2qTIBCEhIyL
+	 5B3H/gpFIxtDH1CVimW0Po5KOEv2/w4/7RtvBqY2Mz8PzmNd6m00KYPeWBokvZfZ06aHk
+	 8kgvmsYXMz2uBHg+qEP8X4vhxOO6XxrZURpZIweAz8qLUyzk6AzkEsJYuAiSNPAs0zAkS
+	 n88v4/6esVWN1pu3naXvDqe6B428Wd76CgUWb8p3y7XLkUJoSK59iloelLe0Zb8287lQZ
+	 bLGmBYdByO6o41fN3vg33qyv2umpK3fzNZm4g2BePDhVGwGPU6HRhk0V6a+wYQXQf+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793415700;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=0pyAsH8gwqtQqNNm/v8qLvT0oMadqvUmRdeyHoWxCkk=;
-	b=pweF947DOlIkFAh3lULZvdEsLfhXWxsS6WR2Q1JATKiRJG1CZoGFlEI+okUs+czefVVk
-	 7UzSlZpy3HvopMHgWfMfwOXYSat0SN6hC0/mLDP1z+P1TorPcj89kwU9kHymDjA0FHQ5u
-	 q/hFonXy6/SoBx/7ja82QYKAymoxojPrAba5obZw5A76cJKlpcQqeDx1gWo8x3e/WS1ZP
-	 xPU//6loc/CwAGXLBea1ZlTbSjZ/lurWozE8hvW0sL4SojgtUmIlE03d9zTCo8eSRffyC
-	 yS+h+jbUcPuPGD6iVjQ4wYwno3J3vDinBYXGH4tYym2JF83NXuFYSdrLnz0X8tBqppA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793418448;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=lAyFehja7OD0VUj3jcp5uuBLtC+WD4jEdKJehzZg+yE=;
+	b=R/5CWHmr4kVp1HZP+hTiMVjwxLftyHgH3u4pqBAFR85VeJTGye+mqXcEn7BoADgeOhK+
+	 K3ilpPjVwAirDAFhFGVi8yb3IuI4eLTlbMg2MJNVxXZw/Ay2BqKj1JGqgKMb0ggURGQtg
+	 /RynfKqOZ10N2pg6o98XzmTUfklkaPzLSiUSQ+WyHlFYpM+umYP4dWFPQ2qsLeRpOqW3/
+	 A9DUBq2Td5ZD2/Odlg+DQk9l/Ee8kAkYSmBsBGwUTf1lV0yjsZJ5GkSkSEsNiCUf1gDK8
+	 IpIIfQZonPdy9/1T2hr88VRsM5Q1Mci2yg7lv353B813ERYRnUDeRCIv1sM83cqrLfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ARo0k0t6;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H5orrxw3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B3B606A31A
-	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 03:01:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9B3B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821DF606A31A;
+	Sat, 31 Oct 2026 03:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ARo0k0t6
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6E73A40E03BE;
-	Sat, 31 Oct 2026 03:01:36 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id VAOU-mxyKRtE; Sat, 31 Oct 2026 03:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793415692; bh=0pyAsH8gwqtQqNNm/v8qLvT0oMadqvUmRdeyHoWxCkk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ARo0k0t63aHztXyih1D0V4Z2TxlBKaR+J5do/x/gYMHI8FJ9q9fi8OmK1HMDBS7jg
-	 TeYJFKvUD4lGZ3wHHrzeu94rpgtEiCB3a+HyHpF5EaqActVQ2hrRbVuXCurwtkKRjR
-	 PBivNrv1Z4N8nSptEDL++HJXRpxkogeZotdKAVPMC5pfyCvhe+iFMvmX7t+27oUG7M
-	 dQR5+pOvBZC7CR1z58DT2TlRnYeeJiDwA8oRi9wsYbg0YENxgYHuJZw9w+hMdV2rig
-	 wuF6RY6B5M+HZoyjae8efvTAsDdR2qMWua5jr/666ru7IsE1BB9YKZCnsYpdFwsMp0
-	 BhJCtzZn4DiDOaSE8K5203liu4WT6zds/kMVbaiB0cwD7ROSoNpi60TLjCaKy2bxuM
-	 /qzLPMGDf/O1AbeF9nACfcA7MRPW5tqfvuCQWgx879iw3+hboObXn7vRkon9W8pqI6
-	 LnAm2xrppa/b2+MeDRGpPxyfPN12rFH26zOTMM7DOAQmJoK7REkR3HvbewTeQkeweZ
-	 6sIertfd5jYuFhIKFm48spvMpmd31YqFaKDqJlvksul4Suy8lhai7Cjp6aT8iKrojz
-	 Z3OJWfM0hKcOT3PuQosu/3F73ThYEcyEXcC1x5I66IFIGBHX8mqv53CNPsZlESL7z/
-	 lw/SrvWoh2iAxU2PgcnswTxs=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 21C9F40E016C;
-	Sat, 31 Oct 2026 03:01:15 +0000 (UTC)
-Date: Fri, 30 Oct 2026 20:01:12 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	"biju.das.au" <biju.das.au@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H5orrxw3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8511F000C1;
+	Sat, 31 Oct 2026 03:47:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793418448;
+	bh=lAyFehja7OD0VUj3jcp5uuBLtC+WD4jEdKJehzZg+yE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=H5orrxw3pLs6YCFvL5Y31Rg+6dF3jR3nw5RoZ1qgUlK/djyvjIiZcjk+Dx/lkZuDs
+	 cYcKA8bGVpqP/Xt46y2mI4gf57jGHGJexmBA2y8Wcgh/Pk1XYpsKk/bHL0B5gYUum2
+	 ocXZLuvG8WODhP/EOEIMDoXDNvo76zJaLtvKtQRj7VIsrXQYwPOtQs/JOYq4ZW5l28
+	 jlz9qWuG9SyE6zV1B07c/6lqVzPPQGs4Vcj22IIqpoYY80OsIs3lyIrjwa+j6z/nx5
+	 61pqQ3/l26bshsS5WlN8cIWgJP4gIYidRsoMvnYa2Nrd1qLqRyIKmzS1XBi9uOoukD
+	 0V09SNtNHpgUQ==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>, "Reshetova,
+	Elena" <elena.reshetova@intel.com>
+Cc: "Jiang, Dave" <dave.jiang@intel.com>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Au Dang <au.dang.jx@renesas.com>
-Subject: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
-References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
- <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
- <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
- <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
- <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
- <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+	Jiri Pirko <jiri@resnulli.us>, "Tian,
+	Kevin" <kevin.tian@intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Kiryl Shutsemau <kas@kernel.org>, "Edgecombe,
+	Rick P" <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>
+Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot
+ zero and establish streams after acceptance
+In-Reply-To: <20261030131543.GH3734323@nvidia.com>
+References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
+ <20261028152618.1356860-11-aneesh.kumar@kernel.org>
+ <26c24a66-be3d-40ac-8cb4-294deb0108db@intel.com>
+ <20261029171053.GD3734323@nvidia.com>
+ <DS4PPFA84FA90FC768B30DCFEBDE71F31CFE76D2@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
+ <20261030131543.GH3734323@nvidia.com>
+Date: Sat, 31 Oct 2026 09:17:17 +0530
+Message-ID: <yq5apkwqa5ve.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -101,63 +83,67 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+Content-Type: text/plain
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-A K: is a content regex file pattern which matches any text in a patch
-so if a commit message contains "tdx" as in
+> On Fri, Oct 30, 2026 at 09:58:03AM +0000, Reshetova, Elena wrote:
+>> > > It can't defer the session. The TDX Module runs the whole SPDM
+>> > > session setup inside TDH.SPDM.CONNECT, and the host relays its DOE
+>> > > messages without interpreting them, so there is no defined point to
+>> > > stop after the certificates. The chains come back in the device info
+>> > > only once TDH.SPDM.CONNECT completes (TDX Connect ABI Reference Spec
+>> > > 2.1 v0.66, 4.2.20.1).
+>> > 
+>> > Yeah, its fine. TDX will have to do what Aneesh proposed for ARM, and
+>> > use use the Rust SPDM Driver to operate DOE prior to calling
+>> > TDH.SPDM.CONNECT. This will allow discovering what is in the slots and
+>> > passing that information to userspace.
+>> 
+>> I am somewhat confused by this. 
+>> 
+>> 1. You are saying that prior to establishing a
+>> secure SPDM session, you will use unsecure DOE mechanism to discover
+>> available cert chains. Here you have to take into account that anything you
+>> get at this step is not trusted. A malicious device could send you any cert
+>> chains from another legitimate device.
+>
+> I poked at this with AI for a while.. While nothing about SPDM slots seems
+> particularly clean it can be made to work. It looks like 1.4 improves
+> things meaningfully.
+>
+>> 2. Next, you will choose a cert slot to be used for SPDM authentication and
+>> secure session establishment (slot 0 initially in this patch) and allow
+>> everything to happen.
+>
+> Yep
+>
+>> Now, who guarantees that a cert chain that you saw
+>> at step 1 for the selected slot is the same that is going to be used
+>> in actual SPDM connection? Who is verifying/ensuring this?
+>> Kernel? Userspace? 
+>
+> Not sure, it would make sense if the kernel can do some of this with
+> rustspdm, but there are alot of details here that I can't guess what
+> is best.
+>
+> AI tells me there are a couple of reasonable ways to implement slot
+> selection and avoid downgrade attacks:
+>
+> 1) With 1.4 match GET_DIGESTS and MULTI_KEY_CONN_RSP=true
+>    1) Do via RustSPDM:
+>         GET_DIGESTS / DIGESTS
+>         GET_CERTIFICATE / CERTIFICATE
+>    2) Userspace selects slots
+>    3) TSM module does startup and also issues 'GET_DIGESTS' as part of
+>       the signed transcript
+>    4) Confirm that the digests from #1 match the digests from #2 in
+>       the TSM transcript.
+>
 
-  has_tdxe_auto_clear
+I am currently doing something similar to the above.
 
-for example, see
-
-  https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp.renesas.com
-
-get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
-obviously is a completely unrelated patch.
-
-The same happens when someone uses it to check
-
-  drivers/power/reset/tdx-ec-poweroff.c
-
-patches.
-
-So switch the x86 TDX patterns to files and directories (F:) wildcard
-type patterns and group them by path, for less false positives.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local
----
- MAINTAINERS | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7a162e9bcab1..015cf66afb96 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -30347,8 +30347,11 @@ L:	linux-coco@lists.linux.dev
- L:	kvm@vger.kernel.org
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
--N:	tdx
--K:	\b(tdx)
-+F:	arch/x86/**/*tdx*
-+F:	Documentation/**/*tdx*
-+F:	drivers/virt/coco/tdx*/
-+F:	include/uapi/linux/tdx
-+F:	tools/testing/selftests/tdx/
- 
- X86 VDSO
- M:	Andy Lutomirski <luto@kernel.org>
--- 
-2.53.0
+https://git.gitlab.arm.com/linux-arm/linux-cca/-/commit/0657d167aee1ba43dd2765d99b5e3244b83c6ea6
 
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+-aneesh
