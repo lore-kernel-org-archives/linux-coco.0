@@ -1,72 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793427898;
-	b=riIIk29WhBLLZPI2nKCTEn8Ggz/SOCgceGN1JjjDaKHFYuJNT6/tWGBd1GDXFHLWLJlh
-	 eAR5InKGErcJwUmSUFQpvAtjdL06NNnsqHttit6zUkqCtp3zda1P+jFaPzewd+8f6GOYw
-	 PnaH21BOg+vp2ZLWrIdEZN8yDcSsIIN7rAdyBpz2LyUD538oDLb/HTAoML7KAoKevF5+Q
-	 pnhDqdzI3T+r/H0vhnqZS4OsHUeyNQAigB46HosObxTXe9zYiTiGbF5TBex3zqSMuY21N
-	 huU2TQfVsxVATnz1HXwnhkyfkjUXDoSP+WQf8SMVPd69o8rU51v1ABmkfwdHCk7vcfA==
+	t=1793465038;
+	b=t+0tusJ+c1Qj8KraKNgtjSM1JFGxUft00bcgN/WxgNWrcQNscEKOVaF2LEJObXz5KNUs
+	 WUb0jstqq2rRJGuUWpveP7kr/JHig9OW/cHVuXGjbLbHlrRp6QIS+HiKk2y0iwBLg8wNd
+	 Sorx8mvTjlhXBWlFlB+FpbhWIwsfwUOyu7/8EYdMYKj/gaemw7SmzaL1jLGNDnoZJmSdR
+	 8bmuGlyhD1/axKEKZ2ZBFaZ+wrP0yuw8NNHfxmgCYhGe2ANULVk+b2+lOtEzHzjThjBYK
+	 oZA2gjQYZKARLKxvnEUSyMkPvpuX/PZvzzxjIvH4SWsVyQrWkugQt2j7FW4Xdx3xw6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793427898;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=HqKPasDyHVzgQf6STvy+cgNCVVhZ8yNZrvR7X75yp+0=;
-	b=DAPK5ahUYwva5PFsfe6uCrc88GV7z4O7j9n4M6mEkzse3oz+UCv77S5Y/r/CaBHdWKdV
-	 souJTQtOO2fBaLMgH2OtFIp7fvSVvI2HwNRB9g2Hh7vgdkA8WXLmYHtKpsAO4vMlLIP/c
-	 KHnAENYBJB/VzN7mt8qw3/cyerq6tpgaC6SntlYzaPxlUapN77Q1jcXwEf37MMpXVsVW1
-	 R+qlQMb389ieZKNGUJsWzgwHIt7KMbfO7Yhd1fZ6qGPJs3t3k2VX5JnUNNQRM8mC0nS8N
-	 G0AEUA+WaUq68crpKEOzbg5JlPsgiFFdFgE2BmMZcpDEgQA6fIKXlDaDJpLcbgivYnA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793465038;
+	h=DMARC-Filter:Received:Received:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-Spam-Status:X-Rspamd-Server:
+	 X-Stat-Signature:X-Rspamd-Queue-Id:X-Session-Marker:X-Session-ID:
+	 X-HE-Tag:X-HE-Meta;
+	bh=2qB20Z5OO2PNW4tv0VUCGMSLze3zUhNo7SG7JE4xwdA=;
+	b=dtnp2T2U/e1YlJa45NsF5eaB9Jnf8zWNTbxI0pr2HCdjzcGXoDFr293xY6wBFFDOaVKs
+	 /N/LkI+p7iH9iT4SgwpvUY0HZ24wyOZ5oHQqd8vB41+AcmyJxxB5CQwnUZQgDpKtJAhE/
+	 H3u+CC+yc6iHISZR2E7zvl7p35VqEEo6sPOx1sIjM1jfSbJA+N58ZcrXNTMgOWE/JE+DZ
+	 j/888rh36Yhwd1cNMAS47uS0wQNQmT0yJ9FxsA0tZgpmiJBV81W2+utZ0Q+YR9u9Sbzke
+	 ivam5tQKlWuT8wWTDgShazDpXIVOaJO7Q+hVHaAWI/Ib1rLAjU/G0oy10AA2whgeYSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmqv8eKA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=perches.com;
+	spf=pass smtp.mailfrom=perches.com;
+	arc=none smtp.remote-ip=216.40.44.13
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB86606A31A;
-	Sat, 31 Oct 2026 06:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmqv8eKA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87AE1F000C1;
-	Sat, 31 Oct 2026 06:24:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793427897;
-	bh=HqKPasDyHVzgQf6STvy+cgNCVVhZ8yNZrvR7X75yp+0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=nmqv8eKAdIp60xqNWfQ2JKRLItA/s39epbi/y2PtHLL3Ps4M3pJAlOKfjFfgBXKuo
-	 pCRVwOvbLF1RxQqS+VfhRgKTtpaA/jgd1ZGNTngUBKstrzK9xFo/RCnuKv5/qAtls1
-	 6T4qBzSDW6ASEmMNVGpM2Vj5CcKa+VeufHs7B/a8QhqKEJ2HUZg8DmD7xH5QiCv6dm
-	 TVOGtlJKELZFUJcB3+FXTcA30N3HHmA7fzuO34bjgl5TatKOySGb3gyzGhYeUul3L6
-	 glShjySBZpIbw06ZEbr0zCDP/qSNBw3lkjRDh0sjArn/AjmR7fF2g7jfCUSzLHqXtK
-	 s3+BMsGy+Bw+w==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v1 02/11] attestation: Filter evidence objects per
- instance
-In-Reply-To: <auSe3YzgKX-lu27G@FV6GYCPJ69>
-References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
- <20261028152618.1356860-3-aneesh.kumar@kernel.org>
- <auSe3YzgKX-lu27G@FV6GYCPJ69>
-Date: Sat, 31 Oct 2026 11:54:47 +0530
-Message-ID: <yq5aecd69ykw.fsf@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D182D606A31A
+	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 16:43:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D182D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42C19409E2;
+	Sat, 31 Oct 2026 16:43:50 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf10.hostedemail.com (Postfix) with ESMTPA id 8D14E30;
+	Sat, 31 Oct 2026 16:43:45 +0000 (UTC)
+Message-ID: <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
+Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
+From: Joe Perches <joe@perches.com>
+To: Borislav Petkov <bp@alien8.de>, Kiryl Shutsemau <kas@kernel.org>, Rick
+ Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Biju Das
+ <biju.das.jz@bp.renesas.com>,  "biju.das.au" <biju.das.au@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman	
+ <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+ "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
+ "linux-serial@vger.kernel.org"	 <linux-serial@vger.kernel.org>,
+ "linux-renesas-soc@vger.kernel.org"	 <linux-renesas-soc@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,  "linux-coco@lists.linux.dev"	
+ <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ Au Dang <au.dang.jx@renesas.com>
+Date: Sat, 31 Oct 2026 09:43:44 -0700
+In-Reply-To: <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
+	 <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
+	 <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+	 <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+	 <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+	 <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+	 <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+	 <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+	 <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+	 <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+	 <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -76,60 +78,69 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Rspamd-Server: rspamout06
+X-Stat-Signature: cz19ooi49e8kna7me5cxdfeognint4ao
+X-Rspamd-Queue-Id: 8D14E30
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+aPwco/IotqFsTCHguuiIZ71NEMlq/oig=
+X-HE-Tag: 1793465025-286637
+X-HE-Meta: U2FsdGVkX1+7oQJ8xZbPzF3WUzJtxPMOp4ITyHXTuBqjUwjvWCL8pBnLSLvJ6P0zSuLxo6wFO7RN6RtWjz0Dd3+Fp0tsyGSgSYJQm7LqbZsSbe7+icfF7JAurJ13t8RbUmVfWj9blGLVueeiSOt3v9FUAPxaFjtPpztPj6aySPsRhOfbpZ1wPEpAMCR6Cm4JTzr38J0YNJO32IGcvTDTp7k+TjjpoORr4BqcJYvhG2oto0Cp9TRmqNrU0yqH1w+F8tcRm5C91rM/OCOcwGT7GAZ37awfxD2pryYnFYjKs1KCnJ5mYfL3hXLHEt9C92e5kuLNELHnFkXZP0MgVhpC/ORI5IckZIpVH/+vjzgGJQbwIjmbPDcTmA==
 
-Jiri Pirko <jiri@resnulli.us> writes:
+On Fri, 2026-10-30 at 20:01 -0700, Borislav Petkov wrote:
+> From: "Borislav Petkov (AMD)" <bp@alien8.de>
+>=20
+> A K: is a content regex file pattern which matches any text in a patch
+> so if a commit message contains "tdx" as in
+>=20
+>   has_tdxe_auto_clear
+>=20
+> for example, see
+>=20
+>   https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp.renesa=
+s.com
+>=20
+> get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
+> obviously is a completely unrelated patch.
 
-> Wed, Oct 28, 2026 at 04:26:09PM +0100, aneesh.kumar@kernel.org wrote:
->>Allow an attestation instance to expose only the evidence objects its
->>device supports. Add an optional evidence_object_supported() callback
->>and use it both when building DEVICE_GET capabilities and when checking
->>EVIDENCE_GET requests.
->>
->>The following PCI/TSM patch uses one attestation implementation for
->>devices that support different evidence objects. Its list includes
->>certificate slots 0-7, SPDM VCA, measurements, and a TDISP interface
->>report. Each device must expose only the objects it supports, for
->>example:
->>
->>  Instance                  Supported evidence objects
->>  ------------------------  ------------------------------------------
->>  Host link using slot zero Certificate slot 0
->>  CCA guest device          Certificate slot 0, VCA, measurements,
->>                            TDISP interface report
->>  Host PF0 after discovery  Certificate slots reported populated by SPDM
->>
->>PCI/TSM checks the TSM driver's evidence_types bitmap or, after SPDM
->>discovery on a host PF0, the populated-slot bitmap. The preceding patch
->>controls whether EVIDENCE_GET is enabled; this patch controls which
->>objects that operation can retrieve.
->
-> For SPDM slots, I think it would make sense to distinguish supported
-> slot addresses from discovered population. DEVICE_GET describes fixed
-> object tuples, formats and limits; SPDM_GET reports the populated
-> slots and their certificate digests. An empty supported slot
-> returns -ENOENT.
->
-> Fixed differences between backend instances can be selected before
-> publication. Please do not make the capability set follow a
-> populated-slot bitmap that can change during the instance lifetime.
->
-> [..]
+It's not an error in get_maintainer.pl
+and V2: no changelog
 
 
-We still need to filter objects such as measurements and the interface
-report based on the backend instance. Are you suggesting that we do this
-in attestation_evidence_object_find()? 
+> So switch the x86 TDX patterns to files and directories (F:) wildcard
+> type patterns and group them by path, for less false positives.
+>=20
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_cra=
+te.local
 
-supported = attestation_evidence_object_find(att, blob_class, has_instance,
-					     instance, format);
-if (!supported || !attestation_representation_in(supported, representation)) {
-	kfree(objects);
-	return -EOPNOTSUPP;
-}
+nack.  Bad file pattern below
 
-So the backend will have some way to indicate which objects it supports,
-such as the TSM driver's evidence_types bitmap, with the host setting it
-to indicate support for only CERT_CHAIN[0-7]?
 
--aneesh
+> diff --git a/MAINTAINERS b/MAINTAINERS
+[]
+> @@ -30347,8 +30347,11 @@ L:	linux-coco@lists.linux.dev
+>  L:	kvm@vger.kernel.org
+>  S:	Supported
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
+> -N:	tdx
+> -K:	\b(tdx)
+> +F:	arch/x86/**/*tdx*
+> +F:	Documentation/**/*tdx*
+> +F:	drivers/virt/coco/tdx*/
+> +F:	include/uapi/linux/tdx
+
+No file match.  Probably should be:
+
+F:	include/uapi/linux/tdx*
+
+but as far as I can see there's only a single file there.
+
+F:	include/uapi/linux/tdx-guest.h
+
+> +F:	tools/testing/selftests/tdx/
+> =20
+>  X86 VDSO
+>  M:	Andy Lutomirski <luto@kernel.org>
+> --=20
+> 2.53.0
+>=20
