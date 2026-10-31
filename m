@@ -1,75 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793487184;
-	b=1XXdC9xArvhqX8oTw7LBikOpAeMfDUTT2sCF7dPHTtjQqXG2Lb+Zhmle0nPs1khAC4/2
-	 HDrfpHwIQXR49O9VVSiJUWt/2vSfC00JO6jqcZSE/P1vWQW9SmbZS+obR1wvS/Sr66v7R
-	 pRk2EElNgBV2wK7G9vS2QkbrrMW/ohj+SL/rOVyKpzCVgYISoXAcjEU6DsuHI3lQDb52B
-	 qYlCx3pM8rp6g6nMmZ+40DzuNXm8IshER/I8NVwEnQJ92AC4akfhkb7hdbm+w7BTKm9hc
-	 A5RrC6VJG/q6nIO4p9lUF9VnUV1pyYPc1PwKlRPF2UkwVHNNHOg2UItHY0FDuprqivA==
+	t=1793491226;
+	b=nP+EKq2/kzwmPFtWtza6rtomtxTprQWl3WP/ocdZ9gkfcYSKh58oCDmn2ACcz5OIiRNf
+	 NqeyNwGUYxtbi6bOHQdCr+ijlIfwscqKakGxeMpbp12t6WXEHm497I1/7n6SrAD7ykOgK
+	 KxOPH/5+k0mXr1pTijlkm3iXC7JN8Yz7hF3xPAYkcMdIB7oQTdKfELrDnXd1MAoV2bhhA
+	 uRlutZOZp6e7NhZ/O14iHBpzDXMQ69dgQb8W8vUJBpuekF6/GH9VaA5DBbb2PmAuwhC/d
+	 TccjKV2lRboCRh5sMNZtPcwaZHEemZwC5/tzC9Uyv1CO7viblW0mqkRRrILrtjRgDxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793487184;
-	h=DMARC-Filter:Received:Received:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-Rspamd-Server:X-Rspamd-Queue-Id:
-	 X-Stat-Signature:X-Spam-Status:X-Session-Marker:X-Session-ID:X-HE-Tag:
-	 X-HE-Meta;
-	bh=7rj8u/UvoPl33grk+9GADLsAX2hYAohNEc54RJVP14k=;
-	b=eX6f3iW19wGlZNcleXgvR3t4TMChuIcyIdV7B2pTJ7/vDQlgJcgEqFiMUFXP0DMmkI6e
-	 KItSGgt2aTDrcWDuCzq76CCZhYeuge89+ne8xN6AGOEy4MkBfiCmLCyEEBO3VOoNqN3j/
-	 kTJkMyvDqLFCwKdMe9cU8X+dlBwli7XNGmDnrZc48e5G+Zo95Tbuq3lPMXjw3QF249+7j
-	 FuWf1AZMDKis8OvcnQyxSwQsgUv8b07nTnw4l3Y+2vcUujnArVVtrBPvev1odhd1FgrDE
-	 zw3L3nmpOvVe2fcbJ7ZLDueP0ByW9RR3KoTJcrMbZ8PbTGL3cxDqX5Iiho1Zyz/WgxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793491226;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Wb27v7drwI43HShdAf729fldZ0PxtCAsw7JNqFBlX2E=;
+	b=mBHHt+mb7w8A5xp5iuHAnRpA/D2sMn/H8zJEXWHhJ6TuuoVjSrfXyKBn8pzkNvy7EtUS
+	 6Vzbs/4JZPZZH1gZZ50zSxdDMzYHJVYQjkz5tJfAU/6j5K1Xc56fFXK3yvOhwPF8/cH5s
+	 t+SiOeLzmC5t+Fj+wNUZSjD5QgvtdEy/1Be02Cw8qv4WzKpBk6HUXGbaFx6qQxiaSZBcE
+	 Lce7Luzd1GGz5trTc7R2dl2nJGj2Q0GOwGmdNT+ysm+0FWuFGHhw3oIv2UxirfCZIIgTE
+	 HlKQtKp9+Y4rfokOD5YWXnOdQwuY3P3aBjmaa+NYcGKWLVQkVP5yjZe8C1ARiTKhqKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=perches.com;
-	spf=pass smtp.mailfrom=perches.com;
-	arc=none smtp.remote-ip=216.40.44.15
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=iQcmbfAk;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A0B606A31C
-	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 22:53:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44A0B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 092091C4326;
-	Sat, 31 Oct 2026 22:52:56 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf02.hostedemail.com (Postfix) with ESMTPA id 8290A8000F;
-	Sat, 31 Oct 2026 22:52:51 +0000 (UTC)
-Message-ID: <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BE0606A31D
+	for <linux-coco@lists.linux.dev>; Sun,  1 Nov 2026 00:00:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 12BE0606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=iQcmbfAk
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8B70E40E04D0;
+	Sun,  1 Nov 2026 00:00:22 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id AV7brn4tjS-4; Sun,  1 Nov 2026 00:00:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793491219; bh=Wb27v7drwI43HShdAf729fldZ0PxtCAsw7JNqFBlX2E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iQcmbfAkhwkEa570o884sv5yc2/RMstGH8O+BEKBU/mLvUJGlTY6quuX4WJTFhl7T
+	 np62qEIiTdnW8w4O+GG/w6zJ9QJdc19CKqOxHVgKKzvX1QgMxEdm34t+PO/fIPuqcI
+	 s49Yvb/OBVNJkU8g2Iu+xSoXq270zBcKnH9KqtGSLQCptyi5+fPwjlKhvzpwqFlL59
+	 7qxCflSKPFK4ArFFQmG1uLiUSYFuIg5GY263e5FiQVtxU2wti196k7/qZwGpwPhLxs
+	 ITkmwJsqziSyAYzug3Uc+3QGwCDvIEsHTjG57xsSgAtCt3cTQ7TL7hal87EDrw1rXv
+	 Leo06gtUUQ+/0zbjPn9iavVO0VvI4/mxXYm5CB7v9Ib4lcry26kT0gYQCBXQ9DNPor
+	 7NFCL3lVS2ysJJi6bF1+9vfBL/2+wfCF1dV+4WHTCMSO7o+uF+Xs8GrFhzcLf9OrpX
+	 hPSjwqh0BGVfntS6Sm0lPgJejNLWD8Hi8dllaMcUcr6FZAQKrB44HLiLogcgDRgszT
+	 66bGanT2Ue7vLiFgzp87DjGHW2cj4HZgNYSWUIphdpQE3mjZTheXEIw6/G9OSsZ2D2
+	 kJ5KrLDGasQ8BrarZYjMgWnBfx77BZaKlgn8UtNQKlLxNIS0RhZCTWQsJ9FJpjjbyk
+	 T7fwhY+ASc1RZoSq9RBGbb+w=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 01D2940E03BE;
+	Sun,  1 Nov 2026 00:00:01 +0000 (UTC)
+Date: Sat, 31 Oct 2026 16:59:58 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Joe Perches <joe@perches.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
 Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-From: Joe Perches <joe@perches.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe	
- <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Krzysztof Kozlowski	 <krzk@kernel.org>, Biju Das
- <biju.das.jz@bp.renesas.com>, "biju.das.au"	 <biju.das.au@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
- "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
- "linux-serial@vger.kernel.org"	 <linux-serial@vger.kernel.org>,
- "linux-renesas-soc@vger.kernel.org"	 <linux-renesas-soc@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,  "linux-coco@lists.linux.dev"	
- <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- Au Dang <au.dang.jx@renesas.com>
-Date: Sat, 31 Oct 2026 15:52:50 -0700
-In-Reply-To: <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
-References: 
-	<TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	 <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
-	 <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	 <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
-	 <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
-	 <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
-	 <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
-	 <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
-	 <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
-	 <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
-	 <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+Message-ID: <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
+References: <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+ <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+ <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+ <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+ <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
+ <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
+ <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -79,71 +102,20 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Rspamd-Server: rspamout05
-X-Rspamd-Queue-Id: 8290A8000F
-X-Stat-Signature: wrphe1g58doyr98fgezuwqmu1atgin9d
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+qb3BuH9YjR22czeDdTdd93jOWsEqBurQ=
-X-HE-Tag: 1793487171-147821
-X-HE-Meta: U2FsdGVkX19VSC24XAmKXD+FFUbKxT+lVME26wksYovRKHagZcnzja7HIjX8HCLIQvKUOGUz973oMsRB3NQMJ/+IG2Gs7tGk0IiJzrJwSka+SUMt616a/ldJ287W1ZLbyuCjSn9i0EIEtq5tZZRUeWXfRosx+pyyGDZYu03mExqtF9FOUYloFdyw7dUmxwBTeLHfSrO6CjbplVF6BgmdDGKL60yrefSFXVK1PK8CLNYXF0uulO6qyCE4s8lEGQqGTmOlAgzv2MPR2PCfb8AvKNZyW464VZRHUCorB2BAjU6JFGw0ENIMC/0bzWO3cc2S0bIAijzGzJNcdwrcqyfDb94LzbQ5aDEGh4Bvaf3sxV1obqbGCS7ORw==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
 
-On Sat, 2026-10-31 at 13:27 -0700, Borislav Petkov wrote:
-> On Sat, Oct 31, 2026 at 09:43:44AM -0700, Joe Perches wrote:
-> > It's not an error in get_maintainer.pl
->=20
-> I'm open to suggestions.
+On Sat, Oct 31, 2026 at 03:52:50PM -0700, Joe Perches wrote:
+> Please add a wildcard * at the end
 
-Overly broad K: pattern match in MAINTAINERS
+I will, once the rationale is clear and documented so that people know what to
+do in the future.
 
-> > > +F:	include/uapi/linux/tdx
-> >=20
-> > No file match.
->=20
-> Works:
->=20
-> ./scripts/get_maintainer.pl -f include/uapi/linux/tdx-guest.h
-> Kiryl Shutsemau <kas@kernel.org> (maintainer:X86 TRUST DOMAIN EXTENSIONS =
-(TDX))
-> Rick Edgecombe <rick.p.edgecombe@intel.com> (maintainer:X86 TRUST DOMAIN =
-EXTENSIONS (TDX))
-> Dave Hansen <dave.hansen@linux.intel.com> (reviewer:X86 TRUST DOMAIN EXTE=
-NSIONS (TDX))
-> x86@kernel.org (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
+Thx.
 
-Hmm, that's likely a defect in get_maintainer.pl
-in sub file_match_pattern:
+-- 
+Regards/Gruss,
+    Boris.
 
-      sub file_match_pattern {
-          my ($file, $pattern) =3D @_;
-          if (substr($pattern, -1) eq "/") {
-      	if ($file =3D~ m@^$pattern@) {
-      	    return 1;
-      	}
-          } else {
-      	if ($file =3D~ m@^$pattern@) {
-      ----->				^ here - likely needs a $
-      	    my $s1 =3D ($file =3D~ tr@/@@);
-      	    my $s2 =3D ($pattern =3D~ tr@/@@);
-      	    if ($s1 =3D=3D $s2 || $pattern =3D~ /\(\?:/) {
-      		return 1;
-      	    }
-      	}
-          }
-          return 0;
-      }
-     =20
-> ...
->=20
-> because it is enough to match the beginning of the string:
->=20
-> $ perl -we 'print "match\n" if "include/uapi/linux/tdx-guest.h" =3D~ m@^i=
-nclude/uapi/linux/tdx@'
-> match
->=20
-> > F:	include/uapi/linux/tdx*
-> >=20
-> > but as far as I can see there's only a single file there.
-
-Please add a wildcard * at the end
-
-I'll check the rest of the MAINTAINERS file.
+https://people.kernel.org/tglx/notes-about-netiquette
