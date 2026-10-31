@@ -1,83 +1,97 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793408894;
-	b=yrAW0RwYQtgs/m1yFEk9aapYub1n0bec2o8zMInJq4a18+txdbuJkjYF6Suu4F37n+eg
-	 1gySEvGpNRcyDEIVyRjvcqWfbJ1i2JPvGDyJRrUJ9wLOlYXL9ANoFMtZk4FMkuycCwb9Z
-	 0jvSCS52hPAqpMhUjiuWSPomWtK+ySsGmMUObH1c9jDZVOQjsaZBfI/qT1uuzpkS2KjDM
-	 XIZnAAaLX8K/gTQIFyj1vp3XoKTAxS8GiajZ/iGMf5twVZoJCwqWFJXzpoUVgY6nWvv31
-	 KDceXZZ8XBhBQGs63Cbu9Ih5SUvRWrXky4BHErK0VppavkPFP9DCJG70W4wB3ChisJw==
+	t=1793415700;
+	b=pfi2VNYIvZcVykQvvFlv1WCzi2N338NPvLK4mfkHtceTfZ4VwcvOA+pJYqktDfF1VLHj
+	 jw3yK1gJyn8V1RzA5pvVeblau2VxU+KtLnho/EbC5Meh/2s50vjwZFOfmu3ilVaJrFt5u
+	 94QpLedAbf++oG539RN89AE26xRGAw5yt97GWDP5+icZSgXr6jKGmx8cbSpNQLyFgLBr1
+	 bWZUuBju1+9X2KXAPUWDpNoDL0I5LOWPqNysI0oI3IjvIDWJ1hV35WmT2tLTNRFGSJwLs
+	 K29b5l5J3/ph5HvvCY00Z6RJ53Drn0jdg/Vnl+fPo9lrZeZhD6mgEJHfO+pnSnpzPTQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793408894;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793415700;
 	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
 	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=UBGwpvxng8YWkU7ZTvAl2v1tzqyQSCQj5Ob46jz5lV4=;
-	b=S4ndqW78L3UsZI0R1zD+pYwyQtbL9LrurMo5u7FR5b8iZtlKfCwUyvGO6dVRUtahRAeA
-	 6CMrhS+B1bSTFiEPXu/tCg2XCIWtmPhAFsNf/aI3oi3hYkm29g5H0Qod97JbQ44mgR1YS
-	 bem1jnj/S0qsSx9pZ5LnmfR1786mXGli2H7YK4vJmsvzfVKIbZuqVGi8ct14CQ3WIiEwV
-	 LkAOEkaJLNqu2/vQZabkb6oHpK12dDS3N1SmtPhqV+k1jVXrZjePookN4pPhQr0+o0d4y
-	 jmDJ0gW4+oJWAwVlRgGnN+zm8USi/QxAYnPATk0gDUdGYefwI4NenxOEcPUOJEd0fhA==
+	bh=0pyAsH8gwqtQqNNm/v8qLvT0oMadqvUmRdeyHoWxCkk=;
+	b=pweF947DOlIkFAh3lULZvdEsLfhXWxsS6WR2Q1JATKiRJG1CZoGFlEI+okUs+czefVVk
+	 7UzSlZpy3HvopMHgWfMfwOXYSat0SN6hC0/mLDP1z+P1TorPcj89kwU9kHymDjA0FHQ5u
+	 q/hFonXy6/SoBx/7ja82QYKAymoxojPrAba5obZw5A76cJKlpcQqeDx1gWo8x3e/WS1ZP
+	 xPU//6loc/CwAGXLBea1ZlTbSjZ/lurWozE8hvW0sL4SojgtUmIlE03d9zTCo8eSRffyC
+	 yS+h+jbUcPuPGD6iVjQ4wYwno3J3vDinBYXGH4tYym2JF83NXuFYSdrLnz0X8tBqppA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=alien8.de;
 	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jnyaiDsG;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ARo0k0t6;
 	arc=none smtp.remote-ip=65.109.113.108
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8D6606A31A
-	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 01:08:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C8D6606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B3B606A31A
+	for <linux-coco@lists.linux.dev>; Sat, 31 Oct 2026 03:01:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9B3B606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jnyaiDsG
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ARo0k0t6
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1079B40E02B7;
-	Sat, 31 Oct 2026 01:08:11 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6E73A40E03BE;
+	Sat, 31 Oct 2026 03:01:36 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id bjktjXMRBRaY; Sat, 31 Oct 2026 01:08:08 +0000 (UTC)
+	with ESMTP id VAOU-mxyKRtE; Sat, 31 Oct 2026 03:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793408887; bh=UBGwpvxng8YWkU7ZTvAl2v1tzqyQSCQj5Ob46jz5lV4=;
+	t=1793415692; bh=0pyAsH8gwqtQqNNm/v8qLvT0oMadqvUmRdeyHoWxCkk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jnyaiDsG1rK1Fyz9AS6XoWn5oQ4piwfCFwEVlyVXpiG2JJxf0XoFVS3USSHGZcIOh
-	 /2ehUaczjNbZyKNE3VVPLEpfx+ygcZC5wZI5uoq3Em2PL9t/xgyIUoPqrbFVsvpgJu
-	 LTXEnkhIfxSX4zXaLUGViZPA/62w59/kCr4G3UImLFfxbdSq/WoxL99bAILTx2YFCG
-	 /qj51yq3v9KXNRZqJtmg9q0Bs8t+L6XsIfEwZnYDxKgIfE7A7k3ZeiNTppZ7Tlno2M
-	 egldhHCqqZ3aKQn3gbI9H56yRfmdhiHwXPezHnJlRDC3JF7euQYMQBfH64ycnEswMF
-	 3gDuNucCUM4vVeTSk9H30c+t2TD+twyXTj6KnVQ4kEpSeIWZCCYeAmblA5+LwfJvco
-	 bgWK8XXnE0A2HT1Cch4WiWu13EL+bYLgax6cIMcFzR/aMlNExVwleNBTR2ChjE/47t
-	 XBs33kNw3exH9k7Kb9kq6Ez3viUjk0TGbbZKEpvJJ8dFqmKDwK0r7okGRbJd38gGgF
-	 kTYUOCk7GhEdiBxdW6CMzDt0XK1vms9hYrvlmP/HorQ9ev6mH4T1uD6tZ5+tg5p1wr
-	 Wh2QJJX2na94Yl/D/sut+jaSbPDD2prSgU/acl1gMHrmQy3VlxhDTyRss+Cq2Sz0u4
-	 Ka1T2u4fyXQjDlwhsYRDaVfo=
+	b=ARo0k0t63aHztXyih1D0V4Z2TxlBKaR+J5do/x/gYMHI8FJ9q9fi8OmK1HMDBS7jg
+	 TeYJFKvUD4lGZ3wHHrzeu94rpgtEiCB3a+HyHpF5EaqActVQ2hrRbVuXCurwtkKRjR
+	 PBivNrv1Z4N8nSptEDL++HJXRpxkogeZotdKAVPMC5pfyCvhe+iFMvmX7t+27oUG7M
+	 dQR5+pOvBZC7CR1z58DT2TlRnYeeJiDwA8oRi9wsYbg0YENxgYHuJZw9w+hMdV2rig
+	 wuF6RY6B5M+HZoyjae8efvTAsDdR2qMWua5jr/666ru7IsE1BB9YKZCnsYpdFwsMp0
+	 BhJCtzZn4DiDOaSE8K5203liu4WT6zds/kMVbaiB0cwD7ROSoNpi60TLjCaKy2bxuM
+	 /qzLPMGDf/O1AbeF9nACfcA7MRPW5tqfvuCQWgx879iw3+hboObXn7vRkon9W8pqI6
+	 LnAm2xrppa/b2+MeDRGpPxyfPN12rFH26zOTMM7DOAQmJoK7REkR3HvbewTeQkeweZ
+	 6sIertfd5jYuFhIKFm48spvMpmd31YqFaKDqJlvksul4Suy8lhai7Cjp6aT8iKrojz
+	 Z3OJWfM0hKcOT3PuQosu/3F73ThYEcyEXcC1x5I66IFIGBHX8mqv53CNPsZlESL7z/
+	 lw/SrvWoh2iAxU2PgcnswTxs=
 Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E386840E0298;
-	Sat, 31 Oct 2026 01:07:47 +0000 (UTC)
-Date: Fri, 30 Oct 2026 18:07:44 -0700
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 21C9F40E016C;
+	Sat, 31 Oct 2026 03:01:15 +0000 (UTC)
+Date: Fri, 30 Oct 2026 20:01:12 -0700
 From: Borislav Petkov <bp@alien8.de>
-To: Reinette Chatre <reinette.chatre@intel.com>
-Cc: Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, x86@kernel.org,
-	Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
-	mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
-	kas@kernel.org, rick.p.edgecombe@intel.com,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
- mode at boot
-Message-ID: <20261031010744.GFauU_YJdX2eV6GoHV@fat_crate.local>
-References: <cover.1793392128.git.babu.moger@amd.com>
- <c1e5ef23e83ea663e9aa969e301fac20723a988a.1793392128.git.babu.moger@amd.com>
- <3ebc7028-c559-4add-800a-614b29d66ba3@intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
+Subject: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
+Message-ID: <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
+ <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
+ <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+ <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+ <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+ <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -89,23 +103,58 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3ebc7028-c559-4add-800a-614b29d66ba3@intel.com>
+In-Reply-To: <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
 
-On Fri, Oct 30, 2026 at 03:08:09PM -0700, Reinette Chatre wrote:
-> To help future readers understand how we landed on this I think it may be useful
-> to add a link to the decision that resulted in this fix. For example: 
-> 
-> 	...
-> 	Leave mbm_assign_mode in default mode during initialization as decided in [2].
-> 	...
-> 	Link: https://lore.kernel.org/20260804191608.GDanI6eK2Q07w6pNcb@fat_crate.local # [2]
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-I can fix that up when applying, yes.
+A K: is a content regex file pattern which matches any text in a patch
+so if a commit message contains "tdx" as in
 
-Any other Links I should add? I don't have a problem with leaving enough
-breadcrumbs for the future...
+  has_tdxe_auto_clear
 
-Thx.
+for example, see
+
+  https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp.renesas.com
+
+get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
+obviously is a completely unrelated patch.
+
+The same happens when someone uses it to check
+
+  drivers/power/reset/tdx-ec-poweroff.c
+
+patches.
+
+So switch the x86 TDX patterns to files and directories (F:) wildcard
+type patterns and group them by path, for less false positives.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local
+---
+ MAINTAINERS | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7a162e9bcab1..015cf66afb96 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -30347,8 +30347,11 @@ L:	linux-coco@lists.linux.dev
+ L:	kvm@vger.kernel.org
+ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
+-N:	tdx
+-K:	\b(tdx)
++F:	arch/x86/**/*tdx*
++F:	Documentation/**/*tdx*
++F:	drivers/virt/coco/tdx*/
++F:	include/uapi/linux/tdx
++F:	tools/testing/selftests/tdx/
+ 
+ X86 VDSO
+ M:	Andy Lutomirski <luto@kernel.org>
+-- 
+2.53.0
+
 
 -- 
 Regards/Gruss,
