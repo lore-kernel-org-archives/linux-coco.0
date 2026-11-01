@@ -1,98 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793559320;
-	b=jnn6KtakhAiOYvWfiyVR7g3PNYopRcHyB7ZIA7dHf6tXppuDt1i3nhhzUFfs7i4TZKYm
-	 U3GeNrmbK5DqqTwvkrsJPt7bWYJIA4TDTUCrv0ii1YeG65kIVS24Dtg7QXi4eQ2hjAp9x
-	 3ItwvKA1+elpWvYW3R5l0ESyXhXC4nGJSGpQyEh+HTB2cWqoCkdA765z9YBaIrNSPmeQ1
-	 yUspGH6jYn+82sD6kLZ68ceqjulLIijE0Gs0lTxuXkpRTDUeePg7n+zmgvHcMChi51Nxr
-	 9l6hOVS88d24/cIW8rIEEo2gRR5YAWV8SopZoVSKzxx2aQWgUFyCdG8O/fBIthE/mSQ==
+	t=1793559579;
+	b=1wFDSk/1UccnVhIVJU675n2ss7x8DasU5yn7XdaGbS1E53JbSLY0zuj7pmi+2sAlHLN7
+	 J4P5cRI/7jZ2kGUQOJ/jrv47Xda4ElQ1iHutIxJktYkG4L+jZbo+HNkuVa6uqQQshG5UO
+	 tIhOrre3jUnyI+3O6+MEam7arrCAlxhhMf9BdoxBhXjuflffrM7cbzdoFx0ZPv8DqCmTN
+	 97/SoZ6GAurczRwdxBl4jMAQFhWo6zncmu04ithdiRaoXBf7RFE+mj7QCrAekNXKAn6T2
+	 yU370ohOpE83nJSEVm8w1/5jz+vgMk/QnGrLju0siLxDBAOEnhc2JA/i5kyCl9ouTfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793559320;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=ScgBFQ2sEKk0TgN1KH7zHW+IlMrnPfyRl1r/gf8Y950=;
-	b=bJJpT7+AFAiG+bTppZ9G2iYDHcLsLbAe4zCLFHSSwjhJ94m6m1Wgvz784fX5vusjzufV
-	 oou6oYNJU9CNSU0CFXQD4Dw/Bxeb7KecbBhcC8BsIK63s6me3NBsTtfQgh4zU9dLDujXW
-	 LG8qhv8ZGuHj4F8jgJMvcpJBOSqKO53u21SUrdixA1cPPU6aQuv93fN0b+iWnozaE8Z9l
-	 HxajyQi0mNURB3taWCXNbAVQ1xn1Yid8t7/HYCy1r3TsdD9nWxd6DMKtpJGVHuB2gIujw
-	 HuSOFie/CQuHseJ3OA3H2Jz63RuxmxqEX+n+79jlRHu6KcJ/rMZNsBSuunns4xB9wbA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793559579;
+	h=DMARC-Filter:Received:Received:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-Spam-Status:X-Rspamd-Server:
+	 X-Stat-Signature:X-Rspamd-Queue-Id:X-Session-Marker:X-Session-ID:
+	 X-HE-Tag:X-HE-Meta;
+	bh=rKS7EROUAy7n7sobIAuUF7+6WoGtzT2rcSavJ4CCIuk=;
+	b=RaRc527U1vfOFlIP8JgDroTxhq4LJqbyIpl1EdylLPFgsg5huZGyB8zgXbqpZiebvNwy
+	 O6RiJkDNozIhEJZanq/a590jbTahp5hzjztLwOtyv/deRfkLgWTqQsOPuegL5fkV+oxI1
+	 WZIOv5eZRpG8FrvUQCIqqrQCX3mDr+oEvnHCWn7i87P2x+iBBm2OzDybZ8x6IZ5iA/DNg
+	 DpkdksCIo2mtD26w0xLPeLTnujuJnHNQDZRRT/OeJbzISViPvizkj06b2rEXOtqCQgKmb
+	 yEJUHsLbxyyVwGM28k65+u3zDizItckObZ7FsVUITLv4Bh9KxOmNxCXFuolVQ0eOuwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Fd0sAu6A;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dmarc=none header.from=perches.com;
+	spf=pass smtp.mailfrom=perches.com;
+	arc=none smtp.remote-ip=216.40.44.12
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB4606A324
-	for <linux-coco@lists.linux.dev>; Sun,  1 Nov 2026 18:55:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFCB4606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Fd0sAu6A
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0AFD240E02B7;
-	Sun,  1 Nov 2026 18:55:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id GiwTy8Y-tnlr; Sun,  1 Nov 2026 18:55:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793559313; bh=ScgBFQ2sEKk0TgN1KH7zHW+IlMrnPfyRl1r/gf8Y950=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fd0sAu6Ag4L25Z3n/tp+oZ0Oac5dsyFgG6/NxLjkeA6Hzya3ScsIvwtPeIgOkyvAe
-	 dAZqcKKMvvewmJwsUX9PmE8HDgp1v290YCz5YzIMwPKOya/2OezBUlX/vL08wMTAhZ
-	 smETM8r1nrReNHkKK1+ODUsC3kQpvQnmaTqgRWmj995ROUril0Qzv7wiuY/qhdJIGn
-	 CDp+niWzh/rNEZUpzvu5XZe2rN0UfgOLoLU9xrzDOF57Zh3s3WrT7sleTwN/9ej3io
-	 WjeH8gzPwzAQp65KGWXh8eEgstVlwRBjZQ3TvqB0OVv337WVcokar1aWvKLULj7MM0
-	 5DAPQaI7v/rTyZ4zY74brkZ5sJQ15/UoCS+6rFg8k8+uCrTDeruN8SpXgaXC6aH4y6
-	 apg9cq7Na4RBP6jBszvo5GoIoH8zGkFO5xKPccEFVlne7i909/jMsnPtT9mDoEJPiX
-	 gGwPHcf2RBLShleWSk9R7qoURpZScNWjx/uqNDL4dDEtx9J5kcwcPfZqTORV9eqMgt
-	 tuANnMrgGsdSM8uwZlCjH6YNiqBUVrzenplMPpNfxpfvUiIsE7hpJ4ZUJwl+sG3YID
-	 YX/tDo/AV63BxCAIVV9as/lGxxH1mCa0q64r5dRfcOCDcPL1bnvE2I/oq2l5sNBM85
-	 tRBEFODZx1DB4hWnVwGyArZw=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 55AA740E0298;
-	Sun,  1 Nov 2026 18:54:55 +0000 (UTC)
-Date: Sun, 1 Nov 2026 10:54:52 -0800
-From: Borislav Petkov <bp@alien8.de>
-To: Joe Perches <joe@perches.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	"biju.das.au" <biju.das.au@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Au Dang <au.dang.jx@renesas.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35EA606A333
+	for <linux-coco@lists.linux.dev>; Sun,  1 Nov 2026 18:59:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D35EA606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8EC03A0A95;
+	Sun,  1 Nov 2026 18:59:30 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf03.hostedemail.com (Postfix) with ESMTPA id CB7186000B;
+	Sun,  1 Nov 2026 18:59:25 +0000 (UTC)
+Message-ID: <44db8c930587810e902dcb36b5a0718a52eb94fc.camel@perches.com>
 Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <20261101185452.GAaueK_PzlK68DsmRz@fat_crate.local>
+From: Joe Perches <joe@perches.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe	
+ <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Krzysztof Kozlowski	 <krzk@kernel.org>, Biju Das
+ <biju.das.jz@bp.renesas.com>, "biju.das.au"	 <biju.das.au@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
+ "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
+ "linux-serial@vger.kernel.org"	 <linux-serial@vger.kernel.org>,
+ "linux-renesas-soc@vger.kernel.org"	 <linux-renesas-soc@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,  "linux-coco@lists.linux.dev"	
+ <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ Au Dang <au.dang.jx@renesas.com>
+Date: Sun, 01 Nov 2026 10:59:24 -0800
+In-Reply-To: <20261101185452.GAaueK_PzlK68DsmRz@fat_crate.local>
 References: <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
- <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
- <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
- <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
- <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
- <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
- <5ad69a1167fddc7caf1eb73e439765116db1ce17.camel@perches.com>
- <20261101014710.GEauaaHoYk5TzRpGBQ@fat_crate.local>
- <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
+	 <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+	 <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+	 <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
+	 <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
+	 <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
+	 <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
+	 <5ad69a1167fddc7caf1eb73e439765116db1ce17.camel@perches.com>
+	 <20261101014710.GEauaaHoYk5TzRpGBQ@fat_crate.local>
+	 <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
+	 <20261101185452.GAaueK_PzlK68DsmRz@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -102,19 +78,24 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
+X-Rspamd-Server: rspamout06
+X-Stat-Signature: j5g9rtxhq7odxsr3gt3d6798659r1mp8
+X-Rspamd-Queue-Id: CB7186000B
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19vCIaGkHorItTUazhptROnmHM9y+ZDxXw=
+X-HE-Tag: 1793559565-30508
+X-HE-Meta: U2FsdGVkX18XvreR4HU9/cED9LP6S0o8okYYC69f0b+TbxhNjW7lJ+E26iQGMtTTQ7KQNyqnwf5NpSWBV8UUuNV50fopKmNBiNSIRtQIzMIaRqXc6VtCCtE3unfuv144ILR8SMuZP76QPN3bBAzCgGTLxC6bIbAXbCivJJPE3Rv2zt7D4yniy5p6KvxbEmJXzW8uX9hGsxwIvvH3GjMF7Z0PgIgMXKgP7HvRMc0h+ntdfwt7kmAR30etnQaSWj7NH/TzbWqvDzK6/5Y1Q91qai8rJSHi48pNUaIX+LWOIDaZg2h3qA3AQh24c12kByeB
 
-On Sat, Oct 31, 2026 at 10:35:57PM -0700, Joe Perches wrote:
-> No.  The intent is to match typical file matching patterns.
+On Sun, 2026-11-01 at 10:54 -0800, Borislav Petkov wrote:
+> On Sat, Oct 31, 2026 at 10:35:57PM -0700, Joe Perches wrote:
+> > No.  The intent is to match typical file matching patterns.
+>=20
+> Are you trying to have the same matching behavior as <pathspec> of git?
+>=20
+> See section "pathspec" in gitglossary(7).
 
-Are you trying to have the same matching behavior as <pathspec> of git?
+Not completely no.
 
-See section "pathspec" in gitglossary(7).
+I've no particular use in match '^:' in file patterns.
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+I think no maintainer would either.
