@@ -1,73 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793518139;
-	b=ZVX0KqF9/8rySpjRvapEpmmeN+ePYqYLVS89KoHvXgNda+EwUUyjY4tsgeCw6NP2wxCt
-	 pWvqgrmvoo3yYS9yqJsjptN1b25/bPPWcrAULR/QzioU9QwMufPlfXkrVQvIaWKMTL4Mc
-	 k3CGnDEn0Gb/QNN3UE0QwTFFFLnN2U6pJIfpj1Co4dJJLqGHYpiAvNgv4dGPZOFN6Y+ut
-	 rbLR1xkpMnq/VFkfxsI9D8FVOKsHahwY0NtXebIshtMNdmcinKEsGE4ZJmBxtXRtAEf9T
-	 cRXukCTt3XYMlCPzmufSNht1l8nmMZ93G0S/ol19igjY/LGoMh9pUoE6+bBX1VwEOrQ==
+	t=1793559320;
+	b=jnn6KtakhAiOYvWfiyVR7g3PNYopRcHyB7ZIA7dHf6tXppuDt1i3nhhzUFfs7i4TZKYm
+	 U3GeNrmbK5DqqTwvkrsJPt7bWYJIA4TDTUCrv0ii1YeG65kIVS24Dtg7QXi4eQ2hjAp9x
+	 3ItwvKA1+elpWvYW3R5l0ESyXhXC4nGJSGpQyEh+HTB2cWqoCkdA765z9YBaIrNSPmeQ1
+	 yUspGH6jYn+82sD6kLZ68ceqjulLIijE0Gs0lTxuXkpRTDUeePg7n+zmgvHcMChi51Nxr
+	 9l6hOVS88d24/cIW8rIEEo2gRR5YAWV8SopZoVSKzxx2aQWgUFyCdG8O/fBIthE/mSQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793518139;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=ZEkTE9TgeFOprp8X/PqQu5dF595QKTp33C0W7LGmaFo=;
-	b=fpN8Grzt2ZfCFC4oybytFQn7IyTR4wiFYtIKaRKvHhMA6QTjnGNE6aN61o1Epa/03Vvk
-	 lMq50r424h8TyQCd8hTiji0CiZ/kq1yH8ukMM5sdThDkQk/ILgIs9dguQyB33seKC8WMq
-	 AmBNAbDf3EGAj4Tlo27JPt0sYz90J+TqSkScCnsldRKZQx8uRyN5ejOHQbq8EREOQ6RrL
-	 Aa3Xe0EknjT8T2sH18ZVJXUSyo2hEUEGYyVmT5tPKoUKlyxQkD54Xg4691LhtyX74QjbQ
-	 i4UA3GhBFAFKqX6tp0j31ChqRulblFaJ1f136HPkKojwPWyuzQ2imAcAIgrei2tfprg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793559320;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=ScgBFQ2sEKk0TgN1KH7zHW+IlMrnPfyRl1r/gf8Y950=;
+	b=bJJpT7+AFAiG+bTppZ9G2iYDHcLsLbAe4zCLFHSSwjhJ94m6m1Wgvz784fX5vusjzufV
+	 oou6oYNJU9CNSU0CFXQD4Dw/Bxeb7KecbBhcC8BsIK63s6me3NBsTtfQgh4zU9dLDujXW
+	 LG8qhv8ZGuHj4F8jgJMvcpJBOSqKO53u21SUrdixA1cPPU6aQuv93fN0b+iWnozaE8Z9l
+	 HxajyQi0mNURB3taWCXNbAVQ1xn1Yid8t7/HYCy1r3TsdD9nWxd6DMKtpJGVHuB2gIujw
+	 HuSOFie/CQuHseJ3OA3H2Jz63RuxmxqEX+n+79jlRHu6KcJ/rMZNsBSuunns4xB9wbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K8xgiLEf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Fd0sAu6A;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EA6606A324;
-	Sun,  1 Nov 2026 07:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB4606A324
+	for <linux-coco@lists.linux.dev>; Sun,  1 Nov 2026 18:55:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFCB4606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K8xgiLEf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734D41F000C1;
-	Sun,  1 Nov 2026 07:28:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793518138;
-	bh=ZEkTE9TgeFOprp8X/PqQu5dF595QKTp33C0W7LGmaFo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=K8xgiLEfZj/gyEaaz2uZMZEtINC0VjibSRUzhyA0UtxtVj7GBaePTRNRR5fWz/W9l
-	 xbPqnCcpLaOo0aRXU3RMM0zMN4VGVdy0m0nQmDoPizWSzBvPjHm9AkJpHifvSWqqVA
-	 3G7EEBcuXL7pKNXHrvz/ow7TSqx7rpRsWv4eFNlxaGzKnkewO7xsNcu8elCrWHzfjo
-	 eLhX7+EkulhuuyBzXYopkKEo5/fGiKchuInGtrXvWKoy/dUVy+Lb++wylvey4+ztZE
-	 9G8ROFw68lG4BH3Zg1puVCJ4P6+9BpO4NxGFID+CzmVs+ykCBaiKornyJlcnjea3/t
-	 x5PLjVjP9f2vg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev
-Cc: Alex Williamson <alex@shazbot.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Will Deacon <will@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v2 02/13] KVM: guest_memfd: Support private/shared
- conversion of device memory
-In-Reply-To: <CAEvNRgFEKqVZcNYCL0LpB6BTyBFe+ot1x1nFfEqOrSTsu134PQ@mail.gmail.com>
-References: <20261017073149.1303738-1-aneesh.kumar@kernel.org>
- <20261017073149.1303738-3-aneesh.kumar@kernel.org>
- <CAEvNRgEh3E7NBc5_3Wq66Fss-mAYT6+4FWP5+=Co6+OVfVnQQQ@mail.gmail.com>
- <CAEvNRgFEKqVZcNYCL0LpB6BTyBFe+ot1x1nFfEqOrSTsu134PQ@mail.gmail.com>
-Date: Sun, 01 Nov 2026 12:58:48 +0530
-Message-ID: <yq5a33tl9fin.fsf@kernel.org>
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Fd0sAu6A
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0AFD240E02B7;
+	Sun,  1 Nov 2026 18:55:16 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id GiwTy8Y-tnlr; Sun,  1 Nov 2026 18:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793559313; bh=ScgBFQ2sEKk0TgN1KH7zHW+IlMrnPfyRl1r/gf8Y950=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fd0sAu6Ag4L25Z3n/tp+oZ0Oac5dsyFgG6/NxLjkeA6Hzya3ScsIvwtPeIgOkyvAe
+	 dAZqcKKMvvewmJwsUX9PmE8HDgp1v290YCz5YzIMwPKOya/2OezBUlX/vL08wMTAhZ
+	 smETM8r1nrReNHkKK1+ODUsC3kQpvQnmaTqgRWmj995ROUril0Qzv7wiuY/qhdJIGn
+	 CDp+niWzh/rNEZUpzvu5XZe2rN0UfgOLoLU9xrzDOF57Zh3s3WrT7sleTwN/9ej3io
+	 WjeH8gzPwzAQp65KGWXh8eEgstVlwRBjZQ3TvqB0OVv337WVcokar1aWvKLULj7MM0
+	 5DAPQaI7v/rTyZ4zY74brkZ5sJQ15/UoCS+6rFg8k8+uCrTDeruN8SpXgaXC6aH4y6
+	 apg9cq7Na4RBP6jBszvo5GoIoH8zGkFO5xKPccEFVlne7i909/jMsnPtT9mDoEJPiX
+	 gGwPHcf2RBLShleWSk9R7qoURpZScNWjx/uqNDL4dDEtx9J5kcwcPfZqTORV9eqMgt
+	 tuANnMrgGsdSM8uwZlCjH6YNiqBUVrzenplMPpNfxpfvUiIsE7hpJ4ZUJwl+sG3YID
+	 YX/tDo/AV63BxCAIVV9as/lGxxH1mCa0q64r5dRfcOCDcPL1bnvE2I/oq2l5sNBM85
+	 tRBEFODZx1DB4hWnVwGyArZw=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 55AA740E0298;
+	Sun,  1 Nov 2026 18:54:55 +0000 (UTC)
+Date: Sun, 1 Nov 2026 10:54:52 -0800
+From: Borislav Petkov <bp@alien8.de>
+To: Joe Perches <joe@perches.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
+Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
+Message-ID: <20261101185452.GAaueK_PzlK68DsmRz@fat_crate.local>
+References: <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+ <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+ <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
+ <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
+ <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
+ <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
+ <5ad69a1167fddc7caf1eb73e439765116db1ce17.camel@perches.com>
+ <20261101014710.GEauaaHoYk5TzRpGBQ@fat_crate.local>
+ <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,115 +102,19 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+On Sat, Oct 31, 2026 at 10:35:57PM -0700, Joe Perches wrote:
+> No.  The intent is to match typical file matching patterns.
 
-> Ackerley Tng <ackerleytng@google.com> writes:
->
->> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
->>
->>>
->>> [...snip...]
->>>
->>> +static int kvm_gmem_device_convert(struct inode *inode, pgoff_t start,
->>> +		pgoff_t nr_pages, const struct guest_memfd_device_request *req,
->>> +		const struct kvm_memory_slot *slot)
->>> +{
->>> +	struct gmem_inode *gi = GMEM_I(inode);
->>> +	u64 attrs = req ? KVM_MEMORY_ATTRIBUTE_PRIVATE : 0;
->>> +	bool prepared = false;
->>> +	int ret;
->>> +
->>> +	MA_STATE(mas, &gi->attributes, start, start + nr_pages - 1);
->>> +
->>> +	filemap_invalidate_lock(inode->i_mapping);
->>> +	if (__kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs)) {
->>> +		ret = 0;
->>> +		goto out;
->>> +	}
->>> +
->>> +	if (req && !__kvm_gmem_range_has_attributes(inode, start, nr_pages, 0)) {
->>> +		ret = -EEXIST;
->>> +		goto out;
->>> +	}
->>> +
->>> +	ret = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
->>> +	if (ret)
->>> +		goto out;
->>> +
->>> +	kvm_gmem_invalidate_start(inode, start, start + nr_pages, KVM_FILTER_SHARED);
->>> +	if (req && READ_ONCE(gi->device.kvm->vm_dead))
->>> +		ret = -EIO;
->>> +	else
->>> +		ret = gi->provider_ops->prepare_conversion(gi->provider, req);
->>> +	if (!ret) {
->>> +		prepared = true;
->>> +		if (req)
->>> +			ret = kvm_gmem_device_make_private(inode, slot, req, nr_pages);
->>
->> Is there a way to avoid making private from within the conversion flow?
->>
->> kvm_gmem_device_map() below already does it as part of vcpu_run.
->>
->> If we do the above, we'd be aligned with regular conversions, where
->> to-shared conversions eagerly update arch state (make_shared) but
->> to-private notifications to the firmware are done lazily.
->>
->
-> I was a bit confused above. IIUC to handle
-> RMI_EXIT_VDEV_VALIDATE_MAPPING, the conversion is not done from outside
-> the kernel, instead it is done in the vcpu_run completion hook.
->
+Are you trying to have the same matching behavior as <pathspec> of git?
 
-All of that has changed in the latest series.
-kvm_complete_vdev_map_validate() now does the following. For the dependent
-changes in other subsystems, you may want to fetch the Git branch
-mentioned in the cover letter.
+See section "pathspec" in gitglossary(7).
 
-static void kvm_complete_vdev_map_validate(struct kvm_vcpu *vcpu)
-{
-	struct kvm *kvm = vcpu->kvm;
-	struct realm_rec *rec = &vcpu->arch.rec;
-	struct realm *realm = &kvm->arch.realm;
-	struct kvm_memory_slot *slot;
-	unsigned long start = rec->run->exit.dev_mem_base;
-	unsigned long top = rec->run->exit.dev_mem_top;
-	unsigned long rd = virt_to_phys(realm->rd);
-	unsigned long rec_phys = virt_to_phys(rec->rec_page);
-	int idx, ret;
+-- 
+Regards/Gruss,
+    Boris.
 
-	if (vcpu->run->cca_exit.response != KVM_ARM64_TIO_RESPONSE_APPROVE ||
-	    top <= start || !PAGE_ALIGNED(start | top | rec->run->exit.dev_mem_pa) ||
-	    !kvm_realm_is_private_address(realm, start) ||
-	    !kvm_realm_is_private_address(realm, top - 1))
-		goto reject;
-	idx = srcu_read_lock(&kvm->srcu);
-	slot = gfn_to_memslot(kvm, gpa_to_gfn(start));
-	if (!slot || (slot->flags & KVM_MEMSLOT_INVALID) ||
-	    !(slot->flags & KVM_MEMSLOT_GMEM_DEVICE) ||
-	    gpa_to_gfn(top - 1) >= slot->base_gfn + slot->npages ||
-	    slot->arch.device.vdev_id != rec->run->exit.vdev_id_1)
-		goto out_reject;
-	/* Userspace installs the mapping through guest_memfd before approval. */
-	if (!kvm_gmem_range_has_attributes(slot, gpa_to_gfn(start),
-					   gpa_to_gfn(top), KVM_MEMORY_ATTRIBUTE_PRIVATE))
-		goto out_reject;
-	while (start < top) {
-		unsigned long next, rmi_ret;
-
-		ret = rmi_rtt_dev_validate(rd, rec_phys, start, top, &next, &rmi_ret);
-		if (ret || rmi_ret || next <= start || next > top)
-			goto out_reject;
-		start = next;
-	}
-	srcu_read_unlock(&kvm->srcu, idx);
-	return;
-out_reject:
-	srcu_read_unlock(&kvm->srcu, idx);
-reject:
-	rec->run->enter.flags |= REC_ENTER_FLAG_DEV_MEM_RESPONSE;
-}
-
-
--aneesh
+https://people.kernel.org/tglx/notes-about-netiquette
