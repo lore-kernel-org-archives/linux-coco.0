@@ -1,80 +1,149 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793628859;
-	b=W/yQrQWF7LQ8SN4WjOrQgvEB4DpFiXpNzPVHl4LSSXZ0KbCMEkErL+Ye2frLwBbDeG9v
-	 UUpEo+/xHr6iXLqZZuwg0tEmRSonifS6KeQ5psOFM6az0NBhEFulu39bQysa1Hiw9A/y6
-	 hoSvYC00B7NAPWzonSccIR1xXF1AUS/xcbkg6u26edH1GG7L/EXRnQVJPT4AbOoxxaIqT
-	 1hmjQadCKJhUFKa9OxXVfyvCCUWgB/ertkK6tvIPivJ/eVABwcCD0xexa8f64YdKO5+9D
-	 OwvroLr3mFg1ODQoBN7v89dXKE/VexaCaBCSltCxsp7W+fkRDpklBWZ3Mk0rpeo6Ssg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793628859;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ALAeEjVWgPy4SEptVr1zQrhjVbK8Vf7hKcAAyJACeLI=;
-	b=30wZJXXtFwo+VWqPn5Sbx05PJROSYGwIyvGqoBKk0/5g4XsWIrPYEX8ZwqlBu+/qJZgV
-	 zkuW7+465XY4aVSfIZ1rSD20Ai9cz7VfXfou7+UXFq6qCPtyD5noiAeqT1ydQwO/1RW/y
-	 rJ81d+a2RSA5iMiZpO7im3yXg6p6d8mmOVpAkLTZw0DBqbBPNKMxAMBv7aykFXgZRu8Uw
-	 DxNZKLZ5d7m4YAIpP9OtgdOBQlS7wzK+hPloLT3peA9RGalI37/cCfZo17TfeEVua1Pks
-	 X4Cz8U6XkgPJNiVeeAFFTjCkc/10aL6IvUVXh5Pu1wadl+Ibl33dV9J5cEucUlvbrzQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=obxiM3AD;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E077D60A2607;
-	Mon,  2 Nov 2026 14:14:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E077D60A2607
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.58
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793628866;
+	b=4uIG8U4u67qmDzee45PFcwIkmR4HsHaUW2o1GzYeJSQbSCXCn4hnRtJdgsVoHDTDAkZ4
+	 Togli701f5p+q51PRHVnP5zY3vmdD4Q7Oz6k7uh5aAlVYSTKTVv/rq3nl95IXSlbukUil
+	 jXNIYQpOjs9q1cbnS1PnDYyf8zIjjl0YsdYMPj5vefID8Fb5/p4C7hhcBJRKC6iLkGGrA
+	 5xtNw9+pf0bOZpHcRccNAwg7H56a/tQ5UEodK05SED0Zador/urEOqVp2K2Hc20Y9TIdA
+	 i3oK9EfRq9NN2sHTzVHwUjJVnUzvdmJZK8WzIuvPWwY7/BLgjbv3cuFZOYDAvX/WoSw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793628866;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=AFz8AhkP+Hlsihi/lwAz6XLQdYYIq49NbymlBa5DHmg=;
+	b=qk7KH+N5bcnUqojGp5Chwq3L6y2AA9Q7mN6RG7aAn91WSYtFBPx/nvGrgMNaQe9Pgvkx
+	 CTlEmUc68YkHhQa7hKxw8M/i0db27PpVtwyz7DxSAMjPTP/wFbsW7Yf1mrNdY9c0aANg1
+	 gfkrtwZkOYPpRp0S3kwjfe3D43Y93icGoo/MbNQqTviR71KAWMJWf6kUX+p10ZPDzx4mo
+	 GGg8mR01RJhtrvLWrrwa5hAe97zOd5po/jTs7vQfwPaX9OZbjX3+tef/SbEG9Fkc3L86l
+	 JkUjd06vQOLNtbN9LhMM6d77R3pme4TJVx3POymS1U3Xl1WKmVgqVIkUYEiw0E8mWjw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=uDKLYVGS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.58
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012058.outbound.protection.outlook.com [40.107.209.58])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF7D606A985
+	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 14:14:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFF7D606A985
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=obxiM3AD
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 54CD219F0;
-	Mon,  2 Nov 2026 06:14:15 -0800 (PST)
-Received: from e122027.arm.com (unknown [10.57.58.9])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D117F3F59E;
-	Mon,  2 Nov 2026 06:14:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793628858; bh=az0uL1dtDvuJq+q1C7R/5lYcZ3dGeAC3e7zwtv7DLZU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obxiM3ADSy/fV1TNfQszBR+GET88JwTRthm3yYTPdCxZO8ddbQ88fr5DCuvkHw1FO
-	 7LX+A0sndUjMmqxHt+K71GG/36VuDBg604b8rAJM7+nDnvXk7RCvbuTCARHyljjHG0
-	 WH7MinrXaSHwH3e0j8D6I8o4YSjgw0IkjiKu8/BY=
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 10/11] KVM: arm64: CCA: Support runtime faulting of memory
-Date: Mon,  2 Nov 2026 14:13:01 +0000
-Message-ID: <20261102141304.126883-11-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102141304.126883-1-steven.price@arm.com>
-References: <20261102141304.126883-1-steven.price@arm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=uDKLYVGS
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FEmJsy0msX7zVVow2UFGywT7Mn3krH3mcqNca3PjFGrKeruXgMC+hOntSf+N3McLvLZyvbjeTrKXk5q+/Wc4bHY9xzKFHOamsGyr358L81GmqGPfpTcyd72fa6xnGB6UZHtIX1ZVXnlYZCTX00n/RiGoVBBZS0OU2rwLfSLUoxyQdUPiF3L8QgLfZpB8bCUFRECIYuG018lXeRyjUMxGMaCBLubrsKOtf0JY8ZfWScq+krO8anWpNTDkEfBm+W2cbYZSHk6+O8UidWkV/VrVMEITRjZTFYGDPN+5GTeMVlCaefmg6LD6xiXpD/dIUO7fTcrqM1Vp534VSaOA2+w+ug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AFz8AhkP+Hlsihi/lwAz6XLQdYYIq49NbymlBa5DHmg=;
+ b=r+uXU9CEk5NXvHl6bqzuhbMvrOQ5er+dKwfT6tf3RYfAK7/jnFSBFBh6l0Iy8uStFH0YJRlAV68DbdF07CxZRlZuKWpUgw/xp2qOik9/inB07y4mNEHYAbgvwDVvUu0LTwp19NMQcgzipOy6F/MZCivygw5bG080kzJptRy6ExjPDcM/N3ho3l+PVh5fvxo9///fcS4caWNuHdWUpUBQbidpREgHDHx+rce/S4496HLA+yemwwVBx1MC65+PGthnYhaFIyhxRyc0os0l71kw/DgdCfVKOv075Cc63JJOd2Y1d0bWO8AzeHuDPieS+XjKZjWLJU/hru2SsU2la6zdeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AFz8AhkP+Hlsihi/lwAz6XLQdYYIq49NbymlBa5DHmg=;
+ b=uDKLYVGS/b4tb2NuKcNyknurc+Pc1FyoTWiuIs5ixLiQfKtB7q6GpuYvRNgJqsa5S0TUW2zsZVOwM/3Wp+qx+Y2DyNy5k9+4/YU7a+iTtA5nLLL7gM1J8lUlLpVS5h9uC4H4+kWPpBmGJtCncaaFYtdnii6ZLm5ZunQQ7IcCzZA=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com (2603:10b6:806:32d::12)
+ by CYYPR12MB9015.namprd12.prod.outlook.com (2603:10b6:930:c8::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
+ 2026 14:12:20 +0000
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46]) by SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46%6]) with mapi id 15.21.0569.009; Mon, 2 Nov 2026
+ 14:12:20 +0000
+Message-ID: <414b2fc2-a55a-4b2d-ac70-4def101c4aee@amd.com>
+Date: Mon, 2 Nov 2026 08:12:16 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
+ disabled by firmware
+To: K Prateek Nayak <kprateek.nayak@amd.com>, Borislav Petkov <bp@alien8.de>,
+ Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+ pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, ackerleytng@google.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, darwi@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1793216372.git.ashish.kalra@amd.com>
+ <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
+ <20261102052841.GBaugfibOXxGorZKgq@fat_crate.local>
+ <69ed0d93-f96d-4baa-a587-fade5a0a3262@amd.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Content-Language: en-US
+Autocrypt: addr=thomas.lendacky@amd.com; keydata=
+ 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
+ WiyqywZI5g==
+In-Reply-To: <69ed0d93-f96d-4baa-a587-fade5a0a3262@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH5P223CA0001.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:610:1f3::27) To SN7PR12MB8131.namprd12.prod.outlook.com
+ (2603:10b6:806:32d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -84,576 +153,151 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8131:EE_|CYYPR12MB9015:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02c5a035-13e1-4b2e-a892-08df38eb4eea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|6133799003|10067099003|22082099003|18002099003|56012099006|11063799006|4143699003|261026121527099003|261021121427099003|261022075727099003|261026140227099003|261022105027099003|261009223027099003|261028144727099003|261021123027099003|260925022911599003|260925021911599003|260925021311599003;
+X-Microsoft-Antispam-Message-Info:
+	DHCTsDPDQHcTsaIM3ITdrzd+vkJ517m+KRqPcqr6eDdGBsmvn1xDugTxi2hE7XLZ6eQ/8ZPY+UebLRDFgaZpqi5VM1omTqXGjZ9qGJPAXdashheKxcDyGxODvQOvy2QyB1oA4V8O7+9sywlTjDfyIvQtuwmHHJSoXhicAcEGBz0Drt6CuRVw8gTWxALBiDMWcaIkFxZl7MWK02TWCSWa0MTTdfILgKD0ebUqGH3lI/s8rde3P1NX0mLF+ui4fE3gNZeHVj1nSmcOC2EfT+h+mPtDIIcADtFrnxvHCrzdMG9jGnvS8TTK/FynszHL8Mj0wt9RgEV2XXojLRA7iD8kDmtrBL10WR0Nl/Xit02xxo76R3tL7RcQzeC0TJkQOyvR697pIHd6XPpaOIstSwt3JD7hH09LkIFj/tLiWks5B6rjmvMreJT5BPOjogR7J42kZkPqirYPSEGwC7bMudTB4FTqsakUJ6c0NPaF94GIQ2PaZfSdrMHrhqV0bp7p8MnwZQCMFd1DmwADKqf3r5EBug5Eq5uJ/4TzS7O/VMIV8C0Rs2g9dZXGSnT6IsI21tlvPTfdRqeFOIbiZaqQ1Vbox0/l4DDQlXBmcLDgY4YHLFS2Vl3ojQqlgDOdLBMYYt4+
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8131.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(6133799003)(10067099003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(261026121527099003)(261021121427099003)(261022075727099003)(261026140227099003)(261022105027099003)(261009223027099003)(261028144727099003)(261021123027099003)(260925022911599003)(260925021911599003)(260925021311599003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U1M0aS9yZ0ZGVS9OZXlKZktoa3Vsc1kyUFpOK283M1Ztb2M1SXhCOERtZENJ?=
+ =?utf-8?B?NGV4dzdIQzU5ODhDM2FzZXRVVjFnaWhtaEprcldnekt6TXJzREpTZVZqZmdD?=
+ =?utf-8?B?MnBKbDdqQ0tIRXZ6S01wRE9WMS9XampSN3I4YkFvdGtCTFBUVmFia2FVSjVJ?=
+ =?utf-8?B?Vnl0WUNwZUNGUWs0dDM0STJwTklQSWxsMjNsZXlNWWc4dDdCYU5JdmRqTTVx?=
+ =?utf-8?B?QXlvTTlmbDdiZFdyOXdQT0lQWG4wNXJZK1IwWW5LYVFjNnVMN0R6RS91aC82?=
+ =?utf-8?B?cWJiU1kxaGNDNTAvcHRDd2IzK2R4eHEvK2ZlUUl6dXNpT2NJa25JdVNoaWZ3?=
+ =?utf-8?B?REYwZmNZcEVsZGluS29idGR6RGVNR3JjSXNNdmVhNXhidDJqNzRXUm5SeXhY?=
+ =?utf-8?B?bldCTGNXZCsyRENmV1NnUWQ1TnkzYnlPWnFqRWtnRENYbkVmNE5oWHVDZ1hr?=
+ =?utf-8?B?dndJcEU5dnZ3MHQ1YnNZUndpNUt2c2N4bUJ1a0xjdlRVU0tISnZBZC9LUjE3?=
+ =?utf-8?B?TzNxREYvYXoyL2FKQi8wY3N5U2ZHVEhHQ0h1T1p0ZHR2d3BpYjh6cWwwVDhC?=
+ =?utf-8?B?bnMxWFFpOW9sZlFJcFFvcjVFSzJFOXJPSUN2ZklmUjV1ZTZxK3ZQZnB5ZWd3?=
+ =?utf-8?B?R1BBMHgyd1VoVXJzWWRuc01ka2dObXFGeVlyakhVN0pZdFdrVUVSQS9aWGdN?=
+ =?utf-8?B?a0RZWnZ0SDM1bHp0TmlpWk1uUGtCb1lFMFI5RkprdXhyNXVsa3NoSDJBTUNZ?=
+ =?utf-8?B?TzBiZzhITDZJbUx6enppNDIxdFdVZkhFdSt0SHdaYkhBUklIRk1hOG13dlIz?=
+ =?utf-8?B?ekp4cm1LeFVLVm1GaklzcW5IVWpYSkVWNFpoV01zeVRvUnBtLyszSWtkU3pp?=
+ =?utf-8?B?eUVkYzIxYmRYNDZkV3BPYTRDUGduQUo3ckVMT08wd3REVE03ZHBhZklzSWc3?=
+ =?utf-8?B?akJ1RjcyVlJoZ0NNbFR3SHFWWDUzclp0WGNrMVpQMFpxekJRSitYNUhSQnJ2?=
+ =?utf-8?B?OUJ3OGp5bXJMUnl3ZDRFUmZRamtTSUtnMXJIUXcvZU13R2NoajVDcnl4TWth?=
+ =?utf-8?B?V21JUHQ2bE11NTA4WXUxWVZVbjFneHRCUHlrUXBBRU1RRDdHWVQ5cWhqMW4w?=
+ =?utf-8?B?RE4vdEM0bDMxa2VJT3dXUVJoRysxM2V2R1lUZHBGdFAzN2hERXBsKzU0bkZn?=
+ =?utf-8?B?a09lSnJJUnd4bTJESGt4NFVKdDNXZmcwWFJOaEVMRTA2aER2eXhRdm42Y1k0?=
+ =?utf-8?B?ZEtwZFdRM0o3SzNQazFsRFZ0RTQ1M0l1T3RtVFF3YktvWE1VWDZFNjFKamVz?=
+ =?utf-8?B?UTRXYWRlQjJtU0lOQ21ZaERDR3RlNHdEMzh3RlNBMEZVSXgvNURxTTFtUUxB?=
+ =?utf-8?B?SXNKVkU0NjgyRjhCMWd0WTRwcHgvNFdQamt0MXRsV1NlWCs3Vk9jM1NIWEFZ?=
+ =?utf-8?B?aDRYWldsMVJVcndTWmlFN0ZqWHN0YUtPUHloOHRPUmpDREN4N2FjenpMc1pC?=
+ =?utf-8?B?V2VXV2JjVThuS2txYXB0VUtqSDlaZG41MENLZFkrV0NSWERxOUNNU3ZVZkVk?=
+ =?utf-8?B?SW9MZWd4OFY0bEVidDlNTndJMzRUYU1ZQjdLMWlzK1dlRkhUd3dyanlBNmRD?=
+ =?utf-8?B?YXlnY3pQTDhGeFNoZTJiWTlLV01lZkU0YjZBdHJicE83VkFHc2x2V2sxdWd0?=
+ =?utf-8?B?UzdHSjdET2JWOXZUejQvYnVCdk5Cb3dOSFhwWW50SkM0TFpTcW9XRU1ic0hC?=
+ =?utf-8?B?NXRiOGVkWUV2cmlOVXU4KzdRaGVaWElxMTFaRVQzS0NVeFZJcXhScFMzbG9D?=
+ =?utf-8?B?eXUxTzlyNU9QNUh1OXRUTXhYWGNoWWpqaEZmanYzQzVwakhUa1dNYy8zTXRK?=
+ =?utf-8?B?ekRKdys4K0pPMGtiRkZULzBMKzNiM2VUcXFWZGZjZzdCWjZkK3RWL21zVHB1?=
+ =?utf-8?B?b0ZneVBYdXIwTng2Vi9WWjFESkQ3WmNlTEpKWlJiK2JJQzJQSHBRZ1VwV29I?=
+ =?utf-8?B?SzdnU01CRFNaWGc1VkZWbU1ucmI3YWUzZ0pZeDUxRjhDTEIxY1oxSnlvLzhQ?=
+ =?utf-8?B?WnBreHUrSjR6cmZvY1hGaVZxV0dPbHNwS2sxNm5OeGtUOWpNYmpLMVRBUm0v?=
+ =?utf-8?B?SlJJZlBpM0VkV1NGWHpRanJmUU5Oc3NHRGFhY2VDWkhRWEZhZ1hZd1NGc2pq?=
+ =?utf-8?B?M2NJaVJ3OENPeEFuVlF5S3BnS0U3aXBQVkpSMUZCeUMvcnJISURvekxYNldD?=
+ =?utf-8?B?MVZVQXovNTZWSkNweW1NMUpEU0FrN1R5S1lVT0wzUDBodFBMa2pic3lUU0J6?=
+ =?utf-8?Q?yt6xLIO3vyppO153GR?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02c5a035-13e1-4b2e-a892-08df38eb4eea
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8131.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 14:12:20.4648
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FOOOnqvfoOwkdIRxiPHlFhllS3+uwZ2emlMfsyhMN6JmNaE/BFTB7tLx7ecV4G2SGAxxTJh9vJBvpGSvhANgCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB9015
 
-At runtime if the realm guest accesses memory which hasn't yet been
-mapped then KVM needs to either populate the region or fault the guest.
+On 11/2/26 00:12, K Prateek Nayak wrote:
+> Hello Boris,
+> 
+> On 11/2/2026 10:58 AM, Borislav Petkov wrote:
+>> Segmented RMP support is advertised via X86_FEATURE_SEGMENTED_RMP, and the
+>> firmware enables it via MSR_AMD64_RMP_CFG[SEG_RMP_ENABLED]. The latter can be
+>> cleared in platform BIOS by the user, in which case the system runs in
+>> contiguous RMP setting.
+> 
+> nit. In the latter case, SNP is disabled entirely in bsp_determine_snp and
+> the system won't continue with contiguous RMP.
 
-For memory in the lower (protected) region of IPA, verify that the
-corresponding guest_memfd page is private before delegating to the RMM.
-The RMM then maps the page into the realm and initializes its contents
-to zero.
+Heh, I don't think that is a nit, it is broken.
 
-For memory in the upper (shared) IPA region, map the backing page as
-non-secure memory. Check that a guest_memfd page is shared when the
-fault uses guest_memfd; ordinary userspace-backed memslots follow the
-normal user memory fault path.
+I think the code as it was read fine, but that's just my opinion.
 
-If the fault IPA and guest_memfd attributes disagree then exit to
-userspace with KVM_EXIT_MEMORY_FAULT so the VMM can perform the required
-conversion.
-
-Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/include/asm/kvm_emulate.h |  13 ++
- arch/arm64/include/asm/kvm_rmi.h     |   7 +-
- arch/arm64/kvm/mmu.c                 | 115 +++++++++++---
- arch/arm64/kvm/rmi.c                 | 228 ++++++++++++++++++++++++++-
- 4 files changed, 336 insertions(+), 27 deletions(-)
-
-diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-index 32021bdf2610..8a71fddfdb85 100644
---- a/arch/arm64/include/asm/kvm_emulate.h
-+++ b/arch/arm64/include/asm/kvm_emulate.h
-@@ -847,4 +847,17 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
- 	return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
- }
- 
-+static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t ipa)
-+{
-+	if (!kvm_vm_is_realm(kvm))
-+		return ipa;
-+
-+	return ipa & ~BIT(kvm->arch.realm.ia_bits - 1);
-+}
-+
-+static inline gfn_t kvm_gfn_from_fault(struct kvm *kvm, phys_addr_t ipa)
-+{
-+	return gpa_to_gfn(kvm_gpa_from_fault(kvm, ipa));
-+}
-+
- #endif /* __ARM64_KVM_EMULATE_H__ */
-diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-index 72a9449f00d7..105660d4d56a 100644
---- a/arch/arm64/include/asm/kvm_rmi.h
-+++ b/arch/arm64/include/asm/kvm_rmi.h
-@@ -6,6 +6,7 @@
- #ifndef __ASM_KVM_RMI_H
- #define __ASM_KVM_RMI_H
- 
-+#include <asm/kvm_pgtable.h>
- #include <linux/arm-smccc-rmi.h>
- #include <linux/kvm.h>
- 
-@@ -92,9 +93,13 @@ void kvm_realm_unmap_range_filter(struct kvm *kvm,
- void kvm_realm_unmap_range(struct kvm *kvm,
- 			   unsigned long ipa,
- 			   unsigned long size,
--			   bool unmap_private,
- 			   bool may_block);
- 
-+int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
-+		  kvm_pfn_t pfn, unsigned long map_size,
-+		  enum kvm_pgtable_prot prot,
-+		  struct kvm_mmu_memory_cache *memcache);
-+
- static inline bool kvm_realm_is_private_address(struct realm *realm,
- 						unsigned long addr)
- {
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index eb8c5f9e9791..20aedbe6ec07 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -434,7 +434,11 @@ static void stage2_flush_memslot(struct kvm *kvm,
- 	phys_addr_t addr = memslot->base_gfn << PAGE_SHIFT;
- 	phys_addr_t end = addr + PAGE_SIZE * memslot->npages;
- 
--	kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
-+	if (kvm_vm_is_realm(kvm))
-+		kvm_realm_unmap_range_filter(kvm, addr, end - addr, true,
-+					     KVM_FILTER_SHARED);
-+	else
-+		kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
- }
- 
- /**
-@@ -1221,6 +1225,10 @@ void stage2_unmap_vm(struct kvm *kvm)
- 	struct kvm_memory_slot *memslot;
- 	int idx, bkt;
- 
-+	/* For realms this is handled by the RMM so nothing to do here */
-+	if (kvm_vm_is_realm(kvm))
-+		return;
-+
- 	idx = srcu_read_lock(&kvm->srcu);
- 	mmap_read_lock(current->mm);
- 	write_lock(&kvm->mmu_lock);
-@@ -1790,6 +1798,10 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
- 	void *memcache = NULL;
- 	gfn_t canonical_gfn;
- 	int ret;
-+	bool is_realm_private = false;
-+
-+	if (KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
-+		return -EINVAL;
- 
- 	if (!perm_fault) {
- 		memcache = get_mmu_memcache(s2fd->vcpu);
-@@ -1804,7 +1816,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
- 	}
- 
- 	s2vi.vma_pagesize = PAGE_SIZE;
--	s2vi.gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi.vma_pagesize) >> PAGE_SHIFT;
-+	s2vi.gfn = gpa_to_gfn(kvm_gpa_from_fault(kvm, s2fd->fault_ipa));
- 	canonical_gfn = get_canonical_gfn(s2fd, &s2vi);
- 
- 	write_fault = kvm_s2_fault_is_write(s2fd);
-@@ -1816,13 +1828,28 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
- 	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
- 	smp_rmb();
- 
-+	if (kvm_vm_is_realm(kvm)) {
-+		is_realm_private = kvm_realm_is_private_address(&kvm->arch.realm,
-+								s2fd->fault_ipa);
-+
-+		if (is_realm_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
-+			kvm_prepare_memory_fault_exit(s2fd->vcpu,
-+						      gfn_to_gpa(canonical_gfn),
-+						      PAGE_SIZE,
-+						      write_fault, exec_fault,
-+						      is_realm_private);
-+			kfree(mapping);
-+			return -EFAULT;
-+		}
-+	}
-+
- 	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, canonical_gfn, &s2vi.pfn, NULL);
- 	if (ret) {
- 		/* If result is non-NULL this is a synthetic fault. */
- 		if (!result)
- 			kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(canonical_gfn),
- 						      s2vi.vma_pagesize, write_fault, exec_fault,
--						      false);
-+						      is_realm_private);
- 		kfree(mapping);
- 		return ret;
- 	}
-@@ -1845,6 +1872,13 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
- 		goto out_unlock;
- 	}
- 
-+	if (kvm_vm_is_realm(kvm)) {
-+		prot &= ~KVM_PGTABLE_PROT_X;
-+		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
-+				    PAGE_SIZE, prot, memcache);
-+		goto out_unlock;
-+	}
-+
- 	if (perm_fault) {
- 		/*
- 		 * Drop the SW bits in favour of those stored in the
-@@ -2046,7 +2080,8 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
- 	 * mapping size to ensure we find the right PFN and lay down the
- 	 * mapping in the right place.
- 	 */
--	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
-+	s2vi->gfn = kvm_gfn_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa,
-+						       s2vi->vma_pagesize));
- 
- 	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
- 
-@@ -2241,12 +2276,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
- 	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
- 		sanitise_mte_tags(kvm, pfn, mapping_size);
- 
--	/*
--	 * Under the premise of getting a FSC_PERM fault, we just need to relax
--	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
--	 * kvm_pgtable_stage2_map() should be called to change block size.
--	 */
--	if (mapping_size == perm_fault_granule) {
-+	if (kvm_vm_is_realm(kvm)) {
-+		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
-+				    prot, memcache);
-+	} else if (mapping_size == perm_fault_granule) {
-+		/*
-+		 * Under the premise of getting a FSC_PERM fault, we just need to relax
-+		 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
-+		 * kvm_pgtable_stage2_map() should be called to change block size.
-+		 */
- 		/*
- 		 * Drop the SW bits in favour of those stored in the
- 		 * PTE, which will be preserved.
-@@ -2339,18 +2377,43 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
- 	return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
- }
- 
-+static bool private_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa);
-+static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
-+				    const struct kvm_s2_fault_desc *s2fd);
-+
- static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
- {
- 	VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
- 			!esr_abt_is_write_fault(s2fd->esr) &&
- 			!kvm_s2_fault_is_exec(s2fd));
- 
--	if (kvm_slot_has_gmem(s2fd->memslot))
-+	if (private_ipa_fault(s2fd->vcpu->kvm, s2fd->fault_ipa) &&
-+	    !kvm_slot_has_gmem(s2fd->memslot))
-+		return -EINVAL;
-+
-+	if (kvm_fault_is_gmem_abort(s2fd->vcpu->kvm, s2fd))
- 		return gmem_abort(s2fd, NULL);
- 	else
- 		return user_mem_abort(s2fd, NULL);
- }
- 
-+/* Decide if an abort should be handled by the gmem */
-+static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
-+				    const struct kvm_s2_fault_desc *s2fd)
-+{
-+	if (!kvm_slot_has_gmem(s2fd->memslot))
-+		return false;
-+	if (kvm_memslot_is_gmem_only(s2fd->memslot))
-+		return true;
-+	/*
-+	 * For Realms, all private faults must be backed by GMEM.
-+	 * TODO: Handle Trusted device private memory mappings.
-+	 */
-+	if (private_ipa_fault(kvm, s2fd->fault_ipa))
-+		return true;
-+	return false;
-+}
-+
- /* Resolve the access fault by making the page young again. */
- static void handle_access_fault(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa)
- {
-@@ -2444,6 +2507,12 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
- 	return 0;
- }
- 
-+static bool private_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa)
-+{
-+	return kvm_vm_is_realm(kvm) &&
-+		kvm_realm_is_private_address(&kvm->arch.realm, fault_ipa);
-+}
-+
- /**
-  * kvm_handle_guest_abort - handles all 2nd stage aborts
-  * @vcpu:	the VCPU pointer
-@@ -2457,10 +2526,10 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
-  */
- int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
- {
-+	struct kvm *kvm = vcpu->kvm;
- 	struct kvm_s2_trans nested_trans, *nested = NULL;
- 	unsigned long esr = kvm_vcpu_get_esr(vcpu);
- 	struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu;
--	struct kvm *kvm = vcpu->kvm;
- 	phys_addr_t fault_ipa; /* The address we faulted on */
- 	phys_addr_t ipa; /* Always the IPA in the L1 guest phys space */
- 	struct kvm_memory_slot *memslot;
-@@ -2553,8 +2622,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
- 		nested = &nested_trans;
- 	}
- 
--	gfn = ipa >> PAGE_SHIFT;
-+	gfn = kvm_gfn_from_fault(kvm, ipa);
- 	memslot = gfn_to_memslot(kvm, gfn);
-+
- 	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
- 	write_fault = esr_abt_is_write_fault(esr);
- 	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-@@ -2597,7 +2667,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
- 		 * of the page size.
- 		 */
- 		ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
--		ret = io_mem_abort(vcpu, ipa);
-+		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(kvm, ipa));
- 		goto out_unlock;
- 	}
- 
-@@ -2856,6 +2926,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 				   enum kvm_mr_change change)
- {
- 	hva_t hva, reg_end;
-+	gfn_t ipa_limit;
- 	int ret = 0;
- 
- 	if (kvm_vm_is_protected(kvm) && new &&
-@@ -2891,17 +2962,21 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 		return 0;
- 
- 	/*
--	 * Prevent userspace from creating a memory region outside of the IPA
--	 * space addressable by the KVM guest IPA space.
-+	 * Realm shared IPAs alias the corresponding private IPAs, so memslots
-+	 * must reside entirely in the canonical lower half of the IPA space.
- 	 */
--	if ((new->base_gfn + new->npages) > (kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT))
-+	ipa_limit = kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT;
-+	if (kvm_vm_is_realm(kvm))
-+		ipa_limit >>= 1;
-+	if (new->base_gfn + new->npages > ipa_limit)
- 		return -EFAULT;
- 
- 	/*
--	 * Only support guest_memfd backed memslots with mappable memory, since
--	 * there aren't any CoCo VMs that support only private memory on arm64.
-+	 * Only support guest_memfd backed memslots with mappable memory,
-+	 * unless the guest is a CCA realm guest.
- 	 */
--	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
-+	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new) &&
-+	    !kvm_vm_is_realm(kvm))
- 		return -EINVAL;
- 
- 	/* guest_memfd is incompatible with MTE. */
-diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-index 1066f767f85d..f89460d8adcb 100644
---- a/arch/arm64/kvm/rmi.c
-+++ b/arch/arm64/kvm/rmi.c
-@@ -531,15 +531,231 @@ void kvm_realm_unmap_range_filter(struct kvm *kvm, unsigned long start,
- }
- 
- void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
--			   unsigned long size, bool unmap_private,
--			   bool may_block)
-+			   unsigned long size, bool may_block)
- {
--	enum kvm_gfn_range_filter attr_filter = KVM_FILTER_SHARED;
-+	kvm_realm_unmap_range_filter(kvm, start, size, may_block,
-+				     KVM_FILTER_SHARED | KVM_FILTER_PRIVATE);
-+}
-+
-+static unsigned long addr_range_desc(unsigned long phys, unsigned long size,
-+				     unsigned long state)
-+{
-+	unsigned long count = 1;
-+	unsigned long out;
-+	int rmi_size;
-+
-+	for (rmi_size = KVM_PGTABLE_LAST_LEVEL; rmi_size >= 0; rmi_size--) {
-+		unsigned long entry_size = rmi_range_entry_size(rmi_size);
-+
-+		if (size == entry_size)
-+			break;
-+		if (size > entry_size) {
-+			rmi_size = -1;
-+			break;
-+		}
-+	}
-+
-+	if (rmi_size < 0) {
-+		/*
-+		 * Only support mapping at the page level granularity when
-+		 * it's an unusual length. This should get us back onto a larger
-+		 * block size for the subsequent mappings.
-+		 */
-+		rmi_size = 0;
-+		count = MIN(size >> PAGE_SHIFT, PTRS_PER_PTE - 1);
-+	}
-+
-+	WARN_ON(phys & ~PAGE_MASK);
-+
-+	out = FIELD_PREP(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, rmi_size) |
-+	      FIELD_PREP(RMI_ADDR_RANGE_COUNT_MASK, count) |
-+	      FIELD_PREP(RMI_ADDR_RANGE_STATE_MASK, state);
-+	out |= phys & PAGE_MASK;
-+
-+	return out;
-+}
-+
-+static int realm_map_protected(struct kvm *kvm,
-+			       unsigned long ipa,
-+			       kvm_pfn_t pfn,
-+			       unsigned long map_size,
-+			       struct kvm_mmu_memory_cache *memcache)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+	phys_addr_t phys = __pfn_to_phys(pfn);
-+	phys_addr_t base_phys = phys;
-+	phys_addr_t rd = virt_to_phys(realm->rd);
-+	phys_addr_t delegated_phys;
-+	unsigned long base_ipa = ipa;
-+	unsigned long ipa_top;
-+	long ret = 0;
-+
-+	if (WARN_ON(!IS_ALIGNED(map_size, PAGE_SIZE) ||
-+		    !IS_ALIGNED(ipa, map_size)))
-+		return -EINVAL;
-+
-+	if (rmi_delegate_range(phys, map_size, &delegated_phys)) {
-+		if (delegated_phys == phys) {
-+			/*
-+			 * It's likely we raced with another VCPU on the same
-+			 * fault. Assume the other VCPU has handled the fault
-+			 * and return to the guest.
-+			 */
-+			return 0;
-+		}
-+		/* Partial delegation - map as much as we can */
-+		map_size = delegated_phys - phys;
-+	}
-+
-+	ipa_top = ipa + map_size;
-+
-+	while (ipa < ipa_top) {
-+		unsigned long flags = RMI_ADDR_TYPE_SINGLE;
-+		unsigned long range_desc = addr_range_desc(phys, ipa_top - ipa,
-+							   RMI_OP_MEM_DELEGATED);
-+		unsigned long out_top;
-+
-+		ret = rmi_rtt_data_map(rd, ipa, ipa_top, flags, range_desc,
-+				       &out_top);
-+		if (ret < 0)
-+			goto err_undelegate;
-+
-+		if (RMI_RESULT_STATUS(ret) == RMI_ERROR_RTT) {
-+			/* Create missing RTTs and retry */
-+			int level = RMI_RESULT_DATA_LEVEL(ret);
-+
-+			if (WARN_ON(level >= KVM_PGTABLE_LAST_LEVEL))
-+				goto err_undelegate;
-+			ret = realm_create_rtt_levels(realm, ipa, level,
-+						      level + 1,
-+						      memcache);
-+			if (ret)
-+				goto err_undelegate;
- 
--	if (unmap_private)
--		attr_filter |= KVM_FILTER_PRIVATE;
-+			continue;
-+		}
-+
-+		if (WARN_ON(ret))
-+			goto err_undelegate;
-+
-+		phys += out_top - ipa;
-+		ipa = out_top;
-+	}
-+
-+	return 0;
-+
-+err_undelegate:
-+	realm_unmap_private_range(kvm, base_ipa, ipa, true);
-+	/* A range which cannot be undelegated remains owned by the RMM. */
-+	WARN_ON(rmi_undelegate_range(base_phys, map_size));
-+	return ret < 0 ? ret : -ENXIO;
-+}
-+
-+static int realm_map_non_secure(struct kvm *kvm,
-+				unsigned long ipa,
-+				kvm_pfn_t pfn,
-+				unsigned long size,
-+				enum kvm_pgtable_prot prot,
-+				struct kvm_mmu_memory_cache *memcache)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+	unsigned long attr, flags = 0;
-+	phys_addr_t rd = virt_to_phys(realm->rd);
-+	phys_addr_t phys = __pfn_to_phys(pfn);
-+	unsigned long ipa_top = ipa + size;
-+	long ret;
-+
-+	if (WARN_ON(!IS_ALIGNED(size, PAGE_SIZE)))
-+		return -EINVAL;
-+
-+	switch (prot & (KVM_PGTABLE_PROT_DEVICE | KVM_PGTABLE_PROT_NORMAL_NC)) {
-+	case KVM_PGTABLE_PROT_DEVICE | KVM_PGTABLE_PROT_NORMAL_NC:
-+		return -EINVAL;
-+	case KVM_PGTABLE_PROT_DEVICE:
-+		attr = MT_S2_FWB_DEVICE_nGnRE;
-+		break;
-+	case KVM_PGTABLE_PROT_NORMAL_NC:
-+		attr = MT_S2_FWB_NORMAL_NC;
-+		break;
-+	default:
-+		attr = MT_S2_FWB_NORMAL;
-+	}
-+
-+	flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_MEMATTR_MASK, attr);
-+
-+	if (prot & KVM_PGTABLE_PROT_R)
-+		flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_S2AP_MASK, RMI_S2AP_DIRECT_READ);
-+	if (prot & KVM_PGTABLE_PROT_W)
-+		flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_S2AP_MASK, RMI_S2AP_DIRECT_WRITE);
-+
-+	flags |= RMI_ADDR_TYPE_SINGLE;
-+
-+	while (ipa < ipa_top) {
-+		unsigned long range_desc = addr_range_desc(phys, ipa_top - ipa,
-+							   RMI_OP_MEM_UNDELEGATED);
-+		unsigned long out_top;
-+
-+		ret = rmi_rtt_unprot_map(rd, ipa, ipa_top, flags, range_desc,
-+					 &out_top);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (RMI_RESULT_STATUS(ret) == RMI_ERROR_RTT) {
-+			/* Create missing RTTs and retry */
-+			int level = RMI_RESULT_DATA_LEVEL(ret);
-+			int req_level = find_map_level(realm, ipa, ipa_top);
-+
-+			/*
-+			 * There already exists a mapping at the level. May be
-+			 * we are relaxing a permission for the given range ?
-+			 */
-+			if (level >= req_level) {
-+				realm_unmap_shared_range(kvm, ipa, ipa_top, true);
-+				continue;
-+			}
-+
-+			ret = realm_create_rtt_levels(realm, ipa, level,
-+						      req_level,
-+						      memcache);
-+			if (ret)
-+				return ret;
-+
-+			ret = rmi_rtt_unprot_map(rd, ipa, ipa_top, flags,
-+						 range_desc, &out_top);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
-+		if (ret && RMI_RESULT_STATUS(ret) != RMI_ERROR_RTT)
-+			return ret;
-+
-+		phys += out_top - ipa;
-+		ipa = out_top;
-+	}
-+
-+	return 0;
-+}
-+
-+int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
-+		  kvm_pfn_t pfn, unsigned long map_size,
-+		  enum kvm_pgtable_prot prot,
-+		  struct kvm_mmu_memory_cache *memcache)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_ACTIVE)
-+		return -EBUSY;
-+
-+	ipa = ALIGN_DOWN(ipa, map_size);
-+	if (!kvm_realm_is_private_address(realm, ipa)) {
-+		return realm_map_non_secure(kvm, ipa, pfn, map_size, prot,
-+					    memcache);
-+	}
- 
--	kvm_realm_unmap_range_filter(kvm, start, size, may_block, attr_filter);
-+	/* It's impossible to map protected pages read-only. */
-+	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
-+		return -EFAULT;
-+	return realm_map_protected(kvm, ipa, pfn, map_size, memcache);
- }
- 
- void kvm_destroy_realm(struct kvm *kvm)
--- 
-2.43.0
+Thanks,
+Tom
+> 
+>> snp_probe_rmptable_info() does not clear X86_FEATURE_RMPOPT in the
+>> advertised-but-firmware-disabled case.
+>>
+>> As a result, this does not prevent snp_enable_rmpopt() from trying to program
+>> MSR_AMD64_RMPOPT_BASE, which raises a #GP on the MSR access.
+>>
+>> Make sure X86_FEATURE_RMPOPT is cleared in all cases where segmented RMP is
+>> not enabled.
+>>
+>>   [ bp:
+>>    - Put the commit message on Ozempic
+>>    - Flip the logic in the function so that the segmented RMP disabled
+>>      case goes first and the flow gets simpler this way. ]
+>>
+>> Fixes: 15d974be0a3b ("x86/sev: Initialize RMPOPT configuration MSRs")
+>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+>> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+>> Link: https://patch.msgid.link/56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com
+> 
+> Feel free to include:
+> 
+> Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> 
+>> ---
+>>  arch/x86/virt/svm/sev.c | 21 ++++++++++-----------
+>>  1 file changed, 10 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+>> index bd70c4d0b774..ff6d17795054 100644
+>> --- a/arch/x86/virt/svm/sev.c
+>> +++ b/arch/x86/virt/svm/sev.c
+>> @@ -817,21 +817,20 @@ static bool probe_segmented_rmptable_info(void)
+>>  
+>>  bool snp_probe_rmptable_info(void)
+>>  {
+>> -	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
+>> -		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
+>> +	if (!cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
+>> +		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+>>  
+>> -		if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
+>> -			if (probe_segmented_rmptable_info())
+>> -				return true;
+>> +		return probe_contiguous_rmptable_info();
+>> +	}
+>>  
+>> -			setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+>> -			return false;
+>> -		}
+>> -	} else {
+>> -		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+>> +	rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
+>> +	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
+>> +		if (probe_segmented_rmptable_info())
+>> +			return true;
+>>  	}
+>>  
+>> -	return probe_contiguous_rmptable_info();
+>> +	setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+>> +	return false;
+>>  }
+>>  
+>>  /*
+> 
 
