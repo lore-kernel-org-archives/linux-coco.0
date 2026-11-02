@@ -1,71 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793626863;
-	b=LrwMM2bi+h9l/9ZQLXYN3XaXCApjzi7Ha3vOZ5CqUZvVf6cvLKIdlrw6cKEg0Z1zpPxp
-	 ysAu9fpr0vsbLhp6TA4mV6TloaB5W4xRsQeWF8xNhKZNKqA6VvNsL1YCTLcrDc8kjj8EZ
-	 jhVB3nM1IWDBYdKbodDtE5rYkuya+2HShryLtDYRuCisqe+C4stRGNwg+H7wSZ8E4+7ZO
-	 Co8PSn1XuS3nJc3VPC5P5p+7BrC3/7YL+lc5+yZO2B6kdP0DqTExDZYcGviB2Uhpd4/90
-	 1/VPpC5vYFfiICkfJoA2FTbq8utMHtKxNPHnsEPipvzP/jJY00p0zYj4aDl7H8oPBQA==
+	t=1793628811;
+	b=UG87R9XWzPlKSzrOVrc+saBpzFcWBqfYRduPm5HICfoOz5vtGDKu8fbkuZjEETDGt43O
+	 X5H+InsQuYiEeEjj1yw9Su50C+JCbFAsxH4lp+6kn32ORPsdYn02emfUzkcr3gb+Qopye
+	 EdjNQWgqNABPeAAJf6L5HaU04twKuGsiwjM+9g+46Dr3VUqHBfoqTgIxGNA2MOMrUUCuD
+	 GDqhpTBqSha+uQZ7kllboxqeMVP/3dGAFImmUYXguPx8sZmAGALl3hR8VLht8zau3eyLE
+	 ImPOJobe0JG2pIFIq3ZsQrC6smS079+hTdc5sg96HwM5R7JOIzxStHmYDhntS2Q5rmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793626863;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=pdjAuETj6QcMhvC8ZxVXiv5ojquYRwlbvdnRb3U3eDY=;
-	b=D8vU7GVcP9UNqeTMFIBoSknAr1+q3O+yjXfp9Yf5X6gEBBMbAyvqNh0uKb79lnf6tMQG
-	 RyOfipOjL1+abvSxIqLugXLHZz0WbmKKuJX8yfff3UZAN/GiHDtWTM7SRnJtmEBBN42gy
-	 zM+9TwJ6bKh/EU5D6hs7csqyyYtdJqmNV7qG3oZYptJdjiZy9LluV6rk0waGfwLE2BoU7
-	 IolNNhYzqT3eQs5XXLaJ8DgzKNkE6wCBsrND/+DBad6QHpoIoif0MdRk2y/YoFvrBaeD0
-	 iGuotAM+4xhdR6X3fB6JwGrQtkf2F8h8bPe5cHRit9K4gd1QcW/4tGTC06SfKrAHMdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793628811;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Ua1DOoDM2ycibNdB6MjyfXMQfwPGZxy1wTaNHdPExSE=;
+	b=xARI+BiYIZvTPJjWvsWtOyL5enuSwVVx2oSmQzq8McXCQVeKPOrVnxR4b3YRIXzvfvOh
+	 0eDYyN8a80dXlICJJAp82kCBjhONIMvarCsDCYWo+akNNrshHzx5fKXi1OoaJRNSHo/gN
+	 rJEopX3TB456uW/HKbyw1LfjRnpSQz7H4J6fKT6mRn80ItJhoqQ/iCckDkxbl22LZpjI6
+	 H/3TCNbfxIe+cIs/ZCqGccVmA+OIsHwkJvfkonc7vzfUknEJb9DlBNsYcL5iALQA6T6qQ
+	 co3UEACMnjPW0WCgzbnWPc3NyVKLfqfHFDacntbmhrhYm5h5JZsyxLrAumTzj47lqgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MMbEDOY0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF09C606A326;
-	Mon,  2 Nov 2026 13:41:02 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=N3l60SDP;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C360606A329;
+	Mon,  2 Nov 2026 14:13:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C360606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MMbEDOY0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7179B1F00A17;
-	Mon,  2 Nov 2026 13:40:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793626862;
-	bh=pdjAuETj6QcMhvC8ZxVXiv5ojquYRwlbvdnRb3U3eDY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=MMbEDOY0OmbpHnaLfTp/tGOscM0cLWYj9WB3bHalRtrnz7a2w4SfkqLrsfAOwGRuD
-	 4oJ0lUy3uXOr3VbYF/H2MX5DRxGfx6PQTmhezc8gVNtrb24rpSEBGipbSngP+YXujI
-	 ZicdHMN9ZeSpKUyPkyy+150wWID1ceyGaIEKMPUVNrgjNi9FPGz+xZF7iOslQSrcxR
-	 qdGlZ1nzVjjxSlYUIVaT8pSP1dGtm86BdpL1GTZ3c7iio3i3Ag5JX9BSHccm+3APRy
-	 vFWu3sDU3MKqgmvn3RGd5qXCNdkBalh2xKoumvjWpSC4Lg0U9A5IfO17qS5ha+U0OP
-	 yRJYC3Auf4ePg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	Alex Williamson <alex@shazbot.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Will Deacon <will@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=N3l60SDP
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 43EB31691;
+	Mon,  2 Nov 2026 06:13:26 -0800 (PST)
+Received: from e122027.arm.com (unknown [10.57.58.9])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A554D3F59E;
+	Mon,  2 Nov 2026 06:13:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793628809; bh=c0J8oAMjRRRr84vzXcxPgHvZvqambP7No/QhePqrRBE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=N3l60SDPbFfZ/rOuZxoYhJ8tcOkCD9sP+8uYKl4eoZq/cgrmQrEnoisz5nMtdJLuD
+	 qWSdXM9gtzbElbowMGwonb6XxZqM4kWzYJXehgEmhhYeY30TR0+NZkpilaJfrOo8Bi
+	 7jmItYOE9907P8VlBdZFksu/Z3QQYoEXRV8ARkH8=
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v3 00/13] KVM: guest_memfd: Add a common framework
- for device memory providers
-In-Reply-To: <20261101071928.2462549-1-aneesh.kumar@kernel.org>
-References: <20261101071928.2462549-1-aneesh.kumar@kernel.org>
-Date: Mon, 02 Nov 2026 19:10:50 +0530
-Message-ID: <yq5aa4nr5p25.fsf@kernel.org>
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 00/11] KVM: arm64: CCA: Prepare Realm memory management
+Date: Mon,  2 Nov 2026 14:12:51 +0000
+Message-ID: <20261102141304.126883-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -75,35 +81,61 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+This series adds the memory plumbing for CCA building on the basic
+plumbing[1] that has just been merged.
 
-> Confidential device assignment needs guest_memfd to manage device MMIO as
-> well as RAM. Device resources such as PCI BARs supply PFNs directly, and
-> their protected mappings need architecture-specific map and unmap
-> operations.
->
-> This series adds the common guest_memfd support needed by device memory
-> providers. It builds on the resource-provider API [1] and the existing
-> folio and RAM PFN backing support.
->
-> The VFIO provider, IOMMUFD integration and Arm CCA implementation are
-> available together at:
->
->   https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-da-gmem-backend
->
+These patches add the internal realm VM state and RMM feature checks,
+prepare realm stage-2 setup and teardown, and provide RTT mapping and
+invalidation helpers. Realm memslots are now contrained to the lower
+half of the IPA space, because faults treat the protected and shared
+halves as aliasing. The final patch then connects these helpers to the
+KVM stage-2 MMU operations.
 
-An updated series is available at:
+There's also an integration branch[2] that builds on this series and
+includes the realm descriptor creation, REC entry/exit, activation and
+the new uAPI. This series by itself is also available as a git
+branch[3]. However the new code isn't generally active without the full
+integration branch.
 
-  https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-da-gmem-backend-v4
+[1] https://lore.kernel.org/all/20261007073537.2454351-1-suzuki.poulose@arm.com/
+[2] https://gitlab.arm.com/linux-arm/linux-cca
+    branch: cca-host-mm/v1/integration
+[3] https://gitlab.arm.com/linux-arm/linux-cca
+    branch: cca-host-mm/v1/mm
 
-Most details remain unchanged. The VFIO/PCI code has received cleanups
-and updates, as summarized in the cover letter[1]. I will rebase the full
-series onto 7.4-rc1 before reposting it. If you would like to review v4
-before then, let me know and I can repost it.
+Steven Price (7):
+  KVM: arm64: CCA: Reserve the RMM mode
+  KVM: arm64: CCA: Check for RMI support at KVM init
+  KVM: arm64: CCA: Check for LPA2 support and SHA-256
+  KVM: arm64: CCA: Add basic infrastructure for creating a realm
+  KVM: arm64: CCA: Tear down RTTs
+  KVM: arm64: CCA: Add Realm RTT mapping and invalidation helpers
+  KVM: arm64: CCA: Support runtime faulting of memory
 
-[1]
-https://git.gitlab.arm.com/linux-arm/linux-cca/-/blob/cca/topics/cca-da-gmem-backend-v4/cover.letter.gmem_vfio?ref_type=heads
+Suzuki K Poulose (4):
+  KVM: arm64: CCA: Introduce Realms
+  KVM: arm64: Handle attributes in stage2_unmap_range
+  KVM: arm64: CCA: Prevent memslot modifications after Realm creation
+  KVM: arm64: CCA: Add Realm stage-2 MMU operations
 
--aneesh
+ arch/arm64/include/asm/kvm_emulate.h   |  29 +
+ arch/arm64/include/asm/kvm_host.h      |  62 +-
+ arch/arm64/include/asm/kvm_rmi.h       | 109 ++++
+ arch/arm64/include/asm/virt.h          |   1 +
+ arch/arm64/kvm/Kconfig                 |   1 +
+ arch/arm64/kvm/Makefile                |   2 +-
+ arch/arm64/kvm/arm.c                   |  33 +-
+ arch/arm64/kvm/hyp/include/nvhe/pkvm.h |   2 +-
+ arch/arm64/kvm/hyp/nvhe/switch.c       |   4 +-
+ arch/arm64/kvm/hyp/nvhe/timer-sr.c     |   2 +-
+ arch/arm64/kvm/mmu.c                   | 242 +++++--
+ arch/arm64/kvm/rmi.c                   | 852 +++++++++++++++++++++++++
+ 12 files changed, 1275 insertions(+), 64 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+ create mode 100644 arch/arm64/kvm/rmi.c
+
+-- 
+2.43.0
+
