@@ -1,76 +1,152 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793650040;
-	b=nn1an76dlDpLmZn686Fo1u8xqfblECY2HcbP9At5I43Ni5xywNBtEQTtfwlkqocdw4YR
-	 6cTw9FKIYQDzIYShz2nNyGOkaTT8dIZDjJQM1zIAsXhUqKYOQS4+Ml93LQxMNbHBRtwvv
-	 Sy9X82BJIHsfYMfnXvRFiZfpFEEpaQ2c4dQYHZSTzzAVeEV4Ms+hOw/5ZInZFbBRsex56
-	 qMYuFbCs+8gyaTUDzncE1VU17x0XnJfcJ/eafkuauQU40svCLO7xzQMAsIOsAA72xNdlf
-	 grguY5ZtzjeMt7tTrAhUjKQgYri7VfJaNzlymw3dCYcByX1TuaiAO1/QlWB0TzNzeXQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793650040;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=nNfm4rH6eQ2Oj47JrfSVJCEhe2McbXnswnFij5qW64Y=;
-	b=Rg7oDKM1zHlPGKp7JIBbD0PmCx1o7fdVZN06ZoKcShxCl2JhpeaK177XsFM9BdjDXUqb
-	 Lbw0rKwMS9D2YlILw7YoZCTQhIMp5S3xiH25rwxOQV1K2a0G85qfDkkbdd8xUE01oujsk
-	 SRtj6caU7Pt3PN2ZnZgUZuN7vu9Yvu7bX41jeBwdgn2l03T3XCan8zHBUuA9ursUfHkAe
-	 pEmapnhJyYJ8NpxoixGmekmS3cIZG3VbKEaUFH4cE/Nf4dM45bVMeJlxf9IevqcZvA7IK
-	 isXCjrXPqbmqVFwQhQh/m842KmZLuWsJnt+YO/+3chGHHeCQXfYBwj57fHCu61FtvAw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bnx2sDfM;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.38
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793650896;
+	b=ZeWkrrkQ6u3R8ltG/jdeGyuqkBvBnYJBIwIc10of6eIA2Azl0bhp+1mcGTXa/OZu/FvJ
+	 s6SHwBewHsYCOZvJU2ytPRCG8xIMlP1adBPmpSzqZBYrr+M8u3PV0rD53He3FqRi4JRXs
+	 Q9AzewsR6zdwXs4+YRtMrLHfizCMXEfnANApMeARYqJIhUpBBNe4JPrGDxbytj0VAD6ll
+	 0iXV4/tLFYBDh47+9tmtP9q0OJQUWKbKfRWL5/Ft17T5buOMdevT10ONcJgNvIyMEGNvr
+	 SyJ1xlkONeWm+BmYGKzPEEnoCJPWNse8wySPi7zBHSg2MWqwQmxrmhADZfgeC/PbnHw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793650896;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=RZzIfwZOmCgviJKQ3vlMGbRooiHjRH+3prmBiyfx2yk=;
+	b=B9AGzecmb3W1g5weoSk02p5dAAcMV5AIyr/HIxoRsr1ztHzsE8i79a5haEQ6twEMYGwQ
+	 +Ep1o2P4ylRztivxs9IQPeDekrBfVZGiGOu4OwF9+/U8m4NjI+BYLV5tf5Aik42Zetztj
+	 Nu9jcve4RPM7y3pDyM8uFCvNqWPzNu23kM8Ux3DlBxV1zrR6Ntn4hk8e9vUN7h9myZNsA
+	 cVQzO8IKCe/pq91KR68QKhvix+g7DUjxvPkNKJq0zEpyuckwfGDrnZpU6gevIoN4AbwYm
+	 x2ghMw2Ac6sr16eXv5QRTtmopjl/7DELJD6upt+kMGwIlOLdr9k+RLpH593+oTysFQQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=0d6pbPNT;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.38
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011038.outbound.protection.outlook.com [52.101.52.38])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81227606A32C
-	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 20:07:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81227606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ED2606A326
+	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 20:21:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1ED2606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bnx2sDfM
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ada8bc8575so7102634a91.3
-        for <linux-coco@lists.linux.dev>; Mon, 02 Nov 2026 12:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793650040; x=1794254840; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nNfm4rH6eQ2Oj47JrfSVJCEhe2McbXnswnFij5qW64Y=;
-        b=Bnx2sDfMqbuRTBGA/3NfKkvkmWhi2uter22V95Qi0MNO4pwtcfk4Hz5+jNurAB0FjD
-         R26knP1Rb4JpOBONbES7J9ZAXAEKl58KtT+Az4qKBFl9F5qdfGXeYB3rklyXaFZxMDUy
-         Yvn9Be4L/BnndmQ+h1uXvAKEx8JkNMmvvv74GxSf6IByqjTxrWKKp5RMO5/fYF8h/GSn
-         YkxdiHSq50GOEdj0Cv9cvJt6czlVvZLfP5vVnHj7K4RipALhOnQoXAULKGZxBLo7G4VS
-         4OhIKPB9vlMrTzfO0AjZbGNraOGgD59WjcZid7fQlXtuDM0BMP+m/aTTMj65NicCaB/q
-         TiVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793650040; x=1794254840;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nNfm4rH6eQ2Oj47JrfSVJCEhe2McbXnswnFij5qW64Y=;
-        b=Y7tgTNiYa2yMssi7Pd9sc52tXnfAkXdIwQ0U71jvpwezXfbR39vMDVH7LIX8A4obQl
-         Wa7HzB5eyIBxUUBIRhAUhe8uFmJ9LBDvJtvnv86/nu27QrD98BjLQzbKoZKg9YIc1nq4
-         vHxzUfQKtpTbt4PABAJpDrwTbnvDuQ1Gdea/mEKfhe46U6IYz697bQOSsR/hORcx559j
-         5ryIas+mZRovi806jCl3V8BPAUW/UwiogF/Qv5NYOJkyU7JsAzfCqqQE1v39zt1ZWNUs
-         gqldrPONseTRbuBwkrZ2ELZsGvZvFA6jIs1honsPi9Q128grd3yMKqMhVzanIc7EAnbi
-         XVmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy9hliXevjm/Le2ho1JuvPT30XsleqrmfzuWHdmMh7T9qOy3nBshQ/qAxgWQZlgXuBiXGEgVwsruRcW@lists.linux.dev
-X-Gm-Message-State: APuU4Z94N0rin5g1NO0USQ/BVlv+dmhXsJRsaBfkgj6dhWA1lyXh+sNt
-	aIo49vpizrP8aQ+j9FtDdaQCTicYcyDDD2yqj10eJkjvoNl9hQidxFzAk32RWS1lFkvpKVjMXXl
-	M52gFaA==
-X-Received: from pjwo8.prod.google.com ([2002:a17:90a:d248:b0:3ac:16a7:52de])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d44:b0:3ac:9d83:885e
- with SMTP id 98e67ed59e1d1-3ae898392a1mr8899415a91.52.1793650039539; Mon, 02
- Nov 2026 12:07:19 -0800 (PST)
-Date: Mon, 2 Nov 2026 12:07:18 -0800
-In-Reply-To: <953b3d774dc281bf13f5025041d4434f560cf776.camel@intel.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=0d6pbPNT
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=whvgyascafWIFj642anGzLiTSgQ0+2sAsKfFNyXrTkZ9ePb8TZ9Vxegvdz4hnZmgdma207T/2VxkyIixTP855kIZkzU9LpBAEkJWtLWgq1QIFcZbQW98jb4xV4iygfcyaNdpTqHAXPmTAKM4fb49+yycE2CEjvt3a0/Ads7jaHTw9ChztFP0w797nINdanaxBijaUoT5s44ZSksnSWVjp2qYpSvLnyfg9Fy/t6W64+9kaPYRzvnN+Iu4x5gdbwAhjwmU7VglBPTYk76/cwo4h2QsNfPRqzXSZZ5WnVQp5Asy9nK9mUWJY1dQOeTvLCDjY493q0gacvKO8pkPjGUbGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RZzIfwZOmCgviJKQ3vlMGbRooiHjRH+3prmBiyfx2yk=;
+ b=o46JO19HldfnHhSjJEowE14O3TSjFxikeO4nVF2AkV0wwkujHRZqwtUMVl92jA64HChNNQCTyxFDya8CSlVHQfiRiQ7HPgbCpu4Z3mzD0UpXBAA4mXPLvMof+3cmL3uvWnRaSH4SkY7o35sDIilwE7apME0uhKHYMZVofZMaGHQlJRJSvQ4OepKJjDcU6C2+zuIeVTQJTmyuXg+yi+unJWQ4SqCTmgoo4qOy54ST/CVo9TRyd/jmzpmx0lwKuRglEmaJkrAb2iN0oymODQNGVYeo1ZsAF3KdaOWv5MCFKGu8ndHXDIJC0EeP8CUKFm3TtJNnzY1SFyLSNuaZ2sbI5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RZzIfwZOmCgviJKQ3vlMGbRooiHjRH+3prmBiyfx2yk=;
+ b=0d6pbPNTDuPzfrKNG8jtXmelTfOW6EjxlK7iECVmjiFhRFwLMSXYp6A/aJcFXga+GzAUhgu2AD9bEoXbuICnExl3XZF2IneonBmB2dnQh//6aAxa5Y/j2cpXrILmFyZDTb3snM8HyXuNJRAs99IJ8WRG/fLcmAISBoiPrEQ1GUo=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by MN2PR12MB4437.namprd12.prod.outlook.com (2603:10b6:208:26f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
+ 2026 20:21:32 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%4]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
+ 20:21:32 +0000
+Message-ID: <5c80e556-cdb8-46fd-9bee-c54732377236@amd.com>
+Date: Mon, 2 Nov 2026 14:21:28 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
+ disabled by firmware
+To: Borislav Petkov <bp@alien8.de>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, herbert@gondor.apana.org.au,
+ davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com, aik@amd.com,
+ Michael.Roth@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1793216372.git.ashish.kalra@amd.com>
+ <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
+ <20261102052841.GBaugfibOXxGorZKgq@fat_crate.local>
+ <69ed0d93-f96d-4baa-a587-fade5a0a3262@amd.com>
+ <414b2fc2-a55a-4b2d-ac70-4def101c4aee@amd.com>
+ <20261102144805.GCauiipTaEXcg6Lr59@fat_crate.local>
+ <d81f6807-26ac-49b9-a205-c89c394ec1d4@amd.com>
+ <20261102193116.GDaujlBJc3XjG3xzLj@fat_crate.local>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+Autocrypt: addr=ashish.kalra@amd.com; keydata=
+ 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
+In-Reply-To: <20261102193116.GDaujlBJc3XjG3xzLj@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA9PR13CA0020.namprd13.prod.outlook.com
+ (2603:10b6:806:21::25) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -79,105 +155,223 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-References: <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org> <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org> <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org> <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local> <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
- <953b3d774dc281bf13f5025041d4434f560cf776.camel@intel.com>
-Message-ID: <aujtdn73XnWH5g-i@google.com>
-Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "kas@kernel.org" <kas@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"krzk@kernel.org" <krzk@kernel.org>, "au.dang.jx@renesas.com" <au.dang.jx@renesas.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"biju.das.jz@bp.renesas.com" <biju.das.jz@bp.renesas.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, 
-	"biju.das.au@gmail.com" <biju.das.au@gmail.com>, "jirislaby@kernel.org" <jirislaby@kernel.org>, 
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|MN2PR12MB4437:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bd69554-4081-42da-5c93-08df391ee24e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|11063799006|4143699003|261021135927099003|56012099006|261009223027099003|261028144727099003|261026140227099003|261026121527099003|261022105027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	RNQOwmPkqtoOX0IuDuUaoXv/ne1uYfLHEQfGxHfvCttQKB2Jlnfw8LbCkTvZw2MWbdGt+PfFhqoogc0Rg9UbTnxFKuF6hU2MeFqvMcfgCm6P3dFQaMmB3Qm5c5x37r51LjGSJxwsGhYcuRgG66VwxEPz0Gkfzew3O66ljIdHfEspcgiZXL17QPrdtpiEaGpaafC0cib3Duw6ZTLCmd2UGtRo2blGpu1gi9N2qakW/XTPNYwFv2l16Bq8My8sLbXuVb9EqgsjaxPaemjj5BAgyWNyNrkNKRt1QLlH1ts1GBxBmJahG/z+vRQb+DxglmnJkswMXjOA5gWsBpEs5asJbapuCX4aUt+u58oy4gEbgYq6VYUbiJwWpguA6pmXNzLkqkwQXj48iGfxB3J2ch0w0cR5MwwsmajUoO06ha+SuNG4p2w9NFNwBqNTrfVs6KnGMnUMxyj5YTDkZ/bZniPWxDnih4v6ozTzhNH+jKqd4psHS0hnPQAlgDt7WHkWpJn6+AkGDz9kD33bspKipeJLDZLNjPim4zGkvuRabcb4wvq3HldWifBeD6uAXGXr9BzCDrp6ZgpkDmfcvijqUtWPxLagZFu586pESqozUnlVsaVeLoj2SviUGcbdN81tE/QIEAqhESxGB2ZWx2o8F9fwaCY/x9YoiEZUso11ZH2pjME=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(11063799006)(4143699003)(261021135927099003)(56012099006)(261009223027099003)(261028144727099003)(261026140227099003)(261026121527099003)(261022105027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QVYvZWJBc283UDZvVU9Dc3lRaGQ5b1lCVWxPU1hidytYd1V6OVQyWTJZNGFh?=
+ =?utf-8?B?a05lZjhJY2liTWE2c2sxbWMvZzduT29DR2FDbjFUUkFpY0tHVERvbDdSWWtK?=
+ =?utf-8?B?dzNDMU5MYkVJV2t5K081bFBXbktQTTFERGdPS0oyaEg0YXM3WVlkREdSVmF6?=
+ =?utf-8?B?TXNpTkZGMEQ4ekFLUDg3dnlGYnlNQTFGTGhUeGhmTlk2WTJvdjVNMHVhbXlG?=
+ =?utf-8?B?UnhwVVBLYWZQcWYxcG1wandqalh5amxkcGR2UzZIcjZYSm5lMjBBRWx3L0sw?=
+ =?utf-8?B?S3NzdGtvNkdVdFFwb1BTMWRsY1EzeHVmWjUzSUU2S1hEc2VnL2JkWXdtZWpa?=
+ =?utf-8?B?cEdBeEhoTmtlYUNxNk5lUGRnaXlpdDhOT2tHTjBJc2k1dTlqRDZFK1FwenNo?=
+ =?utf-8?B?ZDd5U0ovL0MvcW4xR2lkMUFmWUNWVXRVekZEY0c4VTdHVzQxcEhsNjUyVnBz?=
+ =?utf-8?B?dnlxMUpJT2NyTlRCa01RY0dWcGtSMGkyY29wL0NtZStCVk80cGxiYkxqbmE0?=
+ =?utf-8?B?QlRsS0xCei81aVpxU2RQOFkyTkNDQ0pWUFRMZlQzN2NuWDR3Yzd5Q1h3U3F0?=
+ =?utf-8?B?RVJmMW1FTjRTNTgwZ2hYWURkT1V1TWM1T293cUhsQktzeU9uUVNBZzZaUytJ?=
+ =?utf-8?B?VzBKUjFiU2dXTzFBQkdTUDdKRE15RGRVZVN5ak1pN3dvSnowa0tuNG8rbGZH?=
+ =?utf-8?B?aEwrQnVBQ1Y5MnlMVGFDc2VHS3RURk40UGZIdlJWM29VeXVDREZVdXA0Qnpw?=
+ =?utf-8?B?R2RXZ1owcXNzMjgrbUl1TnlMSi9qUU9YNXMyQU4rNENRZHQ5R3R5T1JncUc0?=
+ =?utf-8?B?ODhZTGg3eUszTWxNT25MVlEybkl5U0JmTHY3bkVqallUZnFOWVZBTlN5Skk1?=
+ =?utf-8?B?TVVxQjQ3eWpQSGtldUY5V3NRcEJXTkhvM25uTlZXWGZXbDBRSnN4SVNYeFJ0?=
+ =?utf-8?B?ZmtVUkh1Y053bnFlUk5mb29GVGhBblIyR0RCV3RlejM4TFJodzBWYlJCakhH?=
+ =?utf-8?B?MFg0a2xyZmZsNm9NQkdRZ3pVMXRrYnhHOWJlcU5nNG9pOXpIS1lQcldxVDFm?=
+ =?utf-8?B?SVBJMXhHWHdVSDFFaE10S055YytCS0tLelhqeFp3UHhYNlhhZ1hNU0dSbzMy?=
+ =?utf-8?B?Z3pkTWhmWjJXcm5SSWFxc0RjN1UybmlndUx3U0huOG9PZi8wNWdnTmY4ZGxa?=
+ =?utf-8?B?MXRXV1JjMFJjSFc4cTZLdHR3bW1Zc0NtNUt6b3pBMy9XSEpOV2Y3YXNPaDh2?=
+ =?utf-8?B?eFNwSjlSVkNVSnMzYW5QSVowU1NUaUdqaUJXVVMyS1ZJSTVoNUMxckJxc2dP?=
+ =?utf-8?B?YnVrc0dlTWNSeFV1WXVUU1dSVHVuQ2k3RUVFZWhEZVpZWkFwT1I3dktJeGdE?=
+ =?utf-8?B?RnNsbTZIaTQ0SG5iNUZrMU1zNWs3aW8wS0FQeGhRSENzVWRIbTAvdG9DaXJl?=
+ =?utf-8?B?bjB1SUxIL2gzMUl0dnNXRitrdXdPYk9wMTBmK3NWcHQwL3B3TGxHazVvaUlu?=
+ =?utf-8?B?VnhnSUp6ZkhYRXJvMFBGOGRFRFV5SEc4ZWRXQjhBRFNoaVZaS3M1SDREYTdq?=
+ =?utf-8?B?c3YxdnpPdTU0WTh4M0pUWXd0dU1aYVNsS1hBNENRYVJHWDBmb2xtYTdRL096?=
+ =?utf-8?B?WUVpUG9CQlJFOHo1Ri8xc0Q0N0RRMnpveHFYaE9KZzdsTjNXSGVFai91WFhl?=
+ =?utf-8?B?SlpZTy9BWkowT0EvQkFFZGlqejVpSUhsaVBsY3FxR25oZzVTK1VKR0FhN2ZB?=
+ =?utf-8?B?ZGhxWmEvWmVOZWdwT1dUU0szNlZybk4xL2pBaFFuY1VxblQ1NGR2K1p4dXVD?=
+ =?utf-8?B?ejRRRWhvUE5UQks0ZVc2TGUyeTNJczl4OXBWM0pyODRUM3pxUEJheHp1QTFq?=
+ =?utf-8?B?T3h0V2pKRHpNaFhBWlM5S0NKMlpnWmxRR1ZzMmQ0TEpRb2tVVUFnM3h6ZzUw?=
+ =?utf-8?B?eVc3M1lUYisya3o4NE9rOGJVdE5RNHpiWVNHYnBsYkpqYkRQVTNGL3dTUUhv?=
+ =?utf-8?B?eEhQS2NaMmJoOVJ5dWRGRTM3UzJzUWo5aE5BbWtLUVIyS1VCUWFOM2RpKy9C?=
+ =?utf-8?B?ZTdObDl0K0kzQms3Si93U01nbElDSU9oZ0hRUGsweDBTMTdmZ2VHb25jc20r?=
+ =?utf-8?B?eGFiZk5oOTN6UnRmanlmelpBL08zTnBFdSt5ejNEVHd0WDQ0elF5anQrZFg5?=
+ =?utf-8?B?RlNVNjdZUUV1aUtsT3I3OFcvbFpONlBjTzg1MlBxL2pEMTQ4dmZUODRINzUw?=
+ =?utf-8?B?dVZKdld5WXFORENqVDJvbVYvT1FWL0w3MVlkN3A4dHE0bmZORDVoSWJocXNR?=
+ =?utf-8?B?RXJZbE1RUUZxdjB0eW1BOVNIcmhwa2RRU3FVdC8ranRRZ0wyTGhDZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd69554-4081-42da-5c93-08df391ee24e
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 20:21:32.0424
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xEdTqR4huGiyfDd+WyJenLWpgkvhiz3MtjC2jh6LeJyQKOkSDj40DciVVjz5q1EQkjGKyKaQseaV6k0ONSpfOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4437
 
-On Mon, Nov 02, 2026, Rick P Edgecombe wrote:
-> On Fri, 2026-10-30 at 20:01 -0700, Borislav Petkov wrote:
-> > From: "Borislav Petkov (AMD)" <bp@alien8.de>
-> >=20
-> > A K: is a content regex file pattern which matches any text in a patch
-> > so if a commit message contains "tdx" as in
-> >=20
-> > =C2=A0 has_tdxe_auto_clear
-> >=20
-> > for example, see
-> >=20
-> > =C2=A0 https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp=
-.renesas.com
-> >=20
-> > get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
-> > obviously is a completely unrelated patch.
-> >=20
-> > The same happens when someone uses it to check
-> >=20
-> > =C2=A0 drivers/power/reset/tdx-ec-poweroff.c
-> >=20
-> > patches.
-> >=20
-> > So switch the x86 TDX patterns to files and directories (F:) wildcard
-> > type patterns and group them by path, for less false positives.
-> >=20
-> > Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> > Link:
-> > https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.l=
-ocal
-> > ---
-> > =C2=A0MAINTAINERS | 7 +++++--
-> > =C2=A01 file changed, 5 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 7a162e9bcab1..015cf66afb96 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -30347,8 +30347,11 @@ L:	linux-coco@lists.linux.dev
-> > =C2=A0L:	kvm@vger.kernel.org
-> > =C2=A0S:	Supported
-> > =C2=A0T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git =
-x86/tdx
-> > -N:	tdx
-> > -K:	\b(tdx)
-> > +F:	arch/x86/**/*tdx*
-> > +F:	Documentation/**/*tdx*
-> > +F:	drivers/virt/coco/tdx*/
-> > +F:	include/uapi/linux/tdx
-> > +F:	tools/testing/selftests/tdx/
->=20
-> This drops arch/x86/kvm/vmx/tdx.c. Not that we are sending any PRs based =
-on this
-> maintainer entry, but I'd like to continue to keep tabs on that code.
->=20
-> Sean do you have any thoughts about how this entry applies to the KVM sid=
-e of
-> TDX? I'm not sure we actually ever had a specific discussion.
 
-Honestly, it annoys me.  I often temporarily delete the TDX MAINTAINERS ent=
-ry when
-sending patches that affect arch/x86/kvm/vmx/tdx.c, because many, if not mo=
-st, of
-the KVM changes are purely mechanical and/or KVM-internal that don't have m=
-uch to
-do with TDX as a whole.  Although maybe that's just a reflection of the typ=
-es of
-patches I tend to send.
+On 11/2/2026 1:31 PM, Borislav Petkov wrote:
+> On Mon, Nov 02, 2026 at 09:50:32AM -0600, Kalra, Ashish wrote:
+>> The original patch returns false if segmented RMP is enabled but
+>> probe_segmented_rmptable_info() fails, your version falls through to
+>> probe_contiguous_rmptable_info() instead. 
+>>
+>> I believe it makes sense to keep the return false there: on a
+>> segmented RMP enabled platform the RMP is segmented, not contiguous, so the
+>> contiguous probe shouldn't run.
+> 
+> That simplifies the code even more:
+> 
+> bool snp_probe_rmptable_info(void)
+> {
+>         if (!cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP))
+>                 goto out;
+> 
+>         rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
+>         if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
+>                 return probe_segmented_rmptable_info();
+> 
+> out:
+>         setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+>         return probe_contiguous_rmptable_info();
+> }
+> 
+> Along with the below, which should have happened too:
+> 
+> 1. RMPOPT depends on SEV_SNP, ofc. This would make sure RMPOPT is cleared
+>    everytime SNP is cleared, as it should be.
+> 
 
-But I do that purely to try and not pollute x86@ and linux-coco@ with stuff=
- I'm
-99.9% certain they don't care about.  If y'all want to sign up for spam, I =
-won't
-stop you. :-D
+Yes, that is a good point, but do note that the cpuid-dep only fires when the SEV_SNP CPUID bit is cleared though,
+and the IOMMU "can't enable SNP" path clears only CC_ATTR_HOST_SEV_SNP, not the CPUID bit.
 
-> In practice it has been a cross subsystem wrangler role. With TDX connect=
- it
-> will likely grow more tentacles.
+> 2. snp_enable_rmpopt() needs to check SNP first, ofc, and then RMPOPT.
+
+Yes.
+
+> 
+> diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+> index 99801e844b30..acbcec394ef1 100644
+> --- a/arch/x86/kernel/cpu/cpuid-deps.c
+> +++ b/arch/x86/kernel/cpu/cpuid-deps.c
+> @@ -93,6 +93,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+>  	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
+>  	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
+>  	{ X86_FEATURE_INVLPGB,			X86_FEATURE_PCID      },
+> +	{ X86_FEATURE_RMPOPT,			X86_FEATURE_SEV_SNP   },
+>  	{}
+>  };
+>  
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index ff6d17795054..a47b812b2ea3 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -669,10 +669,10 @@ void snp_enable_rmpopt(void)
+>  	u64 base;
+>  	int cpu;
+>  
+> -	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
+> +	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+>  		return;
+>  
+> -	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
+>  		return;
+>  
+>  	if (!rmpopt_soft_init)
+> 
+> ---
+> 
+> here's the full diff. Have a look pls and let me know what else I am missing:
+> 
+> ---
+> 
+> diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+> index 99801e844b30..acbcec394ef1 100644
+> --- a/arch/x86/kernel/cpu/cpuid-deps.c
+> +++ b/arch/x86/kernel/cpu/cpuid-deps.c
+> @@ -93,6 +93,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+>  	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
+>  	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
+>  	{ X86_FEATURE_INVLPGB,			X86_FEATURE_PCID      },
+> +	{ X86_FEATURE_RMPOPT,			X86_FEATURE_SEV_SNP   },
+>  	{}
+>  };
+>  
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index bd70c4d0b774..a47b812b2ea3 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -669,10 +669,10 @@ void snp_enable_rmpopt(void)
+>  	u64 base;
+>  	int cpu;
+>  
+> -	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
+> +	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+>  		return;
+>  
+> -	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
+>  		return;
+>  
+>  	if (!rmpopt_soft_init)
+> @@ -817,20 +817,15 @@ static bool probe_segmented_rmptable_info(void)
+>  
+>  bool snp_probe_rmptable_info(void)
+>  {
+> -	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
+> -		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
+> -
+> -		if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
+> -			if (probe_segmented_rmptable_info())
+> -				return true;
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP))
+> +		goto out;
+>  
+> -			setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+> -			return false;
+> -		}
+> -	} else {
+> -		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+> -	}
+> +	rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
+> +	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
+> +		return probe_segmented_rmptable_info();
+>  
+> +out:
+> +	setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+>  	return probe_contiguous_rmptable_info();
+>  }
+> 
+> ---
+
+Looks good, the simplification is nice. Two things worth noting:
+
+1). With the leaner snp_probe_rmptable_info(), a probe_segmented_rmptable_info() failure no longer clears RMPOPT inline — it now relies
+on the new {RMPOPT, SEV_SNP} dep: the false return (from probe_segmented_rmptable_info()) makes bsp_determine_snp() clear SEV_SNP, 
+which clears RMPOPT. 
+
+2). As i mentioned above, the cpuid-dep only fires when the SEV_SNP CPUID bit is cleared though, and the IOMMU "can't enable SNP" path
+clears only CC_ATTR_HOST_SEV_SNP, not the CPUID bit. So we still need the rmpopt_init() (in patch 2 of this series) move into 
+snp_rmptable_init() to avoid announcing RMPOPT / allocating the workqueue on a host where the IOMMU turned SNP off — 
+this dep doesn't cover that case.
+
+Rest looks right.
+
+Thanks,
+Ashish
+
+> 
+> Thx.
+> 
