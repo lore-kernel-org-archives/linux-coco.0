@@ -1,99 +1,88 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793564282;
-	b=xYouybPXqMIkeV6/MWxJTAyzxO2LqnczO1bKDuh9sd2oeDXuiSJtM6WAyQvAWIHEwSLp
-	 B+YWFkMpxsL/YrGRIDSstpw6BmXkAoOOdZPuD8/TwAA+HN60OvK/bKTYpJisCSkIgjRp0
-	 LWsrtqnCgU2jiAkmd6oYrQlsJyLNX0Cu5KZSzMdho3Tg4QwVfQq/K1sCcoeHwQUNkDLyL
-	 NF8penQ3TBjNp+qdJ2eDVAvv4UGK0ECG+CSGiPWg1q9MRaLw00QhO5ERm3i7BUI8aovnR
-	 MtE4B/xtfSNg76OCbzsdjHWDSv/uGz+WTE+LWys8z+9dOPiXalhzUZWekfISfT5DsZQ==
+	t=1793597375;
+	b=tiMeSJuEY0TFCwJ7damBbQ3jqkMfe14MG+CyMgA4W/SVDdc76fV0opyeoXXd5BZ6q0GY
+	 l8rhjRgFDEymJGHXU/TkRYEuSu68mCYO+p+QQaWeXhaZKHu2oHU69u/gf/qOxaSCMMbMT
+	 MpoaW1ju/Nz5u/GrsEoUzmxkF53lGmbRoOZC/kJkQGdJZDZADxz2AQ2HHNQ12/+zyFHmc
+	 ak6pUPHRJ7FBlyIT0C99pAyF5Osd8vPM3dWYQJa/OEV0Tf1isFYmQg+O12u2q96DTt5/q
+	 KyE0JuTv/kFBJ017PlSpgJ6CRThxWPea8swYfXPPkETRdyFaMuPS+sr4zoW3WmfyDkA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793564282;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793597375;
 	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
 	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=CcMs9tvtlwt5Bs19TD28TDiqHmuTbnMeK3Pwk1m9fcI=;
-	b=VWcOpRu8KUJ0Efnc/Vx5KRlu9MFcKlN6jka9xG33rfJIsAXfbqKkMCMVSr3DBwWeSw3o
-	 DgULE7pbZs0kfLo4LeydhDh7qu5TNnLRr4Tw5TGKG4tvaDRakI5uVZKK06v+i+KVGnXle
-	 Exprnz2xByjM6Q4XRPRQJmC8nmz0ag+7iCW55CoNj6a5hEMJGEe8lY4MpFF1FkF69/+RZ
-	 4m5H9rqc3U73zOa7glJWnPbDZjy3RHeUZgfYEL1CUSGawXPJ1vehCz00V6/L1dKeOqui0
-	 UB0qp5zd27ShRso9NRfdm6CcWk7VKtR0WPuDjJfovq4IfNl+NQW0HRnfCJ1BiXZmnTw==
+	bh=062LyCwScVM8TDwVa2CHqKPohwkUdfCc0sbqgE5jNzA=;
+	b=LPWKylTPy5BSPEeYKkmojcl2V0uaAMSUR5PAOoT4JRylZz+uh0r8SIfG76LrALW0QXMI
+	 3hwtYDTrYdmLIk4mfmoebiVaXynqQCmt+WkjQb0DUNnNEJSUSC9Gi9Ln3wekM3o3gCBcI
+	 z0z+A4II6OfRBUtaB+Huhbe989tcUVwAMTvM9A6m2QIiIUD2zZVviw7/FtIeHxkehkiLA
+	 zEVHASUG09BCa+gzkpCVACf7pPNQQbHiCnjqpDy5w13ZdRDS5bcelpK+vMhDMhPyIQ89q
+	 YWVKVUr0lT+9FMo+QsB6YSSJO1BG/2zfR6OOJFaNxycffATW1kb4LLuSY+jA4DAkiUA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=alien8.de;
 	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=BdZrPLVn;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Z6i1pCHo;
 	arc=none smtp.remote-ip=65.109.113.108
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1976E606A339
-	for <linux-coco@lists.linux.dev>; Sun,  1 Nov 2026 20:17:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1976E606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F42606A324
+	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 05:29:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40F42606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=BdZrPLVn
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Z6i1pCHo
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5C99340E03BE;
-	Sun,  1 Nov 2026 20:17:54 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D6C9B40E016C;
+	Mon,  2 Nov 2026 05:29:24 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Bd7ecPcu3egA; Sun,  1 Nov 2026 20:17:49 +0000 (UTC)
+	with ESMTP id RxgB04etsPu3; Mon,  2 Nov 2026 05:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793564269; bh=CcMs9tvtlwt5Bs19TD28TDiqHmuTbnMeK3Pwk1m9fcI=;
+	t=1793597358; bh=062LyCwScVM8TDwVa2CHqKPohwkUdfCc0sbqgE5jNzA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BdZrPLVnCOqsebut2c7nykFo/vNmhjON4fQa50k/KbCavQnJesAcCCeyovv86jH0Z
-	 6c91xRny7T8cZrM/nOsb7OJFJbpCFlj5B8DX8XbLQ5oJjm7WwEtTuY+HcRSBo9SZ+0
-	 +TiXYiVUwm6ZyrCGWXAISZIx19w4dFtAGYrgjj0IhLYisQ67RXNYWLz3zAfohIVIDN
-	 kdpJ90prDrv09xZpeTqFnN3k5JB7fc7p5Sl2pvahQ3ORoY0Z9jN5W6hZ7O2mHAyjAh
-	 zmU+s1UUy+58aEpNvuRAdxbHn+zsuMukhvt34hgdotP5uO0sSGXBANvo+mRpXrmMc8
-	 +m41JE+gKXLRoPqSEG16r9V6R5T2smfVdoP18vgO48YC1c+ngHB3iE4e6l0WpSE9Zy
-	 CHHfE3wxVIpPrfaSlAMLUWRijoH6NrjVgGeqKI0odptOsvWBp9gUospPyx7+IlS6nd
-	 2hdNNgScNU7TNmJzwlG7KTJRIGQsC3Gh5yZQhOoHvZ9F+gpfA24Rq3S05mdMO+AKF7
-	 QoaBFOzIIgK9Jx9cEUIzXheIbNXcUVMjf3NjqBIn5NuGlsNdS5NGEWDn8qJaz73H4D
-	 jL6jnXgqqUdE3En7PDXPe3PUnpQyGrcf5ytzSHIwKOh7K+Ej2/uyz3dB82z+kwrOIM
-	 vt+Hq3gPyHodhUq01aAERb58=
+	b=Z6i1pCHoWtAn61nOtp0mn7qypuFLiIeEp5N6EODwfwZDDyy3tlHEYeuCw2DvxW3ew
+	 JVieTdjlP0GGKMeT/K5nCQ0XOrmr1oeteAxOYZO4gt3VE0IfUpN7OSEjr3JvsHwUe9
+	 P07qmGmwo7v4D8YQIuINOrvxPGPxdq2mphT4WRH9jk+ykAFoWpZtWNuSL9c3UtJNXQ
+	 z8c0s/B6xAGeA2Bk5Y/Ej44x4mmiu9oXS6VtG8VV4I7rX0JfMMpVUfxnHr+ddaU1iV
+	 1dtxKii+IP3f6fizpMpliH1ilk3GHbE6f+FxyNpC9tRdBXnwDCG2eo1pAvnyCK+geh
+	 z/9rYKIk1e6WHDJK+QH6hfiyub4Ejf/JBcVJuuP09wuAsLJOt4zowB2nJhcJ1YrRin
+	 JdEvWFM9FrgDCkNs31eO+2SOHE+NjCxwiHH+4kUUiqcsbKbSP2qntP4kPpw0DDW4pC
+	 suHZsOsST2SdZiDjEKyWnTE/2xoLqBdBj2D3kwkR/tYgS/jxaIEzPAKYA5rnPXgQlv
+	 6aiEG/A5XeS15mmm7MFQyUP5sdoOVh7U9Hf/9T+9Y/0A+qFhq003lNkm5WxWWm/+dR
+	 M5jcJGH4z0E2+eTva3XGRbov0NFYXYOKzbgr6D3wk/uC3yvxvGxVBLvy5dsFvIugR4
+	 76ifX0CMDDLKXElC5ob4hpxs=
 Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7C7F040E0299;
-	Sun,  1 Nov 2026 20:17:30 +0000 (UTC)
-Date: Sun, 1 Nov 2026 12:17:27 -0800
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DC94440E0184;
+	Mon,  2 Nov 2026 05:28:44 +0000 (UTC)
+Date: Sun, 1 Nov 2026 21:28:41 -0800
 From: Borislav Petkov <bp@alien8.de>
-To: Joe Perches <joe@perches.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	"biju.das.au" <biju.das.au@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Au Dang <au.dang.jx@renesas.com>
-Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <20261101201727.GCaueeVySou8SsgdDY@fat_crate.local>
-References: <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
- <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
- <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
- <5ad69a1167fddc7caf1eb73e439765116db1ce17.camel@perches.com>
- <20261101014710.GEauaaHoYk5TzRpGBQ@fat_crate.local>
- <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
- <20261101185452.GAaueK_PzlK68DsmRz@fat_crate.local>
- <44db8c930587810e902dcb36b5a0718a52eb94fc.camel@perches.com>
- <20261101193759.GBaueVF-1a0H8BDmZ2@fat_crate.local>
- <874236faffbe90543d69361f04628fd8047ab1b8.camel@perches.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	darwi@linutronix.de, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
+ disabled by firmware
+Message-ID: <20261102052841.GBaugfibOXxGorZKgq@fat_crate.local>
+References: <cover.1793216372.git.ashish.kalra@amd.com>
+ <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -105,20 +94,81 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <874236faffbe90543d69361f04628fd8047ab1b8.camel@perches.com>
+In-Reply-To: <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
 
-On Sun, Nov 01, 2026 at 11:54:42AM -0800, Joe Perches wrote:
-> I do think it was already generally understood though as
-> there was just one exception to the pattern match style
-> in the existing more than ten thousand ^[FX]: MAINTAINER
-> entries.
+Ok,
 
-I leave it up to you.
+pls check if this works too:
 
-As said, my only angle is having this documented as clearly as possible, even
-with an example, so that people in the future do not stumble over this and
-have to add debug prints to get_maintainer.pl code to figure out what exactly
-happens.
+From: Ashish Kalra <ashish.kalra@amd.com>
+Date: Wed, 28 Oct 2026 19:49:22 +0000
+Subject: [PATCH] x86/sev: Clear RMPOPT when segmented RMP is disabled by firmware
+
+Segmented RMP support is advertised via X86_FEATURE_SEGMENTED_RMP, and the
+firmware enables it via MSR_AMD64_RMP_CFG[SEG_RMP_ENABLED]. The latter can be
+cleared in platform BIOS by the user, in which case the system runs in
+contiguous RMP setting.
+
+snp_probe_rmptable_info() does not clear X86_FEATURE_RMPOPT in the
+advertised-but-firmware-disabled case.
+
+As a result, this does not prevent snp_enable_rmpopt() from trying to program
+MSR_AMD64_RMPOPT_BASE, which raises a #GP on the MSR access.
+
+Make sure X86_FEATURE_RMPOPT is cleared in all cases where segmented RMP is
+not enabled.
+
+  [ bp:
+   - Put the commit message on Ozempic
+   - Flip the logic in the function so that the segmented RMP disabled
+     case goes first and the flow gets simpler this way. ]
+
+Fixes: 15d974be0a3b ("x86/sev: Initialize RMPOPT configuration MSRs")
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com
+---
+ arch/x86/virt/svm/sev.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
+
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index bd70c4d0b774..ff6d17795054 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -817,21 +817,20 @@ static bool probe_segmented_rmptable_info(void)
+ 
+ bool snp_probe_rmptable_info(void)
+ {
+-	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
+-		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
++	if (!cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
++		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+ 
+-		if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
+-			if (probe_segmented_rmptable_info())
+-				return true;
++		return probe_contiguous_rmptable_info();
++	}
+ 
+-			setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+-			return false;
+-		}
+-	} else {
+-		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
++	rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
++	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
++		if (probe_segmented_rmptable_info())
++			return true;
+ 	}
+ 
+-	return probe_contiguous_rmptable_info();
++	setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
++	return false;
+ }
+ 
+ /*
+-- 
+2.53.0
 
 -- 
 Regards/Gruss,
