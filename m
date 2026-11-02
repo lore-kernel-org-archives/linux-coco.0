@@ -1,68 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793603914;
-	b=s8TWoCyMOCdcFT32TO8k8YASkfJfQR/1X9+FAGRtZVjv8bUuhEfNIof7APKlNy/JlvlQ
-	 ivpDyFdoHXvfAmqsDO7KjNcvhErwXdSmSE8vrG9woR1y+esJluxDZ4Hc9dmYtDdwDp+/Z
-	 1Too7fPi1KmDzMb3kqleCATQZExPcY+ulThw6go+S5/Wsh1vKK2g/5X/p5rlZfPoEp/qi
-	 jskq/uyEWN6rj6OSg1ea5c+6i0L6LFCy1metCf5hyPNSp5YVZH3F3I14rCtO8yOd93efr
-	 Tc9DArucQqJAA6fQZ9DAcsnlkeTedpIV45v+OwWFEaldHH3gyWzeFxOUyju/1NDTgPw==
+	t=1793604790;
+	b=znsHKObpBgrG905W4QDOzGIM0NOYZwZp6UrpKJEninMoRoJQZmRIADlGctNUQnHjdDbj
+	 aLRWf5nzBwMbcJ++4eVmJQF71HWnRI/fdOznYTflnQOKBI5N0NgZbTxeaM7Pp1OYSpwNb
+	 HVzgBnsKke9T0iDZ5v0ZjK4wP8oSoYxt5/AA6nhELNc79IVjVQLzabublNUlhdKRC7R1z
+	 Ak6SLuHTDCoUWKhPxjP4Z9B3a5k5WnwWWqv/QD0v6f5MPW0AGgXVHOOVZZSRlZkkQrbVW
+	 7Dqf2Q5ynq+obBvgvunm5+t7UckqFi9yWiOB63p931r4psfDkhMn7FSYkypRA6lRUVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793603914;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=AKYpB2+zrqXiyOQva5RgKPct/7/kmoifdAd8IOoSraE=;
-	b=wbEJUcMW5zmt7OBy1DJhIhDhtWZjUg4QCzB7AOd88io1BJ6xsCByDVe36aD8uOwX2piH
-	 seoM2U0o0f2o+p4788vdk7rCQT/LnaH6/l72/2/VBhK6pDyZf/o+eJXgvM1SnKwqaoDqw
-	 pgoFWYxJP2k1vz7TVihLwUbZzz/77CCs2mzkAjyFm+zgZycjQ90DX+T+tZnniAu2E9LV9
-	 UrtyvIFhH/fBBqA2s9670/wzPWXgJ1YHD+J657l1SaPj3FU1XyuHWYavoFhLOnpRjsRiM
-	 bK6wBJPooOc99leR7Ep0o1+ZaFEgvsjprV16rT7C/cDSFL/93D+kOk7bgyJ82Bon8aQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604790;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=uhlq7lRBnMZgN/FlVC6dxixNTQE9Qh0fbitp0y0qEhA=;
+	b=3iEePYsMenHNa1XewbS64K3a+msf6cor7BnP2KmrHFbEU5l+0hO5fuBnVMTpckvdAon9
+	 wAAbVKbfcyqs/j0zBqVbqdBrWI+Pf8+iY9EhafEJgCFo8RzFQ1gkr/v/JNjKzxANrTf12
+	 HGa1urYVscW7QSyPoIyfbI+uygvI1zdRy8lITe1/eWXHGTrr9cJeNp/rj9uUWI217rSSl
+	 BXzgNWxFr9dqhHXoC4VFsLnekpu/ciggL+ANDMG8H0HqfLNhLB7GZBf+XRb0CoBACgu4o
+	 +yX7U78avrp1W9eha4zb688O8+VUZiKGxulczahRT/TQvH2wDX0/O2ogH6AbHRIXXJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="fZdW/tZS";
-	arc=none smtp.remote-ip=198.175.65.16
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DBxHRawa;
+	arc=none smtp.remote-ip=209.85.210.177
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E99606A326
-	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 07:18:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01E99606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A26606A339
+	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 07:33:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71A26606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fZdW/tZS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793603913; x=1825139913;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KudH8oFsImGYL7mGO6FDNrAM7eIjgonP8sHENv5RJ7A=;
-  b=fZdW/tZSE4YOQKKt3qHrLrLSuiJ0R/lGg3tXDW8QrDb4yGmci+C6Jk2/
-   9n8m+Pn1L55v3wNwxd4l4e1vg0EyDB15z1bht4IhKxIvDTZvf8CFxTKGK
-   0dkXQuUXl+9x09w/3mN0xe4HxONWGISdyvYHaE9kOrNoHHL9zfjqLl8Md
-   zuq7Cofx2GxWG9bIZpfw2/imPHmNs9pdVOmzkEXOvZX80uAQNNkdxBC9u
-   3UgjmL1jRpkOdw9l298k1WA975eN/Iv7/elRtvVjoENXckFFn4N/Uo76K
-   QC/gVrcezh7Fkuz5pMMIdeun/CMah+fBY2c83JuQJ7OomqXksLoxC/sH6
-   w==;
-X-CSE-ConnectionGUID: qL+RabY5RvGJRnNPRNibjw==
-X-CSE-MsgGUID: IRMYe+HNSQ65OHoEBxD6PQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2278285"
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2278285"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:18:33 -0800
-X-CSE-ConnectionGUID: bvHAe9u6QVeycrZfagHV7g==
-X-CSE-MsgGUID: Wvv3PDsyQwOVjQMSyYeJdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="5873618"
-Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:18:29 -0800
-Message-ID: <061b1963-7288-4f9f-97f7-54fab5b95ecd@intel.com>
-Date: Mon, 2 Nov 2026 15:18:26 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DBxHRawa
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-89d6bd67045so1239962b3a.0
+        for <linux-coco@lists.linux.dev>; Sun, 01 Nov 2026 23:33:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793604789; x=1794209589; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uhlq7lRBnMZgN/FlVC6dxixNTQE9Qh0fbitp0y0qEhA=;
+        b=DBxHRawa6TYdvavSg3FcztrsikcMiHn/ZHdNcnepYIZjNJzCQcwvU3Q5LCEjEDfr3R
+         RugAWttzSHSJjXaqsLXGuS7VewVjTxlGkxeziAC+s1UT4maJemxsF9TKEjSIbSWgM1Nf
+         ex5s1edOZFJXyuEJgggft8LGWA78edusIkrekPfpmAi+/ismD9tiM4/RxZXAaWTlFDs7
+         iGlOqoiLAMZOznJWswJxrc8fwPFJHm76pgVeUou90MQ5hewZKEaviCcVqsnyzCE1Hs29
+         apCXjs9iBSepQxUTg0HHFFWe2gdp1F09LXgXCoPlks36oJK0xApXiXUgNEEcRib2yf8D
+         D2lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793604789; x=1794209589;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uhlq7lRBnMZgN/FlVC6dxixNTQE9Qh0fbitp0y0qEhA=;
+        b=Tq8MgnAmHVyghxS2DCncEji1VK0mNP4VvrWwagTx3y2uh5FBPlKrJ9aVJvz2QLboEC
+         J5t5blU5ju35Ho4JwzTBrgALGmJnGihY8mVra0WAc2V9UzilIw8P/TOg+W9whT5tEUS3
+         wLuaCsDqaaf2QHZgqfBlw7XZPKUMZHB8G6oNQe1GdkFSEfHkDw/DmSss90dpUA6nS+pe
+         cyoxqjxZkKPR/T7VoAEFzaeEQALI2Goeb3p9LvjCXwyraqTntY9uscDw+hkvJ/6Liau/
+         mCLRdNmKB8mkaHUVd572yXCIfOTOzi0v5yiQIjDMxNkoGv0tlUarwBl6izFXoHRChc+F
+         T6lg==
+X-Forwarded-Encrypted: i=1; AKwUvBwqOe3IL40JyjXRvfUlEideJYwTzJmtAhmkx0pVwVS2a2M1CCS4LMaTYCLe2oYTUsNDn5lSTC2AbLAM@lists.linux.dev
+X-Gm-Message-State: APuU4Z8BYFKmZ8VfZT9YFa8gmlkndM4skMJenPvXUiPD1FTtoQMmiPiz
+	2mI1IfHhQPYNRfSPMWQBM0N96awlm6bhup2GdyKJL/pYayKSKGnbMJVlzmuqNweYVEI=
+X-Gm-Gg: AYBFou3zklfoZYptnew/E4fnqXyeNBmNb3Xly6VwvIoDrDvo97y9wVUGcOOs2iJ8nzC
+	vifWhe7jo2/4N9rYmxUSeE+tz7AApLKWkDiXVMV0bhXNKeSzfmrXwTx2sHttTEFyvDxnl7vu6KM
+	Z61Tqa9SDOxViC7wfDOl5qn7xUyuJr3CviSWjIzdIhhewcanqXmFZTMKZPVwz31VCGQTfFvvoNy
+	E3gJteF5WuTpkg6fSoM535gWOW0BDhgxKckNAeozuCzFYsqyKuyo1yqKSubaaMzc1Y9D+ZrxeBC
+	0pIO2Uv53I7uDhfpaY/durRERWA6PeSYrhflMs4ZqxF5+LYRtSMAXKVm2hm32Cb8uSi6MsskTHD
+	chHmjr6Ro7y1nFZKSraNNUdtLLRqiF3hTNqiXerX9ddL0V5yqlQIZ4D5pslWp6EjZUhCFC9NF/W
+	SDXkmzeULmnwo2P3BUPD0Z+LPXrFY6hkIwlMi1DiDJxR30XwWv1f3sL3a1qpzLALKF+k+MOoOnY
+	tz6GRgo4sjV5fcK+EGc0rQ962KvpxCmGc6kXi6tJlim4ZKja+77JJXYGER/7x50HFaWImuWmzUh
+	ipxGCfcdhTo/GKvjXhogTkKI8SlZULkPa2j+pYdDQ8E=
+X-Received: by 2002:a05:6a00:340a:b0:89f:d449:7526 with SMTP id d2e1a72fcca58-8a8321b41acmr7898596b3a.21.1793604788690;
+        Sun, 01 Nov 2026 23:33:08 -0800 (PST)
+Received: from iZj6c0kydq3fvfrtx5kta5Z ([47.86.51.122])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aada6c2c28sm1563174b3a.43.2026.11.01.23.33.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 23:33:08 -0800 (PST)
+From: Challvy Tee <challvy.tee@gmail.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	kas@kernel.org,
+	dave.hansen@linux.intel.com,
+	rick.p.edgecombe@intel.com,
+	vishal.l.verma@intel.com,
+	kai.huang@intel.com,
+	seanjc@google.com
+Subject: [PATCH v4] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module is not initialized
+Date: Mon,  2 Nov 2026 15:32:44 +0800
+Message-ID: <20261102073244.919864-1-challvy.tee@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <07cfa95a-e766-411b-8765-33352a04c0be@intel.com>
+References: <07cfa95a-e766-411b-8765-33352a04c0be@intel.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,85 +106,111 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/virt/tdx: Do not print error message on
- non-present feature
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, dave.hansen@linux.intel.com
-Cc: x86@kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Nikolay Borisov <nik.borisov@suse.com>,
- Sean Christopherson <seanjc@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Chao Gao <chao.gao@intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/2/2026 2:51 PM, Jiri Slaby (SUSE) wrote:
-> Before commit 165e77353831 below, the kernel did not print anything
-> during boot if X86_FEATURE_TDX_HOST_PLATFORM was not present, unless TDX
-> enablement was explicitly requested via a module parameter.
-> 
-> After the commit, when attempting to load TDX automatically, this is
-> emitted to the log:
->   virt/tdx: TDX not supported by the host platform
-> 
-> It is emitted with the "error" level, hence it is disturbing. It is not
-> an error to run CPUs without the feature.
-> 
-> Drop this silent-boot-breaking error message for the automatic
-> initialization path.
-> 
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Reviewed-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Commit 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and
+kdump") made native_machine_crash_shutdown() call tdx_sys_disable(),
+whose only gate is compile time (CONFIG_INTEL_TDX_HOST).  A kernel that
+never initialized the TDX module therefore still issues
+TDH.SYS.DISABLE.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+In VMX non-root operation on a SEAM-capable host, SEAMCALL causes a VM
+exit instead of a native #UD.  KVM injects #UD only since
+commit 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute
+SEAMCALL or TDCALL"), first released in v6.18.  On an older host the
+VMM gets KVM_EXIT_INTERNAL_ERROR and the vCPU never resumes, so
+machine_kexec() is never reached and no vmcore is written.  Kdump is
+thus broken only in guests on SEAM-capable hosts whose hypervisor does
+not handle the exit; plain kexec is unaffected because tdx_shutdown()
+only runs as a syscore op, registered after init_tdx_module() succeeds.
 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Chao Gao <chao.gao@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> ---
-> 
-> [v3] add reviewed-by tags and resend
-> [v2] update the commit message.
-> 
-> Cc: Thomas Gleixner <tglx@kernel.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: x86@kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-coco@lists.linux.dev
-> Cc: kvm@vger.kernel.org
-> ---
->  arch/x86/virt/vmx/tdx/tdx.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 680e5178a86f..d910a290ac50 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1276,10 +1276,8 @@ static __init int tdx_enable(void)
->  	enum cpuhp_state state;
->  	int ret;
->  
-> -	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
-> -		pr_err("TDX not supported by the host platform\n");
-> +	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM))
->  		return -ENODEV;
-> -	}
->  
->  	if (!cpu_feature_enabled(X86_FEATURE_XSAVE)) {
->  		pr_err("XSAVE is required for TDX\n");
+Gate the SEAMCALL on X86_FEATURE_TDX_HOST_PLATFORM before issuing it,
+the way paddr_is_tdx_private() already guards its own SEAMCALL in this
+file.  Without that feature the module is never initialized, so there
+is nothing to disable; on a TDX host the gate is a no-op.
+
+It also decouples kdump from the host KVM version -- a guest cannot
+require its host to inject the #UD.
+
+Fixes: 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and kdump")
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Challvy Tee <challvy.tee@gmail.com>
+---
+v3 -> v4:
+ - Gate on X86_FEATURE_TDX_HOST_PLATFORM instead of
+   tdx_module_state.initialized, guarding the SEAMCALL itself the way
+   paddr_is_tdx_private() already does, as suggested in review.
+ - Drop the v3 rationale about covering the syscore and future callers.
+ - Retested with this predicate: kdump produces a vmcore on the
+   Alibaba ECS Emerald Rapids guest (6.12.0-278.el10 base).
+   v3: https://lore.kernel.org/all/20261030154851.907726-1-challvy.tee@gmail.com/
+
+Hypervisor -- KVM on all five (CPUID leaf 0x40000000), across three
+clouds: Alibaba Cloud ECS, AWS EC2 and Tencent Cloud CVM.
+
+Host log -- yes, from the Alibaba ECS host of the Emerald Rapids guest:
+
+  KVM internal error. Suberror: 4
+  extra data[0]: 4c
+  extra data[1]: 2f
+  RAX=0000000000000045 RDI=0000000000000045 RIP=ffffffff855422fe
+  R12=8000020300000000 R13=8000000300000000 R14=8000020200000000
+  Code=... 4c 8b 5e 28 <66> 0f 01 cf 72 05 ...
+  check runstate transition: 'running' -> 'internal-error'
+
+Suberror 4 is KVM_INTERNAL_ERROR_UNEXPECTED_EXIT_REASON; the two data
+words are the exit reason (0x4c = EXIT_REASON_SEAMCALL) and
+last_vmentry_cpu, i.e. kvm_prepare_unexpected_reason_exit().
+
+RAX and RDI hold 0x45 = TDH_SYS_DISABLE and RIP is at the '66 0f 01 cf'
+SEAMCALL opcode in __seamcall.  RAX still holds the input leaf rather
+than a status code: the SEAMCALL never returned.
+
+Reproduced with 'echo c > /proc/sysrq-trigger'.  All five have
+CONFIG_INTEL_TDX_HOST=y, kexec_crash_loaded=1, a kernel changelog
+naming both backported commits, and "TDX not supported by the host
+platform" in dmesg:
+
+  Microarch          x86_vfm  Cloud          Kernel             echo c
+  Sapphire Rapids    0x68F    AWS EC2        6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    AWS EC2        6.12.0-278.el10    no vmcore
+  Emerald Rapids     0x6CF    Alibaba ECS    6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    Alibaba ECS    6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    Tencent CVM    6.12.0-278.el10    no vmcore
+
+That dmesg line is printed by tdx_enable() when
+X86_FEATURE_TDX_HOST_PLATFORM is clear, so the feature this patch tests
+is absent on all five.
+
+Controls, each producing a vmcore: the same platform on a kernel
+without 5b25f249be32 (tdx_sys_disable absent from kallsyms), platforms
+without SEAM support (Skylake, Cascade Lake, Ice Lake, AMD), and plain
+kexec.
+
+With the gate applied kdump produces a vmcore on the Alibaba ECS
+Emerald Rapids guest, retested with this predicate.  The Granite
+Rapids guest was verified with the v3 predicate and not re-run; the
+AWS and Tencent guests are reproduction evidence only.  No TDX host was
+available, so the no-op case is reasoned from the code, not measured.
+
+ arch/x86/virt/vmx/tdx/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 96ced0494b68..9b01131f7b7b 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2321,6 +2321,9 @@ void tdx_sys_disable(void)
+ 	struct tdx_module_args args = {};
+ 	u64 ret;
+ 
++	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
++		return;
++
+ 	/*
+ 	 * Don't loop forever.
+ 	 *
+-- 
+2.52.0
 
