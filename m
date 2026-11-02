@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793618903;
-	b=TyCRQuJvQN3Ig1W0gSkIRd5LDfIJGGzyOCIblmJ0CmaShDnxfnQBLJPjHm5+ZjsCZMdc
-	 yA+e8xH+QGgliAIedjCdjBxDfKgZ2QTUYozG3HEnMyNtlD2B0ss/i14oZGU05TX6nnfYC
-	 ztLjrBnLdrQaC2/gh7D9DR/LjJizHIfbYJUFa0YuOPLMPegr9qO9CrlIaXcZdU/z8xniN
-	 RBoR5n9yZ1EDz1b5cFHeWDOD7BK4BHbbgqysj1CbPORZSuioP64p97ekaKibO27YXb1Sq
-	 A03w29lG9JkJBFMVr7zioIdTu3II+mdN3tFIsBb+A0sr8vAIsK9nmxYplHEjofDzjXw==
+	t=1793619054;
+	b=3T4uQeplkOQF3EK39117N9heZGBJQ3/0Zly0WeXIp7znJ/XehLm2DCd8ff0pMbQLPj1C
+	 7JB1JlKt+m4SFy9u7psDzrtz/L9VaMJcVaS2wS14IfMO338ym6XsleLtbClpfSOIZBNJS
+	 vnh6fg48DJL0cMHh1R6EpNZI4io+8ujxf7dQSGYBqdTPkFyoVhbk3Mmv0G+84DrBaDHKZ
+	 Z+5WTz4cLZbXQcCMc1IA5+agNOtyvBRYMiBW6oqE4KrqsOgQ52sYpDQKdX/kEqipF3tLO
+	 2lrBsMcpxTS5s/KnN1CBFg6Z2OfuTDo59XhN/4dfhqmTYv4b2AD4OudE24abIqo1ChQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793618903;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793619054;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=MLwaQ6Jl6/f4tSN2XtwUoJlbirpWyViWzdWq1gz8VdM=;
-	b=xHBoHWkGhNIPdth7/QXf3MSCLGloAAGFwCyzLRVguA4FO47p3RT1ft/3jtma0WPh/JTB
-	 ZRwfM8/yb/unocPZAft65EyBiIexWxRkFbLk690cKGctGVXf0c2zs73d4gNTWCQtsEWq8
-	 KHFAdAjUQgnqx5g7Pg5YdXKXN4eHOKdeleojhKZfmuTxOnABbvk7o2Le4/i7UIab5+6y8
-	 P7prTyKOHvGPj4MzDw/sMhnuDOtGKB93TXv5RbYPR0KpEBxErfSJiALuOBDxqCgJKp8Tz
-	 n6e8iF77IPvXGPa3pDU9z6FJTxZE0RNLCnhaemh5YEolRuSLHe1+Nqnwz6uxbNkz//w==
+	bh=RopkjFnH/L5NMVxm+y2n/4o6xw3wiVYjMxy6v3/2wg0=;
+	b=XiQDwMQYqp+kH3NL+S5Tio/GabPPuqxCoAVXbz85LRJ0nj9IIZDU7rbXZAjI6hpRRLjC
+	 /dFlkzgFMSwVi4g7Y0kGPIAWURqA1A/cqkIBgeTKqHMHYfyry0e6OJzQzbmnlddERlJST
+	 GW/Iv28QJJDeRF6nz33UV3cl/hy/Bn0DR/xbK6nF/8tIW6KzvAX7tIQKroLOhYcwHuQmC
+	 Okca6O2ceUW8rfYLZBw0ZIih26KxLiIqTUkji+IbFgwkw7sEISPFXWTkJd5DOOIP397VD
+	 xZUB4Yah/flk1OA+OcKATZFqh99qr+jkl/PEjCK0/Ng+gnDERror+i4Xv476xgt74AQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=qIQ2ejEt;
-	arc=none smtp.remote-ip=209.85.208.181
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=sXcK2Nov;
+	arc=none smtp.remote-ip=209.85.128.46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3423160A2619
-	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 11:28:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3423160A2619
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8234160A260A
+	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 11:30:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8234160A260A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=qIQ2ejEt
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3ab3dd966e1so25777871fa.2
-        for <linux-coco@lists.linux.dev>; Mon, 02 Nov 2026 03:28:21 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=sXcK2Nov
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso23797345e9.1
+        for <linux-coco@lists.linux.dev>; Mon, 02 Nov 2026 03:30:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793618900; x=1794223700; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1793619052; x=1794223852; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=MLwaQ6Jl6/f4tSN2XtwUoJlbirpWyViWzdWq1gz8VdM=;
-        b=qIQ2ejEtRr21NrEuCV4pMJgM3PhQjmZwVsbgTI2E9SHZL6HIiFEd99mQhCZZja39Sa
-         4Wne3paKRI0HxAMDQV/v0Dc9UsDQWQUV7nElwR/y9SCoINc51kThlHd82ET1FINYt/xr
-         aw0ypjseHVo0p9mDLVQf9CmR9U9jRIJ93ABktK234qZrDvAxx2IGQqo5I3wuAZPRtCeC
-         LJYioPVr4IlDvhha/y8o83w+CME7I+bMg4gk/UZafn1Ompx5EfGTseTRGKly0oNflu83
-         NZseOVRdcgOEt3X6OhTJG+805I+whhPzuBFTv7nrITucJt+mNtejFe6ReeIEffmpcmY8
-         +S7A==
+        bh=RopkjFnH/L5NMVxm+y2n/4o6xw3wiVYjMxy6v3/2wg0=;
+        b=sXcK2NovY48hvg6EmE/3bDf0R+rJ1ekz0ZuwCMBacIZcM4799MC/bChBWbPygg9Cpl
+         iid8HHBLBy5fqkbz5IW717cFpYAuSHx8fNXOT2y/uWKu6O/iS2hzCZ+bvjJqSx0zu2LT
+         PNgoGwKuLsteM846rklP0uPCryza2LyjJ86qASd+ceFKGfTI4Isdp3wa9kkrSOIpx+6o
+         vipQziJM5ADO44mHjsTNfElAoLDNLulZ6BOtPJqtzUxk6TxeHIGY0rc9b9s+qfZIq/Zl
+         8vfXenAkG58I9lOD9rIxJ+KZFmW/cVSCxwoCOX6NEeZHcO9krVhg6XlYY+ODOaOB4ulc
+         LdoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793618900; x=1794223700;
+        d=1e100.net; s=20260707; t=1793619052; x=1794223852;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MLwaQ6Jl6/f4tSN2XtwUoJlbirpWyViWzdWq1gz8VdM=;
-        b=sAPbArBoD9C+97p1ecexBkfixiJvW8ZdI7SnKcQyJm6YLOWdaVvrDj+0qS12MQtJL+
-         jDurOz7+Vzq/kGyfHeNBRzp46VzWApB1SlnQH1hP1GFwgImBuRBWdzGMAkcv0MwVJaqC
-         Fb3PdAkReJR4vPZAibYArmE8srmp4oGGwe/sdtz3pe8DoGPowRB6OOLoaXGHgyTiXmKF
-         Pbu4VHkshRTcM9taSzGZdv9/5jhEhJtKsieaVwYNg8CEE+igaKIYiNhXmmVo2A8xS9rL
-         gNtKv9/xnMptbjCYgxoUOhsr6GNEH6CG+6u2Igwu41kFAvnt66ZDXwSMYM4UByH1lyIU
-         ThZw==
-X-Gm-Message-State: APuU4Z/HHyRB5dmMmOAJrWd+scxrYYJE0mXHJ7nErOpLmwBLxEoUMdkZ
-	iLKdd2IK7pRB9G3a/WcMm+dYREZEvB77NS4nxgsf00QsO+n6hBoI4P16y2tLxFYahYM=
-X-Gm-Gg: AYBFou24yuPrsaxtE1k8gPwt5qU/D4zpaRoCgIv3okjo2HJdAYFoikXjzb98oVZniJk
-	GoKEAwFH7A3xgqGEw2gUJ5z/dxIhSKlM5LMNH+iqAxxHkWDLwEXGcGczK+15Bjuh8oqaYtbBquM
-	JARWUV92ZMiFfpmbmQB84GS9+mk8bPyMehL3yUNzlKL/B6UpPdcmV+fEtnMsCfKUqfOSGPT37lb
-	r/Y1JFAHefQsWDCjW05DXg/Dr6xbxZIciZVDPreqx3mjLHhOIjQGJjG5xybXynl+jciECGBH20P
-	pYlhPBGkp7j1vZefJTwqPi0ly/WIWPfYlHsEAudtprhHZDs3sTR9hBpS1UhSpTkklIi8xSh7cio
-	7EO4CBJwPtFqTzPtTWK92o6b49KRmMqWl8p7FrQF89WloO4fII9zxb/q8WUhiJ6WpKnmJb84pRO
-	IIYYdehTu+hrI6H0RQ2Uaz5tDgxzUTIeH2RqJqBrGkPJEJ1euZTlTJkJ5KUvZHjqkkTG5zqMHty
-	Wct8FYCksS670ZStfByzfrEoof1RQ709DLSaa0K23YZ1aEVCZ6Eoax08Ksf64EZnQSyCCfzwllT
-	Ox70wBVhde9ufX1tLoAq0hSBH0xmXXK0UHm/6ySGJWjc89FYaA+Z+z/iGxdA
-X-Received: by 2002:a05:651c:3137:b0:3ab:4eb4:5f19 with SMTP id 38308e7fff4ca-3acb7b5ac93mr23955881fa.27.1793618900071;
-        Mon, 02 Nov 2026 03:28:20 -0800 (PST)
+        bh=RopkjFnH/L5NMVxm+y2n/4o6xw3wiVYjMxy6v3/2wg0=;
+        b=LxFpLvQKt9zEQwgp/NkeEsIhsEigDUXpCKmn0RwQQPJ+tAxANHwU89UsgAT24QgFn/
+         BiUoKF7v+/Tp7sQr6tlC2eVI1U2sAeJ1IEeebztbJTCPYFC4/rQKoe4Iabicskis5WHR
+         kk8yd2P6wDTQbyplBvK6SPfjlVy2MIijsPXSdMVrWdDMDb9JfGOlsVE2yIk8WSidGPkh
+         ZRF4GjbbKlVr2rmWAQQwgGlzubNB+Vhs78Cfv8tA/mBCqzyiMZEBhpLjNgt1ybQDPqQ5
+         aSN30u1qVAEL/M0uNhAZwOf2jfV+gyuIeBtCzIt5EiFd4BI/r10XucIS7N5sQuO+84e7
+         js1g==
+X-Gm-Message-State: AFq9FYJHHb1mjBwTmOZINe5NEuf88efWD3IiePuP/oH3Hk6I98Et4bOJ
+	Fb4G8J19NZwc79q826Yvm7lyIjqF5b+yEunRXoBdqtaXEZX6s7ZzZ5XrfHc+wG+YWzQ=
+X-Gm-Gg: AYBFou1E7pbAB1gu7d2UKJN4FOYHJ+kcPwxCA2wxUj/Br1E9vj2qSCWIZX3htFpzyp2
+	YLZgdwQBnchJQEBMMY68RAiYcIk80RKCN+hTsxu4zEIjizHY8BG4ujLNhiApZjtgpv28BL3hzV1
+	unfN9gLUOYNc51IlxVJTFI9WDgsdnOm+SDxNBAEE8zvpeOCaiF8P2kWIx0PMDnLCiQu9icCh0/2
+	NSkS2g1bQ+Lig76W+pGpL52Pf88oPtFhcpt4OTCP5qTPp1GH3U1QSkqGOnXd/KrKjjjA9ZYsI6q
+	yMtqQhnobt8ZgV4knBAKwRq8xeFk6hekgFImMPAR4PTN0qZXS9GC61sbeYboqIieM4SrX6GEkJj
+	udHp0iP2G1vmxQxjSjxnz+3hOJbMzP5CtX2FWCRwzfpGHVVSU1cu/4es+ixmVXvOXmzJhGzMVs8
+	BuuE7cJr1UUw7v4m08nm2bo6g2V6QxEHRtry4H8RYa98gC6AxohsR4eLrW0okOoqHoKu+mnXb4l
+	ZDEfgEDiX84yqV7hitt0A01xIDtqds5r2THc6YzmMoYmanKyUOk2TT+CNTIV2nix3IO5hn2owKC
+	TvAu09PuRR3tiA6Kh5p7neOi/3cLqiYTnlK1nbD3gUVXD2fHsT+bqI3jUR5w
+X-Received: by 2002:a05:600c:1f93:b0:4a5:75d2:c104 with SMTP id 5b1f17b1804b1-4ac17ffa050mr233942805e9.22.1793619051662;
+        Mon, 02 Nov 2026 03:30:51 -0800 (PST)
 Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3acbbefd30asm23263631fa.23.2026.11.02.03.28.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ac09bcc967sm199946425e9.3.2026.11.02.03.30.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 03:28:19 -0800 (PST)
-Date: Mon, 2 Nov 2026 12:28:16 +0100
+        Mon, 02 Nov 2026 03:30:51 -0800 (PST)
+Date: Mon, 2 Nov 2026 12:30:48 +0100
 From: Jiri Pirko <jiri@resnulli.us>
 To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>, 
@@ -89,14 +89,14 @@ Cc: linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
 	Jonathan Cameron <jic23@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, 
 	Bjorn Helgaas <bhelgaas@google.com>, Ashish Kalra <ashish.kalra@amd.com>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v1 03/11] attestation: Enter secure operation when
- evidence is accepted
-Message-ID: <auhzxNDC7JZylDOt@FV6GYCPJ69>
+	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev, Dan Williams <djbw@kernel.org>
+Subject: Re: [RFC PATCH v1 06/11] PCI/TSM: Describe the PCI attestation
+ control family
+Message-ID: <auh0MBdHJw0cqKa8@FV6GYCPJ69>
 References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
- <20261028152618.1356860-4-aneesh.kumar@kernel.org>
- <auSfroz-gNb62nMG@FV6GYCPJ69>
- <yq5ajymya4ud.fsf@kernel.org>
+ <20261028152618.1356860-7-aneesh.kumar@kernel.org>
+ <auShvL2m00S70H3d@FV6GYCPJ69>
+ <yq5ah5i2a487.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -108,33 +108,107 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5ajymya4ud.fsf@kernel.org>
+In-Reply-To: <yq5ah5i2a487.fsf@kernel.org>
 
-Sat, Oct 31, 2026 at 05:09:30AM +0100, aneesh.kumar@kernel.org wrote:
+Sat, Oct 31, 2026 at 05:22:48AM +0100, aneesh.kumar@kernel.org wrote:
 >Jiri Pirko <jiri@resnulli.us> writes:
 >
->> Wed, Oct 28, 2026 at 04:26:10PM +0100, aneesh.kumar@kernel.org wrote:
->>>Use EVIDENCE_ACCEPT to enter secure operation after userspace has
->>>checked the evidence. Check the referenced device and evidence
->>>generations before calling the driver, and record acceptance on success.
->>>
->>>Remove the separate DEVSEC_RUN command and callback.
->>>
->>>Keep DEVSEC_STATE_GET so userspace can read both evidence acceptance and
->>>device state. Clearing acceptance does not undo the device state change.
->>>For example, with the following PCI/TSM patches:
+>> Wed, Oct 28, 2026 at 04:26:13PM +0100, aneesh.kumar@kernel.org wrote:
 >>
->> Note that the published wip_attestation_all_1 baseline still
->> has DEVSEC_RUN. I am planning this merge into EVIDENCE_ACCEPT for
->> my next revision, which is not pushed yet.
+>>
+>> [..]
+>>
+>>
+>>>diff --git a/Documentation/ctlv/specs/ctlv-attestation-pci.yaml b/Documentation/ctlv/specs/ctlv-attestation-pci.yaml
+>>>new file mode 100644
+>>>index 000000000000..edb35cede0c2
+>>>--- /dev/null
+>>>+++ b/Documentation/ctlv/specs/ctlv-attestation-pci.yaml
+>>>@@ -0,0 +1,79 @@
+>>>+# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+>>>+%YAML 1.2
+>>>+---
+>>>+family:
+>>>+  name: ctlv-attestation-pci
+>>>+  inherits: ctlv-attestation
+>>>+  pre-init: true
+>>>+
+>>>+attr-groups:
+>>>+  - name: pci
+>>>+    attrs:
+>>>+      - name: name
+>>>+        type: string
+>>>+        min-length: 1
+>>>+        max-length: 31
+>>>+      - name: generation
+>>>+        type: uint
+>>>+        max: 4294967295
+>>>+      - name: tsm-id
+>>>+        type: uint
+>>>+        max: 2147483647
+>>>+      - name: connected
+>>>+        type: uint
+>>>+        max: 1
+>>>+      - name: locked
+>>>+        type: uint
+>>>+        max: 1
+>>>+      - name: accepted
+>>>+        type: uint
+>>>+        max: 1
+>>>+      - name: dsm
+>>>+        type: string
+>>>+        min-length: 1
+>>>+        max-length: 31
+>>>+
+>>>+      - name: object
+>>>+        enum: evidence-blob-class
+>>>+      - name: challenge
+>>>+        type: binary
+>>>+        min-length: 32
+>>>+        max-length: 32
+>>>+
+>>>+attr-sets:
+>>>+  - name: device-info
+>>>+    attrs: pci.name
+>>>+  - name: change-reply
+>>>+    attrs: pci.generation
+>>>+  - name: state-reply
+>>>+    attrs:
+>>>+      - pci.generation
+>>>+      - pci.connected
+>>>+      - pci.locked
+>>>+      - pci.accepted
+>>>+    optional-attrs:
+>>>+      - pci.tsm-id
+>>>+      - pci.dsm
+>>>+
+>>>+  - name: refresh-request
+>>>+    attrs:
+>>>+      - pci.generation
+>>>+      - pci.object
+>>>+    optional-attrs:
+>>>+      - pci.challenge
+>>>+
+>>>+ops:
+>>>+  - name: state-get
+>>>+    type: action
+>>>+    fd-access: read
+>>>+    reply:
+>>>+      attrs: state-reply
+>>>+  - name: evidence-refresh
+>>
+>> I'm missing why exactly you need this op. Can't you do whatever is
+>> needed in the provider evidence_get implementation? Why it needs to be 2
+>> step.
+>>
+>> Also, why do you think this is provider-specific op?
 >>
 >
->I agree with your comments here and in the other emails regarding
->attestation. I will wait for the next revision of your attestation
->series. If you can accommodate these changes there, I can rework my
->patches accordingly.
->
->Could you also add the ctlv-attestation-spdm family so that I can base
->the PCI/TSM changes on top of it?
+>I was considering evidence-get to return the evidence generated by
+>evidence-refresh. Without an explicit refresh, evidence-get would return
+>the previously fetched evidence. There is no particular reason for this
+>two-step approach; evidence-get could always fetch fresh evidence,
+>making evidence-refresh redundant.
 
-Yep.
+Okay. The aim of evidence-get is to do get fresh evidence upon each
+call. I will document this more clearly.
