@@ -1,71 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793659960;
-	b=KVi2qHF1pvYGADcddt0ed/x+2IBnYjdy2uopUIm4FsGS5QTz8GiIA5Qlh0Ge63NjRCVW
-	 VC6cIE+jjuOS2SXqt8HpV7Z+7QPT76/+KGGNrxVaZOR7Iv0PoSiYz/CIkDWR0awSSGabn
-	 m3pn6r4FobsgzDT8pg9r57+z+Oah5V3tLVhPIEDvmWoLl56vfTIFN3yMvh9guFuYaFQch
-	 wGIhPnRXSTeQdsoinMGwdkf8t4E0d2jCoOgO1TWMe6Ze0VY3NjcRcN2ET30jPYG1MO3WN
-	 I2RZU/GhCyk7QRcapY9pzzZIbyChGaaeVS0lOwXfohv9gPhotTn5zuaUJQhj7OQaj9Q==
+	t=1793663372;
+	b=h8zMeMVsqpgHtFwzmo7KuFP9KgRgGHmk98rfeifzcSK61XhOyYCtXs/LRWuFprUiiQmU
+	 J+KYVhmDqANb7Jx8QrAtvEqKi6axqHspYIBzuDcPUnm7g8cBVYIYnWx+jDmOnUu0bMUG4
+	 CzMjXE9k9jh+Bv+7aFG4vM7air7pz8mYPxsqQ83UQspY9a7OwiH6Q7peYxIVzF8vpvfzv
+	 81l79ZKPlr//WsTJtiBIvjK2oQ5yCbRMvdkYvr5Z6cTjZDfIdGQrZAhx8+zHl1IraH+Pd
+	 O0sko9FMwsyrXEFF+Jgvh6JTfsI59ITHZ/IYilSqedoDEY1VGmRizRmdMUb24FDxxIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793659960;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=5EeFOGrNhJvOiwMb9ZcmuSbFCO5HUpUlaUKGB5+z6e8=;
-	b=WFvvbAcC3zJUYrJ8dRo4fqJMVpUsa3RJamxisNDWFHo4QqCiY6PeDpfnhbtvnH8pxeta
-	 MRlaUhHwCmIM5i64yKVEjnDjvdC1T/H1+DqRB4u9cyndcNZqEYtenzOWT+aH22r3UGU8i
-	 adx4XBc9I5FmfZVxyKHmTXu9nDJXfpphI4XSGzAZ5FSrMgQ2hR9RN1foS4sUEmIiUMeZR
-	 4W3TyPXuBbTrZX/Ss3rbtP4sCO8sbKq3uHAslnr+7+h5y2R6PHrTnGYLkx3LOyT91CR5D
-	 pnDSbh4CeVrUyK35PPyLGk2e6QBNGt3B1fILGXxxU1VPV+CrB/aocJByjplOXA7sBSg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793663372;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=+5ayfBBADbSXVO+eg5fhbmtgjn7ckRAVi9w3JeSSink=;
+	b=IsRwpqFLptKACZDejFsl+acl+T0Nr+G7VQLhr105161JPaTKGjBTn06vY28Q8IKXXRWu
+	 RBTNSvJTXwoPJ3iGMSAE1+WLzZQpgaLpob5TRDsf9tr1CLTFF56R3k0ClxDmpgFhOqNfA
+	 b+87ibJpnGIhTIkwQtWwTdNM62bnAcZ4Ro1KHFBOK9JUuMVLNc1pHhsH6rf1PGVhr5UcL
+	 B+eS9KBYl2p/ZCdY83MoE6JauTeBxlnrK15lzELDpWyqxkZj9ZqHZTYoaY18KGsxWbKib
+	 CQZsUEtRbE1idFbr/7XGKMq4NWNRqL43TQKTInl+T+uF7Crd2oLCVQYY3LKngw5cbTA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SX7X9Ppp;
-	arc=none smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF1C606A334
-	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 22:52:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AF1C606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="Ogq7K/NR";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8B4606A324;
+	Mon,  2 Nov 2026 23:49:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF8B4606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SX7X9Ppp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793659959; x=1825195959;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=K5gvYgmGTJk4RzxZ/MTJMmU7IeJumBJZ0T2Adr6olbI=;
-  b=SX7X9Pppbyf+DEoJHEQ/JLCqMvxDRzIo8EKBu/hYBZkBGiV8ZOkqUnyg
-   iGHI0vsQP739dRHqgpzq5kUmD7Tn9S0lSyWtHRRzBff/T9srNuOHqeMb7
-   EjETilCcVFRLroGZ6SN7qf39iOmuRnzLaULSBF1BvQSi8JLF//8TwVvSa
-   6vP8jQvRJXryvKn36oPVL7ssh1RM7VtTSpAHgQ9RPGlqX2SXLRvPf9axI
-   zW4qv7Hc+FtHC73QD0HSC87aNuJHW/wzYHvtuN9cGfsp1lDVYdOQFwYW5
-   WrGPS7rxK7PRrA4TCJXf4JHYsdKwMkQuBFx+kbjVM4j5eK+DDLU8g75UO
-   Q==;
-X-CSE-ConnectionGUID: mfOOiJEhS1CEM2Aj8h3U0A==
-X-CSE-MsgGUID: rSm+YofRRMCPlR4QBR92QQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2258125"
-X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
-   d="scan'208";a="2258125"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 14:52:38 -0800
-X-CSE-ConnectionGUID: 5LI0IB62QEClgPyanGW5zw==
-X-CSE-MsgGUID: 0DCILlXsTa6Pl16GMftRPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
-   d="scan'208";a="6360441"
-Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.109.177])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 14:52:37 -0800
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Mon, 02 Nov 2026 15:51:58 -0700
-Subject: [PATCH v5 1/2] x86/tdx: Move port I/O definitions to a shared
- header
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Ogq7K/NR
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B750E16A3;
+	Mon,  2 Nov 2026 15:49:26 -0800 (PST)
+Received: from [10.57.66.79] (unknown [10.57.66.79])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5BA063F673;
+	Mon,  2 Nov 2026 15:49:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793663369; bh=alebyCC8ucd9nKIf6KiLwM7p1T8ro5s0+5R+DzxK1x4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ogq7K/NRj3ZtTzBg6VE+G5KuBv6rnWTie/UUaE8+2mBsG01dhkFc2eV6JorfEeoM3
+	 ZexUIvkA6wXgj/3qwzuC4XW9Imb87Us2ZE8TMKlj9sYG59AroPN00Bs7EJK9nrNAqU
+	 UyZGsJGgN6wHKbjiY22gBO69bbtgEzdTnrhBSNe8=
+Message-ID: <4304d0c7-2220-4add-9c71-e6dc6b4fbc11@arm.com>
+Date: Mon, 2 Nov 2026 23:49:24 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -75,123 +53,356 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/11] KVM: arm64: CCA: Add basic infrastructure for
+ creating a realm
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-7-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261102141304.126883-7-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-b4-tdx_earlyprintk_tdcalls-v5-1-b01bc95d44ff@intel.com>
-References: <20261102-b4-tdx_earlyprintk_tdcalls-v5-0-b01bc95d44ff@intel.com>
-In-Reply-To: <20261102-b4-tdx_earlyprintk_tdcalls-v5-0-b01bc95d44ff@intel.com>
-To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
- Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
- Vishal Verma <vishal.l.verma@intel.com>, 
- Nikolay Borisov <nik.borisov@suse.com>
-X-Mailer: b4 0.17-dev-e5168
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3219;
- i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=K5gvYgmGTJk4RzxZ/MTJMmU7IeJumBJZ0T2Adr6olbI=;
- b=owGbwMvMwCXGf25diOft7jLG02pJDFkvRXRbrM27lPMkMuvNBaQddWwUV8vWSySl9jR+1OyQz
- vp0ekZHKQuDGBeDrJgiy989HxmPyW3P5wlMcISZw8oEMoSBi1MAJvJCg+GfLXedHWuZRtYeBt4S
- BvZHW0qeN/2SX8xs+Lv71CtWoea1DL+Y2R7eZL/A8nXrmzPM7vsWsrTqKfKVZFbFJu9fdFL6LTM
- LAA==
-X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
- fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-In preparation for adding a 'tdx' option for early_printk which uses
-direct TDVMCALLs for I/O, factor out the PORT_READ and PORT_WRITE
-definitions from arch/x86/coco/tdx/tdx.c into
-arch/x86/include/asm/shared/tdx.h, and namespace them with 'TDVMCALL_'.
+Hi Steven
 
-The decompressor also used 0/1 literals in its tdx_io_{in,out} helpers -
-switch those to use the new definitions.
+On 02/11/2026 14:12, Steven Price wrote:
+> Introduce the skeleton functions for creating and destroying a realm.
+> The IPA size requested is checked against what the RMM supports.
+> 
+> The actual work of constructing the realm will be added in future
+> patches.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>   arch/arm64/include/asm/kvm_rmi.h | 20 ++++++++++++
+>   arch/arm64/kvm/arm.c             |  9 +++++
+>   arch/arm64/kvm/mmu.c             | 18 ++++++++--
+>   arch/arm64/kvm/rmi.c             | 56 ++++++++++++++++++++++++++++++++
+>   4 files changed, 101 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 3194daaacf2b..f1a1ed6b91f5 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -6,6 +6,9 @@
+>   #ifndef __ASM_KVM_RMI_H
+>   #define __ASM_KVM_RMI_H
+>   
+> +#include <linux/arm-smccc-rmi.h>
+> +#include <linux/kvm.h>
+> +
+>   /**
+>    * enum realm_state - State of a Realm
+>    *
+> @@ -50,12 +53,29 @@ enum realm_state {
+>   /**
+>    * struct realm - Additional per VM data for a Realm
+>    *
+> + * @rd: Kernel mapping of the RMM-managed Realm Descriptor (RD) granule
+> + * @sro: Preallocated SRO state context for Realm MMU operations
+>    * @state: The lifetime state machine for the realm
+> + * @ia_bits: Number of valid Input Address bits in the IPA
+>    */
+>   struct realm {
+> +	void *rd;
+> +	/*
+> +	 * Reused by RTT map/unmap SRO commands. Those commands are only
+> +	 * issued from Realm stage-2 map/unmap paths while kvm->mmu_lock is
+> +	 * held for write, including Realm fault handling where
+> +	 * kvm_fault_lock() takes the write side, so concurrent use is
+> +	 * serialized.
+> +	 */
+> +	struct rmi_sro_state *sro;
+>   	enum realm_state state;
+> +	unsigned int ia_bits;
+>   };
+>   
+>   void kvm_init_rmi(void);
+> +u32 kvm_rmm_ipa_limit(void);
+> +
+> +int kvm_init_realm(struct kvm *kvm);
+> +void kvm_destroy_realm(struct kvm *kvm);
+>   
+>   #endif /* __ASM_KVM_RMI_H */
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index c8599fed5902..9a7bbfaf9675 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -303,6 +303,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>   
+>   	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
+>   
+> +	/* Initialise the realm bits after the generic bits are enabled */
+> +	if (kvm_vm_is_realm(kvm)) {
+> +		ret = kvm_init_realm(kvm);
+> +		if (ret)
+> +			goto err_uninit_mmu;
+> +	}
+> +
+>   	return 0;
+>   
+>   err_uninit_mmu:
+> @@ -367,6 +374,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>   
+>   	kvm_destroy_nested(kvm);
+>   	kvm_arm_teardown_hypercalls(kvm);
+> +	if (kvm_vm_is_realm(kvm))
+> +		kvm_destroy_realm(kvm);
+>   }
+>   
+>   static bool kvm_has_full_ptr_auth(void)
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 1301c563d705..b049ea67d9af 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -981,10 +981,14 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
+>   
+>   static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
+>   {
+> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   	u32 kvm_ipa_limit = get_kvm_ipa_limit();
+>   	u64 mmfr0, mmfr1;
+>   	u32 phys_shift;
+>   
+> +	if (kvm_vm_is_realm(kvm))
+> +		kvm_ipa_limit = kvm_rmm_ipa_limit();
+> +
+>   	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
+>   	if (is_protected_kvm_enabled()) {
+>   		phys_shift = kvm_ipa_limit;
+> @@ -1034,9 +1038,18 @@ static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t addr,
+>   
+>   static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>   {
+> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+>   	unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
+>   
+> -	stage2_destroy_range(pgt, 0, BIT(ia_bits));
+> +	/*
+> +	 * Realm RTTs are inaccessible to the host and may contain stale data
+> +	 * after the RMM has released them. The non-root RTTs are explicitly
+> +	 * destroyed through RMI before the RD is destroyed; only the root PGD
+> +	 * pages remain to be freed here.
+> +	 */
+> +	if (!kvm_vm_is_realm(kvm))
+> +		stage2_destroy_range(pgt, 0, BIT(ia_bits));
+> +
+>   	KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
+>   }
 
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- arch/x86/include/asm/shared/tdx.h | 6 ++++++
- arch/x86/boot/compressed/tdx.c    | 4 ++--
- arch/x86/coco/tdx/tdx.c           | 8 ++------
- 3 files changed, 10 insertions(+), 8 deletions(-)
+This looks like a good candidate for another callback for vm_s2_ops ? 
+Something like (incomplete functionally, but this should work).
+As a bonus, we can remove two instances of KVM_PGT_FN()
 
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 56d741065783b..3d1656a44f75e 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -85,6 +85,12 @@
- #define TDVMCALL_STATUS_ALIGN_ERROR	0x8000000000000002ULL
- #define TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED	0x8000000000000003ULL
- 
-+/*
-+ * TDG.VP.VMCALL<Instruction.IO> direction (passed in R13)
-+ */
-+#define TDVMCALL_PORT_READ		0
-+#define TDVMCALL_PORT_WRITE		1
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 5e9c2919c509..96685c52fb6e 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1048,35 +1048,52 @@ static int kvm_init_ipa_range(struct kvm_s2_mmu 
+*mmu, unsigned long type)
+   * cond_resched() periodically to prevent hogging the CPU for a long time
+   * and schedule something else, if required.
+   */
+-static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t addr,
+-				   phys_addr_t end)
++static void stage2_destroy_range(struct kvm_pgtable *pgt,
++				 void (*pgt_destroy_range_fn)(struct kvm_pgtable *pgt,
++							  u64 addr, u64 size))
+  {
++	u64 addr = 0;
++	u64 end = BIT(VTCR_EL2_IPA(pgt->mmu->vtcr));
+  	u64 next;
+
+  	do {
+  		next = stage2_range_addr_end(addr, end);
+-		KVM_PGT_FN(kvm_pgtable_stage2_destroy_range)(pgt, addr,
+-							     next - addr);
++		pgt_destroy_range_fn(pgt, addr, next - addr);
+  		if (next != end)
+  			cond_resched();
+  	} while (addr = next, addr != end);
+  }
+
++static void kvm_vm_stage2_destroy(struct kvm_pgtable *pgt)
++{
++	stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
++	kvm_pgtable_stage2_destroy_pgd(pgt);
++}
 +
- /*
-  * Bitmasks of exposed registers (with VMM).
-  */
-diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-index 8451d6a1030c6..ed278bac3c939 100644
---- a/arch/x86/boot/compressed/tdx.c
-+++ b/arch/x86/boot/compressed/tdx.c
-@@ -22,7 +22,7 @@ static inline unsigned int tdx_io_in(int size, u16 port)
- 		.r10 = TDX_HYPERCALL_STANDARD,
- 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
--		.r13 = 0,
-+		.r13 = TDVMCALL_PORT_READ,
- 		.r14 = port,
- 	};
- 
-@@ -38,7 +38,7 @@ static inline void tdx_io_out(int size, u16 port, u32 value)
- 		.r10 = TDX_HYPERCALL_STANDARD,
- 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
--		.r13 = 1,
-+		.r13 = TDVMCALL_PORT_WRITE,
- 		.r14 = port,
- 		.r15 = value,
- 	};
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 8bacbef62891f..9531490c9c246 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -24,10 +24,6 @@
- #define EPT_READ	0
- #define EPT_WRITE	1
- 
--/* Port I/O direction */
--#define PORT_READ	0
--#define PORT_WRITE	1
--
- /* See Exit Qualification for I/O Instructions in VMX documentation */
- #define VE_IS_IO_IN(e)		((e) & BIT(3))
- #define VE_GET_IO_SIZE(e)	(((e) & GENMASK(2, 0)) + 1)
-@@ -673,7 +669,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 		.r10 = TDX_HYPERCALL_STANDARD,
- 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
--		.r13 = PORT_READ,
-+		.r13 = TDVMCALL_PORT_READ,
- 		.r14 = port,
- 	};
- 	bool success;
-@@ -702,7 +698,7 @@ static bool handle_out(struct pt_regs *regs, int size, int port)
- 	 * "TDG.VP.VMCALL<Instruction.IO>".
- 	 */
- 	return !_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), size,
--			       PORT_WRITE, port, regs->ax & mask);
-+			       TDVMCALL_PORT_WRITE, port, regs->ax & mask);
- }
- 
- /*
++static void pkvm_stage2_destroy(struct kvm_pgtable *pgt)
++{
++	stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
++	pkvm_pgtable_stage2_destroy_pgd(pgt);
++}
++
++/*
++* Realm RTTs are inaccessible to the host and may contain stale data
++* after the RMM has released them. The non-root RTTs are explicitly
++* destroyed through RMI before the RD is destroyed; only the root PGD
++* pages remain to be freed here.
++*/
++static void realm_stage2_destroy(struct kvm_pgtable *pgt,
++				 u64 start, u64 end)
++{
++	kvm_pgtable_destroy_pgd(pgt);
++}
++
+  static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+  {
+  	struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+  	unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
 
--- 
-2.56.0
+-	/*
+-	 * Realm RTTs are inaccessible to the host and may contain stale data
+-	 * after the RMM has released them. The non-root RTTs are explicitly
+-	 * destroyed through RMI before the RD is destroyed; only the root PGD
+-	 * pages remain to be freed here.
+-	 */
+-	if (!kvm_vm_is_realm(kvm))
+-		stage2_destroy_range(pgt, 0, BIT(ia_bits));
+-
+-	KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
++	kvm->arch.vm_s2_ops->stage2_destroy(pgt, 0, BIT(ia_bits));
+  }
+
+
+
+
+
+> @@ -1084,6 +1097,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   		return -EINVAL;
+>   	}
+>   
+> +	mmu->arch = &kvm->arch;
+> +
+>   	err = kvm_init_ipa_range(mmu, type);
+>   	if (err)
+>   		return err;
+> @@ -1092,7 +1107,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   	if (!pgt)
+>   		return -ENOMEM;
+>   
+> -	mmu->arch = &kvm->arch;
+>   	err = KVM_PGT_FN(kvm_pgtable_stage2_init)(pgt, mmu, &kvm_s2_mm_ops);
+>   	if (err)
+>   		goto out_free_pgtable;
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 5b07beff8bc9..45ecbaa467d1 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -6,6 +6,8 @@
+>   #include <linux/arm-rmi-cmds.h>
+>   #include <linux/kvm_host.h>
+>   
+> +#include <asm/kvm_emulate.h>
+> +#include <asm/kvm_mmu.h>
+>   #include <asm/kvm_pgtable.h>
+>   #include <asm/virt.h>
+>   
+> @@ -14,6 +16,60 @@ static bool rmi_has_feature(int reg, unsigned long feature)
+>   	return !!u64_get_bits(rmi_feat_reg(reg), feature);
+>   }
+>   
+> +u32 kvm_rmm_ipa_limit(void)
+> +{
+> +	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+> +}
+> +
+> +void kvm_destroy_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> +
+> +	if (!kvm_realm_is_created(kvm)) {
+> +		kfree(realm->sro);
+> +		realm->sro = NULL;
+> +		return;
+> +	}
+
+Do we leak memory of the stage2 PGD if the Realm was never created ?
+Should we have something like on top ?
+
+@@ -1646,11 +1645,8 @@ void kvm_destroy_realm(struct kvm *kvm)
+
+         guard(mutex)(&kvm->arch.config_lock);
+
+-       if (!kvm_realm_is_created(kvm)) {
+-               kfree(realm->sro);
+-               realm->sro = NULL;
+-               return;
+-       }
++       if (!kvm_realm_is_created(kvm))
++               goto free_pgd;
+
+         kvm_set_realm_state(kvm, REALM_STATE_DYING);
+
+@@ -1684,6 +1680,7 @@ void kvm_destroy_realm(struct kvm *kvm)
+
+         kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+
++free_pgd:
+         /* Now that the realm is destroyed, free the entry-level RTTs. */
+         kvm_free_stage2_pgd(&kvm->arch.mmu);
+
+
+Suzuki
+
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DYING);
+> +
+> +	if (realm->rd) {
+> +		phys_addr_t rd_phys = virt_to_phys(realm->rd);
+> +
+> +		if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
+> +			return;
+> +
+> +		if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
+> +			return;
+> +		rmi_free_delegated_page(rd_phys);
+> +		realm->rd = NULL;
+> +	}
+> +
+> +	if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
+> +					 pgd_size)))
+> +		return;
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+> +
+> +	/* Now that the realm is destroyed, free the entry-level RTTs. */
+> +	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +
+> +	kfree(realm->sro);
+> +	realm->sro = NULL;
+> +}
+> +
+> +int kvm_init_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +
+> +	realm->sro = kmalloc_obj(*realm->sro);
+> +	if (!realm->sro)
+> +		return -ENOMEM;
+> +
+> +	return 0;
+> +}
+> +
+>   static int rmm_check_features(void)
+>   {
+>   	if (kvm_lpa2_is_enabled() &&
 
