@@ -1,70 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793659805;
-	b=h59feCopsVY7oWtbQw7+ZjzLxMy7VI6QVQNmqh6y2TbqkmcNGLyDIgSR9mutP5fQKeg3
-	 0iw7EnOXzWlUjk7/h6ckx5oP3w1jdUJAbjJqLq73ItDoPz5CvzLxRLnUwfFKZd2LM2X2N
-	 fAK+162k6VQSb87QBXaDtWaf8AWPd3CQj6U4/ZOGstFyAY1cnKQqN8vz//v3ySWCXvBzN
-	 JrwgOTWg7MyUyCnQwEo+ZPTaLoFUmGUgjTFK9iUwakiBbb/lYuizt3Z526gmDue06CMuh
-	 JgnPYcYBbAOBH0IokHgDe0D9V4QTuGB+bazFg22Mrh6NMa1HFVcbXUk9xtz01NT4ChQ==
+	t=1793659961;
+	b=DPgui8wEdLszWylFdk57VIb+AdiLgujvIpOu78oZfsECfleWuWnWrO/HbJSE85Z8L2Rh
+	 pj2WnxTqkU7R55AUjTtV+SuhT12A/Srjbgw42yBWra9wvgGHWUpMuUx/ev5mYJCaQhyn+
+	 HrBgjjzKw53wAY/0MvQ9dvXhbDE6A0O3BphdDZQHZQFoASM3MQSt883soItRGUpAQ5ttu
+	 xgYNOWIhgU48YURRub1vnF6S8Gq+nHbrUd5YwJGKbBrV8gwFIDAtJPvzH98rBPS59lWHV
+	 6UGpcD3keHcUCvhmYHNUWqgfO7LpmSmntt0paF5dSLIb3xySwDGj6RCQo0rZ6+4ECQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793659805;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793659961;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=k8tnUczw/adIvXenmAmW/YRcW7M+t2qZ1o++8tGqdck=;
-	b=QnPjWoTsP0k9w0RuOoD3/c7qa9Kq7CeT0z8SLicL55KKcVuSySON07ZsSozTzCSuUgB3
-	 MvxI2xAq+0+J4RWThioqTvjj7r4+h8XpTE4uVVQhfsA6I0gUpItzVlhzoKyDTSNzG/QLO
-	 VxVxbj0VywpND3wajwAyTjB0EtBqx7hR87khu5aersBIfufu1fqMkrmXSaEZvPvEky5Ao
-	 uueEFz1aV1HoCAR18FCxZev8lZdH/vHuVbtw19QubPEs/L1ZhSt8l7bw2r/3y57O/uDoC
-	 ylmAOeUACoSPN6reA7zbAT7/udvHRZQ9iadBSEaIH0SYKbrYtnxEFR8DtvEg6zo8TzQ==
+	bh=nKse35nd1WP6PHAiGDT6fv0Q5aPFDQ02t1Mzv5nA8B8=;
+	b=UFoZ8lQFrR0iajzw912AoIUH8Mx2k/bap9HUXseOG3LP7ejLDsr4rOS5dagYap3j7lBV
+	 mBCmgRdcJYlQZK0y7mfoNqGoly/g4B9Koy5XbUtdMTlRd1cWMH2e8JPB3NtwVl883WXZa
+	 6szCqDDlURQQXPF84Ld1WlLbITd8Yh+RpGfsNtvB+0XF6zkxz4vmmTKY/gp+bNLgUplm2
+	 kHoqS8aIPlR+7IVjIuQqLRmQGtsHXENnsxGgaisTGkbS3Cd8wVQq9exrsiFn6t2oVXvMU
+	 +TOAdN/D4TAHz+NwaxK0Kh/XcjVs7L1dMdZasZ2V3yZByduu2PMTrJb2LZCGPhk+y7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YuA6Ic4F;
-	arc=none smtp.remote-ip=198.175.65.20
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iSuivJoA;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863B8606A327
-	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 22:50:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 863B8606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2474C606D802
+	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 22:52:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2474C606D802
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YuA6Ic4F
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iSuivJoA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793659804; x=1825195804;
+  t=1793659961; x=1825195961;
   h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=IuuB5lfPeAjcN6a1wobZID6wlbBI012KoIJkmL4+8kU=;
-  b=YuA6Ic4FXkBvqRBs3FZWS7LwG+hzGuWijS03up+GNCp9LeiMYLkahDqY
-   K454LX9+4cdILIFT6ew+TM5TIPG+XqqGBq6uGGFi2S8TDDZ6SxmFZ5im4
-   9DsbsWoPG2D+RIqN/jzHg9pF1AaypeM4VAVvWkTzmtMr++8sDOXOivjpb
-   hShttRqVQbcKA2AWtjjiMD7fErYdX2KJ/gznmxc10l3td8OaAOyy1gFkx
-   LXz2R0u4UKtSTTHQo9bWBC6YjzsfdIsM4DocAgL2G3LTFOw9Vkk3tL7zY
-   aV/Q2H/bXSj3ga9oHN23GUpVxDs6B9D1yvYc2juvyzWdTDq6bRVe7PeKj
-   Q==;
-X-CSE-ConnectionGUID: uJpPKJ/sTimZo+4kmaNoIw==
-X-CSE-MsgGUID: HtjrRlxMTECEx9dmFBCPyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2399399"
+   message-id:references:in-reply-to:to:cc;
+  bh=wcflalAqgbhBYxWyh48Kq+AQPOEFlkHdE6EvbeKdyPU=;
+  b=iSuivJoAYACbGkMTkcy2M5rNVu3G5w5eHSFQ45xwFRcd6H7F0oxosiBX
+   vb1LQP/VZdihlF3W+z0Zq4ANpzpGBe65iqyOzY1aSz4rhIQzLCXFZz6pg
+   0G3hAiKGZplZTlzpCj0n8SIeSiOrFlrIIBMws33U4VVG42ZJiD7m39SCK
+   xkCqA1/6KIht9hGq/1Ox0dKvMftjJ6OXrROtI6gt29yJFv17VivTFSeIC
+   BnBGvA3wMeamaRih0DzpMi1bFOlILS2yQPMqlOzRMGmYhVm7iJWJO75sm
+   oy1ALx8Lgl+IyRQGQCTvPCAR0/pSn+Yj8pFTtU+Xm262CO+Jj4Ma8onF6
+   A==;
+X-CSE-ConnectionGUID: a0J9xr+2QUa5tUNKtqBNTQ==
+X-CSE-MsgGUID: fqm9NY4ZRXSX+d5ef27o9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2258132"
 X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
-   d="scan'208";a="2399399"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 14:50:03 -0800
-X-CSE-ConnectionGUID: KhNAZ1+DR7yN/w2Q6XcYig==
-X-CSE-MsgGUID: 59hy0lnZR1S+4GtfBtANQQ==
+   d="scan'208";a="2258132"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 14:52:39 -0800
+X-CSE-ConnectionGUID: 83BaAKjJQfy3CPHIdp20cw==
+X-CSE-MsgGUID: MpWxz/k+SWC/PYrIpynw+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
-   d="scan'208";a="8030896"
+   d="scan'208";a="6360466"
 Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.109.177])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 14:50:03 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 14:52:38 -0800
 From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Mon, 02 Nov 2026 15:49:35 -0700
-Subject: [PATCH v2] x86/tdx: Remove the early #VE handler
+Date: Mon, 02 Nov 2026 15:51:59 -0700
+Subject: [PATCH v5 2/2] x86/early_printk: Add earlyprintk=tdx to drive the
+ UART with TDVMCALLs
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -76,142 +77,190 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-b4-tdx_remove_early_ve_handler-v2-1-71361d14f359@intel.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WOQQ6DIBBFr2JYlwaQonXVezTGKAyVRqUBSjTGu
- xf1AN3NS17+mxV5cAY8qrIVOYjGGzslYJcMyb6dXoCNSowYYYKUrMQdx0HNjYPRRmigdcPSpCO
- 5agCHC0m5yKUmWuQojXwcaDMfgWd9sv92b5BhX92N3vhg3XJ8EOnunbE7Jf9ikWKKO82LlqtcE
- Hl7mCnAcJV2RPW2bT9Pqma53gAAAA==
-X-Change-ID: 20260828-b4-tdx_remove_early_ve_handler-7c1463cf0f63
+Message-Id: <20261102-b4-tdx_earlyprintk_tdcalls-v5-2-b01bc95d44ff@intel.com>
+References: <20261102-b4-tdx_earlyprintk_tdcalls-v5-0-b01bc95d44ff@intel.com>
+In-Reply-To: <20261102-b4-tdx_earlyprintk_tdcalls-v5-0-b01bc95d44ff@intel.com>
 To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
  Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Kiryl Shutsemau <kas@kernel.org>
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>, 
- Nikolay Borisov <nik.borisov@suse.com>, Andi Kleen <ak@linux.intel.com>
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Vishal Verma <vishal.l.verma@intel.com>, 
+ Nikolay Borisov <nik.borisov@suse.com>
 X-Mailer: b4 0.17-dev-e5168
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3976;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6362;
  i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=IuuB5lfPeAjcN6a1wobZID6wlbBI012KoIJkmL4+8kU=;
- b=owGbwMvMwCXGf25diOft7jLG02pJDFkvhbulJrSHrWtSCYx/3JbJH/beK3lt/Tp7j/dsR81Uq
- ybscm7qKGFhEONikBVTZPm75yPjMbnt+TyBCY4wc1iZQIYwcHEKwER2PWP4Xxh9W3PBro7tX6NF
- q8/ozGL1/Lg/++OsvuzGab8UuVI4gxi+Zwd/qPGYd/Wy+bls9tmODO/e5OYn39tZ8XezisGnZdv
- ZAA==
+ bh=wcflalAqgbhBYxWyh48Kq+AQPOEFlkHdE6EvbeKdyPU=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDFkvRXQt3i71edFkKZfSkLd+wkHthDlu967vtVn2vsppy
+ usmTZ2ZHaUsDGJcDLJiiix/93xkPCa3PZ8nMMERZg4rE8gQBi5OAZjIjw0M/x28XzFMnqkhXbAz
+ 4GJH19wvbqul8vmEbxyp95s3bxXTAmtGhv+rM3fGrjrCNCnk0LWy1QbWXawal2qdE4TMPyx847K
+ nhBsA
 X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
  fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-tdx_early_handle_ve() emulates port I/O for #VEs taken before
-idt_setup_early_traps() installs the real #VE gate. Per commit
-32e72854fa5f ("x86/tdx: Port I/O: Add early boot support"), it exists to
-support earlyprintk's serial driver.
+A TDX guest cannot execute port I/O instructions directly, but
+earlyprintk's serial console still issues plain inb()/outb() and lets
+each one fault into the #VE handler to be emulated as a TDVMCALL.
 
-"earlyprintk=" and "earlycon=" are both early_param() handlers, so no
-console can be registered before parse_early_param(), which runs from
-setup_arch(), after idt_setup_early_traps() has replaced the early IDT.
-Nothing in the window between idt_setup_early_handler() and
-idt_setup_early_traps() does port I/O, so this emulation doesn't ever
-get called.
+While that works, it is a roundabout way to get a character out.
+early_serial_putc() polls the LSR, and then writes a byte, but since the
+TDX guest can't directly do port I/O, a #VE exception is raised. The #VE
+handler must call TDG.VP.VEINFO.GET to find out what faulted, and then
+it can issue the TDVMCALL that does the actual work.
 
-Remove the handler. Any #VE in the early window now falls through to
-early_fixup_exception().
+This makes #VE a functional mechanism for doing I/O, which is not
+desirable, is unnecessarily complicated and fragile, and results in
+twice the number of calls into the TDX module.
+
+Instead, add an earlyprintk=tdx option, which can issue the TDVMCALLs
+directly. Add a pair of tdx_serial_in() and tdx_serial_out() accessors
+and set them up in this case.
+
+Note that the output does not appear any earlier - "earlyprintk=" is an
+early_param(), so the console is still registered from
+parse_early_param(). This only changes how the bytes leave the guest
+once it is up.
 
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
-Changes in v2:
-- Add review tags (Rick, Kiryl, Nikolay)
-- Move LLM attribution below the ---
-- Rebase to v7.4-rc1
-- Link to v1: https://patch.msgid.link/20260910-b4-tdx_remove_early_ve_handler-v1-1-bf47a4d360c5@intel.com
----
-Found with the help of an LLM observing that the real IDT is installed
-before parse_early_param(). LLMs were also used to verify this. On a TDX
-guest booted with earlyprintk, a counter added to tdx_early_handle_ve()
-for testing remained 0 after boot.
----
- arch/x86/include/asm/tdx.h |  4 ----
- arch/x86/coco/tdx/tdx.c    | 22 ----------------------
- arch/x86/kernel/head64.c   |  3 ---
- 3 files changed, 29 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  8 +++++++
+ arch/x86/include/asm/tdx.h                      |  4 ++++
+ arch/x86/coco/tdx/tdx.c                         | 29 +++++++++++++++++++++++++
+ arch/x86/kernel/early_printk.c                  | 20 +++++++++++++++++
+ 4 files changed, 61 insertions(+)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 0b3c140babd94..da5aa688294cc 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1547,6 +1547,7 @@ Kernel parameters
+ 			earlyprintk=serial[,ttySn[,baudrate]]
+ 			earlyprintk=serial[,0x...[,baudrate]]
+ 			earlyprintk=ttySn[,baudrate]
++			earlyprintk=tdx
+ 			earlyprintk=dbgp[debugController#]
+ 			earlyprintk=mmio32,membase[,{nocfg|baudrate}]
+ 			earlyprintk=pciserial[,force],bus:device.function[,{nocfg|baudrate}]
+@@ -1560,6 +1561,13 @@ Kernel parameters
+ 			Use "nocfg" to skip UART configuration, assume
+ 			BIOS/firmware has configured UART correctly.
+ 
++			On x86, "tdx" is a fixed COM1 console, and takes no
++			options. In a TDX guest the port is driven with
++			TDVMCALLs rather than port I/O instructions, avoiding
++			the #VE exception that would otherwise be taken to
++			emulate every access. Outside a TDX guest it falls back
++			to port I/O, behaving like "earlyprintk=serial".
++
+ 			Append ",keep" to not disable it when the real console
+ 			takes over.
+ 
 diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 1fcfaed515fec..3f7a96b85beb0 100644
+index 1fcfaed515fec..c6f6a60fbbac4 100644
 --- a/arch/x86/include/asm/tdx.h
 +++ b/arch/x86/include/asm/tdx.h
-@@ -76,8 +76,6 @@ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
+@@ -98,6 +98,10 @@ static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
  
- void tdx_halt(void);
- 
--bool tdx_early_handle_ve(struct pt_regs *regs);
--
- int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
- 
- int tdx_mcall_extend_rtmr(u8 index, u8 *data);
-@@ -94,8 +92,6 @@ void __init tdx_dump_td_ctls(u64 td_ctls);
- static inline void tdx_early_init(void) { };
- static inline void tdx_halt(void) { };
- 
--static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
--
  #endif /* CONFIG_INTEL_TDX_GUEST */
  
++/* Only referenced when X86_FEATURE_TDX_GUEST is enabled, no stubs needed */
++__noendbr unsigned int tdx_serial_in(unsigned long addr, int offset);
++__noendbr void tdx_serial_out(unsigned long addr, int offset, int value);
++
  #if defined(CONFIG_KVM_GUEST) && defined(CONFIG_INTEL_TDX_GUEST)
+ long tdx_kvm_hypercall(unsigned int nr, unsigned long p1, unsigned long p2,
+ 		       unsigned long p3, unsigned long p4);
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 8bacbef62891f..288142062991e 100644
+index 9531490c9c246..74d4e479964dd 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -737,28 +737,6 @@ static int handle_io(struct pt_regs *regs, struct ve_info *ve)
- 	return ve_instr_len(ve);
+@@ -211,6 +211,35 @@ int tdx_get_max_quote_size(u64 *max_quote_size)
+ }
+ EXPORT_SYMBOL_FOR_MODULES(tdx_get_max_quote_size, "tdx-guest");
+ 
++/*
++ * early_printk accessors for a TDX guest. Ask the VMM to do the port I/O with
++ * TDG.VP.VMCALL<Instruction.IO> instead of executing IN/OUT and having the
++ * resulting #VE emulate it.
++ */
++__noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
++{
++	struct tdx_module_args args = {
++		.r10 = TDX_HYPERCALL_STANDARD,
++		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
++		.r12 = 1,
++		.r13 = TDVMCALL_PORT_READ,
++		.r14 = addr + offset,
++	};
++
++	if (__tdx_hypercall(&args))
++		return 0xFF;
++
++	return args.r11;
++}
++ANNOTATE_NOENDBR_SYM(tdx_serial_in);
++
++__noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
++{
++	_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), 1,
++		       TDVMCALL_PORT_WRITE, addr + offset, value);
++}
++ANNOTATE_NOENDBR_SYM(tdx_serial_out);
++
+ /*
+  * The kernel cannot handle #VEs when accessing normal kernel memory. Ensure
+  * that no #VE will be delivered for accesses to TD-private memory.
+diff --git a/arch/x86/kernel/early_printk.c b/arch/x86/kernel/early_printk.c
+index cba75306e5b62..04dadcd73b857 100644
+--- a/arch/x86/kernel/early_printk.c
++++ b/arch/x86/kernel/early_printk.c
+@@ -21,6 +21,7 @@
+ #include <linux/usb/xhci-dbgp.h>
+ #include <asm/pci_x86.h>
+ #include <linux/static_call.h>
++#include <asm/tdx.h>
+ 
+ /* Simple VGA output */
+ #define VGABASE		(__ISA_IO_base + 0xb8000)
+@@ -196,6 +197,20 @@ static __init void early_serial_init(char *s)
+ 	early_serial_hw_init(divisor);
  }
  
--/*
-- * Early #VE exception handler. Only handles a subset of port I/O.
-- * Intended only for earlyprintk. If failed, return false.
-- */
--__init bool tdx_early_handle_ve(struct pt_regs *regs)
--{
--	struct ve_info ve;
--	int insn_len;
--
--	tdx_get_ve_info(&ve);
--
--	if (ve.exit_reason != EXIT_REASON_IO_INSTRUCTION)
--		return false;
--
--	insn_len = handle_io(regs, &ve);
--	if (insn_len < 0)
--		return false;
--
--	regs->ip += insn_len;
--	return true;
--}
--
- void tdx_get_ve_info(struct ve_info *ve)
++/*
++ * Use early_serial_base (COM1) and same default baud rate as
++ * "earlyprintk=serial"
++ */
++static __init void early_serial_tdx_init(void)
++{
++	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
++		static_call_update(serial_in, tdx_serial_in);
++		static_call_update(serial_out, tdx_serial_out);
++	}
++
++	early_serial_hw_init(115200 / DEFAULT_BAUD);
++}
++
+ static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
  {
- 	struct tdx_module_args args = {};
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index fd28b53dbac51..7b8b13f454545 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -166,9 +166,6 @@ void __init do_early_exception(struct pt_regs *regs, int trapnr)
- 	    trapnr == X86_TRAP_VC && handle_vc_boot_ghcb(regs))
- 		return;
- 
--	if (trapnr == X86_TRAP_VE && tdx_early_handle_ve(regs))
--		return;
--
- 	early_fixup_exception(regs, trapnr);
- }
- 
+ 	u32 __iomem *vaddr = (u32 __iomem *)addr;
+@@ -414,6 +429,11 @@ static int __init setup_early_printk(char *buf)
+ 			early_serial_init(buf + 4);
+ 			early_console_register(&early_serial_console, keep);
+ 		}
++		if (!strncmp(buf, "tdx", 3)) {
++			early_serial_tdx_init();
++			early_console_register(&early_serial_console, keep);
++			break;
++		}
+ #ifdef CONFIG_PCI
+ 		if (!strncmp(buf, "pciserial", 9)) {
+ 			buf += 9; /* Keep from match the above "pciserial" */
 
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260828-b4-tdx_remove_early_ve_handler-7c1463cf0f63
-
-Best regards,
---  
-Vishal Verma <vishal.l.verma@intel.com>
+-- 
+2.56.0
 
