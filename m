@@ -1,104 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793623527;
-	b=vg0HkC3QLBE9Ro8L7j6tsAfXrXlAMHxry9NlYbCxTSv/ZAro9OzCOtyEr5sL/0tx8e1U
-	 4SbcmwDj3RY96clsT3Ijf3v8S0wNwMCDGuVT4atncCV8rn6N0GP2ILHxtNhLoU8y9D4Su
-	 h3dFMolZX7cfhmSB74cjGp88X0VrnfXG8lCjVmbh2G9eXjHlRaz6QK/nNVtXE0C95zE2A
-	 3B8wUW+KSO9LT/6GskD/Nx3EOZOJI+xjrxTq/Q52PICaomuRrtv7vEDP5WM8OBFd/6cib
-	 8r7E96L/x5dz1MD7UNkPEEQyfloQs4426SrAVmJ9pNG1bdVCfOFarroz89ACGWPkLeA==
+	t=1793623752;
+	b=LOPqhvWebGT7mcuQroALfmCqjJrK/vP+0bTvWZCvxJQg2fzxB0WQgAt/OElw6qScDAT3
+	 XVTMrUfyN8QThlNemsPrB+iRSjULFoyjIGcNF8KZvqApDV334kb7+Es+uQkQYPOYlu7ne
+	 D7yGMg6D7vj7eA9A+HKBdk5maqk1peL6aDlyJH44RMmnLvRp9mjWmuYhRjFVyJGdrXicJ
+	 rX5fm6BCJxQPo/JKUO0sjg0vIgX4id30JZ7DGuC1hi8KaQ3WHC6xZ/rUChdsHBuppU3gD
+	 FmeSpwR9wG5qejHYt+Jxx6Kj1GbK3PUMY1lwHMqwfGJUM4mN7RxoD2FDZdf8SCgPxFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793623527;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793623752;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=PT7CWHpvNKeQzTrBYKakMU7LWZDvbAJYzwpyQwagUfU=;
-	b=avWyzEXkKOju8tkVT8udz1qvk/NKyry4+Vrq0MLCVW1RZ952da70bsoOKALzUZhCBSDz
-	 J/HyVBEEv6dE9GBX/C974k5kwgrwo5opc/W857gHSLwwMp0cRVXKeynT7ClnVmLifNYKn
-	 5YXvjU8CTWMfQh8yt3QMvdMluj4UtgvfRHEqMS1PG6vvdzYb3UHmDhXUeX3udINO9qgQS
-	 4qls62WAepxtHVLwbEDcC6bL9rkfgK6J1u73zQLhRiNkfrlSdacGQb+mjLXbZt85ayzo+
-	 WcZlE7j3Qm+cs+WkFCpqjOedcF0EY86F+eLELWEKBBzVOmpimFt6LrNN4IfmycpfnPw==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=i8NTQB3dN2QpIdebJsLSmUNNG/IYt0L9NmfBKr3dfDw=;
+	b=l0JP2g/4Pj3yKQT/SqGxufw9BpIYxCYqx0oEyDw32c+vu1EkSfmSP1lmKqW9F+0ZRy3Y
+	 EAmhRtE97/TCMOk32dgJwUebhPaES+m3G9cB+7VHITJqNAm4e06BUJSPoR5jUGjOs7QzC
+	 TsCl5mFOHYH1VubQRLOKGszxwAc6CREqspGm9rhq7krHYGNoSn3kAv9cNC4dYFhgDHz7A
+	 WXI6qCdwDdW1HPfZjju+ztTd9NmEbMAEYsCkIEBr56mwao+RJyBTZXb+rz9W5USrLvexg
+	 v/gCjjwICrtYB4Xnr3dstaei3OvRbwjoOCjp4zb1RK8HpP3hnowRTE0DavqkNbPpU2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=dN6fVMrA;
-	arc=none smtp.remote-ip=209.85.208.172
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=aUd+m5gk;
+	arc=none smtp.remote-ip=209.85.167.51
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977E9606A33C
-	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 12:45:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 977E9606A33C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B33060A2602
+	for <linux-coco@lists.linux.dev>; Mon,  2 Nov 2026 12:49:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B33060A2602
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=dN6fVMrA
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3acc7a0b558so11458001fa.3
-        for <linux-coco@lists.linux.dev>; Mon, 02 Nov 2026 04:45:25 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=aUd+m5gk
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5bccb867d6fso2608817e87.0
+        for <linux-coco@lists.linux.dev>; Mon, 02 Nov 2026 04:49:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793623523; x=1794228323; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1793623749; x=1794228549; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=PT7CWHpvNKeQzTrBYKakMU7LWZDvbAJYzwpyQwagUfU=;
-        b=dN6fVMrADnnOq9gAZ8X0cwHOCy/Yxe6sjLHs9Pi7OzMOBLrOBTFlyo/4WwDrKcaEF+
-         EMeBfgKn2wA3qQNU4cO8OYTsWSF00QV3ZsnzE4oBry75vJWJLPhAw6RQyanHE18ljhci
-         TmENhoiVZuTBXQU6+e4GzYZe8v3CZtIHrmr4nZJ3DMLqIMz4nW8qEreEZMWpXiR2KdOp
-         vjtIezSW6pCjSb7TIDPSO+R+Tyz7IYbr7o6jO6B/9Uwu5ubAWXdIqKTDh6lyVVhGQBvL
-         //lMH5YpavS5vO1aEPId8My7BcXsj0QfI0E6QeZbhKnQTrBcw2ktdKx0ilxsxNUGP7CC
-         HMRg==
+        bh=i8NTQB3dN2QpIdebJsLSmUNNG/IYt0L9NmfBKr3dfDw=;
+        b=aUd+m5gkI4S3tuC9Qyqej3r4a+dgf0UB7yQCB3E+1P4SwdETFs5yofHok2tXUPxUOI
+         MIJJ3oOBE2DOyTqlPhmrwhleRNfU/uJXZ8ZzmA8Cb3mWXmpj5n0aA0R6yFl2PqPl22Va
+         DNPCvK/DvXpwDUkH3IbH/VWnib+Lup6coZA1aeLXHnK9j3JOOEBHaxz02hOrhdgPKFLH
+         Bb1iIzM6EPv7x25bJ+vGtoFeu6RucMtgj+7vuypAKpaYhscYLS03Pvm5n5+SQI9SWTD5
+         Wor464hjU+EdkMlvGLHZVgFzeoumFmx6OY0sQjkMg8nZJP/SsJf15La1HAalmX0LQO/I
+         y01Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793623523; x=1794228323;
+        d=1e100.net; s=20260707; t=1793623749; x=1794228549;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PT7CWHpvNKeQzTrBYKakMU7LWZDvbAJYzwpyQwagUfU=;
-        b=cD6KfX6MYZsUmNdL0vGM0CbbCHIug17vWwgsq58ISNVgO/RryqGoUbMwyPihDi+B3W
-         zstn2du2988j+lygbn70CkQ4OSSl8WiMuFN4toSWRBfGK+f2cxUIXzMitaGdsFYVwq2l
-         O+p4mg3OflEYGPnye11eJAU+jVn1MgDQpOnmxI+/io0xec9+GaHJkZjjkvSEra+OMtiE
-         ll4HP6HzJEtfz9RLd8EOI9XrB7dQTU/hPmBRjq7AYTpT3uKWb7IzRpcvVWt6Ei9h1SvH
-         3gaHWkBkAbfnh62JaWsLvOnW+jrT+/cIZZvKsTQ+0ZIv2qLXiuM4BC7Raf1mJKjMHW2Y
-         ww5A==
-X-Forwarded-Encrypted: i=1; AKwUvBziz7OpTuggqKEw+epAfcU2ry/5t4r3n1WWE37trvzw7WYsAoFqMgDZLri6AIV1/EwoSwSsHWngC6nc@lists.linux.dev
-X-Gm-Message-State: APuU4Z/Eqc7Xu55qNPDW74SRQpf81vdoFBcPwkBO521vqsgc90R87+cv
-	WwWFLqg6MDPAn95soUPX/mPxTqs3R6dl3IYA6w8AT9L1ETPOZV8htZ3UvnJy72VBu2w=
-X-Gm-Gg: AYBFou1lxObbwq1ca1O1i9cuc2ZIvZ0nLzil7pj1DHF9A1egL4U3Cvp4rezzHBpx0rd
-	oomLnvcvJj012tg442PRdOmYC9NosMg1EiMvofGUcEk9BUpF+gRAhHLNMifbsJn/VA7kb7qJnV+
-	wnPiJ050JlkZgeYewRQpNvKquHxi8eZrY8FCjfu+NOcAivpMYp74gNaojI8iY0dg+byUhOS+JGC
-	KQy4imaEYmMnvdFte37NQrdW0fP0VoPnlBRwIi4Eeost3KdNvxCr+eNgwEbg+1E1IMM/wEqnjpe
-	nd/Uzkxrj8mDQt/9hrSpj50r5PkmlE0UvKRNRcp2I1/DP8CzFwo4RqtgCJIv3U7mYAs1I8XoR8g
-	HsKqTMRnVC4VE7YfngY56nHSxwFaJSSS9IuIW3li7QnfSXygvKXRSzJf/ACXGxnsVK7A3wjFxtq
-	CpiL0flQOlKw//QE5TLniKVWTKdoPlOWcBeUEtDNFyk7NhLNkK9EFPHA0ZMYTUqbOoo6oLYuJW8
-	19i6ykaZZWEX5lQVvFMmgcCy9QQOEkvGgPxND+iv7c6mVh7AHqbrkVtpV5lEli7tbrpQps+d+Ag
-	8WLC/MHyDE7R/rH+3IPcULHmEiIEuHkNmbJAD94=
-X-Received: by 2002:a2e:9fc6:0:b0:3aa:ee9b:cf2c with SMTP id 38308e7fff4ca-3acb7aa8400mr22439851fa.14.1793623523562;
-        Mon, 02 Nov 2026 04:45:23 -0800 (PST)
+        bh=i8NTQB3dN2QpIdebJsLSmUNNG/IYt0L9NmfBKr3dfDw=;
+        b=wk82rVo74Rj+aMfcRh5KyDTPt7a0OoQcTFfudqdlO9h/U5XyxH2D4r/vjSkCSLx+aY
+         ecUfwFbhnZUlqLiecSDwwEAov6fVn5ODYa78+H8SXPtimLuLAW5R0PNPYPnMNJoEJau3
+         mOSlmH+KVtnI+VVGeO/1q84Lp+R1da70+ayd1h2wOKHltOP2tEBnv0ya9SOd7PwZ3efC
+         Pll4V8eu79SEy1iUv8+6vv3HWVBmI667mqzNgIhRhzB+nQ4jV43JAEfG09Gzcr9LrH2k
+         stTTnc5vUMlbdkM8Vft0Ap792fRvZiCy/E9xg7hKQS934a96M/UJjv1vrnJpQkab5dvK
+         pgLw==
+X-Gm-Message-State: APuU4Z91BhdmNrun4ghhKaKhcPVD3VQ+lymq7T0kdTh81gUd/ImDvX/3
+	2l8JupOsWx2VgWdbNZYxNTYhrrCd3iDEqyBFaVwDY83xZfGDhwBGHefOzEAHKKTMlLU=
+X-Gm-Gg: AYBFou2bXgV5RUUNlWMrMCGBvftYb1JQuPT/WKw3cCc0Vnc5lEBVOLdObfwTMfQ810Q
+	AJ0kOtYUZR8Z4Eczxfk60nyBvP7tptFmUBMyPp/yaTJNMVHFZLWUOosGEfIXWFTFXiJ8Ud2ojRG
+	2WV9OZcbyYu8Bl9Oug+GD8fqAB43xWQo9TidSws1iYm73b5v1KNjmvbTXdDnn8AqkpxFMnEGFEO
+	dBMeROihn1Q92cd0ol2AHxmkZkQh1CeX8BjdNdF03Q/MeOAdXgG3xyVqQzeiKDVnjxbisH9is48
+	DCED5SndnHEdWQfcAY/yO8p8FpCkGnioElrR7KQROW5f7cceqLDhxtUIXYPqGT1kANAP8rkaiJ+
+	NyNZaN1WJ4srHcaZEDmUo9NjCt02wbF6phFkqZHIi3KHRaa+fqdGXqtCXS7fbDYihlbDYG/e5qu
+	IY/XghIRHIIGyidaWS0IQtrVVKQgJJyfezun7n5baK8d4Wup76Yyhcyi+frqu6JrP8fiWYRrcv0
+	k9VT/vJ0Y/3iIMBDewl7BYRupg1Yh9MR5XmEhoFmk6JjXBP2nIUx8BdWV+f52RM+Ul/owC4v2Nd
+	k5d5cx7a3yuoY+YGyyJIbydWTA1rB6eOu8PHX1Q=
+X-Received: by 2002:a05:6512:158d:b0:5bf:e799:c7f3 with SMTP id 2adb3069b0e04-5bfe799c920mr1589103e87.61.1793623749527;
+        Mon, 02 Nov 2026 04:49:09 -0800 (PST)
 Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3acbbf458c6sm20091341fa.40.2026.11.02.04.45.22
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe04ee003sm1638014e87.7.2026.11.02.04.49.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 04:45:23 -0800 (PST)
-Date: Mon, 2 Nov 2026 13:45:19 +0100
+        Mon, 02 Nov 2026 04:49:09 -0800 (PST)
+Date: Mon, 2 Nov 2026 13:49:05 +0100
 From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, 
-	linux-coco@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Steven Price <steven.price@arm.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev, Dan Williams <djbw@kernel.org>
-Subject: Re: [RFC PATCH v1 06/11] PCI/TSM: Describe the PCI attestation
- control family
-Message-ID: <auh_GGpJ0ngQTETS@FV6GYCPJ69>
-References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
- <20261028152618.1356860-7-aneesh.kumar@kernel.org>
- <auShvL2m00S70H3d@FV6GYCPJ69>
- <20261030154353.GN3734323@nvidia.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 10/20] ctlv: Prepare event queue support
+Message-ID: <auiGL-Xq72i5K8FT@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-11-jiri@resnulli.us>
+ <auCbPdoaMq9oWoQ_@e129823.arm.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -110,66 +106,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030154353.GN3734323@nvidia.com>
+In-Reply-To: <auCbPdoaMq9oWoQ_@e129823.arm.com>
 
-Fri, Oct 30, 2026 at 04:43:53PM +0100, jgg@nvidia.com wrote:
->On Fri, Oct 30, 2026 at 03:01:29PM +0100, Jiri Pirko wrote:
->> Wed, Oct 28, 2026 at 04:26:13PM +0100, aneesh.kumar@kernel.org wrote:
->> >+    type: action
->> >+    fd-access: read-write
->> >+    availability: dynamic
->> >+    optional: true
->> >+    request:
->> >+      attrs: refresh-request
->> >+    reply:
->> >+      attrs: change-reply
->> 
->> This differs from what I had in mind: a transport-neutral
->> ctlv-attestation-spdm family with SPDM_GET and SPDM_AUTHENTICATE.
+Tue, Oct 27, 2026 at 01:38:21PM +0100, yeoreum.yun@arm.com wrote:
+>Hi Jiri,
 >
->Yes, we should try very hard to keep all the SPDM stuff as transport
->neutral as possible.
 >
->> SPDM_GET would report discovery BaseHash, discovered slots and their
->> certificate digests, authentication state, and the effective
->> authentication slot. SPDM_AUTHENTICATE would take device-generation and
->> the selected slot. EVIDENCE_GET would retrieve CERT_CHAIN with
->> blob-instance=slot without selecting the authentication slot.
+>[...]
 >
->Do you have a mapping to ARM RMM operations already you can share with
->Aneesh?
+>> +int ctlv_event_emit(struct ctlv_op_ctx *ctx)
+>> +{
+>> +	struct ctlv_device *ctlvdev = ctx->ctlvdev;
+>> +	struct ctlv_event_record *rec, *next;
+>> +	struct ctlv_file *cfile;
+>> +	u32 len, wanted = 0;
+>> +	LIST_HEAD(spare);
+>> +	int ret;
+>> +
+>> +	if (WARN_ON_ONCE(ctx->file))
+>> +		return -EINVAL;
+>> +	ret = ctlv_event_finish(ctx);
+>> +	if (ret)
+>> +		goto out_free;
+>> +
+>> +	len = sizeof(struct ctlv_event_hdr) + CTLV_ALIGN(ctx->output.root->len);
+>> +	scoped_guard(spinlock, &ctlvdev->events_lock) {
+>> +		if (ctlvdev->dead_announced)
+>> +			goto out_free;
+>> +		list_for_each_entry(cfile, &ctlvdev->files, node)
+>> +			if (test_bit(ctx->op->event_index, cfile->subscribed))
+>> +				wanted++;
+>> +	}
+>
+>Suppose at the time of here, the number of subscriber is 1.
+>However, before calling the ctlv_event_deliver(), another task hold the
+>event_lock() to register new subscriber. for example:
+>
+>
+>Task 1 (emit)					Task 2 (new subscriber B)
+>
+>wanted = 1
+>unlock events_lock.
+>						Register subscription.
+>allocate one record
+>ctlv_event_delver()
+>
+>  grab events_lock.
+>    Deliver former subscribe event to old one.
+>    new subscriber B will call ctlv_event_queue_event() with NULL.
+>
+>When this happens, new subscriber B would receive overflow event
+>via ctlv_event_queue_dropped() though it was registered right before.
+>
+>Is this intended? It doesn't make sense that subscribe B receives
+>the overflow event in this situation...
 
-Yes. For SPDM-capable PCIe endpoints, this is the mapping I figured out
-with LLM, using the existing RMM 2.0-bet3 interface:
+Not intended. Will fix.
 
-sysfs connect (PCI/TSM and kernel SPDM requester):
-  Perform preliminary negotiation and GET_DIGESTS/GET_CERTIFICATE.
-  Retain the discovery snapshot and destroy the temporary requester.
-  Do not create the endpoint PDEV yet.
-
-SPDM_GET (attestation provider):
-  Return the retained discovery information and connection state.
-  There is no corresponding RMI discovery command.
-
-EVIDENCE_GET(CERT_CHAIN, blob-instance=N):
-  Return the retained DER certificate chain for slot N.
-
-SPDM_AUTHENTICATE(device-generation, slot):
-  Validate the generation and selected slot.
-  RMI_PDEV_CREATE(id_index=slot)
-  RMI_PDEV_COMMUNICATE until PDEV_NEEDS_KEY
-    -> RMM performs fresh negotiation and retrieves the selected chain
-    -> CCA host driver relays requests over DOE and caches the chain
-  Compare its DER certificates with the selected discovery identity.
-    -> reject a mismatch before supplying the key
-  Extract the leaf key; RMI_PDEV_SET_PUBKEY -> PDEV_HAS_KEY
-  RMI_PDEV_COMMUNICATE until PDEV_READY
-
-  Prepare the root-port PDEV to READY and configure PCI IDE resources.
-  RMI_PDEV_STREAM_CONNECT
-  RMI_PDEV_COMMUNICATE on both PDEVs, honoring STREAM_WAIT
-  RMI_PDEV_STREAM_COMPLETE
-  Enable the endpoint IDE stream.
-  Only then publish authenticated state and the new device-generation.
-
-[..]
+>
+>
+>> +	if (wanted) {
+>> +		ctlv_event_copies(ctx, len, &spare, wanted);
+>> +		ctlv_event_deliver(ctx, &spare);
+>> +		list_for_each_entry_safe(rec, next, &spare, node)
+>> +			kfree(rec);
+>> +	}
+>> +
+>> +out_free:
+>> +	ctlv_event_free(ctx);
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(ctlv_event_emit, "CTLV");
+>> +
+>
+>[...]
+>
+>Thanks!
+>
+>-- 
+>Sincerely,
+>Yeoreum Yun
