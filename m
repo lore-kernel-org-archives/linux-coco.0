@@ -1,49 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793719241;
-	b=tVIAwk5WjIMc6D9VM9lzMF2ptE8iK1XE9s2yMKSrJ8IEV/QUukFuwQQNsej6rdK5MNoK
-	 9XXXvHFtWGV91iT6/sFrzhanudKNf1CWpDiwPyE4k1oavpONMH2O7av5yTiqJQcEAKfYw
-	 PpMpyGRZyrLGthDse4BM+ic/HMlwQEKsriHgm2NCjIfkij/8pJXppxZ2v4ZDrx3EiyKc2
-	 4kCRdjmHRaSG5+w9qTMNbGWKXnWsSYVriTwntu5zY1eCLlMyB/DfhgFhaYonYDWtAafOW
-	 IDt/GSJCtLYb4Nu3Ov4Dj7kZCCB4Wa+dhjhxTiel2TauRUHEMsFUzfsG3tUmCFUZ10Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793719241;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=p5HBFsCe0qnSPF5mxz0GgXojtqMTl6Hpr7/e0Q8Dowk=;
-	b=Y7klUC8GBcdDJ0EGMEvEiFNajTEeD5sGzm95AWLQzo8vWgyrRmdwSmUPTr+ibCbJ7lG5
-	 Pxa33wa6LIFttgtN49Mcu6kVFa6fG26R+RTypvtgSwL1nYlNkEXjFKRElHF2WB0glcj6G
-	 eAOvSBUs7Ju1SsN0yPz65hFXqvdoHKF5tgxPyeGQJA/+fjxP3wdX8WixZBojwKqhf9vww
-	 oC430Nl8qAgoCXu9AIWc7jcUvgPpl43ZkrAg9+iO7F00DGlPe03YoiAqRNYZxNlA0sAya
-	 nKX+ztUzgBqfteFhIjReKPnC11hlGS+Y1vs0QT7fzPasVMX2ZLXqGOVXXkak7RwqYAA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=EwZyTQDu;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36E6606A328;
-	Tue,  3 Nov 2026 15:20:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D36E6606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.55
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793720160;
+	b=F/eHceQnAGJsJ2qBDr9vcEGL5KDXn5UyPqs592XANNx76TqHOgkThuXu2kUYyOIg0grD
+	 KM+yYMOx6gjeTupm6DZD81uFe5ckSo9HfjLiLnuuHI+hJIA6G8uDVDUWwe0sFDk8ndN1P
+	 bkHoQe1W13pdVGBFxpIIp7GK728FredEzY1HxjBML2wZmE9eMw6/G0pU2q+RYxtDcBBfl
+	 Y2GvBoir76Xi3t2jwi6LzjZipBIy9RsLgzYqmSPqSl94oieRGbdQAZ6vTmEBKgUAeYlfs
+	 DZw5lrD+zYmsUSvrx9UQ6eUb97Nsdkx9/b2OMGjObtF5GOt2lLJO/SPdg2mHUC2ay3Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793720160;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Qeamo4irrBToBPZfU9g+isG4lZjAtD3wINTaY1K5MSE=;
+	b=byjyUu5akQjWh9Z+n3oS+O2zq3hxEcdz96UIuL8O3+pBx4z6qsw1XirfRH0SSwupwncm
+	 klJ1GUwO24DWTfu+pLdsGFxauYLshtFJ0KERVyPU89qcFPKDq47CghXJUnl2V83nms8Ub
+	 hDxjaJFphjacidsAALLP/cSBncunItxsUqHr8ykaVfzLzPp6/1oWTkorJliuJScUxdkvm
+	 Ot296dKokd6P+DxjmIelpKNVHTM38SlbaNP4U6PCCME7vuR0qTsoKyGCr5TOjp1s0m5r4
+	 nEwN++JKcPoIhWSXhRshJ4PKSTGEWajjeivxnvyDucZqJnvicHl9tZkH2IBuBSk9/AQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Q8cuPMqd;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.55
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012055.outbound.protection.outlook.com [40.93.195.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8D7606A324;
+	Tue,  3 Nov 2026 15:36:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B8D7606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=EwZyTQDu
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E9191595;
-	Tue,  3 Nov 2026 07:20:35 -0800 (PST)
-Received: from [10.57.66.79] (unknown [10.57.66.79])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1DC223F673;
-	Tue,  3 Nov 2026 07:20:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793719238; bh=Tz3JU1rW/n3cqhxdCyJG8jS1F5VtoD76wpDc7WimSLY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EwZyTQDu31RPwxwzCPKjWznhEBToCNQWENtm+Mlj7QxRKNfKCffaL9ovAXUqFtVe5
-	 FppOmqw7wLEwbOiwkYfl0r1n/g0Kxv3BcHK+0vz4HQihgkp7nzZedGpRYlr11EoVw6
-	 SyAzFPR/yE+0joxrXKQZ5twRDsIOgyibl9AxJteY=
-Message-ID: <472e29a3-ab29-46b3-a70f-caab49befbb5@arm.com>
-Date: Tue, 3 Nov 2026 15:20:33 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Q8cuPMqd
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rdhP4i4WEsYCYK4Y1it1p7KlW5srf0zq1N4iYTU/4RuWzR8U7KV+W8MbPz8rWptTjnhu1vmZaBDF9v6FTnCn32LT39McKoYjzil07cBW8ndzLv1FBtkhvgeDsjzY/N10wjNIwE4JBXL3WHB8V7ydR27g99MeBrAn5a+KKLSf/9rl7YWgvec2Ga4hvGQNaUHAmBP2AMfg9fZJVAkgDZit/7uVADqMWjJWWonzCLO7S5Dq2p1oxf7nsx4yg6OME7PyvR2s2fgd2BT9fiJVy+BAefe/GhbSf0w++QkFAJYxkk0sTCE05JUG2RO3zMBDjA48lfhQFctdELYv3Br3UYgK1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qeamo4irrBToBPZfU9g+isG4lZjAtD3wINTaY1K5MSE=;
+ b=ELiqtSp80rzPsVcvC74qGoj+GgNYrRv8z9+G/nz0TWX0AWTTcFjIXc/7Use+CkvBsgHfRpt4MsEfM9KmIxyfifEqQfbBoH2Nfi/Z+zHYIczMtkN3BPp9l/+1WDzd4WkY+ANSPpRcaXQXSYWc17GiFTangjnG+2bnJmuNVu/z0NUvPivI5RfoEbqPshpJzqLVttyRo9qLO5fZ1kxlf6rjAy0kLJhxUlOxxENnpme5Eodej6wvVQgXTNEHjP3WKCjx0RIzv3W5Lp00z8G6JkYHF5eNjAKws+qwarQ/clsvJ23SOIzHQrQ9xLxftt2S8b7Vnc790YD2rKX1JnjZqxaHvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qeamo4irrBToBPZfU9g+isG4lZjAtD3wINTaY1K5MSE=;
+ b=Q8cuPMqdu2/SfSYz+jLdaebXvhaT8kf4Baor8eDQNTLFp5DdeDZfByJBA2FIpUomUFIc6hwVm5B0CWhU136rO/GM/81hy2rjc1Iv00W6S0gfsNnjiL0SHXqDtGkGO1HXn/Z6sBRk8UhsuRFOuoQlFHFJTCL+DVr21Qa4JZrAdHeBQYJ0aBhwDi5k1csbtszDlrXHEVz+fzkEK+Uh9gLdJdomCpfAn6nf78OrDWjhJUA81ObWvwVwwqyOziFBpQauR9jpfXYgH9UvHyNvUXaxsI8K0Cc+3PWZX49UkgSe4gZpvswJ4SBKmF1RPjctIxR+gZT8M0IGByHTgnC74kfoww==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by PH8PR12MB8608.namprd12.prod.outlook.com
+ (2603:10b6:510:1bc::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 15:35:55 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
+ 15:35:55 +0000
+Date: Tue, 3 Nov 2026 11:35:54 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev,
+	Dan Williams <djbw@kernel.org>
+Subject: Re: [RFC PATCH v1 06/11] PCI/TSM: Describe the PCI attestation
+ control family
+Message-ID: <20261103153554.GJ274202@nvidia.com>
+References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
+ <20261028152618.1356860-7-aneesh.kumar@kernel.org>
+ <auShvL2m00S70H3d@FV6GYCPJ69>
+ <yq5amrrua515.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5amrrua515.fsf@kernel.org>
+X-ClientProxiedBy: BN0PR08CA0014.namprd08.prod.outlook.com
+ (2603:10b6:408:142::23) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -53,365 +114,92 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/11] KVM: arm64: CCA: Tear down RTTs
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-8-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20261102141304.126883-8-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|PH8PR12MB8608:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96dc17c8-4159-49aa-ed50-08df39c026b9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|11063799006|4143699003|56012099006|261102123227099003|261021121427099003|261028144727099003|261022105027099003|261026140227099003|261026121527099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	mqDnTY9WTOvi7C8aRMF0s2Qnql3RVXmQJqpEHL7GE0SlYd1qrwi+DCRbPz/rcejbVMRYyPA4feEVLFGn/e8iRC2UB4CpESVQ0cS6k5/TCbZoLkQkzk9Bl7f4h7YuUZHq1wHPVnCh3hgYRKN12GC2pCtiTvme5r1WjrpUiuqJiU+WHtQ8xQ5GtAkXDIObo4AmYBIq0TorWS5XpFW2H0MHa/MpXiWrfnzph7Xr3gpngQooT9zpTPpbWXHQb8eaXOizlCre7DFlhYnP18LWiVs536VRPTKR4hAjUyZImN1YjPXIgWibnXEWKfzNh25LQcg+zFvwMcTo8ZiOc1TdqTRDOCTPwUZ7/mZ3RWyzRiuEFvegXrQ2PjR6j59ouVb3XhX3r3n/OlEu+mfmEGYywjOjxQelZ9gXn1kk3/cHBXByEgVGzsykp06Dw/XA65padZGfCWq+s2AsUIcrmlvX3CrJ62m/rUkshnaJxLNYF9ibkKKBjye6Qok/zRo7wmsBr1b2XhUdFhdD3xTr7p+5o2pgAkq2ZPf50MTCAJXvdkFQIFP4/0pzVX/qqvSlgDSXeWX++vTE2TthSjO70GyfWOb2CNerTB5JmZnz1gXtzr225qkMHFIzvTJITmZzQjoYfykFqYPjO1SE+FZKQ58xEdkWRb5OpA2w6N76hVTy49m3cGc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(11063799006)(4143699003)(56012099006)(261102123227099003)(261021121427099003)(261028144727099003)(261022105027099003)(261026140227099003)(261026121527099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?sR87IJczl3lHpB4dahL9AW9tZHjurGyocRviCDQu1wgLqHCaLRWnh700ZRGP?=
+ =?us-ascii?Q?UxfKkZpC/IxuEDGuDoHtlPzyTCkl7d0XZORyVqe5rlL0VwH1ijKmI6ll7djt?=
+ =?us-ascii?Q?pd/VeY8K6PxWvnR+2PUbIU7jQnzkfQIUBRQGESGC3436zwzT0/92i90Tw8if?=
+ =?us-ascii?Q?fLMODy5B6P2uT8EcPEMWcjhQ+Vfy4PymTQiB4KKwxiM077fi7kS7fvbOq9Cf?=
+ =?us-ascii?Q?cdsp0KSLAJVuFeGAUbzCHKerFG0lnUBa3b99LhxZ5Rr8m6d567UGCRVY5yOb?=
+ =?us-ascii?Q?Y25YxVPOou+CR0f0nnmAOx1xOyi3NQhh7WGuMySaVWgnhjL9kUzletNuHOYx?=
+ =?us-ascii?Q?aGmKGpSBezxdKYNj0UTYUkP3SfxW+mOq97c8QLq8mI2nkKeJ16Twk6uPRoQ5?=
+ =?us-ascii?Q?pB3oEpFotmch7nk2FQwjdYjkQMIYaedGb5Ud39B/otb0CAccKhiF61wPV6/S?=
+ =?us-ascii?Q?eBdGXQTnuwlG7/VF6+qIsZ3bIibb6AKrjxmwUKX4MCnhKPmQSmcCyqarjuEs?=
+ =?us-ascii?Q?0lQ0I3dP0kShajSm5ujP0yX5lYmgmlKXlvU9RuJAbmn9DP3RNH5tlUQSVUwp?=
+ =?us-ascii?Q?K8ds62KxPpjOb/3w+q4xFiqzr1pguGIuRHSj2ems/cRyTHlQq9ARWtaDchI9?=
+ =?us-ascii?Q?S2S3sO4XXEVZI+y0BNMLnV0C5NGcskn74YADgwGh/GwbRzInofgqT4m/uyM9?=
+ =?us-ascii?Q?8EHGhAnyif2Jhnm4BPqMr0QAqIiIIZ7rezZM8hq07ZL45i7twE2qZpdZMUuR?=
+ =?us-ascii?Q?x5ZTmrLaJfuwVmVtmVjyyWLBHu3l+Sm8TNwv/nePqTJsupksm0UtFm/2V975?=
+ =?us-ascii?Q?K3BW5+llYvAyNURktGi2mzLd3RGZIUphMbifYLuULn0yLf/mcPkD703Ycu4O?=
+ =?us-ascii?Q?KKoQDRozxY4jqbqzWeEP4jmk3fobmF5nh8/shQ0siP1OZnSYTQmhkQ0C9GyD?=
+ =?us-ascii?Q?Pd9SIZ5AXL9M9nyFdUfEhceau3C50q+UgyJ94EloElWwl9Afk/bNX0CvNlty?=
+ =?us-ascii?Q?bYc2Idu5aTzU4e1h95+xRdMqh2GlAkzlWkfmbmDZR6bTKd/YPxSxVjfn7CxQ?=
+ =?us-ascii?Q?PjpnwxxqgrQSfsLd7vuCReThgJv6PxDUENxAap4FBcJuD1A/U2KQ1fVxFiJ7?=
+ =?us-ascii?Q?fU3MC6tZcznKKvZOMVCMpY+DyhAU0Z8++w+IVWtFPafmgBWz61gBTs/Av8nW?=
+ =?us-ascii?Q?E7wkMoYS4IjRkA74qiz62Hxk+MzfZNAC5zPg/F6fhe4Wu8kzKdv3k6YAPPi3?=
+ =?us-ascii?Q?t8zMiOaI8X6rXEnBkpbJvdyuWLK/4AIjHWah+xhLni0FPdlf1WU4PNCesvnm?=
+ =?us-ascii?Q?0zx/155Q+kGVUuuPyNrY6z7m4MVSdf5v8xv32pYLLXNTLGr3Jsm12hwiSaJI?=
+ =?us-ascii?Q?kT8VIA3vnazv27pUwgKl0lNP2SrqdwAk+KFYbw0oNasQ8+yUJXd5MIdLi0Vy?=
+ =?us-ascii?Q?jBJMK8yoN4Q1ml7ygE+7n79x7St7y8UiUeCtW6Pqu9te2tYMuWMIsknvT7AM?=
+ =?us-ascii?Q?GhFrRrPH3EI9TBPOeOWll+29YmWLvNuzo4asyWtF3qgbMOGGzmqoeqV5fPea?=
+ =?us-ascii?Q?D5DnleAgXwymeFB0o77JIBtpmV30JF2DIiWpydTBqZ+55t7D77695heWaLJW?=
+ =?us-ascii?Q?CrMSyVAyh7g7bokfAGfJSNfjtA3B4xKoXRivTVk//lnto2aP4zBaCDtWl3WN?=
+ =?us-ascii?Q?W3bKnB4I3IpUTutD9PaYQjX/wV2f1w0KCsYpovVStDqet5sz?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96dc17c8-4159-49aa-ed50-08df39c026b9
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 15:35:55.8648
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nqDJbork4fnW6uXzk0h9dVdZMGyzUyfZfTuLm8iIIL2HTjChoTPO86t6zO7J46tV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB8608
 
-On 02/11/2026 14:12, Steven Price wrote:
-> The RMM owns the stage 2 page tables for a realm, and KVM must request
-> that the RMM creates/destroys entries as necessary. The physical pages
-> to store the page tables are delegated to the realm as required, and can
-> be undelegated when no longer used.
+On Sat, Oct 31, 2026 at 09:35:26AM +0530, Aneesh Kumar K.V wrote:
+> > Would this split work here? It would also allow non-PCI SPDM adapters to
+> > share the contract. I understand that multi-slot discovery is deferred,
+> > but a slot-zero implementation could still use this family and operation
+> > layout.
 > 
-> Creating new RTTs is the easy part, tearing down is a little more
-> tricky. The result of realm_rtt_destroy() can be used to effectively
-> walk the tree and destroy the entries (undelegating pages that were
-> given to the realm).
-> 
-> Unmap the Realm IPA space once during stage-2 teardown. Defer destruction
-> of non-root RTTs until final Realm destruction, after REALM_TERMINATE and
-> before destroying the RD; root RTTs remain until the RD has gone away.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->   arch/arm64/include/asm/kvm_rmi.h |   9 ++
->   arch/arm64/kvm/mmu.c             |  17 ++-
->   arch/arm64/kvm/rmi.c             | 189 +++++++++++++++++++++++++++++++
->   3 files changed, 214 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index f1a1ed6b91f5..58d825e40bdf 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -57,6 +57,7 @@ enum realm_state {
->    * @sro: Preallocated SRO state context for Realm MMU operations
->    * @state: The lifetime state machine for the realm
->    * @ia_bits: Number of valid Input Address bits in the IPA
-> + * @stage2_unmapped: The Realm stage-2 mappings have been removed
->    */
->   struct realm {
->   	void *rd;
-> @@ -70,6 +71,7 @@ struct realm {
->   	struct rmi_sro_state *sro;
->   	enum realm_state state;
->   	unsigned int ia_bits;
-> +	bool stage2_unmapped;
->   };
->   
->   void kvm_init_rmi(void);
-> @@ -77,5 +79,12 @@ u32 kvm_rmm_ipa_limit(void);
->   
->   int kvm_init_realm(struct kvm *kvm);
->   void kvm_destroy_realm(struct kvm *kvm);
-> +int kvm_realm_teardown_stage2(struct kvm *kvm);
-> +
-> +static inline bool kvm_realm_is_private_address(struct realm *realm,
-> +						unsigned long addr)
-> +{
-> +	return !(addr & BIT(realm->ia_bits - 1));
-> +}
->   
->   #endif /* __ASM_KVM_RMI_H */
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index b049ea67d9af..51fda7b2ff7f 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1145,9 +1145,24 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
->   	return err;
->   }
->   
-> +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
-> +{
-> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
-> +
-> +	mutex_lock(&kvm->arch.config_lock);
-> +	if (kvm_realm_state(kvm) == REALM_STATE_ACTIVE) {
-> +		kvm_set_realm_state(kvm, REALM_STATE_DYING);
-> +		WARN_ON(kvm_realm_teardown_stage2(kvm));
-> +	}
-> +	mutex_unlock(&kvm->arch.config_lock);
-> +}
-> +
->   void kvm_uninit_stage2_mmu(struct kvm *kvm)
->   {
-> -	kvm_free_stage2_pgd(&kvm->arch.mmu);
-> +	if (kvm_vm_is_realm(kvm))
-> +		kvm_realm_uninit_stage2(&kvm->arch.mmu);
-> +	else
-> +		kvm_free_stage2_pgd(&kvm->arch.mmu);
->   	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
->   }
->   
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 45ecbaa467d1..f190143b33ba 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -11,6 +11,14 @@
->   #include <asm/kvm_pgtable.h>
->   #include <asm/virt.h>
->   
-> +static inline unsigned long rmi_rtt_level_mapsize(int level)
-> +{
-> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
-> +		return PAGE_SIZE;
-> +
-> +	return (1UL << ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
-> +}
+> The only point that remains unclear to me is the distinction between
+> EVIDENCE_ACCEPT and SPDM_AUTHENTICATE. Also, would EVIDENCE_GET retrieve
+> fresh evidence on every call? If so, we do not need evidence-refresh.
 
+Lets talk about the desired flow over in this thread:
 
-Now that we are using the same PAGE_SIZE as GRANULE size, we could
-replace the above helper with kvm_granule_size() ?
+https://lore.kernel.org/all/20261102172640.GB274202@nvidia.com/
 
+I proposed that LOCK and RUN fit into the normal SPDM flow.
 
->   static bool rmi_has_feature(int reg, unsigned long feature)
->   {
->   	return !!u64_get_bits(rmi_feat_reg(reg), feature);
-> @@ -21,11 +29,180 @@ u32 kvm_rmm_ipa_limit(void)
->   	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
->   }
->   
-> +static int get_start_level(struct realm *realm)
-> +{
-> +	return 4 - stage2_pgtable_levels(realm->ia_bits);
-> +}
-> +
-> +static void free_rtt(phys_addr_t phys)
-> +{
-> +	if (rmi_free_delegated_page(phys))
-> +		return;
-> +
-> +	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
-> +}
-> +
+LOCK is effectively starting a SPDM session since it is LOCK that
+provides the mechanism to confirm the host hasn't tampered with the
+SPDM while we are evaluating it. It has to be tied into the SPDM flow
+somehow or it doesn't make sense.
 
-...
+RUN is the natural consequence of finally accepting the SPDM
+connection after checking the post handshake signed evidence and maybe
+a measurement.
 
-> +
-> +static int realm_tear_down_rtt_level(struct realm *realm, int level,
-> +				     unsigned long start, unsigned long end)
-> +{
-> +	ssize_t map_size;
-> +	unsigned long addr, next_addr;
-> +
-> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
-> +		return -EINVAL;
-> +
-> +	map_size = rmi_rtt_level_mapsize(level - 1);
-> +
-> +	for (addr = start; addr < end; addr = next_addr) {
-> +		phys_addr_t rtt_granule;
-> +		long ret;
-> +		unsigned long align_addr = ALIGN(addr, map_size);
+Every SPDM flow should end in some kind of 'RUN' step. It signals to
+whatever is waiting that the SPDM session was authenticated by
+userspace.
 
-We assume that the start is aligned to the kvm_granule_size(level - 1) 
-and thus this works ? Should we enforce this before the loop ?
+It is a bit unfortunate that the IDE setup was bundled into the
+CONNECT, before we have a chance to inspect the evidence, but I don't
+think there is an practical downside to that. Though we shouldn't
+consider that the right approach.
 
-> +
-> +		next_addr = ALIGN(addr + 1, map_size);
-
-So that we can be sure we have (align_addr != next_addr).
-
-> +
-> +		if (next_addr > end || align_addr != addr) {
-> +			/*
-> +			 * The target range is smaller than what this level
-> +			 * covers, recurse deeper.
-> +			 */
-> +			ret = realm_tear_down_rtt_level(realm,
-> +							level + 1,
-> +							addr,
-> +							min(next_addr, end));
-> +			if (ret)
-> +				return ret;
-> +			continue;
-> +		}
-> +
-> +		ret = realm_rtt_destroy(realm, addr, level,
-> +					&rtt_granule, &next_addr);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		switch (RMI_RESULT_STATUS(ret)) {
-> +		case RMI_SUCCESS:
-> +			free_rtt(rtt_granule);
-> +			break;
-> +		case RMI_ERROR_RTT:
-> +			if (next_addr > addr) {
-> +				/* Missing RTT, skip */
-> +				break;
-> +			}
-> +			/*
-> +			 * We tear down the RTT range for the full IPA
-> +			 * space, after everything is unmapped. Also we
-> +			 * descend down only if we cannot tear down a
-> +			 * top level RTT. Thus RMM must be able to walk
-> +			 * to the requested level. e.g., a block mapping
-> +			 * exists at L1 or L2.
-> +			 */
-> +			if (WARN_ON(RMI_RESULT_DATA_LEVEL(ret) != level))
-> +				return -EBUSY;
-> +			if (WARN_ON(level == KVM_PGTABLE_LAST_LEVEL))
-> +				return -EBUSY;
-> +
-> +			/*
-> +			 * The table has active entries in it, recurse deeper
-> +			 * and tear down the RTTs.
-> +			 */
-> +			next_addr = ALIGN(addr + 1, map_size);
-> +			ret = realm_tear_down_rtt_level(realm,
-> +							level + 1,
-> +							addr,
-> +							next_addr);
-> +			if (ret)
-> +				return ret;
-> +			/*
-> +			 * Now that the child RTTs are destroyed,
-> +			 * retry at this level.
-> +			 */
-> +			next_addr = addr;
-> +			break;
-> +		default:
-> +			WARN_ON(1);
-> +			return -ENXIO;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int realm_tear_down_rtt_range(struct realm *realm,
-> +				     unsigned long start, unsigned long end)
-> +{
-> +	/*
-> +	 * Root level RTTs can only be destroyed after the RD is destroyed. So
-> +	 * tear down everything below the root level
-> +	 */
-> +	return realm_tear_down_rtt_level(realm, get_start_level(realm) + 1,
-> +					 start, end);
-> +}
-> +
-> +static int realm_destroy_rtts(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	unsigned int ia_bits = realm->ia_bits;
-> +
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-
-Should we assert that realm->stage2_unmapped == true here, since we
-expect to not have any valid mappings ?
-
-> +
-> +	return realm_tear_down_rtt_range(realm, 0, (1UL << ia_bits));
-> +}
-> +
-> +static void realm_unmap_stage2(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +	if (realm->stage2_unmapped)
-> +		return;
-> +
-> +	write_lock(&kvm->mmu_lock);
-> +	kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
-> +			       BIT(realm->ia_bits - 1), true);
-
-
-> +	write_unlock(&kvm->mmu_lock);
-
-Do we need this write_lock() ? IIUC, the Realm is dying and this is
-called from kvm_destroy_realm()/ kvm_free_stage2_pgd(). KVM assumes that
-stage2_destroy_range() is called without kvm->mmu_lock held (along with
-other relaxations).  The comment above stage2_destroy_range() says:
-
-
-/*
-  * Assume that @pgt is valid and unlinked from the KVM MMU to free the
-  * page-table without taking the kvm_mmu_lock and without performing any
-  * TLB invalidations.
-  *
-  * Also, the range of addresses can be large enough to cause need_resched
-  * warnings, for instance on CONFIG_PREEMPT_NONE kernels. Hence, invoke
-  * cond_resched() periodically to prevent hogging the CPU for a long time
-  * and schedule something else, if required.
-  */
-
-So, I believe we should be safe here without the lock ?
-
-Also, could we not call the realm unmap routine directly here, rather
-than going through the generic helper to get back to what we want ?
-
-
-Suzuki
-
-
-> +
-> +	realm->stage2_unmapped = true;
-> +}
-> +
-> +int kvm_realm_teardown_stage2(struct kvm *kvm)
-> +{
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +	realm_unmap_stage2(kvm);
-> +	return 0;
-> +}
-> +
->   void kvm_destroy_realm(struct kvm *kvm)
->   {
->   	struct realm *realm = &kvm->arch.realm;
->   	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->   
-> +	guard(mutex)(&kvm->arch.config_lock);
-> +
->   	if (!kvm_realm_is_created(kvm)) {
->   		kfree(realm->sro);
->   		realm->sro = NULL;
-> @@ -34,12 +211,24 @@ void kvm_destroy_realm(struct kvm *kvm)
->   
->   	kvm_set_realm_state(kvm, REALM_STATE_DYING);
->   
-> +	/*
-> +	 * REALM_DESTROY requires the realm to be non-live: all RECs must have
-> +	 * been destroyed and the root RTTs must be empty. Unmap the IPA space
-> +	 * and destroy any non-root RTTs before tearing down the RD. The root
-> +	 * RTT pages are still owned by the RMM at this point, so keep the KVM
-> +	 * pgtable alive until after REALM_DESTROY and undelegation.
-> +	 */
-> +	realm_unmap_stage2(kvm);
-> +
->   	if (realm->rd) {
->   		phys_addr_t rd_phys = virt_to_phys(realm->rd);
->   
->   		if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
->   			return;
->   
-> +		if (WARN_ON(realm_destroy_rtts(kvm)))
-> +			return;
-> +
->   		if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
->   			return;
->   		rmi_free_delegated_page(rd_phys);
-
+Jason
