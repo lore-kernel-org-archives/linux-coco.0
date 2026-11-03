@@ -1,136 +1,126 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793687460;
-	b=SLT1yUXEo+v9kgntkH1729AAHlYcDkhgQQUgaT5sbaF6qVdQO0DBTU1gBHWSniIzy6oA
-	 M7b9+ELHlPrgDHJANMX0WcddQkDfCtV6Z3J3cuN+U2NS+uBKGe6YZuR/wwMKfIxu9cyjL
-	 DkLjTF+luz3VE0u2DAiWl6EzqFWyPmBD2e/r2RA+wGxi7t600/ifvJVnVNVh2r9YVAL0e
-	 2mVuFDcd1QN5VbQyZz5499SMWsvT6EdJCLIpTL1XryyeuP4a6UpRU7pK2hkYbn8cBA8LJ
-	 CqEZ185BnwXyqmYW9Ko1Xjb2N4KIA+ya0o3l0lnaEVk5EeLEJPqMTH/MJWEdnwmG2Mg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793687460;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 References:Content-Type:Content-Disposition:In-Reply-To:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=45l8P6tFk4BgFS7Ta/i9+TJqCt073V0MgDViP2MASLE=;
-	b=HTOqWk8JgU2jYpUkyp18G3v6S+rqRDSwp6JeKh0w1Erjue5ORNY6Aw1uzD7ZOWMu0KzK
-	 J3D/L9bjG//vB7E0VjO/VKkQ5ZZq43eFijcz6lZruTAHqyBQyEO4VTZi/yBhrKZ+5hpCD
-	 GtplblSkRQmVQUw6acjdGVDZh7kwV/3cge4Gn6j2WgWYhNNxrY1hsz7ZpbgzaVr0vIXnd
-	 3TRLkHUOrMtRwpGinbb2UlwD8IVuFo1V+03+8PzHXMX8XdW2CPl7DGPJDL9Tf3F+SbMsU
-	 +1LpkctyJkWaj3iJLqSowSVAdTUT5UzmCsJ7pLPyMQ95nD99vIZ5UHRFhyBsy0Hn+Hw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=f6fT8I9w;
-	arc=fail smtp.remote-ip=192.198.163.19
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793690152;
+	b=GHaXoBCtbBmqohNV01k3QX+IaFHcmA3HvnIbrnqPEfo7gpUYz5xHySSFe0sF060FiPCy
+	 kHyBLt+QgrMs9oEUJtGrz4zvhugwRkJF3HH/J4Ibk7I2CXYGBlmj1RcpN96Huwo/1mfvH
+	 E9pQ24yNX+7hSuFOtlqeImCId6whsq9aQ107oLrIh9Agegjlp+Vc9G0Z6jLQ/3dODp4ll
+	 o67hE9WndK3UompMv1EXCiBnUy3jpXHI9d/WpVX8br6o5v0q5nvppEOKt3v0yK4p2N9s6
+	 1lSToUZWtayU2HHyZ5nc5+jIKnwfhNGZ+emdqAwVsspSIEbsloK5PyD3qnOGqZNFsyw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793690152;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=j/Bcqh1Ir2ox5ZHSRD7plS8yIHsdPIl+LjTttxcCQ1U=;
+	b=jSn8+KDjeFqm5JZESrS5chrfUn0yZcGuNKrHekQA+i3GmUJfyvj31WxSirsuBoECes0z
+	 eqkyN5xuMU1l8Sak3C4WWV5RJYlFfAx/abA/KB1Q6MRw+jXWdrW5wzvL6oEoANnwYrawB
+	 UuTeezOOmFageqRRzLKRWlY6VFGj7jtaIefZl+99fj0LwCcwptmubalAtUtPLyZHAso8x
+	 dtNGrVHYSLfOC+RDdReHlubHohiuvHf02224Zqk9IkPLfDMnmQlL3LTQJcrgd8PlEab0n
+	 5xJzUEuSOeDCPEl8lVOFKYlp0n2oAWENNfIpGGYJCOCrieMsbS7KcwbxDLz9c/eSbew==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=JFJhmgzw;
+	arc=none smtp.remote-ip=209.85.216.100
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E776D606A329
-	for <linux-coco@lists.linux.dev>; Tue,  3 Nov 2026 06:30:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E776D606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AF1606A32C
+	for <linux-coco@lists.linux.dev>; Tue,  3 Nov 2026 07:15:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2AF1606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=f6fT8I9w
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793687459; x=1825223459;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=nl1bi69whbR3wAZSX2YcH5RTZE8IV2Gwfy8qe6RF4/c=;
-  b=f6fT8I9wvE7hp6ZVkYY8ioxbabB9QWBhwYQyg8m2oa2fgZg5x9Itafi8
-   P1vXmExNagIDpK7HREGe/6S+14ylMHzrVba45y1IKZQC8YIXsFS+Zjdyc
-   NvmL7h/TWIo+IGZY/PinxJZTn/qGCxsRFe0pn55Me/dBQHru0efntzPQi
-   HcNFt4dL/drTFrtjMW6FwCv2m5ikLdhOmgB/MMMsBMJjsFcUxj4O2ECnq
-   9xb9AUXBqpecUGIidBQBfQXbRNApcXY7u1RItZ7kewMKNd1kvhBWu6p7Z
-   IWZcWEJnHBq+27E6N8Hk2X31GJS8H2Nh8v/qEmuxBHGXLDQtdS+hW07n5
-   Q==;
-X-CSE-ConnectionGUID: 3r04fgMjSGiSAt6eBCdxPQ==
-X-CSE-MsgGUID: fE/wxdhQSniAYaLTGd3ZTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2503542"
-X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
-   d="scan'208";a="2503542"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 22:30:58 -0800
-X-CSE-ConnectionGUID: t+X7AwdgRxy05B4A79B7Ew==
-X-CSE-MsgGUID: WyEmyScJRY6SwVwFZ2Zm+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
-   d="scan'208";a="6342233"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 22:30:58 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Mon, 2 Nov 2026 22:30:57 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Mon, 2 Nov 2026 22:30:57 -0800
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.6) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Mon, 2 Nov 2026 22:30:57 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vkW0/At+IBpro2nQU2FvzE95j3ZEYcn1P+SPc3+yTWb+Q7GuxklQE2ldqc/JHZxUbS7vUE+EYdALkUOonOVUHihMrh2m0S32YyDhdexez5JFFRUxoVXWYL1HlnAIY49NKD23NFzxSArOEpob2N2St6jUO3C7Ur6ftJHUon0nxBFnXjXuIsJ2fA7HYZKEC81FO3ZciG5AcNSJtqWhFr2ZVqAamnCl3MK2rDmp9UElHFaGlTrBYFeO/nDU7rP2R1LBR9w/9xLnEaI3E+KGSs2KrzegupcWbvgIVd2oZ+5P3iOFGwWsbuwHaYTGjNqNafaiiFOIA1hocp2CsnrIct0rlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=45l8P6tFk4BgFS7Ta/i9+TJqCt073V0MgDViP2MASLE=;
- b=q/nf4fJhb3kQQesrfCHfxKWwjm8NYeyRs88sBqiJsoSgPxForvHIZbllWAjIVwzOx6dCEY5tEMvBoxAt0T9g6rNbSjfz92bJBRmW5IJ1kHKjtIw7Bp5KqCsHYh43uQ1KJtdzEBfyEXuM3LIjoH1MrsGSX3Qwb9pYHSRjjHOOz3YDsvBqZp6ym/RsQZi0Vioj6sE3D8f+llT6TXcFcO/3Mipq8cmznqIZK3divdRr5kfVfhgyhkWEr8PTJCoh7SLC/bbJmhqOdeUivfPa00ntDLCJuAs7fkeYRDchDEn49F+I65g0ORIe9ZaCGMry91yQ4DNDq9VCLsEucTxdlDo9iQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
- by SA1PR11MB5873.namprd11.prod.outlook.com (2603:10b6:806:228::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 06:30:51 +0000
-Received: from IA0PR11MB8380.namprd11.prod.outlook.com
- ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
- ([fe80::ea8e:eec4:f8d3:f95d%5]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026
- 06:30:50 +0000
-Date: Tue, 3 Nov 2026 14:30:38 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Van De Ven, Arjan"
-	<arjan.van.de.ven@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com"
-	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
-	<bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>
-Subject: Re: [RFC PATCH v1 1/3] x86/virt/seamldr: Allocate 'struct
- seamldr_params' after image validation
-Message-ID: <aul_jq5X63s7QnTS@intel.com>
-References: <20261030085304.3886520-1-chao.gao@intel.com>
- <20261030085304.3886520-2-chao.gao@intel.com>
- <5397736259f9743da43ad41b2e2a995e6372f1f7.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <5397736259f9743da43ad41b2e2a995e6372f1f7.camel@intel.com>
-X-ClientProxiedBy: PS2PR01CA0035.apcprd01.prod.exchangelabs.com
- (2603:1096:300:58::23) To IA0PR11MB8380.namprd11.prod.outlook.com
- (2603:10b6:208:485::21)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=JFJhmgzw
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3acdcfa2bd3so2999791a91.3
+        for <linux-coco@lists.linux.dev>; Mon, 02 Nov 2026 23:15:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793690151; x=1794294951;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=j/Bcqh1Ir2ox5ZHSRD7plS8yIHsdPIl+LjTttxcCQ1U=;
+        b=j3iTLOEKAXm+YXHCYg9GZPuZXZ+x7XAiNULWitVB2h7RtPqU7pD+GhVX9ckf4Zb8Ec
+         tA8HRcSsgV0M20wRO3nhxC/YTREb4hOA0USaukS11PC5j+FJNrxtlA10LGG480ysi8/x
+         pZRAtFzz4skFrb+EvUULMnQzrx/lmV2B70kxASHfucV2xGRkgTEvQVPGDX58hChevMZb
+         BgS2vCFqkH/mp/IV2cKbKyGh8PSYVInam5w9AKVaFIXZdi/WNjYfUSf2MZLI13xbLGH7
+         vf+BEWBiMPOlAxLfkny4grtI6HTvwbdVHTM7NOHoznbbdox7vL1dHKlRvK/sxvSM9bdB
+         Lc4g==
+X-Forwarded-Encrypted: i=1; AKwUvBzi+aGx4rWrSw5a/YMUGKMXRlNkEfr1tv13NmFZKdjTnQk+JlGUpewYIDOzK/EOes0lPLTlRMG84YCZ@lists.linux.dev
+X-Gm-Message-State: APuU4Z/JiUixrGRjZWkvJpd7fxL7Dprn9H305lR8Lh0lJPXRogHdwano
+	IAcqVQ7ALObINjR5j820OtqGxLUL2qBRwDELryJt4B9sw+ieBMnCPuSbWjgp8oQfcYZo7PZ7l2/
+	rwu254rK2R45ig4RZiT2kfRG5lUW14NV6GC3cU7JXy7TZIT1Ea3i/gf4LEhuIAlkmcxFiPn57nQ
+	eSmyylmzs8JO6alZEbc9ONtLyj9FPZylocFFbPlO+AT5/UPdRkMZk/sFeiz9gfgylGwu0DU6o2j
+	sJs76bng55f4Q==
+X-Gm-Gg: AYBFou3glXO1R73XB9DgiRt3T5nq9eghc2LUzfSJgn7qVAF0AFT1BjwYkqZtlxoTijg
+	06Vk6FQuPz59C66CdmREHNn0keaIPRR20TTpzQdoj5Sv4EKVHXPObybwLymgvANqOKqGQTIGb29
+	4W+YTzUEM8WNfInWWKs2y7fGQ4LE9vSgg+OLd1QwWfaZv1A+NbDxVwX9eUPuzyUlRFWpxEUS01g
+	nt/qo2/mJAYJLKBxd+TCZAJw86J/LHomayibo1U85Hb6Hfqsr5dZh153A6eytG1C38mUDkwtCJq
+	ELIp6a9PPjuBTYJa3sZXcXnHOb7L4qjkNjVLgns+ZG1Dsbl7IDgGK+OkXkEBZUcn28jf+nVj62n
+	c6Ic5vVlZg7kiDOP9+Ts/sG5I80ehvG32sjN0Mo7fEbJe1sL/ljShcY6SYinqHC/BvilpvFv13/
+	ZMlMYH9MVwH9cmOmZtNADlVBAMrgiZbScz
+X-Received: by 2002:a17:90b:1c01:b0:3ac:9176:e81c with SMTP id 98e67ed59e1d1-3ae8982cc67mr11221203a91.46.1793690150077;
+        Mon, 02 Nov 2026 23:15:50 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b07cab84edsm1233625a91.7.2026.11.02.23.15.44
+        for <linux-coco@lists.linux.dev>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 02 Nov 2026 23:15:50 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93f2373e9b4so384506185a.1
+        for <linux-coco@lists.linux.dev>; Mon, 02 Nov 2026 23:15:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793690144; x=1794294944; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j/Bcqh1Ir2ox5ZHSRD7plS8yIHsdPIl+LjTttxcCQ1U=;
+        b=JFJhmgzw88BS0em4SvJjG60IPbCSu4vd9cKLf1LsE44d32YRIDml6E1N135r1jEGrI
+         i8jfkqdp8Mhg+QDPTmH45Bs0EEQ7dj5d90vNJn8s4E8+O8i17bMWOrGSg4GbvyGCyNy8
+         MRhzY3FKIyfDjl0yc14Aa4ZX2Jh00i80jQFfg=
+X-Forwarded-Encrypted: i=1; AKwUvBzPujkWL7sMmQU9wXIY8UqYz2OCN7LN5FBFvSmHQBmGjd0xcRAAPv5nXVuqmoFHki9EDvP8g3JKIECn@lists.linux.dev
+X-Received: by 2002:a05:620a:4044:b0:93f:3163:3e37 with SMTP id af79cd13be357-944216b1af2mr2136142885a.28.1793690144063;
+        Mon, 02 Nov 2026 23:15:44 -0800 (PST)
+X-Received: by 2002:a05:620a:4044:b0:93f:3163:3e37 with SMTP id af79cd13be357-944216b1af2mr2136140385a.28.1793690143503;
+        Mon, 02 Nov 2026 23:15:43 -0800 (PST)
+Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9442581b2d2sm1018334585a.15.2026.11.02.23.15.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 23:15:41 -0800 (PST)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: Borislav Petkov <bp@alien8.de>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	x86@kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH v3 0/3] x86/vmware: Clean up the hypercall code
+Date: Tue,  3 Nov 2026 02:14:55 -0500
+Message-ID: <cover.1793685318.git.zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -140,143 +130,62 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|SA1PR11MB5873:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1bbdab49-a6cf-4ec4-c08c-08df39740099
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014|23010399003|6133799003|18002099003|22082099003|10067099003|56012099006|261102123227099003|261009223027099003|261022105027099003|261022115727099003|261028144727099003|261021121427099003|261022075727099003|5023799004|11063799006|4143699003|261026140227099003|261026121527099003;
-X-Microsoft-Antispam-Message-Info: AUrf0gAEZFBkzNFsbafDnD5fGuoxmwL/C1WyXe0VYAz0+mJHnfKM5SpCzAlbP+9l2xD5cSc4b0GeDzaYfJ9P6edo0PfP9o57u/hrwnIMCt2p6Gyyz3sO1Tf8FoE4pfNPMmmeB1VkkoZpJ0REYDeqEaKcQYG3pfN6udNLFjDVEGJ0AGhASnmQqwmn0Fvl8YdXlLyM/kAt66FsCG3jd1yOZbiTpCYvgxtHiK2T8yatz7PwqpicWiBv7vBDRBImw0Rd63vtraiSQqhze9UpTHSWrQ179+GBfT5AQ8ZzkpIGOgtF9PWDXVlaWPubz0nzr5Mwqs0RzPGzj93vBpr4xAizH/SvTodNpfPz0R+QPzWdgYRsD8mJdXHO469scOTb7XLX2SzRf6bMiMUeCJjm4ss+oV6qNTa5g/zGy8IBu1k8cNMM1ilN8GDjeh+Ig7XWwhDknnk3F3FIU4ZIgWEc9mv9Y26FJy6tHaU0xqsReMLjiI4f/h5lFovpVyLYtBTPT7nwh9bUubw2VdH5NiapoF2lJN6mnXoFRihFBp6RKSEW9ru2dP22oz4QikKVdm38nHXDjbtme9fpQLjqyGYkHz/tIfN9uD5p+ZXcMOLFhV0Ge8DOATO4F3KbB8S7SsCyJ4NBkplVesAXAFU9bQXQRQC5wAjUCyeom+7j/i6o0uPGl0s=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(23010399003)(6133799003)(18002099003)(22082099003)(10067099003)(56012099006)(261102123227099003)(261009223027099003)(261022105027099003)(261022115727099003)(261028144727099003)(261021121427099003)(261022075727099003)(5023799004)(11063799006)(4143699003)(261026140227099003)(261026121527099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2DZWYbbmz6HPr/eApbTk1DdBnDoXS0OTx4ato48Kpbg3Rk3ZNAHp7CBsPL6T?=
- =?us-ascii?Q?qXI0SELR9WcZYhYN6KK5XsgIb1IhT1sHXAw3JJAlY9r/cN6kaRr/AoKg1wGi?=
- =?us-ascii?Q?xpkOP6UUzw0LPe+E2vLkXDOJNgauKH7QUKVPAvyhI05qx0CQJ0H6rcr3B6yc?=
- =?us-ascii?Q?cFwOgPy7p46Kr+goOC/AjnVfI1qf9E6mJFyeICYgrx1nkxu/7GLvGzL9sGfH?=
- =?us-ascii?Q?UBLeJa17JoSyZZ77UlPqQWlA3VJ89OvmWzXEQvqkzkDDVUoWFqz+h1C/OEPF?=
- =?us-ascii?Q?HnKbDf5n9ONKTUDL3Q0JZnQkNMWcWyO0YiDbYK2Pgw13FyR9lfGDExAuhW7w?=
- =?us-ascii?Q?9biqMsFy92bT+IgK8vo4xalIznem7YZk2keXg3SOON5tJY84CC5i1n+WnJ+u?=
- =?us-ascii?Q?V1mKvOnHi+CGxMMJC/PowkFazVSDV1IWotTvfr+CPo+bT0yYPpzA3+2jiyM+?=
- =?us-ascii?Q?lq3rZZP5XmmXDXhgI0wQT8r0O+kzsAbftJs2DklpplQKhRWXX26xmMaQKnal?=
- =?us-ascii?Q?O56AKnvsR9Raey/3SAC57IbLAataR5n6ffcraWiBgVOtkiwaHh3qWaAOdu0B?=
- =?us-ascii?Q?QPswhDebMJmgVg50SjkzO9uf6aua+vFF7VE69LwM0N41Ug1yVntLc3frOQDL?=
- =?us-ascii?Q?/2InVmZX42/NQC+E/B6p7XaJOHzh+UIvXeK9qEJPEKv7fTWBgID6IDuzyQHP?=
- =?us-ascii?Q?Jsij03FZEjceuQV7t82fB4dTtOcGMN8H+gdAc/RJcG+Y4FUErONWbVrOHw+P?=
- =?us-ascii?Q?pQLEOvHLhUPHAl0ubSUqC3rqTILV83bNofwuiCFQn4xMX7+6lBuxVxVZ1fSY?=
- =?us-ascii?Q?ptSckQROVDuywNUutaJlVQoy09gI7x63AXrTnDcubqzsPp3f5DK2NZZHlMkt?=
- =?us-ascii?Q?qIWmPN0G5ItPfwfbtXc4mst61hoLCxvzwomiFpnY8s1dSDO3KtruUWrRbBBr?=
- =?us-ascii?Q?vHG+Li3POdZemd9fIAh0fGy1CThe0Q5QbYiahR7o8wQcvm1MAmP9vuktC6WH?=
- =?us-ascii?Q?5SAZqqFKRKk38m96H+WZqFMNNVhsOSm1XZ8SYTVpToSJ94LMmAwJE/oQBikE?=
- =?us-ascii?Q?VB7jSQfZU6+zTVE6E6uTQ2lVP/OLup7t+c889OvCisSt+JiWzTIzrflipybY?=
- =?us-ascii?Q?xt7b/kG8Kgha8F9a5LX5AaC2BXjPwe2ATKK4XbItpOKQJYMlEIlcvfGKI8CL?=
- =?us-ascii?Q?iwpUAxd7QpeRqFRRl0Ssr7HY3ukMjoMyhBl+CNyDeJnHUdfAf8U6KHHXF5VP?=
- =?us-ascii?Q?vQaB20c5EpVgyoDCaQx4//yQswlYJLg2YvtN4iVft38kmeXCYciGXO+gjvGp?=
- =?us-ascii?Q?yX1fqO+ZB0+cU+ytkoIWBhtAYO/SqPfgtIweVGOZXKOEPYS8XprQhTWsFUWa?=
- =?us-ascii?Q?2gT6s/A23GkopcJdmX6DgwRAnSTu0w1kswJ31uTT6t9eP/KXLeAIy8rUuHtB?=
- =?us-ascii?Q?BGjBYr5XqqS2VyR+TqWUiwO1X770We/jhkwOTV1sY9qLMPw84O6GLMJZDnmB?=
- =?us-ascii?Q?XSnt2br9+m92jVhV6jgnNIXTxUT524aMQnCaGUb8ALZ9VuwSIhYKhyCql85z?=
- =?us-ascii?Q?oF/yBRPi5VFNhveLxNxQa193Gy4h/taWjIHOlOTr+44hGgJ5Bw47oUtGtA/q?=
- =?us-ascii?Q?OyrGDz/NpTQ6rwE02eo51FMaA3nsRr/6TkV1uZ6a8RDcP2UF1cDr+Fo+DV1m?=
- =?us-ascii?Q?ePDNhUPjajwtBJVHzJwmCb1GkHoDcFjIkSZZOiu649YBa18gC/Gqku+j4BaJ?=
- =?us-ascii?Q?saI7+Vw2Nw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: 1zLT9MUMwBD4feTeULwwJINZZ9NW5YkNnx2TRkdRsUJ3M6w3XCtDXstlORQjrH7Xjuzt1VzzWKavq/pXs4hRLEzXwnFnpVWMj9CBcq0XJ6Ucl53tU4uoGm4VRUuYrbXNmKXlxKf3Fb4e5iM7Tz70atPzKiNNr+6GXGawYifqIi23ZhkoefyHcwYVbHrLJ44MMDA9waEVKljE9Hp2qQ/W0gARb4suvhb1eCxvaj/uyFwnA/9qGd+RJLRgE1us4o/iAcr7xw6gJfCrusML55O+iS8AQj/an2Ih5+K5sDZHZkzm4Ph9PryJYrOlku8s3mHqdvJgGzKD95rdTIcEXNkZfg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1bbdab49-a6cf-4ec4-c08c-08df39740099
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 06:30:50.2095
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EGSVh/yVb/Ijl4Wt1lD77s0p0FeqzzcGaFO6kU0Z+BMC+dCY8+xb3CQov6SovlvCpZrQ9yCsNyFjjjpO6L9mig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5873
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Tue, Nov 03, 2026 at 07:58:06AM +0800, Edgecombe, Rick P wrote:
->On Fri, 2026-10-30 at 01:52 -0700, Chao Gao wrote:
->> 'struct seamldr_params' is the in-memory ABI the kernel passes to P-SEAMLDR
->> to update the TDX module. It has a fixed size and is allocated before the
->> update image is validated.
->> 
->> To support larger TDX modules, the ABI was extended to let
->> 'struct seamldr_params' link to extra pages. The number of extra pages
->> depends on the module page count, which can be trusted only after the image
->> header is validated.
->> 
->> Move the allocation after the image validation in init_seamldr_params(),
->> so a later change can allocate 'struct seamldr_params' and the extra
->> pages as one buffer. Rename the function to build_seamldr_params() since
->> it now allocates and returns a buffer rather than filling in one the
->> caller provides.
->> 
->> No functional change intended.
->
->So we want to have the allocation happen after header->module_nr_pages is
->verified so we don't allocate some ridiculous size. And the verification
->currently happens all in one place. So move the allocation.
->
->Did you look at just moving the one header field check earlier? Wondering if it
->requires less churn.
+Move VMware hypercall assembly out of vmware.h and select the
+low-bandwidth backend with a static call, following Linus's request:
+https://lore.kernel.org/all/CAHk-=wivx7pi+h+hGmvNFAJm6StQLiQ-b8DdsE5J=LMOWae8Ng@mail.gmail.com/
 
-I didn't. It works too, and we can drop this patch by doing the check in
-alloc_seamldr_params() (added in patch 2) instead:
+Patch 1 moves the high-bandwidth helpers out of line and removes the
+redundant vmwgfx caller annotations. Patch 2 uses input and result
+structures for the four low-bandwidth backends, selects the backend
+during VMware platform setup, and removes the early dispatcher. Patch 3
+retires the unused VMware feature bits.
 
-static struct seamldr_params *alloc_seamldr_params(u32 nr_module_pages)
-{
-	struct seamldr_params *params;
-	u32 nr_chain_pages;
-	u32 nr_direct;
-	u64 *link;
+The caller API is unchanged. The I/O-port backdoor remains the initial
+target for early DMI probing. Modules use the exported high-bandwidth
+helpers and static-call trampoline; the static-call key stays private.
 
-+	if (nr_module_pages > SEAMLDR_MAX_NR_MODULE_PAGES)
-+		return ERR_PTR(-EINVAL);
-+
-	/*
-	 * Number of module pages that fit directly in
-	 * module_pages_pa_list[]. Minus one as the last entry is
-	 * reserved to point to the first chain page.
-	 */
-	nr_direct = SEAMLDR_NR_MODULE_PA_ENTRIES - 1;
+This v3 replaces patch 1 of Alexey's v2:
+https://lore.kernel.org/all/20260309235250.2611115-1-alexey.makhalov@broadcom.com/
+Its panic logging patches and steal-time fix were reposted separately:
+https://lore.kernel.org/r/cover.1790014793.git.zack.rusin@broadcom.com
+https://lore.kernel.org/r/20260929040256.543767-1-zack.rusin@broadcom.com
 
-My concern is that this spreads the header checks across two functions.
-The churn is a one-time cost, while keeping all the checks in one place
-helps readability for the long term. That said, I am fine with going
-with less churn if you prefer.
+It is based on tip's x86/urgent branch, which has the i386
+high-bandwidth fix this series builds on: e0e022004bbe ("x86/vmware:
+Fix i386 high-bandwidth hypercall arguments").
 
->
->Hmm, also, this is an admin only thing right? What goes wrong if the admin user
->passes a huge value?
+Please route this through tip. As the vmwgfx maintainer, I agree that
+its small annotation removal should go through tip with the assembly
+move. DRM maintainers and dri-devel are copied. I'll make sure there are
+no conflicts in that code while the trees merge.
 
-Right, it is admin only, and nothing too bad happens. A u32
-module_nr_pages can ask for about 32GB of chain pages. Anything above
-KMALLOC_MAX_SIZE (4MB) hits the WARN_ON_ONCE() in the page allocator,
-taints the kernel and fails the update with -ENOMEM.
+And yes, this code is a bit like me, meaning it gets on everyone's nerves
+and likely looks awkward in shorts, so we're just trying to make the best
+out of what a politician would call a less-than-ideal situation.
 
-So it is not a serious problem. But relying on "it does not hurt" has a
-cost of its own. Every reader has to work out why the unvalidated value
-is safe to use. Using the value only after it is validated is more
-straightforward.
+Changes since v2:
+- Replace the ten-argument backend interface with input/result structures.
+- Move the high-bandwidth assembly out of the header as well.
+- Preserve all low-bandwidth outputs and the backend-specific %dx flags.
+- Export the callable trampoline without exporting its key.
+- Correct the ABI documentation and retire unused feature bits.
+- Keep the backportable i386 fix in its separate posting.
 
->
->In any case, I think the log could be simpler and more plain while still
->explaining what is happening better.
+Alexey Makhalov (1):
+  x86/vmware: Route low-bandwidth hypercalls through a static call
 
-If we keep this patch, how about:
+Zack Rusin (2):
+  x86/vmware: Move high-bandwidth hypercalls out of line
+  x86/cpufeatures: Remove unused VMware hypercall feature bits
 
-  'struct seamldr_params' is the in-memory ABI passed to P-SEAMLDR to
-  update the TDX module. It has a fixed size and is allocated before
-  the update image header is validated.
+ arch/x86/include/asm/cpufeatures.h  |   4 +-
+ arch/x86/include/asm/vmware.h       | 371 +++++++++++-----------------
+ arch/x86/kernel/cpu/vmware.c        | 299 +++++++++++++++-------
+ drivers/gpu/drm/vmwgfx/vmwgfx_msg.c |   3 -
+ 4 files changed, 351 insertions(+), 326 deletions(-)
 
-  A later change will append a variable number of pages to the
-  structure, sized by header->module_nr_pages. The allocation then
-  needs to come after that field is checked, so that a bogus header
-  cannot make the kernel attempt a huge allocation.
 
-  All header checks are in one place. Move the allocation after them
-  instead of splitting the module_nr_pages check out.
-
-  Rename init_seamldr_params() to build_seamldr_params() since it now
-  allocates and returns the structure rather than filling in one the
-  caller provides.
-
-  No functional change intended.
+base-commit: e0e022004bbedc7caf1c18770980eb5372019189
