@@ -1,111 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793815030;
-	b=eR895uOSlBj56eVEE6tSb0g1QLGbaxPkiCfCDXdi9ThZhb8NVkQEXnPa3NC62VZC7YVl
-	 bkmUeMgunxOfo865Ehjwi9ZZarEsQuDCPUxzP3XNVPGXS850YuTJ9IBre26bIfWQ+ae8j
-	 iPCd+nsyoOfq2aY7DosPABBXtgg1nVDOH/yLFXxCNwd7lYZtmxH4+V2GktnboyL8w+imv
-	 n+8AQsoso1DCmJXdLAWY5zLzpPpPzRr+AbabR1dW+2GdjqE5NPZsf1Q/IVivs03xT2CD0
-	 igzTtrLsRl5WBNEiXRJm6xsmW4DSVApHHtbY6/DITimWXG1/MumB1GAN1WJx2uopA7A==
+	t=1793817477;
+	b=3Mp4Hffe80CGch2E7uENkUexp++30iAH266vHSmXdXhxMH8oTPjRjKdKzQDo1ezuje5S
+	 q/zz+xugwt13z0wEO2dK5bLeAOKXS4/uwLK8evpuCXjDjhVcApryPVvPFrJmLyxZG0Ge5
+	 LBSzQlbIG/Hiigg05ChyFU/gzsyhwm/sc89tACQ/gcBhhQzEmiJAWHbNP/pfSlYgIJpAD
+	 eAyYSilMswN5ywcLqUUIREmf0pp3/OWGYZGt9GjbqFRco4NSVyqapoyQNTavTxnaMBWL0
+	 VY0MXOvLamUPQrUaKVDJm2FS6m0XdYmUQ8nadkaIfQRHlxRrcnHQAo1X0AJ58+PbtPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793815030;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793817477;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=u6+Lf/8gHZf1IKHjq4H+ss02XIxxzMA/c7y+z6oAgJc=;
-	b=Eu/8L/Ku8YJ08v6IJrON8RcB9uvDGMJpgKKiU3qEYyzPzbi7+U5k9UYuMfMkWl3BNJy0
-	 tUbEyT2G60fyz0JCSOErsk8qPxRfmrKMzasGnepnWnsZu9Ae6evFV+/PPS3hDD1Ae86vL
-	 VIe+XS14zlorUgoME++nk5KImX6f/SXfevC4IJDhI0nkJiku037makNlnyWISNXDwssTd
-	 WabMA3LG63wrUQR7DKGUSjWf2rldV0TyWhZosNO8Pa86v8uDIVRSfsZcsFcnxjZvLFx5a
-	 b5WSGB/Z3e5Fm78gD+2Maz1U+u+Azm93YJXVCUUjcDxlVF5cWsIo8EwGPzfrtGe2eQQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
+	b=UbJ152u7Tids6SlVEu6fhqo2h0LG7caEGz7EbiXlfO6qHlJOaT4RrYdbRd1m8Zam+vbJ
+	 43NerZZe1MqbZnLnAx2zPA5UMqBrAblqhvEnW0ou8g17sgGAA5o5mZ3EsWIeNRE73ZNw0
+	 UO7KV8tqM2ezcj8nqJ7MBOXqMmuvRtbfe81LbEFmvkVYiY6HTmd5Oa0csBsxAhQK6eexM
+	 /ukJWmSO17n80xdx5dSd/zEc6FHN7ZHV0DEqbLihBQcwCvNwvMieeS/a1kQjTLSN+1coK
+	 JzflH+MdvbpinYWtOo/WjwyhofyvyM4GJcMVkSwee81dulRSKEgPd/XlPv/fnV/OjnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=MBRWrDJO;
-	arc=none smtp.remote-ip=209.85.160.176
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=id58xR3y;
+	arc=none smtp.remote-ip=209.85.128.46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017A8606D82A
-	for <linux-coco@lists.linux.dev>; Wed,  4 Nov 2026 17:57:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 017A8606D82A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA11606A339
+	for <linux-coco@lists.linux.dev>; Wed,  4 Nov 2026 18:37:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EA11606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=MBRWrDJO
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-537548b811aso7316321cf.3
-        for <linux-coco@lists.linux.dev>; Wed, 04 Nov 2026 09:57:09 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=id58xR3y
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a210470b49so7962335e9.2
+        for <linux-coco@lists.linux.dev>; Wed, 04 Nov 2026 10:37:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793815029; x=1794419829; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=u6+Lf/8gHZf1IKHjq4H+ss02XIxxzMA/c7y+z6oAgJc=;
-        b=MBRWrDJO+zx9Ig9ggBNqos7yIEgACrAFVqFyX/Ib/yrOxMFWGEM/WBGwEyNPY+uukl
-         EbM0+QjnIuwSwk9WUW9mN1OSeoYbZwarsGoPOsj960cciGQXX3EXnNLGptSzbuUJ+aa+
-         nFnfbOwKVyNYCfBX09ELjsx4VFrEc4Jw0dIuO/DblgR63etFv2FacG8H37eOCLp9HyLj
-         8horBUAkJQZyg7AdQA7CtfI0XO4A80vJyHUJSV8xctUv535yvod71O2lO8ZSDYRIwamI
-         cGk7m7yi+6L0VNPal9+W5DvNu0B81L4pdLz6ausNw0Kw4PUEXtW5oPJRuwoO25FDFoL1
-         gfrA==
+        d=gmail.com; s=20260707; t=1793817476; x=1794422276; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
+        b=id58xR3yXof1mgYZ/P5jHRLMSpf9YnAWZ5l0v6P0qr032vgjfhX0MCmf9beKiq8SnG
+         Fs/36SndlYpSdjfcQj90HTont983Bn33aZ9gBsgKQ5juK3a1aoZ7dVEZtmpHczoygnuF
+         aGPjvAog3VDTA4DBZG7CIaH5vDMUAO3TeBFe/BuxgsIuSQ588lbzeWGRXubKKQ1DUDK0
+         P2fkSmzV1MBa2wsQSisua0yV+9hozRsTtv69yGmpCFHtWDAkwIx3jlpeJ7uBtTzZUoh6
+         z6bdAA4YVN0BjWSvAQPuVjO3xQd0QF8NQsQfZphGg3C0946jWq7/f030ZPcimSa2QNJM
+         dpFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793815029; x=1794419829;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u6+Lf/8gHZf1IKHjq4H+ss02XIxxzMA/c7y+z6oAgJc=;
-        b=tQBraMo6N4T7dGuto1Y6Le1ovA5QpspNdaXybu1e38YOlwUq1vzf4tSuQpyZfZSOqo
-         Qlocs9rZexRLbrzk5dYDz6ZwehtmTKsrqaUDDj4p/TarDSL1U0yJhbI9HvmMIqbLFb2V
-         OinFcYcnubuklnevCkRzq3CqYSuHNSEZsvKZNE2XDeD2PsI7+dro9NevCwqNfCgh7VqN
-         rWouydvGltbADMi5IZDu/fg9c8TQyGeKR6yCJ2mTWHDfcOQBSyXHW2FxFuZHw/dpVLi4
-         O20W4nhj9KairoDuVc8SpDl/+rJH/VCv+GArYbfUm0B8Gz0RBHc9xoytoMJsfPZ5kHyo
-         i6UA==
-X-Gm-Message-State: APuU4Z8iV/vL06QE6i1uFKmjrgW2mIcpzIoLCnlV63MzFq4xN/agH9v7
-	dhQtStKGLIBM7tGzpQK08rsm/W9FkvQX+pLYbK/m0iTYfriGnEh2GyiQX62FGtvvONi41ydeFKG
-	xLz1Q
-X-Gm-Gg: AYBFou17scZmpDEwIH2K9fmN8yn9eJteCrViWzQhKWzrTScRlDWefE52TX8m440/75u
-	jtP3hO4ogQm+wb9PpcxEx60lzuHTqsJV5pdEDvvi5h6yckWFI0EqrKvj260zg5zGq0TizhNJ4y7
-	iUBNIT4ycrys2dPU75ZKwl8PSgiFFpV18TNsBtlQtJxoF+NRMVjFMNgBwW7o3Hf7NLosCBgtCui
-	SsD3Z6dzUa7tPmzNQyMk+hIEoEeMWCjW0zeP3GukGrBRTGUJyQKls/w6Om/S2uBzpUTJRa0EDg4
-	+34NcV52+YPyp7Ttev3DW/UnsAC3rU1SySE3j8STMWNjXy0i1k+nrVbJIFxweORUFCirRrXjr58
-	Nb5ng/dQcqgIBSMWPG/1TUjDqj17Zib2dvt7wy/g4U7HelzojHHbvCagc6roROlBmLMS4QFjlU2
-	5LrOkSWc9fF/JkGAQO67ZwbfBjprEbrbbbmMd9xQwni/dJ3Cj9D+6UDFbir0MD0yg0/gTZwstA7
-	T4j9BtVkSNe0OEU/YDDNeWTtURP9Wp6doTEjYbLRAi0lS+ImVIFmBJ7eNEgiFgcqOeR7jv2IdHc
-	xG3NDtpgDG6qIqODDqfw5V2rrrHigBGzDJb8ztH2x36fuFjdK8NOdujCTnGnhO0Hl94qqjpGd4u
-	9aJyrp8M16g==
-X-Received: by 2002:ac8:5f08:0:b0:535:baa:a78d with SMTP id d75a77b69052e-542b3a728c4mr272645741cf.10.1793815029017;
-        Wed, 04 Nov 2026 09:57:09 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54b10a6ca24sm30262291cf.14.2026.11.04.09.57.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 09:57:08 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xOfER-0000000H210-48gw;
-	Wed, 04 Nov 2026 13:57:07 -0400
-Date: Wed, 4 Nov 2026 13:57:07 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
-Message-ID: <20261104175707.GA3889730@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-12-jiri@resnulli.us>
- <179302367452.58760.11808905856343064399.b4-review@b4>
- <auRmMPfaFINUIchi@FV6GYCPJ69>
- <20261103010537.GI3889730@ziepe.ca>
- <aumogVKtYnY0QJ2r@FV6GYCPJ69>
+        d=1e100.net; s=20260707; t=1793817476; x=1794422276;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
+        b=D0tdJc9d+edHdYDlpinaEgy9T4xt1ynT6NYXUSCwBRqmPeIzPeNVtT1zzK7MrQmd4M
+         gt430nsO/ASMzn7e17ioj/i9HEIv0iGT3h5iAmXcgLtLcORxX10Kna8VmMqhP4/EOTRc
+         3WM8MptNPKtsPMQquwl+QTf/HNSe1H0vbb+wNFa8ph2Nh7bJ3hCsO4/fJ/SsyAvK5wWl
+         lO9FPlLGtHOy3tpFVdEc6//KAcJ2ZyKraC/ezXnRb+xyvS4zX+vpRmDPRH8ONGPRgvtS
+         3v277ZeyqpRQlE8eyCFLkY/Y3vImlvg5TKh32jEivEZGVp2BOMlpynsQaCeTKoL8CIQ4
+         DTfQ==
+X-Forwarded-Encrypted: i=1; AKwUvByI8TZTOX087hTdQks4hZEv2FNxeDHBttXZ5pPfLuFXogviGZdPaMAd/Avs3oLS4V5whHCpLfyj41NR@lists.linux.dev
+X-Gm-Message-State: APuU4Z+m40UgzSpE8zry9oc5h0CdYrofOvEVbHpOK4i//eu/p/dgcRmq
+	/dePSfp4vJAeNkbF1+bYzQX074WDWoDF3/aCNTZQswJ327quzHGwyF9o
+X-Gm-Gg: AYBFou2z4oneRVAxM2dT5O3k84BEjBNokX+YAkUEpjCjXJbznQsOKWuezj/nepim87A
+	hNCPTmoi9V/5XMpMcOFvacpuT2wRFLp40tHug5xVYd6of4RXDMLoE1vT1XvWFuFVtc3B93N3QCd
+	uT0Zf1toylkAl6HnHDNseoAU44TOiuXUsBwYul0CwS8G/GywQJp3dN/8a3ocmvm3cIGrz4tbP+k
+	DOZD2uhZvCMjn6STBBcgpDO8k9YfKYLdD9oxUJbsU3TdslYTfQToI5TzjTwvrE2v7vmQpkV4bHL
+	DvYqJQmS/5kBorPaYWEraE/gSWjG243pq4Qn3JyPS/CNpzkFC95Z82etBz1mdQ4VJgNY53W9I4g
+	50K0VHxJp2tS4UIr6cTmCgwtgdMceKMWyRnV+tyPZNRxwLxU1CtBNu4PqullNOA6AFq+bBURgUg
+	2ak3sSa6SiknMDyPGSEymzkez22KU6EADBG3Pcr03jB2B88ycO9iEaaiA44yGdd9Q1v+drXCjqi
+	dUBjGsKdU7f1cw5dNDOYADFrA3LRZSAXXYXKEQmxGS3SgPB0z3N56oNYWBTaWbaDgTFmJr9Jkbh
+	gGIxTcIaqWs5A3XYOwMqchNNZUVMLdI4dr7vAPEKWI1z/cByc0d9i0h9K4gfz9ZoTQMiQI4inLf
+	1SVXkHg+hiNp8s7bIwaUVGYjLiQaPCXZGrkQnNrLTTw7jmcj0t+u8MtvKSrQbXaYL4g==
+X-Received: by 2002:a05:600c:8b85:b0:4a1:cd83:b23e with SMTP id 5b1f17b1804b1-4ac122897a8mr438143715e9.0.1793817475572;
+        Wed, 04 Nov 2026 10:37:55 -0800 (PST)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56fca22e1sm4198665e9.14.2026.11.04.10.37.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Nov 2026 10:37:54 -0800 (PST)
+From: Fred Griffoul <griffoul@gmail.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev
+Cc: Ackerley Tng <ackerleytng@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	iommu@lists.linux.dev,
+	kvm@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [RFC PATCH v4 06/25] KVM: guest_memfd: Support device-backed PFN providers
+Date: Wed,  4 Nov 2026 18:37:54 +0000
+Message-ID: <20261104183754.10457-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261104150322.3516320-7-aneesh.kumar@kernel.org>
+References: <20261104150322.3516320-1-aneesh.kumar@kernel.org> <20261104150322.3516320-7-aneesh.kumar@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -115,46 +115,56 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aumogVKtYnY0QJ2r@FV6GYCPJ69>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 03, 2026 at 10:29:45AM +0100, Jiri Pirko wrote:
-> Tue, Nov 03, 2026 at 02:05:37AM +0100, jgg@ziepe.ca wrote:
-> >On Fri, Oct 30, 2026 at 10:53:11AM +0100, Jiri Pirko wrote:
-> >> >So.. how about could we drop the sets, use a direct description of the
-> >> >layout and do something else for the ID numbering? Maybe the numbering
-> >> >can be solved directly by only listing the names in:
-> >> >
-> >> >numbering:
-> >> >  - device-get.reply
-> >> >  - device-get.reply.caps
-> >> >  - device-get.caps.evidence
-> >> >  -[..]
-> >> >
-> >> >?
-> >> 
-> >> I'm still committed to implicit numbering. For "inline records" I
-> >> resolved it by having it encoded as a tree with 4 levels:
-> >> 
-> >>  63         48 47 46 45        32 31  28 27  24 23  20 19  16 15               0
-> >> +-------------+-----+------------+------+------+------+------+------------------+
-> >> |   family    |kind |   index    |  L1  |  L2  |  L3  |  L4  |      field       |
-> >> +-------------+-----+------------+------+------+------+------+------------------+
-> >>               |<------------------ record ------------------>|
-> >
-> >Fascinating idea. Sort of like an oid
-> >
-> >I guarentee we will run out of bits someday :) I saw recently we ran
-> >out of bits in RDMA :\ 3 bits seems like quite a small number..
-> 
-> Well, this is just for inlines. I think if user comes to the point this
-> will not be enough, he can use named record, as he probably should with
-> more than 8 inline records anyway :) Also, we can introduce "mapping"
-> mechanism to allow inline conversion to named record without breaking
-> userspace. I just didn't bother to implement now as it is a theoretical
-> problem now as I see it.
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
 
-Oh OK, thats interesting.
+> Device resources such as PCI BARs supply PFNs directly and cannot use
+> the folio allocation path. Store the mapping owner and device ID in the
+> core context during attach(), and use them when preparing device
+> memslots. Keep device memory separate from ordinary PFN-backed RAM.
 
-Jason
+The device rules you wrote down in api.rst and locking.rst helped a
+lot. If I read v4 right, the device backing differs from the RAM PFN
+backing in these places:
+
+  1. PFN mode calls RAM arch hooks: kvm_arch_gmem_make_shared() at
+     conversion, kvm_arch_gmem_make_private() at fault, and
+     kvm_arch_gmem_reclaim() on revoke and release. The device path
+     has to skip them.
+  2. lookup_pfn_range() only feeds those hooks, so the device path
+     does not need it.
+  3. The host mmap and stage-2 need a device memory type.
+  4. In PFN mode, a conversion to private only updates the attributes,
+     and the guest fault maps the page later. CCA has to map device
+     memory at conversion, because the guest validates the mapping
+     before it touches it.
+  5. The device provider needs lock()/unlock(), the private range
+     summary and prepare_memory_region().
+  6. The provider gets the VM and the vDEVICE binding at attach.
+
+Would these changes to PFN mode be enough to drop the device table?
+
+  1. The arch hooks take the frame attributes. For RAM the arch does
+     the RMP work. For MMIO it skips it, or does the RMM work instead.
+  2. lookup_pfn_range() stays required. For vfio-pci it is the BAR
+     start plus the offset.
+  3. get_pfn() and lookup_pfn_range() report a memory type (MMIO) in
+     their attributes, next to read only. The core mmap and the KVM
+     fault path use it.
+  4. A conversion calls an arch hook in both directions, and the hook
+     can fail. CCA maps the private device range there.
+  5. lock()/unlock(), the private range summary and
+     prepare_memory_region() become optional ops for any PFN provider.
+     A provider that moves RAM between guests needs them too: it has
+     to order its moves with conversions and leave private pages
+     alone.
+
+I'm less sure about 6. Could KVM ask the provider for the vDEVICE when
+the memslot is created, passing the VM? The provider would then not
+need to keep a VM pointer.
+
+Is there something in the device path that this would not cover?
+
+Thanks,
+Fred
