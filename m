@@ -1,206 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.10
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793803172;
-	b=rID2u3L7oM36RtTc6WuRu5/XrB5VOJRUNNt3+9aSbqO++VIFGkhBik5kMONH0mwOwkU5
-	 nCsvXVRZ0wh64YaukCeHP4LfbCKEuirwEzN3licvNp8Mz5zzOgEkIwhHJ26hbNM5hXXg5
-	 JAMWUc0fkocz28XMIcp5Bp4wJWoEJqJgV3tlk4SssqHBzcOGYHnbpj6KzW/XRirWlkK1q
-	 rlB5YViz7aPPZDVIGLsLBdPXroPuER2MsJjLW7mPF6b9AARA3rcqYatkmdAbqV99ptQgQ
-	 pMvwbENX/V70KVaPpGVZk3PE/RG7fBPs/5lA/XcBeuDDpfHiM9f0rZ539ZMRWjN7D1A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793803172;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:user-agent:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:Content-ID:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=EIzGhEarVZwpLYP4ccor1Q/l+dqv7pYKwYcdmVDoncI=;
-	b=IjUNeaYwNRjAlPqK/RYK30GiiHoXNt4IGOO3jijwAAX+IJGPXU0nB/EAsb6SY93AmGTH
-	 pZZHtEfV/vMc/Rjp+QS1DB02RluJ7Kw0e0AXOZIEFHXU70RiYFstC34Dfb7I87mGBlzjA
-	 lS7btA8BhHHLV1uwzj+t1O6frpEScdPChiOtIVP1lZEjeGHNcJ0bVXk7uuyt/u1VROli/
-	 4QvLuKZpofSgiqFzqtbOOuFiSbo2IE+LGA6lPajG92CvZjpWkxXgFVf9jluZxZNpsXsEv
-	 yKFh4qJexlsMZ5hdOotEYZFy16T99MmOFerjaz2+9N0cUmNqmovs9sf1nOBw/jRAiFA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793804614;
+	b=aVqG5/QOgbqla+SMDOYb70RMI7ilpqAMTbjX+fmwiWrSS5l4DV73XXAz86B42/32CGOP
+	 YqCijQiTzvNzCvTLSCTFcye8CX1a5z/+sxQawNJKDhE/y+edG3TwcCYInhiBzEMMRgVv3
+	 WHOyLXFNayVYZ0SkWUpc/krilgb1YJ4nJUsKq+hLPsDrNTayXEL2VeR/Ppcvad811O1GZ
+	 GbDrYJnqOqX7H0xkLB6feL8Bx6cr+v1flmSfp73k+DvCbo9O1uGlDqeXDBIOGH+UuaTUy
+	 kcGCNwGKID74KXh0t1xecCaD7TbUFpLGPB2UyryvcNhEyhFKBu33AKSeEonAT0oJ6+A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793804614;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=ggRHKQR+tnVpCkDd0ac2LRjtcpOMpokLMDyx1F51Qcs=;
+	b=A5ze0V3gZu3ct+8pn5P/mxkRhfn3ohW2bm66dTDuqpR8lb/UZDDpdssb1bH9w/qeu9Qx
+	 vr+jfFfdF2vusqVFP/PFN2+8C12pNqv+7+I/I1wvmBXFni5mUKow/7qLfZQW1OxkZt7aO
+	 jGB96z5MSY/rRVmtmuyTuIGpci6ZT2GKkGH78HofrsjaSsBCgH/CsJgea68DDIWZHfTLR
+	 Pg1CeQHWRuqcbgK5d/ZN8+XKlJJazNRdIwbg+ahKNyI5D4b4HlDgNsiArQsKoFbi/cBMc
+	 oLafihW4AkFHtfExNcKOFiApz61nZrLM21rIFRuDKG6gRv9Wg6Q5D6InDTVaCC/UaAg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NTIZzUzM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FFF606A326
-	for <linux-coco@lists.linux.dev>; Wed,  4 Nov 2026 14:39:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79FFF606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793803165; x=1825339165;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=EIzGhEarVZwpLYP4ccor1Q/l+dqv7pYKwYcdmVDoncI=;
-  b=McdrtjUTLnvLCTTiG31dzp+jnj/n9aV8GwVZ3vuhSmgcWELtqaoAcBKz
-   vE/v/sU27ZBH8tqRNYvpeGtfRIoKMvJEl+rZz3HKz1VTxmixTCwQ96hcG
-   Xah5l0xGmvp5c2piB/ZmsGwEQYqZm124YtGGiEJe0xBiNSXRLRSA4pDkj
-   SqHFWqQbFa6WBHVa3NYjUZaoo/ktnJ1725lG2x/xmz9aM6/51KoZdZ91l
-   D78bnh6rSP8CovqU8njO/o89ZsJ2jp0v3xIBDwl/tBwhWz4aKP3nVfuT2
-   lMb8O3R8+87nKgj0WHVpECzQxI5AywplPr5HeKT2qLNxUf8R+yqlr8fi4
-   A==;
-X-CSE-ConnectionGUID: p6u2q9gFScSJgZ0U4B3xHw==
-X-CSE-MsgGUID: AzPryBogSAya780K/AT8QA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2458450"
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2458450"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 06:39:22 -0800
-X-CSE-ConnectionGUID: lV6sc8MESkCNWVe44nNUyA==
-X-CSE-MsgGUID: DVpjYiqCQbe2urAUIZOOBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="6836099"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 06:39:21 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 4 Nov 2026 06:39:20 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Wed, 4 Nov 2026 06:39:20 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.18) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 4 Nov 2026 06:39:20 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YmOX7Y9eisdTd3fmPu/Ir23Kg4il5nU3dG2mXEx82md1/cNyDFJBnWf1FWdWNhqNkpLlN9YaGJPI3EBmZwiC1vSi6QNZh1IiwDCHf/KOccwqjZ/OqjRgOjMaMuO3dTq/8RV6yXs7g/TC5Hwbt7vn9CW/b1OYDTpWM6EsCvL2Y/mw5FoQEbXxX33pCqlCn+zr9m2zGz3HmxSLJRlCSqs4wp+OlXK3hnyyhzAqSGzJx50pYOrGHld6zR4F5QABkq+Vb9RD7i4x45MgdtMt7C7Wg/wIWw1DR0cbU2wzREsZwsdL9LUyaHc0TnX41Fhl8OAzh1/uTMxTpGiWRG4Z7FfStg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EIzGhEarVZwpLYP4ccor1Q/l+dqv7pYKwYcdmVDoncI=;
- b=MbEJi0d5goYcRc4k5SEUPzNdXkfzTRBlHLWEHlu+JTkpRRfUr7JaD8+3MGf51mtgrdR87XBXZ/W8rWMkUWGQ1nd+f/kKH9p5wn3uvzkZNvSNvRLshpfN1pimLczP6wLft9A10mhlyPT7MuCAmupfkHFQmkoY+ERNPG6RdLoqtlLpiCif6TUoF1rkqUseqGEgwSN9XfT4sB84ER67dYYCaukJWDsT8tjo+XG388JBbkI085/odbMERstDVpug0gr6noEcMndEKH/ixGHG2WlsO+ayFptrQFBdWUCM8kKZ4LmprtJJxavUGZ/XUhYy54mtlYxaqiAUcVu3gLu3ndopBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- (2603:10b6:208:549::23) by CH3PR11MB8518.namprd11.prod.outlook.com
- (2603:10b6:610:1b8::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 4 Nov
- 2026 14:39:15 +0000
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57]) by IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57%5]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
- 14:39:14 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "Li, Xiaoyao" <xiaoyao.li@intel.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Duan,
- Zhenzhong" <zhenzhong.duan@intel.com>, "x86@kernel.org" <x86@kernel.org>
-CC: "Hansen, Dave" <dave.hansen@intel.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Tian, Kevin"
-	<kevin.tian@intel.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
-	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "Verma, Vishal L"
-	<vishal.l.verma@intel.com>, "hpa@zytor.com" <hpa@zytor.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "nicolinc@nvidia.com"
-	<nicolinc@nvidia.com>, "bp@alien8.de" <bp@alien8.de>, "Gao, Chao"
-	<chao.gao@intel.com>, "aik@amd.com" <aik@amd.com>, "yilun.xu@linux.intel.com"
-	<yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
- operations
-Thread-Topic: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
- operations
-Thread-Index: AQHdS9rF50k7lxnBBE+JUA+1gdhvT7cCNcsAgAISOACACwTNAIAB/ggAgALIGICAB3LugIAAwwYAgADOJgCAAMbrAIAAXtqA
-Date: Wed, 4 Nov 2026 14:39:14 +0000
-Message-ID: <b15708f7cd770fdba4082b19488422a376c2aa9c.camel@intel.com>
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
-	 <20260924041032.1096569-7-zhenzhong.duan@intel.com>
-	 <8c892695-7ec5-4d93-a74b-487fe535c3f4@suse.com>
-	 <IA3PR11MB913605FFABBBC42C1FF341E192982@IA3PR11MB9136.namprd11.prod.outlook.com>
-	 <03c80e1b-2a47-466a-a042-c736f640d3c7@intel.com>
-	 <IA3PR11MB91368A7BCDAF146ECDC6A4CB92602@IA3PR11MB9136.namprd11.prod.outlook.com>
-	 <IA3PR11MB9136FE2B23CA52EC68EF2139926E2@IA3PR11MB9136.namprd11.prod.outlook.com>
-	 <bd0f63af98521d76e0d34ea31f18accc063d1d27.camel@intel.com>
-	 <IA3PR11MB9136FEF30F06D8D5118B389292692@IA3PR11MB9136.namprd11.prod.outlook.com>
-	 <a63e7dbdba277b5a551ec74d09144e97f55504dc.camel@intel.com>
-	 <IA3PR11MB91363BF2AFC2ED5E126DBFA792682@IA3PR11MB9136.namprd11.prod.outlook.com>
-In-Reply-To: <IA3PR11MB91363BF2AFC2ED5E126DBFA792682@IA3PR11MB9136.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB634048:EE_|CH3PR11MB8518:EE_
-x-ms-office365-filtering-correlation-id: 1ce4c060-8bab-4109-87f8-08df3a81662a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|38070700021|5023799004|11063799006|4143699003|56012099006|261021121427099003|261022075727099003|261102123227099003|261022105027099003|261026121527099003|261028144727099003|261026140227099003|10067099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: pDuLftjFl+qW8E/M2XvJ1LB8VsRWVCkfVOoQ2bpCEeYj2dSPD0QQXzJ5VFJJxrC4cQatd/dxFJQZ86lQdf7iH1axLv7/+8PsWW6n5NwldLnY8TSnHduChh9MzwLmE+yWUxi3AxgEX20z9gfTBfuEc8KI8cT9XyqRizG2hGCiJhDJExKOT20DvJeLzT8ZTFcfkNdypOnRjUCB1aGr9im1xlAF7gJTTI7x2AZIlylJgIUNCHytq/uM/nNtZdC+JqJT2sLPJMKh+nFCjSvO6hR+fPCOmhGyJSQkv5VAbi+Z5ZPndn6pfOY9xx2nCYCxkkAvRe04a+RhuxAarUTz/XXuT7yWtqezpvh/xIVZegMs5rILHAn9Jxjh837E8CXiB7Fv8KjBZhJhzDv11m2N07mASgZr9y6tnrMDk+YJYzzx7EfbCsPEidhfGNP/BQ4781qrvczp6GqTs+NFKied1qgSnOJlXbxaxvdzs89VMd30rUn+S/YGr5houTraYtwO1zN8V5k+Ss6PmvH5NKb4/Y9zSaM0XUrm8FRaz0++rGVvKqAUGjOG4ARZM4dZKbLoEjZOdKjE/k3y4l60JgNIaxE4AmXasull6HiRJGCcgcRibj7+zNuj3YFKzzoHrVGWl7NhEWv/aCOHEZlprYPczHoWYZIj1or2svH9P+3tYiOxlI+cWxvXjkFQ+sHX/0+FFegOdonHPSRPioZFLcRTYNWf2yaJeQRzttbzz/spU/hQWyI=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB634048.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(38070700021)(5023799004)(11063799006)(4143699003)(56012099006)(261021121427099003)(261022075727099003)(261102123227099003)(261022105027099003)(261026121527099003)(261028144727099003)(261026140227099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TGpQK1BHZ3MzODRKaXpqV0FPRTJud21ON3R0Zk9QUHYwdVMzMitoaURLNkdN?=
- =?utf-8?B?dDIzVUxCektqblh3YlRXSnJ2dGlxRTF3ellUZDA0ZlZCYzI4NkJtNmZBMzg4?=
- =?utf-8?B?SGVhVEg1cDl1RzNpRHMrQ3ZaMTdYNlR4dW1GOXF0OFVNYlV3WmpwRnp0b3M1?=
- =?utf-8?B?c3dzWHBEdEgxZTBaVUhuQ1FKSFlZMzRsTWxxSWw4d1Y1c2JhcnR0UnhrRXRZ?=
- =?utf-8?B?RFRqS2EyQVUwNUIzRTQ0bC9ZU0FQWnlnWnUybTFRY0dJQyt4YUlnRUQ4Mm1F?=
- =?utf-8?B?U0VDS3hsSUFNKzhSZzBadUZMUSs5bE44SDgyR1NDTEJHSWUzUkg4emJIZFFq?=
- =?utf-8?B?Z1N3dWZMMURTNE5JSTgvejJya0MxMWFManJVZ3VoM0VMMlFLV0NPb215akI3?=
- =?utf-8?B?OHRWZUhsSVMxZ2FrS0w4d0dLVXlkMzczVjRxdGdFMGN1MnJwZjliUUoxU3Vy?=
- =?utf-8?B?YUVaTWZMQTBraGNLa3JlMG40NEhjYmw1SVBUaU9xVTdRL2ZZYVg1UlhqM1Nv?=
- =?utf-8?B?aS9DY21PbVZnYmRwOUZwU240SnJ6QnRML0xjeHgwdFRoK1FDb2xqSzZRVFdH?=
- =?utf-8?B?MEU5aTVhdGxiczJCbmdLc3E5NmRqa0lFampjSjZFL3pvTVMrd0ZvRmJCSTZN?=
- =?utf-8?B?Y1RYdkZrQ3NYTjRQYVdUL0Z3c295VVB2eXFjYzBaOVJ3WCtqb1o1L0dFNzBw?=
- =?utf-8?B?c0xldDIzQTF6UXUzTFE1TGhhZ1FYNzlobUgvUXFIcmhuR2lTbFpzR3VWOTBn?=
- =?utf-8?B?K2wwanEzN1E4WnliMUR0aVltT3VPZThBanpOY3ZPTDRGZlZKbGIxSUUyV1VN?=
- =?utf-8?B?djFZb1M2U2tpdTdxNHcxYllVYkV4L3RrcWVnOWl2eWUyZ0hRNUMvTVZHWUNn?=
- =?utf-8?B?YU1pS1FJYXFwZXA2RUtCN2pWS2hDajhObzhEVTQwVHd3MkVKSmZmZE5nR1pQ?=
- =?utf-8?B?WkV1bFcyZUs0QVBNUnlzV0FGSElNVXZ4QjN2eDN5M0duY1NWQkl3ZnhTcXlP?=
- =?utf-8?B?VVdOR2VRdjFvTU9vTEY1dEYwbGM4SjdraFBWYmtjZzJRVTlka2NHaTBFYmNr?=
- =?utf-8?B?U0xLOTg4cmprckxibmJjZUZodXNXQmludmpvWExJb2Nwa3lNb0NFL0NWVU5Y?=
- =?utf-8?B?WmliS25MSlowVVdKSXFUdFA1bHZXTkM1N1hLNkVZTktKa3JMbThRTWIvKzJp?=
- =?utf-8?B?RWlTbXpXZytuYk50R0oybkNJUWM1WDZZUjlBTXlwRkpVRkpPTjhlSDBlaXNx?=
- =?utf-8?B?b3Y3Q1pVRllLSWlHdU1VZlVwbFZjdGx2Z05KQ0dNa28zdTJzdmY0Wk55ZXRU?=
- =?utf-8?B?dUxIdS9xN3Iwd0EvcnFuNG5lWnp1elV4eDFXU0t3amMvSGoxM1JFdkZPUXRH?=
- =?utf-8?B?STdJSUIyKzJoSlVXNFhVT1pCRXBLZWtvY09INzVISWIvcWRmeEhTNDYvRFBa?=
- =?utf-8?B?VXpIdlRmRTZyY0NRNXF4MEN5aWpxcjY5dDlwRTJnNG9FM0hNa0Q4cVBGSDMz?=
- =?utf-8?B?U2JHY0VwWDZsTm1MUkNVMi9Ca1FlWkp5Vzl4LzJnM2lpL0xrcW5IRDRiTVpW?=
- =?utf-8?B?OXNEUEREdy8yaDRvbVNicnA1RSs3VVBIclJPN3FjVTExRVh6SnI5UXN2aUlK?=
- =?utf-8?B?bEVmR0RIS3lUNFFzdjFmeStWalVvRGg2K213SjZibU9BZFlHSmNoWm5vb0dZ?=
- =?utf-8?B?OFB6b01ZVmoyK1NRd2RmUEV6WGNLYktUVlhoajAybHlTK3pkUGJ2Y1JIVTA5?=
- =?utf-8?B?QzdjYUJ6aFJCYTYxK2IvcUlDRzBPYnRhbjlucTJFUTljRklGMTRzKzFaT25W?=
- =?utf-8?B?YjVQMWxPaitQWDZwRFhnak4xb3o0RGNxVGRhRm9WSWdWOGdPVTEyaUFUWFhQ?=
- =?utf-8?B?SFZnRTRBdlZXQUhKTmwxc3ZkajNOdGE2M2tiMzgxblkxK0Z0YTRPanNLaGtk?=
- =?utf-8?B?ajdBb0RHMW56RUFZME95Z0hsQnZEbklDYjJMaGI0WHhVTGRBcGlYeGRUT0Nz?=
- =?utf-8?B?NHNSVE4rMUFQajE1N1NqK2RiYjVDbjJITmd6S3dsZG9WZWtOTUtRWGZ3dzNX?=
- =?utf-8?B?UEdyNHRxMWNJd2taNWRPb2d4Nnp0bldDM0E4TGl1WG1heEZ0bnhFeHM1NGkw?=
- =?utf-8?B?WVFWVlpuTHp1WUpSMnRDb3g5OGk1TnkyZjU1ckF3VWFpejZXNVU0bHpqaWVY?=
- =?utf-8?B?SCs5L3JGTUxiQlRDMkdQYnVaWlRSQktsbFRrNWNNWGJXdWY5djA3eStiQVB1?=
- =?utf-8?B?TnJ6NTF6RDR0bG56MjhuYkorWjJxNzVhbjgwZWgyYXQ3bUJaNm1RcUg2NW80?=
- =?utf-8?B?bzJQL25BNVQ4UUFLQXhhSGE1VE9GeHNncHQxSjdRTWM4TlMrZzZGcVVsbkFj?=
- =?utf-8?Q?1p3vsyQUgLj9cJCU=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5858F5BFB076EE479C93034DE40D189E@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB97606A33E;
+	Wed,  4 Nov 2026 15:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NTIZzUzM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172261F000C1;
+	Wed,  4 Nov 2026 15:03:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793804613;
+	bh=ggRHKQR+tnVpCkDd0ac2LRjtcpOMpokLMDyx1F51Qcs=;
+	h=From:To:Cc:Subject:Date;
+	b=NTIZzUzMxJP+6coME6Rr0OmO1n1pVKdiiey+P3ZPnG1jNIrlY4kwD+a1SVCvfuAWR
+	 GPEeE/9DSxs246hFFOM3PGUHhdpfQDTq1GEH4grmJ349+FaMP7Zck037PbSWu6D0FH
+	 XvudfHlmbuYrh1rzlqUpH6/LtPVoEuVytc44BUq9qhh8IxaXAA0o+rXH6E9PAcrI6E
+	 AcUC3DMsfHuQk+0KeghZD/zet5zvFyKIwHnsGyNkoAp74SpZ9hHpCpgr4IUy41WmtI
+	 8/9abD+jL+ShSKhxbeqy3QLChzjhMAuwiWvGJ+K1XJqLvmiRTMcw+9FtsrhWRuJr8K
+	 s++TgWV0u5d0Q==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Fred Griffoul <griffoul@gmail.com>,
+	iommu@lists.linux.dev,
+	kvm@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [RFC PATCH v4 00/25] KVM/VFIO: Add guest_memfd support for device MMIO
+Date: Wed,  4 Nov 2026 20:32:57 +0530
+Message-ID: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -210,31 +74,237 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 1dRRQcDWmAOuAgqY8CK1mnMnqXvAIBLhJYMHCkGrL/6pJiJjOEtQ9p9sEsLC25nuj6Y9b0Tli8p4h5yVPZ7yNL9XTuJCF1LdT9uRyzJgJ7FEdropM1QpeReMfbqEpDrSHraSXZESpAqWjhDRT45NSkC1hkERiXNjxsYWlOb4P1ohOWyi5s28de9l3OgDiM4q8ys6DPO6b6bYQvJq37bFsEDxCrKZc4p0pQurAd8fH5EiUN2oGOoV+z3ex097gL9A79MWGP155YFhO0wq/XBgHC97tgvEkHUBRTuClNni61HMzTGPVz+/dfgx1JJAF2jFQx251d1nRy9/XKLaF4Kq/A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB634048.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ce4c060-8bab-4109-87f8-08df3a81662a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2026 14:39:14.9121
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /K1/xpAJ3YUpMqrJG/btvn3IRm8J9R/hUv8Owytvk2nhiYFTP/rZiqEVA6HFVgjqDjqaW3PRhO09okV3T1FS65ADqq3aSm9Iyj2XceAcXfA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8518
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-T24gV2VkLCAyMDI2LTExLTA0IGF0IDA4OjU5ICswMDAwLCBEdWFuLCBaaGVuemhvbmcgd3JvdGU6
-DQo+ID4gSSdtIG5vdCBjbGVhciB3aG9zZSBmYXVsdCB0aGlzIGlzLg0KPiANCj4gSG9zdCBzaWRl
-IGZhdWx0LCBlLmcuLCBhIG1hbGljaW91cyBWTU0gZG9lcyBub3RoaW5nIGluIFVOQklORCBURENN
-IGh5cGVyY2FsbC4NCg0KSWYgdGhlIGhvc3QgKmNhbiogYWx3YXlzIGhhbmRsZSB0aGlzLCBidXQg
-anVzdCBkb2Vzbid0LCB0aGVuIEkgd29uZGVyIGhvdyBtdWNoDQplZmZvcnQgd2Ugc2hvdWxkIHNw
-ZW5kIHRvIG9uIGhhbmRsaW5nIGl0LiBXZSBjYW4ndCBwcm90ZWN0IGFnYWluc3QgVEQgRE9TIGJ5
-IHRoZQ0KaG9zdCwgc28gZG9uJ3QgdHJ5LiBTbyB0aGlzIHNlZW1zIHNpbWlsYXIuDQoNCj4gDQo+
-ID4gDQo+ID4gPiDCoCBvciBURENNIGh5cGVyY2FsbCBwb2xsaW5nIHRpbWVvdXQoZS5nLiwgaGVh
-dnkgbG9hZCBpbiBob3N0KS4NCj4gPiANCj4gPiBIZWF2eSBsb2FkIGluIHRoZSBob3N0IGxlYWRz
-IHRvIGJyb2tlbiBmbGFnIGJlaW5nIHNldD8gVGhpcyBpcyBwcmV0dHkNCj4gPiBzaW1pbGFyIHRv
-DQo+ID4gdGhlIGlzc3VlcyBhcm91bmQgdGhlIEJVU1kgZXJyb3JzLiBZb3UgcmVhbGx5IG5lZWQg
-dG8gdGhpbmsgdGhyb3VnaCBob3cNCj4gPiB0aGlzIGlzDQo+ID4gYWxsIGdvaW5nIHRvIHdvcmsu
-DQo+IA0KPiBIbW0sIHllcywgbXkgdGltZW91dCBleGFtcGxlIHdhcyB0b28gdmFndWUgdG8ganVz
-dGlmeSBhIGJyb2tlbiBzdGF0ZSwgaXQncw0KPiByZWNvdmVyYWJsZSB3aXRoIHJldHJ5IGluIHRo
-aXMgY2FzZS4NCg0K
+Confidential device assignment needs guest_memfd to manage device MMIO as
+well as RAM. Device resources such as PCI BARs supply PFNs directly, and
+their protected mappings need architecture-specific map and unmap
+operations.
+
+This series adds the common guest_memfd framework for device memory and
+a VFIO provider for PCI MMIO BARs, with IOMMUFD vDEVICE integration. It
+builds on the resource-provider API [1] and the existing folio and RAM PFN
+support.
+
+Backing operations separate folio, RAM PFN and device MMIO handling while
+sharing attribute updates and invalidation. Device conversion derives GPA
+from memslot bindings and PA from provider PFNs. Revocation and cleanup
+remove shared and private mappings without reclaiming MMIO PFNs.
+
+Creating guest_memfd from an IOMMUFD-bound VFIO device rejects existing
+VFIO BAR mappings, dma-buf exports and ioeventfd handlers, since these
+allow access outside guest_memfd. Direct VFIO BAR access is then blocked;
+GUEST_MEMFD_FLAG_MMAP enables shared userspace access through guest_memfd.
+
+The device must be in D0. A runtime-PM reference keeps it active, and VFIO
+blocks reset, power-state changes and userspace changes to Memory Enable
+or Bus Master Enable while it supplies BAR PFNs to guest_memfd. MSI-X
+SET_IRQS remains available; userspace must keep the table and PBA pages
+shared when using host-managed MSI-X.
+
+The series and the Arm CCA implementation are available together at:
+
+  https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/7.4/tdisp-host
+
+This series depends on:
+[1] Resource-provider groundwork:
+https://lore.kernel.org/all/20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com
+[2] IOMMUFD/TSM vIOMMU and vDEVICE support:
+https://lore.kernel.org/all/20261008055955.4014342-1-aneesh.kumar@kernel.org/
+
+Notes:
+* Codex assisted with implementation, review and series organization.
+
+Changes from v3:
+https://lore.kernel.org/all/20261101071928.2462549-1-aneesh.kumar@kernel.org
+* Include the VFIO PCI provider and IOMMUFD vDEVICE integration alongside
+  the common guest_memfd framework; v3 posted only the common framework.
+* Replace make_private()/make_shared() with an optional
+  convert_attributes() callback, and prepare_private_pfn() with
+  prepare_pfn(). Pass attributes to both so backing implementations can
+  handle shared and private memory at attribute-update or PFN-lookup time.
+* Pass the device context directly to provider attach(), removing
+  kvm_gmem_get_device() and avoiding a VFIO dependency on KVM symbols.
+* Store has_private_ranges in guest_memfd_device so providers can read
+  the core-maintained summary directly instead of calling has_private().
+* Serialize VFIO file operations with provider setup and release using
+  gmem_lock. Reject existing BAR mappings, dma-buf exports and ioeventfd
+  handlers, and block direct VFIO BAR access while guest_memfd uses the
+  device. Shared userspace mappings go through guest_memfd.
+* Require D0 and hold a runtime-PM reference while guest_memfd uses the
+  device. Block VFIO reset, power-state changes and userspace changes to
+  Memory Enable or Bus Master Enable during that time.
+
+Changes from v2:
+https://lore.kernel.org/all/20261017073149.1303738-1-aneesh.kumar@kernel.org
+* Rebase on the v2 alternative-provider series and separate the common
+  guest_memfd framework from the VFIO, IOMMUFD and Arm CCA integration.
+* Introduce backing operations to separate folio, RAM PFN and device MMIO
+  handling while sharing locking, invalidation and attribute updates.
+* Replace prepare_conversion()/finish_conversion() with non-failing
+  lock()/unlock() callbacks.
+* Convert device memory through ordinary file-offset attribute updates.
+  Derive GPA from memslot bindings and PA from provider PFNs, removing the
+  device request object.
+* Allow shared and private device PFN lookup in the common layer. Include
+  both mapping types in generic invalidation and leave architecture
+  mapping policy to the backend.
+* Support device range revocation through the common revoke path without
+  reclaiming MMIO PFNs or changing attributes.
+* Add shared device mmap through the existing get_pfn() fault path. Keep
+  VMA protections and flags in the core
+* Require only get_pfn() for device providers; lookup_pfn_range() remains
+  required for RAM PFN providers.
+
+Changes from v1:
+https://lore.kernel.org/all/20261010072504.536230-1-aneesh.kumar@kernel.org
+* Require GUEST_MEMFD_FLAG_MMAP to allow VFIO BAR mmap while a provider is
+  attached; disable it by default.
+* Use the common guest_memfd_provider_operations for folio and PFN
+  providers. Select operations through the resource mapping superblock
+  and forward VFIO operations to the device driver.
+
+Cc: Ackerley Tng <ackerleytng@google.com>
+Cc: Alex Williamson <alex@shazbot.org>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Fred Griffoul <griffoul@gmail.com>
+Cc: iommu@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Cc: patches@lists.linux.dev
+
+Aneesh Kumar K.V (Arm) (25):
+  KVM: guest_memfd: Let providers prepare memory regions
+  KVM: guest_memfd: Dispatch conversion through backing operations
+  KVM: guest_memfd: Let providers coordinate mapping changes
+  KVM: guest_memfd: Dispatch revocation through backing operations
+  KVM: guest_memfd: Split population by backing type
+  KVM: guest_memfd: Support device-backed PFN providers
+  KVM: guest_memfd: Support private/shared conversion of device memory
+  KVM: guest_memfd: Track private device ranges after attribute updates
+  KVM: guest_memfd: Support range revocation of device mappings
+  KVM: guest_memfd: Add shared device mmap through PFN providers
+  KVM: guest_memfd: Clear private device state on final close
+  KVM: guest_memfd: Invalidate mappings before memslot unbind
+  vfio: Track device use by guest_memfd
+  vfio/pci: Add helpers to check and serialize BAR state changes
+  vfio/pci: Check command enable changes before updating device state
+  vfio/pci: Check whether BAR state changes are allowed before reset
+  vfio/pci: Check low-power requests before updating device state
+  vfio/pci: Track userspace BAR mappings
+  vfio/pci: Restrict host BAR access for guest_memfd providers
+  vfio: Dispatch guest_memfd provider operations through the device file
+  vfio: Serialize guest_memfd attachment with device file operations
+  vfio/pci: Require D0 before providing guest_memfd BAR backing
+  iommufd: Support MMIO provider attachment to vDEVICEs
+  vfio/pci: Add a guest_memfd resource provider for MMIO BARs
+  KVM: Document device-backed guest_memfd and VFIO usage
+
+ Documentation/virt/kvm/api.rst     |  63 ++-
+ Documentation/virt/kvm/locking.rst |  27 ++
+ drivers/iommu/iommufd/viommu.c     |  86 ++++
+ drivers/vfio/pci/Kconfig           |  11 +
+ drivers/vfio/pci/Makefile          |   1 +
+ drivers/vfio/pci/vfio_pci.c        |   3 +
+ drivers/vfio/pci/vfio_pci_config.c | 134 ++++--
+ drivers/vfio/pci/vfio_pci_core.c   | 120 ++++-
+ drivers/vfio/pci/vfio_pci_dmabuf.c |   4 +
+ drivers/vfio/pci/vfio_pci_gmem.c   | 327 +++++++++++++
+ drivers/vfio/pci/vfio_pci_gmem.h   |  17 +
+ drivers/vfio/pci/vfio_pci_priv.h   |  28 +-
+ drivers/vfio/pci/vfio_pci_rdwr.c   |   4 +
+ drivers/vfio/vfio_main.c           | 135 ++++++
+ include/linux/guest_memfd.h        |  74 ++-
+ include/linux/iommufd.h            |  26 ++
+ include/linux/kvm_host.h           |   7 +
+ include/linux/vfio.h               |  13 +
+ include/linux/vfio_pci_core.h      |   7 +
+ mm/shmem.c                         |   3 +-
+ samples/kvm/mem_provider_sample.c  |   3 +-
+ virt/kvm/guest_memfd.c             | 722 +++++++++++++++++++++++------
+ 22 files changed, 1627 insertions(+), 188 deletions(-)
+ create mode 100644 drivers/vfio/pci/vfio_pci_gmem.c
+ create mode 100644 drivers/vfio/pci/vfio_pci_gmem.h
+
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+prerequisite-patch-id: 1d4a2fa9dc0f4b560e55f419d23835f0a9fbe485
+prerequisite-patch-id: 21acd717af7d0f19db31afe0871a62b3b82ff21b
+prerequisite-patch-id: 1d895ab7ebe362ca9b1941de8a58bc0a9a57124a
+prerequisite-patch-id: b9003ee26d6e855f8e95aa6978372f009d98e737
+prerequisite-patch-id: d8fdf7f17485c6a2905e689a5cd72c76d0d4c446
+prerequisite-patch-id: 5fb6db464c1936ed74d2fc2fe4083aa9a3a968c7
+prerequisite-patch-id: 03d76de408efeb5a2205079bb61face09255ca60
+prerequisite-patch-id: a1635ac11bebba53e057e38c032b1e6b4cefffc4
+prerequisite-patch-id: 851431bcda2a44f9475af58c86353be9aa9bbb4e
+prerequisite-patch-id: 446c5c5033f7acc066ca98503af62798dca09d3c
+prerequisite-patch-id: acbc4e19d554317c64bc813901434005a563da75
+prerequisite-patch-id: 2c81e480010f916f7cf823b8db04e3dc90951b14
+prerequisite-patch-id: 5b1537647264994178adb5e7f56d50c6cc49b234
+prerequisite-patch-id: fa549035ee7387b3fe85177ae4c78b4a725a80b8
+prerequisite-patch-id: 9dccd5e814d553649ee13c3f6c1cab4dc652acab
+prerequisite-patch-id: 09de20b5a192aacbb036d35eecce3c94cc5680c5
+prerequisite-patch-id: d0932c65d2a453e84f7917da27f9f6ae1da95856
+prerequisite-patch-id: 7be8f39fdcfe7e504a9ac85e835a5dfb2ee414ba
+prerequisite-patch-id: 5ee7e97d4814e41f362261deb9054485e561fc3b
+prerequisite-patch-id: 45cd3951b114a26eac94390727287c1221862b5c
+prerequisite-patch-id: 6d978b6f0561697e5b145e4b82d79ac8c89f9f31
+prerequisite-patch-id: 9bd6979aa47dd00c87a3aa8feb1798486107ac4b
+prerequisite-patch-id: 98438bd35d53340738a20fd8724b038c9de1207e
+prerequisite-patch-id: 146dfaa64e29a4930adb60e9524c7613f888a241
+prerequisite-patch-id: 170e27bc053fede8d24accca69809d3687faf668
+prerequisite-patch-id: 789fe5bfb1183f6b9a9b0d817e5d1050a7999e1a
+prerequisite-patch-id: 5dd6878d0476a9dd925aa8d7ef1cf18900cbcd82
+prerequisite-patch-id: 1f0d1dca2a51df2283f1d83ed57dd9ce4e11b025
+prerequisite-patch-id: 503eb8fb0bf9af163f344c2693d374b6a3093fd1
+prerequisite-patch-id: 94e4777a58b357458bdce680bbb41c04c0c661f4
+prerequisite-patch-id: 4c1f6b548994d239e5093ee1d268ef5a12a76873
+prerequisite-patch-id: f6d13ac583d54fe1ae22adde87f5c68d8e8e41ce
+prerequisite-patch-id: 7846b44d34507a9af6ac8a3fb263ee446ea56a1d
+prerequisite-patch-id: 2d309198e27a3922b5cf5805ac5660ea92029219
+prerequisite-patch-id: e1f75965298956ad87bb78969461eff31419b6eb
+prerequisite-patch-id: 40ef669df2a64e5b28127059e4cea288d426f6f6
+prerequisite-patch-id: d8adb8f100cb13423db02e7e7a834fa241ff04fe
+prerequisite-patch-id: 75591ca138e7de26db6cd3e242a7f0ce56c4752c
+prerequisite-patch-id: b1e2c46b473783f37490c29140498a0bb35ec7d3
+prerequisite-patch-id: bc8b607986a132eef4daa5e20979d3f038d046ba
+prerequisite-patch-id: c9de5cd8a95f8102597b49dcf70b8ec5825b9ec7
+prerequisite-patch-id: 954606132449080c4e173eb06d114504f87d0322
+prerequisite-patch-id: 82a44a46cf9d4cc3fcdc03c362fc4e86d1fc533a
+prerequisite-patch-id: 23dbc9968c0b2570f40cd6c3b13337078334aa8d
+prerequisite-patch-id: 6c6a5ca6d0a1b60158a47ed21f25889dd71dd9b7
+prerequisite-patch-id: e4d1ba4119277d7772dbf6e81f748beab4e62856
+prerequisite-patch-id: a32d69bdd1fb21b85547fdc026475e2d94ffbc28
+prerequisite-patch-id: 2704fe13a294e1f33cfbee6cd27c11ee392a8b78
+prerequisite-patch-id: ebb701b7e050327e798c172d897021806f7e6c35
+prerequisite-patch-id: 03db7e48c976a019ce478883002670c4b1a33cd9
+prerequisite-patch-id: a18608129e63bbbc6e89a4ca237863ba4c506a63
+prerequisite-patch-id: a35607a73bd0329fd91a39bd7b9c855edb4b8798
+prerequisite-patch-id: 6d57cd16d6c6e71c3da069c1d9eee1c86bdeee8d
+prerequisite-patch-id: b64a5a718f540e7daf2dc4f0703422ad2cc52ebe
+prerequisite-patch-id: eb9a9e4d7f4b7e439c5687786628f07c406864a4
+prerequisite-patch-id: 2fe22fda60b4e4678bcf62d87bfd82181556af98
+prerequisite-patch-id: 26211cbacdbc31a62524aa5ad402b0f3933d433e
+prerequisite-patch-id: 02455f9ee70487d8b30b6aada5f5b62ff4e5ebe2
+prerequisite-patch-id: 113da62f7845c2a9f86d24ed178cf52756917cc0
+prerequisite-patch-id: 9ef3e8b12bc70690470035f0c6f351fa49562659
+prerequisite-patch-id: 0953a92b86c0790554b64ebda5d6aed038a6cf0e
+prerequisite-patch-id: 877e1c79e389936278122aa1efbdf99053b2d6c7
+prerequisite-patch-id: 0b04c869d49a4c1ad96ff7b5d8e3b11c4069f23f
+prerequisite-patch-id: 942b7480ddb281b9df74705f1a3a6e23a2440a43
+prerequisite-patch-id: 98c3864233a7ba6d789ad260f4af170a020d2929
+prerequisite-patch-id: 40dc0f2b1ab5e59f1f5de0be5134101ca896d13d
+-- 
+2.43.0
+
