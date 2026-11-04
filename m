@@ -1,111 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793817477;
-	b=3Mp4Hffe80CGch2E7uENkUexp++30iAH266vHSmXdXhxMH8oTPjRjKdKzQDo1ezuje5S
-	 q/zz+xugwt13z0wEO2dK5bLeAOKXS4/uwLK8evpuCXjDjhVcApryPVvPFrJmLyxZG0Ge5
-	 LBSzQlbIG/Hiigg05ChyFU/gzsyhwm/sc89tACQ/gcBhhQzEmiJAWHbNP/pfSlYgIJpAD
-	 eAyYSilMswN5ywcLqUUIREmf0pp3/OWGYZGt9GjbqFRco4NSVyqapoyQNTavTxnaMBWL0
-	 VY0MXOvLamUPQrUaKVDJm2FS6m0XdYmUQ8nadkaIfQRHlxRrcnHQAo1X0AJ58+PbtPw==
+	t=1793818089;
+	b=S1nBLXBUZ3Az7+5PEpXh0aL8v3p03bDMNE2iVt4iX/8L8lYaGtn0PxdjnDB5uZoJw5/k
+	 utd/A3z6D/E7OdiuA1HVrY9b8/BEqW6LREqdLpcJDZKTsWi3eRDXXlA1U2CW/n7uLtpeC
+	 R9OfVsDgxMNnQX+0solzLHKFAoQIe/sq919yiu404iVX1ycBWoHsI1ri9jhWdBtknU8eF
+	 aLG3BZHzjrGmEmzig01zdkQjfEbNkmUoWrgCLUdhc8QKGPD13T5IuHH+W23gx+XZt1Yv+
+	 /fjo4fBepkArgbpqI4MnorzAPuTFWSquOHMO+JqtJQx0r/WgVqJh4PCHNNtsQjHdrkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793817477;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
-	b=UbJ152u7Tids6SlVEu6fhqo2h0LG7caEGz7EbiXlfO6qHlJOaT4RrYdbRd1m8Zam+vbJ
-	 43NerZZe1MqbZnLnAx2zPA5UMqBrAblqhvEnW0ou8g17sgGAA5o5mZ3EsWIeNRE73ZNw0
-	 UO7KV8tqM2ezcj8nqJ7MBOXqMmuvRtbfe81LbEFmvkVYiY6HTmd5Oa0csBsxAhQK6eexM
-	 /ukJWmSO17n80xdx5dSd/zEc6FHN7ZHV0DEqbLihBQcwCvNwvMieeS/a1kQjTLSN+1coK
-	 JzflH+MdvbpinYWtOo/WjwyhofyvyM4GJcMVkSwee81dulRSKEgPd/XlPv/fnV/OjnA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793818089;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=/xa7tH3nOSKK5BODidULfZihUcUBhftqw8/dQCZflN8=;
+	b=0l+J+jA4ZYFAHK2VNAHdMUMoaGytlIO/l590Q0a7f61e7jdZ2rpPw9EWAQ/+1MQSh8dT
+	 hu2kQsPjreil2eG2CxL16FuW3SGJyumM01gbWqMOgR3g+8TuzxQh9kTR7mtsDdxV3CEUO
+	 qo3Jp8eFVNDo8j4dHhvoj819RF6TtitQMUgRhbJNd5WnHP5VIyj6APAp59JoiyiTy0chk
+	 4mYQfCPRcgXZlWj0YC6YWFAHHf3DA2stIxFa8Uv1xBMbSJk+pzEqqy1a7hIdMPwn+5dUY
+	 RWfLxyU6CvBcOV4CHsR4ENS1mUQGnI2u+KDwFEaYcpw8Xr+cU6xTgVA+REKJr9CUCEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=id58xR3y;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA11606A339
-	for <linux-coco@lists.linux.dev>; Wed,  4 Nov 2026 18:37:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EA11606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=mllFYLbu;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58AC606A33E;
+	Wed,  4 Nov 2026 18:48:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A58AC606A33E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=id58xR3y
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a210470b49so7962335e9.2
-        for <linux-coco@lists.linux.dev>; Wed, 04 Nov 2026 10:37:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793817476; x=1794422276; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
-        b=id58xR3yXof1mgYZ/P5jHRLMSpf9YnAWZ5l0v6P0qr032vgjfhX0MCmf9beKiq8SnG
-         Fs/36SndlYpSdjfcQj90HTont983Bn33aZ9gBsgKQ5juK3a1aoZ7dVEZtmpHczoygnuF
-         aGPjvAog3VDTA4DBZG7CIaH5vDMUAO3TeBFe/BuxgsIuSQ588lbzeWGRXubKKQ1DUDK0
-         P2fkSmzV1MBa2wsQSisua0yV+9hozRsTtv69yGmpCFHtWDAkwIx3jlpeJ7uBtTzZUoh6
-         z6bdAA4YVN0BjWSvAQPuVjO3xQd0QF8NQsQfZphGg3C0946jWq7/f030ZPcimSa2QNJM
-         dpFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793817476; x=1794422276;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
-        b=D0tdJc9d+edHdYDlpinaEgy9T4xt1ynT6NYXUSCwBRqmPeIzPeNVtT1zzK7MrQmd4M
-         gt430nsO/ASMzn7e17ioj/i9HEIv0iGT3h5iAmXcgLtLcORxX10Kna8VmMqhP4/EOTRc
-         3WM8MptNPKtsPMQquwl+QTf/HNSe1H0vbb+wNFa8ph2Nh7bJ3hCsO4/fJ/SsyAvK5wWl
-         lO9FPlLGtHOy3tpFVdEc6//KAcJ2ZyKraC/ezXnRb+xyvS4zX+vpRmDPRH8ONGPRgvtS
-         3v277ZeyqpRQlE8eyCFLkY/Y3vImlvg5TKh32jEivEZGVp2BOMlpynsQaCeTKoL8CIQ4
-         DTfQ==
-X-Forwarded-Encrypted: i=1; AKwUvByI8TZTOX087hTdQks4hZEv2FNxeDHBttXZ5pPfLuFXogviGZdPaMAd/Avs3oLS4V5whHCpLfyj41NR@lists.linux.dev
-X-Gm-Message-State: APuU4Z+m40UgzSpE8zry9oc5h0CdYrofOvEVbHpOK4i//eu/p/dgcRmq
-	/dePSfp4vJAeNkbF1+bYzQX074WDWoDF3/aCNTZQswJ327quzHGwyF9o
-X-Gm-Gg: AYBFou2z4oneRVAxM2dT5O3k84BEjBNokX+YAkUEpjCjXJbznQsOKWuezj/nepim87A
-	hNCPTmoi9V/5XMpMcOFvacpuT2wRFLp40tHug5xVYd6of4RXDMLoE1vT1XvWFuFVtc3B93N3QCd
-	uT0Zf1toylkAl6HnHDNseoAU44TOiuXUsBwYul0CwS8G/GywQJp3dN/8a3ocmvm3cIGrz4tbP+k
-	DOZD2uhZvCMjn6STBBcgpDO8k9YfKYLdD9oxUJbsU3TdslYTfQToI5TzjTwvrE2v7vmQpkV4bHL
-	DvYqJQmS/5kBorPaYWEraE/gSWjG243pq4Qn3JyPS/CNpzkFC95Z82etBz1mdQ4VJgNY53W9I4g
-	50K0VHxJp2tS4UIr6cTmCgwtgdMceKMWyRnV+tyPZNRxwLxU1CtBNu4PqullNOA6AFq+bBURgUg
-	2ak3sSa6SiknMDyPGSEymzkez22KU6EADBG3Pcr03jB2B88ycO9iEaaiA44yGdd9Q1v+drXCjqi
-	dUBjGsKdU7f1cw5dNDOYADFrA3LRZSAXXYXKEQmxGS3SgPB0z3N56oNYWBTaWbaDgTFmJr9Jkbh
-	gGIxTcIaqWs5A3XYOwMqchNNZUVMLdI4dr7vAPEKWI1z/cByc0d9i0h9K4gfz9ZoTQMiQI4inLf
-	1SVXkHg+hiNp8s7bIwaUVGYjLiQaPCXZGrkQnNrLTTw7jmcj0t+u8MtvKSrQbXaYL4g==
-X-Received: by 2002:a05:600c:8b85:b0:4a1:cd83:b23e with SMTP id 5b1f17b1804b1-4ac122897a8mr438143715e9.0.1793817475572;
-        Wed, 04 Nov 2026 10:37:55 -0800 (PST)
-Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56fca22e1sm4198665e9.14.2026.11.04.10.37.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Nov 2026 10:37:54 -0800 (PST)
-From: Fred Griffoul <griffoul@gmail.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	Alex Williamson <alex@shazbot.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	iommu@lists.linux.dev,
-	kvm@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: Re: [RFC PATCH v4 06/25] KVM: guest_memfd: Support device-backed PFN providers
-Date: Wed,  4 Nov 2026 18:37:54 +0000
-Message-ID: <20261104183754.10457-1-griffoul@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261104150322.3516320-7-aneesh.kumar@kernel.org>
-References: <20261104150322.3516320-1-aneesh.kumar@kernel.org> <20261104150322.3516320-7-aneesh.kumar@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=mllFYLbu
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BC9B1BB0;
+	Wed,  4 Nov 2026 10:48:04 -0800 (PST)
+Received: from [10.57.65.18] (unknown [10.57.65.18])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F053D3F632;
+	Wed,  4 Nov 2026 10:48:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793818087; bh=Fig9OCM/KGY3VRfmCNjCGspQaEuJVLDLkY3IAef4A2c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mllFYLbuuRJFkELC98lA7wpTx8Z2oYT5T7AKLvolRsfbGryWltp1/nFu7t/JSdoHu
+	 wBJM31lEdlkYdi0U85UuO/Y5irxN7FnUZ1IjW8Vpkzv94uras6pQYJPq+5Hi+amPn0
+	 deGc8/VUidDU8QZP5X/5Q4DvIFisir5QqzOKjUdk=
+Message-ID: <799454ae-9950-4b5a-8a06-9966ede152b6@arm.com>
+Date: Wed, 4 Nov 2026 18:48:02 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -115,56 +53,506 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/11] KVM: arm64: CCA: Add Realm RTT mapping and
+ invalidation helpers
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-9-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261102141304.126883-9-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+Hi Steven
 
-> Device resources such as PCI BARs supply PFNs directly and cannot use
-> the folio allocation path. Store the mapping owner and device ID in the
-> core context during attach(), and use them when preparing device
-> memslots. Keep device memory separate from ordinary PFN-backed RAM.
+On 02/11/2026 14:12, Steven Price wrote:
+> Add the RMI RTT creation and unmap helpers needed by CCA Realm stage-2
+> memory operations. REC exit handling and guest requested RIPAS changes
+> follow in the vCPU series.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>   arch/arm64/include/asm/kvm_rmi.h |  14 ++
+>   arch/arm64/kvm/rmi.c             | 346 +++++++++++++++++++++++++++++++
+>   2 files changed, 360 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 58d825e40bdf..72a9449f00d7 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -81,6 +81,20 @@ int kvm_init_realm(struct kvm *kvm);
+>   void kvm_destroy_realm(struct kvm *kvm);
+>   int kvm_realm_teardown_stage2(struct kvm *kvm);
+>   
+> +enum kvm_gfn_range_filter;
+> +
+> +void kvm_realm_unmap_range_filter(struct kvm *kvm,
+> +				  unsigned long ipa,
+> +				  unsigned long size,
+> +				  bool may_block,
+> +				  enum kvm_gfn_range_filter attr_filter);
+> +
+> +void kvm_realm_unmap_range(struct kvm *kvm,
+> +			   unsigned long ipa,
+> +			   unsigned long size,
+> +			   bool unmap_private,
+> +			   bool may_block);
 
-The device rules you wrote down in api.rst and locking.rst helped a
-lot. If I read v4 right, the device backing differs from the RAM PFN
-backing in these places:
+This can be removed now in favor of the one above ?
 
-  1. PFN mode calls RAM arch hooks: kvm_arch_gmem_make_shared() at
-     conversion, kvm_arch_gmem_make_private() at fault, and
-     kvm_arch_gmem_reclaim() on revoke and release. The device path
-     has to skip them.
-  2. lookup_pfn_range() only feeds those hooks, so the device path
-     does not need it.
-  3. The host mmap and stage-2 need a device memory type.
-  4. In PFN mode, a conversion to private only updates the attributes,
-     and the guest fault maps the page later. CCA has to map device
-     memory at conversion, because the guest validates the mapping
-     before it touches it.
-  5. The device provider needs lock()/unlock(), the private range
-     summary and prepare_memory_region().
-  6. The provider gets the VM and the vDEVICE binding at attach.
+> +
+>   static inline bool kvm_realm_is_private_address(struct realm *realm,
+>   						unsigned long addr)
+>   {
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index f190143b33ba..1066f767f85d 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -34,6 +34,83 @@ static int get_start_level(struct realm *realm)
+>   	return 4 - stage2_pgtable_levels(realm->ia_bits);
+>   }
+>   
+> +static int find_map_level(struct realm *realm,
+> +			  unsigned long start,
+> +			  unsigned long end)
+> +{
+> +	int level = KVM_PGTABLE_LAST_LEVEL;
+> +
+> +	while (level > get_start_level(realm)) {
+> +		unsigned long map_size = rmi_rtt_level_mapsize(level - 1);
+> +
+> +		if (!IS_ALIGNED(start, map_size) ||
+> +		    (start + map_size) > end)
+> +			break;
+> +
+> +		level--;
+> +	}
+> +
+> +	return level;
+> +}
+> +
+> +static unsigned long rmi_range_entry_size(int rmi_size)
 
-Would these changes to PFN mode be enough to drop the device table?
+I am wondering if we should move rmi_addr_block_size_to_bytes() from
+drivers/firmware/arm_rmm/rmi.c to include/linux/arm-rmi-cmds.h and
+allow the consumers to deal with the address range entries.
 
-  1. The arch hooks take the frame attributes. For RAM the arch does
-     the RMP work. For MMIO it skips it, or does the RMM work instead.
-  2. lookup_pfn_range() stays required. For vfio-pci it is the BAR
-     start plus the offset.
-  3. get_pfn() and lookup_pfn_range() report a memory type (MMIO) in
-     their attributes, next to read only. The core mmap and the KVM
-     fault path use it.
-  4. A conversion calls an arch hook in both directions, and the hook
-     can fail. CCA maps the private device range there.
-  5. lock()/unlock(), the private range summary and
-     prepare_memory_region() become optional ops for any PFN provider.
-     A provider that moves RAM between guests needs them too: it has
-     to order its moves with conversions and leave private pages
-     alone.
+> +{
+> +	if (WARN_ON(rmi_size > KVM_PGTABLE_LAST_LEVEL))
+> +		return 0;
+> +
+> +	return kvm_granule_size(KVM_PGTABLE_LAST_LEVEL - rmi_size);
+> +}
+> +
+> +static int undelegate_range_desc(unsigned long desc)
+> +{
+> +	unsigned long size = rmi_range_entry_size(RMI_ADDR_RANGE_BLOCK_SIZE(desc));
+> +	unsigned long count = RMI_ADDR_RANGE_COUNT(desc);
+> +	unsigned long addr = RMI_ADDR_RANGE_ADDR(desc);
+> +	unsigned long state = RMI_ADDR_RANGE_STATE(desc);
+> +
+> +	if (state == RMI_OP_MEM_UNDELEGATED)
+> +		return 0;
+> +
+> +	if (size * count == 0)
+> +		return 0;
+> +
+> +	return rmi_undelegate_range(addr, size * count);
+> +}
+> +
+> +static phys_addr_t alloc_delegated_granule(struct kvm_mmu_memory_cache *mc)
+> +{
+> +	phys_addr_t phys;
+> +	void *virt;
+> +
+> +	if (mc) {
+> +		virt = kvm_mmu_memory_cache_alloc(mc);
+> +	} else {
+> +		virt = (void *)__get_free_page(GFP_ATOMIC | __GFP_ZERO |
+> +					       __GFP_ACCOUNT);
+> +	}
+> +
+> +	if (!virt)
+> +		return PHYS_ADDR_MAX;
+> +
+> +	phys = virt_to_phys(virt);
+> +	if (rmi_delegate_page(phys)) {
+> +		free_page((unsigned long)virt);
+> +		return PHYS_ADDR_MAX;
+> +	}
+> +
+> +	return phys;
+> +}
+> +
+> +static phys_addr_t alloc_rtt(struct kvm_mmu_memory_cache *mc)
+> +{
+> +	phys_addr_t phys = alloc_delegated_granule(mc);
+> +
+> +	if (phys != PHYS_ADDR_MAX)
+> +		kvm_account_pgtable_pages(phys_to_virt(phys), 1);
+> +
+> +	return phys;
+> +}
+> +
+>   static void free_rtt(phys_addr_t phys)
+>   {
+>   	if (rmi_free_delegated_page(phys))
+> @@ -42,6 +119,32 @@ static void free_rtt(phys_addr_t phys)
+>   	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>   }
+>   
+> +static long realm_rtt_create(struct realm *realm,
+> +			     unsigned long addr,
+> +			     int level,
+> +			     phys_addr_t phys)
+> +{
+> +	addr = ALIGN_DOWN(addr, rmi_rtt_level_mapsize(level - 1));
 
-I'm less sure about 6. Could KVM ask the provider for the vDEVICE when
-the memslot is created, passing the VM? The provider would then not
-need to keep a VM pointer.
+As pointed out in the other patch, this could now be replaced with
+kvm_granule_size().
 
-Is there something in the device path that this would not cover?
 
-Thanks,
-Fred
+> +	return rmi_rtt_create(virt_to_phys(realm->rd), phys, addr, level);
+
+Does it make sense to save "rd_phys" as we tend to use the physical
+address more than the virt and we end up converting it all the time ?
+
+> +}
+> +
+> +static long realm_rtt_fold(struct realm *realm,
+> +			   unsigned long addr,
+> +			   int level,
+> +			   phys_addr_t *rtt_granule)
+> +{
+> +	unsigned long out_rtt;
+> +	long ret;
+> +
+> +	addr = ALIGN_DOWN(addr, rmi_rtt_level_mapsize(level - 1));
+> +	ret = rmi_rtt_fold(virt_to_phys(realm->rd), addr, level, &out_rtt);
+> +
+> +	if (rtt_granule)
+> +		*rtt_granule = out_rtt;
+> +
+> +	return ret;
+> +}
+> +
+>   /*
+>    * realm_rtt_destroy - Destroy an RTT at @level for @addr.
+>    *
+> @@ -65,6 +168,43 @@ static long realm_rtt_destroy(struct realm *realm, unsigned long addr,
+>   	return ret;
+>   }
+>   
+> +static int realm_create_rtt_levels(struct realm *realm,
+> +				   unsigned long ipa,
+> +				   int level,
+> +				   int max_level,
+> +				   struct kvm_mmu_memory_cache *mc)
+> +{
+> +	while (level++ < max_level) {
+> +		phys_addr_t rtt = alloc_rtt(mc);
+> +		long ret;
+> +
+> +		if (rtt == PHYS_ADDR_MAX)
+> +			return -ENOMEM;
+> +
+> +		ret = realm_rtt_create(realm, ipa, level, rtt);
+> +		if (ret < 0) {
+> +			free_rtt(rtt);
+> +			return ret;
+> +		}
+> +
+> +		if (RMI_RESULT_STATUS(ret) == RMI_ERROR_RTT &&
+> +		    RMI_RESULT_DATA_LEVEL(ret) == level - 1) {
+> +			/* The RTT already exists, continue */
+> +			free_rtt(rtt);
+
+nit: We seem to be releasing the rtt (undelegating it and
+freeing a page) only to be reallocated later (and re-delegated). We
+could optimise this a little bit and may be reuse it for the next
+iteration ?
+(I understand this is rather a corner case)
+
+
+> +			continue;
+> +		}
+> +
+> +		if (ret) {
+> +			WARN(1, "Failed to create RTT at level %d: %ld\n",
+> +			     level, ret);
+> +			free_rtt(rtt);
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   static int realm_tear_down_rtt_level(struct realm *realm, int level,
+>   				     unsigned long start, unsigned long end)
+>   {
+> @@ -161,6 +301,64 @@ static int realm_tear_down_rtt_range(struct realm *realm,
+>   					 start, end);
+>   }
+>   
+> +/*
+> + * Returns 0 on successful fold, a negative value on error, a positive value if
+> + * we were not able to fold all tables at this level.
+> + */
+> +static int realm_fold_rtt_level(struct realm *realm, int level,
+> +				unsigned long start, unsigned long end)
+> +{
+> +	int not_folded = 0;
+> +	ssize_t map_size;
+> +	unsigned long addr, next_addr;
+> +
+> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+> +		return -EINVAL;
+> +
+> +	map_size = rmi_rtt_level_mapsize(level - 1);
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		phys_addr_t rtt_granule;
+> +		long ret;
+> +		unsigned long align_addr = ALIGN(addr, map_size);
+> +
+> +		next_addr = ALIGN(addr + 1, map_size);
+> +
+> +		ret = realm_rtt_fold(realm, align_addr, level, &rtt_granule);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		switch (RMI_RESULT_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			free_rtt(rtt_granule);
+> +			break;
+> +		case RMI_ERROR_RTT:
+> +			if (level == KVM_PGTABLE_LAST_LEVEL ||
+
+
+> +			    RMI_RESULT_DATA_LEVEL(ret) < level) {
+
+Should this be RMI_RESULT_DATA_LEVEL(ret) == level ?
+
+Additionally if the walk terminated at a shallow level, i.e.,
+RMI_RESULT_DATA_LEVEL(ret) < level), then we don't have to conclude
+that the table was NOT folded. In effect, the table is actually folded
+at level above.
+
+Also, we could move the next_addr in this case skip to the addr
+past to ALIGN(addr + 1, kvm_granule_size(RMI_RESULT_DATA_LEVEL(ret) - 1))
+
+
+> +				not_folded++;
+> +				break;
+> +			}
+> +			/* Recurse a level deeper */
+> +			ret = realm_fold_rtt_level(realm,
+> +						   level + 1,
+> +						   addr,
+> +						   next_addr);
+> +			if (ret < 0) {
+> +				return ret;
+> +			} else if (ret == 0) {
+> +				/* Try again at this level */
+> +				next_addr = addr;
+> +			}
+> +			break;
+> +		default:
+> +			WARN_ON(1);
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	return not_folded;
+> +}
+> +
+>   static int realm_destroy_rtts(struct kvm *kvm)
+>   {
+>   	struct realm *realm = &kvm->arch.realm;
+> @@ -196,6 +394,154 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
+>   	return 0;
+>   }
+>   
+> +static void realm_unmap_shared_range(struct kvm *kvm,
+> +				     unsigned long start,
+> +				     unsigned long end,
+> +				     bool may_block)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	unsigned long rd = virt_to_phys(realm->rd);
+> +	unsigned long next_addr, addr;
+> +	unsigned long shared_bit = BIT(realm->ia_bits - 1);
+> +
+> +	if (start >= end)
+> +		return;
+> +
+> +	/*
+> +	 * Callers may pass either an IPA range or its shared alias. Add the
+> +	 * shared bit only for the former. Use addition so an exclusive end at
+> +	 * shared_bit advances to the end of the IPA space.
+> +	 */
+> +	if (start < shared_bit) {
+> +		start += shared_bit;
+> +		end += shared_bit;
+> +	}
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		long ret;
+> +
+> +		ret = rmi_rtt_unprot_unmap(rd, addr, end, RMI_ADDR_TYPE_NONE,
+> +					   0, &next_addr, NULL, NULL);
+> +		if (WARN_ON(ret < 0))
+> +			return;
+> +
+> +		switch (RMI_RESULT_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			break;
+> +		case RMI_ERROR_RTT: {
+> +			int err_level = RMI_RESULT_DATA_LEVEL(ret);
+> +			int level = find_map_level(realm, addr, end);
+> +
+> +			if (err_level >= level) {
+> +				/* Nothing present, so skip */
+> +				next_addr = addr + rmi_rtt_level_mapsize(err_level);
+> +				break;
+> +			}
+> +
+> +			ret = realm_create_rtt_levels(realm, addr, err_level,
+> +						      level, NULL);
+> +			if (WARN_ON(ret))
+> +				return;
+> +			/* Retry with the RTT levels in place */
+> +			next_addr = addr;
+> +			break;
+> +		}
+> +		default:
+> +			WARN_ON(1);
+> +			return;
+> +		}
+> +
+> +		if (may_block)
+> +			cond_resched_rwlock_write(&kvm->mmu_lock);
+> +	}
+> +
+> +	realm_fold_rtt_level(realm, get_start_level(realm) + 1,
+> +			     start, end);
+> +}
+> +
+> +static void realm_unmap_private_range(struct kvm *kvm,
+> +				      unsigned long start,
+> +				      unsigned long end,
+> +				      bool may_block)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	unsigned long rd = virt_to_phys(realm->rd);
+> +	unsigned long next_addr, addr;
+> +	long ret;
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		unsigned long out_range;
+> +		unsigned long flags = RMI_ADDR_TYPE_SINGLE;
+> +		/* TODO: Optimise using RMI_ADDR_TYPE_LIST */
+> +
+> +retry:
+> +		ret = rmi_rtt_data_unmap(rd, addr, end, flags, 0,
+> +					 &next_addr, &out_range, NULL);
+> +		if (WARN_ON(ret < 0))
+> +			return;
+> +
+> +		if (RMI_RESULT_STATUS(ret) == RMI_ERROR_RTT) {
+> +			phys_addr_t rtt;
+> +
+
+
+> +			if (next_addr > addr)
+> +				continue; /* UNASSIGNED */
+
+This is no longer valid. out_top (next_addr in our case) is only valid 
+when ret == RMI_SUCCESS. Please drop. See VTKMV.
+
+> +
+> +			rtt = alloc_rtt(NULL);
+> +			if (WARN_ON(rtt == PHYS_ADDR_MAX))
+> +				return;
+> +			ret = realm_rtt_create(realm, addr,
+> +					       RMI_RESULT_DATA_LEVEL(ret) + 1, rtt);
+> +			if (WARN_ON(ret)) {
+> +				free_rtt(rtt);
+> +				return;
+> +			}
+> +			goto retry;
+> +		} else if (WARN_ON(ret)) {
+> +			continue;
+> +		}
+> +
+> +		ret = undelegate_range_desc(out_range);
+> +		if (WARN_ON(ret))
+> +			break;
+> +
+> +		if (may_block)
+> +			cond_resched_rwlock_write(&kvm->mmu_lock);
+> +	}
+> +
+> +	realm_fold_rtt_level(realm, get_start_level(realm) + 1,
+> +			     start, end);
+> +}
+> +
+> +void kvm_realm_unmap_range_filter(struct kvm *kvm, unsigned long start,
+> +				  unsigned long size, bool may_block,
+> +				  enum kvm_gfn_range_filter attr_filter)
+> +{
+> +	unsigned long end = start + size;
+> +	struct realm *realm = &kvm->arch.realm;
+> +
+> +	if (!kvm_realm_is_created(kvm))
+> +		return;
+> +
+> +	end = min(BIT(realm->ia_bits - 1), end);
+> +
+> +	if (attr_filter & KVM_FILTER_SHARED)
+> +		realm_unmap_shared_range(kvm, start, end, may_block);
+> +	if (attr_filter & KVM_FILTER_PRIVATE)
+> +		realm_unmap_private_range(kvm, start, end, may_block);
+> +}
+> +
+
+---8>---
+> +void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
+> +			   unsigned long size, bool unmap_private,
+> +			   bool may_block)
+> +{
+> +	enum kvm_gfn_range_filter attr_filter = KVM_FILTER_SHARED;
+> +
+> +	if (unmap_private)
+> +		attr_filter |= KVM_FILTER_PRIVATE;
+> +
+> +	kvm_realm_unmap_range_filter(kvm, start, size, may_block, attr_filter);
+> +}
+> +
+
+---8<---
+
+No longer needed ?
+
+>   void kvm_destroy_realm(struct kvm *kvm)
+>   {
+>   	struct realm *realm = &kvm->arch.realm;
+
+Suzuki
