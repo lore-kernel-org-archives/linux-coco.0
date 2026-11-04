@@ -1,105 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.219.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793747565;
-	b=jCidfSbx7mATcOt9UwLPcR7HB18sKKiCCxS3VP6pMlmOYLsYU8jLB92UD0PrvqTuZS3i
-	 /yhv+EFlAWXPNx0WjHaL4j3t1JLZzElg9Hfu8xVl++y5HLx/8USSg5a5Z0LP9A7yHd8W0
-	 e08EZiycThvnRgtyuEznduQR9Ha1bDWiqigWWszwDQCOZsG26sgdrx5wstMqsSeKeOzvz
-	 ILFm8crOBDKTwobMamB+7nI8E/kX1aPatBTF7lnElCpo7q5rthK9bZahAy70Jnz383ywf
-	 m2qSFkDgF4CcdK1Q8ZpRcW95fe13QY/shh+HntxEiCbvOZa/uuqVzREBYBm0tMK4J/w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793747565;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=ryvB2JGWPuZAAGR2GMJJClI5Kf6c0Mg6JzyuuAdWS2w=;
-	b=PGqlExLzByfdXiVYHKRNx/fzP973DYSfF/CAwum/2f5bANcXorjbPgW27A9ZyqeieUT3
-	 6aBTL0EU2M/HM+xNTutRUzpPmDGk/OBCbkqzhTXbIHObmtYMQt0KDqJ91eTgyeUvg3L2Q
-	 g9nlr/dLRvqOCIXnbgge97ZWHoQYvM/7V4GCcVn6G7REk1GEkhX3SP/WuuyeHorOwyViA
-	 BT4haisY9k4ds6/0E8VGzkdpIJ2kZXTRW+zLoCf2diHwZ2En3pI4vUL7AMAqKWRU3Yj5I
-	 32bxtA7LDocOIbZGjNo6FE9LRVvevMv1eaMzJYGk1S/TQ8NIKPdHcao/br8lZ7Jk1Wg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Vh6WmtpO;
-	arc=fail smtp.remote-ip=209.85.219.53
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793752196;
+	b=oNLVNwBtFLP53MzMoRhyOXjLtYPsggyp/bomboB5iqln5eVgQalJRk1J3bNjS84Nh+qx
+	 r74h65X7hd89kAU7t41bAinWnDJD7WkDvSXCKWYdqqnZPge8cBdxyBlK7ADvf9YG5EtIF
+	 /tOZ1n3DU6gdmVngmSW07EkTyJqwQOJ3pi3xvyLi1BWhYou+iZ9cF+zPlauHmB4TDD2+a
+	 uRJniHMRTYJaazK3lFdoYvyM4OS6A0oCMeO6ljOZ+Nv5LcTU41r78aXoneicTUALoczHA
+	 y14chDp1Il8iaQzK9o0pvFCdM1H5sw6cgci1zZHAZwmpT7u+oPbwfuKXOEw2a0/lUsA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793752196;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=11TWoilnUAwwnoICHn0Pai020F/1fd8oGymeOrpOeUQ=;
+	b=nTrGvN0FdalJRgYwYk9y2w1mRqhAGyMsvp+I/xLAv2nCXH6TYBQ7wDKsXPgdj0OB6p89
+	 Ab0oM2OxxvvxcTxyaDk4LvBv10gaM8jrKcC9V7Qd2h6xeffvzFJTDeJdxcCEd9u+nMpt4
+	 Dq6j8/ZFwbPYN3/WuWD3dIPRkKzCf4aaowV2W3sbXB8R6tR+AarNfkTRZL0VutPmMuQkE
+	 Y8V2hx4E7xj5RuzW9ONGkwOfHe8K6i0nighiMQZOof2MQNoLjCaartP0Gh8+Y6Q2zQpQb
+	 0bMtJpOKQ6x1nlKpnjpC6CahAyp5utj5IfufzOZaxCU2fzcVxym4Tnyuk8bekYnxH2g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ki5WhSSh;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BED606A326
-	for <linux-coco@lists.linux.dev>; Tue,  3 Nov 2026 23:12:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06BED606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF4F606A31B
+	for <linux-coco@lists.linux.dev>; Wed,  4 Nov 2026 00:29:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EEF4F606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Vh6WmtpO
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91bb5795792so1554796d6.2
-        for <linux-coco@lists.linux.dev>; Tue, 03 Nov 2026 15:12:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793747564; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kpzQR/Kyb4s2r7GYcToOf/6B9Nc0Hj34UuNmEpJzzCUebuZQJeV60o6PuDnJLWjpfo
-         gUBDgY788pn9DhdThWAqegpOVEpv47GomPXUAzfm3IlWPEabdAVHwD8JnDn7SOgqayAY
-         XnXV0hHMZJZI8ki0qqL5f/s+KXCw4Ve8X1s22zzYheh8TqfcUTnixdl4BIeT8i70zYEF
-         GSZug6IANWgRp1+PALI8cpxELkGRuBaY7/2OnR4VGivHISiDiDoCuG5tsAfTESLF4iRQ
-         nZAqDMKuQMdc58aqUeJwWOuYctE7aVcD3QobWM8bBJO7I54ofzl7dPqsky/KHoHmcQtN
-         vF2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=ryvB2JGWPuZAAGR2GMJJClI5Kf6c0Mg6JzyuuAdWS2w=;
-        fh=iVFMNCbebUd+ND2cNok057PZe1VL3GEUJv/E/r9cGR4=;
-        b=QC3HeLS+W7V4uPZyvHYMClh1fwsNCVqH3KHDmxs3GSt2R+2YJNyuf+cHdmKsJKXpHR
-         MvyfdKXhmWvPirO+wwp3SwI2SHXTB5Zak9i1nMHZwm69+aRotz3/egOB03vfNmQ4k+hB
-         HQYsBd+ZO8JcIFhwT+/6hYWY4iNNpy6tl8trqr6LnxLGLBExTDTQQtdZah+9+nVWee7+
-         FrJPQ9u2I/eL2BqUnRL0iZb4HACXb4V14Kl/CvDsKvUPCDUSAdbF/tgK+ROcG3MjVx5C
-         IITJbKg0Y49s5Vxu50pmeSp7kIvx+a6VPsw31vJCH689uOK94MTyCfNaNa3hUQPmvsgq
-         3+3Q==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793747564; x=1794352364; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ryvB2JGWPuZAAGR2GMJJClI5Kf6c0Mg6JzyuuAdWS2w=;
-        b=Vh6WmtpO4DFRjhgk2OSHe9dfcoVHHEJ7JDMGmG6L3flBWzxlr2j3LzAkLlFGiUWl4T
-         LKZNwvNvdkAIB1vC7EVA44H/ocUACItm9cQJIJoiPEwu/3AwZmrdHw6M8d5cbQrbaYAi
-         zqI4ddKdNpEIsKjwu6IH9pB0T5EzTvVpWnrUTA5WzcDxjgmXaGg7KSgC1EyjiBdAnt9n
-         1Op3RlmiXsNu04BHVvg7dSGnbBz2D3XbowBOQJV6qfmMQzBncXwnlZdRC+oLc5erVqmg
-         nBgJLpuYCtIELgxRVtnMctsbelnQh7hZIMawU3AUy+3Tl3ncF9x9Xt9wumFqBzLS1rYQ
-         a7YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793747564; x=1794352364;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ryvB2JGWPuZAAGR2GMJJClI5Kf6c0Mg6JzyuuAdWS2w=;
-        b=ZNSFTzfUV98hytl55q/ZWXZMdF8M7r3r4y1cnxUyR/Jg3JgbQWma8oQBhYovr+jcmO
-         d18aMIQqsGUn3WyERwm+sNzU7JmPVPy2RnLhiBrltJplmO4iA6Nudq8DKcFijGvsBbmM
-         OIdThBGC5tG+xo9g6sUe+eJlQ3D904iiEoPXUm3FEHm3aGVPaf2lhMQdI5szM70qNdoz
-         gYf3GO+jZQA+VO13bNTQ/sb3mBNTxxRnWTSOPdxoTxWoEGJw8L1oV8Vs6XTQArHyvyau
-         gIdMCAD8irfQejWWHdzDpBk/u0r7XMj+D/TcPQY15/aUnVbEhE88JgGYZInJahq+0R42
-         QJBg==
-X-Forwarded-Encrypted: i=1; AKwUvBzm/Bc/hdGVF0EBTovCQh2uRoKoew67u56w2geB7QGd8elQcfpXK9BhHog3qeW8J1KkyZQ6cVUm5dal@lists.linux.dev
-X-Gm-Message-State: APuU4Z/Tqd3qpHlImVeZ56isJKWkZc2S98annGMJjz71Hp0P8QSCADQQ
-	Floi+BStXiVjOrh1AZ/xgsRE43LnxVsjHoe16oKMWX83Vs4qHr7hnoN67OZXC7arnYtJK55VeK5
-	lpR8ZsUyZTc/oaorsJinC/XUmBN9Qe52vagqKZJvO
-X-Gm-Gg: AYBFou1pNEd+8RXjH/D4NIQ7ia60df4XqcyXZW97NfaXrfhPc4Oh2ZMlGKfALRyWVWg
-	YnEmmWlALGxZEJgcaiNZkJ6KI3MTzOVRxYqhZHXEBg97efSYylfcGXNTkRMhqgZB0d4QRJPZIqz
-	joZ+1mC/pEKcj9u+7c4RZlEPcDmoMbU/eUrNNtDEYGAvEKBEWErnczLTNXSInzpW9ti1tlnVQLZ
-	ksPlANIQD6HVKt4cVYdrp4PkWS/ePaCZZXot/e5uWB0BjGrVinQL53/D0tRBsYz/FoLRYrCCFIo
-	1rCqQyk3BYM0kaGghhter/EKfWPPXy3uhvVGnlgFdot1IAv6aj5Ec0LFtV0LYrNrygApvbgs0ur
-	KIKPgpkcWpFdJEj1EnU2EVMit10c5DXmRyxc4ZigpvAthUzLcCBonz3P9vW5lbbEgGlK7+g2fyZ
-	lqipn5lIgSacdmaK/YzpoB1W0=
-X-Received: by 2002:a05:6214:570d:b0:91b:832d:ce5a with SMTP id
- 6a1803df08f44-91ca4b833acmr247908926d6.48.1793747563253; Tue, 03 Nov 2026
- 15:12:43 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 3 Nov 2026 15:12:42 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261101071928.2462549-7-aneesh.kumar@kernel.org>
-References: <20261101071928.2462549-1-aneesh.kumar@kernel.org> <20261101071928.2462549-7-aneesh.kumar@kernel.org>
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ki5WhSSh
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 44C3840E0184;
+	Wed,  4 Nov 2026 00:29:52 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id iB2fZmh7Popd; Wed,  4 Nov 2026 00:29:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793752187; bh=11TWoilnUAwwnoICHn0Pai020F/1fd8oGymeOrpOeUQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ki5WhSShKDv4SSh/WVvj6Ps057PBNuwTeIHHfZwQKvjCz1XDPyxwqd4vZCBF1CtgI
+	 eDpNG1yvMuYpeY1N+zOwGKOBSA5TMbnOGkqjaUMnEDFzta0uLFnLmsda34GmWWtQj8
+	 WJW0WFnhil+MSiJvPUJE4jtlyTdUg9C/60D1ePrTFRlRByy0rsrtiztAwXLJx3LhEr
+	 rwIkSwWGOGwP0VuAgppgzPKCKmamdYUSZNxhwy8DyBlZ6ls8W9BJbp1fIkNgPSC1JQ
+	 cD4/Z6lNA061XFuhy3dQtRDJpvRieelBG3HklnvXvk7C9HX8LNq9dK/ENfikeaX/gd
+	 z6jqTfUjmuej06FMry2CRPF/5AlLNIjCJR4DWmbg0HlluOZMJJIZDC5j6Z+wJ3vnV2
+	 StJa5Ioizu2tV3QfPJ/35HmbYUWe8/Ow2hWaQOEUR+D45tqCLlMaMcQs7/JBxRlkD7
+	 25k2DAcuJWjL/nA9R21Rxn8UAxO+KvU+SEkcAw52WS34hwy/7c8pczcHmdwSzSDnZk
+	 nH26GaLBvFhQMLyq+2ntFmNDwDEuzVOCYKH+CBEfahwpvs+2ouU+UVeoO+NzXh9HVv
+	 aIotPGF+vhkKMsCrobsQZ5pz88m8tFhXc2kM7XHeU2eZmjIcxMps8kMzPp/3OYiZmt
+	 y4Zw2rjd38bac6S8vgJdbs4E=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C684440E0299;
+	Wed,  4 Nov 2026 00:29:13 +0000 (UTC)
+Date: Tue, 3 Nov 2026 16:29:10 -0800
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+	ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+	rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com,
+	dyoung@redhat.com, nikunj@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
+ disabled by firmware
+Message-ID: <20261104002910.GBaup8VlLyafsjSbth@fat_crate.local>
+References: <69ed0d93-f96d-4baa-a587-fade5a0a3262@amd.com>
+ <414b2fc2-a55a-4b2d-ac70-4def101c4aee@amd.com>
+ <20261102144805.GCauiipTaEXcg6Lr59@fat_crate.local>
+ <d81f6807-26ac-49b9-a205-c89c394ec1d4@amd.com>
+ <20261102193116.GDaujlBJc3XjG3xzLj@fat_crate.local>
+ <9ebcb83a-1c0e-423a-8730-eff6b710634b@amd.com>
+ <20261102214343.GFaukED8ep3EMmQxfx@fat_crate.local>
+ <30947e17-bffc-4c70-b19c-56504771c9fa@amd.com>
+ <20261103004531.GEaukuq9sXbCs_PjfL@fat_crate.local>
+ <78bc08d8-211c-4de0-b99a-2932d5612282@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -109,52 +100,21 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 3 Nov 2026 15:12:42 -0800
-X-Gm-Features: AclHuK-a6U90XRQ86I28YCLgetKuFVa0CnGLyQ5k0MglUtI4Y2OMEO9n6VKxkJo
-Message-ID: <CAEvNRgEL5SuPBwGqwrUzD3Gb1iUonhvM488-3khHpQk8OkWr+A@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 06/13] KVM: guest_memfd: Support device-backed PFN providers
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev
-Cc: Alex Williamson <alex@shazbot.org>, David Woodhouse <dwmw2@infradead.org>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, Will Deacon <will@kernel.org>, 
-	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Steven Price <steven.price@arm.com>, Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <78bc08d8-211c-4de0-b99a-2932d5612282@amd.com>
 
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+On Tue, Nov 03, 2026 at 08:59:25AM -0600, Kalra, Ashish wrote:
+> I'll wait for you to push to tip:x86/urgent and re-test there.
 
-> Device resources such as PCI BARs supply PFNs directly and cannot use
-> the folio allocation path. Store the mapping owner and device ID in the
-> core context during attach(), and use them when preparing device
-> memslots. Keep device memory separate from ordinary PFN-backed RAM.
->
+With patch 2 ontop:
 
-I'm really hoping that device providers are just another kind of PFN
-providers and not special in some way.
+https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp.git/log/?h=rc1%2brmp
 
-Please give me some time to prototype so I can see what can't be
-achieved.
+Thx.
 
-> Require device providers to use PFN_MODE and INIT_SHARED with
-> architecture support for protected device mappings. Device providers
-> require get_pfn(), but not the lookup_pfn_range() callback.
->
-> Mark device memslots as guest_memfd-only and pass their device binding
-> to the architecture. Resolve guest PFN lookup through get_pfn() for
-> either shared or private attributes; the architecture decides how to
-> establish mappings. Include both mapping types in generic invalidation,
-> using the memslot binding to select the architecture unmap path. Host
-> userspace access still requires shared attributes.
->
-> Skip RAM population and PFN reclamation for device MMIO, which has no
-> RAM pages to initialize or reclaim.
->
-> Keep mmap, fallocate and attribute changes on device-backed guest_memfd
-> files disabled until device mapping and conversion support is added.
->
->
-> [...snip...]
->
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
