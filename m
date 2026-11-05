@@ -1,102 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793881978;
-	b=cn2vY4BOV20lGTrh05eV4vFt8hgRQsuHyfMl1Rp+3IB5n6CU2TtZ32UFHwxQdDk6Ku1/
-	 t0RRVVoSYhFCarOuqyaYvqJEuyJKWR/vACaFANFW5/8Z8QJP+ut3wvcEOqqm8zGti415a
-	 Hcqo7LPH1/f92ngOtMWs+P48rjuyA4Nu22xUCJj5/1R3g4apwUxmqDMGjHlrQ4q1Z/fsX
-	 ownvP4d5QgJ47aPHH++OIsfQ8oGLmUYoICJgL9MoHcYQePjpGnAoii/IPJnlK/z2X8JNG
-	 3h7FSZcDsoBW+3TjsorFPyxRiw2Q4jF5PBdXHD9A/U5ZqrFVHs3DHehTLEaMwK6mAZQ==
+	t=1793882155;
+	b=meL6b3cK56P60VbeFCRtpMlEkvMBpyu0XXzONafGiSvxoGTkbPhG61OS3w1UMzJdaRY+
+	 42NuKOMvkg0W/qvrDFUkyj8zt90C4Si41DRpo7Pk4dL0jR+PQhCeXSGRNunEvOx8APFGW
+	 6kg64D0lezv2lSShki/Ue+AUYwAiAFpA2ERoqe0Dnx95i9dNqNCtbf+1nvtOIY5p8mrGw
+	 6Hqfh6HZDx8tmtgi/FRYrhbUiVYmKTMpgDN3us6+tST0uzicqLi98YtlBZov5tj4NazwF
+	 uYdhx4kGtElCIuEUkTvLER9bzgp75SXxr2NUmHUyg6w0bs7p+gWTnqtsLgaIWAUe8RQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793881978;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882155;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=RcJPtti5GFvFEoOYZYt06D/AhFo3icPnTOuzdt+NBsE=;
-	b=EKI/1TP94MlLH3uKF4WRapOqxjhvA/KEzQKZMLjueehCor9Q/ucbMxrwqjIFNiSTxsjf
-	 mnczWBw7XgUktYK5OjwyzAYmWw9uj/HHJAWPGMMYr7XAylAY6h+mdBsp1JdmzBr7qUoI7
-	 6tpaSWWzJdp1Rl7tSLjRkMfC7uQ3aWulmkNjgiyspJUkjt8vW/1g/9tSCzJM/t1Q1jBZJ
-	 3rLHDQ0hzyEoK5QNXweyKSjvzuh176mPmf0vbg6RK8DCyW7iJZYeQAiy1pPsM2/N6x4T0
-	 fkMFw8sJ3vW8QtpW0aNRW2IZJ0uQTHnYglBIe12tNifTm0JHWk5BENhxGsn530Jd8WA==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=viyDdmvwD4U6PS8lafjWT8pU3blZXU6a4uhU+bJMb8s=;
+	b=BJeLJxFqV85jV2RJfC28MFCLhWtovuztgXXepSGVdPN2XHJhiIFLwPGjTl9Mx0uaKETH
+	 lgURU+ka3QCq+E6ivGTgIp305IyBjZrNfzgZQxSTLTraYBE85Qato7jVuM6wKfcUsuFES
+	 xc4adM/Zj6QpPu5c9wvJIBjml6+O6jPZuNAp5pntFosLCnUanoSNQ9i5pGJgHL108KMqN
+	 L6aFekXgC4t3+11IihwSBXEOmh8VQPp8cMqukHhrQLZrY6OmPJWl30FhaqrtiyEec3kKP
+	 sildqAM44yzf+ZB1SvRjpMD/hiONC0JwYkIgl5g7nC4H+EB4jCqLJyvePOLM2CcieXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=fj2QZV0w;
-	arc=none smtp.remote-ip=209.85.167.54
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=wF50YJ9p;
+	arc=none smtp.remote-ip=209.85.167.43
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E84606A330
-	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 12:32:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54E84606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33221606A33F
+	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 12:35:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33221606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=fj2QZV0w
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bfa65c8617so1036597e87.0
-        for <linux-coco@lists.linux.dev>; Thu, 05 Nov 2026 04:32:56 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=wF50YJ9p
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5bfbc25a76aso734396e87.0
+        for <linux-coco@lists.linux.dev>; Thu, 05 Nov 2026 04:35:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793881975; x=1794486775; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1793882152; x=1794486952; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=RcJPtti5GFvFEoOYZYt06D/AhFo3icPnTOuzdt+NBsE=;
-        b=fj2QZV0wC/py2pU/ReJUvYT4JxpvOFzfVAm7EQB+gRsmvKo8pt3jXXa3w7RUspZQ6v
-         uWTywaquayJ7cEExAhPmTVpkJygWkyCLJlBpp4VRikMO5e5lL/LdYBZCa/ovGEAQShN7
-         tqTe8cpfX/Gg50G+9PFdp+9HtYhbF/hj4KFW5g6786FU28JLIgLm93dLKlHtvXR+A9yi
-         lcBdC0eELjdA5BkV9E8tpN2FwpUzStqhRtJRg8vvybWzZzoj7KUIGyyiIu95tmaZpptv
-         O1D1oSMfekOqgo7X/VIYrjxqSYO9OR/1Q8FTr5hy6VNwgZBVmTLDa81TQSmD9eZ0vBg6
-         q6Rw==
+        bh=viyDdmvwD4U6PS8lafjWT8pU3blZXU6a4uhU+bJMb8s=;
+        b=wF50YJ9pWeGpIZgjpLso4vSCFokBc66tU9z3+ylmj/Jt3A7tPFuJ/I/BPI0WGQvQM2
+         0OdGfU11sU+hIYc8WbZDcJpYjUnbOmmWOMNRFS2NpZcJZW6nQlQZg4NeGaNSpwmrvXjl
+         ZgE0kbkF+8T21vCbCfq/2U+HWcAYown2ra+ybQPjZPfQaBim0GgOuD+3AZSbBX0TT9RI
+         3FNXHbTcF34aBiR6AS3Yg97j2YufEuqy2cEpHHjAdU5xXHOxKmbkoDtnU3WMoAAVil4x
+         LGoQcPQ8CRHfgnnN5id4KykLWyeJdPzbwMPVa7orOqDBCG77Ffd4wIyLNrvjC7Ax+8Go
+         1U6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793881975; x=1794486775;
+        d=1e100.net; s=20260707; t=1793882152; x=1794486952;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RcJPtti5GFvFEoOYZYt06D/AhFo3icPnTOuzdt+NBsE=;
-        b=tfhqszH54dwiu8wbDGtIMO6x3i9UkTWQhD6JkG3InryxTc6NKeptB5clT3mZdvYfFD
-         5JR5iQ0L0Z9yJ2WiBLK1tFV/SKER+zbDoHvGXcHS8FenNP+QVesFLh//CMATXiAZO9Zs
-         iuQou2JTS+CgxSu1V8QmKM5dalmw3fdSwHXVEiCcbUSvwteENDZ2AwMxJmUrqx2xQzzi
-         iMrd5QVfI2v3tXU0PBSEtkFqUTMFdLok5w/gXvQ2vSaY4eypFRDmW/KvOHXlIEh4rzuF
-         Dj8wq0dTBTzOU06CLSdNQUZF32l1rijaTe21xOTm9Jb7Wda0tQdCFdxQi7hDK42DInmQ
-         gHnA==
-X-Forwarded-Encrypted: i=1; AKwUvBxdqib4M1GwuWOhiIDib2s8iWPaF2AEV3MFvWhqMqaDxPjvoBBHbsw4ne2f4dXCw1Rw5YMPCalp0Qnu@lists.linux.dev
-X-Gm-Message-State: APuU4Z8qrS5QIPdrkPOH0yoIRidiv8lczSN917cKAGUninWUG4HmKjxF
-	nq1TXW4jG3qXBuGKMhEPyEuANBsc3i103q2FYN/gwxikfcqpVZuGt6fuouT2qDG2M4c=
-X-Gm-Gg: AYBFou1mmxS6z2rkhcn4Vo/Ebo5+10g+NkvOwox3GwrqJue02NZHESTNAC/95G9E6mk
-	NEGFqikJjSnVPtyDX6l+hce/GDXnkaqKolTB8/RMombAynLvlFa0dKGiY4v86faXqvM3i46kekO
-	O50hPlt6oAdxW+xXbZouhfF3SjwCcM2Bc7qTxXoc5MpBXTzabrHi4vjg7IN0P7aGKL4mkK2u615
-	KS4E2rcTawPYjpYPZLCwYMnvrqp6vdIvHKiouIBuwA0KLb1kOJutjOcRwcoqjEo2aW69LjKg8Yk
-	DfYSK+KPSm1tXKpSRYo6lbo0isJXmR780TAagAorjFpZJ5lIKSwkapFiHi0MbgQFSNBL//zX3Cq
-	EIBQCYAudfdEVgVdJIuGiv05Deiltj7NhEgYAObnkv9dKe83mM7IJSyDJYIC7CkW9fNWaShItDr
-	oqgQQXbUmXmCepjXP9EImsvZbIjUB9NeJjxViIFFizzsJpiMXACsU9Zu2+5y8YqYRLsMf4wYWQ2
-	scIhuTx//bpkZPPkbaF9tQe3usAvfHao/qg5O/i3MZbnipRXamTVcGcqIV2A/TPG9e1voyKMZYm
-	Sh4GL4gXB0THnD5BYNqrVF4aBy712RBFSFepBJM=
-X-Received: by 2002:a05:6512:3056:b0:5bf:b96b:2c75 with SMTP id 2adb3069b0e04-5bfd957c416mr7135190e87.37.1793881975197;
-        Thu, 05 Nov 2026 04:32:55 -0800 (PST)
+        bh=viyDdmvwD4U6PS8lafjWT8pU3blZXU6a4uhU+bJMb8s=;
+        b=AREvMwhr4ocRJEL+Rre6SLkkw5XYUMaMdUYAcKOjtCI+3V/FBauRO/oHaVP6IY5aBu
+         dtATkeU67cCSgYSBL0dRpLu9vSdLjiU2YX+uopI0DnqtzCIyoiGy0ExZYxM39IGEpQyS
+         wNr0Sirvi2x7DriKQewnaqCeKwyNH+ckl+378k8Fo70CEm4ewdI4gcS6mdK/AEel7KN4
+         0btPvC8RGoTfT+Y+5+VL6bhFJUIUEb8irNn+1XTbnfajbNuHCjQSkq6BFApFdeM0j/kh
+         fKqWKKLaOQFG1/hV1L5K7jktXLQRC+kMykEgsQiutBJenEOS2eNu1jPZ0SqG/f9y3GZ7
+         pHkA==
+X-Gm-Message-State: APuU4Z+N44q7eEmOU9TDqxjAx6oHFWOjgMrBdU7pVfeORqWr7j2oUz9s
+	D34JKkfJKu9jexF81Oc+c/tQfwPvIInb2/rBxhw/ziVIZlwU933zJcOpltCPavFsvHc=
+X-Gm-Gg: AYBFou2DPFOeui8T+43CAIzPju18rysV2H/YNWAhjEtAfrGSeF4DxCxQhOr7kEMc2k1
+	3Aik42eoQ/MT6XAQsLFv274sUH/v2BvZKAcAH34HvhKioM9N08mjkYzeN7Oe5vmzMuhVDwUJtgI
+	v48kIVnexwe+eQ3GT4qYBSGVawGzR7Tu1Qf6L6rwNHaWPXLVXKHigVO1wXXsbZ2621ebBNS67yi
+	TRVpj+uXVABgjGJPNRUi5h9I0OFCRS535jv8YIpY3ShMMRsXsT+MuLs+k8st8d6882rAoEZOcG/
+	+oyIx6em6mTYfLOBN6x7KF+z7GHlQm5pdsf27mYEant4NcRjUQrha7HQwRzy6k7dHQKE4nup+F9
+	oICDI5GT+SKwxwZNWiPrrp2C7qzZXzKpXIyz9F3dnIk7gvWL2ljygaqpaS+S9wvDbWfBnUvs90l
+	3sMK+C9RIK7nCCSnXwj/mZEf7p5Q3ovWBQuSbVD7LyteZemTiT7BIOPFN2alua9p0jQmX/9l3bq
+	I0BzKFTzOA86MZRk6dTxtnAHMchhS3Gw8eAxmB9UbWgwbHrNXsNOY2dMgACSR8D9LqSJzfLzxeW
+	o6lHLyCHBBZVZQjsk9ObsdXIScDtdRwwd9ZZ00I=
+X-Received: by 2002:a05:6512:2342:b0:5bf:d738:a5a9 with SMTP id 2adb3069b0e04-5bffa1653b7mr666170e87.22.1793882152273;
+        Thu, 05 Nov 2026 04:35:52 -0800 (PST)
 Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bff38ab170sm875824e87.16.2026.11.05.04.32.54
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bff38ab878sm806136e87.21.2026.11.05.04.35.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 04:32:54 -0800 (PST)
-Date: Thu, 5 Nov 2026 13:32:49 +0100
+        Thu, 05 Nov 2026 04:35:50 -0800 (PST)
+Date: Thu, 5 Nov 2026 13:35:46 +0100
 From: Jiri Pirko <jiri@resnulli.us>
 To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
+	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
 	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
 	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
 	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
 	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
 	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
-Message-ID: <aux01NUd85PabtZu@FV6GYCPJ69>
+Subject: Re: [PATCH RFC 14/20] attestation: Add the base family specification
+ and generated files
+Message-ID: <aux4F5Fj1VjSwUb-@FV6GYCPJ69>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-18-jiri@resnulli.us>
- <auuDcABX27EeTApl@e129823.arm.com>
- <20261104194622.GC3889730@ziepe.ca>
+ <20261015145053.3664509-15-jiri@resnulli.us>
+ <179302367452.58760.3782556786585774917.b4-review@b4>
+ <auSxxPM5z8BzgNm3@FV6GYCPJ69>
+ <20261104175436.GZ3889730@ziepe.ca>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -108,75 +109,50 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104194622.GC3889730@ziepe.ca>
+In-Reply-To: <20261104175436.GZ3889730@ziepe.ca>
 
-Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
->On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
->> [..snip..]
+Wed, Nov 04, 2026 at 06:54:36PM +0100, jgg@ziepe.ca wrote:
+>On Fri, Oct 30, 2026 at 04:05:13PM +0100, Jiri Pirko wrote:
+>> Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
 >> 
->> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
->> > +					       const struct ctlv_cursor *request,
->> > +					       struct attestation_evidence_request *decoded,
->> > +					       struct attestation_evidence_object_request **objects)
->> > +{
->> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
->> > +	u32 challenge_length;
->> > +
->> > +	decoded->challenge =
->> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
->> > +	decoded->challenge_length = challenge_length;
->> > +	if (challenge_length < caps->min_challenge_length ||
->> > +	    challenge_length > caps->max_challenge_length)
+>> [..]
 >> 
->> Hmm, I'm not sure whether this check is required for
->> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
+>> >> +
+>> >> +/* attrs of group cap */
+>> >> +#define _CTLV_ATTESTATION_ATTR_CAP(_attr) \
+>> >> +	_CTLV_ATTESTATION_ATTR(CTLV_ATTESTATION_GROUP_CAP, _CTLV_ATTESTATION_ATTR_CAP_##_attr)
+>> >> +
+>> >> +enum _ctlv_attestation_attr_cap {
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_EVIDENCE = 1,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_MR,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_MIN_CHALLENGE_LENGTH,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_MAX_CHALLENGE_LENGTH,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_MAX_TOTAL_OUTPUT_LENGTH,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_MR_FLAGS,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_OBJECT,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_BLOB_CLASS,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_FORMAT,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_REPRESENTATION,
+>> >> +	_CTLV_ATTESTATION_ATTR_CAP_MAX_LENGTH,
+>> >> +};
+>> >> +
+>> >> +#define CTLV_ATTESTATION_ATTR_CAP_EVIDENCE _CTLV_ATTESTATION_ATTR_CAP(EVIDENCE)
+>> >
+>> >I feel like there are too many layers here for a code generator..
+>> >
+>> >enum ctvl_attestation_attributes {
+>> >   CTLV_ATTESTATION_ATTR_CAP_EVIDENCE = CTLV_ATTR(CTLV_FAMILY_ATTESTATION, 2, 1),
+>> >}
+>> >
+>> >Do the intermediate constants add anything?
 >> 
->> for example, if the provider provides two evidence:
->>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
->>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
->> 
->> might challenge is reuiqred for generating the token
->> and this would be marked at min/max_challenge_size in evidence_cap.
->> 
->> However, in case of eventlog, it wouldn't require challenge.
->> for example, TPM event log or CCEL event log.
+>> True. I originally had it like you suggest, I changed to enums to avoid
+>> the explicit numbers. But you are right, does not add anything.
+>> Changed back.
 >
->Right
->
->> Do we need some field on attestation_evidence_supported_object whether
->> it requires challenge or not and applies this sanity check per the object?
->> 
->> Otherwise, to get eventlog, it would need to send *dummy* challenge
->> always.
->
->I wonder if we should have two interfaces here for signed and unsigned
->evidence? It would be clearer for userspace then when it needs to
->provide a challenge or not.
+>I was also thinking that having the explicit numbers makes it more
+>robust if someone does backport. We should try to have everything
+>explicitly numbered in these generated files to prevent subtle errors
+>like that.
 
-Isn't the challenge field provided/not-provided enough?
-
-Currently on the introspection side, device-get op would provide
-challenge-lengths array:
-
-        evidence?:
-          challenge-lengths[8]:
-            length?: uint(..4096)
-            min-length?: uint(..4096)
-            max-length?: uint(..4096)
- 	  objects[16]:
-            blob-class: evidence-blob-class
-            max-length: uint
-            blob-instance?: uint(..u32-max)
-
-I think it would make sense to have challenge-lengths array per object:
-
- 	  objects[16]:
-            blob-class: evidence-blob-class
-            max-length: uint
-            blob-instance?: uint(..u32-max)
-            challenge-lengths[8]:
-              length?: uint(..4096)
-              min-length?: uint(..4096)
-              max-length?: uint(..4096)
-
-Then the unsigned object would just simply have challenge-lengths empty?
+Okay.
