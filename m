@@ -1,98 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887380;
-	b=kuY+CNmuU5KtQ0oGliSInJm8r7LQB+e0XOsMrj+1Bq9BdwSL5vBVztNDU/r+6ctSrUfd
-	 dmJ9SRCysfO8Y5zgjgRYXugBurkomtP90kER7/2InkhDehD+7hTRemSMrhH5KF24DeyH0
-	 QgTlcp5rDy37DHLIPeLrPz/ilkE+qEBfRTESCqE6YbcanC3ItXf+lDXjo6a7flf6stU6A
-	 RliKo2VIfF5fIcyKTxOVJ2nbppxdtDs+eGY4hlmG0ycBzkxX/vAU115y0StAb7UypyfyI
-	 R3gHQnlXqPAeJwsYH4woo+HZL5EeR6iwYFi3njBSs30C5VPNDIOf5KkY8RonLOTtGrQ==
+	t=1793890221;
+	b=ZXHm4Vdum6lcEAB0Xojqws2inELEQBDrjnqRCPWkHMRhfjbqFt+Mdb69BTd2GCFWsH5F
+	 N41uxeazQrzrZ9P9HxeiVRcEV+Z1BQjGjKn9ptyHgL8wKnE1KNU9rJmiCHDHUiMqCid5P
+	 5dAWRMuvr4uawT4mRyFj/eL0hHe03GefXAuSnIxgJUVUNCjYwm/WoRGutwH5SIWGLAWDu
+	 ulT9SSd+iFMHTK1atsQGXXHWILIsmr/lSG3XAhH2a5hTnbAWdOORDB4frEi4SoQfSvWMl
+	 KhZb74sBIl7LoJvlE4RuoB0nqI8fgvSOmt24yOt7I8ZJ/bFC18TvtspjVxj/kO+CWHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887380;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793890221;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
-	b=fSOuSYl+8rDHKAgvf1wpe6ntwJOFQzJCU4imj+CjWM4kYjSM0dDHhYxvzxVJvG1XFabr
-	 F0Xq5sdiGmDb4Qzn3439AtscZ2dlvxcUqTXgbUKqOYSGApnIUSA7/qXHIvEYWwanxTlwb
-	 a+zX6ssfdvrdjik9tX305PKjkAlxnuAIKPPELVENkXzlCdwagIL9/Y4uI0RLutJT2Mo67
-	 doIfxHgjiQjVo1vc1PpyfWmlm2M+fotOuTOyWMwZCRFWOY3OhjDo7epOLGJYVOsSjM086
-	 8HNhhtajcKINOmhSMiNqjE82h5fvwklx5gCrPaYop3Ex83tjZMLUlv4Yg5GgFmJl7eQ==
+	bh=zngDh/hn+d+IfbRxuQD9941zh0dh76DUZmGv37oN1yw=;
+	b=xDyJJtbIue4LpXZ4ZZB2ImKqOSAdb43E9WTUzjol2UIGEwUy9tpL+ownRbaPkGnEjzje
+	 s7PbbTuFSFtneN5mkFS2cj/Ej5BJ4JiWj34e3OlVY5pATjnxkwzhWTQPFIdx8A4wOZqZ0
+	 wNAfwyaP/UGziJE12SSG9VdGZaIP/U4UItjjX71VsZmcenIeyPhe1KcjHeOBYcQjZLWsN
+	 iWwKDIwO0SLCW5jsdfwIy5iI5IESyrlBSuvBRb/fyVgKSTcbb6/kPwpNehjZ+XcERnu11
+	 fUYHeMGI8B3CwVdwriiqq9e7SO1HjJkWUHmct9wDBE3y/H0fI5fh/IaKcJIO4YEdydg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	arc=none smtp.remote-ip=209.85.221.48
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CaH54igg;
+	arc=none smtp.remote-ip=192.198.163.7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3025606D80A
-	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 14:02:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3025606D80A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-491f34b4e0fso244208f8f.2
-        for <linux-coco@lists.linux.dev>; Thu, 05 Nov 2026 06:02:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793887377; x=1794492177; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
-        b=Eudi1wpVJzDTGP61iqqj5/1G3gdaYgvewNYl4hnQDWGXobREX1AGczC1cfZibJL/kb
-         62i4qWaqbLdYzPdfXhj6b3G0QDSpi4qwnAD1O/cV+H0WdoZv0ngBhDikKHLd9vKZg72F
-         eqzscLwQqSwFBaAad5cQCqlNSp9jaJlFlqkqf3KI4t785Wm9vP6T1Ueb84CPtc9pXH0g
-         1yeKOQq8sIe6p09P2Tqq8XyIwY3vu0TEKNLkAbSJ7EaLv5KMaQv7O0WlswuduV7V9ska
-         yPaWTrn6hzH/34Y6djvskMchdoXmLxr3yOgCP7oJYRmZ67HnuN34nr2e7CV+LHyk2k70
-         2LIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793887377; x=1794492177;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
-        b=pTFZN8lhzt73fGfQhMbQ5edDp8DpwJvFVrA1j3yCfHB9HGA+WUaFd9cLPRxbPZgck8
-         y6NiiKsjW1iQq6G+T8ltgScjJSdX0pqeTH3luxLFwTx2BkjOD4QaGHVYHBMmLIaVOUpB
-         Yy2lxQ7xQJ88luWZlA9jbR1p1eJqVC1d1QgU85I3GNKSbrinN62rfvvsZgXcvjwl7yx/
-         FvpilxduBuYc0r9o/mEmBR9MdCrhDHZqEWAJZ4zb3BG2PDBS/4cArr4yU2QcUtcf2IKY
-         S8OvAjpMXV654zdnVkpeYZBalKEKy7c4wATPH1U5rycI7y1nD/xuF3dpT+wMjrb+WPn2
-         B+Bg==
-X-Gm-Message-State: APuU4Z/GxvxhL6EeRgMyGniG9liGOSJs91+0thWqbkpJxzu9Envbroey
-	UKBlGmGyQLHdW3GLr0faPQsaFlFhQpNPnM4nEvlG4Q+c5DHBhMnk1dgOukMSPgWDJCs=
-X-Gm-Gg: AYBFou0M7vjBvOAfNqiGPmHjeppuKmpktgnyznOCKAPgu/4uZxOULElSgigmHBniDPt
-	v9iqkLTToGRMsWfuPL5SzM55EgEYF9cV19t5rvD2ZcOUB+TxsUysHZ/X0OhrKOEguPRn9QfSovN
-	iujmi3buaGZ13/ThGJsOQtnzZGjjCmLAVpjId7SYgvHBS49seEFmpm7Rv4KOqmpFagJ2NH+dfUW
-	JCC6wkR+g/17AktTTHTN17lyYBJJ3noOA+mzYnnOJO+oaONcOulCXkLGyqElFB9jeIgnNKBhoF6
-	qlx3LUlMMx+VI3kTJM8nTh9Bdx9sBIDuPM5Ge3PfQjQPHYL+SyYBiK/Td30+SIq/XftP00ftx0Y
-	239e2lpRJdgT2dAUFQR7Mow/iYVREr++6w207M6Ri55I8YqNmoFjvboQ1M0XV94XD/MMuH8Fagd
-	TDqWmBwE3/KPA+RoRA9D5knyq21a7cr0zDJZEW0WiQSzsZP4BU1sYbnSvCoMyvq0XRhZuJNe8Og
-	fcglus/23tak9YuWg4bsL++wRHAEhJX3D5G8KrpcLQgMzOd6LsLVOgEtFKvrou6kW3UgACHJG2E
-	Dohbcjf9dp1IJcXwnjTUaiFUMYFEFM1Rie+qEjM=
-X-Received: by 2002:a05:6000:310f:b0:48d:f95e:6e8 with SMTP id ffacd0b85a97d-48e6e2c3586mr39104058f8f.1.1793887376849;
-        Thu, 05 Nov 2026 06:02:56 -0800 (PST)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fec8d8e29sm10937240f8f.19.2026.11.05.06.02.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 06:02:56 -0800 (PST)
-Date: Thu, 5 Nov 2026 15:02:52 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 14/20] attestation: Add the base family specification
- and generated files
-Message-ID: <auyKhc02JmfXNiMe@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-15-jiri@resnulli.us>
- <179302367452.58760.3782556786585774917.b4-review@b4>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A559606A32C;
+	Thu,  5 Nov 2026 14:50:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A559606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CaH54igg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793890220; x=1825426220;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pR76mBghhXMOKm2t2fE0Nbyxh5lA9YdTCI2eN6g0oNY=;
+  b=CaH54iggLRDvQu+fJy5qc9rHlSnF6nsEVdBBbu3Ar6gIvJuB8AHBpkPM
+   kCA7K7QuaiBsHFbRWy9TTYTaWKa3D7Zt92JuZ/ksDLmMqCKsttD1DpZom
+   pkVIgwhUNfwLRm54cVXI0rSfvLC036msgNFCu8F4xD0jLJU64AJ8/51Qu
+   6BabFNr6P1nwSVwlm3ZlksDHdPa8gS8Nm3pLNYVRLO9CytwaN93oP88zt
+   CMOm2lBojG4H/vZuJGRvjmXoCkdBqh1xbiG8vEPM9udN0dDqdjQTboPRM
+   QleP0cr+b4qYN72v4nHfL9cyupgrhozEzja8wYoOC23dG7xOG85PP0/Ux
+   g==;
+X-CSE-ConnectionGUID: 8nFN23+4ToK1NBAfvUWTRg==
+X-CSE-MsgGUID: k24zrZWCRV6iiH0/lgrymQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2551310"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2551310"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 06:50:19 -0800
+X-CSE-ConnectionGUID: /dk8MTNSRPGYLMVUiJXO/Q==
+X-CSE-MsgGUID: pVjBF9RvTTCjveglukFKDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="7151193"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 05 Nov 2026 06:50:13 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xOyn4-00000000mLb-00W9;
+	Thu, 05 Nov 2026 14:50:10 +0000
+Date: Thu, 5 Nov 2026 22:49:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v8 11/15] iommufd/viommu: Select vIOMMU operations before
+ allocation
+Message-ID: <202611052227.TxHIjde3-lkp@intel.com>
+References: <20261104161632.3547423-12-aneesh.kumar@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -104,84 +108,45 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179302367452.58760.3782556786585774917.b4-review@b4>
+In-Reply-To: <20261104161632.3547423-12-aneesh.kumar@kernel.org>
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
+Hi Aneesh,
 
-[..]
+kernel test robot noticed the following build warnings:
 
->
->evidence-get:
->  request:
->    challenge: binary
->
->Binary, blob, raw? Lots of words for the same idea here..
+[auto build test WARNING on 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4]
 
-binary is inline field, blob is va/memfd/dmabuf using field. I want to
-keep these to "types" of TLV separate.
+url:    https://github.com/intel-lab-lkp/linux/commits/Aneesh-Kumar-K-V-Arm/PCI-TSM-Move-core-code-into-its-own-directory/20261104-214618
+base:   6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+patch link:    https://lore.kernel.org/r/20261104161632.3547423-12-aneesh.kumar%40kernel.org
+patch subject: [PATCH v8 11/15] iommufd/viommu: Select vIOMMU operations before allocation
+config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20261105/202611052227.TxHIjde3-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261105/202611052227.TxHIjde3-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611052227.TxHIjde3-lkp@intel.com/
 
->
->    objects[]:
->      blob-class: evidence-blob-class
->      format: string
->      representation: evidence-representation
->      data: output-blob
->  reply:
->    object-lengths[]: uint
->    mr-generation?: uint
->
->=======
->
->mr-get:
->  request:
->    id: uint
->  reply:
->    name: string
->    supported-hash-algorithms[]: uint
->
->No definition what these numbers are. They should be TCG2 defined hash
->algorithm constants I guess. Why not have an enum here for them?
+All warnings (new ones prefixed by >>):
 
-it's enum hash_algo - I will make it more explicit including existing
-c enums into yaml.
+>> drivers/iommu/amd/iommufd.c:81:40: warning: unused variable 'amd_viommu_ops' [-Wunused-const-variable]
+      81 | static const struct iommufd_viommu_ops amd_viommu_ops = {
+         |                                        ^~~~~~~~~~~~~~
+   1 warning generated.
 
 
->
->    caps: mr-caps
->    register-index?: uint
->
->So we get a string and a small integer for every MR? Like PCR10 and 10
->for TPM?
+vim +/amd_viommu_ops +81 drivers/iommu/amd/iommufd.c
 
-Yes. The name is the platform's and the index is the hardware's number,
-where it has one. TDX has mrtd without an index and rtmr0-rtmr3 with
-0-3. A TPM would have pcr10 and 10.
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  76  
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  77  /*
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  78   * See include/linux/iommufd.h
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  79   * struct iommufd_viommu_ops - vIOMMU specific operations
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  80   */
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15 @81  static const struct iommufd_viommu_ops amd_viommu_ops = {
 
-
-[..]
-
-
->
->=======
->
->mr-extend:
->  request:
->    id: uint
->    values[]:
->      hash-algo: uint
->      data: binary
->  reply:
->    generation: uint
->
->Is this extend 'you give me an exactly sized data that is a hash' or
->'you give me data and I hash it' ?
->
->TPM/etc do both, there are good reasons to have both, and the latter
->is more flexible in supporting crypto agility..
-
-The former. I have a patch in a queue that adds the latter: mr-extend
-takes either a digest per bank or the data, as an input blob, which the
-kernel hashes with the algorithm of each bank, and the reply returns
-the digests the banks were extended by.
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
