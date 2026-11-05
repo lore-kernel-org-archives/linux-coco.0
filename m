@@ -1,81 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793886756;
-	b=YoJcELsWnwgPgxhzBS8i3vB+sDQw07ZOvlhO2bQKBfalNUAPseGcQefciwZ2aO/JZnzT
-	 p4W286lcO5glbcBX+63kfxaA0yQzyrWMvU8EGAamOmjYj8XfZ8gBWd3uTGZwvN9r05ZcL
-	 8sXeRAkJsV2Gdo3/t/3dAXLUVbz0MZGYLY9JoolM2hZfpC8MiyhQw99pVkQMFuwKK0pT2
-	 ZJ+ji534v0I/JCv+8kAqFSmxQkhNrhrhu5ZWygK6pP9PN5k/b0RsGWbBeyyJ7cBinB7Rb
-	 4kP1Q0wTk0uzt1Z4SFeoNUrcHasf39TDpv2OuyvTsSqpXi4DI1PAQBm9l8HE0aqp1XQ==
+	t=1793887380;
+	b=kuY+CNmuU5KtQ0oGliSInJm8r7LQB+e0XOsMrj+1Bq9BdwSL5vBVztNDU/r+6ctSrUfd
+	 dmJ9SRCysfO8Y5zgjgRYXugBurkomtP90kER7/2InkhDehD+7hTRemSMrhH5KF24DeyH0
+	 QgTlcp5rDy37DHLIPeLrPz/ilkE+qEBfRTESCqE6YbcanC3ItXf+lDXjo6a7flf6stU6A
+	 RliKo2VIfF5fIcyKTxOVJ2nbppxdtDs+eGY4hlmG0ycBzkxX/vAU115y0StAb7UypyfyI
+	 R3gHQnlXqPAeJwsYH4woo+HZL5EeR6iwYFi3njBSs30C5VPNDIOf5KkY8RonLOTtGrQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793886756;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793887380;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=QwmQA1a2QhYSOPcBSTBe/t1Xyv+zC9XEOaQnTg/X7XI=;
-	b=YnDY88cEWO/S+aEw2/scaIqU3y4QG5C4D7FkURnAJ7XhzvW2s4GSicmhMgInbhBmtss7
-	 I0n/t6g7a+TeUt20et7bjwWnOCPUjPbN/bw55GNKJcjhlGTST6UglaxmDmTFCmtm7SYEM
-	 9LUlKKjlNix9jVz0vXOeUBkUK7Zgk3tPYsOGfVYq8RmmBOlFJYASo1gk0gwO+rfKddXj0
-	 I3hRU0O8ByZeH6AjQxs+JqPsCz+enBCQyZxmfCCDyWz052sSIvXkTah1hBbsjcJ2fyhVc
-	 6bn5mqayNebyISCGuRfYr53QfIg3QbKVX/j4mDkHWgkG/wWrAdOuznpR4UohP1jvpPw==
+	bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
+	b=fSOuSYl+8rDHKAgvf1wpe6ntwJOFQzJCU4imj+CjWM4kYjSM0dDHhYxvzxVJvG1XFabr
+	 F0Xq5sdiGmDb4Qzn3439AtscZ2dlvxcUqTXgbUKqOYSGApnIUSA7/qXHIvEYWwanxTlwb
+	 a+zX6ssfdvrdjik9tX305PKjkAlxnuAIKPPELVENkXzlCdwagIL9/Y4uI0RLutJT2Mo67
+	 doIfxHgjiQjVo1vc1PpyfWmlm2M+fotOuTOyWMwZCRFWOY3OhjDo7epOLGJYVOsSjM086
+	 8HNhhtajcKINOmhSMiNqjE82h5fvwklx5gCrPaYop3Ex83tjZMLUlv4Yg5GgFmJl7eQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	arc=none smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	arc=none smtp.remote-ip=209.85.221.48
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE70606D80C
-	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 13:52:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DE70606D80C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3025606D80A
+	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 14:02:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3025606D80A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so13702045e9.2
-        for <linux-coco@lists.linux.dev>; Thu, 05 Nov 2026 05:52:34 -0800 (PST)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-491f34b4e0fso244208f8f.2
+        for <linux-coco@lists.linux.dev>; Thu, 05 Nov 2026 06:02:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793886753; x=1794491553; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1793887377; x=1794492177; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=QwmQA1a2QhYSOPcBSTBe/t1Xyv+zC9XEOaQnTg/X7XI=;
-        b=yGMUWYEd03WwhbsSMJmUFrXXijWMst5mGPJdrOwVgiCKwzxGhnas1193EJBHSKLVYC
-         fS9oFE/1CGGSs9ACJzPIOSJvvUEE9eaaMxKXx/3uUHiWiskead3vXY3MZf9npjlyhXxw
-         laELVIp3Ufptvy9ZdXATQwOQn0kIUlngNAslAQGZ8H/5/PjhB6ycGyNXAtnDGBqixitD
-         sInbuNv9GsXprM4uy/mrmqOZsjLW49NET+ZVeuSgqZceEjt9lAVHxWgVeqFK87rmuZrd
-         nTvvk0x0uW3zFp479OejBEgLEnMjOkql7qsVs2mDa91ps7iMz76S5oXijjYAaVaj9buI
-         kTWA==
+        bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
+        b=Eudi1wpVJzDTGP61iqqj5/1G3gdaYgvewNYl4hnQDWGXobREX1AGczC1cfZibJL/kb
+         62i4qWaqbLdYzPdfXhj6b3G0QDSpi4qwnAD1O/cV+H0WdoZv0ngBhDikKHLd9vKZg72F
+         eqzscLwQqSwFBaAad5cQCqlNSp9jaJlFlqkqf3KI4t785Wm9vP6T1Ueb84CPtc9pXH0g
+         1yeKOQq8sIe6p09P2Tqq8XyIwY3vu0TEKNLkAbSJ7EaLv5KMaQv7O0WlswuduV7V9ska
+         yPaWTrn6hzH/34Y6djvskMchdoXmLxr3yOgCP7oJYRmZ67HnuN34nr2e7CV+LHyk2k70
+         2LIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793886753; x=1794491553;
+        d=1e100.net; s=20260707; t=1793887377; x=1794492177;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QwmQA1a2QhYSOPcBSTBe/t1Xyv+zC9XEOaQnTg/X7XI=;
-        b=dxGuQNRS6CN22ayPDS4lHt1Y8UiW3RVncrNevnBAxsejPH/Sdu6TvIvdEiLiy5uAdS
-         1uFvN1M8BnvY+qTs6hSdwVUkHJ/1Mx4jIjOYZL1+YsxeFsKxpNrRU2lJa1Rw6jrJJXUV
-         Iy5HDofBfscEILNod1ZmJ2SgWQ2u/+QV1JisttxLEpUw+MXNpnotsCNMEa+00SaTXNvB
-         hxqKXpZZTBU6HTepK46mSo64eBkcUoFBNX+wCm5juCv2qmYmZIYpsHbZhQiWN3VzP/WI
-         WB7nHmG+oXIt05k5ijt6vGq6Leb3kOtnFPOmSL6kAMHoFPXN04g7fL/lzwbqJjuFuSw3
-         LwBQ==
-X-Gm-Message-State: APuU4Z+hNSMooRmTQKTSGjVoV0d1FhpjYu3xxuqcMlkthjVVHFK+qBti
-	bNXvs+CPuBlyQe2WRYp1sShgNQbXLOysKYCM2Hcz1eyjaISBbrncQ4lKAK4si/LXqug=
-X-Gm-Gg: AYBFou3clR9HEepnU4tVSVN2U3d2YYuR91DSh7vwIn5LwjnM13VSnmccNskSWzriASq
-	OzM1QhYc+K9CH3kMvl+SaaMvrFvNjpydxvhBGpMecuFyLZ1pFvjFA5kgWD5ovfMGqNmsPXXYFuC
-	sNw4Ar0J4htnODRZbQMD6KRmebZhjX1Ji7HoqwIFVEASOWKGeqmD6VIQUTdK4K/K+YR/fES7y9S
-	RSQ5NmUGpivePv+ZS6pl4G998DpNa++MW6emdKvfAhzgsgNdFWol2bYD1L5Q6gL/RBqpCQIZUwy
-	apVxA3y8gqEKRA24TvPxbEkRF1pfX7zsTVbxz1q6siWW3g2UAnejQ8NsUNg+5FT2UAxthH1PqS5
-	D/x695f4u/V2sr0D3LFHwqefNs6C4+85OYImIfd2cApwpEG0Xg6AGuM09bmRDn0OHTQ9IJ0gMby
-	sXvtUeoEeFwRjYDFE/os7nr2+Ntuo8XV4l7KGvksyl8dL10u2L6Jj2AQav1HFYk3ZkXxbWsbbyg
-	hswkGIssnBRFovaw1jJ7GngpAH+sV705MyyiSw+FQ9EDt6iMF18lb4GZG5/Jzn9lpSHjEqFKg5f
-	BonwI5ewraU1VDNBCgdbkHlh+VilZSnWqABq9dw=
-X-Received: by 2002:a05:600c:83c5:b0:4a1:88de:9e8b with SMTP id 5b1f17b1804b1-4ac17191074mr383781755e9.5.1793886753121;
-        Thu, 05 Nov 2026 05:52:33 -0800 (PST)
+        bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
+        b=pTFZN8lhzt73fGfQhMbQ5edDp8DpwJvFVrA1j3yCfHB9HGA+WUaFd9cLPRxbPZgck8
+         y6NiiKsjW1iQq6G+T8ltgScjJSdX0pqeTH3luxLFwTx2BkjOD4QaGHVYHBMmLIaVOUpB
+         Yy2lxQ7xQJ88luWZlA9jbR1p1eJqVC1d1QgU85I3GNKSbrinN62rfvvsZgXcvjwl7yx/
+         FvpilxduBuYc0r9o/mEmBR9MdCrhDHZqEWAJZ4zb3BG2PDBS/4cArr4yU2QcUtcf2IKY
+         S8OvAjpMXV654zdnVkpeYZBalKEKy7c4wATPH1U5rycI7y1nD/xuF3dpT+wMjrb+WPn2
+         B+Bg==
+X-Gm-Message-State: APuU4Z/GxvxhL6EeRgMyGniG9liGOSJs91+0thWqbkpJxzu9Envbroey
+	UKBlGmGyQLHdW3GLr0faPQsaFlFhQpNPnM4nEvlG4Q+c5DHBhMnk1dgOukMSPgWDJCs=
+X-Gm-Gg: AYBFou0M7vjBvOAfNqiGPmHjeppuKmpktgnyznOCKAPgu/4uZxOULElSgigmHBniDPt
+	v9iqkLTToGRMsWfuPL5SzM55EgEYF9cV19t5rvD2ZcOUB+TxsUysHZ/X0OhrKOEguPRn9QfSovN
+	iujmi3buaGZ13/ThGJsOQtnzZGjjCmLAVpjId7SYgvHBS49seEFmpm7Rv4KOqmpFagJ2NH+dfUW
+	JCC6wkR+g/17AktTTHTN17lyYBJJ3noOA+mzYnnOJO+oaONcOulCXkLGyqElFB9jeIgnNKBhoF6
+	qlx3LUlMMx+VI3kTJM8nTh9Bdx9sBIDuPM5Ge3PfQjQPHYL+SyYBiK/Td30+SIq/XftP00ftx0Y
+	239e2lpRJdgT2dAUFQR7Mow/iYVREr++6w207M6Ri55I8YqNmoFjvboQ1M0XV94XD/MMuH8Fagd
+	TDqWmBwE3/KPA+RoRA9D5knyq21a7cr0zDJZEW0WiQSzsZP4BU1sYbnSvCoMyvq0XRhZuJNe8Og
+	fcglus/23tak9YuWg4bsL++wRHAEhJX3D5G8KrpcLQgMzOd6LsLVOgEtFKvrou6kW3UgACHJG2E
+	Dohbcjf9dp1IJcXwnjTUaiFUMYFEFM1Rie+qEjM=
+X-Received: by 2002:a05:6000:310f:b0:48d:f95e:6e8 with SMTP id ffacd0b85a97d-48e6e2c3586mr39104058f8f.1.1793887376849;
+        Thu, 05 Nov 2026 06:02:56 -0800 (PST)
 Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b4104d600fsm127121635e9.0.2026.11.05.05.52.32
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fec8d8e29sm10937240f8f.19.2026.11.05.06.02.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 05:52:32 -0800 (PST)
-Date: Thu, 5 Nov 2026 14:52:28 +0100
+        Thu, 05 Nov 2026 06:02:56 -0800 (PST)
+Date: Thu, 5 Nov 2026 15:02:52 +0100
 From: Jiri Pirko <jiri@resnulli.us>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
@@ -89,7 +89,7 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
 Subject: Re: [PATCH RFC 14/20] attestation: Add the base family specification
  and generated files
-Message-ID: <auyG1AnzpjLdOtpR@FV6GYCPJ69>
+Message-ID: <auyKhc02JmfXNiMe@FV6GYCPJ69>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
  <20261015145053.3664509-15-jiri@resnulli.us>
  <179302367452.58760.3782556786585774917.b4-review@b4>
@@ -110,6 +110,29 @@ Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
 
 [..]
 
+>
+>evidence-get:
+>  request:
+>    challenge: binary
+>
+>Binary, blob, raw? Lots of words for the same idea here..
+
+binary is inline field, blob is va/memfd/dmabuf using field. I want to
+keep these to "types" of TLV separate.
+
+
+>
+>    objects[]:
+>      blob-class: evidence-blob-class
+>      format: string
+>      representation: evidence-representation
+>      data: output-blob
+>  reply:
+>    object-lengths[]: uint
+>    mr-generation?: uint
+>
+>=======
+>
 >mr-get:
 >  request:
 >    id: uint
@@ -119,43 +142,46 @@ Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
 >
 >No definition what these numbers are. They should be TCG2 defined hash
 >algorithm constants I guess. Why not have an enum here for them?
+
+it's enum hash_algo - I will make it more explicit including existing
+c enums into yaml.
+
+
 >
 >    caps: mr-caps
 >    register-index?: uint
 >
 >So we get a string and a small integer for every MR? Like PCR10 and 10
 >for TPM?
+
+Yes. The name is the platform's and the index is the hardware's number,
+where it has one. TDX has mrtd without an index and rtmr0-rtmr3 with
+0-3. A TPM would have pcr10 and 10.
+
+
+[..]
+
+
 >
 >=======
 >
->mr-dump:
->  request: {}
->  reply:
->    items[]:
->      id: uint
->      name: string
->      supported-hash-algorithms[]: uint
->      caps: mr-caps
->      register-index?: uint
->
->
->This returns all of the MRs at once?
->
->=======
->
->mr-read:
+>mr-extend:
 >  request:
 >    id: uint
->  reply:
->    generation: uint
 >    values[]:
 >      hash-algo: uint
 >      data: binary
+>  reply:
+>    generation: uint
 >
->Get, dump and read? I don't get it
+>Is this extend 'you give me an exactly sized data that is a hash' or
+>'you give me data and I hash it' ?
+>
+>TPM/etc do both, there are good reasons to have both, and the latter
+>is more flexible in supporting crypto agility..
 
-This is another netlink-influenced terminology. "get" fetches one object
-info, "dump" fetches all objects info. "read" reads a single MR.
-
-I'll remove get and just have dump accepting id as a "filter".
+The former. I have a patch in a queue that adds the latter: mr-extend
+takes either a digest per bank or the data, as an input blob, which the
+kernel hashes with the algorithm of each bank, and the reply returns
+the digests the banks were extended by.
 
