@@ -1,119 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.40
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793892709;
-	b=lVgF/fAz1fYfmQTqslr4RitumuOt9MWXDU2KfmrrcFAyjqWQd2d4Vo0GUlr6iHQFTNhm
-	 WYyXar4fIvJaeEiB0x3PsNuFj2CtBFerjz8Bc3dYnN8wzGxdyAsDv5vSL5kVT06k47zI9
-	 6ClJPUTYX/ekHybO0biK2LNHpy0vO15GOEo7jtA3OX+iwwWH8acmpOIaPreEA2ZXBiZZ7
-	 aPDgKQWB3HCMw+KC/JZ+qIYrFpMDaxOYjpKmaCs+hn9ALENJjepFb0YoxisbEVkt5rggM
-	 SGWctBtbDYeNAp57p7looYWmdyIp+BEMcIsh9hKRJArsrlEZXNYntI3U932EJfK2bdw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793892709;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 Content-Type:X-NV-OnPremToCloud:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=qDGsxnsID9JABLE6+VvkbPhVMdX+4zcbNLKGiAy6DMU=;
-	b=lTExhwQWYXzp7cE6szP7SktW3YgPgIhLNOZYhv7LWe9Fm2AEp2tw5gnSMgHyyw0LG0Dz
-	 bXplpbHWZFwFfi1Lo+SDGa6RupMehdrDFKm7a8/bQdYAPppusq0FADriJ5NYpergzaY5q
-	 FeuttwHG7ldX/yZsAoLl+9Hz3s23mUkB4NjG9VqSqaiOKxsuue0Przec59hFlzjpkU/N2
-	 mT1UfuoMD1Wi0weoqLTIW1+1M33bVwhkKBm2us0kTeS9jnBnzIinQsTC8pVS1PUNTQKnJ
-	 LFDfU8n/UeYGDj9uSQ83vV0pbwJl/rSizg8tnbbAGKKV4M9FAg1/9Tujp1aZURGQAhA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RZiCvPWa;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.40
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013040.outbound.protection.outlook.com [40.93.201.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86869606A330
-	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 15:31:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86869606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793893724;
+	b=HWP61r7xBx6hL2HmUoziWoOZi7aCrDcVlB9L2PZiZImlkh5n/+xdnkyAJQl08NE2wv6T
+	 ASr1JTv28mCDSfqsJsUuXGZn1kkrMqQoi+Xm/wwhIny7nBqlH1lDLQfgAARjjVM/bztja
+	 7w2N2wShvHLhHRfctB9aDAoBdO91U7sY+5g1qzONTvMdwmR8cif777IhFcozW7bL6PGCI
+	 sCWJvPwpaJqH3SuLYApw1fka2zqY6ZKds9pbGY+Ks1ka7joM3DqER91CAGPEtpfJDt2tt
+	 CpAysyun05uArOstZWwW8jRVkH8TIT0DgOj+WvK3915l6hGNJguwEHH/NC8oopR7RJw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793893724;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=6i6/L6hP11TjNe6WSkwFv8BJGRSRafQN6TY9DsiH1KM=;
+	b=InHoD6LSvgg/jZg+L4rPq4iBe5nBPKu5oeCCbRi/im1gAcWi07pMrDZyZG2QVLIfL3no
+	 1sfVGx17GnBxIoOCmHtNrUU7RcTO142g89/CjXmdtra7WMP2DZS55Qz1OYAUlQj3Vc6dY
+	 ekBVoZDP1cmgUtuQcVY7fAXOu4CCBxw2GoC9gkLhQpxp2Ro/MHXTt6n8JFz694GEyVrfC
+	 i1MkJ/fdHvs3z39jFDOISz/uULNKoyx+pHwV2TzI7nSkH+Ys5b6gQa3xJgKvWalfajLzE
+	 sIIIGmKJqQN/lv+FzH4WvVicQ+5XGaBOC6hTPbcN1pffQg98qdR3vpFuutPL3je1saA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hkHHixG5;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193B7606A329;
+	Thu,  5 Nov 2026 15:48:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 193B7606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RZiCvPWa
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nlIzZZ+L63ce18tJUjLtriLWLYxE5OXKfPQ7aFOCJypxwph8UxLPiNOE1jLO4rLGS23w6L9TqeXQx1fcpo/F73bydVKQx056pXFMM7/CifZqGl9YNwmAB0B+9qR5YKP+xy5Bz7LWVfRJ+AU2XOG+kwWnhYzTcjSQZRgqQTQpwUK2e+gtsMfCTu7Y9tNp91r79oimgxZ2IOkOQ7xJlSxfL4LmUr6tb4m05k68NPQPqHomy75B+P19XjFqmDHXbqxnXnmc3hr9ONupDlM0JBJFYWj9vA7wNFPrIR6rgzKdpT02Gjlse1H7S0vgShFvm8p/PjRN2bBs0tuhIlfrEkk6uA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qDGsxnsID9JABLE6+VvkbPhVMdX+4zcbNLKGiAy6DMU=;
- b=SfXXN2QmjzikDnxzU9OQvYI0QOwRyHtdJUOwN9CJ+GhJJpxwERB2jYnYF/gUG39SoICuxa/OJ1eHwQHNC7nE3FnygzV+yfnJcRDv8K54o9AQcpDMR/XbFWRnQ/UC90MJdXeIGcNiCyQDqIRujxR2Veq6X/MKuOvkEUMK76Yf/BMlLPYGSK6SxpE95o66XA3tHAmlBoZOAKxqtGnTW5cnV/jj4gZmUbVzkH9BpVMZqrlV4j68tO38tpNUZjIlpHoFoItoA8qD4gtYwjpeW5b04HzSOKDRa6Ji8fUR108OgH1E4u4StbEXmiNZptWV/IMDJse/xw2MeLKUHbA+FCn+Zw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qDGsxnsID9JABLE6+VvkbPhVMdX+4zcbNLKGiAy6DMU=;
- b=RZiCvPWaJyJbiZQHQ6ibHNNawDqSmi/lTfqMoC3wZ52irBpKTJksT03IMu78eTHN99vE1uo5oQlAZ2P9bk3aTzFrLt++Mnqpi94Z0dBLkQv7qO2C8uEClX0Kd2itUO/LejbQifVQYHjYfvT5mGj7tbRf/v7v1gOj5CuH5EEzhYhgqTi6RmcOqFBXbAWeqETr+aY7iAa4G3Pis+zL8odZBv90QDCOMxPqMeSaphzntM3ObBghUvRVnG3Co/iMteKZF5CWMSTWR00ILBS8/i0kjrl1w4N/NOUjFB1GvgYc0t1PKXdN1xiUy859ivTM6oMMxLk/Q4MJNfIBQw5TLISiLw==
-Received: from BLAPR03CA0030.namprd03.prod.outlook.com (2603:10b6:208:32b::35)
- by CH3PR12MB9079.namprd12.prod.outlook.com (2603:10b6:610:1a1::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 15:29:33 +0000
-Received: from BN2PEPF000044A8.namprd04.prod.outlook.com
- (2603:10b6:208:32b:cafe::10) by BLAPR03CA0030.outlook.office365.com
- (2603:10b6:208:32b::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.12 via Frontend Transport; Thu, 5
- Nov 2026 15:29:33 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BN2PEPF000044A8.mail.protection.outlook.com (10.167.243.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Thu, 5 Nov 2026 15:29:33 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
- 2026 07:29:11 -0800
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 5 Nov 2026 07:29:11 -0800
-Received: from localhost (10.127.8.12) by mail.nvidia.com (10.126.190.181)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56 via Frontend
- Transport; Thu, 5 Nov 2026 07:29:11 -0800
-From: Ankit Agrawal <ankita@nvidia.com>
-To: <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <dave@stgolabs.net>, <jic23@kernel.org>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>, <jgg@nvidia.com>,
-	<aneesh.kumar@kernel.org>, <aik@amd.com>, <yilun.xu@linux.intel.com>,
-	<iweiny@kernel.org>, <ming.li@zohomail.com>, <icheng@nvidia.com>,
-	<bhelgaas@google.com>, <smadhavan@nvidia.com>, <ankita@nvidia.com>,
-	<ilpo.jarvinen@linux.intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
-	<andriy.shevchenko@linux.intel.com>, <linux-coco@lists.linux.dev>,
-	<terry.bowman@amd.com>, <nik.borisov@suse.com>, <brads@mainlining.org>,
-	<lukas@wunner.de>, <rrichter@amd.com>, <gourry@gourry.net>
-Subject: [RFC PATCH v2 3/5] PCI/TSM: Derive the coherent-range IPA from CXL
-Date: Thu, 5 Nov 2026 15:29:07 +0000
-Message-ID: <20261105152909.53452-4-ankita@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261105152909.53452-1-ankita@nvidia.com>
-References: <20261105152909.53452-1-ankita@nvidia.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hkHHixG5
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4EEE2168F;
+	Thu,  5 Nov 2026 07:48:39 -0800 (PST)
+Received: from [10.0.128.250] (e122027.cambridge.arm.com [10.0.128.250])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 474E13F628;
+	Thu,  5 Nov 2026 07:48:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793893722; bh=lB8UsCIAPGMVGaSELcGsGRzGgsq10JYJohcCglxrA0w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hkHHixG5PB8dS3mjYoN0IxqQv+yNOs3Q1N6ez4t+U2Be4zD0SsGpCVhzPFeEXXUoR
+	 mF4Ahp56TdQH8gn0jTIXe6HyjVP15uONtg0JWq+2lawj7P2Uub4HyOdaiiEiXJUiit
+	 ioMcekzxpLZRzsrRtpk/KOLRFmHL1d2pPfb1NFRk=
+Message-ID: <18bb1899-c106-447f-80a7-1117040dc378@arm.com>
+Date: Thu, 5 Nov 2026 15:48:34 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -123,382 +53,360 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/11] KVM: arm64: CCA: Add basic infrastructure for
+ creating a realm
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-7-steven.price@arm.com>
+ <4304d0c7-2220-4add-9c71-e6dc6b4fbc11@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <4304d0c7-2220-4add-9c71-e6dc6b4fbc11@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A8:EE_|CH3PR12MB9079:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2dc598b-648f-4adc-8c07-08df3b5197dd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|23010399003|36860700016|1800799024|7416014|376014|56012099006|11063799006|261009223027099003|261102123227099003|261021123027099003|261022105027099003|261028144727099003|261102130727099003|261021121427099003|261026121527099003|261026140227099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	kIPzmFrnY/biY+tNHZzCHi/GsWAYgjXNLQwONhSUGbxSQ0PUJoLWqwItcpQDwLjflf66ij4uZetMeHN5/e1/ONKxRbSPPiyRHlDU6ZZAcQ8+FiXmi2lXPxfL5MSwxOgzQeN7p5xNC6DpSONoGYpuRWIK12ujhKC3kV7fw5yVpUZh6WLAchX7yJ15BpVNWVsjr0wkJ10lBMBglAsY5Px3i+bWg9OrtZUWWPvCZm3J8W3iaplowONKhZE9DaLVaWLEeEPuTLzTbCRwVOpa+UNZ42vn17d2E0Dcmq8AFkjbfFD38umua/HdcubjLmfwUv0DK326Cn/1SLlliTa5McepgzfdyIWbfE1fLQXWoUz5r/jqCvPhGRnhWV7GPDBYroqxmbaK4ObwdAL/eulkIt4LytG9XCEG8mYvfjoWVbPnenF66K1DIMcKFRZxdWEaZwJgcPgaqjMbOhkM9J/6U0v93AN24EtYk2vKdi1HwSobVjqrm2kAnBBL9RIC5I4YW6KNKUGu4UIPTFMAW9Suq7DlFqTXJpzbom0frn6jlNTLYMJVz0he9i0fKGTrl0yCRRXbN/N1IS1lAHXlwDL+DPiNxsnm3mG4IDYKRLYvRiykCT43NxJyptxZkdnbZxlrh0ql/eZKhPCc35vDD1oRuZiVKMuWU+YQPReegmxi40v4TVKtmn9kbHgL9EinNe/zLH4SAVoi1IFq19NZWW4bUyhTFQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(36860700016)(1800799024)(7416014)(376014)(56012099006)(11063799006)(261009223027099003)(261102123227099003)(261021123027099003)(261022105027099003)(261028144727099003)(261102130727099003)(261021121427099003)(261026121527099003)(261026140227099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ZdZ4z22lx/y3Rd3o9Gvl7wXr9/29icgg793BvCnoJcRgqK4K0yqo+yVGqNxAYp+eyX2WGMuJDG0SgiwRt35ahNrrWCzMvcW2QD9L5OZTqb2zTGfXMr1zUPcSPVae1lmI7fk8fVfBLTr0WbvO1uLEw0WMWNc+mOlZfrCw5rhJNbz86pr8Gw5jnt5AbQDeHfrEtTKSxGq0JKMbJwGwiNxMbEu6pgHsNI2RaMS4UkQ5LYtfbDld5jDJw7jf3Dnx/tuJ+pHcSpJD7PRr8j+2A4luraMXn7yfUP/Yd+5WktduQzhr+e+NHKLkHkzw801g2CMClaaZifxk5QnWz/kPO7w+x6FPLS1ep6x5xN5yxR7hMtyayc4h3uy/XvRq8ljxzgJ1yix3H+NaRZzzT/WIKDidn2M8UiMPQ+1YBhHl1OLUDCLuBWl22DgFEK2sqvcYVhO0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 15:29:33.4147
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2dc598b-648f-4adc-8c07-08df3b5197dd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044A8.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9079
 
-The DevIf report range with range ID 0xffff describes the device's
-coherent (CXL) memory window and unlike every other reported range
-carries no BAR number. Recognize
-PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT and recover that window's
-address from the CXL side of the device instead of treating it as a
-BAR-relative offset.
+On 02/11/2026 23:49, Suzuki K Poulose wrote:
+> Hi Steven
+> 
+> On 02/11/2026 14:12, Steven Price wrote:
+>> Introduce the skeleton functions for creating and destroying a realm.
+>> The IPA size requested is checked against what the RMM supports.
+>>
+>> The actual work of constructing the realm will be added in future
+>> patches.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>>   arch/arm64/include/asm/kvm_rmi.h | 20 ++++++++++++
+>>   arch/arm64/kvm/arm.c             |  9 +++++
+>>   arch/arm64/kvm/mmu.c             | 18 ++++++++--
+>>   arch/arm64/kvm/rmi.c             | 56 ++++++++++++++++++++++++++++++++
+>>   4 files changed, 101 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
+>> asm/kvm_rmi.h
+>> index 3194daaacf2b..f1a1ed6b91f5 100644
+>> --- a/arch/arm64/include/asm/kvm_rmi.h
+>> +++ b/arch/arm64/include/asm/kvm_rmi.h
+>> @@ -6,6 +6,9 @@
+>>   #ifndef __ASM_KVM_RMI_H
+>>   #define __ASM_KVM_RMI_H
+>>   +#include <linux/arm-smccc-rmi.h>
+>> +#include <linux/kvm.h>
+>> +
+>>   /**
+>>    * enum realm_state - State of a Realm
+>>    *
+>> @@ -50,12 +53,29 @@ enum realm_state {
+>>   /**
+>>    * struct realm - Additional per VM data for a Realm
+>>    *
+>> + * @rd: Kernel mapping of the RMM-managed Realm Descriptor (RD) granule
+>> + * @sro: Preallocated SRO state context for Realm MMU operations
+>>    * @state: The lifetime state machine for the realm
+>> + * @ia_bits: Number of valid Input Address bits in the IPA
+>>    */
+>>   struct realm {
+>> +    void *rd;
+>> +    /*
+>> +     * Reused by RTT map/unmap SRO commands. Those commands are only
+>> +     * issued from Realm stage-2 map/unmap paths while kvm->mmu_lock is
+>> +     * held for write, including Realm fault handling where
+>> +     * kvm_fault_lock() takes the write side, so concurrent use is
+>> +     * serialized.
+>> +     */
+>> +    struct rmi_sro_state *sro;
+>>       enum realm_state state;
+>> +    unsigned int ia_bits;
+>>   };
+>>     void kvm_init_rmi(void);
+>> +u32 kvm_rmm_ipa_limit(void);
+>> +
+>> +int kvm_init_realm(struct kvm *kvm);
+>> +void kvm_destroy_realm(struct kvm *kvm);
+>>     #endif /* __ASM_KVM_RMI_H */
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index c8599fed5902..9a7bbfaf9675 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -303,6 +303,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned
+>> long type)
+>>         bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
+>>   +    /* Initialise the realm bits after the generic bits are enabled */
+>> +    if (kvm_vm_is_realm(kvm)) {
+>> +        ret = kvm_init_realm(kvm);
+>> +        if (ret)
+>> +            goto err_uninit_mmu;
+>> +    }
+>> +
+>>       return 0;
+>>     err_uninit_mmu:
+>> @@ -367,6 +374,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>>         kvm_destroy_nested(kvm);
+>>       kvm_arm_teardown_hypercalls(kvm);
+>> +    if (kvm_vm_is_realm(kvm))
+>> +        kvm_destroy_realm(kvm);
+>>   }
+>>     static bool kvm_has_full_ptr_auth(void)
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 1301c563d705..b049ea67d9af 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -981,10 +981,14 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
+>>     static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned
+>> long type)
+>>   {
+>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>>       u32 kvm_ipa_limit = get_kvm_ipa_limit();
+>>       u64 mmfr0, mmfr1;
+>>       u32 phys_shift;
+>>   +    if (kvm_vm_is_realm(kvm))
+>> +        kvm_ipa_limit = kvm_rmm_ipa_limit();
+>> +
+>>       phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
+>>       if (is_protected_kvm_enabled()) {
+>>           phys_shift = kvm_ipa_limit;
+>> @@ -1034,9 +1038,18 @@ static void stage2_destroy_range(struct
+>> kvm_pgtable *pgt, phys_addr_t addr,
+>>     static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>>   {
+>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+>>       unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
+>>   -    stage2_destroy_range(pgt, 0, BIT(ia_bits));
+>> +    /*
+>> +     * Realm RTTs are inaccessible to the host and may contain stale
+>> data
+>> +     * after the RMM has released them. The non-root RTTs are explicitly
+>> +     * destroyed through RMI before the RD is destroyed; only the
+>> root PGD
+>> +     * pages remain to be freed here.
+>> +     */
+>> +    if (!kvm_vm_is_realm(kvm))
+>> +        stage2_destroy_range(pgt, 0, BIT(ia_bits));
+>> +
+>>       KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
+>>   }
+> 
+> This looks like a good candidate for another callback for vm_s2_ops ?
+> Something like (incomplete functionally, but this should work).
+> As a bonus, we can remove two instances of KVM_PGT_FN()
 
-pci_tsm_retrieve_coherent_range() resolves the window from
-pdev->coh_resource[], snapshotted once with the committed CXL HDM
-decoders range. The range to IPA conversion is applied onto
-range_base/range_len using pdev->coh_resource[]. The ascending BAR order
-checks stay on the BAR path only. The coherent range is required to be
-the last report entry and is not part of the BAR sequence.
+Nice, yes that's an improvement. Thanks for the suggestion.
 
-An HDM decoded window lives in the CXL Fixed Memory Window and is not
-part of a BAR. So by construction, no pci_dev resource contains it. So
-the function pci_tsm_coh_resource_contains() validates the range against
-pdev->coh_resource[] instead; the same known-good snapshot
-pci_tsm_retrieve_coherent_range() already trusts.
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 5e9c2919c509..96685c52fb6e 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1048,35 +1048,52 @@ static int kvm_init_ipa_range(struct kvm_s2_mmu
+> *mmu, unsigned long type)
+>   * cond_resched() periodically to prevent hogging the CPU for a long time
+>   * and schedule something else, if required.
+>   */
+> -static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t
+> addr,
+> -                   phys_addr_t end)
+> +static void stage2_destroy_range(struct kvm_pgtable *pgt,
+> +                 void (*pgt_destroy_range_fn)(struct kvm_pgtable *pgt,
+> +                              u64 addr, u64 size))
+>  {
+> +    u64 addr = 0;
+> +    u64 end = BIT(VTCR_EL2_IPA(pgt->mmu->vtcr));
+>      u64 next;
+> 
+>      do {
+>          next = stage2_range_addr_end(addr, end);
+> -        KVM_PGT_FN(kvm_pgtable_stage2_destroy_range)(pgt, addr,
+> -                                 next - addr);
+> +        pgt_destroy_range_fn(pgt, addr, next - addr);
+>          if (next != end)
+>              cond_resched();
+>      } while (addr = next, addr != end);
+>  }
+> 
+> +static void kvm_vm_stage2_destroy(struct kvm_pgtable *pgt)
+> +{
+> +    stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
+> +    kvm_pgtable_stage2_destroy_pgd(pgt);
+> +}
+> +
+> +static void pkvm_stage2_destroy(struct kvm_pgtable *pgt)
+> +{
+> +    stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
+> +    pkvm_pgtable_stage2_destroy_pgd(pgt);
+> +}
+> +
+> +/*
+> +* Realm RTTs are inaccessible to the host and may contain stale data
+> +* after the RMM has released them. The non-root RTTs are explicitly
+> +* destroyed through RMI before the RD is destroyed; only the root PGD
+> +* pages remain to be freed here.
+> +*/
+> +static void realm_stage2_destroy(struct kvm_pgtable *pgt,
+> +                 u64 start, u64 end)
+> +{
+> +    kvm_pgtable_destroy_pgd(pgt);
+> +}
+> +
+>  static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>  {
+>      struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+>      unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
+> 
+> -    /*
+> -     * Realm RTTs are inaccessible to the host and may contain stale data
+> -     * after the RMM has released them. The non-root RTTs are explicitly
+> -     * destroyed through RMI before the RD is destroyed; only the root PGD
+> -     * pages remain to be freed here.
+> -     */
+> -    if (!kvm_vm_is_realm(kvm))
+> -        stage2_destroy_range(pgt, 0, BIT(ia_bits));
+> -
+> -    KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
+> +    kvm->arch.vm_s2_ops->stage2_destroy(pgt, 0, BIT(ia_bits));
+>  }
+> 
+> 
+> 
+> 
+> 
+>> @@ -1084,6 +1097,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
+>> kvm_s2_mmu *mmu, unsigned long t
+>>           return -EINVAL;
+>>       }
+>>   +    mmu->arch = &kvm->arch;
+>> +
+>>       err = kvm_init_ipa_range(mmu, type);
+>>       if (err)
+>>           return err;
+>> @@ -1092,7 +1107,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
+>> kvm_s2_mmu *mmu, unsigned long t
+>>       if (!pgt)
+>>           return -ENOMEM;
+>>   -    mmu->arch = &kvm->arch;
+>>       err = KVM_PGT_FN(kvm_pgtable_stage2_init)(pgt, mmu,
+>> &kvm_s2_mm_ops);
+>>       if (err)
+>>           goto out_free_pgtable;
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index 5b07beff8bc9..45ecbaa467d1 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -6,6 +6,8 @@
+>>   #include <linux/arm-rmi-cmds.h>
+>>   #include <linux/kvm_host.h>
+>>   +#include <asm/kvm_emulate.h>
+>> +#include <asm/kvm_mmu.h>
+>>   #include <asm/kvm_pgtable.h>
+>>   #include <asm/virt.h>
+>>   @@ -14,6 +16,60 @@ static bool rmi_has_feature(int reg, unsigned
+>> long feature)
+>>       return !!u64_get_bits(rmi_feat_reg(reg), feature);
+>>   }
+>>   +u32 kvm_rmm_ipa_limit(void)
+>> +{
+>> +    return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+>> +}
+>> +
+>> +void kvm_destroy_realm(struct kvm *kvm)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +    size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+>> +
+>> +    if (!kvm_realm_is_created(kvm)) {
+>> +        kfree(realm->sro);
+>> +        realm->sro = NULL;
+>> +        return;
+>> +    }
+> 
+> Do we leak memory of the stage2 PGD if the Realm was never created ?
+> Should we have something like on top ?
 
-Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
----
- drivers/pci/Kconfig     |  12 ++++
- drivers/pci/tsm.c       | 119 ++++++++++++++++++++++++++++------------
- include/linux/pci-tsm.h |  75 +++++++++++++++++++++++++
- 3 files changed, 170 insertions(+), 36 deletions(-)
+Sashiko beat you to it - yes I've already got a fix locally for that.
 
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index 16fbd4212e0f..22c416c84a6f 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -139,6 +139,18 @@ config PCI_TSM
- 
- 	  Enable a platform TSM driver to use this capability.
- 
-+config PCI_TSM_CXL_COHERENT
-+	bool "PCI TSM: CXL coherent range support"
-+	depends on PCI_TSM && CXL_RESET
-+	default y
-+	help
-+	  Enables helper functions to manage coherent regions on CXL devices
-+	  for TSM. The device CXL coherent (CXL.mem) ranges could be tracked
-+	  and fetched across subsystems to be reported in a TDISP Device
-+	  Interface Report.
-+
-+	  If unsure, say Y.
-+
- config PCI_DOE
- 	bool "Enable PCI Data Object Exchange (DOE) support"
- 	help
-diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-index d074bfd18d40..bc3218c58ff0 100644
---- a/drivers/pci/tsm.c
-+++ b/drivers/pci/tsm.c
-@@ -939,8 +939,9 @@ int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
- 		return -EBUSY;
- 
- 	for (i = 0; i < mmio->nr; i++) {
--		struct resource *res = pci_tsm_mmio_resource(mmio, i);
--		int j;
-+		struct pci_tsm_mmio_entry *entry = pci_tsm_mmio_entry(mmio, i);
-+		struct resource *res = &entry->res;
-+		bool coherent = entry->flags & PCI_TSM_MMIO_F_COHERENT;
- 
- 		if (resource_size(res) == 0 || !(res->flags & IORESOURCE_MEM))
- 			break;
-@@ -950,13 +951,28 @@ int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
- 					     pci_name(pdev), IORESOURCE_MEM,
- 					     IORES_DESC_ENCRYPTED);
- 
--		for (j = 0; j < PCI_NUM_RESOURCES; j++)
--			if (resource_contains(pci_resource_n(pdev, j), res))
-+		/*
-+		 * The coherent (CXL.mem) range isn't BAR-backed, so check it
-+		 * against pdev->coh_resource[] instead of pci_resource_n().
-+		 */
-+		if (coherent) {
-+			if (!pci_tsm_coh_resource_contains(pdev, res))
- 				break;
--
--		/* Request is outside of device MMIO */
--		if (j >= PCI_NUM_RESOURCES)
--			break;
-+		} else {
-+			struct resource *r;
-+			bool contained = false;
-+
-+			pci_dev_for_each_resource(pdev, r) {
-+				if (resource_contains(r, res)) {
-+					contained = true;
-+					break;
-+				}
-+			}
-+
-+			/* Request is outside of device MMIO */
-+			if (!contained)
-+				break;
-+		}
- 
- 		if (insert_resource(&encrypted_iomem_resource, res) != 0)
- 			break;
-@@ -988,6 +1004,7 @@ EXPORT_SYMBOL_GPL(pci_tsm_mmio_teardown);
- #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE BIT(2)
- #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
- #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
-+#define PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT 0xffff
- 
- /* An interface report 'pfn' is 4K in size */
- struct pci_tsm_devif_mmio {
-@@ -1043,6 +1060,7 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
- 		return NULL;
- 
- 	for (i = 0; i < mmio_range_count; i++) {
-+		struct range window;
- 		u64 range_off;
- 		struct range range;
- 		const struct pci_tsm_devif_mmio *mmio_data = &devif_report->mmio[i];
-@@ -1053,33 +1071,58 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
- 		u32 attr = __le32_to_cpu(mmio_data->attributes);
- 		int bar = FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID,
- 				    attr);
-+		bool coherent =
-+			bar == PCI_TSM_DEVIF_REPORT_MMIO_RANGE_ID_COHERENT;
- 
--		if (bar >= PCI_STD_NUM_BARS ||
--		    !(pci_resource_flags(pdev, bar) & IORESOURCE_MEM) ||
--		    (pci_resource_flags(pdev, bar) & IORESOURCE_UNSET)) {
--			pci_dbg(pdev, "Invalid reporting bar ID %d\n", bar);
--			return NULL;
--		}
--
--		if (last_bar > bar) {
--			pci_dbg(pdev, "Reporting bar ID not in ascending order\n");
--			return NULL;
--		}
--
--		if (last_bar < bar) {
--			resource_size_t mask = pci_resource_len(pdev, bar) - 1;
--
--			/* Transition to a new bar */
--			last_bar = bar;
-+		if (coherent) {
-+			if (i != mmio_range_count - 1) {
-+				pci_dbg(pdev, "Coherent reporting range is not last\n");
-+				return NULL;
-+			}
- 
- 			/*
--			 * Determine the obfuscated base of the BAR. BAR
--			 * offsets are never obfuscated.
-+			 * No BAR names the coherent range, so fail closed if
-+			 * neither a CXL region nor a committed HDM decoder
-+			 * resolves its address.
- 			 */
--			reporting_bar_base = tsm_offset & ~mask;
--		} else if (tsm_offset < last_reporting_end) {
--			pci_dbg(pdev, "Reporting ranges within BAR not in ascending order\n");
--			return NULL;
-+			if (pci_tsm_retrieve_coherent_range(pdev, &window)) {
-+				pci_dbg(pdev, "No CXL region or committed HDM decoder for coherent reporting range\n");
-+				return NULL;
-+			}
-+
-+			reporting_bar_base = tsm_offset &
-+					     ~((u64)range_len(&window) - 1);
-+		} else {
-+			if (bar >= PCI_STD_NUM_BARS ||
-+			    !(pci_resource_flags(pdev, bar) & IORESOURCE_MEM) ||
-+			    (pci_resource_flags(pdev, bar) & IORESOURCE_UNSET)) {
-+				pci_dbg(pdev, "Invalid reporting bar ID %d\n", bar);
-+				return NULL;
-+			}
-+
-+			if (last_bar > bar) {
-+				pci_dbg(pdev, "Reporting bar ID not in ascending order\n");
-+				return NULL;
-+			}
-+
-+			if (last_bar < bar) {
-+				resource_size_t mask = pci_resource_len(pdev, bar) - 1;
-+
-+				/* Transition to a new bar */
-+				last_bar = bar;
-+
-+				/*
-+				 * Determine the obfuscated base of the BAR. BAR
-+				 * offsets are never obfuscated.
-+				 */
-+				reporting_bar_base = tsm_offset & ~mask;
-+			} else if (tsm_offset < last_reporting_end) {
-+				pci_dbg(pdev, "Reporting ranges within BAR not in ascending order\n");
-+				return NULL;
-+			}
-+
-+			window.start = pci_resource_start(pdev, bar);
-+			window.end = pci_resource_end(pdev, bar);
- 		}
- 
- 		/* Per spec the tsm_offset never results in overflow / underflow */
-@@ -1090,19 +1133,21 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
- 		}
- 
- 		range_off = tsm_offset - reporting_bar_base;
--		if (pci_resource_len(pdev, bar) < range_off + size) {
--			pci_dbg(pdev, "Reporting range larger than BAR size\n");
-+
-+		if (range_len(&window) < range_off + size) {
-+			pci_dbg(pdev, "Reporting range larger than %s size\n",
-+				coherent ? "coherent range" : "BAR");
- 			return NULL;
- 		}
- 
--		range.start = pci_resource_start(pdev, bar) + range_off;
-+		range.start = window.start + range_off;
- 		range.end = range.start + size - 1;
- 
- 		/* Only record the TEE ranges for later consideration by ioremap() */
- 		if (FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE,
- 			      attr)) {
--			pci_dbg(pdev, "Skipping non-TEE range, BAR%d %pra\n",
--				bar, &range);
-+			pci_dbg(pdev, "Skipping non-TEE range, %s %pra\n",
-+				coherent ? "coherent range" : "BAR", &range);
- 			continue;
- 		}
- 
-@@ -1110,6 +1155,8 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev,
- 		entry->res.end = range.end;
- 		entry->res.flags = IORESOURCE_MEM;
- 		entry->tsm_offset = tsm_offset;
-+		if (coherent)
-+			entry->flags |= PCI_TSM_MMIO_F_COHERENT;
- 		mmio->nr++;
- 	}
- 
-diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-index e54ad057fa8e..7c29f10e7795 100644
---- a/include/linux/pci-tsm.h
-+++ b/include/linux/pci-tsm.h
-@@ -1,8 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef __PCI_TSM_H
- #define __PCI_TSM_H
-+#include <linux/bits.h>
- #include <linux/mutex.h>
- #include <linux/pci.h>
-+#include <linux/range.h>
- #include <linux/sockptr.h>
- 
- struct pci_tsm;
-@@ -199,15 +201,20 @@ enum pci_tsm_req_scope {
- 	PCI_TSM_REQ_DEBUG_WRITE = 3,
- };
- 
-+/* The range is the device's CXL coherent (CXL.mem) window, not BAR-backed */
-+#define PCI_TSM_MMIO_F_COHERENT BIT(0)
-+
- /**
-  * struct pci_tsm_mmio_entry - an encrypted MMIO range
-  * @res: MMIO address range (typically Guest Physical Address, GPA)
-  * @tsm_offset: Host Physical Address, HPA obfuscation offset added by the TSM.
-  *		Translates report addresses to GPA.
-+ * @flags: PCI_TSM_MMIO_F_* attributes for the range
-  */
- struct pci_tsm_mmio_entry {
- 	struct resource res;
- 	u64 tsm_offset;
-+	u32 flags;
- };
- 
- struct pci_tsm_mmio {
-@@ -227,6 +234,74 @@ static inline struct resource *pci_tsm_mmio_resource(struct pci_tsm_mmio *mmio,
- 	return &mmio->mmio[idx].res;
- }
- 
-+#ifdef CONFIG_PCI_TSM_CXL_COHERENT
-+/*
-+ * pci_tsm_coh_resource_contains() - check a coherent range against the
-+ * PCI-core coh_resource[] snapshot
-+ * @pdev: device owner of @res
-+ * @res: candidate coherent MMIO range to validate
-+ *
-+ * The coherent (CXL.mem) range isn't BAR-backed. So pci_resource_n()
-+ * containment doesn't apply. Check against pdev->coh_resource[] instead.
-+ *
-+ * Return: true if @res falls within a populated coh_resource[] entry.
-+ */
-+static inline bool pci_tsm_coh_resource_contains(struct pci_dev *pdev,
-+						 const struct resource *res)
-+{
-+	for (int i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
-+		struct resource *coh_res = &pdev->coh_resource[i];
-+
-+		if (resource_type(coh_res) == IORESOURCE_MEM &&
-+		    resource_contains(coh_res, res))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+/*
-+ * pci_tsm_retrieve_coherent_range() - resolve the device's coherent CXL window
-+ * @pdev: device owner of the reported ranges
-+ * @out: host physical (guest IPA) range of the coherent window
-+ *
-+ * The coherent range carries no BAR number, so its address comes from
-+ * pdev->coh_resource[], a pre-driver-bind snapshot of committed CXL HDM
-+ * decoders.
-+ *
-+ * Return: 0 with *@out set from the first populated entry, or -ENODEV if no
-+ * entry is populated.
-+ */
-+static inline int pci_tsm_retrieve_coherent_range(struct pci_dev *pdev,
-+						  struct range *out)
-+{
-+	for (int i = 0; i < PCI_CXL_MAX_COHERENT_RANGES; i++) {
-+		struct resource *res = &pdev->coh_resource[i];
-+
-+		if (resource_type(res) != IORESOURCE_MEM)
-+			continue;
-+
-+		out->start = res->start;
-+		out->end = res->end;
-+		return 0;
-+	}
-+
-+	return -ENODEV;
-+}
-+#else
-+static inline bool pci_tsm_coh_resource_contains(struct pci_dev *pdev,
-+						 const struct resource *res)
-+{
-+	return false;
-+}
-+
-+static inline int pci_tsm_retrieve_coherent_range(struct pci_dev *pdev,
-+						  struct range *out)
-+{
-+	return -ENODEV;
-+}
-+#endif /* CONFIG_PCI_TSM_CXL_COHERENT */
-+
- #ifdef CONFIG_PCI_TSM
- int pci_tsm_register(struct tsm_dev *tsm_dev);
- void pci_tsm_unregister(struct tsm_dev *tsm_dev);
--- 
-2.53.0
+Thanks,
+Steve
+
+> @@ -1646,11 +1645,8 @@ void kvm_destroy_realm(struct kvm *kvm)
+> 
+>         guard(mutex)(&kvm->arch.config_lock);
+> 
+> -       if (!kvm_realm_is_created(kvm)) {
+> -               kfree(realm->sro);
+> -               realm->sro = NULL;
+> -               return;
+> -       }
+> +       if (!kvm_realm_is_created(kvm))
+> +               goto free_pgd;
+> 
+>         kvm_set_realm_state(kvm, REALM_STATE_DYING);
+> 
+> @@ -1684,6 +1680,7 @@ void kvm_destroy_realm(struct kvm *kvm)
+> 
+>         kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+> 
+> +free_pgd:
+>         /* Now that the realm is destroyed, free the entry-level RTTs. */
+>         kvm_free_stage2_pgd(&kvm->arch.mmu);
+> 
+> 
+> Suzuki
+> 
+>> +
+>> +    kvm_set_realm_state(kvm, REALM_STATE_DYING);
+>> +
+>> +    if (realm->rd) {
+>> +        phys_addr_t rd_phys = virt_to_phys(realm->rd);
+>> +
+>> +        if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
+>> +            return;
+>> +
+>> +        if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
+>> +            return;
+>> +        rmi_free_delegated_page(rd_phys);
+>> +        realm->rd = NULL;
+>> +    }
+>> +
+>> +    if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
+>> +                     pgd_size)))
+>> +        return;
+>> +
+>> +    kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+>> +
+>> +    /* Now that the realm is destroyed, free the entry-level RTTs. */
+>> +    kvm_free_stage2_pgd(&kvm->arch.mmu);
+>> +
+>> +    kfree(realm->sro);
+>> +    realm->sro = NULL;
+>> +}
+>> +
+>> +int kvm_init_realm(struct kvm *kvm)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +
+>> +    realm->sro = kmalloc_obj(*realm->sro);
+>> +    if (!realm->sro)
+>> +        return -ENOMEM;
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   static int rmm_check_features(void)
+>>   {
+>>       if (kvm_lpa2_is_enabled() &&
+> 
 
