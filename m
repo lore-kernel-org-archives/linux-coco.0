@@ -1,49 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793891549;
-	b=c/gebTI8YHt7AAfD7Krne4rbEZZQl+h20poMC8yCGVK2TeDF99vdeRqTZ6UNwSvwZfzf
-	 seFm1uzIgX0TBu6QTrI4DmsXu4cuFMe4BHPRaan5hOuHB9UGi2TH3N0+U5RJnGEhHYHQb
-	 +gxXcW5nvveo2LdPL3FDovu1I0uCl8m46iGFV7UTSj7FSjhQxIZux3RPlOwH3fYexg0t2
-	 UrbK88Hn5SpXKa+DneLq0PZCByw0+KA9CASsaLi9eQhSYtTF+XJ/Ny0M4SHc8l4aHJfwR
-	 iVzWj9Dsrx0Tc2FYU4HWTOaUFtiL11xxj0FDzY1rQU52iZWbYP6YiV0BachAkZq1cBQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793891549;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=IWJD0iHItHJ0ZLICudpIGPh2lKAzMkhjEJ2bZxXwT1g=;
-	b=WqBZWMg0uwUnXETg9weHwwbejQWuzh3rFz29O5X4Bu2uLCkVPgInYIbGNZBZ8x55A4L7
-	 tLbQJqWJlZ+gxV4+PsrBl0cdBX6/K1D0VsPCznbcL7HA85nYxe4/DcDm6Qr3QNEtq9V4d
-	 4MvPc5so0lJEDbjx97o0WbZOY1fXCndq+n6yw8E8tXWi2eGGe49j4eJ/V/B1FMEqu0K4B
-	 lElzP93idWwpUJ/D+oXxBA862PEbBp3MU8rRm/97NOBF/pipVbYLrJsHhiwlLgu9KPLef
-	 SkFtVCVtnavlHxpjgqPb2BDuo3QuodOk8AEgfi3JZa4QMIHOEgdsp30XD0UJ9exaIaA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=I9yJWYMO;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678DA606D821;
-	Thu,  5 Nov 2026 15:12:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 678DA606D821
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.22
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793892576;
+	b=B3t/X39AC1MBTF6ss8Ai5d7UAa+wG//iZ2Wfk4JoWA3ct6YFVmuJ/0u8qS5yDOfUQTO3
+	 64knh4U3y4DVWcgmOAwsLx+ftdTYtQ1y/t3b9vboc6D5Rl87RsALW5ZguIwbX66vWcsYo
+	 5roq02gR2TdqUjQrB30b636LSsf7gUzChJAkZa8BltyRHbzVmAG0/BAbtwgaRYy/zp6od
+	 CNzulb9OftLWEgGaTxiFB0Ks8fKUBtZF2dYdAmBnAEblVFloYsHOul3ZSMJwZ26c0Sq0S
+	 Bjjeq2orM2On1Gd4rBUBqgUkxooZU2A9eZQ9AZMf4nkRRHIVSS3VpNtjRjiNY9mrP4w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793892576;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type:X-NV-OnPremToCloud:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=lXnfzGILnOXRFwCF0b4qg9HuxoF+oN2N8gZ0jPp/KnA=;
+	b=iri4x/nKBTiEWHwo0X24QYmwHVn9W7JA1KKx/He8swX8AagHrq4lBuv9rtty6fWQNyoi
+	 XK0RO8bbPV7XSDGtqTHm/E9dlY/oiQAosx36m6ZX0FUbefilQaN9NhiINmvRLBfZyPyQm
+	 YttD6dFNC7Y/2yt7/FV6S69HBumRHqfDzpyqrVIIiGX5RLrR6o+EJ5ersaRn4EbwmmxE4
+	 Dp0882qDRaNUZowdUUhEt+ASAY1fJE0B6LORtUQkkmv0TddmskFZiizs6Oz46BYH6EB39
+	 XKxhQ6y6Vy6VTBwzDFwPPlkk1a6Mgd9a4zJWBLLlIE9k1Gz0JzIpxjNJH8yf7EGxIlA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="GSYMDO/4";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.22
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011022.outbound.protection.outlook.com [40.107.208.22])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8128C606D803
+	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 15:29:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8128C606D803
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=I9yJWYMO
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E02B16F2;
-	Thu,  5 Nov 2026 07:12:24 -0800 (PST)
-Received: from [10.0.128.250] (e122027.cambridge.arm.com [10.0.128.250])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D24EC3F628;
-	Thu,  5 Nov 2026 07:12:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793891547; bh=K05vKtM+fPDTzjogjywixfTKzhfzKJwvrbfn/flAQKU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I9yJWYMOEfAXqlqdwyFVq2M5GIwutk5K6psqq9Cpc7QM5j08Mcw18ktYr7AnqST3/
-	 GjFIAmD16GvgTjVNYKV0YLBzFCCAvPxZyKsBXJAoSEfd1Vp0+12u1UwKcGhCWb1cWp
-	 eDOuw2QPcrF8XLvPwDKHxwX3Bkyl6a8Ir0NoK4TQ=
-Message-ID: <e57e8cd0-79eb-4073-87ea-5b0c27122b71@arm.com>
-Date: Thu, 5 Nov 2026 15:12:23 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GSYMDO/4
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GL0k21CbOJ61gyGBOwXcdim4S+rNT9LthcDOcByOmNrueLaURh6n/hzgQItfnms8ata1pqobvchBBP/Z2TBkipJ9RygmjHCsX+UC2qRy+OrtLlHZ9KLD3I/zPpPoG+cfc6NZApEXd3ChKuMzvhYqivRqG2yAEL1kBdjtg8jTkW144P9WNIgozKYl65GFP31Qf66axRkKN0s3SiPwW8zZUG8z9pjJJ6Nzn/4X2k+3PRrWcuJegvJPwom3L5qFjt37r69vv6V/7lTDRnXBebAweh/SVRUxiSx9XhmtYWCUXbeck8u9gRzs3K2gAnLqIC5LYAPLq7U99UvVO9R3VjM+Gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lXnfzGILnOXRFwCF0b4qg9HuxoF+oN2N8gZ0jPp/KnA=;
+ b=QdClGuhtC3tHBp0ZjgB8QgqofL8/S484U84FPdOOSZKqbUxy98h4RqCwqSsQ5g9iyz52NBUcx/OJhofpqnQWmNL64w7f5cvf9Ide5hLTz8q14x0IT5LbE1JYF2AMfzoki7F+RYRtXX7KdI3CNV9HWt+e6B71qi6u1bpQaWn02Cn1KXhKdYnpQlha/HsYprb/D2Ugjz3aEzC3oH9X8AI/mGGZOqa3vmsRIdgtzpydcgaJTkT/B5g1o+wAULLewEMhX8I69u/VdrUMSvud9GWRqmmtXADfEwjzqSWEj3q0OZugJ/1/c9wt4lK944nu45nckHAu4REYnkZVAtErg7FChA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lXnfzGILnOXRFwCF0b4qg9HuxoF+oN2N8gZ0jPp/KnA=;
+ b=GSYMDO/4kpsLVTxbcDF7+WfA7Mh++cjvNWHw7cE6UigPUsuMDaBFy396c+93FqiZPSQhvZiuisdpZn3XWZGn7mlfcAZ/WvN2Zu1XZuFYtKUGNrKEMcS/MlaDi2xONgoQQ9uzJxb4luxT61ZhweGQZVnvhxMH6l6HdBXTwkGeQxjWlhntnMqk8RQqPTMcacel2H0p5PVvXHo5ilB0q3GwHyeHkUlx5M5ydefyAVOpzSTP2aMK5tBTVy/c2/2Bl9lHJ7J0I7MIAVbdTxO5n3Rx4KeTGrUXUbIDvsDLv06wpz9dEBF4HXA15pw4pH5/Q1xU4O2OKRg0a8hbiQekZcVjzA==
+Received: from CH0PR13CA0012.namprd13.prod.outlook.com (2603:10b6:610:b1::17)
+ by DS1PR12MB999190.namprd12.prod.outlook.com (2603:10b6:8:495::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 15:29:27 +0000
+Received: from CH2PEPF000166C6.namprd04.prod.outlook.com
+ (2603:10b6:610:b1:cafe::7b) by CH0PR13CA0012.outlook.office365.com
+ (2603:10b6:610:b1::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.8 via Frontend Transport; Thu, 5
+ Nov 2026 15:29:27 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CH2PEPF000166C6.mail.protection.outlook.com (10.167.244.233) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Thu, 5 Nov 2026 15:29:27 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
+ 2026 07:29:12 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 07:29:12 -0800
+Received: from localhost (10.127.8.12) by mail.nvidia.com (10.126.190.181)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56 via Frontend
+ Transport; Thu, 5 Nov 2026 07:29:12 -0800
+From: Ankit Agrawal <ankita@nvidia.com>
+To: <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <dave@stgolabs.net>, <jic23@kernel.org>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>, <jgg@nvidia.com>,
+	<aneesh.kumar@kernel.org>, <aik@amd.com>, <yilun.xu@linux.intel.com>,
+	<iweiny@kernel.org>, <ming.li@zohomail.com>, <icheng@nvidia.com>,
+	<bhelgaas@google.com>, <smadhavan@nvidia.com>, <ankita@nvidia.com>,
+	<ilpo.jarvinen@linux.intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
+	<andriy.shevchenko@linux.intel.com>, <linux-coco@lists.linux.dev>,
+	<terry.bowman@amd.com>, <nik.borisov@suse.com>, <brads@mainlining.org>,
+	<lukas@wunner.de>, <rrichter@amd.com>, <gourry@gourry.net>
+Subject: [RFC PATCH v2 5/5] cxl: Invalidate cached coherent range when Normalized Addressing is detected
+Date: Thu, 5 Nov 2026 15:29:09 +0000
+Message-ID: <20261105152909.53452-6-ankita@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261105152909.53452-1-ankita@nvidia.com>
+References: <20261105152909.53452-1-ankita@nvidia.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -53,119 +123,136 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/11] KVM: arm64: CCA: Check for LPA2 support and SHA-256
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-5-steven.price@arm.com>
- <f2cb2959-f56d-414c-b4a5-c0656a44f57d@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <f2cb2959-f56d-414c-b4a5-c0656a44f57d@arm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF000166C6:EE_|DS1PR12MB999190:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef89a187-1aaf-4fd7-56d1-08df3b519469
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|7416014|23010399003|376014|1800799024|10067099003|22082099003|6133799003|18002099003|56012099006|11063799006|261026140227099003|261028144727099003|261021121427099003|261102123227099003|261022105027099003|261009223027099003|261026121527099003;
+X-Microsoft-Antispam-Message-Info:
+	q/WWEKIfkPuEpyKk8BrAYiy7aTPw7OJdK64PZcvF4lYSDc+2hCetsV3tjqKbRaKHQS7LBmlQty2FjsgEAO60/M4QRPTftmgwKsRZYcTuDePA9UbYsKR9ib/DKD1FcGiRNvP8ryznv2grGr+8w2pkVs4oY2dhu8oaqBV2ZFIjqZUDCfu063E0VBT9cmyF8iIhyjSwXA+SSRkgoVLNNGDQABqw4QzssTCXe4BET6QNhdKezXf0LNmB0U3OyW40G4rdHxSwJ/KuN0tQdx9Yv+haGFpxhaahNLWQhj2Dl9IL34z2zrkV1fviQiqJ/jYQNo5w0ivCev2bDF9wqwev5FwTa+hBU3EVdnczW92BhSyaDt/+akCLIlNB3LFGvg8u1BAfUeIrnzZd+gxAsycJeu8pPRQ+NskJthYxqmp6mpmnud4qV4Twtgbx4cFPkKs5SVyuiLEaMThrSwoeoqi7/3C25JSixeTXmHnpWVYWdIvNdNWHMdYewkzOIdx4EcsStMB2U186/8jUkAMvciE801nqZ1GxPnGQvf0X1IjP7BoSUYOrP8ZaCyaj3fenD1Jz3h1crAIHlkeB6lVWaU6NB+Cht7ETVCkz8hKSGBICm7bcp32U8WnHu6Dywpa6cnLGSBGdEzA2xCS6WWcmyyLYCEjP5cHdsFviL+8zrh0guS3lhjuMi2iUwE8qJ/SG+uiKWphJ5MXw6irr59AUWVw0DKJtFw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(23010399003)(376014)(1800799024)(10067099003)(22082099003)(6133799003)(18002099003)(56012099006)(11063799006)(261026140227099003)(261028144727099003)(261021121427099003)(261102123227099003)(261022105027099003)(261009223027099003)(261026121527099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	kL2w5wI4e174GdEvTEsGdrs6pSuPrNDJiJBxje3Y0bRK0hwA7RDX0PutDVoqfrtT7Va8+U1NtCPcCNcF2F0RuY38lEBABF1l867AHGUcT2SHsWC0u3Qf2/qmpzFkkJ/Zyn5kFxcA4qXpG9jraOCpwTJ9S6T3J3vy9+yVV2FeIcf0i5yRgyqNlqByik3+NTZi2pSCV7usoHkayGgY+dDLVeCTiSPYQ+L9ZqRt69T9KCU6kkUhoNCGibvjBfhSsPo9n2rBP4b9N7yHpf1KwxaapI1CnTWR10j8Y7kvE3atfK6HtNZQMQnx9RtStLyNECQaiOGIQ8NKsWjMLXVfhaqUdRMuYG6Y3G0taawh7p5zq8Gr870JP5c+S50tj8L5wbs0RRL/lbLvLqph6QFlNVK6lJCNSwZHjMzrbxib9AMTQzxXlYNzQ+kIoDjuCdwLvyXK
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 15:29:27.6745
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef89a187-1aaf-4fd7-56d1-08df3b519469
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF000166C6.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS1PR12MB999190
 
-On 03/11/2026 11:47, Suzuki K Poulose wrote:
-> Hi Steven
-> 
-> On 02/11/2026 14:12, Steven Price wrote:
->> If KVM has enabled LPA2 support then check that the RMM also supports
->> it. If there is a mismatch then disable support for realm guests as the
->> VMM may attempt to create a guest which is incompatible with the RMM.
->>
->> Also check for SHA-256 support in the RMM as to begin with we only
->> support SHA-256 based measurements. This can be relaxed in the future.
-> 
-> 
-> This could be merged with the patch 3.
+In case of Normalized addressing, the HDM decoders report DPA instead
+of HPA. Determine such case and ensure the pdev->coh_resource[] do not
+cache it.
 
-Makes sense.
+CXL_DECODER_F_NORMALIZED_ADDRESSING is only set on a decoder once the
+endpoint is assembled into a region in cxl_prm_setup_root(). This is
+well after the HDM decoders are snapshotted and populated in
+pdev->coh_resource[]. So the DPA would be populated in the
+pdev->coh_resource.
 
-> 
->>
->> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
-> 
-> 
->> ---
->>   arch/arm64/kvm/rmi.c | 25 +++++++++++++++++++++++++
->>   1 file changed, 25 insertions(+)
->>
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index 9d118768550d..5b07beff8bc9 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -6,8 +6,30 @@
->>   #include <linux/arm-rmi-cmds.h>
->>   #include <linux/kvm_host.h>
->>   +#include <asm/kvm_pgtable.h>
->>   #include <asm/virt.h>
->>   +static bool rmi_has_feature(int reg, unsigned long feature)
->> +{
->> +    return !!u64_get_bits(rmi_feat_reg(reg), feature);
->> +}
->> +
-> 
-> minor nit: Do we see this useful for others (e.g., DA) ? May be we could
-> move this to the include/linux/arm-rmi-cmds.h ?
-> 
-> May be we could even make the above a macro, something like
-> 
-> 
-> #define rmi_has_feature(reg, feat)
->     u64_get_bits(rmi_feat_reg(reg), RMI_FEATURE_REGISTER_#reg _#feat)
-> 
+Add pci_cxl_hdm_coh_invalidate() and call it later when the normalized
+addressing is identified to clear the cached value.
 
-Sashiko pointed out that my use of u64_get_bits() is problematic. So
-I'll fix that up and more it to the header file.
+Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+---
+ drivers/cxl/core/atl.c      |  6 ++++++
+ drivers/cxl/core/core.h     |  9 +++++++++
+ drivers/cxl/core/resource.c | 32 ++++++++++++++++++++++++++++++++
+ 3 files changed, 47 insertions(+)
 
-Thanks,
-Steve
-
-> 
-> Cheers
-> Suzuki
-> 
->> +static int rmm_check_features(void)
->> +{
->> +    if (kvm_lpa2_is_enabled() &&
->> +        !rmi_has_feature(0, RMI_FEATURE_REGISTER_0_LPA2)) {
->> +        kvm_err("RMM doesn't support LPA2\n");
->> +        return -ENXIO;
->> +    }
->> +
->> +    if (!rmi_has_feature(1, RMI_FEATURE_REGISTER_1_HASH_SHA_256)) {
->> +        kvm_err("RMM doesn't support SHA-256 measurements\n");
->> +        return -ENXIO;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->>   void kvm_init_rmi(void)
->>   {
->>       if (kvm_get_mode() != KVM_MODE_RMM)
->> @@ -16,5 +38,8 @@ void kvm_init_rmi(void)
->>       if (!is_rmi_available())
->>           return;
->>   +    if (rmm_check_features())
->> +        return;
->> +
->>       /* Future patch will enable static branch kvm_rmi_is_available */
->>   }
-> 
+diff --git a/drivers/cxl/core/atl.c b/drivers/cxl/core/atl.c
+index 07ce7c50c47a..2bf4d73fd02f 100644
+--- a/drivers/cxl/core/atl.c
++++ b/drivers/cxl/core/atl.c
+@@ -175,6 +175,12 @@ static int cxl_prm_setup_root(struct cxl_root *cxl_root, void *data)
+ 	cxld->config.flags |= CXL_DECODER_F_LOCK;
+ 	cxld->config.flags |= CXL_DECODER_F_NORMALIZED_ADDRESSING;
+ 
++	/*
++	 * The PCI-core snapshot of this decoder was taken before the flag was
++	 * known. Invalidate it so a DPA is never exposed as a coherent HPA.
++	 */
++	pci_cxl_hdm_coh_invalidate(pci_dev, cxld->config.id);
++
+ 	ctx->hpa_range = hpa_range;
+ 	ctx->interleave_ways = ways;
+ 	ctx->interleave_granularity = gran;
+diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+index 1aabbbb4ae5e..97d27a27ab67 100644
+--- a/drivers/cxl/core/core.h
++++ b/drivers/cxl/core/core.h
+@@ -139,6 +139,15 @@ struct cxl_rwsem {
+ 
+ extern struct cxl_rwsem cxl_rwsem;
+ 
++#ifdef CONFIG_CXL_RESET
++void pci_cxl_hdm_coh_invalidate(struct pci_dev *pdev, int decoder_id);
++#else
++static inline void pci_cxl_hdm_coh_invalidate(struct pci_dev *pdev,
++					      int decoder_id)
++{
++}
++#endif
++
+ void cxl_commit_start(void __iomem *hdm, struct cxl_decoder_settings *settings);
+ int cxld_await_commit(void __iomem *hdm, int id);
+ 
+diff --git a/drivers/cxl/core/resource.c b/drivers/cxl/core/resource.c
+index d837f8e952a9..d0774926da2d 100644
+--- a/drivers/cxl/core/resource.c
++++ b/drivers/cxl/core/resource.c
+@@ -527,6 +527,38 @@ void pci_cxl_hdm_cache_release(struct pci_dev *pdev)
+ 	kfree(info);
+ }
+ 
++/*
++ * A decoder is found to use Normalized Addressing only once the endpoint is
++ * assembled into a region, after the snapshot. Record the flag in the cached
++ * settings and drop the coherent range so a DPA is never reported as an HPA.
++ */
++void pci_cxl_hdm_coh_invalidate(struct pci_dev *pdev, int decoder_id)
++{
++	struct cxl_hdm_info *info;
++	struct resource *res;
++
++	guard(rwsem_write)(&cxl_rwsem.dpa);
++	info = pdev->hdm;
++	if (!info || decoder_id < 0 || decoder_id >= info->decoder_count)
++		return;
++
++	info->settings[decoder_id].config.flags |=
++		CXL_DECODER_F_NORMALIZED_ADDRESSING;
++
++	if (decoder_id >= PCI_CXL_MAX_COHERENT_RANGES)
++		return;
++
++	res = &pdev->coh_resource[decoder_id];
++	if (!res->flags)
++		return;
++
++	pci_warn(pdev, "CXL coherent range: decoder%d uses Normalized Addressing, dropping %pR\n",
++		 decoder_id, res);
++	if (res->parent)
++		remove_resource(res);
++	memset(res, 0, sizeof(*res));
++}
++
+ static void __iomem *cxl_pci_hdm_ioremap_current(struct pci_dev *pdev,
+ 						 int bar,
+ 						 resource_size_t offset,
+-- 
+2.53.0
 
