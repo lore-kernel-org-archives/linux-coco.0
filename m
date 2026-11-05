@@ -1,70 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793897617;
-	b=Ht4T6MTKd5h1Un6HVKVvU/yEOqQk6sXIAXwcia1TlbWnaZMgenU4VJNZ6VJlEsrs62Tx
-	 JJn+n/Qwc4qnGnSF/1DSc7cYGHIEna0FLrx5NkHNaUO7UW7UENMP2zUG1UreAF/c2Vi+H
-	 /+seLYf8P6HylQyVfHhZf12yi/Y7c4ktuBHInOBiB3h5gswsxwWRddabFtHjGY5LRJ5U6
-	 tYo4eJmL4ooZAP6mvRPyJcJeXbk1QnOP1PiCaDCjywV6tuHBJQKm0u+rd5QGTaV4cGnyZ
-	 KbxNy+JkzNjdQpAVHI8ROUsNJAPLBQxvEZDL0BThax4ilpdkj8NjZC0cL/QphaGNbkw==
+	t=1793899007;
+	b=PKGkaw2yLxxWm8sXj3UX102IpV/4qEcKHzDv8HzNU6xTNQ+yksHv607eEnUlJRrHJthT
+	 fZClOtVoRbSSLLPvHDjxw7HHmqOni1hbC5HdKQBezJCbzG6h/zhepUQyntYKAT6/Eq5W0
+	 C5lGXFm6Mlk7zhP6zeZtolYdlz/ZeCGoaksB9h3yEYSWhKrhu+iFnuT2zdX9JY20nHcvb
+	 2EdZr7Qq8yr7uCROUgpC6a+TA3RHxmrj3bq/KM4+zXfTLja/b7rttEV9oE+P+8lBdZteT
+	 9fc3HOVq0GSUGfj6gAYecOTDUGUsKZxbgw5Pd+vMiXB7oF62oSqvwxRzRjHLwbX+Tww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793897617;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=FnB6ScYt0UJ+tH3MyOUVNV1BCySchRfbtW7QyFys1DY=;
-	b=lhxRaRVlu7N8M6VPeSOL4HkLzAINHtYEzJp674jzrVzNXaKca5yJ6qO+3HfSY7oVUGEB
-	 roQhX2/+TzPc6hbxVSCnARIKSbhDqXwH/hwh8/Jer4gKnIoYjczNvR39uGUSLTQg+NqyV
-	 DkM8Tasg3wjaQx9o8hmen1xSX3/hitZvpXE8hnHs2qfoOIwbzzjUo5IhBPbGd0iCBFIsd
-	 b6aVOMrEtR+PGuV4mjZLVtPhTaUZRMJcda1j21cRVVVDPibLvQCJxeyfxR5ALI1mliSh2
-	 N3wxRyk/tMwPMw7mVWGsYGYCHrGuKc2wpI+Kiyvm2m3cKHv6Y1+N92VcP6bnCSv2tVg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793899007;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=sZzW7JYVrmh754uY37zU3QW1aKqFPt/3sf0AcxHaA8U=;
+	b=CU6EuAnp9xAeVWhQJFAUeO4D/8bjs8hVM2gtDg/OR8uIUzXKy14ONT682ZBuBYfF59oW
+	 srzWPb3446AoIEp5mTOmF4kIguyxzcCxCJZwKEXaDEbDpw1ecyxpmiZKQjMpwibbqQqFk
+	 P4FxQMWuV3DiWjL1qVZBowSxFA2AbNV5iHKilPo2CuZVgqZFYwOdgcqc6dSdhoaHzW3Xr
+	 jxloCwtjFru6WUIkBq1vuzM16Yu7wj7vZ2TyVarQEvsFZaf0U8ZGbZ6a9P9LCYnlfo1bV
+	 /KnuK1oveGXrb7Kjg+NtO6MvHS7tWCa6k/k5np3rkXsOjJMuvyPG5TdlySh1J764y9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9881B606A32D
-	for <linux-coco@lists.linux.dev>; Thu,  5 Nov 2026 16:53:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9881B606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8DE51684;
-	Thu,  5 Nov 2026 08:53:32 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 282963F632;
-	Thu,  5 Nov 2026 08:53:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793897615; bh=gens9hPKGA5ELjldl6EH1n02/4cZLP/+KLPJ6OG+Fkw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BNBjlWWZxPk/3OjZlelVp0O3zZXCm69B3ls9RYBpwR7Ml6GZW3+6kNE55iqdThxI1
-	 19eVBTIJJP9nuQSpyr/ZvhHC4YD1IFyXPLmmhs0yYOiRokyEos3nbx9i9FaL2L0pQ4
-	 vCEg18tG2S3UK1ZSEiiYqU9kdbxOV8dQM7pM4gX8=
-Date: Thu, 5 Nov 2026 16:53:29 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
-Message-ID: <auy0iXpFEcVoHBOC@e129823.arm.com>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-3-jiri@resnulli.us>
- <at-iEMxN98nie1Qr@e129823.arm.com>
- <auBaROC0XdWpILEI@FV6GYCPJ69>
- <20261027141524.GF1685504@ziepe.ca>
- <auC5sw9YMC9NO4wl@e129823.arm.com>
- <20261027151729.GG1685504@ziepe.ca>
- <auyAJ8OMWHUTCFKs@FV6GYCPJ69>
- <auyJ8Nuvn0t2qj5w@e129823.arm.com>
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=BDigdHUc;
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC266082BF6;
+	Thu,  5 Nov 2026 17:16:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABC266082BF6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=BDigdHUc
+Received: from localhost (unknown [4.194.122.144])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DC88420B7166;
+	Thu,  5 Nov 2026 09:16:12 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DC88420B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1793898990;
+	bh=sZzW7JYVrmh754uY37zU3QW1aKqFPt/3sf0AcxHaA8U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BDigdHUcFCn/BGRR+msSMNpyCmQhCddheyhTHa7wwd9XqbOQJv7c+S9FDhQb3VNVZ
+	 RLnMGIyNgvt+VCa/EaPADFS35i/IrjwJEXySHjy9vWowetESB57/SzTQSzchZl/PMv
+	 YUtjHkuVWQPmp+6/ZuXR4XHcImqNujF+A/aE2m08=
+Date: Thu, 5 Nov 2026 09:16:22 -0800
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>, Alexey
+ Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Joerg Roedel <joro@8bytes.org>, Jonathan
+ Cameron <jic23@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, Kevin
+ Tian <kevin.tian@intel.com>, Krishna Reddy <vdumpa@nvidia.com>, Lukas
+ Wunner <lukas@wunner.de>, Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy
+ <robin.murphy@arm.com>, Samuel Ortiz <sameo@rivosinc.com>, Shameer Kolothum
+ <shameerali.kolothum.thodi@huawei.com>, Steven Price
+ <steven.price@arm.com>, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>, Vasant Hegde
+ <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>, Xu Yilun
+ <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, jacob.pan@linux.microsoft.com
+Subject: Re: [PATCH v8 12/15] iommufd/viommu: Allow PCI TSM backends to
+ provide vIOMMU operations
+Message-ID: <20261105091622.00004a9c@linux.microsoft.com>
+In-Reply-To: <20261105004934.GE3889730@ziepe.ca>
+References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
+	<20261104161632.3547423-13-aneesh.kumar@kernel.org>
+	<20261104152351.00002565@linux.microsoft.com>
+	<20261105004934.GE3889730@ziepe.ca>
+Organization: LSG
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -74,86 +81,69 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auyJ8Nuvn0t2qj5w@e129823.arm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 05, 2026 at 01:51:44PM +0000, Yeoreum Yun wrote:
-> > Tue, Oct 27, 2026 at 04:17:29PM +0100, jgg@ziepe.ca wrote:
-> > >On Tue, Oct 27, 2026 at 02:48:19PM +0000, Yeoreum Yun wrote:
-> > >> > On Tue, Oct 27, 2026 at 09:02:14AM +0100, Jiri Pirko wrote:
-> > >> > > Mon, Oct 26, 2026 at 07:55:12PM +0100, yeoreum.yun@arm.com wrote:
-> > >> > > >[    3.856919]  ctlv_schema_check_attr+0x3dc/0x538
-> > >> > > >[    3.857105]  ctlv_schema_check_indexed_nest+0x788/0x958
-> > >> > > >[    3.857301]  ctlv_schema_validate+0x88/0x180
-> > >> > > >[    3.857482]  ctlv_msg_test_as_deep_as_the_core_allows+0x11c/0x1e8
-> > >> > > >[    3.857698]  kunit_try_run_case+0x64/0x188
-> > >> > > >[    3.857878]  kunit_generic_run_threadfn_adapter+0x30/0x68
-> > >> > > >[    3.858086]  kthread+0x10c/0x140
-> > >> > > >[    3.858245]  ret_from_fork+0x10/0x20
-> > >> > > >[    3.858398] SMP: stopping secondary CPUs
-> > >> > > >[    3.858630] Kernel Offset: disabled
-> > >> > > >[    3.858720] CPU features: 0x0,00000000,00b0802e,9f190bc3,2affe72f
-> > >> > > >[    3.858872] Memory Limit: none
-> > >> > > >[    3.858976] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
-> > >> > > >
-> > >> > > >[...]
-> > >> > > >
-> > >> > > >I think it might be good to configurable according to architecture
-> > >> > > >unless it's not good to reduce the CTLV_MAX_NEST_DEPTH number
-> > >> > > >otherwise, increasing stack size when CTLV is enabled seems unresonable...
-> > >> > > 
-> > >> > > Agreed, will lower it down. I think we should be okay with 8 for start.
-> > >> > 
-> > >> > I'm surprised this ran out of stack though with even as few as
-> > >> > 32 levels.. Is there accidently something large on the stack?
-> > >> >
-> > >> 
-> > >> Nope.
-> > >> 
-> > >> When I see the each functions stack allocation:
-> > >> - ctlv_schema_check_indexed_nest():
-> > >> 	sub	sp, sp, #0xf0 // 240 bytes
-> > >> 
-> > >> - ctlv_schema_check_attr():
-> > >> 	sub	sp, sp, #0xb0 // 176 bytes
-> > >> 
-> > >> Roughly (240 + 176) * CTLV_MAX_NEST_DEPTH = 13,952 (around 14KB)
-> > >> consumed.
-> > >
-> > >400 bytes per nest seems pretty big to me...
-> > >
-> > >Do you have debug options enabled or something that increases stack usage?
-> > 
-> > KASAN is such an option. On arm64 with GCC 15, the stack protector and
-> > zero-initialized stack variables, ctlv_schema_check_indexed_nest() takes
-> > 208 bytes and ctlv_schema_check_attr() 144 without KASAN. With generic
-> > KASAN, which instruments the stack with GCC, they take 432 and 304: the
-> > redzones around every local whose address is taken more than double both
-> > frames. Your numbers are in between, I guess a different compiler or
-> > KASAN mode.
-> > 
-> > Otherwise there is nothing large on the stack. 96 of the 208 bytes hold
-> > the callee-saved registers, the rest are small locals and spills. It is
-> > just two frames per nesting level.
-> > With the limit lowered to 8, validation at the maximum depth takes about
-> > 3KB, about 6KB with generic KASAN.
+Hi Jason,
+
+On Wed, 4 Nov 2026 20:49:34 -0400
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
+
+> On Wed, Nov 04, 2026 at 03:23:51PM -0800, Jacob Pan wrote:
 > 
-> TBH, I'm bit of surprised since I'm not using GENERIC option but with HW
-> (MTE). Do you mean this with KASAN HW_TAG?
-> might the GENERIC and SW_TAG would be, but I don't expected with HW_TAG.
+> > I am thinking MSHV/pKVM can register an assignment-only tsm_dev to
+> > leverage this? Could PCI/TSM support this role without
+> > device-security?  
+> 
+> It is certainly not what TSM was originally imagined for, but with our
+> new arrangement, yah maybe so?
+I will rebase on this set and send out patches for a detailed review.
 
-JFYI, When I check again without KASAN HW_TAG and clang-23:
+> TSM basically just becomes this weird overlay driver on the PCI device
+> that does stuff. Some of the stuff it might do:
+>  - Register an attestation subsystem device to do SPDM
+>  - Register to allow iommufd to create a viommu
+>  - Some status sysfs ?
+>  - ??
+> 
+So we may expand pci tsm to have more than one role? currently it has
+one.
+int pci_tsm_register(struct tsm_dev *tsm_dev) {
+...
+	roles = is_link_tsm(tsm_dev) + is_devsec_tsm(tsm_dev) +
+		is_assignment_tsm(tsm_dev);
+	if (roles != 1)
+		return -EINVAL;
+> It all seems separable and composable to me, so if you don't want to
+> launch an attestation subsystem device because there is no SPDM then I
+> think that might be OK?
+> 
+> Another option would be to somehow obtain the viommu from the kvm file
+> descriptor and rely on the fd to handle the module pinning/etc. I
+> don't know how to do that nicely with the way the modules work
+> though..
+I did this in mshv-iommufd RFC to associate hypervisor FD file to
+viommu.
+VMM:
+	struct iommu_viommu_hypervisor hypervisor = {
+		.vm_fd = vm_fd,
+	};
+	struct iommu_viommu_alloc alloc = {
+		.size = sizeof(alloc),
+		.type = IOMMU_VIOMMU_TYPE_HYPERVISOR,
+		.dev_id = dev_id,
+		.data_len = sizeof(hypervisor),
+		.data_uptr = (uintptr_t)&hypervisor,
+	};
+	rc = do_ioctl(iommufd, IOMMU_VIOMMU_ALLOC, &alloc,
+		      "IOMMU_VIOMMU_ALLOC");
 
-  ctlv_schema_check_indexed_nest() -> 240 bytes
-  ctlv_schema_check_attr() -> 176 bytes
+Since mshv creates partition file with anon_inode_getfile() which does a
+try_module_get(fops->owner), then in mshv_viommu_init, it does
+fget(hypervisor.vm_fd) which will indirectly keep the module pinned.
 
-This is no difference with KASAN HW_TAG.
+I guess we have to enforce this pattern to make it universally viable?
 
-Anyway, limit depth to 8 seems valid for me.
+Thanks,
 
-Thanks!
-
--- 
-Sincerely,
-Yeoreum Yun
+Jacob
