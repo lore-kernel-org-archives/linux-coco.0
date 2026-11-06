@@ -1,108 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.33
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793974895;
-	b=jykBnBxWXGdf6/VLoEes83NSwd6E7xWGYPwHK7k0tWnlTNEGysvNYBGHUSSoLmPk9EBe
-	 +TfiGseYrZEp3lF+A41TBjfp7FBGHi4LtHBCKaFamK0EqUzYzPEupq3AyfJI83NNoJyfZ
-	 iIpviWBk9yu+hD7F+CHL7lqWH4w6v7bnP6u+4CsH2yw+JT6vV+N46Ixi/5Pkgfe+nObNx
-	 1ZNSMsu1tlldJUrtqUhR8TT89U8QXl4QKCh1NNwrNQak0UYCisT2Ymm8foVCDXOHEfMMp
-	 mShMn1RglWl2PauiPgYU40T06K9Rer6y1hFIHYiOoi1LLXpbAagiKlSlxdeyQ5oPgdg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793974895;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=LgazTQ+TfMOC9KhctR7bKf80rTZabzVXUlU5GV1VjGA=;
-	b=ZMLYw5gVyrd0kR8G5UHwQSne9PqaMlJDosBewDxrzFkYPj+R99PW+FaneXUuKG1CPZ9S
-	 hCA/MootujvGqodJK2sjACdeoI4hWA7u1re/HIV+FEVLdaQVfI1gXCavsD13+jzUGYs5M
-	 kg/i1KhjXVsGwDIa1N37gPQ9yIi9YD21joTKyN5B8VaJUtOZsfuEh990byDheO4Zv3d9G
-	 HcN11az9kU7x9N+CgXgjzScsBKK3mQYi7D2roXkQ/fyOtZsF0PWWtmJzVfVIVIFtMIHa/
-	 nocSJd3cmcMcwjvZ72ebN2txnacfClNPYhpFrAAkYt5wMwDOjGUQuM/tHvcU/89VaFw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="pp/liVqg";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.33
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010033.outbound.protection.outlook.com [52.101.56.33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793975124;
+	b=hmBf8mKESCFw3QyupKJwRaNllhmnQT8hUxips+yCYaixwmbB1tQQnS4YtJKeVp6AXRp1
+	 VwqMSC5KDU+qwe7AMExKAv+2rTw5yzbzBjDGxG0I20n8Di142vsIaNH5TUQmIw6wRUFKi
+	 o8Jre17jyh6Qo8AcNm8IIX4dCPbyzcMfmlEinp5gisusfwGtVKuzGOSiMUN5ghc4tuC6u
+	 dTutyVehscwgWon62zjeVWUtA8h+haVrSK0RY2ZK6dWh/oJiTq9VMqW85Mofw+7wOl11z
+	 nW8sr/Twoe5Ze5xh8RxEwfXG0AYGEDLjV3Ssz8KMj/NDDuoTwsWjHyyMSMvIyV12xBA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793975124;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=XjubV5JgjeqjPXQH1+nVKdJIc9BEV5NX4y8ymGv5/6U=;
+	b=oUDM10x0wteF9Vde72CRcxYZPV7812sIqx7arfQQnjPplKzPGDdlo4/ricHfNEOxFy5j
+	 wts8Xas9nhaWM8BOAt07r5Mim7l/tPgHR76vhkiPW20bPl65Z9Ui4G8eviCWkOa2kJqZQ
+	 c50OV21UfRVuowjjWlnegcrZ7urBYoWqEpLSilpVPtTIra3ixVzJg2GC1zcNj0/iPO9H2
+	 Ak1i8Qz5OPqVi4L24DNMrW9fWw9bO1JQREg1TNCZNIadswObAZ6BX0zUr1MdV7FBREPRI
+	 EaIKwFSC2PRMAXx/JPVYpRm/OdZcYEuFooJaOBdB6OhbiNKIY5z8M650Qw6A+wSy6Cw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=pUp7u6F0;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA3F606A326;
-	Fri,  6 Nov 2026 14:21:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BA3F606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97C4606A32F
+	for <linux-coco@lists.linux.dev>; Fri,  6 Nov 2026 14:25:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C97C4606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pp/liVqg
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BYoSOAyYJgI6K0WhSqV/QJmrWIlyNuUV7JmH5DeUZWc/WDrUlY0nOK9l+lVWOCF8JamktWnECxzj6hd6efbt93cPZse20H0DdeqR6mc3PprvOFFmuNj9qWqpCdVNfr/3TPtJCLv0ktQOjYIT1O6e7efQ6ITXVkfLzBDg6P/QBIKXodWyTk2i9XUB2IkWvOkvxEa8umH9NFmfQFlqY5yxDJgnrcBblNc2kZNmw+02QdOIDBmGkTiCgj/2mfENsGb7c/Y0p/fKl5igsZCbH5bf0xKcLbzI1bKc+gvoIOTF0yT4R3dV4tXJDSbYlF+nrzI2G1CD/HGB8nocNgAe9OEQXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LgazTQ+TfMOC9KhctR7bKf80rTZabzVXUlU5GV1VjGA=;
- b=yJZ/VIUyHuzprJJyIj9b0L7QIBFnGxHWFJvnSyo6aahaX/vh1kDcvonKzPeeWqX6Gy7Rn/Ouib13S7AB8YNIbdLAVsV5mpiP9btJvPHdROuXTNt2IzNZ1Q3+EuHltbDSDjZRkvj0ddlTyXzDWFtD5aEksY8Nir0JjrKTzc/wmTC0XCib/ex7wqbj9zW0aJ292ih2+S3AVHoo4C5pRcWnrOApGsZodVxq4uOdPRNFkORVLO4aYr7HQFPIncwdLSMgIxAw4QAM0aDbuHDyzPa5sdBbJQkr/S5DPOTzUkbcA63PwUD0U1sVDM8EqXeHGSbG/0UNMRl0FQobl1j7gYsxrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LgazTQ+TfMOC9KhctR7bKf80rTZabzVXUlU5GV1VjGA=;
- b=pp/liVqg4DxOPa2L+efZX8nogs3EDRpmU+8/C4Bs/aOCYSGeVdaNQAUjJGPGPg52ldzn3Bf/T60gO5paYku4qD/N5SV/IDxHjfigtF81xe0Nlnl4oZzG9Ikln1OVlX8GXLjUGiazJmsj0WXTH8cRRS6gibE0HIzmF/TGixZ0x1FZKzOpsDOODplaiYa5L6G1a7AEgDU9Z3J5Z+wStqAHmKzVLxAZzaaT/7Pz+6ptPjirrNR44wCs5Hwfen5pZMwkF+QVy7ymKkQzoWsWRma0v6MiCnTuY9QtLtsfDrdHIvW8U5EUKe3IdFrakiUz2RX8sK3ngDS7C1M4mdRd1u8mGQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by DS1PR12MB999190.namprd12.prod.outlook.com
- (2603:10b6:8:495::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Fri, 6 Nov
- 2026 14:21:30 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0592.010; Fri, 6 Nov 2026
- 14:21:30 +0000
-Date: Fri, 6 Nov 2026 10:21:29 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>, Kevin Tian <kevin.tian@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v1 09/11] crypto/ccp: Defer SEV-TIO link setup until
- evidence acceptance
-Message-ID: <20261106142129.GA770409@nvidia.com>
-References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
- <20261028152618.1356860-10-aneesh.kumar@kernel.org>
- <e8785bcb-45ed-492f-af66-deadfba6ac25@amd.com>
- <yq5ao6c2p0ek.fsf@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5ao6c2p0ek.fsf@kernel.org>
-X-ClientProxiedBy: YT4PR01CA0046.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:fe::14) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=pUp7u6F0
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a5177d78c7so6673325e9.2
+        for <linux-coco@lists.linux.dev>; Fri, 06 Nov 2026 06:25:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793975121; x=1794579921; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XjubV5JgjeqjPXQH1+nVKdJIc9BEV5NX4y8ymGv5/6U=;
+        b=pUp7u6F0REst+vXoxCc1mv61/0zt12nXxw0QN/utT2Lxa50ysGjjTfFSiowIf6xBdV
+         v3pl5KfJG0hU7B3O//fsn3fwuH8CR66G4eFu+nqBR0Qm/0Syx8q2HK77hKfhnK+BMKq1
+         EPrwPPBrfhyZQUT2A9Gao9RjGfEUWsjs/VuEsSabnWbgjEZcp8+WGpogWPJV+Jxho43N
+         9RuIkdWN1FzNRVw5CWbN/tIUGpGwfFjdLv3I61ONG/zG1RQEpGdrtHW1ya76GGbCxcmv
+         YEyGdKeFNc0qze2HeMiXQiAc0Kq6z8VldekheP6Qmmbfevgfg7K2PFeIul1ehBaBdzpe
+         77BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793975121; x=1794579921;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XjubV5JgjeqjPXQH1+nVKdJIc9BEV5NX4y8ymGv5/6U=;
+        b=tcVBeg6rG4ufzWiFnFsGpaWOXYMNw+NLd1XFRSge7va+b349wkpmpHAkB1zdmdlAIk
+         JYotb0LrCGXPuFbB/evcihm5sfTJBWmJDpYWbScyrfxWnB6qt5B5fRxn71Uhg5+Ogr+W
+         8v9716KSiJKq4IBnddvIvX4lwnjjZ/NsCvOPBkq2lIy0M5AKBaAy6ttGvYaBMw8mHyVD
+         oNRPpRBooXSY6AGIFktS9UL6LJtV6aj//C04W9+ol6TsU63G3ccVJsHtjnOU10bVDv9D
+         5M1+9D37zx7pX3tUqY00MOeIP1v30gep1E/pxUmzd/X4XvQv7hEGlvWBVHGqc+MMoawh
+         ehjw==
+X-Forwarded-Encrypted: i=1; AKwUvBzv+nBvapkHs7wd1/JnWo5wuGcjY2jGGhHOG9Qi7VkY6h/1OBYAsZ9UFJJsH90aQxoFm9aECJH9q9C5@lists.linux.dev
+X-Gm-Message-State: APuU4Z9RphxYTvlq93EDw8JBmOU4gsKyCoWCWWOPsu/rTtYRnTjvOBOY
+	ZOCgoj1oLjy4BWWE6+f95sP/RADgpA7V9KGPMJLHySUeVA+WEbAH/gj5RfbSm+8GOy4=
+X-Gm-Gg: AYBFou2bb9Wtm4Y73rLJi69w2w69cSazd4a1caJB0ke3pN6XfxMSAQ/TzQWN8fsOyO8
+	jwyipib9jxcYPTc6RJzIAywDSiB2tOVjQZPkb6mD+GwfJCdNXbiwBB6xoUz89swDJprEBBR1i+N
+	0wsObRdHwjrSI4BPgSign+Y9ff63XrzuwGfku0ihQVHib34P5qcNequViB9dIl6zOf8qi82TFys
+	iM5mUBE1xgkJgctVJUVEG85jL8h5YzP9YD3NH7T1UyvojCg3sEYVgh9eQxTedhMUnu06gn9zAkM
+	y4N2YGeMoTw9jVQ8EF4o+CVuPsQ17bndbn/PHfAQ3SxFCExW9ZlVOxS1E3y08iojpdAsC0s5sDX
+	JPnJ3XJR3IiDzWUvpxur+pi249OOEETezOokiRyQd8FpMgroWj7zk1bfg0hqphvjo8AlPASEjmQ
+	eZMBq1Xh0hkb31Zhd2cCzfO7y6Vx0UAURZIqre+WgQd7D7RzRyGv1M5L5de2YojralMTmYTwVox
+	0hoxW4G8hM3nqg1NXDB4Dg+MaLypum8S5QRp886Ua2aK+IgNRC9uMrtbmCWJ5taXuDevIL6Cp74
+	CqVf4jjQQXNDxqrYajfSzGOEYr7yObpzum44
+X-Received: by 2002:a05:600c:5307:b0:4a1:e00b:a10b with SMTP id 5b1f17b1804b1-4b6de973c39mr43606025e9.7.1793975120493;
+        Fri, 06 Nov 2026 06:25:20 -0800 (PST)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b571f46538sm136357845e9.5.2026.11.06.06.25.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 06:25:19 -0800 (PST)
+Date: Fri, 6 Nov 2026 15:25:15 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, aneesh.kumar@kernel.org
+Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
+Message-ID: <au3i-0eDzJZaWukx@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-18-jiri@resnulli.us>
+ <auuDcABX27EeTApl@e129823.arm.com>
+ <20261104194622.GC3889730@ziepe.ca>
+ <aux01NUd85PabtZu@FV6GYCPJ69>
+ <auyKE2sGqtfjk4v5@e129823.arm.com>
+ <auy7IM0_S2tv7EZX@FV6GYCPJ69>
+ <au2WdWFOYbPEv0Uj@e129823.arm.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -112,85 +110,202 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DS1PR12MB999190:EE_
-X-MS-Office365-Filtering-Correlation-Id: 397322df-9cb7-4332-c81b-08df3c11404b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|366016|18002099003|22082099003|3023799007|10067099003|56012099006|5023799004|11063799006|4143699003|261026140227099003|261026121527099003|261102123227099003|261028144727099003|261021121427099003|261022105027099003|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	5Eb6Xve/OwRhzcPZGIOMRERBXkFAWVXGSBbrRpt/yaQGMrATVUcthubDseIzSrP9RZN2CdJeKDXMv345qw74xKm8oYC3mitoCthn7wS67PtoeaOorTvr2p5U4xV+jkybvISOHZehqG+We+RXCGOgmji+3WzGBUEQTQiC5YMN86vBZZy49Up5x3oH5d2JxkeiW+EyCGaXuWcLFsq/d7PjhStRmRAsW/CE/bDtKZK4HK905CL2tPuw02biQtXNyUpr4yMiccRS1D60rPYKh9J8CkoS96cv59OCgrbJ+y90jvf75V/zg0CXHv+MLX1d9Uoi3z7kDJvrgAKd2PrL12hyzXPNXpofCLRKFU3CEz7fLjqQ2Q0q0CgUABGO4gr/WBRvNpo+Wx0qAnRhLnJ/8c7iG59egrcB++DHDwQsyVf3UYicdLkk/6m3/hV/78hgZOG/VhB374AF30i+46N0njpyw1hWiU3NEZHH7K/NwrTTOuQVvVlOVw4kWmlMrtfgpc82N6TVVA0aabKFPR+a8CMO0oWhKyLAencn0nLUgrbFbeWwLGwGUmn1aBUzzoHcKRpV7burClZFtprcEgwQjdE7/TIQg0K7zY9RSKpirpqfoGpxHJOvu0Qbom6+Vgd8Nq0k42HTB5Vo4NBaHOB+rFWrLfqi3PKjucK6173D0+D1fuQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(366016)(18002099003)(22082099003)(3023799007)(10067099003)(56012099006)(5023799004)(11063799006)(4143699003)(261026140227099003)(261026121527099003)(261102123227099003)(261028144727099003)(261021121427099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xCaVJx+0TP7RPFlStrnfDIeKXgFa6kH7/qJKJUqh/9FzdB85vH4k1AIfN6Zu?=
- =?us-ascii?Q?N7qv4mSR72sI+Rl5jNiQjUu2+Rt7pLZ4KMe06oLJE8fGlnGdX5m01l4soH/+?=
- =?us-ascii?Q?bV/9Bw2DcQMR86oGV6MO7tPUfzpA3A2q0xZKBoTj6Kj7GKhXqctHT+C3ywTY?=
- =?us-ascii?Q?MQO3NWHLrpJcpS7tMac6CP5Yx61WaYs+pgozAA7SBHKtjq56GaOxZcKorWNB?=
- =?us-ascii?Q?0FpQ0cMK9YnL+b6oEYZP7qlk1qIExhcQZ9/AFj/34Cp6GyOCqXa5LYWiyEs9?=
- =?us-ascii?Q?zuvdJbFsDZdhxy8H26jlSG/1r+T3rvuO6M+f5iPg2ZUQlXZeLgZ+TpcrOZn6?=
- =?us-ascii?Q?KSucJ6pgTuF4OrduNswYjj32O52V+Gb4s55UzE+PMCIxGM3GypoX6biv7uS4?=
- =?us-ascii?Q?iKiX0Sn4a1GJppIbivGSiD33+OF66NlH3TP9MzIGDpACgceY5XtLdxRpHzd4?=
- =?us-ascii?Q?ELpfGxVYLmzXYLoj2cNnEMJlSFbet/GtgD2WX8Ye7JWUiHzez/8kfww3Gyz3?=
- =?us-ascii?Q?v83QY66DC4ddfwGpDeFvcNlcJRf1gAMLwxHOQhVbXoUhLlALXtmPNkO8tP5e?=
- =?us-ascii?Q?mCoxu7/x5KHtVRXbopL/+w9f8yN1BVmX2y9SuVLLqCqBiliDTI88VgK00uRA?=
- =?us-ascii?Q?xuSGlpOHgvF4jo2Z0BDHiT7qFxmTx3mRTj5ZLNYnuQjQZCt6x5mGZDZHMCUl?=
- =?us-ascii?Q?KCT2YYZmrP0zE1M9qyJSftLZGX7y562lCbUWZM63yTzdDSwrb2k3ATjv5000?=
- =?us-ascii?Q?bEHJL+LFtcSkjK/SXIIQBiR7aI/wKIoyD8rFN5GksS4WoT0gtFHmzouGN2HK?=
- =?us-ascii?Q?Z7nLYedT3a2qs83HfpMqPMR0N3wBEgd6T02h4qjhR28Q35cn+8yWYSSyYNM+?=
- =?us-ascii?Q?f/4xNfrH/R2U9U22FJ/DU+1U5Mb94luNvPGv7Vidzl3xLqtnyMkcKcL4jdot?=
- =?us-ascii?Q?wGGyigCduIamhPQuCAEtyIx1Y+N2M9GwB82HJTUMRzWgL3PjbCISuvw6GVFC?=
- =?us-ascii?Q?E/DNu8kBG+TAYsuE5bNvh7C+7rIRCwLfMCGuj5Lc49POTZqZ2kTLcsYB9fBf?=
- =?us-ascii?Q?20buyW+zQV6EDh5gtjpkngTLxpmZz4N29DznfNGmD4rYKaxa6s/Qu8eAQw1b?=
- =?us-ascii?Q?P2sLDbYgbAnXeSuTrd3dE04so4R8X7GiE2DwlpQcuMe1ztj9RSKABNxMtzIw?=
- =?us-ascii?Q?RCrdxXq6ABpNkzVS5vawxzX6MutUcqVC1XFAM9RGDNFPs4V2uYj/1aClirX1?=
- =?us-ascii?Q?vwb8KCvdLbeSWrrsELc1/NyJCuGIMJ9rdQeOdhh4zYQsmVyHfDHUVgaDJVkJ?=
- =?us-ascii?Q?XiV8RWr/jigALukdQQUe7KXXDeNWb/4SXlwGbEN6VDuCmzm+/t7Zg9qERBUy?=
- =?us-ascii?Q?FrZS/mth2P6CO29fmIYoBWsMPuBNWrygAS6VfVy6F6UYpxHi3Hfgew9A1QSF?=
- =?us-ascii?Q?SEHzj2HFqd93uDh0Nu5IzgwV3HYrXIzASPm0K9sDN3AIV1WTM9qu90gwTTQ6?=
- =?us-ascii?Q?ClVr89nHM7YGfqhKVU8FBVcVcbsvN64+TyswngtQbWFfpxKdqoyfRNpjhPHs?=
- =?us-ascii?Q?6OIU0v6Y86yV704JiAVwpY94ivRK+MShCG5UIvtF7NFFTTzeLUHgBl36nbyJ?=
- =?us-ascii?Q?LxBpmkyuCKZOIjmI12guXBBEoZI2a+22l+inztRMxQPKOV5Bn8WB0GLR9Xf2?=
- =?us-ascii?Q?Nsc/lNZ5RH/2D5lboEzRtEadoPRTj1RpycTUFR2L29ZyZLD0?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 397322df-9cb7-4332-c81b-08df3c11404b
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 14:21:30.1782
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mNYMJ3+i8PmdbUKyL2Joj466zmvczOD5dXhX0h13DnVI9mDkkxy0XRPsjmNztC0p
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS1PR12MB999190
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <au2WdWFOYbPEv0Uj@e129823.arm.com>
 
-On Fri, Nov 06, 2026 at 06:44:27PM +0530, Aneesh Kumar K.V wrote:
-> >> +	/* Reserve TC0's stream ID without programming or enabling IDE. */
-> >> +	memset(ids, 0xff, sizeof(ids));
-> >> +	ids[0] = dev_data->ide[0]->stream_id;
-> >> +	dev_data->cert_slot = 0;
-> >> +	ret = sev_tio_dev_connect(dev_data, BIT(0), ids, dev_data->cert_slot);
-> >> +	ret = dsm_collect_identity(dsm, ret);
-> >
-> > Cannot librspdm do that collection, directly via DOE? Ideally in the
-> > generic code? There nothing special for the PSP to do and stopping
-> > SEV-TIO's connect half way is weird.
-> 
-> This patch does not use rust-spdm and avoids introducing that
-> dependency. It uses slot 0 to initiate the session, retrieve the
-> certificate chain, and return it to the host. After host approval, it
-> resumes the session and enables IDE. Only slot 0 is supported, and the
-> host can reject the device identity before IDE is enabled.
+Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
+>On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
+>> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
+>> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
+>> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
+>> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
+>> >> >> [..snip..]
+>> >> >> 
+>> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
+>> >> >> > +					       const struct ctlv_cursor *request,
+>> >> >> > +					       struct attestation_evidence_request *decoded,
+>> >> >> > +					       struct attestation_evidence_object_request **objects)
+>> >> >> > +{
+>> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
+>> >> >> > +	u32 challenge_length;
+>> >> >> > +
+>> >> >> > +	decoded->challenge =
+>> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
+>> >> >> > +	decoded->challenge_length = challenge_length;
+>> >> >> > +	if (challenge_length < caps->min_challenge_length ||
+>> >> >> > +	    challenge_length > caps->max_challenge_length)
+>> >> >> 
+>> >> >> Hmm, I'm not sure whether this check is required for
+>> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
+>> >> >> 
+>> >> >> for example, if the provider provides two evidence:
+>> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
+>> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
+>> >> >> 
+>> >> >> might challenge is reuiqred for generating the token
+>> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
+>> >> >> 
+>> >> >> However, in case of eventlog, it wouldn't require challenge.
+>> >> >> for example, TPM event log or CCEL event log.
+>> >> >
+>> >> >Right
+>> >> >
+>> >> >> Do we need some field on attestation_evidence_supported_object whether
+>> >> >> it requires challenge or not and applies this sanity check per the object?
+>> >> >> 
+>> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
+>> >> >> always.
+>> >> >
+>> >> >I wonder if we should have two interfaces here for signed and unsigned
+>> >> >evidence? It would be clearer for userspace then when it needs to
+>> >> >provide a challenge or not.
+>> >> 
+>> >> Isn't the challenge field provided/not-provided enough?
+>> >> 
+>> >> Currently on the introspection side, device-get op would provide
+>> >> challenge-lengths array:
+>> >> 
+>> >>         evidence?:
+>> >>           challenge-lengths[8]:
+>> >>             length?: uint(..4096)
+>> >>             min-length?: uint(..4096)
+>> >>             max-length?: uint(..4096)
+>> >>  	  objects[16]:
+>> >>             blob-class: evidence-blob-class
+>> >>             max-length: uint
+>> >>             blob-instance?: uint(..u32-max)
+>> >> 
+>> >> I think it would make sense to have challenge-lengths array per object:
+>> >> 
+>> >>  	  objects[16]:
+>> >>             blob-class: evidence-blob-class
+>> >>             max-length: uint
+>> >>             blob-instance?: uint(..u32-max)
+>> >>             challenge-lengths[8]:
+>> >>               length?: uint(..4096)
+>> >>               min-length?: uint(..4096)
+>> >>               max-length?: uint(..4096)
+>> >> 
+>> >> Then the unsigned object would just simply have challenge-lengths empty?
+>> >
+>> >This looks good to me. :)
+>> 
+>> The challenge is one of several open points that all depend on what an
+>> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
+>> "primary", "raw" and the format strings. Here is my proposal to settle
+>> these together:
+>> 
+>> The model:
+>> 
+>> 1. device-get lists each object with an id, a class (signed, event-log,
+>>    cert-chain or auxiliary), the formats it may come in, its max-length
+>>    and, for signed objects only, challenge-lengths.
+>> 2. evidence-get names objects by id, as MR ops name MRs, each with its
+>>    output blob. It carries a challenge exactly when it names a signed
+>>    object, and the challenge has to fit each of them.
+>> 3. The reply gives each object's format, length and, where the TCB
+>>    vouches for it, the TCB's digest. The output is always {label, data}.
+>> 4. A signed object is made by the call, over the challenge, and never
+>>    reused. The rest are read as they stand.
+>> 
+>> This settles following issues discussed during this patchset review:
+>> 
+>> 1. One op, not two. Per-object challenge-lengths tell userspace when to
+>>    pass a challenge, and one call returns the signed object with the log
+>>    and certificates needed to check it.
+>> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
+>>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
+>> 3. TDX's Quote object lists the legacy and the DICE format. The provider
+>>    labels what the host returned and fails on a Quote it cannot label.
+>> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
+>>    spdm-measurements and tdisp-report become formats, and signature
+>>    goes, as a signed object carries its own.
+>> 5. "raw" goes with the representation attr. The TCB digest is a reply
+>>    field, so a blob always holds the object's own bytes.
+>> 
+>> Formats become an enum each provider family defines, instead of free
+>> strings. I'm still unsure if format should be entirely provider-specific
+>> and defined as "extension", or it should be somehow mixture of common
+>> and provider-specific. Looks there is not really much common
+>> anyway, so I lean towards provider-specific only. So far I have:
+>
+>Overall, This is plausible for me with some small question.
+>
+>> 
+>> ======  ============  ==========  =========  ===========================
+>> Family  Format        Class       Challenge  Bytes
+>> ======  ============  ==========  =========  ===========================
+>[...]
+>> tpm     ek-cert       cert-chain  none       EK certificate from NV
+>
+>Just a thought, but how are we planning to retrieve
+>the NV index for EK certificate?
+>
+>As far as I know, TPM NV storage doesn't support labeling.
+>
+>Should I assume that the NV index would be specified as part of the
+>challenge to retrieve the certificate from TPM NV storage?
 
-I'm working toward and exact flow on what all the drivers should do,
-including the roadmap to SPDM 1.3 multikey. That should answer these
-questions. It wil look like close to this:
+evidence-get allows to accept mr-selection as part of the request
+alongside the challenge.
 
-https://lore.kernel.org/r/20261103151643.GI274202@nvidia.com
 
-AFAICT AMD's current stuff fits fine, and the PSP protocol will need
-the same adjustment as everyone else for 1.3 multikey.
+>
+>[...]
+>> armcca  event-log     event-log   none       Realm firmware log, if any
+>
+>JFYI, this would be a CCEL log like tdx:
+>  - https://github.com/tianocore/edk2/issues/11384
 
-Jason
+Okay.
+
+>
+>
+>> snp     report        signed      64         SNP attestation report
+>> snp     cert-table    cert-chain  none       VCEK or VLEK, ASK and ARK
+>> ======  ============  ==========  =========  ===========================
+>> 
+>> Did I miss something that would break us here?
+>> 
+>> CTLV layout draft:
+>> 
+>>     device-get reply, caps.evidence:
+>>       objects[16]:
+>>         id: uint(..15)
+>>         class: evidence-class
+>>         # The reply says which one was written.
+>>         formats[4]: evidence-format
+>>         max-length: uint
+>>         # Signed objects only, entries as today.
+>>         challenge-lengths[8]?: ...
+>>         # Descriptive, such as an SPDM slot.
+>>         instance?: uint(..u32-max)
+>>         # When the TCB vouches for the object with a digest.
+>>         tcb-digest-algo?: hash-algo
+>> 
+>>     evidence-get request:
+>>       # Required exactly when a signed object is named.
+>>       challenge?: binary(1..4K)
+>>       objects[16]:
+>>         id: uint(..15)
+>>         data: blob(out, va memfd dma-buf)
+>>       # selection, privlevel, service and options as now.
+>> 
+>>     evidence-get reply:
+>>       # In request order.
+>>       objects[16]:
+>>         format: evidence-format
+>>         length: uint
+>>         tcb-digest?:
+>>           hash-algo: hash-algo
+>>           data: binary(16..64)
+>>       # The generations as now.
+>> 
+>> Makes sense?
+>
+>For me, It seems fine.
+>
+>-- 
+>Sincerely,
+>Yeoreum Yun
