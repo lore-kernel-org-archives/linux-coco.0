@@ -1,83 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793953467;
-	b=x4ApWDhuQXcroSFmI3u+wJMZ0P7ThfehDM1IXzuSeUjS8CRl6rOVLbvUi7rhmyqOnesQ
-	 PSxFpq4jUzYELdHslgLDZDcWscBIoQwdQckWnjAZTX28fGMxDbCVF7Ki0Zy+CvbosE/wi
-	 oxZfuoHUqylnGq5LqFrI2lv9Kcv5mTGQWMR2QQ8wY/dZrNIS0m9FQAs3aGXIu9GlY/JPq
-	 RxdFzhvptQfD6iGMhMW2F5ExxLjqlBeON1/8zcjIcDEkBguWW623NjfQzE80lRI+gy/Q/
-	 6p/X0T/8yZD5qletr5+IFWqDK8xouQ6j0ZZQoTIpFbqnfi6qviTavO45sEfYDKfjnvQ==
+	t=1793953670;
+	b=uP5O47IkTfKMmmb+L1uwuVzMXjYjXlak2uZcCFVs9Nf7nWSRgOHSo4zmv9G8jUJaw1F6
+	 /YGcJoosMfrBO7ncmYJrJK7EiB3rT7iPMdqFTV1P51vD/cnCaweYNKnTuWk562G+muprb
+	 NZOMrn2kBET3vcZF2H8umscfEwu37cJ4J844gYmtIVBwainB93doY8cdBF5tRTOoJT7ib
+	 YG+VadAEmblmlN0yLyo9EboTKtYs+DByOnUSJIdurULmUoqAAVoVIlNqozIoZvcwr9xlC
+	 qNn29wDAOlU4hOMiogm+WH5w7Ql4l2n1KC17I+hF3fmHXbwbPrr1z72SH8DVvcFtlBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793953467;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=JNN9fSulUqv+ZWRT5ZOWUQqvJRbmjv9przFDvv5FnSA=;
-	b=B3lg47N4kFFzW7pPPa6EBFccEj1IKpwKH+p00qLKiVDBLdi8j+UWdNPjKj4CjSCHt7HK
-	 qTr4FjF7PFl8EUR1QXF56ET6DI7g9GDmQJ+pPqfedn/GOq9T1sVJp0uExZzkxy7IC0/t4
-	 3YtqYGWiR2t3SgmXWT3B1/qM6k+hu7Sncf6q9W2rdqPm0m61dHkAB/DDeE0Vu0xoKTMZo
-	 dsvAgLovq0EQj+YVTSgww4C/B4aCp/O4GJ2mXNivUSDrgEx4LnHvZYtnuVDE93FyJzWJh
-	 WHQ/9do0uM0CjH83QzjH6TspfjD6Lj+CLG8FOLOCB9qZjYLG8D5a+Kbx96/qMTwMP+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793953670;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=eFyf1J2eCmzdcygEsnj9uuRDnIkV5nwpe7sUFMbcNPA=;
+	b=mnxO7hyueYQ6/3S9IZoUL/fmsSTQ8argN3sBPs324/4GB+BUMdwl8LfQSkr27kkik37f
+	 dQGjyonpgu8J3oF+hg1vvafhsU7lj/X+JBd/VKItIMp/DuYsUvqR8QSDtnh+N0BbazuVf
+	 LLO/QFrZi6EpsLFOBRE3KDQO4B2K4jATVb44v0gKASUot+5i/IzaFQg7TLbIHNH08/WkM
+	 WknntnWYWyzipvf3FbY9NoJFOTH7YbfVT3VL8kaNinjJ7DsXPQMNgCFQGkQbx3XS9HkB1
+	 XlC0S1kEypdsenMCsV8RrRM1H+kemJrKqQ/HIrgQPVmLVksj5b5p6sjyn8Z+R3PczlQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JGSwu+AT;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=m8QAQ5Zy;
+	arc=none smtp.remote-ip=209.85.221.52
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABACC606A326;
-	Fri,  6 Nov 2026 08:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A80606A330
+	for <linux-coco@lists.linux.dev>; Fri,  6 Nov 2026 08:27:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79A80606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JGSwu+AT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FF61F0089F;
-	Fri,  6 Nov 2026 08:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793953466;
-	bh=JNN9fSulUqv+ZWRT5ZOWUQqvJRbmjv9przFDvv5FnSA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=JGSwu+AT80CV/HMl70hUGZrcOqgaDiIvhuYIBIyztIprWzJKhN3wRAqAocVThxyW7
-	 Vn7aLAq4uc2IaQKkrZZMbzutoGHl5C5VYOoAFx6ljaLf6dhlXCYcyuBR9A1G5HYVIZ
-	 I/79sUSXsTxjD6ynb78x9OSjlw8iZR+aOof8OaHaN6JX0JmxlYg6h8H9VYLIRSXJmg
-	 h9UmuKPfcsihs4e5KVY/1ZEe0JZ793dBzwMXv+V8l9dRwQ7Bw3Iin49abJsQVodX62
-	 9ZAsFsSab8PgPoP6rTEhpJxUIl9Ekjn3vxYCA4RQBHC5olfrlOOMUpyfmcJt/xewvE
-	 LnKzZYgdLR3Iw==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>, "Reshetova,
-	Elena" <elena.reshetova@intel.com>
-Cc: "Jiang, Dave" <dave.jiang@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Jiri Pirko <jiri@resnulli.us>, "Tian,
-	Kevin" <kevin.tian@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>, "Edgecombe,
-	Rick P" <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot
- zero and establish streams after acceptance
-In-Reply-To: <20261103151643.GI274202@nvidia.com>
-References: <20261028152618.1356860-1-aneesh.kumar@kernel.org>
- <20261028152618.1356860-11-aneesh.kumar@kernel.org>
- <26c24a66-be3d-40ac-8cb4-294deb0108db@intel.com>
- <20261029171053.GD3734323@nvidia.com>
- <DS4PPFA84FA90FC768B30DCFEBDE71F31CFE76D2@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261030131543.GH3734323@nvidia.com> <yq5apkwqa5ve.fsf@kernel.org>
- <DS4PPFA84FA90FCEFB18E5620217FDCA728E76A2@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261102172640.GB274202@nvidia.com>
- <DS4PPFA84FA90FC31B41ECA1F6ACF6D0600E7692@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261103151643.GI274202@nvidia.com>
-Date: Fri, 06 Nov 2026 13:54:17 +0530
-Message-ID: <yq5ay0b6pdu6.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=m8QAQ5Zy
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-491aaed7565so203600f8f.2
+        for <linux-coco@lists.linux.dev>; Fri, 06 Nov 2026 00:27:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793953668; x=1794558468; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eFyf1J2eCmzdcygEsnj9uuRDnIkV5nwpe7sUFMbcNPA=;
+        b=m8QAQ5ZysfH7ByYENVZhU+eXT0Rai1VyOTjUPnoRaxtKVZYXYbWuUD/3qNk5mX3+Mn
+         fVn7fl2Vn9C6g8H6HWgLcdCbozLo70jUVQnkiFPybIjhuopDnN3tFju7/M7SHBZ2Xcyr
+         RxoAjfpsa7hgOTWcxa0ezSULHrBUTKZ5+qzIqhCFAkGRSf232l7yNyUxO236CNIJ5UQl
+         FSPLKTUx0sS6DJI6n8yX5wHqCvO4AOfzvTXrNVCoVOlR8i8jQi8wkkU0fKaOIby5TTSS
+         o/ZE+iS7LAXNT9lsIm5T/P1FYhCXtrbM1UPN1OWKcbbbOKnTpRtau9wKSpkaSVf82B1s
+         3gTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793953668; x=1794558468;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eFyf1J2eCmzdcygEsnj9uuRDnIkV5nwpe7sUFMbcNPA=;
+        b=reWy8Yr0U2dvitsZwCpiwZ2c0QD0WfmgR4wlojZmTaTdzz6hfJ2L6WYW+77GTk9hm+
+         7kEGtRihKk82mJGS+qzPimJR6b/w4p0I8d2CMwmjY1pDEM3bnXWfbo5nYTMl6wjKWGSx
+         zDd0W60a65yb/QEVxSlXGI7EkSS2j926XUC1DBJFqMN3rtRYPE/98qK2FM0XtwV0wz19
+         HQiYUrEqU8bnd81IPkrWVzNw0g5zjH1/2tRHBcR6bTWvL0Y3mrfk9FxQlEjSkbbOhWxU
+         3etrAbJbdYUO6qnyxWw1gCh1buUQepGitxcT9gaL1xlj/GZBfSqVpVKjBL4LAJXN4e9E
+         X1kg==
+X-Forwarded-Encrypted: i=1; AKwUvBz+bhac0WFgD4005nF5D1b5Dp3Z3OXxZQ/x6ox8ZriBxNdvoYC8YKa32FSH82/SF6EYB8nL8JdUjHEG@lists.linux.dev
+X-Gm-Message-State: APuU4Z91lhc27nHsywdFsQ9vjCptO4r6gUw1C9IXQiSElq67OjRYXyTn
+	veC8xe1FUopnJO40Fkdo2+tXfSqz9QPsDdCeosKUDtf8y8Bhca8+XzDrs9LWgBJUZyU=
+X-Gm-Gg: AYBFou1ic/eTxgFhKb7B1kVlILJe4VD00y/GC3rnaw3Irp/C3JwIWRquoJb26ipiuE3
+	LYGFW2Jn9HsuEFFpW8b9B7e5zNnyF6bsQ/Mbw4gFYnerKapuXlCiwycL0mX3PPxJd2/bM5HS4Gy
+	FJTBJsB9fJKDla/HkzS2ObYd27g7B7EWVl76IZUP+D49qdez0lg6OuP4sk+jEUNoeHzuOiegGNs
+	ZQO39B1gd5/LTpETcaby/e7fxvgRW53caTDxOgT1Dd9i0HXwhgb8oucXMqCTqCiV2NY+hP5qfOp
+	TFWUJ6ttqP6uQMtdbyrkOnPMq+tjNbYez0V3RkvLRouh5osdOHOvifooSTuSRFRXfMjrMG8+jUD
+	UmVeLvEduhOI5EzUWbxHFWjro+N6e/3Vlm5QHT6zDwGjdouQLvCIjndxnjaYbtUlVIPhXO9bGO1
+	0WehsNBfemKurYQPduEakjWk4VOhZvjvJpocNbHCl7Pnc8P3cmPDRra1fOnKuOr3MKD+DCbIXya
+	Swtr3ScqKK7+dRpm2rMzbEpjPCKfktB0a9X+oVSt9JlpWD4GNx6IRyTQ/dkKCIZDDk13BYRI93r
+	/4rHFQPEvxdh3fU2p6aVLTHIre33z53BouSiqOJNJHh7K+B/mkErgqI8SgyM
+X-Received: by 2002:a05:600c:3e0e:b0:4a2:150f:1605 with SMTP id 5b1f17b1804b1-4b6dfba908bmr27264855e9.24.1793953667539;
+        Fri, 06 Nov 2026 00:27:47 -0800 (PST)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b73ee651b7sm16201965e9.0.2026.11.06.00.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 00:27:46 -0800 (PST)
+Date: Fri, 6 Nov 2026 09:27:42 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, aneesh.kumar@kernel.org
+Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
+Message-ID: <auy7IM0_S2tv7EZX@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-18-jiri@resnulli.us>
+ <auuDcABX27EeTApl@e129823.arm.com>
+ <20261104194622.GC3889730@ziepe.ca>
+ <aux01NUd85PabtZu@FV6GYCPJ69>
+ <auyKE2sGqtfjk4v5@e129823.arm.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -87,73 +108,184 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auyKE2sGqtfjk4v5@e129823.arm.com>
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
-
-> On Tue, Nov 03, 2026 at 12:01:43PM +0000, Reshetova, Elena wrote:
+Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
+>On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
+>> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
+>> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
+>> >> [..snip..]
+>> >> 
+>> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
+>> >> > +					       const struct ctlv_cursor *request,
+>> >> > +					       struct attestation_evidence_request *decoded,
+>> >> > +					       struct attestation_evidence_object_request **objects)
+>> >> > +{
+>> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
+>> >> > +	u32 challenge_length;
+>> >> > +
+>> >> > +	decoded->challenge =
+>> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
+>> >> > +	decoded->challenge_length = challenge_length;
+>> >> > +	if (challenge_length < caps->min_challenge_length ||
+>> >> > +	    challenge_length > caps->max_challenge_length)
+>> >> 
+>> >> Hmm, I'm not sure whether this check is required for
+>> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
+>> >> 
+>> >> for example, if the provider provides two evidence:
+>> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
+>> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
+>> >> 
+>> >> might challenge is reuiqred for generating the token
+>> >> and this would be marked at min/max_challenge_size in evidence_cap.
+>> >> 
+>> >> However, in case of eventlog, it wouldn't require challenge.
+>> >> for example, TPM event log or CCEL event log.
+>> >
+>> >Right
+>> >
+>> >> Do we need some field on attestation_evidence_supported_object whether
+>> >> it requires challenge or not and applies this sanity check per the object?
+>> >> 
+>> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
+>> >> always.
+>> >
+>> >I wonder if we should have two interfaces here for signed and unsigned
+>> >evidence? It would be clearer for userspace then when it needs to
+>> >provide a challenge or not.
+>> 
+>> Isn't the challenge field provided/not-provided enough?
+>> 
+>> Currently on the introspection side, device-get op would provide
+>> challenge-lengths array:
+>> 
+>>         evidence?:
+>>           challenge-lengths[8]:
+>>             length?: uint(..4096)
+>>             min-length?: uint(..4096)
+>>             max-length?: uint(..4096)
+>>  	  objects[16]:
+>>             blob-class: evidence-blob-class
+>>             max-length: uint
+>>             blob-instance?: uint(..u32-max)
+>> 
+>> I think it would make sense to have challenge-lengths array per object:
+>> 
+>>  	  objects[16]:
+>>             blob-class: evidence-blob-class
+>>             max-length: uint
+>>             blob-instance?: uint(..u32-max)
+>>             challenge-lengths[8]:
+>>               length?: uint(..4096)
+>>               min-length?: uint(..4096)
+>>               max-length?: uint(..4096)
+>> 
+>> Then the unsigned object would just simply have challenge-lengths empty?
 >
-> We will need some multi-step sequence from the uABI perspective:
->
-> 1) CTLV command START CONNECT:
->     TSM does:
->      GET_VERSION / VERSION                          (VCA: Version)
->      GET_CAPABILITIES / CAPABILITIES                (VCA: Capabilities)
->      NEGOTIATE_ALGORITHMS / ALGORITHMS              (VCA: Algorithms)
->      GET_DIGESTS / DIGESTS
->
-> 2) CTLV commands:
->     query certificates. TSM will issue on demand:
->      GET_CERTIFICATE / CERTIFICATE                  (every slot in the slot mask, all chunks)
->     query VCA items
->
-> 3) CTLV commands:
->    FINISH CONNECT with slot:
->     TSM for 1.2 does:
->      CHALLENGE(slot 0, fresh nonce) / CHALLENGE_AUTH
->      KEY_EXCHANGE(slot S) / KEY_EXCHANGE_RSP       (clear text)
->      FINISH / FINISH_RSP                           (in session, opaque to host)
->     Or for 1.3 multi-key does:
->      KEY_EXCHANGE(slot S) / KEY_EXCHANGE_RSP       (now includes DIGESTS and CERTIFICATE)
->      FINISH / FINISH_RSP                           (in session, opaque to host)
->
+>This looks good to me. :)
 
+The challenge is one of several open points that all depend on what an
+evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
+"primary", "raw" and the format strings. Here is my proposal to settle
+these together:
 
-Does this split require us to guarantee that no GET_VERSION can be
-issued in between? Another GET_VERSION in the same requester context
-between START CONNECT and FINISH CONNECT would reset the responder's
-negotiated state and transcript, right?
- 
-If so, can we avoid this split and always use RustSPDM, with or without
-multi-key support?
+The model:
 
-Something like:
-Kc: public key used to verify CHALLENGE_AUTH from slot C.
-Ks: public key selected for session establishment by user using slot S.
-C and S may be different slots.
+1. device-get lists each object with an id, a class (signed, event-log,
+   cert-chain or auxiliary), the formats it may come in, its max-length
+   and, for signed objects only, challenge-lengths.
+2. evidence-get names objects by id, as MR ops name MRs, each with its
+   output blob. It carries a challenge exactly when it names a signed
+   object, and the challenge has to fit each of them.
+3. The reply gives each object's format, length and, where the TCB
+   vouches for it, the TCB's digest. The output is always {label, data}.
+4. A signed object is made by the call, over the challenge, and never
+   reused. The rest are read as they stand.
 
-Host / RustSPDM:
-    VCA -> GET_DIGESTS -> fetch certificate chains
-    CHALLENGE(C) -> retain the messages and CHALLENGE_AUTH signature
-    Stop communicating with the device.
+This settles following issues discussed during this patchset review:
 
-Host / userspace:
-    Examine the discovery results.
-    Select slot S and validate its certificate chain/key Ks.
+1. One op, not two. Per-object challenge-lengths tell userspace when to
+   pass a challenge, and one call returns the signed object with the log
+   and certificates needed to check it.
+2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
+   /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
+3. TDX's Quote object lists the legacy and the DICE format. The provider
+   labels what the host returned and fails on a Quote it cannot label.
+4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
+   spdm-measurements and tdisp-report become formats, and signature
+   goes, as a signed object carries its own.
+5. "raw" goes with the representation attr. The TCB digest is a reply
+   field, so a blob always holds the object's own bytes.
 
-Host -> RMM/firmware:
-        Supply:
-          - C and Kc, S and Ks
-          - Algorithms
+Formats become an enum each provider family defines, instead of free
+strings. I'm still unsure if format should be entirely provider-specific
+and defined as "extension", or it should be somehow mixture of common
+and provider-specific. Looks there is not really much common
+anyway, so I lean towards provider-specific only. So far I have:
 
-    Fresh GET_VERSION -> CAPABILITIES -> ALGORITHMS
-    GET_DIGESTS immediately after VCA
-    GET_CERTIFICATE(C), GET_CERTIFICATE(S)
-    Check that Kc is the leaf public key in chain C. // Can the slot number change by now ?
-    // Do we need rust spdm challenge auth response here? 
+======  ============  ==========  =========  ===========================
+Family  Format        Class       Challenge  Bytes
+======  ============  ==========  =========  ===========================
+tdx     quote         signed      64         Intel TDX DCAP Quote
+tdx     quote-dice    signed      64         DICE-based TDX Quote
+tdx     ccel          event-log   none       ACPI CCEL log area, a TCG
+                                             crypto-agile event log
+spdm    cert-chain    cert-chain  none       SPDM certificate chain,
+                                             instance = slot 0-7
+spdm    vca           auxiliary   none       SPDM version, capabilities
+                                             and algorithms transcript
+spdm    measurements  signed      32         SPDM GET_MEASUREMENTS
+                                             response
+spdm    tdisp-report  auxiliary   none       TDISP interface report
+tpm     quote         signed      varies     TPM2_Quote's attestation
+                                             structure and signature
+tpm     event-log     event-log   none       TCG PC Client crypto-agile
+                                             event log
+tpm     ek-cert       cert-chain  none       EK certificate from NV
+armcca  token         signed      64         CCA attestation token,
+                                             platform and realm parts
+armcca  event-log     event-log   none       Realm firmware log, if any
+snp     report        signed      64         SNP attestation report
+snp     cert-table    cert-chain  none       VCEK or VLEK, ASK and ARK
+======  ============  ==========  =========  ===========================
 
-Is it possible to validate Kc and Ks in the step above?
+Did I miss something that would break us here?
 
--aneesh
+CTLV layout draft:
 
+    device-get reply, caps.evidence:
+      objects[16]:
+        id: uint(..15)
+        class: evidence-class
+        # The reply says which one was written.
+        formats[4]: evidence-format
+        max-length: uint
+        # Signed objects only, entries as today.
+        challenge-lengths[8]?: ...
+        # Descriptive, such as an SPDM slot.
+        instance?: uint(..u32-max)
+        # When the TCB vouches for the object with a digest.
+        tcb-digest-algo?: hash-algo
 
+    evidence-get request:
+      # Required exactly when a signed object is named.
+      challenge?: binary(1..4K)
+      objects[16]:
+        id: uint(..15)
+        data: blob(out, va memfd dma-buf)
+      # selection, privlevel, service and options as now.
+
+    evidence-get reply:
+      # In request order.
+      objects[16]:
+        format: evidence-format
+        length: uint
+        tcb-digest?:
+          hash-algo: hash-algo
+          data: binary(16..64)
+      # The generations as now.
+
+Makes sense?
