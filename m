@@ -1,74 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793975818;
-	b=HKQUYwfFHy467v32Iz2e1mbLS/xlEXhKhQuUus/MeDZp46uTpRQrEYOg7XDizSpOnNNK
-	 TEjBh3hdEIAjXU1SizzCrugGlKKKBCAyKtkbG0F/muGgCnFBkapJzpksMMgVIJuav704r
-	 pkhss8/dvJEJ3kDZlXyx79qurw2NLlNajUlFbwAT1HoTSBBCTMY2DPOmdZ6kWrsBoec/+
-	 ouHCP/Ijl6OyzihQzPPNdlPAj3lVXD9Jn5F9mFYY2bumcmdISFm3ZbXfV8qMTgBlKMHpB
-	 8wIuV2S9OmDXfNdwcqN5aiBt0565s3fkeWc7jo+n1ucnvNYQpIMxrHcc8VnxnB/AhKw==
+	t=1793976128;
+	b=o8Ws7yQJ7H4TaoEXR3Ak6DaSCROxx9ejPBItqUMj1mHca4TPFQYsZJE7ci5JvaPbmIMS
+	 vYg1BpW3EcUEgtdxygnkHzJp0SlFHD9XOLTE3Qv1WZ6T2USBsQfN7o9ftN51mzIXWv6VL
+	 3kzHvSN0lc281+SgctIvzEKGgADxPLRAQrQX8jdWbHl9gAe0GnfabXkmnbmQS0BXzBKZE
+	 rZkGjVYb/9K4SV7AJmnmlwwZ31zT0c8yFYM9HcK2tD/CqXsMyhEpegvq6zi4uJF2jaOFl
+	 NwTt9+anQyjOdP6oJ9SAdlSmgvPTYI6HVNqMHlXKSDKIN7db7A+QrpMOty9Iaexqg8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793975818;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=zltKa4rFPINSvBuo0o9RrInHmslmc2FdfHmKz2Ukns4=;
-	b=PkSow5LYzIOh0h+XoAZ7Inm0vYtS8kvEv2oeSleWsR70T7E5YiYRsD2rasNew5EIjsk/
-	 i2vRrIXDUi8zAzgS2mjIjILKsxG1h+dpa34shN2Zxg4+u/4d/kU+1VRyA1HujR38BcMgS
-	 MQwE2CvbxdstjPTIB7Ta7YF3GZqkaiXxOzW+A8073s4rYrXmOOap3nQ5vfkh+etHNrzg0
-	 5KKfOQeTvvPSR0wjcr60VfANVJnN2nLgl9LzN2JtaypBe+QSxk//nj1lBGENTU5r9O/n7
-	 69FsOALsG2azJO06ehkI7/5viJtNPrr8W3UDeEQ2nEjEm9UILVhsEMU63Fjno/xHZDA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793976128;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=dPrT1d3tfAdRZHoFdKvhwwCCJALbTuZcl0ma0HWZQHQ=;
+	b=VyGodivQrvBPd9TSRKbU6matx8c1uoehl52VWRv0PIEZstRWUoAYRK4+zLKzmyYL8dJm
+	 29ARuQQZ64QRf053wfdR3E+FZm+Qs/9+yjhzsK5K77pTlfR4p9v1FHcbqq51+t/I29rcc
+	 8B27Gkrd2p0oReCmqMhZZO9slfsSW1NWQAaItanOv95pZc5QtTcDFohpIWH3iSAfZSMdF
+	 rzLbyyQLEM453yIlw9Jj7/fLzqVO4yy/PdoQCF+yWeuDwhO9Qi836ytCBqflZ3b3QFifL
+	 ozceQGrvumiMwJnaOPdj54OVMAZflXZzXw9PY7DODu5l7I9jC9NXoM+b/ScQQNjVV3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Xtcdmj3+;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="B/mbpzSL";
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A8D606A32D
-	for <linux-coco@lists.linux.dev>; Fri,  6 Nov 2026 14:36:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5A8D606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838EC606A32E;
+	Fri,  6 Nov 2026 14:42:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 838EC606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Xtcdmj3+
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=B/mbpzSL
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF6191650;
-	Fri,  6 Nov 2026 06:36:53 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D5583F673;
-	Fri,  6 Nov 2026 06:36:52 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BFBD31682;
+	Fri,  6 Nov 2026 06:42:03 -0800 (PST)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C297A3F673;
+	Fri,  6 Nov 2026 06:41:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793975817; bh=BapmaYPgwOoFb44jZl8ECsOxNGNzot+5zaXQXYkt210=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xtcdmj3+II9M6ylPTT/qgViDYNhdLr0ZWZLd4B2qo214r7WMDfKOM2tJrWPbr63Ow
-	 FfAJGzsrQTPwu1s/6AkTUSBnOWZt+yDkgcHlYhi14YeMgOsUywScpp3UfWY07jK5po
-	 E3oDfOZuvSQAss0muWuSJ+TU5l6WxEwhviHdtv7U=
-Date: Fri, 6 Nov 2026 14:36:50 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	aneesh.kumar@kernel.org
-Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
-Message-ID: <au3mAsQrh0GniXJo@e129823.arm.com>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-18-jiri@resnulli.us>
- <auuDcABX27EeTApl@e129823.arm.com>
- <20261104194622.GC3889730@ziepe.ca>
- <aux01NUd85PabtZu@FV6GYCPJ69>
- <auyKE2sGqtfjk4v5@e129823.arm.com>
- <auy7IM0_S2tv7EZX@FV6GYCPJ69>
- <au2WdWFOYbPEv0Uj@e129823.arm.com>
- <au3i-0eDzJZaWukx@FV6GYCPJ69>
+	t=1793976126; bh=RROBsGVNy+Oakstf6DXz+xH01uQZXz9GOkcgQ0meiw4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B/mbpzSLUIxkLsvdYEgUGs2NsLPfEoaHIS2u4uoKA+TM6l8BAPmmaFFiWCiMC/+zG
+	 RnZu7A5UIYQ7u/AWqfgGaXvhX9c5DxYbnRdfhdakUjLrptQLm8mu5OPAnNzPX6lE/G
+	 B3q1sAgPLmHroCXLRJ29Lu6hp0qwTMoNkNoh4n1Q=
+Message-ID: <2e448ac1-7b4f-4d45-90db-dfe9dc5ad329@arm.com>
+Date: Fri, 6 Nov 2026 14:41:57 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -78,157 +53,78 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au3i-0eDzJZaWukx@FV6GYCPJ69>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 01/14] mm: Add an allocator for CoCo shared memory
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+ Marc Zyngier <maz@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Steven Price <steven.price@arm.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
+ Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
+ Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
+ "T.J. Mercier" <tjmercier@google.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Ritesh Harjani
+ <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+ linaro-mm-sig@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+ patches@lists.linux.dev
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-2-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261104164555.3555725-2-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
-> >On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
-> >> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
-> >> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
-> >> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
-> >> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
-> >> >> >> [..snip..]
-> >> >> >> 
-> >> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
-> >> >> >> > +					       const struct ctlv_cursor *request,
-> >> >> >> > +					       struct attestation_evidence_request *decoded,
-> >> >> >> > +					       struct attestation_evidence_object_request **objects)
-> >> >> >> > +{
-> >> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
-> >> >> >> > +	u32 challenge_length;
-> >> >> >> > +
-> >> >> >> > +	decoded->challenge =
-> >> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
-> >> >> >> > +	decoded->challenge_length = challenge_length;
-> >> >> >> > +	if (challenge_length < caps->min_challenge_length ||
-> >> >> >> > +	    challenge_length > caps->max_challenge_length)
-> >> >> >> 
-> >> >> >> Hmm, I'm not sure whether this check is required for
-> >> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
-> >> >> >> 
-> >> >> >> for example, if the provider provides two evidence:
-> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
-> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
-> >> >> >> 
-> >> >> >> might challenge is reuiqred for generating the token
-> >> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
-> >> >> >> 
-> >> >> >> However, in case of eventlog, it wouldn't require challenge.
-> >> >> >> for example, TPM event log or CCEL event log.
-> >> >> >
-> >> >> >Right
-> >> >> >
-> >> >> >> Do we need some field on attestation_evidence_supported_object whether
-> >> >> >> it requires challenge or not and applies this sanity check per the object?
-> >> >> >> 
-> >> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
-> >> >> >> always.
-> >> >> >
-> >> >> >I wonder if we should have two interfaces here for signed and unsigned
-> >> >> >evidence? It would be clearer for userspace then when it needs to
-> >> >> >provide a challenge or not.
-> >> >> 
-> >> >> Isn't the challenge field provided/not-provided enough?
-> >> >> 
-> >> >> Currently on the introspection side, device-get op would provide
-> >> >> challenge-lengths array:
-> >> >> 
-> >> >>         evidence?:
-> >> >>           challenge-lengths[8]:
-> >> >>             length?: uint(..4096)
-> >> >>             min-length?: uint(..4096)
-> >> >>             max-length?: uint(..4096)
-> >> >>  	  objects[16]:
-> >> >>             blob-class: evidence-blob-class
-> >> >>             max-length: uint
-> >> >>             blob-instance?: uint(..u32-max)
-> >> >> 
-> >> >> I think it would make sense to have challenge-lengths array per object:
-> >> >> 
-> >> >>  	  objects[16]:
-> >> >>             blob-class: evidence-blob-class
-> >> >>             max-length: uint
-> >> >>             blob-instance?: uint(..u32-max)
-> >> >>             challenge-lengths[8]:
-> >> >>               length?: uint(..4096)
-> >> >>               min-length?: uint(..4096)
-> >> >>               max-length?: uint(..4096)
-> >> >> 
-> >> >> Then the unsigned object would just simply have challenge-lengths empty?
-> >> >
-> >> >This looks good to me. :)
-> >> 
-> >> The challenge is one of several open points that all depend on what an
-> >> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
-> >> "primary", "raw" and the format strings. Here is my proposal to settle
-> >> these together:
-> >> 
-> >> The model:
-> >> 
-> >> 1. device-get lists each object with an id, a class (signed, event-log,
-> >>    cert-chain or auxiliary), the formats it may come in, its max-length
-> >>    and, for signed objects only, challenge-lengths.
-> >> 2. evidence-get names objects by id, as MR ops name MRs, each with its
-> >>    output blob. It carries a challenge exactly when it names a signed
-> >>    object, and the challenge has to fit each of them.
-> >> 3. The reply gives each object's format, length and, where the TCB
-> >>    vouches for it, the TCB's digest. The output is always {label, data}.
-> >> 4. A signed object is made by the call, over the challenge, and never
-> >>    reused. The rest are read as they stand.
-> >> 
-> >> This settles following issues discussed during this patchset review:
-> >> 
-> >> 1. One op, not two. Per-object challenge-lengths tell userspace when to
-> >>    pass a challenge, and one call returns the signed object with the log
-> >>    and certificates needed to check it.
-> >> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
-> >>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
-> >> 3. TDX's Quote object lists the legacy and the DICE format. The provider
-> >>    labels what the host returned and fails on a Quote it cannot label.
-> >> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
-> >>    spdm-measurements and tdisp-report become formats, and signature
-> >>    goes, as a signed object carries its own.
-> >> 5. "raw" goes with the representation attr. The TCB digest is a reply
-> >>    field, so a blob always holds the object's own bytes.
-> >> 
-> >> Formats become an enum each provider family defines, instead of free
-> >> strings. I'm still unsure if format should be entirely provider-specific
-> >> and defined as "extension", or it should be somehow mixture of common
-> >> and provider-specific. Looks there is not really much common
-> >> anyway, so I lean towards provider-specific only. So far I have:
-> >
-> >Overall, This is plausible for me with some small question.
-> >
-> >> 
-> >> ======  ============  ==========  =========  ===========================
-> >> Family  Format        Class       Challenge  Bytes
-> >> ======  ============  ==========  =========  ===========================
-> >[...]
-> >> tpm     ek-cert       cert-chain  none       EK certificate from NV
-> >
-> >Just a thought, but how are we planning to retrieve
-> >the NV index for EK certificate?
-> >
-> >As far as I know, TPM NV storage doesn't support labeling.
-> >
-> >Should I assume that the NV index would be specified as part of the
-> >challenge to retrieve the certificate from TPM NV storage?
+On 04/11/2026 16:45, Aneesh Kumar K.V (Arm) wrote:
+> Confidential-computing guests may require memory shared with the host to
+> be aligned and transitioned in units larger than PAGE_SIZE. Several DMA
+> users need struct page-backed allocations satisfying these requirements.
+> Provide a common allocator instead of requiring each user to open-code
+> this sequence.
 > 
-> evidence-get allows to accept mr-selection as part of the request
-> alongside the challenge.
+> Add alloc_cc_shared_pages() and its node-aware variant. The allocator
+> rounds the requested size to the architecture's shared granule,
+> allocates suitably aligned contiguous pages and transitions the
+> complete range to shared state. It also preserves the caller's GFP
+> policy.
+> 
+> A private-to-shared transition may alter memory contents. Mask
+> __GFP_ZERO from the underlying allocation and when requested, clear the
+> complete transitioned range after cc_make_shared() succeeds.
 
-Sorry. Could you explain a little bit detail for this?.
-AFAIU, this is to get the EK certificate from TPM non-volatile storage.
-But, I don't know why *EK* certificate get would be relevant for
-*mr selection*.  AFAIK, the TPM_Quote will be used AK not a EK.
+This is not true for pKVM though. It is the other way around. i.e,
+pages must be cleared before transition (e.g., from private to shared)
+to make sure the contents don't leak into the host.
 
-Also, AFAIK, mr_selection is meaningful when the evidence_accept is
-supported.
+Do we need to handle such cases with a pre_conversion and 
+post_conversion hook ?
 
-What is the relation-ship between mr-selecation and getting the TPM's
-EK certificate getting from NV storage?
+Cheers
+Suzuki
 
--- 
-Sincerely,
-Yeoreum Yun
