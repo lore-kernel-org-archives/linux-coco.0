@@ -1,90 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793977262;
-	b=Zhlc1AmidnmJvzzcHDC1AVuZ5jAmGfwg6STxgGcldbELi3+HAg5MFuB5AjMBmB9dp3n1
-	 qf+MaZjgRqa2e1gmfZWJJZViBWReWA9vnFeKTqeKNekqFAz79rxhawIdXLbSdaxyGHAtl
-	 DZX2vzmKGfBXWIHgY4/BRqruqy+Vk9IF1yWpRzGi+38RcxgWS6n/J6WVl0SDUJWvZxQzm
-	 jVgiBy7QitB36U2CdwOX+qWcfVtAtHCVDffP8hEDMlOlTR7NWScCDZ4WyVLutCjA25EZk
-	 WOGrWhdJ+HTn9Qaln7RmyeJHp8r+iR+5BP10KjMJecY371Uewk+5/5u6TBrvcjcOZ+Q==
+	t=1793979022;
+	b=DilXxVzVf0gzWulX8Gk3GNEsDf/Bek64gMS2RdNMrR+G6GuvTlxYhNrK05kRBFDe1xz+
+	 h7PbPs7cq1pV+htTCDVPESkh/HZUNLjb/uxXefPSzonJxDXYFG2zJ+dHVDjn65cUhc+fP
+	 36/tPc1cpP1Y/+6MV/D80Y9GTA8YDAhJ3WYyk60q0UOfuqQoxPH5sjg5Awp4h+Wh8k028
+	 Ln6NOKDcdP0b/Thby8eSlhzOUYTeTzayrJu1vkyR+EU/p9B3cgc9hbk31fxeBZSuadh9R
+	 s17mmON4b341Lz++55k2Rs8ImBkX8hXz43g5NlwI/n2H5+vZr3vR1MhwMyTVDdxhCKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793977262;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Autocrypt:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=yzd+GCKIVHKfFYmD8AFSICY6VmDuMLmOYGV9UzK2dWY=;
-	b=KkvbAkwhqUFm3awDWHh60xHmDFshMWQDnXmWrQp0RiNIjjeaKRA7WdRG1IlWA76ZtQzM
-	 EXOHLCpx45SWPbBRXnpt2pRf+T22f8lXKXB3FZyE1MoZuJoFuArB34GtliDKcdaXmmJhX
-	 3DWhG5D1aFYxwW45ZHghQbPbVS2Mu/GT+mRBbjBdrqHL1oL0WA011cF0lYvRKYa1LZvBu
-	 QiM+nf/av4WbndplnOypL6ONMvtaJ/IKmygfBhjtVpVQ9Q+vrIEem7ylTac1AA1AM74Zu
-	 p9577r9usUCbz2LB26kJ8fGffKhVbmHthRtgBCIUVFvqX08OqTH5+wZBxtNAa0W7+Gw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793979022;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=6ajX4lfiph+VivXIsw2riYK43KZT3Do0cgXxc26s8IY=;
+	b=euK2x3Itm+g1vihfqM9K9oqNA7S392+uN/nMds1LN1Q3EUuJcInPovZCI318ktVkI87g
+	 E3DisGOEysPeScFcg8izKHmrmHwajn+H9h2Dz3s6rp51M4cKa7nvPqrTIL7LbNI59ZAEK
+	 iK386wOxwl7dI8vhtkMj8JDDHmi4f5bBiUCHKH+PyzMQtKQ7/LTQULQ180rxTTnBt4Jfi
+	 cijOLa8ylOHjz2xQWo4Vd0IV3bROU3+MiyAwUTWXqtCRH4McTWAGqUTBK5lWf+BZWrFdM
+	 Vpqo48JYv5SMEDEGQwiT633S8xsegYGhJy18FXQiqu7TBl2NUrBVm8NQtqFdZikDFBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=HansenPartnership.com;
-	spf=pass smtp.mailfrom=HansenPartnership.com;
-	dkim=pass header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=wyTfa4Jg;
-	arc=none smtp.remote-ip=198.37.111.173
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZRYmaiq/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B205606A326;
-	Fri,  6 Nov 2026 15:01:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B205606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0499F606A32C;
+	Fri,  6 Nov 2026 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=wyTfa4Jg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1793977259;
-	bh=5eQBfJ0yczzUiSKJ8EZ8P6D8sM05B7F639QsQk4HSYY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=wyTfa4JgzZkJJuRcCs0OvI5rBhrn+FReFLJw2McReTkadF86yqdzjvzc0WA0hEoAu
-	 Ip7VgjdVVFPVQIXqEnFK/LG5f0CmHGG6Lewaaiy9q36L4qiWdNQm/4QN1ekO7SUBUN
-	 YvXSPsTrxBshzK9zYCtCdhaxC+UYdO2cCRf6UciI=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::8309])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 2DA4C1C05A3;
-	Fri, 06 Nov 2026 10:00:59 -0500 (EST)
-Message-ID: <85a6a70f70562e7c6b7e2a784a87683778e23026.camel@HansenPartnership.com>
-Subject: Re: SVSM Development Call November 4th, 2026
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>, 
-	coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Cc: Paul Meyer <katexochen0@gmail.com>
-Date: Fri, 06 Nov 2026 10:00:58 -0500
-In-Reply-To: <auoEI5wICyOXh-gH@8bytes.org>
-References: <auoEI5wICyOXh-gH@8bytes.org>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNE
- lecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn
- 1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHU
- RfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8
- X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvd
- HRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGw
- MGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAml2ZBI
- FCS3GUMIACgkQgUrkfCFIVNZKjQf/deRzlXZClKxTC/Ee2yEPqqS7mm/INUA49KdQQ5oIhSxkUBy0
- 9J4qjMIo5F8ZFkFTqikBqeL35LKu7O7rn8WETfX8Bxvos3HUsl3jHo34DES4MUFIpoQPgtiLRGwLb
- K0cVCAArR2u2qj4ABmTRrs1I1kvdjEw6gatOuXtEe/j5O2fvfzTq9GBr0Q3n2IAsFXi4hLlx6VPE8
- tyWUZ8BWJKtih3JAeUiXFvASL3McV0rV9RnU0VbjEQEhSE7PMYhWpnDC9AyBb0lXJllQRvC3NSkUB
- 8KVQgNNxRPss0WE/nBoZ4dFA42jTyzTz8lNylxZoAWV7WJb3QxVg4oCodRVrxxrQhSmFtZXMgQm90
- dG9tbGV5IDxqZWpiQGtlcm5lbC5vcmc+iQFVBBMBCAA/AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeA
- QIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mYBQkbNYS9AAoJEIFK5HwhSFTWBpwIAL5Bk3
- 5FB34U6iHmDzzgdCbxLTs43T/YQyJpcGIvopBvnI/fDY8oSG6Df64/O6B+1R+A8TDp6ZG5ysUWnCC
- 6GuIaEHemBYkitMPglR6+sGCMQY7O0mlsPvdssvKK1KI9Bno4VU6ogaF2qVzefSqg1Djmf/DcsxWP
- rI/jdJ8FB5AYR2rjIdDFc+zRdAJuavo1/anyY2wgpFh/3R8IOYAEfWV9nGgYkf9+tA4EIn1sxE0I3
- L5oW2N3mbyRrkzuBwO8ztMCwqEPk7moWzhokcZqMXiAIahaZdkashJC+s2X2RZSGCy+g+pvY5NN4B
- BVG5XwLgVBqbHMTcxE0fbmPqz+q6O0LEphbWVzIEJvdHRvbWxleSA8amVqYkBoYW5zZW5wYXJ0bmV
- yc2hpcC5jb20+iQFXBBMBCABBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmODZ5ACGwMFCRs1hL0F
- CwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQgUrkfCFIVNZu0Af/TzvL2/NdgAcw9uN3x60H8
- jc4QUq14VpxcFEFEMpcj1morkX/G93V+56HBBaXZj+yK8PhxIA/SIz+sU7C/0YvKuvzakP8ZX/7WJ
- e32SOUtjfr/VTaqjIBzNj6OxLvZpmNbBw7s6DwhhNpHOWqJ/1ml+PtDRDV71IB58yVqQjp1xlNKVl
- ZppcJ5908EJzsFnRIVjiQiDSKoppqB2BCibBbrWcln7CiWMyOC/cco6SIn6twH+f7+aivJ3xGcOE2
- a9gBKF5rNi9TBoX9oyPmshv/TDmnohsVrH7AYXlGYfZTk15SWEiROh1QX8/uD9wl/gcIv5EDUpT/F
- L2jzOsA5663bw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZRYmaiq/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E4D1F0089F;
+	Fri,  6 Nov 2026 15:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793979021;
+	bh=6ajX4lfiph+VivXIsw2riYK43KZT3Do0cgXxc26s8IY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ZRYmaiq/u/SQjBF4ufiS7XCsUtIWBR8hL8WYwn3u9em1LPif/YCL7ChpmRJhgOyIX
+	 7IC3EXVPCAkmKpLit8fAZGhbU6zO4Vo41xdkh0y1FE4VLwuE7EJ30uktOPNCEggpHD
+	 MbD1RX7dmUIkjT1awTBDV15avM4RN85WC1q1el5mr5tbkabk3V6dhoZUlfF40LSpgk
+	 KGlR22lgb9rXJhGOGQUNnGEHkpSn3m9hgHzxauJLxhjdxnvoN5U5o3aZh72JhgeHUT
+	 8BdOqsA5VITYBbXwdbZ6w5prD5p1MVjT+3jhhqFtkmeHdpWI1SXbbXixdwYl6O4EkL
+	 ecOySiCRp0UYA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	linux-coco@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	linaro-mm-sig@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	kvmarm@lists.linux.dev, patches@lists.linux.dev
+Subject: Re: [PATCH v9 01/14] mm: Add an allocator for CoCo shared memory
+In-Reply-To: <2e448ac1-7b4f-4d45-90db-dfe9dc5ad329@arm.com>
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-2-aneesh.kumar@kernel.org>
+ <2e448ac1-7b4f-4d45-90db-dfe9dc5ad329@arm.com>
+Date: Fri, 06 Nov 2026 21:00:01 +0530
+Message-ID: <yq5ald76ou4m.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -94,41 +114,35 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain
 
-On Tue, 2026-11-03 at 16:56 +0100, J=C3=B6rg R=C3=B6del wrote:
-> Hi,
->=20
-> Here is the call for agenda items for this weeks SVSM development
-> call.=C2=A0 Please
-> send any agenda items you have in mind as a reply to this email or
-> raise them
-> in the meeting.
->=20
-> We will use the LF Zoom instance. Details of the meeting=C2=A0 can be
-> found in our
-> governance repository at:
->=20
-> 	https://github.com/coconut-svsm/governance
->=20
-> The link to the COCONUT-SVSM calendar is:
->=20
-> =09
-> https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?v
-> iew=3Dweek
->=20
-> The meeting will be recorded and the recording eventually published.
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-One of the requests on this call was around the ability to create a
-signing EK, which Dionna's proposal a long time ago covered.=20
-Unfortunately, we couldn't pull up the thread because it was on the old
-list.  However, Konstantin has now imported J=C3=B6rg's mbox and we now hav=
-e
-the complete thread about adding parameters to the SVSM vTPM
-attestation:
+> On 04/11/2026 16:45, Aneesh Kumar K.V (Arm) wrote:
+>> Confidential-computing guests may require memory shared with the host to
+>> be aligned and transitioned in units larger than PAGE_SIZE. Several DMA
+>> users need struct page-backed allocations satisfying these requirements.
+>> Provide a common allocator instead of requiring each user to open-code
+>> this sequence.
+>> 
+>> Add alloc_cc_shared_pages() and its node-aware variant. The allocator
+>> rounds the requested size to the architecture's shared granule,
+>> allocates suitably aligned contiguous pages and transitions the
+>> complete range to shared state. It also preserves the caller's GFP
+>> policy.
+>> 
+>> A private-to-shared transition may alter memory contents. Mask
+>> __GFP_ZERO from the underlying allocation and when requested, clear the
+>> complete transitioned range after cc_make_shared() succeeds.
+>
+> This is not true for pKVM though. It is the other way around. i.e,
+> pages must be cleared before transition (e.g., from private to shared)
+> to make sure the contents don't leak into the host.
+>
+> Do we need to handle such cases with a pre_conversion and 
+> post_conversion hook ?
+>
 
-https://lore.kernel.org/all/CAAH4kHZg_f--LJhw0zu9bYe87ozQX1jgxhQwJS+-=3Dg0-=
-u0DZTQ@mail.gmail.com/
+Patch 2 does something similar.
 
-Regards,
-
-James
+-aneesh
