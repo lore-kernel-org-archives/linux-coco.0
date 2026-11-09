@@ -1,49 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794234106;
-	b=VAzKpqtvLcLCEG5fm8LPyAhpIua8EWm/9W2AHQWWAgNy+fWt1mw3zBX2A8Rde6x5z9FD
-	 vG1dToQA60UcrCo6xUXAtqMycM6DCRt596bCS15uVb6lo2wVzIguOwpruRoedI+v8Sj/Z
-	 PT86OkRjAjFaxmXjjn+ywP+nCcWj8GLKKjK3yUSs/3PoYNFHniH5fmPjlT5U+i3B2+Czh
-	 +RJWZQodBpvNS8b+XzwVLdt0xzQgUBEx6i84Cnt0XYhJONzUZh28t3i6qpOBo+xQfotU0
-	 DzVxgQug4qBGHh+w4dnlAsnLyvYN2vnoN1nnP3fTU+wxrEDzKlpFVFOjJUGREyXBagA==
+	t=1794239890;
+	b=VNPYsUmN3PuLFOsME59aMiPxl0Mq7UebAFsnxlXymxz4fT5bEyi6pg+8GIAv7GvcGvYy
+	 1Wk9U9dAi6XrLsQJ+V7lGDZNvT+qV7YZ/usVWivyK+kJEis/p7FJ0425P95eccbNysOyI
+	 Ccj0LslUq1BkvpaEsefVZ0VMl7giRzxlFoyHZS/0rnyQo+aOs3us6Cx33mjt5HT/RgJOp
+	 O6rjxIA8gRmjyxIWPz05zKjkgGVqRXA2WpuG4gXviRMebxdi5WoeydO2zCsTGqWvIDNlw
+	 ycCNax4rxKSLz7c5bu1WE3IBAEiaShPBj0xb5h6BjJUY4GAUUZy1SKWLTPZskfqoN7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794234106;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=k6TybH554OLm55RdRjQIliLzitxsqvzSoXpVsCso3cQ=;
-	b=nNUf9UsrWFVj2ii1aLy2NjNDQlTyMPPr4RcCzhd01l18Ec6esbczfCEbFfYOsfl5APL5
-	 Da3AT8qUGDck4coNMapDfBpYvphgvympafEtpw35OMP5KSqG1TonWaM32ZkOj8qSNHtCj
-	 a8IHNyWTXW7cbl2vSk3jBqmjSsHzbqBHbKZXV4YIscvNhFkLirQ/bmBVtjlz6MWX/FZDZ
-	 wH37bO6cYboML2ocufXzykU1wPz0k4EZEbt2YXPbUSquaBVFelTsHilxT8AtX2RuAaKH+
-	 FhiN74STqe3894vM9uxnLN7RMay+FDy/12o1/p49VXOnAjspO9vioszd/fQSqezNuyw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794239890;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=iYFxYy4y/RCp8PCPpnknYT8Me8VloobFASIGXdtsvUA=;
+	b=p9m6qaIOLG7HGvETcDitQswv+4oK5L0qKsUc34Ji+e1vA5FfNgtiD7mV/ECu0s7UVZ4M
+	 rFy9O6Yf2SvS4g9kyxFnGJk9kIfn0sbFHKtFuFKhrFL3lBDn+CdAnbuym6ayafHxobHOU
+	 snxYLfEv96sUF767ATQTV7GD+K49XIjNTS6gWVL2V6D53XSno0P8z/+rii1krAGT484H7
+	 /pfnt4WKKwLUALTZJTINIzxpiBcYxWiNVf9CypDgB5RUm+G4nixSiTsI7Z5JrUyLZLMWb
+	 7Z8hyivMc0t0DHwKZy8MwCH9UQZJffsGKVbE2jir1KV+9/ZUBAbXjxxsLJFNBmVY9Lg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=gDVe0Coa;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181B1606D827;
-	Mon,  9 Nov 2026 14:21:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 181B1606D827
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=dolcini.it;
+	spf=pass smtp.mailfrom=dolcini.it;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=BgCACKZd;
+	arc=none smtp.remote-ip=217.194.8.81
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501CE606A335;
+	Mon,  9 Nov 2026 15:58:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 501CE606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=gDVe0Coa
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 546E21516;
-	Mon,  9 Nov 2026 06:21:41 -0800 (PST)
-Received: from [10.0.128.239] (Suzukis-MBP.cambridge.arm.com [10.0.128.239])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB5D23F85F;
-	Mon,  9 Nov 2026 06:21:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794234104; bh=TpZUDzpw/Fkw5pr4KuKhr8vO1civAMoJmulkZhsrH8Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gDVe0CoaFdmP7T8+kQjLhtHWBzE50ygSdtVsjHEgcIyqL3A15q3DvXe7Fftqoaztv
-	 /sPSztIgv/wTcpBQst51giL9MBRdKjSqzjzZOzIM/DO67jnwblQxNh6KU7jJpXL8C8
-	 zxt7rLEMJKjgDeK1EYEZgieMmfZGIn5P49ihW/Jo=
-Message-ID: <567f2b66-d59f-4248-92fe-47d1d861e04c@arm.com>
-Date: Mon, 9 Nov 2026 14:21:39 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=BgCACKZd
+Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
+	by mail11.truemail.it (Postfix) with ESMTPA id F03CE26665;
+	Mon,  9 Nov 2026 16:57:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1794239879;
+	bh=iYFxYy4y/RCp8PCPpnknYT8Me8VloobFASIGXdtsvUA=; h=From:To:Subject;
+	b=BgCACKZdgA43Rrj5O5wlbP1UTKAKVLnARW1cb4iY0UQ79gZvemqC5K/yua1QBUG0f
+	 9yR0+zh4vQIXmGd7WNW3W8IFc+kq0sfR8h/9x0OJGD3rjd/c+vwHYLRjQwz0EF2a6A
+	 vjxGEYoqUfuLHIT080/THXyhTMTgwa1KcmQTQmxU9K3PUSCU4JezU+wHUQeYXp0f9l
+	 MuuwFfF5cDudhBJyKH7dHLS6cIXa+S4znLPmLBEcIH3sgnJGFiYsr/5K0WEtYL4gu0
+	 dL4rJ2Sqw338DL9D98b6G3Am6VRW1XbqHTSaH1DxXUQz9gD52AUubj95gHV/AR6eeP
+	 wXMK+Vo4uCiRA==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-bsp@toradex.com,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: [PATCH v2 1/8] ARM: dts: imx7d-colibri-emmc: Enable the VGA DAC
+Date: Mon,  9 Nov 2026 16:57:41 +0100
+Message-ID: <20261109155751.475875-2-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261109155751.475875-1-francesco@dolcini.it>
+References: <20261109155751.475875-1-francesco@dolcini.it>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -53,70 +81,50 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/11] KVM: arm64: CCA: Support runtime faulting of memory
-Content-Language: en-GB
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-11-steven.price@arm.com>
- <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com>
- <CA+EHjTy970AWnhYoZ5OqxQ8ojCAELeejw60y2NmpDsM_ZMdu4Q@mail.gmail.com>
- <06e52c9c-9026-4279-b8c0-53a54a667dad@arm.com>
- <CA+EHjTzJ1O8=q0rL5CkLKN3CBDr=TkujEw_M-W0H=BJfmrTEzg@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CA+EHjTzJ1O8=q0rL5CkLKN3CBDr=TkujEw_M-W0H=BJfmrTEzg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 09/11/2026 13:11, Fuad Tabba wrote:
-> Hi Suzuki,
-> 
-> On Mon, 09 Nov 2026 11:35:31 +0000, Suzuki K Poulose
-> <suzuki.poulose@arm.com> wrote:
-> [...]
->>> applies as is. Only how the expected state is computed differs: for a
->>> pVM it comes from the per-page share state rather than an IPA bit.
->>
->> When you say, per-page, you mean per-IPA or per "backing page" ? i.e.,
->> can pKVM do something like :
->>
->>      kvm_ipa_is_private(kvm, ipa) ?
->>
->> (similar to Realm) or does it need the struct page backing the "ipa" ?
-> 
-> Per IPA, so kvm_ipa_is_private(kvm, ipa) would work for pKVM too. A
-> pVM's page is private unless the guest has shared it, and that state
-> is in its stage-2 PTE at EL2, not in the struct page. The host kernel
-> doesn't have a copy today, since EL2 handles the share and unshare
-> hypercalls and the new state is only at EL2, so the pKVM side of the
-> check, a hypercall or a host-side mirror, is part of pKVM's
-> guest_memfd support when that lands.
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-Perfect, thanks for the clarification. If kvm_ipa_is_private() works for
-you, thats good. I was wondering if the host-side mirrors the data
-and KVM would only use that (with EL2 enforcing the checks).
+On the Colibri Evaluation Board and Aster carrier board, the BL_ON signal
+on SODIMM 71 controls the active-low power-save input of the ADV7125 VGA
+DAC. The VGA overlay does not drive this signal, leaving the DAC disabled.
+The monitor receives the sync signals but displays a black image.
+On the Iris carrier board, the DAC power-save input is pulled high
+so the missing GPIO configuration does not prevent the VGA output from
+working.
 
-I think we could go with that construct and make progress.
+Add the pinctrl configuration and an active-high enable GPIO to the VGA
+bridge so that the simple-bridge driver takes the DAC out of power-save
+when enabling the output.
 
-Cheers
-Suzuki
+Fixes: cc6c96f0bdd7 ("ARM: dts: imx7d-colibri-emmc: Add VGA overlay")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+v2: no changes
+---
+ arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-
-> 
-> Cheers,
-> /fuad
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
+index cda214c13876..363c0c2cc43e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
+@@ -12,9 +12,14 @@
+ /dts-v1/;
+ /plugin/;
+ 
++#include <dt-bindings/gpio/gpio.h>
++
+ &{/} {
+ 	vga-encoder {
+ 		compatible = "dumb-vga-dac";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_bl_on>;
++		enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
+ 
+ 		ports {
+ 			#address-cells = <1>;
+-- 
+2.47.3
 
