@@ -1,68 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794203942;
-	b=AuG84muu6DQzQR5qr4bA4p7CpqYfLx11tf2t97mbWHBPULqWm4A9Znc2ZIFnI8+VnVpN
-	 PYaNFE4Kez5vSyiOG3pMikR1bPgIWCPKkn0lJpIb7RQtfr4mXM+D8MLe2f665HQ7x0MpO
-	 326guewk806pYa7XFG+jbYK7bqh/ElUr9MDs3lPl8h8MX5tRpnREBpmY9g9lffNtIujeV
-	 aUZfJbS3WoCzmbbU8TARifjMftQykDey7NksnLHvS3fAWpkPMxQo93j60rvQmJ2Jri9ZO
-	 Sa20xmJIAWQyjIpAyVjdZHgDLBnfgX7heDU1eL/rfMaUSDMe91Voz3M7ht2ahbXMtig==
+	t=1794205534;
+	b=0G+WAGFjMAIWfKBjf1p3/hBI/KbtKRJJiViOwF+m6AiDkB5vlz7zViWLWU5wy8NC5m1I
+	 XDIak0CjiWNySjHbkGcl2tEm630XHFrEv1tdCAbeL5xKzoVu5Ls5h16C1cyJCvoRnJbRz
+	 Ewdn2a0ljlHRpk4QRwWTWuNSOu5e8xXd6XJ5rUtQ3hBBUkc+Y6CxyCuNjfcEuwKnesfbk
+	 qbDUZoEr75m5zLK7rWBnOblhjEBvbxBi00FyaK72G3M4xe1AOJiXXVjxG7z2LcmhPAJx2
+	 dR7ADu+5zVn4L840D3M5W69HjwJIG6nwNeys6rd+I4v3e6QB1ORcFBGVbB/MGGOPWDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794203942;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=/E3ZtH8ojoi/vmsGrVMl6AMo0m24rPSDyRXvjqgo+0c=;
-	b=pkO+JUuA4SouGQEnU/0GJgynq6OKy+gRMqOayn5ox6QcJ6hYZzrP3MzyRzZtq+nR0pfA
-	 AQ0wyXP0ZZhH/NxCyvnDYACfajMcokqunaLQXRy/kEUne+WIz+7Q0stxK7JgR+Ex/jN+B
-	 v46EHmhnA/Du+tMOy6ESvRSuucjBnlaPlJxmnPqY9kov+dlien0XRAFGMBP4ikeazEegK
-	 vEJh/Uk0Z0+Q3N3eWY5Foi0AcbisJzSnhRuymg+fNmkMDQalnPLsOrpxa7ScQxJBxr0jI
-	 UB/I+uYcmfCeHqrTtuHpbrfOwg6lKeKpj6qM+4/gM8FtiyienMxU0yDM8//KBq2TF0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794205534;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=SS8g3kngP0h1kM7qHXzzyWAS56jyqJKHO8SoAqpqAok=;
+	b=zFXhg0P7NC6ZgwKB3cOWAwmD9aPs1cnSMvS2KS0yEHjk6w6aO47Gdmx+/DenedY5Cbdu
+	 qBIWYvLACzNV2Q+I5mkPSCNIrHqIrD45YTE5yiUH7MRlRxnl2q8b63CIFaEbV/SZo6rrO
+	 vlk7kMb3q5cDgVTuWYEDrXaIlL/siMx5jJIYwfzQ21U5oN5qGrDHNoZE8H1QM0lzt4z5g
+	 Pf+sLraTGcpBgxAYuSRwrk8u3ODzYlzeH51F1wHJ1CKql2/0pB3LSMGnyRIWQPHnK4fgc
+	 Q0P3Ga+cI3V1TaHzOd19OaokVtW1lF1AsDOocV5Dt4LZK7ysq8L8L+pn9kmgJvN48RQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n8s+c+Xs;
-	arc=none smtp.remote-ip=192.198.163.19
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NezfhAJh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEA7606A321
-	for <linux-coco@lists.linux.dev>; Mon,  9 Nov 2026 05:59:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AEA7606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38931606A321;
+	Mon,  9 Nov 2026 06:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n8s+c+Xs
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794203941; x=1825739941;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OGKuaFtpJu/00zUw78GQThfCA7h7SYaZtzIWG6Z/hag=;
-  b=n8s+c+XsSLhKKjFbsklhOU6U+BeJe+3SW+GghvcCYq47gh0iHgB4uXuH
-   18vd3diU8jINCdayagu5+oQDK2/nU0MkSCPL3T6ZNcOUjQ56CS1c0jDOP
-   MOnZsU6rXhY8GlDB0dwBbQ4mX6ElxoxK0CLtrIEw6VKxKuCtYGhylI717
-   Nx/7SLg9LSLWs9R23boFZcKRKBW9lV99/RRsctXYCg0R70CnU7aQHXXIx
-   +L9cxTpGAVXuSxHBi24raF6hGPgV4h0Wx/I13ek51QE6CXiBnxpJBP3A6
-   mE//q1CZ7zyKzvj2EYGusOJZyru7sbVY2MDHnsnUmttgAUYc74xOmWeoD
-   A==;
-X-CSE-ConnectionGUID: drUoQc6PSbGqCUkZ70hxKw==
-X-CSE-MsgGUID: bSRtXA74QQuh2L3hbl1SBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="3022707"
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="3022707"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 21:59:00 -0800
-X-CSE-ConnectionGUID: tjo2rXZDQNSnB4+x8NjlaA==
-X-CSE-MsgGUID: wjgjw2klTIuEErLWbS1uLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="7789063"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 21:58:53 -0800
-Message-ID: <d28422d6-7ac6-48ad-a28b-553ba724581b@linux.intel.com>
-Date: Mon, 9 Nov 2026 13:58:51 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NezfhAJh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2CB1F0089F;
+	Mon,  9 Nov 2026 06:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794205533;
+	bh=SS8g3kngP0h1kM7qHXzzyWAS56jyqJKHO8SoAqpqAok=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=NezfhAJhcuPPoZ5uDTjRITe2eGcHJUAF5PkX47h8ZfDi9I8nlGl23SpePXGMr4eDw
+	 v/X+YIDRs7qPt1WDa8fYRIzhloB9Mri6WJ7Tz1Kj40V3APso4rkyTkSiozfm0a7zop
+	 /6BsP7wvJvwN/afUvHrgLWz6PpX3AOr4qSwzusu2pxN0TlQYoRsfKSLJlkrD1vprS4
+	 kmDNfgFP1e/eoIqCuH+f0oLKvedP9Y6lx3Fd2SRQW7x9p95G4QYqlRhlN5Ba0WukxO
+	 bV4Dj3zd/TCFJiucR2yNV5VKSH5wtgM68SzqeJBOo+ewtOENF+3vlSzl7ivKgF/6LL
+	 ZdFY4/eYqlfig==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Fred Griffoul <griffoul@gmail.com>, linux-coco@lists.linux.dev
+Cc: Ackerley Tng <ackerleytng@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [RFC PATCH v4 06/25] KVM: guest_memfd: Support device-backed
+ PFN providers
+In-Reply-To: <20261104183754.10457-1-griffoul@gmail.com>
+References: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
+ <20261104150322.3516320-7-aneesh.kumar@kernel.org>
+ <20261104183754.10457-1-griffoul@gmail.com>
+Date: Mon, 09 Nov 2026 11:55:23 +0530
+Message-ID: <yq5apkwettbg.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,56 +75,162 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 03/20] KVM: selftests: Initialize the TDX VM
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com>
- <20261105-tdx-selftests-v16-3-2024e8fa517a@google.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <20261105-tdx-selftests-v16-3-2024e8fa517a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 11/6/2026 7:46 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
-> 
-> Add tdx_init_vm() to handle the mandatory VM-level initialization
-> sequence required for Intel TDX.
-> 
-> For TDX, the VM's CPUID configuration must be "sealed" during
-> KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
-> the TDX module does not allow the host to create and initialize any
-> vCPUs before the VM's CPUID configuration is accepted and sealed into
-> the TDCS.
-> 
-> Additionally, to satisfy the strict requirements of the TDH.MNG.INIT
-> SEAMCALL, the helper masks the KVM-supported CPUID
-> (kvm_get_supported_cpuid()) against the "directly configurable" bits
-> reported by KVM_TDX_CAPABILITIES.
-> 
-> Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Fred Griffoul <griffoul@gmail.com> writes:
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+>
+>> Device resources such as PCI BARs supply PFNs directly and cannot use
+>> the folio allocation path. Store the mapping owner and device ID in the
+>> core context during attach(), and use them when preparing device
+>> memslots. Keep device memory separate from ordinary PFN-backed RAM.
+>
+> The device rules you wrote down in api.rst and locking.rst helped a
+> lot. If I read v4 right, the device backing differs from the RAM PFN
+> backing in these places:
+>
+>   1. PFN mode calls RAM arch hooks: kvm_arch_gmem_make_shared() at
+>      conversion, kvm_arch_gmem_make_private() at fault, and
+>      kvm_arch_gmem_reclaim() on revoke and release. The device path
+>      has to skip them.
+>
+
+I would say that the VFIO provider expects the conversion to complete at
+conversion time, rather than being triggered by a fault. This is also
+required because, when an MMIO validation request completes, the guest
+expects the range to be mapped. The current flow is that the MMIO
+validation request exits to the VMM, which uses set_memory_attributes()
+to convert the range to private.
+
+>   2. lookup_pfn_range() only feeds those hooks, so the device path
+>      does not need it.
+>   3. The host mmap and stage-2 need a device memory type.
+>
+
+
+Do you mean this code? vm_page_prot is used for the host mapping created
+by mmap() on the guest_memfd, and its setup follows
+vfio_pci_core_mmap(). I think the only device-specific difference here
+should be pgprot_noncached(). Shouldn't the rest of the protection
+remain unchanged even for device PFNs?
+
+
++	if (gmem_provider_is_device(gi)) {
++		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
++		vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
++		vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
++		vma->vm_ops = &kvm_gmem_device_vm_ops;
++		return 0;
++	}
++
+
+
+For stage-2, the architecture-specific fault handler should handle this.
+
+
+>   4. In PFN mode, a conversion to private only updates the attributes,
+>      and the guest fault maps the page later. CCA has to map device
+>      memory at conversion, because the guest validates the mapping
+>      before it touches it.
+>
+
+correct 
+
+>   5. The device provider needs lock()/unlock(), the private range
+>      summary and prepare_memory_region().'
+>
+
+The TSM checks that there are no private pages before issuing the unlock
+request.
+
+>   6. The provider gets the VM and the vDEVICE binding at attach.
+>
+> Would these changes to PFN mode be enough to drop the device table?
+>
+>   1. The arch hooks take the frame attributes. For RAM the arch does
+>      the RMP work. For MMIO it skips it, or does the RMM work instead.
+>
+
+IIUC, this is what the patch already does. Or are you suggesting
+something else?
+
+static int kvm_gmem_convert_attributes(struct inode *inode, pgoff_t start,
+		pgoff_t end, u64 attrs)
+{
+	const struct kvm_gmem_backing_ops *ops = GMEM_I(inode)->backing_ops;
+
+	if (ops->convert_attributes)
+		return ops->convert_attributes(inode, start, end, attrs);
+
+	return 0;
+}
+
+
+
+>   2. lookup_pfn_range() stays required. For vfio-pci it is the BAR
+>      start plus the offset.
+>
+
+I have to admit that I did not understand the need for lookup_pfn_range.
+It was called from the reclaim path, but we did not have reclaim
+support.
+
+>   3. get_pfn() and lookup_pfn_range() report a memory type (MMIO) in
+>      their attributes, next to read only. The core mmap and the KVM
+>      fault path use it.
+>
+
+Yes, this should work.
+
+>   4. A conversion calls an arch hook in both directions, and the hook
+>      can fail. CCA maps the private device range there.
+>
+
+As kvm_gmem_convert_attributes() already does in the current patch?
+
+>   5. lock()/unlock(), the private range summary and
+>      prepare_memory_region() become optional ops for any PFN provider.
+>      A provider that moves RAM between guests needs them too: it has
+>      to order its moves with conversions and leave private pages
+>      alone.
+>
+
+Isn't that what the patch already does?
+
+static void gmem_provider_lock(struct gmem_inode *gi)
+{
+	if (gi->provider_ops && gi->provider_ops->lock)
+		gi->provider_ops->lock(gi->provider);
+}
+
+static void gmem_provider_unlock(struct gmem_inode *gi)
+{
+	if (gi->provider_ops && gi->provider_ops->unlock)
+		gi->provider_ops->unlock(gi->provider);
+}
+
+if (gi->provider_ops->prepare_memory_region) {
+	u32 flags = slot->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY);
+
+	ret = gi->provider_ops->prepare_memory_region(gi->provider, offset,
+						      size, flags);
+	if (ret) {
+		fput(file);
+		return ret;
+	}
+}
+
+
+
+>
+> I'm less sure about 6. Could KVM ask the provider for the vDEVICE when
+> the memslot is created, passing the VM? The provider would then not
+> need to keep a VM pointer.
+>
+
+OK, so you don't want struct gmem_inode to contain struct
+guest_memfd_device, or is the concern limited to struct kvm? I'll check
+whether we can move it out.
+
+-aneesh
