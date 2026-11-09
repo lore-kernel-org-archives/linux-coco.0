@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794239893;
-	b=NkE8Te4ko+U64BV+9rzYrcnce0Y+JMMipKWdXkdaz79Vnova0eWtbhyHnOFtwN3C+kTS
-	 IKm8LhENE7khF25nZfr19vVGYdbRMh0vvh5CbukRzsdT65pBQdhXYoIEFA5dCqmRBMrpC
-	 qCD5ehUohDqWmGrQP+vj00Qam+rkNcQfL4Fe3Stish8EW4sEO7sFgaUDP3FiXhSRVFYrP
-	 ChYJZI4/RHnEEz78hVb3YWbZ7/EEscnZz4j8aBUheebpqaylT+6e6IFgOek5eLLIbMCN3
-	 zo+I440fpz/P+ZHRgDIhWbLG2az9FcIAPj46KnO/BvLcPKp370cGz2slgdtamFY9YCg==
+	b=WTUxd9ihiZgtMMd8U958/WJxBgqPhuHQ6saiJjyvpq6CERd+JtG4IhUIESz/nCdRottu
+	 qd9AAXas8MRbrcjwJC69g3lWK03+RD/KGAVsct1pfX62XbmKnanyCmIhAfBGn3Zw0Gt2p
+	 yECg2fTAL/kkKjjLGo5eoSPfEawD5t2vHP9e/TRTKXwaeQnUEi40twMQfz78I1kcIDIOl
+	 9JycJHV5YrmAA9FtW15rNgY6ImPspRyi57R5U5/8WG6COjZik2Va2UpbsfPsRgbXqUk7o
+	 MFiZrJ8U3x6+DZAFaN3t3G1jfZPEpoSa+lIVwV5IBqBdkwOOpVvXVqWxQ9x4fJFBbeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794239893;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=5xzFaNjdBU2+3j5ofh/IAiAGHMFfV4HPNdcRnthw2k4=;
-	b=PJXZMRFiCWbUF32b/thLxWFV77umwiDT+2COidS7hAb4IrNYlmFAUxyNVfOQSGPAC0LB
-	 lqflQm0R/a5XA7PYCcg/HIIyeuS3wpUv1ZKL1gL6G+i3GJWZfnS1yKFAwuUtjpmdqJtWc
-	 NIIcDa7zwK2kGIadBPm8sXgjFyyQDLRekKlqXtz597L4w7dI+nG8y2ctre6tijfkQUyVn
-	 9YohY8k9L3tE8xOrYev13eBy3T2KYmzGv4n+v54VpYRKbhN3rvut9ENhT0JuwcEOjS73Z
-	 9XelYANMf51Xw3I/a/ndSy+aINw1bEckdJp6rVy456LeGGr++55f467vPYwJOG6x5/g==
+	bh=JqselKB5C9r652rsZshkeZbvIVXAm1lDRv9GJvn/rF4=;
+	b=GlbJ9YqctCBeQbbowqVDHK7TUiDuM1zDr0k1BothVO5tHDlsXzZpd1jHOIDnV15fbKAR
+	 SCteBeJN7v0+D9agiuuBXhWiYRwwZWf8clAc1jhiXuo7k3w6CvyjVU5YLvHwW24WPa3UU
+	 qgPrFjmuN+E1bc+VGtCBXVmi+BMHJXCHIbHvjURXFAU2xsupwVlxwtTcEZIv0UZIJACl5
+	 CLwqwqHD6fEe/nr/FHHBCitX6k8k9alg0ogiPpKY0jSEhbeXu6RKRHoalBrMYZRG7cdPY
+	 HF2pHNOwQxiFIyp5Tn/WnZBpAkHgsTL4FqFHxdrxlnHoDbiTdNPZao6AxhKYwoSbZyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=dolcini.it;
 	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=J8Uat55c;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=D9gJ9cH7;
 	arc=none smtp.remote-ip=217.194.8.81
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C285606EEBD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A402606EEB9;
 	Mon,  9 Nov 2026 15:58:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C285606EEBD
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A402606EEB9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=J8Uat55c
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=D9gJ9cH7
 Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2DB8726664;
+	by mail11.truemail.it (Postfix) with ESMTPA id F3BA826674;
 	Mon,  9 Nov 2026 16:58:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1794239883;
-	bh=5xzFaNjdBU2+3j5ofh/IAiAGHMFfV4HPNdcRnthw2k4=; h=From:To:Subject;
-	b=J8Uat55cuxs2U/x9zu70hgT7pCcrEBVnNxXvyWdiA6QEI/xouLkfWO6DKaauruTTK
-	 G4j8c8zvH9sniRvBQRXgMWJgOCGuxHVmKn1DgElYio+caJKdRG72Iw2p9NxF8mcnM+
-	 YE+jF6MbBYC9sRkE/pcRjZX1643eaP0NvIUxiuam5djt/9/KbyGlMgaz+FoI7YEYAz
-	 Kb81q2fF3UIcwnW0dODqON8l6hi/DZh4piWzfat/DhCZiIrvHwr9P2ZOYaxsPkmdTG
-	 u9IabiWgHIVBbYGBWzAJ9XTWT+yPvfghuQGIZpmrY9y2Q6ADPPnNnb1qWkZQ9bK2ug
-	 3iUYa+LOEKddQ==
+	s=default; t=1794239884;
+	bh=JqselKB5C9r652rsZshkeZbvIVXAm1lDRv9GJvn/rF4=; h=From:To:Subject;
+	b=D9gJ9cH7tUnNiVoeP+HyfuzBe6k9dxwaL1Lea0vosnI8jjFkOicrM0SxHS5dkQXyc
+	 1QNg3NZhABtz/yH52fK5UxTxaaV96r9+5jGyOXZDpnwEWgFZ0XONVs1dQSOrkviw8o
+	 1vTSDInCAiHlaoevFBMwP41pO7sp4Wk1HNvXHpZW3Hfxs59lF7F+0HxIqtzigJotjb
+	 gLT8I1FThzmrFwvMCNTLpMQHhTgRQjhm2QErwQfPpyvbvLyRXojQJj29RWq6J+jwMU
+	 Vyk22TxTjEKidYa5GQ5M9nOGrdwHOLbcHkSvk01qrCvazBe33+gZuiPVBZgX4QIzj8
+	 gY8fhdoH70PCg==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -65,9 +65,9 @@ Cc: devicetree@vger.kernel.org,
 	x86@kernel.org,
 	linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org
-Subject: [PATCH v2 6/8] ARM: dts: imx6ull-colibri-emmc: Add Toradex Capacitive Touch Display 7" Parallel with Touch Adapter
-Date: Mon,  9 Nov 2026 16:57:46 +0100
-Message-ID: <20261109155751.475875-7-francesco@dolcini.it>
+Subject: [PATCH v2 7/8] ARM: dts: imx6ull-colibri-emmc: Add Toradex Resistive Touch Display 7" Parallel
+Date: Mon,  9 Nov 2026 16:57:47 +0100
+Message-ID: <20261109155751.475875-8-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109155751.475875-1-francesco@dolcini.it>
 References: <20261109155751.475875-1-francesco@dolcini.it>
@@ -84,136 +84,132 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Add a device tree overlay for the Capacitive Touch Display 7" Parallel
+Add a device tree overlay for the Resistive Touch Display 7" Parallel
 on the Colibri iMX6ULL eMMC parallel RGB LCD interface.
 
-The panel is a LogicTechno LT161010-2NHC 7" WVGA TFT Transmissive LCD
-and the touch input is provided by an Atmel MaxTouch capacitive touch
-controller.
+The panel is a LogicTechno LT161010-2NHR 7" WVGA TFT Transmissive LCD
+with a resistive touch.
 
-The touch controller is connected to the Toradex Capacitive Touch
-Adapter, the connection to the various carrier boards is documented in
-the datasheet [1].
-
-The panel, backlight and LCDIF configuration is identical to the Colibri
-iMX7 eMMC one, only the Atmel MaxTouch controller wiring and the
-conflicting PWM channels are SoC specific. To avoid duplicating it,
-rework the Colibri iMX7 eMMC overlay to include the dtsi shared between
-the two modules, and use it from the new overlay as well.
+The overlay content is identical to the Colibri iMX7 eMMC one. To
+avoid duplicating it, rework the Colibri iMX7 eMMC overlay moving its
+content to a new dtsi shared between the two modules, and include it
+from both overlays.
 
 The overlay is also combined with the Eval carrier board device tree to
 provide a ready-to-use DTB.
 
-Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
-Link: https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
-Link: https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
+Link: https://developer.toradex.com/hardware/accessories/displays/resistive-touch-display-7inch-parallel/
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
 v2: add the tdx vendor prefix to the overlay, shared dtsi and combined DTB names
 ---
- arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
- ...ap-touch-7inch-parallel-touch-adapter.dtso | 46 +++++++++++++++++++
- ...ap-touch-7inch-parallel-touch-adapter.dtso | 16 +------
- 3 files changed, 54 insertions(+), 14 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+ arch/arm/boot/dts/nxp/imx/Makefile            |  6 ++++
+ ...mc-tdx-panel-res-touch-7inch-parallel.dtso | 16 ++++++++++
+ ...ri-tdx-panel-res-touch-7inch-parallel.dtsi | 30 +++++++++++++++++++
+ ...mc-tdx-panel-res-touch-7inch-parallel.dtso | 18 +----------
+ 4 files changed, 53 insertions(+), 17 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-tdx-panel-res-touch-7inch-parallel.dtsi
 
 diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index a0d22028f20d..7332167aee44 100644
+index 7332167aee44..060bb01f9396 100644
 --- a/arch/arm/boot/dts/nxp/imx/Makefile
 +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -365,6 +365,10 @@ imx6ull-colibri-emmc-iris-v2-tdx-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx6ull-colibri-emmc-iris-v2.dtb \
- 	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo
+@@ -369,6 +369,10 @@ imx6ull-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter-dt
+ 	imx6ull-colibri-emmc-eval-v3.dtb \
+ 	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
  
-+imx6ull-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter-dtbs := \
++imx6ull-colibri-emmc-eval-v3-tdx-panel-res-touch-7inch-parallel-dtbs := \
 +	imx6ull-colibri-emmc-eval-v3.dtb \
-+	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
++	imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtbo
 +
  dtb-$(CONFIG_SOC_IMX6UL) += \
  	imx6ul-14x14-evk.dtb \
  	imx6ul-ccimx6ulsbcexpress.dtb \
-@@ -395,10 +399,12 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ull-colibri-emmc-aster.dtb \
+@@ -400,11 +404,13 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
  	imx6ull-colibri-emmc-aster-tdx-panel-cap-touch-7inch-parallel.dtb \
  	imx6ull-colibri-emmc-eval-v3.dtb \
-+	imx6ull-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
+ 	imx6ull-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
++	imx6ull-colibri-emmc-eval-v3-tdx-panel-res-touch-7inch-parallel.dtb \
  	imx6ull-colibri-emmc-iris.dtb \
  	imx6ull-colibri-emmc-iris-v2.dtb \
  	imx6ull-colibri-emmc-iris-v2-tdx-panel-cap-touch-7inch-parallel.dtb \
  	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo \
-+	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
+ 	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
++	imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtbo \
  	imx6ull-colibri-eval-v3.dtb \
  	imx6ull-colibri-iris.dtb \
  	imx6ull-colibri-iris-v2.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
 new file mode 100644
-index 000000000000..14615f3089e3
+index 000000000000..89800a64b596
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-@@ -0,0 +1,46 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
+@@ -0,0 +1,16 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * Copyright (c) Toradex
 + *
-+ * Toradex Capacitive Touch Display 7" Parallel connected through the 40-way
-+ * Unified Interface Display connector and Toradex Capacitive Touch Adapter.
++ * Toradex Resistive Touch Display 7" Parallel connected through the 40-way
++ * Unified Interface Display connector.
 + *
-+ * Toradex Capacitive Touch Adapter connection with the various carrier boards
-+ * is documented in the datasheet [1].
-+ *
-+ * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
-+ * https://www.toradex.com/accessories/capacitive-touch-display-7-inch-parallel
-+ * https://docs.toradex.com/104497-7-inch-parallel-capacitive-touch-display-800x480-datasheet.pdf
-+ * https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
-+ * https://www.toradex.com/accessories/capacitive-touch-adapter
-+ * https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
++ * https://docs.toradex.com/104498-7-inch-parallel-resistive-touch-display-800x480.pdf
++ * https://developer.toradex.com/hardware/accessories/displays/resistive-touch-display-7inch-parallel/
++ * https://www.toradex.com/accessories/resistive-touch-display
 + */
 +
 +/dts-v1/;
 +/plugin/;
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
++#include "imx6ull-imx7-colibri-tdx-panel-res-touch-7inch-parallel.dtsi"
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-tdx-panel-res-touch-7inch-parallel.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-tdx-panel-res-touch-7inch-parallel.dtsi
+new file mode 100644
+index 000000000000..2159b9788064
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-tdx-panel-res-touch-7inch-parallel.dtsi
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * Copyright (c) Toradex
++ *
++ * Toradex Resistive Touch Display 7" Parallel connected through the 40-way
++ * Unified Interface Display connector, shared by the Colibri iMX6ULL eMMC and
++ * Colibri iMX7 eMMC overlays.
++ *
++ * https://docs.toradex.com/104498-7-inch-parallel-resistive-touch-display-800x480.pdf
++ * https://developer.toradex.com/hardware/accessories/displays/resistive-touch-display-7inch-parallel/
++ * https://www.toradex.com/accessories/resistive-touch-display
++ */
 +
-+#include "imx6ull-imx7-colibri-tdx-panel-cap-touch-7inch-parallel.dtsi"
-+
-+&atmel_mxt_ts {
-+	pinctrl-0 = <&pinctrl_atmel_adap>;
-+	/* SODIMM 28 / TOUCH_INT# */
-+	interrupt-parent = <&gpio4>;
-+	interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
-+	/* SODIMM 30 / TOUCH_RST# */
-+	reset-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
-+
++&ad7879_ts {
 +	status = "okay";
 +};
 +
-+/* Conflict with SODIMM 28 / TOUCH_INT# */
-+&pwm5 {
-+	status = "disabled";
++&backlight {
++	status = "okay";
 +};
 +
-+/* Conflict with SODIMM 30 / TOUCH_RST# */
-+&pwm6 {
-+	status = "disabled";
++&lcdif {
++	status = "okay";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-index 890461f92442..aa8ae9418b44 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-@@ -22,6 +22,8 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- 
-+#include "imx6ull-imx7-colibri-tdx-panel-cap-touch-7inch-parallel.dtsi"
 +
- &atmel_mxt_ts {
- 	pinctrl-0 = <&pinctrl_atmel_adapter>;
- 	/* SODIMM 28 / TOUCH_INT# */
-@@ -33,20 +35,6 @@ &atmel_mxt_ts {
- 	status = "okay";
- };
++&panel_dpi {
++	compatible = "logictechno,lt161010-2nhr";
++
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
+index b926cc020e62..6748ffa2e89a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
+@@ -13,20 +13,4 @@
+ /dts-v1/;
+ /plugin/;
  
+-&ad7879_ts {
+-	status = "okay";
+-};
+-
 -&backlight {
 -	status = "okay";
 -};
@@ -223,14 +219,11 @@ index 890461f92442..aa8ae9418b44 100644
 -};
 -
 -&panel_dpi {
--	compatible = "logictechno,lt161010-2nhc";
+-	compatible = "logictechno,lt161010-2nhr";
 -
 -	status = "okay";
 -};
--
- /* Conflict with SODIMM 28 / TOUCH_INT# */
- &pwm2 {
- 	status = "disabled";
++#include "imx6ull-imx7-colibri-tdx-panel-res-touch-7inch-parallel.dtsi"
 -- 
 2.47.3
 
