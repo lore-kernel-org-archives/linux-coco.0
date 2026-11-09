@@ -1,131 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794244359;
-	b=jh94KVnim3a22cYmLlzN2pyPHKvhj7ea7MxMoCCwkMVaDG7w7DUWH+/T6eSwovjTGK5j
-	 dr+HyuuOgjAt1DzvihuK8MKIjVcPUnizm5qDChZBx2BCynxorUddFEVh033N+hrrqX/K3
-	 2YqHH+EmAqzmx5roSTdtj6iypWEtnLBt/nMvmqiluuN8iaoKMJySGUa2PXYBhZskkByhA
-	 cDakautHGJoHHwiij/YL2bOliR1gzi01kXurS67w0HGYVif5rusHp3gYQDgGhSVzdU+FK
-	 NlMdgqVZqOYJr2I8Anehug12KbaCoB/eFmK/UYNxWlLQ/W8bAgOp7XsSrOeUZ+fmPlQ==
+	t=1794245839;
+	b=JidGNPKRldns7jzgvgm+CRLctapfAjEfZc2w88WXIFyiB/ueufoSjCMjHbSlofxUJe+S
+	 sv0C/IOlYLLaRyaaMmUOb5vxEO63P7xEW0mMPlHHkKF5yUtH6uja40TSbrwMHch/YqpW1
+	 gwWROrLhB39p6n3QyM5MPqtHGGvXHs1FzlP+qjhR35I8moAfnJRhCrXSDnlB2/3huYKJY
+	 RolSo3Jlv6866VYRmkd+3E+sBWoC7AvKSfQqvNNWq7s+J5IUsq/8L40UxXvFIHw9a3OFA
+	 /16hXh+Of5ib3Xw8+89n9Qy2/hwTCTjoGoj2FdS7yP5mRdtysfeEXFGo0loG9hnxD4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794244359;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=mldVdWBWz+slWUX+6pvLrLM/2pda4Td9vv1hcuYueHI=;
-	b=SIv5OXa5QaAHWLqCHH9LXUFIfq8T4SDGT6+FtafZS1oaP1lYe1p+RDpg8/ItQ5AYn8sw
-	 PD7xucMbEe48EtAPKzcFs9AFfJJKGnckeHUGiIbXWU4BgJXNW4pRlz64iMNaqu2IEzYm5
-	 DxauSwAwXhrojg6ojxx4enNem4GjzWiO4RKlOzfgKG4UQt+mgmSUARa97B2uSC5amJ6LD
-	 ely2AGZMXk8ElEsmYzOB4XIhalpxCEa8JgsKUEpAZ28/siSBu64wlE+DkfeZzAN8L25rA
-	 o7od1S5PSXQSIxNrBJdP5oYaM9r0GIa+JXgOKAvgkLA7AbriX+A/D/w9pzmm3+yTlUw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794245839;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=6CXJNsJLcYr7DCz++xy0LDDCohElFbou/J6Mw5qr5fQ=;
+	b=LsbT149G2jtaz1X4PQKhVkppKJ5AiPUcfpYs3YzDbqKCnsDD60X3hndnTXssixIn2sxS
+	 0X9efUz2Hni8hDI6O2KRqpyz19BD92FWCNTaQ12txifsr5waypeBxSQ3pA2Q2+iX1OUaP
+	 2oNw8nw/WHoOtYJ9rh8zuKBh4rQIHocqHGYFMk6gl9raIgilqlSx3DMKg/D3gcq1eC3LQ
+	 68res5zT1KCvwqqq1i+eVMqef3zF0N1QhpsOQmzd2F3sR4uqUqp8EHptCVHquD8vdJG1v
+	 wCF84ee6HiuO1T8KQpVQ+al/ACH/3sA9ZUuiVG9zU5Bb8sMgt2FEYQet4IMazgMTVBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=X8rnpGdN;
-	arc=none smtp.remote-ip=209.85.222.176
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lnaIfhaF;
+	arc=none smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B166606A31C
-	for <linux-coco@lists.linux.dev>; Mon,  9 Nov 2026 17:12:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B166606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0D1606A321;
+	Mon,  9 Nov 2026 17:37:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F0D1606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=X8rnpGdN
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93ece7a73b9so120258185a.3
-        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 09:12:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794244358; x=1794849158; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mldVdWBWz+slWUX+6pvLrLM/2pda4Td9vv1hcuYueHI=;
-        b=X8rnpGdNX6zKDfHbt/akXhdcnin7zHtAT5qVp47YdNOHjctTOnJ/BfN6lyjg2tNgR5
-         ssuH9qus9IXMyB1dnaqOV53KTZm2Nm/mTQBHSn6wr/r3N13OVxqsRZ4vEJ9YRJg9xryf
-         YVh3jiBDcng1Begq2Ctzaj69kK/nEwTX7/7cXSNjHrTUYOh3w9lWqD8u+r2vKHkM+Q7S
-         XDFd+6yLpjpT6krztu4HDrYqBKY22QP6XxGio/OvONCLfqt18yHJoe3wEfzxU3ettukH
-         mSrFJ6NuPHNr8JV8du6+TWavMqJkSX0aQWXhFyJg5i/DdZgyrX7GZleYY0E8pzqWJFNz
-         BJrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794244358; x=1794849158;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mldVdWBWz+slWUX+6pvLrLM/2pda4Td9vv1hcuYueHI=;
-        b=jQsB8HoyY1N2dn7euzmtXK7y3fVSyupT6+M1wjwiNWOji2At9JVyIB5ZLZ9AlgribF
-         lvOGFkD2T+tASv5hbGl5jSw87OYzBt52cTEAMXlYKYEmA1MqhW5/nGZHCuCzaI5Mgub6
-         Lr/JCWubQAI1jVUuJlDzVp9Nbs4e2Ed8JVcGjKoxw7a/9mLcUdYsyMu7gTDoNz4ZRfXw
-         VDccLkoOD7QxFu3pVK0KYkD0QDqhUdzP6QumqnrhG4YO0Q6q0xkUDhKgU2LbEtMZUxBH
-         x5Yn7donHMe/N1CAye6wwk+tFrjx4O/eUHqo1IwHdsxSqWxPLYHdIyUDKOY8JpVHzEqn
-         OSxA==
-X-Forwarded-Encrypted: i=1; AL+hErF7BOlvxPql8PyHn8ZpKF5nnKuO/FOUPNAnVMHiOClbfO+l+qFAQoQhEkekROYsZZp7F6W0CiU1woh8@lists.linux.dev
-X-Gm-Message-State: APuU4Z/TXA3xK0WAOFK9YfEuFZi9NF7ZQdNoFu2JpIgFM405lYfe+vxr
-	JYpje8Z4LUFczdbvyOTCaaXEPSrfYmLntPw8xEBlrbChqUtpp8PpRjwlTw9KDnW9pJ4=
-X-Gm-Gg: AYBFou3LekN17d4fcfUjAq6IvTMBZOJNHoKtZYkHd4PI1bIhrUqpSfb4VoxSGHT/X5P
-	+EFcYAyElWhuK8AZp20OqMUHEq9zjorlPct7hkY0QGugVUDxUo60hI3t2ehROcB916hNAMAoK58
-	D402JevicIgNxzIEg0DYw8j48gDAMSRutqAecQYlB4c00T/AIFj8whsTXuygIv2g2m5lv7uPDOw
-	JVhb616YXHm5aMGFhjVI/YPimRdPOjNbyk/WGR+RcRX/Apmuu2n2YZbMFGsQVq3EKixTm5qC/gm
-	0L6PYhm7Er7a6xJM0VOK7pzFfRvhAru85kXTkNp/MhMo5Ohz84W7VCRZ7Q0XYROtSDmxz5Fi8mK
-	AfOJs5C8LKziM1Y/hWtSeRUVW7qRGT+UlVtGhgkglcnA2bHn4UhLYRoy755SsKsZmpqSnYt279F
-	m9pAPNQygKwY7wZ8LfKQa+Knu2/yeUYFzafNuLVd9EcPIR/H+DwceZ/vxNIKxMU6ssEbwM2pp4H
-	HnAltaQ9d1gyJkP8cxsT+iO8048gYP75mQrH32Js9fXoWPMKpCIMbBWYyO1EpG5Ik/gJfsJ5iD2
-	Ft9ss+mcgQYAxU3+8KUSovVTWhz8hwFbAyRgS9JRckR1Qj5RXINqF+NmlHrAS58z/On/z04O2Kq
-	TyAhmxMUsSA==
-X-Received: by 2002:a05:620a:4625:b0:946:26a:22c4 with SMTP id af79cd13be357-9479f415545mr8700585a.73.1794244358097;
-        Mon, 09 Nov 2026 09:12:38 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef0540a8dsm277806d6.41.2026.11.09.09.12.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 09:12:37 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xQSv6-00000001ryf-1fz6;
-	Mon, 09 Nov 2026 13:12:36 -0400
-Date: Mon, 9 Nov 2026 13:12:36 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Peter Fang <peter.fang@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"drdeeglaze@gmail.com" <drdeeglaze@gmail.com>,
-	"James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"Xing, Cedric" <cedric.xing@intel.com>,
-	"alistair.francis@wdc.com" <alistair.francis@wdc.com>,
-	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"ankita@nvidia.com" <ankita@nvidia.com>,
-	"jiri@resnulli.us" <jiri@resnulli.us>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"Quigley, David" <david.quigley@intel.com>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"jpiotrowski@nvidia.com" <jpiotrowski@nvidia.com>,
-	"Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-	"lukas@wunner.de" <lukas@wunner.de>,
-	"jic23@kernel.org" <jic23@kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"sameo@meta.com" <sameo@meta.com>, "aik@amd.com" <aik@amd.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"ksinyuk@kernel.org" <ksinyuk@kernel.org>,
-	"qinkun@google.com" <qinkun@google.com>
-Subject: Re: [PATCH RFC 20/20] attestation: Add the TDX family implementation
-Message-ID: <20261109171236.GP663069@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-21-jiri@resnulli.us>
- <ed52bb6d48c87ab8023bf2165cadffa259e21725.camel@intel.com>
- <20261023141218.GD3977851@ziepe.ca>
- <343e4a12f2fdbb4e9a19c4afe49cf2b8908d6739.camel@intel.com>
- <20261023220030.GM3977851@ziepe.ca>
- <7843a833723e3aad40f8fc4de3a83f5a5059280f.camel@intel.com>
- <20261103005851.GH3889730@ziepe.ca>
- <au5LCE1jau0yDo5S@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lnaIfhaF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794245838; x=1825781838;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UinYI/6HI/ZaJ1dbH7aEhOKXCkNmi84bLrKsPg96CFc=;
+  b=lnaIfhaFVqTpwm3epEG8L5KybuCx8Ke9TRXK5sa0V8/+LSX/CPrIUz1j
+   U1wjVJf4O/w6kiVfdUMU4dkVY5sR0W25TpNn8W5mK992Nxi6+Isn+DjC6
+   WgES9udL6tiQ8Y754xNv6g7cKGCiynVBe3/v8EvM6adOG7lPLJjzXyjq+
+   VpiaJ1TCOQFnIV31zuKL/0Yr1HwiRUaznScNDkHUHsE2j7Zcrw4GVjokN
+   27e1seiYwGLlxwqtvpyug7QMypczJJIFOjVRFN/ixsJMgOGb99ybd1i7S
+   lKfcCZiua3orphBFyflWPljBxFrXqBgfxwWPv5gzDxfUx4ZrLjKjqYeiD
+   Q==;
+X-CSE-ConnectionGUID: lcBgdatCQW6jiBjZmxbZwA==
+X-CSE-MsgGUID: O+5V0X7bQWu5mP00uSnQzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2876729"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2876729"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:37:18 -0800
+X-CSE-ConnectionGUID: lkAeOzKjQlGPPJ4vFDI4hw==
+X-CSE-MsgGUID: fD7Zf1BcRzOmUcNRd9IzRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="7924446"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.20]) ([10.125.111.20])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:37:16 -0800
+Message-ID: <2b89b830-f1e4-4304-93ee-40287a4b5b2d@intel.com>
+Date: Mon, 9 Nov 2026 10:37:14 -0700
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -135,66 +72,280 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au5LCE1jau0yDo5S@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
+ and establish streams after acceptance
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ Jiri Pirko <jiri@resnulli.us>, "Tian, Kevin" <kevin.tian@intel.com>,
+ Alexey Kardashevskiy <aik@amd.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Steven Price <steven.price@arm.com>, Kiryl Shutsemau <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Jonathan Cameron <jic23@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ "patches@lists.linux.dev" <patches@lists.linux.dev>
+References: <20261102172640.GB274202@nvidia.com>
+ <DS4PPFA84FA90FC31B41ECA1F6ACF6D0600E7692@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
+ <20261103151643.GI274202@nvidia.com> <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
+ <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
+ <20261104134119.GR274202@nvidia.com>
+ <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
+ <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
+ <20261106193018.GK770409@nvidia.com>
+ <53bc57bf-1ee1-407a-b48b-bc6b2deee12a@intel.com>
+ <20261108183337.GL770409@nvidia.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20261108183337.GL770409@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 06, 2026 at 01:47:52PM -0800, Peter Fang wrote:
 
-> For TDX, the direction so far has been to keep the guest as simple as
-> possible in the attestation process. So the "quote type" knowledge is
-> pushed into the TDX module and the remote verifier. The host kernel is
-> mostly tasked with transporting the quote blob from the TDX module back
-> to the guest. In other words, TDX doesn't have any quote type knowledge
-> outside of the module itself. And as far as I know, parsing these blobs
-> is sort of a pain.
+
+On 11/8/26 11:33 AM, Jason Gunthorpe wrote:
+> On Fri, Nov 06, 2026 at 03:39:56PM -0700, Dave Jiang wrote:
 > 
-> The TDX DICE blobs are actually self-describing, meaning the verifier
-> can follow a schema, parse the blob straight away, and know what's
-> inside, including how to verify the signature. They're also
-> distinguishable from the legacy quotes. A launched guest is guaranteed
-> to have a stable format for its quotes. So this makes me wonder how the
-> labeling should be done. Do you think it makes sense to just have a
-> "primary raw TDX quote" label and let the TDX quote blob describe
-> itself? Also, I think currently there are no plans to add
-> secondary/supplementary blobs alongside the quote itself.
+>> I think that works for TDX. tdx-host already relays every DOE
+>> message for the TDX Module, so it can hand them to core SPDM
+>> code. 
+> 
+> Everyone does this right? TDX does, I know ARM does, and AI tells me
+> AMD does too. So this is universal.
+> 
+>> Only part of the flow is clear text though. With the current
+>> module I see the VCA, GET_CERTIFICATE for slot 0, and
+>> KEY_EXCHANGE/KEY_EXCHANGE_RSP in the clear. There's no
+>> GET_DIGESTS. FINISH, GET_MEASUREMENTS, the reads of slots 1-7 and
+>> the TDISP messages are all inside the session, so the kernel can't
+>> decode them.
+> 
+> Yes, but in 1.3 there would be a get digests too.
+> 
+>> So the kernel would get the VCA, slot 0's chain and the KEY_EXCHANGE
+>> transcript from snooping, and still take MEASUREMENTS from the TDX
+>> Module's device info. Would that be ok with you?
+> 
+> Yeah, this is what I was thinking about. I think this should be
+> completly universal and uniform across every implementation.
+>  
+>> I tried disturbing the session from the host with a test hack in
+>> tdx-host, right before KEY_EXCHANGE. A bare GET_VERSION makes the
+>> device reject KEY_EXCHANGE. Replaying the VCA with one field changed
+>> gets a KEY_EXCHANGE_RSP back, but the TDX module rejects it. So
+>> KEY_EXCHANGE does blow up when the host interferes, as you said in
+>> the other reply.
+> 
+> Yes, this is a critical security feature.
+> 
+> The host could inject GET_CERTIFICATES on its own right before
+> KEY_EXCHANGE, and I'm wondering if we end up with this scheme if the
+> 1.3 mode should simply have the host issue GET_CERTIFICATES and the
+> TSM side just does GET_DIGESTS.
+>  
+>> Seems reasonable. Every TSM gets the same uAPI, and on TDX the host
+>> already has every message in hand so the driver side should be
+>> small. It also lets the kernel check the KEY_EXCHANGE_RSP signature
+>> itself instead of taking TSM's word for it.
+> 
+> Yeah, not sure that has security value, but it is a nice debugging
+> aide for sure.
+> 
+>>> If you *really* want to do certificate refresh it has to be a
+>>> dedicated operation, it has to be supported by the TSM, and it has to
+>>> get back another SIGNED GET_DIGESTS. All that would ideally have to be
+>>> dumped into the transcript again.
+>>>
+>>> I feel it is alot of work and not valuable.
+>>
+>> On TDX the re-read of the chains comes with the measurement
+>> refresh. The kernel doesn't ask for it separately. For option (A) I
+>> think the kernel can drop the re-read chains and pass up only the
+>> new MEASUREMENTS. It already has the copy KEY_EXCHANGE signed.
+> 
+> I don't know why you guys do this, I would take it out, IMHO. Just
+> wastes time. Yes, kernel should forward the chain it collected with
+> KEY_EXCHANGE, it isn't allowed to change and there is no need to
+> recollect it.
+> 
+>>> I think any device that can loose its private key while an SPDM
+>>> session is open (ie with live update or something) is fundamentally
+>>> broken. If it wants to do this it has to break the SPDM.
+>>
+>> On the host side, should we drop the fresh-nonce collection before
+>> ACCEPT then, or keep it as audit only? I'd rather not carry a uAPI
+>> for it if nobody needs it. The guest's lock keeps its own
+>> fresh-nonce recollection, as you asked for earlier.
+> 
+> What does this mean?
+> 
+> Every single call to GET_MEASUREMENTS should come with a user provide
+> nonce.
+> 
+> You need to provide two flows
+> 1) /dev/attestation/xx on the host does a GET_MEASUREMENTS for the
+>    host's use, with out *any* disruption to *any* guest
+> 2) iommufd command 'get attestation fd for vdev' ends up implementing
+>    the hypevisor side of guest/host channel and does GET_MEASUREMENTS
+>    with whatever anti-tamerping scheme TDX has.
+> 
+> Both of these need to accept a nonce.
+> 
+> No GET_MEASUREMENTS should be issued, and certainly not from accept,
+> until userspace specifically asks for it with a user provided nonce.
 
-I would be very happy if Intel came with some plan, documented in the
-ABI comments around their labels down the road.
+Sorry, that was unclear, and the guest part was wrong. The guest collects no measurements at lock, only the Interface Report. It collects
+measurements only when userspace asks, with userspace's nonce, so that's flow 2.
 
-What I would like is that given a specific label any userspace can do
-a verification and full dump of that data, including signature
-validation, without need of any further external information.
+On the host I meant the optional fresh collection in step 4 of the diagram. That would be flow 1.
 
-Ie it is entirely self describing under that label.
+One thing on TDX is that TDH.SPDM.CONNECT also runs a GET_MEASUREMENTS of its own during the connect, and the kernel doesn't choose its nonce. The kernel wouldn't hand that one to userspace. Measurements only come out through the two flows, with a user nonce.
 
-So if someone has to say externally 'oh this was a legacy VM' to make
-parsing work then that needs to go in the label.
 
-Think of it this way, you should be able to run a command, lets imagine:
+> 
+>>>> (3) TDH.SPDM.CREATE runs first. The kernel sets CERTIFICATE_SLOT_MASK to
+>>>>     0x01, so the TSM reads only slot 0's chain. It could also read slots
+>>>>     1-7 inside the session [GUIDE B.1.1, Table B-1], but no signature
+>>>>     would cover them: KEY_EXCHANGE hashes only the chain of the slot it
+>>>>     names [SPDM 10.18.1]. So (a) doesn't report them.
+>>>
+>>> ? this is confusing. KEY_EXCHANGE slot=0 includes the hash of the
+>>> certificate chain in slot 0. If the TSM doesn't even read that slot
+>>> during the premable it is impossible to validate the KEY_EXCHANGE.
+>>>
+>>> What prupose is there for this configurable "the kernel sets
+>>> CERTIFICATE_SLOT_MASK to 0x01" ? If the kernel sets for slot 1 then
+>>> KEY_EXCHANGE must fail?
+>>
+>> No, it doesn't fail, and the note was confusing. The mask doesn't
+>> control slot selection. It only picks which of slots 1-7 the module
+>> also returns. Slot 0's chain is always read and returned. The module
+>> reads it in the clear before KEY_EXCHANGE, even with bit 0 clear.
+>> Slots 1-7 are read inside the session after KEY_EXCHANGE. Setting
+>> 0x01 just skips reading chains nothing signs.
+> 
+> OK.. Weird, not sure I see that as useful?
 
-$ attestctl dump report0
-   intel TDX A:
-     - Field 1
-     - Field 2
-   Signature VALID
-   Certificate chain
-      A
-      B
-      C
+For (a) it isn't, which is why the kernel sets 0x01. Elena explained the reason for the mask in her reply.
 
-It must not be something like:
+> 
+>>> Yes, but if we do #1 above I would keep it anyhow and optionally give
+>>> it to the verifier. I agree it is fairly pointless, but it is really
+>>> cheap to do if you have #1 and simply capturing the *entire* signed
+>>> transcript is forward looking from an ABI design perspective.
+>>
+>> Agreed. With snooping the kernel has them anyway. I'll change (5) to
+>> keep them and hand them to the verifier.
+> 
+> So what I'm thinking is some kind of little library with a driver
+> interface like the blow. It would be used instead of the driver just
+> calling pci_doe() directly and does all the capturing magically and
+> transparently.
 
-$ attestctl dump report0 --kind tdx_legacy
-$ attestctl dump report0 --kind tdx_dice
+That works for TDX. tdx-host's relay is one function today. It takes the module's request from a page shared with the module and calls pci_tsm_doe_transfer(), so att_spdm_doe_exchange() drops in there.
 
-Does it make sense?
+I tried a quick version of the capture in a test hack with the TDX Module. It rebuilt the VCA, slot 0's chain and KEY_EXCHANGE/KEY_EXCHANGE_RSP from the relayed messages, and the kernel's own check of the KEY_EXCHANGE_RSP signature passed. Agreed it's more of a debugging aid. Two things I encountered:
 
-Whatever labeling you choose has to follow these goals, and there is
-some trade off between making thing self describing forever into the
-future and exposing protocol details into the guest kernel driver.
+- The DOE payloads carry dword padding, so the capture has to trim each message to its SPDM length before hashing. KEY_EXCHANGE was 160 bytes as a DOE payload and 158 as an SPDM message.
 
-The future scares me so I would always design to include a description
-of the blob from TDX module to the guest driver :)
+- The chain hash in the KEY_EXCHANGE_RSP transcript is over the whole SPDM chain structure (length, reserved, root hash, certificates), not just the DER certificates. That's how the device and the TDX Module compute it.
 
-Jason
+Neither changes the proposed API. The library just needs to handle them.
+
+DJ
+
+> 
+> Basically the only thing in the driver will be the communicate loop,
+> and the little bit ARM needs to get the PUBKEY out.
+> 
+> I've got some AI running through to make a sketch of this to see if it
+> is a terrible idea.
+> 
+> struct att_spdm_connection;	/* opaque */
+> 
+> /*
+>  * Called by the driver (not the TSM core) before the first GET_VERSION is
+>  * issued. @doe_mb is used, not owned; it must outlive the connection.
+>  * Returns ERR_PTR() on failure.
+>  */
+> struct att_spdm_connection *
+> att_spdm_connection_create(struct pci_doe_mb *doe_mb);
+> 
+> /*
+>  * Release all capture storage. Must not race with att_spdm_doe_exchange().
+>  * Sends nothing to the device. Evidence references already taken stay valid.
+>  */
+> void att_spdm_connection_destroy(struct att_spdm_connection *conn);
+> 
+> /*
+>  * Forward one firmware-generated request over DOE and capture it.
+>  *
+>  * @doe_type: PCI_DOE_FEATURE_CMA or PCI_DOE_FEATURE_SSESSION, as chosen by
+>  *            firmware. Any other value is -EINVAL.
+>  * @req:      may point into shared or firmware-owned memory. It is read
+>  *            exactly once, into private storage; nothing re-reads it.
+>  *
+>  * Returns 0 when a response is available through att_spdm_response_len() and
+>  * att_spdm_copy_response(). An SPDM ERROR reply (Busy, ResponseNotReady,
+>  * LargeResponse, InvalidRequest, ...) still returns 0: it is a response for
+>  * firmware to handle.
+>  *
+>  * Returns a negative errno when the exchange failed or was refused before
+>  * reaching DOE. The error is latched: every later call returns the same
+>  * value, and the caller must destroy the connection.
+>  *   -ECONNRESET  GET_VERSION restart, or RequestResynch
+>  *   -EPROTO      malformed or illegal message for the current state,
+>  *                including any plaintext request after KEY_EXCHANGE_RSP
+>  *   -EOPNOTSUPP  PSK or mutual-authentication flow
+>  *   -E2BIG       collection budget exhausted
+>  *   -ENOMEM      allocation failure
+>  *   other        DOE transport failure
+>  *
+>  * Sleeps. Takes no lock: the TSM core issues SPDM operations to the driver
+>  * one at a time, so calls on a connection are never concurrent.
+>  */
+> int att_spdm_doe_exchange(struct att_spdm_connection *conn, u8 doe_type,
+> 			  const void *req, size_t req_len);
+> 
+> /*
+>  * Size in bytes of the latest raw DOE response, including DOE dword padding
+>  * and any ERROR or chunk envelope. Valid until the next exchange or until
+>  * the connection is destroyed. Returns 0 if no response is available.
+>  */
+> size_t att_spdm_response_len(struct att_spdm_connection *conn);
+> 
+> /*
+>  * Copy the latest raw response into @dst. Writes @dst only; never reads it.
+>  * Returns the number of bytes copied, -ENOSPC without copying anything if
+>  * @dst_len is too small, or -ENODATA if no response is available. Never
+>  * truncates. Can be called repeatedly; it does not consume the response.
+>  * An undersized buffer is not latched: how to react is the driver's
+>  * decision.
+>  */
+> ssize_t att_spdm_copy_response(struct att_spdm_connection *conn,
+> 			       void *dst, size_t dst_len);
+> 
+> /*
+>  * The driver calls this once firmware has reported that the SPDM session is
+>  * established and valid, for example when the firmware connect command
+>  * completes successfully. It is the only point where any future kernel-side
+>  * validation of the captured evidence may run, and the only point where such
+>  * validation may fail.
+>  *
+>  * Requires ATT_SPDM_CAPTURED. Calling it in any other state returns -EINVAL
+>  * and latches the error. On success the status moves to
+>  * ATT_SPDM_ESTABLISHED; on failure the error is latched.
+>  *
+>  * Evidence is only made available to attestation consumers after this
+>  * call succeeds.
+>  */
+> int att_spdm_session_established(struct att_spdm_connection *conn);
+> 
+> Jason
+
