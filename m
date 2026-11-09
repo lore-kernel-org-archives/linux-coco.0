@@ -1,68 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794257702;
-	b=LbjTgLVwWhoWF9iZ8yJqDsu13jQanHh0PJDeZscyb2Hxs1R1Ehkwxd8esCnZ7Q5JANL8
-	 oqdAAxPn6re7IQ5XTypwUatqPFrUkzrQ0l+6mkQf2HyqKiI5lDjSludRom2xMHC4gmBVS
-	 EkEn0IkNqY9qpy3PDM4JbDghlmAbO6IvOGoney3fLCq+7B0X+DFDV3JoQ3Qp+YWky6tae
-	 MT3X0qIjgPlNH+PE6alXIdkqMs70LMH41DA1lEVEbAOAUYwamRUtSOxKflTtAbbb6fdOe
-	 cc55Z4RTXt+5zahAPheTNFpU3YaYk9EGAvXCCxlJCLQ4A4SBNRKYrAx+jL1szemeG5w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794257702;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=CHfhohJ+/rjeHNIiMoO54WoZRyK/HZc0Ka95/ZC5f9M=;
-	b=1eZaxGYeMshgjuKj2Oldry038WsGyj00kaUEoBGLqfi3E8zHGaUFn4gAE/3M0CefcWyP
-	 WAdsZCh0QQC3Ib8oj9AW9X1dO4FvNevekn2p1lEthqbEH6HVCC05yZlxvn2c+qUbqdyRS
-	 Frg5eoZdXaYnNA+1zsKpvSXX1meI/f01mKuhKq6VmLRMm7xZbd7fKtXP4aAzh8lZEhin9
-	 wS3n6QfWZpY45x1Bto29mZmmudCWJN6WlAe1Dhgk8McQ95mlwFhufgYwsI4ZlGLSvDz7V
-	 qJ2t8AwxnmIH1UYuFx6cmBAeYvtcozZ28gYqrydtAiW1Z0cEGSt0sysJptMfPnlYl3w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kmrS1twX;
-	arc=none smtp.remote-ip=198.175.65.13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794258340;
+	b=yAvEQtoLfa1UD6eslwVfogHhL1WuBA+coYjIaCIk/gJ5wbQrHXmEXfqROK25vevUGn6L
+	 GApkcc/iA9jkYN8QhHgKDK4C1L6HYZwrLcGYCa67JxeyEiUPNf3jky9qohY5jUvlVd8mT
+	 4PeVtKMvGzQpUtV2fQxVFdL2loReBgJfQTh5ONcOAo9upy/+82dSbCNp8M4tsTmgVtGE3
+	 WSXEVfEn79BezfxsIJK1sl5/qjgbJIDRY/d4idpr/cBgKRMwllzI6qCy22+MOR8Ib/zpC
+	 ZGh17Bv70EHWvECLawnsvoZyqOj3LHu57WG7ttj3X000tNViJGAoufqYpsALTAetSxA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794258340;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Sy9u8l4qw+33zXqH6yQQ/D/LrZ3H+Sno8tntsu30Dlg=;
+	b=M8dZwYn+774TB82VOR7yiyLt79jqGYI1fgaSNsq6JTH0qTvRY1AS0O5VAJpS1/GPxZ9V
+	 98mwNfW4LtmoDV8GbYXWetScnrP/VuXTbUVjrKn0T28jw+OK9nZCMjf4ecRjrpuhxL4wi
+	 7LaeIQ2HSsSMs/mSpfpRoxTjSMqMHiX8v29805mTxHKsTsgdX6RBIpO9I2piCfs+NCFW+
+	 sXEX3S+kWBoD4ki+ppBCCW573hG1lPXYO+vOT/SJN3vYVNNDOusWdS0CuGOYalepJWaNM
+	 cOInxjHDFpUNAsVeuZ5pmx7ywzyC/W1f+3mQxhVz3BuG9+7u4eOl3WObXpwd1wd9aXA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g3eKe2lA;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.47
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011047.outbound.protection.outlook.com [52.101.62.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C266606A31C;
-	Mon,  9 Nov 2026 20:55:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C266606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAF2606A31C
+	for <linux-coco@lists.linux.dev>; Mon,  9 Nov 2026 21:05:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBAF2606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kmrS1twX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794257702; x=1825793702;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=auhSrNaYOPJNFujFxRkBsRNtO2Uc+tj9FzTatr7sER0=;
-  b=kmrS1twXcH0yFlxS0yaznBTisezxxAuD8UXFuE6AyH1pPYest6dtAeJT
-   clwmDUHi50rjZxCPNQI4rRhOtQ2jFutEoW+2QNP8Ss5Cm1xyQCUfrjsqb
-   5UynWjdH7Ouxq6nxSJEucWjvtAtdsV6ELXsM1PwyF/pHvcSPSEMWd3Rv0
-   LPFwJTUbpQaoCdFcCU+40vafgvV9CujO9pQeO8AnCQTz+PkShM0OmOB5d
-   f2H8vjoRJy9emS8ncCQuyfEQR1IoqcvX+5XVQWq5GaLJEErVygGHRpgEV
-   kJ7wZAEWjYfhki6sCZd5vha3VcES0u3NbGGRNySSebGf1gr9ManKkYV1F
-   A==;
-X-CSE-ConnectionGUID: wudGc8FnQVajizpskSbgVw==
-X-CSE-MsgGUID: m3arRSLqTlijMnt6Ep6K6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2872766"
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="2872766"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 12:55:01 -0800
-X-CSE-ConnectionGUID: IVpcitA6TsWQVFPL2XWkVw==
-X-CSE-MsgGUID: HrBS35uUT/+CBVyHYUZr2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="8100554"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.20]) ([10.125.111.20])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 12:54:58 -0800
-Message-ID: <e1fe8fa5-7bcd-46e3-bfe8-368582304222@intel.com>
-Date: Mon, 9 Nov 2026 13:54:57 -0700
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g3eKe2lA
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cQNprLWL/Z/fvfQvdq2SDonsa3yzkR8OxRJ2m7Mjf3G0i+69cNQMeOzKf0NPPEgMq5fx4a8SJ4EVAFlB+KY3RSrx+xu0JSLKeGgqEGQsuvjPXo0tsV8HjwmrGe70namjGAAErpbGOE+ytffp/0pHmthZCSE0Wx0LNxe6YSyQYPwbsEszFiLKQLxxNN63wznH2ngEqDVAESa1QoylmjmVzOeQC/YrRsudEGNffYjXALxKELYgDUvwVKGm3++HrcpDu6W1EiRJKzcPwanwbskT0jgeVrT+tdDPL88gKf8mq7bAgh/NeEaSgoA5/dsyEehyu8Vr81+7Z0weEc9X4X2bCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Sy9u8l4qw+33zXqH6yQQ/D/LrZ3H+Sno8tntsu30Dlg=;
+ b=hQ9T2wNO+cpQO/semZYgLHdR9cVhV8bs4GCQfA9ClKQhJFg81UGkoKlRtVbSiRt6WiNwOprz64+AAVHYODnoxVrIM099y/cceCn6mbAba14p4gaBSE4vi2JDQy11QAVzTVuwruTsq3Cp74cQe7dKgQQ5h9qFjU04oIqmpiXU069ueluC1W7hvGRm2mGAvHD4kA0nWeBYiBttnyIMysMsOZCwUMAqlUHCxo9U13xoQ4ay4E+BwsXkHXCRX2mf+KJPigBn0Imx5g/Yrvsu0G0BbnA76vrYdHAW9Phg35IG3dnDCdPI1XDWseufe7Yj4RyIDuq7cQaE86U5zeueqnlSEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Sy9u8l4qw+33zXqH6yQQ/D/LrZ3H+Sno8tntsu30Dlg=;
+ b=g3eKe2lAg0zpWhFIAGzrpbZI1PFbiFgaKfeWoXOn0zeBDnINLPvbTJMLraX6pSkmaO56ZKR5JU95Rgu4NhG/LVKOhkEe9Zzps18fjfJ8IVZLvFDUMDa41oho1vR9IfeTtUnWdbx9pzY+krjBRwtRJXQtV6B/GN9vYSargAQbxlA=
+Received: from CH2PR02CA0027.namprd02.prod.outlook.com (2603:10b6:610:4e::37)
+ by IA0PR12MB7675.namprd12.prod.outlook.com (2603:10b6:208:433::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Mon, 9 Nov
+ 2026 21:05:24 +0000
+Received: from BN2PEPF000055DD.namprd21.prod.outlook.com
+ (2603:10b6:610:4e:cafe::13) by CH2PR02CA0027.outlook.office365.com
+ (2603:10b6:610:4e::37) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Mon, 9
+ Nov 2026 21:05:24 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF000055DD.mail.protection.outlook.com (10.167.245.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.0 via Frontend Transport; Mon, 9 Nov 2026 21:05:23 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 9 Nov
+ 2026 15:05:22 -0600
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<nikunj@amd.com>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH 0/2] x86/sev: Per-node RMPOPT windows for >2TB systems
+Date: Mon, 9 Nov 2026 21:05:12 +0000
+Message-ID: <cover.1793921823.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,162 +111,72 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
- and establish streams after acceptance
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Jiri Pirko <jiri@resnulli.us>, "Tian, Kevin" <kevin.tian@intel.com>,
- Alexey Kardashevskiy <aik@amd.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Steven Price <steven.price@arm.com>, Kiryl Shutsemau <kas@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Jonathan Cameron <jic23@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "patches@lists.linux.dev" <patches@lists.linux.dev>
-References: <20261103151643.GI274202@nvidia.com>
- <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
- <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261104134119.GR274202@nvidia.com>
- <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
- <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
- <20261106193018.GK770409@nvidia.com>
- <53bc57bf-1ee1-407a-b48b-bc6b2deee12a@intel.com>
- <20261108183337.GL770409@nvidia.com>
- <2b89b830-f1e4-4304-93ee-40287a4b5b2d@intel.com>
- <20261109185315.GS770409@nvidia.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20261109185315.GS770409@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DD:EE_|IA0PR12MB7675:EE_
+X-MS-Office365-Filtering-Correlation-Id: 084f1961-0637-4391-8fe8-08df3ea52c16
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|36860700016|1800799024|82310400026|921020|11063799006|56012099006|261021121427099003|261021123027099003|261022105027099003|261009223027099003|261026140227099003|261028144727099003|261102123227099003|261026121527099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	F56axeauBGWAL1G+v1acn7oturclEl6942gQ9XMP03p2X+on/yVzsHma6h2XlO6r78vyD2TydflKqx+CmF2MDtB+tyonlucMsKGpjfT2phcQvZZozY2ZwtZ1VbPbxkdTjKCNFyV0xI+mbycliD6tPKxo9FrnApAUsHy1vJYbxaZfO7lFozA/jxVSBYTcgOUwCj/vWCSsyQHBgrATlNTekSH6Iu0zP3LgideKolN8SPPvBkdnaKDWBi1wrJ+BXNDFFEhJhL0ZLsBoPlfLNgyF55D1msV3XDRNulJEzM0nUfrn4nyL0xIqy8lBs3NObxs5vptWtJxHXc8wxXNV1GZ/sMMibyUhpp13a3dfxO0Ta00/N9WiIhTnK5dYNrdYd1zSWotDtyDUxwp9VdZiTKjW4s1oiY5fh2YVABtel6Ktt8wMgSRZx2iSa/7PnYjGD7Um8aV2AEmyhmm9S3GYBSg9IlUjqShBcLojFmAoY2gB70PCQnNx82OgpVza+YN0dR+f2BzqkqaxVgnC6hrmIKG+tlI0Hk9XVv9crGZzUScOZgMEgjnOOj2Q4JDIYQK2C3KihAq7mN4f/J/mbImjaNmaQ7QNnb0GoD9xoDSuoeXCmJ7FnTUEj3wZ7FpBoYp2GCsCaU13qg81urilH0tNHkxlypcVNvaQkIB2hTmrAPsLWW0jd4dNlGyigRx78tDYVZx4I4xziRSigfzMclMlC5EH/fLdInmUvxd3vVRvBD5F8TZ84qbYP7R0lP89/B1B1BjO
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(36860700016)(1800799024)(82310400026)(921020)(11063799006)(56012099006)(261021121427099003)(261021123027099003)(261022105027099003)(261009223027099003)(261026140227099003)(261028144727099003)(261102123227099003)(261026121527099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	L36H1kLah5sXsPn26UboHIrkwx9BJ1mkTASbF+ZkG1CX+x3eBr5UISV6MJoLnumLfOdVZaIaITClMMGa3Txn97JRwRMoG6MaS1QJ+ZzA49B6haaw3uLwflR5vVeKwBdLq/9ABjV/GcvqSi8B38rjDwetGVlwKTLVY1VdHj+CTl+X2sizYJfIoO6gRrTiKcMOtLt4GfexAbUjEaKFRniaMm0/BRCGjJC04OqqGFbFIoHQWg/wYuBJ5zoQ1IJ2gQXgszuvY065aDeqq3KoUBf91XuJyhdldQr1S9q5tWH60KMOxvxpHwlWjBfcTzCY76I0e5DqmUfff3yn9khO7HU6GNayvu2KGYUzllqhJ9w9Q/++d/uflQWsQPtJHRX4sEY26pnK/mWEkgin+BhSHAbdllzHxM7CpwATLZdIHmZC6Q04MQ+NrtJEpHo/QDkKvAQ4
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 21:05:23.9660
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 084f1961-0637-4391-8fe8-08df3ea52c16
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000055DD.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7675
+
+From: Ashish Kalra <ashish.kalra@amd.com>
+
+RMPOPT_BASE is a per-core MSR whose optimization window covers at most 2 TB
+of physical address space from its base.  The merged RMPOPT series programs
+every core with the same base (start of RAM), so on a machine with more
+than 2 TB of RAM only the first 2 TB is ever RMP-check-skipped; everything
+above 2 TB pays full RMP checks for the life of the system.
+
+This series extends the optimization across all of physical memory on >2 TB
+systems by giving each NUMA node's cores a 2 TB window placed over that
+node's own local memory.  A core overwhelmingly accesses its local node's
+RAM, so spending each node's 2 TB budget on that memory puts the
+optimization where the accesses land; whole-machine coverage is the union
+of the per-node windows.  The <=2 TB case is unchanged: the window search
+returns start-of-RAM for every node, so all cores share one window.
+
+  Patch 1 generalizes the optimization scan to read each core's own
+    RMPOPT_BASE (base and window size straight from the MSR) and walk only
+    that window.  No behavioral change while every core shares one window.
+  Patch 2 adds the per-node window selection and programming, and warms
+    every window before the interrupts-disabled fan-out.
+
+HW-validated on a ~3 TB 2-socket NPS2 box: every node optimizes its own
+local memory and all populated memory is covered.
+
+Ashish Kalra (2):
+  x86/sev: Scan each core's own RMPOPT window
+  x86/sev: Add per-node RMPOPT windows for >2TB systems
+
+ arch/x86/include/asm/msr-index.h |   2 +
+ arch/x86/virt/svm/sev.c          | 166 +++++++++++++++++++++++++++----
+ 2 files changed, 148 insertions(+), 20 deletions(-)
 
 
-
-On 11/9/26 11:53 AM, Jason Gunthorpe wrote:
-> On Mon, Nov 09, 2026 at 10:37:14AM -0700, Dave Jiang wrote:
-> 
->> One thing on TDX is that TDH.SPDM.CONNECT also runs a
->> GET_MEASUREMENTS of its own during the connect, and the kernel
->> doesn't choose its nonce. The kernel wouldn't hand that one to
->> userspace. Measurements only come out through the two flows, with a
->> user nonce.
-> 
-> Why? Seems like another wasted operation..
-
-The TDX module runs it as part of the connect and with the current module the host can't skip it. I'll discuss with Elena and see if this can be different.
-
-> 
->> That works for TDX. tdx-host's relay is one function today. It takes
->> the module's request from a page shared with the module and calls
->> pci_tsm_doe_transfer(), so att_spdm_doe_exchange() drops in there.
-> 
-> Yeah, it looks like it works for everyone.
-> 
-> I sketched out this library, and it is basically half or more of the
-> in-kernel SPDM in just a different form. Basically all the reply
-> message processing and de-framing abstracted into something a little
-> different.
-> 
-> So in terms of *net* code needed it seems like very little
-> 
-> But it brings forward "rust spdm" or something in a new form as a
-> pre-condition to do the TSMs. Which is annoying for sure.
-> 
->> I tried a quick version of the capture in a test hack with the TDX
->> Module It rebuilt the VCA, slot 0's chain and
->> KEY_EXCHANGE/KEY_EXCHANGE_RSP from the relayed messages, and the
->> kernel's own check of the KEY_EXCHANGE_RSP signature passed. Agreed
->> it's more of a debugging aid. Two things I encountered:
-> 
-> So you (AI'd?) something basic up to do the captures and showed that
-> indeed the right data comes through and the general notion is OK?
-
-Yes. LLM assisted test hack in tdx-host's relay.
-> 
-> That's great, it matches what all the analysis points to. I could find
-> no blocking issue on this idea.
-> 
->> - The DOE payloads carry dword padding, so the capture has to trim
->>   each message to its SPDM length before hashing. KEY_EXCHANGE was
->>   160 bytes as a DOE payload and 158 as an SPDM message.
-> 
-> Yeah, I couldn't belive it when my AI pointed to this. Nobody thought
-> to preserve an actual length so any SPDM over DOE implementation needs
-> to be very, very painfully calculate a length from the message content
-> and algorith negotiation.
-> 
-> My AI predicts 1000-2000 lines of code very careful spec derived code
-> just to remove this padding. Such a big spec mistake.
-> 
->> - The chain hash in the KEY_EXCHANGE_RSP transcript is over the
->>   whole SPDM chain structure (length, reserved, root hash,
->>   certificates), not just the DER certificates. That's how the
->>   device and the TDX Module compute it.
-> 
-> Definitely, it would need to capture the certificate stuff in just the
-> right way.
-> 
-> The optional chunking features are a bit tricky, but I don't think a
-> 1.2 only implementation needs them. They seem necesary for future
-> post-quantum.
-> 
-> This also formalizes the version locking: the TSM FW cannot use a SPDM
-> version that the kernel does not understand. I think this was already
-> basically true, trying to do the 1.3 multi-slot flow is not going to
-> work out with out kernel support to move the additional data. Maybe
-> nobody noticed, but with this scheme it would be really formal.
-> 
-> In practice this means all the TSMs will need the kernel to tell it
-> what SPDM versions it can go up to.
-
-TDX has no input for that today. Will discuss with Elena.
-
-> 
-> So I'm a little bit stuck here. Some thoughts:
-> 
-> 1) I think this removes alot of code from the TSM drivers. All this
->    stuff they have to go back and get the data after the fact, or the
->    thing that is almost like this in RMM, goes away. The TSM drivers
->    are very slim, just run their communicate loops.
-> 2) Clear uniform path to 1.3, stop after GET_DIGESTS, let userspace
->    inspect the certificates, continue with the slot. Again drivers can
->    be super simple, just need to pause at the right point in the
->    sequence.
-> 3) The data collected and presented to userspace is perfectly uniform
->    governed only by the SPDM specification. There is a clear path to
->    adopt newer versions in the kernel with in-kernel SPDM that
->    instantly with nearly no-code works with all the TSM drivers.
-> 4) This is about half of in-kernel SPDM, the receive buffer
->    reassembly, certificate chain reassembly, x509, padding stripping.
->    Each a complicated topic on its own. We always imagined having
->    in-kernel SPDM, so I view this as effectively free code - contigent
->    on organizing the in-kernel SPDM implementation in a properly
->    modular way.
-> 5) Without AI this looks actually fairly scary. I can see why people
->    wanted to avoid it with different schemes to have the TSM do some
->    of the work. Yet we planned to do it anyhow for in-kernel SPDM so..
-> 6) With AI this is probably a weeks work I suppose to really expertly
->    polish and make excellent tests.
-> 7) There is clear overlap with Alistair's work, I don't have a sense
->    right now how close some of the parts in that series are to fitting
->    this shape.
-> 
-> I will look more closely at Alistair's series to see how close it is
-> already.
-> 
-> But, I am strongly tempted to make a draft placeholder in C with AI as
-> a way to get alignment and try it out. Something we can throw out if a
-> Rust version comes along.
-
-Sounds good. I can test on TDX when you have something.
-
-> 
-> Jason
+base-commit: 9f74092fda91ef93c2b07585785c1dc83cd7971f
+-- 
+2.43.0
 
