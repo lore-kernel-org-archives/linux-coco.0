@@ -1,62 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.187
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794229949;
-	b=GQ7e8qs2M65I/P2djKYmQtJSJlthDbejQaxO6oXge6MmYcUwxKKH1Q3fmYGiAjEHo6Cq
-	 vnVjqGVtICtFthuEU2b1fb3rEZLaHhYmWV9iF4NH9VjGU0GYnCyHWDI6Xxqd0Rs/MLSZY
-	 /K5ds1E1h4MGF3GLwBPVH07IfOdLD8EaVToAEzOf5eLl242+voDhem5fRA7WG1RByTLW1
-	 H42kVKgraQBNZsvWhtQm9Y0erYL8jRkSWs8eDY/HrGPuAbmUJUqBNjzJHu4zPb7IIaubG
-	 cAeQnPwFAHIMJlARA1yPYa/plif3QWXtBqRTGKosUvg8woI1yXR2f64lXiSzfTlNcpg==
+	t=1794231438;
+	b=M13vXJeL/cx/i1azwaw1TF8PS8LOoqcDeWTPcw6JA1v0A2bVqYbzga95rq66f1CrxxTI
+	 XVv1ZFlWNqpGJyCkBGLTMLtWAs+SpUgdKNcEkRymauumO00m1BZf57e0c7NiIwCNdseKV
+	 HmPGlT9Klhto6nkl9wdG5wiuvNA20WvaMmCh/iOO9D7hF59/U+QbCcA+tYOf5yXeBN3zy
+	 NGFHrvxRnf6p5PeP486jqsyNeuTxOEpiFwEITTV/ugqaeh4NoQ+x+q/cYorHsYr/tNRxC
+	 KnwP8WeEhSkXZpDMFE8hD9+vYBaEZUVk6ke+6r16uFKTAg4UV3Nd3Vqk4w9605rc9jw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794229949;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=VcGX3S/ok2ofcwS3uJdO8rQXnNkquiVnumUqc1g1VFE=;
-	b=l+TNGTx99v3viykYA2w5AefixVzTaj+wScaX8LOpcLRXEbyuwl9Vj3dyJ1Fi4ZJlFo0V
-	 OPW4ilPez2dSVuR05QK/OjEtJIiZiYx6liukX8GMd4qHOK4oQ/B+4Ezro9JBrNTANnp/G
-	 WcXm5MtIWEH33y8JD7HnpRmmEbR13fK7PXpJM7vgGOMZm7LqMceX2bsdfhnv+56zpGl/F
-	 7IzDzaSCO0LSQ9snEXnBqx6KK7FsEiatbMN0DHYS0LBABYy78Ho3W3tgMRH/Iqrfe74Xk
-	 VLrrLoaL/bX1Dcx3ayDPPeHB5arLzETPEBSAYj5A9580fFbuuwSIy9jBOMCuxzBfG9Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794231438;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=XLjVVqRd3p8pCryT/VdTNuVykrHMu0nh/BoWx9VVYBY=;
+	b=rZsRmBV3r2XYrfEqraZajrROOVP98YOHcLRtxISFANbu8aIh5fuyVm6H+rI5HJbjbjD2
+	 v+YJxyK6T/tS0emhplfeoIVVmxKexZvejYNY5QNn2cgEB5chvmkyWWqFFL7ffZHhiPAX0
+	 zAXpvuRz2SysnRNgmkqF6UGUvmcnwCktG4jkqQyLbXo/uexe7RKwygbKzFrj0tR4s+N8J
+	 M+thSx+DSkkS/FEh4+cM4y28fWA14GqyxL+4/WA8uiUyqvFdbH4ZNVgzZ4FyEmZQkTRHp
+	 PeBX5gzfyiCgRQQKUqdFP2IpKjVNDIVAZhUbs9or3o3wsdZ6++sr3lKKzYQ+AaVHA+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="bijr/jYb";
-	arc=none smtp.remote-ip=91.218.175.187
-Received: from mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A31F606A326
-	for <linux-coco@lists.linux.dev>; Mon,  9 Nov 2026 13:12:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A31F606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hqlHWuAO;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C37606A335;
+	Mon,  9 Nov 2026 13:37:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84C37606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bijr/jYb
-X-Envelope-To: linux-coco@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=9ZfmGyDfW24qGm7656Xt3E7F30kmlnVfQdHu0DS+Udo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794229946; v=1; x=1794834746;
- b=bijr/jYb/jTuZRJB/NT8VlbbP8qh0CWEk6AUL6Gl2KA1Wv4WOk3bZMu8rS/1VkJ/sBQrOaVw
- sCeeObva0UyxqdzFs42TaCDanZ/QEqGCZLZjW1vwiv8KITb76UQKBCpEnGFjkPY/ozcMJZE/DbZ
- uUlmZPwnfUxjrU7V9H/Op/9A=
-X-Envelope-To: linux-coco@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 3d8ed4b859952828;
-	Mon, 09 Nov 2026 13:12:26 +0000
-X-Mizu-Trace-ID: 3d8ed4b859952828
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so5474e87.0
-        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 05:12:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErG5FjgjtFUObfO6bW4eunpWMYvpFPK1Tnd5PUO6NOUv3bMlyhL0XYckp8LI2xhWXQdjqGDu6ZWnLXRu@lists.linux.dev
-X-Gm-Message-State: APuU4Z/3bota9IojIGLvWvbpaowC7gbjYNjmSzqACG8QJsW/RLnTN7R2
-	OvRS/C+pWQveJ6DbQZBiZ/nRAlQXki+Y/HKe8U6lSSFoStG532qSb3RNYCZoUK1ZtuNfME2mrrH
-	AK17Z7QHJgQBUFf+TRY9+GFoBPvxT/w5m7yr3IIsu
-X-Received: by 2002:a05:6512:1109:b0:5bf:c3e1:532b with SMTP id
- 2adb3069b0e04-5c00b60a427mr195461e87.5.1794229945777; Mon, 09 Nov 2026
- 05:12:25 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hqlHWuAO
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ACB4014BF;
+	Mon,  9 Nov 2026 05:37:12 -0800 (PST)
+Received: from [10.57.60.25] (unknown [10.57.60.25])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD2543F632;
+	Mon,  9 Nov 2026 05:37:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794231435; bh=NnQ/lEoIzA5Usu4Fnnce/QHJMYYmA9ABd8vXbiATAAQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hqlHWuAOhP2c6MKtExUEUsXcpTvjTSy/wmSieETuzLi3Tp9gaYEk34F5HIiSJJGGO
+	 hjEnQpAD91vJGTYBOKKPDeTPncDQybIkK8mynI3UZeNxt32odugTQYOrDZ/eg9ywOu
+	 gIBIPBiML6bNn8UnkUiygB6P8gIDKVKxRVz4+FTc=
+Message-ID: <473e0c95-e027-44dc-a355-eed26d8a3926@arm.com>
+Date: Mon, 9 Nov 2026 13:37:03 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -66,53 +53,80 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102141304.126883-1-steven.price@arm.com> <20261102141304.126883-11-steven.price@arm.com>
- <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com> <CA+EHjTy970AWnhYoZ5OqxQ8ojCAELeejw60y2NmpDsM_ZMdu4Q@mail.gmail.com>
- <06e52c9c-9026-4279-b8c0-53a54a667dad@arm.com>
-In-Reply-To: <06e52c9c-9026-4279-b8c0-53a54a667dad@arm.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Mon, 9 Nov 2026 13:11:49 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTzJ1O8=q0rL5CkLKN3CBDr=TkujEw_M-W0H=BJfmrTEzg@mail.gmail.com>
-X-Gm-Features: AclHuK9lv_i4f5zskQj2LbWryVS8Q4D5sdKCijE4VdtfsoeeW5x-cT5K6pQCDgo
-Message-ID: <CA+EHjTzJ1O8=q0rL5CkLKN3CBDr=TkujEw_M-W0H=BJfmrTEzg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 10/11] KVM: arm64: CCA: Support runtime faulting of memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To: Fuad Tabba <tabba@google.com>, Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-11-steven.price@arm.com>
+ <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com>
+ <CA+EHjTy970AWnhYoZ5OqxQ8ojCAELeejw60y2NmpDsM_ZMdu4Q@mail.gmail.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CA+EHjTy970AWnhYoZ5OqxQ8ojCAELeejw60y2NmpDsM_ZMdu4Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Suzuki,
+On 09/11/2026 07:40, Fuad Tabba wrote:
+> Hi Suzuki, Steve,
 
-On Mon, 09 Nov 2026 11:35:31 +0000, Suzuki K Poulose
-<suzuki.poulose@arm.com> wrote:
-[...]
->> applies as is. Only how the expected state is computed differs: for a
->> pVM it comes from the per-page share state rather than an IPA bit.
->
-> When you say, per-page, you mean per-IPA or per "backing page" ? i.e.,
-> can pKVM do something like :
->
->     kvm_ipa_is_private(kvm, ipa) ?
->
-> (similar to Realm) or does it need the struct page backing the "ipa" ?
+Hi Fuad,
 
-Per IPA, so kvm_ipa_is_private(kvm, ipa) would work for pKVM too. A
-pVM's page is private unless the guest has shared it, and that state
-is in its stage-2 PTE at EL2, not in the struct page. The host kernel
-doesn't have a copy today, since EL2 handles the share and unshare
-hypercalls and the new state is only at EL2, so the pKVM side of the
-check, a hypercall or a host-side mirror, is part of pKVM's
-guest_memfd support when that lands.
+> On Thu, 05 Nov 2026 17:30:16 +0000, Suzuki K Poulose
+> <suzuki.poulose@arm.com> wrote:
+> [...]
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> [...]
+>>> @@ -1816,13 +1828,28 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+>>>         /* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+>>>         smp_rmb();
+>>>
+>>> +        if (kvm_vm_is_realm(kvm)) {
+>>> +                is_realm_private = kvm_realm_is_private_address(&kvm->arch.realm,
+>>> +                                                                s2fd->fault_ipa);
+>>> +
+>>> +                if (is_realm_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
+> [...]
+>> I am wondering there is a way to make it a bit more generic. The issue
+>> is, only Realm has private memory with guest_memfd for now. Don't know
+>> the pKVM plans for it.
+> 
+> The plan is for protected pKVM VMs to be backed by guest_memfd too,
+> which would also hold each page's private/shared state [1]. So
+> kvm_arch_has_private_mem() will be true for them, and this comparison
+> applies as is. Only how the expected state is computed differs: for a
+> pVM it comes from the per-page share state rather than an IPA bit.
+> 
+> Steve, could you gate the guest_memfd checks on
+> kvm_arch_has_private_mem(kvm) rather than kvm_vm_is_realm(), this one
+> and the memslot check you proposed for 02/11? Only the
+> kvm_realm_is_private_address() and realm_map_ipa() calls are
+> realm-specific, and they could be VM_REALM cases of a switch on
+> vm_flavor, as Marc asked for on the v21 memslot check [2]. The macro
+> would then only widen to protected VMs when pKVM's guest_memfd support
+> lands.
 
-Cheers,
-/fuad
+Sure I can include that in v2.
+
+Thanks,
+Steve
+
+> Cheers,
+> /fuad
+> 
+> [1] https://lore.kernel.org/all/CA+EHjTz+WgXEW5RTxXf4oGeEb1Tsm5Ha4nOc4S1jBcp7jxP4+A@mail.gmail.com/
+> [2] https://lore.kernel.org/all/86mrsw2jrn.wl-maz@kernel.org/
+
