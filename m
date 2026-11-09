@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794239891;
-	b=TzqGO8A8bLi4vVH0X0sVx/McV8i0hihHVGN4rDVrpSZfOKenisx7b+Z4A+1zGxHZv6vN
-	 GWg9EzwOLKYFw4J4y+zxinHdJ1phmLNbdyYbhJl3gRUzj6JeLwTjAp3kGjvF0E34+2H0f
-	 3trkwqwWc3MJV8p9kzu5MUyop1zW8vDA4x0/uOF+uygmN4+WNQTYJ0Y+8WZ18RDHQyx5G
-	 TBJwmWVuQ95YYa3tVnCD6Ii1ad+aitmP1xLNJ1ZBR297NFKCHQpKvaKytijJZwP0Y6Oi6
-	 a6ym2NGzbe36lHDrDdNVtYXANnkfMl9uL4YwMBHEv3DjXxU8qgHwimnPc4PVopr8ldg==
+	t=1794239893;
+	b=NkE8Te4ko+U64BV+9rzYrcnce0Y+JMMipKWdXkdaz79Vnova0eWtbhyHnOFtwN3C+kTS
+	 IKm8LhENE7khF25nZfr19vVGYdbRMh0vvh5CbukRzsdT65pBQdhXYoIEFA5dCqmRBMrpC
+	 qCD5ehUohDqWmGrQP+vj00Qam+rkNcQfL4Fe3Stish8EW4sEO7sFgaUDP3FiXhSRVFYrP
+	 ChYJZI4/RHnEEz78hVb3YWbZ7/EEscnZz4j8aBUheebpqaylT+6e6IFgOek5eLLIbMCN3
+	 zo+I440fpz/P+ZHRgDIhWbLG2az9FcIAPj46KnO/BvLcPKp370cGz2slgdtamFY9YCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794239891;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794239893;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=D500kmfJ3Qu7r4nWafyRLbfBk9Mhl+ZKg9JhUW5WufE=;
-	b=XldM0+TbS7qOkniDPTRq4cAbGSWreie5aT1AUORdZLU6jsn2QTv1aqSzXbYmkCkqCd4s
-	 ctiD6RKXbs2kxpfF6ioeouiLgBz/WLgU7E5hWbFMPNXHr8be4q+M4x/Om2rUjKAEOvE41
-	 y2FUHpf7PBOS5Y5LyKGJwXdb7Pyb6jNa711xeIvAglRokgJfb/YGRRNOVeTmo263HaxK4
-	 zbSh6E48pzEbTT/0C08j0pZlkqmFlA2xiPZQwTn1CdDnACinV3s3bJ0cwHnq0IC6dGKJZ
-	 90AAiBdvXv+meppCYluENMgtj8Zp3TMlhfMTZRDkCKN74eDy3aR9zfcxFaTPtFH1Z+g==
+	bh=5xzFaNjdBU2+3j5ofh/IAiAGHMFfV4HPNdcRnthw2k4=;
+	b=PJXZMRFiCWbUF32b/thLxWFV77umwiDT+2COidS7hAb4IrNYlmFAUxyNVfOQSGPAC0LB
+	 lqflQm0R/a5XA7PYCcg/HIIyeuS3wpUv1ZKL1gL6G+i3GJWZfnS1yKFAwuUtjpmdqJtWc
+	 NIIcDa7zwK2kGIadBPm8sXgjFyyQDLRekKlqXtz597L4w7dI+nG8y2ctre6tijfkQUyVn
+	 9YohY8k9L3tE8xOrYev13eBy3T2KYmzGv4n+v54VpYRKbhN3rvut9ENhT0JuwcEOjS73Z
+	 9XelYANMf51Xw3I/a/ndSy+aINw1bEckdJp6rVy456LeGGr++55f467vPYwJOG6x5/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=dolcini.it;
 	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=EuBpogJC;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=J8Uat55c;
 	arc=none smtp.remote-ip=217.194.8.81
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EC0606A321;
-	Mon,  9 Nov 2026 15:58:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2EC0606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C285606EEBD;
+	Mon,  9 Nov 2026 15:58:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C285606EEBD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=EuBpogJC
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=J8Uat55c
 Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id 861742666C;
-	Mon,  9 Nov 2026 16:58:01 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id 2DB8726664;
+	Mon,  9 Nov 2026 16:58:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1794239882;
-	bh=D500kmfJ3Qu7r4nWafyRLbfBk9Mhl+ZKg9JhUW5WufE=; h=From:To:Subject;
-	b=EuBpogJC9ohUxTmXRjz/d+pgykISbVewiEtm1BEIwUdZlbcqJHhYFiOMswEF0KU4+
-	 6EJYcWFvl4zk2iUmdLan+w+ABfuUgHn431PExA9sDDgJPLYD42pfx1Er3YIUoKNhd0
-	 +mn0U/jfB6joTMUF7s+9bGY1uCWoZ93oMRob82NNLraTOCAKCkYKWEZTN5XG6qTERt
-	 exjZwmDFvVxV7/8VDOe+F7aRbgv2u7sqzj2QV3fzsQ/migOcgHztq0aBIM8F4vphVl
-	 TmtgIxhcemdiT7BrgizRtv6rg2ocjDuaEUc8pvn4lOUfPF6pubnF4Um0RSi7xMS/po
-	 ZC8KKPibeLGAA==
+	s=default; t=1794239883;
+	bh=5xzFaNjdBU2+3j5ofh/IAiAGHMFfV4HPNdcRnthw2k4=; h=From:To:Subject;
+	b=J8Uat55cuxs2U/x9zu70hgT7pCcrEBVnNxXvyWdiA6QEI/xouLkfWO6DKaauruTTK
+	 G4j8c8zvH9sniRvBQRXgMWJgOCGuxHVmKn1DgElYio+caJKdRG72Iw2p9NxF8mcnM+
+	 YE+jF6MbBYC9sRkE/pcRjZX1643eaP0NvIUxiuam5djt/9/KbyGlMgaz+FoI7YEYAz
+	 Kb81q2fF3UIcwnW0dODqON8l6hi/DZh4piWzfat/DhCZiIrvHwr9P2ZOYaxsPkmdTG
+	 u9IabiWgHIVBbYGBWzAJ9XTWT+yPvfghuQGIZpmrY9y2Q6ADPPnNnb1qWkZQ9bK2ug
+	 3iUYa+LOEKddQ==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -65,9 +65,9 @@ Cc: devicetree@vger.kernel.org,
 	x86@kernel.org,
 	linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org
-Subject: [PATCH v2 4/8] ARM: dts: imx6ull-colibri: Align backlight brightness levels with Colibri iMX7
-Date: Mon,  9 Nov 2026 16:57:44 +0100
-Message-ID: <20261109155751.475875-5-francesco@dolcini.it>
+Subject: [PATCH v2 6/8] ARM: dts: imx6ull-colibri-emmc: Add Toradex Capacitive Touch Display 7" Parallel with Touch Adapter
+Date: Mon,  9 Nov 2026 16:57:46 +0100
+Message-ID: <20261109155751.475875-7-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109155751.475875-1-francesco@dolcini.it>
 References: <20261109155751.475875-1-francesco@dolcini.it>
@@ -84,36 +84,153 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-The LED driver of the Toradex 7" parallel displays turns the backlight
-off below roughly 15% PWM duty cycle, with the current brightness levels
-only the three highest ones produce a visible image.
+Add a device tree overlay for the Capacitive Touch Display 7" Parallel
+on the Colibri iMX6ULL eMMC parallel RGB LCD interface.
 
-Use the same brightness levels as on the Colibri iMX7, which is used with
-the same displays, keeping the default brightness at about the same
-value.
+The panel is a LogicTechno LT161010-2NHC 7" WVGA TFT Transmissive LCD
+and the touch input is provided by an Atmel MaxTouch capacitive touch
+controller.
 
+The touch controller is connected to the Toradex Capacitive Touch
+Adapter, the connection to the various carrier boards is documented in
+the datasheet [1].
+
+The panel, backlight and LCDIF configuration is identical to the Colibri
+iMX7 eMMC one, only the Atmel MaxTouch controller wiring and the
+conflicting PWM channels are SoC specific. To avoid duplicating it,
+rework the Colibri iMX7 eMMC overlay to include the dtsi shared between
+the two modules, and use it from the new overlay as well.
+
+The overlay is also combined with the Eval carrier board device tree to
+provide a ready-to-use DTB.
+
+Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
+Link: https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
+Link: https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
-v2: no changes
+v2: add the tdx vendor prefix to the overlay, shared dtsi and combined DTB names
 ---
- arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
+ ...ap-touch-7inch-parallel-touch-adapter.dtso | 46 +++++++++++++++++++
+ ...ap-touch-7inch-parallel-touch-adapter.dtso | 16 +------
+ 3 files changed, 54 insertions(+), 14 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
-index 1eb1cf2d7395..dd2dc23f0cf1 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
-@@ -14,8 +14,8 @@ aliases {
+diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+index a0d22028f20d..7332167aee44 100644
+--- a/arch/arm/boot/dts/nxp/imx/Makefile
++++ b/arch/arm/boot/dts/nxp/imx/Makefile
+@@ -365,6 +365,10 @@ imx6ull-colibri-emmc-iris-v2-tdx-panel-cap-touch-7inch-parallel-dtbs := \
+ 	imx6ull-colibri-emmc-iris-v2.dtb \
+ 	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo
  
- 	backlight: backlight {
- 		compatible = "pwm-backlight";
--		brightness-levels = <0 4 8 16 32 64 128 255>;
--		default-brightness-level = <6>;
-+		brightness-levels = <0 45 63 88 119 158 203 255>;
-+		default-brightness-level = <4>;
- 		enable-gpios = <&gpio1 11 GPIO_ACTIVE_HIGH>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_bl_on>;
++imx6ull-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter-dtbs := \
++	imx6ull-colibri-emmc-eval-v3.dtb \
++	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
++
+ dtb-$(CONFIG_SOC_IMX6UL) += \
+ 	imx6ul-14x14-evk.dtb \
+ 	imx6ul-ccimx6ulsbcexpress.dtb \
+@@ -395,10 +399,12 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
+ 	imx6ull-colibri-emmc-aster.dtb \
+ 	imx6ull-colibri-emmc-aster-tdx-panel-cap-touch-7inch-parallel.dtb \
+ 	imx6ull-colibri-emmc-eval-v3.dtb \
++	imx6ull-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
+ 	imx6ull-colibri-emmc-iris.dtb \
+ 	imx6ull-colibri-emmc-iris-v2.dtb \
+ 	imx6ull-colibri-emmc-iris-v2-tdx-panel-cap-touch-7inch-parallel.dtb \
+ 	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo \
++	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
+ 	imx6ull-colibri-eval-v3.dtb \
+ 	imx6ull-colibri-iris.dtb \
+ 	imx6ull-colibri-iris-v2.dtb \
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+new file mode 100644
+index 000000000000..14615f3089e3
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * Copyright (c) Toradex
++ *
++ * Toradex Capacitive Touch Display 7" Parallel connected through the 40-way
++ * Unified Interface Display connector and Toradex Capacitive Touch Adapter.
++ *
++ * Toradex Capacitive Touch Adapter connection with the various carrier boards
++ * is documented in the datasheet [1].
++ *
++ * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
++ * https://www.toradex.com/accessories/capacitive-touch-display-7-inch-parallel
++ * https://docs.toradex.com/104497-7-inch-parallel-capacitive-touch-display-800x480-datasheet.pdf
++ * https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
++ * https://www.toradex.com/accessories/capacitive-touch-adapter
++ * https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/irq.h>
++
++#include "imx6ull-imx7-colibri-tdx-panel-cap-touch-7inch-parallel.dtsi"
++
++&atmel_mxt_ts {
++	pinctrl-0 = <&pinctrl_atmel_adap>;
++	/* SODIMM 28 / TOUCH_INT# */
++	interrupt-parent = <&gpio4>;
++	interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
++	/* SODIMM 30 / TOUCH_RST# */
++	reset-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
++
++	status = "okay";
++};
++
++/* Conflict with SODIMM 28 / TOUCH_INT# */
++&pwm5 {
++	status = "disabled";
++};
++
++/* Conflict with SODIMM 30 / TOUCH_RST# */
++&pwm6 {
++	status = "disabled";
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+index 890461f92442..aa8ae9418b44 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+@@ -22,6 +22,8 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/interrupt-controller/irq.h>
+ 
++#include "imx6ull-imx7-colibri-tdx-panel-cap-touch-7inch-parallel.dtsi"
++
+ &atmel_mxt_ts {
+ 	pinctrl-0 = <&pinctrl_atmel_adapter>;
+ 	/* SODIMM 28 / TOUCH_INT# */
+@@ -33,20 +35,6 @@ &atmel_mxt_ts {
+ 	status = "okay";
+ };
+ 
+-&backlight {
+-	status = "okay";
+-};
+-
+-&lcdif {
+-	status = "okay";
+-};
+-
+-&panel_dpi {
+-	compatible = "logictechno,lt161010-2nhc";
+-
+-	status = "okay";
+-};
+-
+ /* Conflict with SODIMM 28 / TOUCH_INT# */
+ &pwm2 {
+ 	status = "disabled";
 -- 
 2.47.3
 
