@@ -1,104 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794240044;
-	b=U1cwtXD8b857jiM2EH242UoF+AZsvT0t+j+ADmoIjFc+XEZU0Mei0ZbL2egBWR35y8WV
-	 7wPBwnHmpMYrZSPeGo8hFFLVt3cmVVLnYiYG0F5v/NRwGvcHo6CtWIMiyhENow97RhCsL
-	 KYIcI4hOSzS88rmJDPWpDW+Pfv/7MBTwzSDHlPTInd4pM9srPAEMLBdItPYk7dW8Fedmy
-	 abVCGIoSR0nzYwazOBj7CZ0plIuEcxxBfEJ6LL7ABEo6OIALAvccR/tvJhE5a/OSVSP3g
-	 HtRcQopGJcG7zkPO7VDjXc4r7we7OBdz1aOBrQiy/vYfQg+T8lL8Zpnee2vhHZAX6wQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794240044;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
-	b=y4VPRaGOexqVTNyM+E13lWmV1Ogde0sFjaR9BG6Sv+ysnj7ue/t33737pCTi9e8O2Y9M
-	 jOmqWqCJyXicU2L+LEv4cXMu2tk/aBkyrKTfknKcdiIgbMfA4H5lUgFUKLhP/W4LrTBBp
-	 4jLEoIBJNa2lXhmCFgvxmTFHAfpvrNCxBu1xvhym/e5iWX/piFCxBnZADWmfGdcn61dnW
-	 xNZPz6N8VsNYvIEfbQDifMBBwt1g0DcdxAJKuJKQKxg4O2yzshdvCBF4KHB6qtx2bd+fv
-	 mnYWjtJFZSXLy2Z5qRLE1Bk6sRGybkap/vRlCIlOztaaBeStU73+tp9OoSxP57najng==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="PsJ+/bnZ";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.42
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.104.109.113
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794242645;
+	b=ROXaz0BPjA0R4Ljo5tCo6UbGkoWx1BX8OhwIt/YcnMPnuXLlzQ21WWWVp/66A2toFFu2
+	 UnRHRfWtqs1fCmP8UGwI4dvKpUXIMkbN0pdI8gX4M6uD4RIiQI0lVUet4kb1p+Lj0/Eew
+	 AZAlnU8v6y+MAzV1uvtP3+q7z/PhSXa879gs9MIl/AeBQeRRJpfiE9l7lTbwd20N/z2YB
+	 GmadCpYDvn/1ZJjIXuNqdKLEDSp/dM0NYuyYmq5utjXPgd+0McSyJaVi79OJo4+WFAVrb
+	 1Q5fqgF1UWsYOa1GyDMiRBg/b5Qwz50bpJrGN+oKffTwcQtSDfuoi8pWeS8B6YDNXMA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794242645;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=lKdeNI2C1JIdHaqLbneHv1qoNsRo1CMptwMq1YCRXUc=;
+	b=i29dHxSitif/n6blQX06+r+dqUjjVrdpk+Ps0XvHPSPnvKA/U6Eaxn/YdT5+u0oPY5xP
+	 XILz0jEAIe0LckkTA7+bD1GEM/JIXjwLZDzgffMDL3ImqqJvOk2QSHBZe9Tm+7ZTfNmxE
+	 +ZJACSfvkC90iahFnSiVx6EDpPSs2DnwIK2VMd27ickoq8N2Hjx9uOYdSZaZGo/4cB0ls
+	 NgkscGZ8tyBAKfyOXADJGDC0+V15f9NBM8SMWBGfgJMiXJtOduFsIBgudl9BkJ3bt7zSa
+	 0TfvwI7eP49Ns9tU+lMvI7x8Zz9KfYXT3YiulIZ7sbUEWTn0SkwlQgj65zsR8qg+IuQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=toradex.com;
+	spf=pass smtp.mailfrom=toradex.com;
+	dkim=pass header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=HjDTNQG9;
+	arc=none smtp.remote-ip=194.104.109.113
+Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.109.113])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939FB6082BD5
-	for <linux-coco@lists.linux.dev>; Mon,  9 Nov 2026 16:00:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 939FB6082BD5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A45606A31C
+	for <linux-coco@lists.linux.dev>; Mon,  9 Nov 2026 16:44:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8A45606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PsJ+/bnZ
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91ec396c93dso12257256d6.1
-        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 08:00:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794240042; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CHcX6YB+mw5s7RNZGjaYQlJqKZNAk1Imy3Abrl+e1bSLJIoSFatBrexl+mI1feUf8H
-         5/Zsk3oMyMQV1NTOikXREL8tffQIPBMIX1tAqa3vmEKLkH6vxZp58R8PT1hZKyR2Wyq5
-         jLfWUK+cpOdcHGf6U7Fv5CTEIrY+GYwlEaaQ/rMF2vl8PZXCeAEtJHGt+y0GEz4HB3Gf
-         nieMjB//Em873D4LXUfj61YG8a24yOtazBoCMtZFqxv76ra5Mish0iMHLynqHUZiKSSj
-         jWAv0M15u4/DxVXn2LqsLQOiGVOrYl5Xplq/mjIPkVKeUiUC63S/1/YfOV+CqKh4I/DM
-         skWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
-        fh=esoZI2PPeB8y5V63xJMOwJ+h5ibYpNIUheVYwh7808k=;
-        b=kGHQGG1su+nqmKdu3MoEfo68aPI1YMBW5lchgNYdW74AVsRP6gTwXQriweJPZ2xThw
-         EL0Eh8RhWoXyPCoSXPwgZNFC4mSMBbW4R1novhFpAk3nrWGCYLmJV0qo5zg1BYM+f7e0
-         g4sTwsWqop8TYIw3AXxXNb2P9XYNzvIzXW2VIQQno0LTu3SxzIQmwlMEQSjfaFCoGOhb
-         XwVBWAzILx+qPNqLdQ8cnBcBhfibaQaelzDYOVdEk3Xsbn9lyRYUvYNI/e+tAeFWi4GR
-         fDS6aSes6BA8HGQU2BWew+0o0A5uLLQDdibBjNBxCWV68a5SdpQXRY2D4nblcluQHnAQ
-         X+tQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794240042; x=1794844842; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
-        b=PsJ+/bnZTMqmfXI/yBbX+8gxf5Zs6+dFqcAPU6gL/g21E4cbqkL53z0w/ZIF6p0r0R
-         mmJImBP6fhBZSpa5LqA887ei1nDQWgIrmP4gOdrpUzQtVulm429NebOXsc4A4ql1yMGN
-         uEfOchmVsS/rjtwGIznxq8CFmzlWFyoUS32iJl2Q3CQtNmIqVOcaOSzll+gMNl9LgpH3
-         8i//9srII3uJ/LMteC7fqOeVqLhuHC3autJB2c67J3HzmCSD6nUDM0l+ExSj4Ay9YADa
-         ZvCJ26eUEjoRRc5ALx/TjVOPxzogEqJkh9fjiABnyx7lHY8oACshkLXCqQdAuSULguwO
-         NvEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794240042; x=1794844842;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
-        b=bzmQUbNvW3B2cXIEA6cC6+qNwj8lbPKoMMJSw1EVXIwmvYmY4DNHB0YwCUYLDAsHsa
-         5rky7Tdz1RL5Ec7EPXno4YPxkD45tqQVUy2GBg+lvxKoiJP+iwa0X3V4qof4ptBSRt6J
-         tjR+QhyRwOAZLRiBJ/4gRnadSU6WdKANxqYptrcYrGS+xGBs6Jxal7Kfico0tCKc6zrM
-         RigHMquaJQcl7n0CjBFTIt27/zvuqx6EXINkRgCKo6w1IDyKRsEfG6tFH1K5bxu0XZe4
-         mUU5q13sHPtzoRJKT5lPAiqOZaSC4Vhvn8fw+RygLbN8QhUlSTHfQcgYlo7zQGNGEaQn
-         Ql0Q==
-X-Forwarded-Encrypted: i=1; AL+hErGzz3ZjsI2nn02N+vuSRwAqW96NfL87OjaxjvOVKzvWmfcRseYZiG5BgRDhRg0KH9Bm3OQMlR8TmTgM@lists.linux.dev
-X-Gm-Message-State: APuU4Z+aSZMEx0TfTCv7+LmBF6oiZCMRFdkNAlqe0pobQERj803gdun0
-	RuVXgqi9kO5xPJrC1Ix2vhEdw+6XGhekt0weWZ3kqsZ811aliHErA0GU4VOJoTnMxsjeeVYkid1
-	KDDtM/jwiY069EUYt8hvtOWulsVtHBDrrgbOS+PYg
-X-Gm-Gg: AYBFou3IlDgW3OFN4gmsi9YAHBPP65ASNadUCj7WvgfwNSKQHC9+HU37VLS4NpNLSlr
-	28qs7253eovLu879/eHvnnFGnZVCphE+S4dKcZcUtD6IpK3jc+xGDvg+0eGFbQ6XC4Vp6pYTVpk
-	Zex4vFYVx9cFB3GQnb54f37Qfg0VNDX+LGlNKFY8dwMTmN82DVsebTIRzIljjTUy2GGyBXN/fb5
-	i4R63DfkEATeyFhaLomG9hKdw5BR9C0hwOdFbE1vazq5JwVRbvmvWGRhCJAxsTr1LWUandYxOSP
-	gOrDWnMEInelOGwDfIf+8o0P6AA3HuLu/eOBTbJlsE7TOsACNq7HHxjgzcCYFXFshdJbsMFMlan
-	QQT/QagnwQUAGAxdtkptRd5aby3h7bC+NAYikR5B3XKTIcxXwItYBXRO3+njjhmXomA==
-X-Received: by 2002:a05:6214:5402:b0:91e:ee31:55ba with SMTP id
- 6a1803df08f44-91eef8c841emr97756d6.57.1794240035928; Mon, 09 Nov 2026
- 08:00:35 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 9 Nov 2026 08:00:34 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261105-tdx-selftests-v16-2-2024e8fa517a@google.com>
-References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com> <20261105-tdx-selftests-v16-2-2024e8fa517a@google.com>
+	dkim=pass (1024-bit key, unprotected) header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=HjDTNQG9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
+	t=1794242637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lKdeNI2C1JIdHaqLbneHv1qoNsRo1CMptwMq1YCRXUc=;
+	b=HjDTNQG90icfE9EApiU+RqvI6gpprAAZ+e92dE4H82oadkPjglRh+rmF+LJX9hck4IVvqR
+	3uG06lCHEZxmd+kewI3l7gjUtXGQ6GLnhF0gYmPXY4hV4A4ZLpuHgufItpLroPUZ9VGIBs
+	02XiNZj2TSo0rpF9nSAz7QGOck7lJGA=
+Received: from ZRZP278CU001.outbound.protection.outlook.com
+ (mail-switzerlandnorthazon11021072.outbound.protection.outlook.com
+ [40.107.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ de-mta-55-xo4ETarDPvKSOxY18QZSIA-1; Mon, 09 Nov 2026 17:43:52 +0100
+X-MC-Unique: xo4ETarDPvKSOxY18QZSIA-1
+X-Mimecast-MFC-AGG-ID: xo4ETarDPvKSOxY18QZSIA_1794242631
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8) by
+ ZR3P278MB2228.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:c1::20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.13; Mon, 9 Nov 2026 16:43:50 +0000
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::88:6821:13f5:a5b2]) by ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::88:6821:13f5:a5b2%3]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 16:43:50 +0000
+Date: Mon, 9 Nov 2026 17:43:48 +0100
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
+Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
+Message-ID: <avH4RI_0OyePjWJp@francesco-nb>
+References: <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
+ <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+ <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+ <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+ <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+ <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+In-Reply-To: <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+X-ClientProxiedBy: ZRAP278CA0003.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:10::13) To ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:2e::8)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -108,52 +117,97 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 9 Nov 2026 08:00:34 -0800
-X-Gm-Features: AclHuK8G0EZDW3tY7sTDlhlnaXZOXK3ScUEr2v83dxDnmQ6yymeVPIAKQ5tIQLE
-Message-ID: <CAEvNRgHhzFxfXB+jXy+RCwTWevFTEW3RH4q51xztrFZYa4Xe_w@mail.gmail.com>
-Subject: Re: [PATCH v16 02/20] KVM: selftests: Update kvm_init_vm_address_properties()
- for TDX
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Adrian Hunter <adrian.hunter@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZRAP278MB0495:EE_|ZR3P278MB2228:EE_
+X-MS-Office365-Filtering-Correlation-Id: edbe18ad-fb95-4ae8-d02d-08df3e80a1a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|18002099003|22082099003|4143699003|56012099006|10067099003|261028144727099003|261026121527099003|261022105027099003|261026140227099003|261009223027099003
+X-Microsoft-Antispam-Message-Info: 56GL8oGC2yEDqmb8N7M1t2kMdMWGUO+gWwesE8UvW5zx3vgUAAHGesqXYM5hAMMlXleQBDItFtdhSQje29SOm8inJHv+dBXDHgW+pUEJT4zCvfJ4894MuBs1AzevnfLXGL4OLR9jGn24ztJzOyJYtIfqKXkUBgct6S3PQVkpclMRYzChKUuHFy61f6sHlrZXBEeMoC7JE/MoZlRL/13fp4tFZOG7Lmau4W96tNkV3LdtWsnoMfLsPth4eH8SH0PWZA7JE6xiegmGezpIbnywne/RV175031JuodVsMb4w6FMtgOpli7ZT3TI+6YRQMx6BSpgUNHWMUAWIdnV+9KKBf0xRoglZ6eR/Yy/mFfguFgyNUyvLTwCrJs6ROJMEQF1upidD/lO2RdhSKQkxWuZK7uy0VfHAco9n6BqF1bVYlZqbcy9YgbrgPXtF8t+ITx3PqYYYwsAPNAH4/aRD6sGUQbu5hNhQbsETrvbQuloZ9hBaiP+be10qocbxUsYNGDpVZ+ZaAxiKvBtXNRDaUCzOr3KZKDqoSKciIUfW6iRZrO2iSl5EItDHR637NHD+K+dtdJvDru7dGAG8oVfWyndOCNPzy2hF6LnBytP+F2ODdH/kUXzzOvm+2H+lcGBolPl
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(4143699003)(56012099006)(10067099003)(261028144727099003)(261026121527099003)(261022105027099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1102
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LCEAcxvzyEtBtO+G6cawy93DBu5qalvdWsLLNrPFFKr6li0dr5Q+ML5Z1cnz?=
+ =?us-ascii?Q?51YgrqSrwLhvGXDyP1fynC9/9hruzKtqZ7BqiqXf5lrFfHzVZjiVcA8mqll0?=
+ =?us-ascii?Q?s+ltYCgJiheAWcaDPCPirg7vBg7batNHnWWls/xWk5sk/jkyIasefIXyVbkk?=
+ =?us-ascii?Q?zo01cArCzzHTfLTI2WE+qUlfDw5/C1ffqo+2OQF3Ug/yTeO9SRNzVlLFCcQU?=
+ =?us-ascii?Q?L9gvj55T98kTCtniGgssfOkgydxW5eiDYd2WfNJOXWeWB7Bjh+Iq7XLkbMrH?=
+ =?us-ascii?Q?fECz8ABP9OdflbS2SyySDFrOrTOGsFKxKY+KSLyNOzKCg+LAw39bI3fBToFJ?=
+ =?us-ascii?Q?oYBMGKE+N6V5lKjkbuMJT95tKDNHw89d5ZzJr+mdqmHZdGSq5u+7fH4zFxDn?=
+ =?us-ascii?Q?wyjViqUJTL8PE7tKbcDEBnueyJb7UQ+KzFout4c+67HMHaUvqkQ9uTYtDQFm?=
+ =?us-ascii?Q?KcVfc0hVogYG9G6vMiDhW3w1oJN/1EITK9x5Zox6/wIE7ZAoqqQ7j+QEw1rW?=
+ =?us-ascii?Q?+3xTErM00AJ6rJ6qnoTK/m2OQErkJ5BCKF3B5vrA2gp+DJ3Kc50/E+1Cg9Xq?=
+ =?us-ascii?Q?9oxcapyI+8gh0E96sfgd9ntFeQ+4FHVl8sXnIivrXUjyi4GDGrId8P1Se36g?=
+ =?us-ascii?Q?cg9Bx7BNRCDNYR/t0Q4y9bv/tKQR4dAC4LirUbQBE/LarLPwLhBKEQxjeImB?=
+ =?us-ascii?Q?ICqAysEAE9DSfqC6B2x3MieUhj0C6iqa3XMRavASLLxRtFSQA1/kYcNbwLNy?=
+ =?us-ascii?Q?XpTgfl6t3MdRFamqULMCGmK8lUbv66YWZ2zIae/GeHY1bCiJtJRxXoQAAbJm?=
+ =?us-ascii?Q?+PxR5Owl5W6peSi4/6XK/7PCZrfAlIlNhX8KA/4nukvukipktQOmpYy71s7G?=
+ =?us-ascii?Q?VdiGTtk2EEeS9age8hmW87n6IcSyedocgiE5CcB5XZfAi6D1APvmi7GSVxc/?=
+ =?us-ascii?Q?UivkdiD705v2xUQBxp+Al5TL8Tc1XaLoYvuIcZ0754TAbY22Fer71gbJyCBX?=
+ =?us-ascii?Q?fQrv1jCDuvZ32C/meJPcK8XzOZGOeWMXdlxcgkv+YDzLukTVyvSSyPnlLOK7?=
+ =?us-ascii?Q?YqAI3Qzv2D9+OVfU0XZ03Hrvy32pEb/7gTaCsAlYzhbdubY8/dz1k6kjJQS8?=
+ =?us-ascii?Q?rFBpIXwAQ6f8Uj4pftLoQBxhaWpVw2X0GsJ/wQn07FKWeKo50PQPl6dk5v8s?=
+ =?us-ascii?Q?bOHby3zkiYx2KiePq0Z5uiFleNjdcHZYbByl9VQPJiETLMC5xhmWIEVqY7Vi?=
+ =?us-ascii?Q?J4OenlN9Fyh7lILh/C3jiCbIDHYFfv357an/npmptkf3mjaQHhD//b93FYv4?=
+ =?us-ascii?Q?th4U0VQtmpmAowurAWeGX+Sf5Y+hXZd3iOMgCi5n8WWXYx4eCPAnzI/1Che8?=
+ =?us-ascii?Q?AoLwV8TC8b6YQhCxWXjE8zp3VRNtpsnVrKnMLc+D6xNqL+GepBhVoZldW40H?=
+ =?us-ascii?Q?bLtSZFLNuYP46CQYP1EnXoRX8i8/o4GWcpjNXny8x68Xgl/zXCNKPryWkN0P?=
+ =?us-ascii?Q?dS/U5SpuePy2lufcg8idPQa847QCIIoHiESluO9oYS067lOyqTxUjYc4zCos?=
+ =?us-ascii?Q?BflCTSobJcuRoBwbD98OyCroJY4ojRN4diZTvYOR+nXigBVkiQ0L8IZLgf6Q?=
+ =?us-ascii?Q?YeCs8cnPwxDid9zGavmK8n9U8qpmSHvxuqlc47kmfaeT9nCsprUV9rNtJ64k?=
+ =?us-ascii?Q?l81aP4o8CpCcQ++WdfreuncW5oS6djZm5ZHnN9TDW5Q0C/yuu1qNHaCuWxt1?=
+ =?us-ascii?Q?pJb7Q6qSwpGAJCSjaeIMQkKb/UiVHxk=3D?=
+X-Exchange-RoutingPolicyChecked: m5sPu7HIxuavy5SeRnreUmRrHx5zD1+LhHxAkXSiWzNQWm6+k2vDUID1pLdJ7fONq65l+B+k94QRxmhv0zY4Ws+rXJrrXBk7cZbdzxdHwHAN6SKHOTllhqZ78Xq8llWIrUJ8pvhKDyBqnjI+ixyAjKBH79UGBAWbh6PiRolrVrE/ivzYMbDB7Htc678OR2uuc01bVFEtIzoflYUmlmt6bhotmR9JFlrAvVFcbkID9y/UjaG+SfxgwN6RhHXSaqK6GANu9SUe5c1eGfBK4uKnw6ABnFJteMqs54aXqlk7Ross4J2YPA0mMsyw7nfiGx5In4z33rCbK0QDNOAkvQfQxA==
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: edbe18ad-fb95-4ae8-d02d-08df3e80a1a2
+X-MS-Exchange-CrossTenant-AuthSource: ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 16:43:50.2200
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ecjeyswKGG4MFLOhx4KvTy8J4ENIFLWbwTKvqkD/jiSMhOQ+ksfAJzJDM1f0h5by6GqfSLGwvVO0b9f/Q21crzlMlKyVzomc1RykppHbQe0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR3P278MB2228
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: A0NJOtK7xAEM_oZXLNCdJWJ5zq2xeYiOOHdzqmwyodQ_1794242631
+X-Mimecast-Originator: toradex.com
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Lisa Wang <wyihan@google.com> writes:
+Hello,
 
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
->
-> Initialize the TDX S-bit and the GPA tag mask in
-> kvm_init_vm_address_properties() for TDX VMs, similar to how the C-bit
-> is initialized for SEV VMs.
->
-> The TDX S-bit is used to distinguish between shared and private guest
-> physical addresses. Its position is determined by the guest physical
-> address width, which is either 48 or 52 bits for current TDX
-> implementations.
->
-> Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> Co-developed-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+On Fri, Oct 30, 2026 at 08:01:12PM -0700, Borislav Petkov wrote:
+> From: "Borislav Petkov (AMD)" <bp@alien8.de>
+>=20
+> A K: is a content regex file pattern which matches any text in a patch
+> so if a commit message contains "tdx" as in
+>=20
+>   has_tdxe_auto_clear
+>=20
+> for example, see
+>=20
+>   https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp.renesa=
+s.com
+>=20
+> get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
+> obviously is a completely unrelated patch.
+>=20
+> The same happens when someone uses it to check
+>=20
+>   drivers/power/reset/tdx-ec-poweroff.c
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+And I just send more unrelated patches ... "tdx" is just the short form
+for Toradex (since 2003 ;-)
 
->
-> [...snip...]
->
+> So switch the x86 TDX patterns to files and directories (F:) wildcard
+> type patterns and group them by path, for less false positives.
+>=20
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_cra=
+te.local
+
+Acked-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+
+Francesco
+
