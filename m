@@ -1,105 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794254570;
-	b=aHF36w3SRwkh9ny11PbRpWqP4/B+iiS32UBsnrLAAhcE3ksEZ6elbhipYlRJMyKXw7dQ
-	 A5XSCZTAOetuA39J2qOTFMluNdXe8pewRXgFkXDp0ZinzU1KufN95LDZ9nfIp3BYk4igo
-	 dhNaVTvc/4ZyjDy/F2FaSAKiZjbCYikLewQlRzOCvxwG1veSSX/rg5/NoTEBi5Pplzq5G
-	 dHT3H0Drd7a0SWNcSnNqvB53S+4deowEfusdujbPrqCV5I/6MMELKNymCNLSeRda8h8SE
-	 vpv08x+VdoV/xN7j51JsVE25DKW8PjbRuUQG6fOjZtgBtjwaKpon7QFcfpvzJ2qJwBg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794254570;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
-	b=ijKCUwh1Wv8EmPpG0/7OKQZaTviQOdXjMFeQ0rcjEf7G4ZnARhLSFz/Rb9W19YMnnic0
-	 Ix946ogjL+6uN3y//nNM5hPh+yUDn+0tUBHe2NZjG+xF5GPOMoMMgX1kAOuY1iH7ol9/3
-	 TRmb7eESYt69R8XGWC4kl55rdrGscQYYrNnYjH2Ov3Zk3h1pI0Nsmq6iqwKpjHUJEcLP4
-	 0hc9dRPk7IJVnQn6tkjxTeFcxzQyVITdC8S/fMe820g87XKnaHH8QfIUhBV+ITq821edl
-	 6mteZMG37meLSFFfK3xUYOS9xsjkfyFu4sBx1vcpt9YnVbUqzA8iHIg1Phw0tk7jK6A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XQ2zHvUR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.169
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794257702;
+	b=LbjTgLVwWhoWF9iZ8yJqDsu13jQanHh0PJDeZscyb2Hxs1R1Ehkwxd8esCnZ7Q5JANL8
+	 oqdAAxPn6re7IQ5XTypwUatqPFrUkzrQ0l+6mkQf2HyqKiI5lDjSludRom2xMHC4gmBVS
+	 EkEn0IkNqY9qpy3PDM4JbDghlmAbO6IvOGoney3fLCq+7B0X+DFDV3JoQ3Qp+YWky6tae
+	 MT3X0qIjgPlNH+PE6alXIdkqMs70LMH41DA1lEVEbAOAUYwamRUtSOxKflTtAbbb6fdOe
+	 cc55Z4RTXt+5zahAPheTNFpU3YaYk9EGAvXCCxlJCLQ4A4SBNRKYrAx+jL1szemeG5w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794257702;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=CHfhohJ+/rjeHNIiMoO54WoZRyK/HZc0Ka95/ZC5f9M=;
+	b=1eZaxGYeMshgjuKj2Oldry038WsGyj00kaUEoBGLqfi3E8zHGaUFn4gAE/3M0CefcWyP
+	 WAdsZCh0QQC3Ib8oj9AW9X1dO4FvNevekn2p1lEthqbEH6HVCC05yZlxvn2c+qUbqdyRS
+	 Frg5eoZdXaYnNA+1zsKpvSXX1meI/f01mKuhKq6VmLRMm7xZbd7fKtXP4aAzh8lZEhin9
+	 wS3n6QfWZpY45x1Bto29mZmmudCWJN6WlAe1Dhgk8McQ95mlwFhufgYwsI4ZlGLSvDz7V
+	 qJ2t8AwxnmIH1UYuFx6cmBAeYvtcozZ28gYqrydtAiW1Z0cEGSt0sysJptMfPnlYl3w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kmrS1twX;
+	arc=none smtp.remote-ip=198.175.65.13
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03867606A33E
-	for <linux-coco@lists.linux.dev>; Mon,  9 Nov 2026 20:02:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03867606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C266606A31C;
+	Mon,  9 Nov 2026 20:55:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C266606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XQ2zHvUR
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5eae1276409so513190e0c.3
-        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 12:02:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794254569; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VKNgjDzOBdZdk9eaBbLZ1xWQht2ALuHRIMfDPiIGGTOG26mjtTvt5l0SKuj0bAdumz
-         lE+OU+zPveXKvQ9wIBKU06YYaAl2wfxdUXxy8xcSshvd2banF6pXvQXQFJiLIIuZ5pQ1
-         RzJMFHcqcXAhjFRYZ6Qi+epTvASkcgMs66/Muu6vBuzKGhrd6GtaI7xuPvE4wRDM79YT
-         JbUVk7nRNa9ePLqUdZUGHioJIf+06tcIu0wnmvgheT976RBF8y84/L2LUf/K7MxmR/Ht
-         u4e64F2/8cYVTyKBFt83PkzZtiVAhcDHRoRaJwGuiDfCEqv2ZaQTgTxm9vSe846zhz8J
-         IsUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
-        fh=ThRJuTIo6sZXMGgRmKk1wt2cQOmyOoYjdHIRBpMWdtI=;
-        b=PW/5dwo5i8UIoNY/BSQByCfY+EP4DlenRfWBiAtO1OSiXMg1oxpjeVfKHOlpNu0EHo
-         VcuxwKZOGbWyoN+2rGRbG2Vq3patyJ6dwSu2w3FGXBgXYHqLOKvReuM5wl0Smn/9pVjI
-         ScZTTlJUFK7lltsRDja6oTX2BR+VsgwM8nr5a9Vs/SOgAnZ9ifUwtM30FDvfgwdr/ke5
-         M1S29YlHYUNBZXQvppQObmStBU6t7VBdvyJHNw63UfbT03d3z8Ixhjk3xpDPddz0Gmnm
-         gSdaaiESFd7Og6AsUb6B0uVv0oP97U5PV5msegUZSW0RsaCXy+CByQjyjrY0gHAAMsut
-         Ctzw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794254569; x=1794859369; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
-        b=XQ2zHvURlXDAzrrCKoTK8n5FVLMomxu97R/woX2YH+W99w/pSZuQlj625HPGeAJXsZ
-         k/lvJ1fxgomgVR6UyZsFCBfSByXex0ucIyY+gJfq50uv4r9+DOh4GV+gY8fVIEIcSWGP
-         mPuyd54xRGV8Dc3Vv8bbNOnOdUiRjVBbx6dzi9JMmzFGqq2884zu/YcoyEk10rVGr5P9
-         qK30wv6MCePz1AXlavqyiz5fSr40XYxWPLAl+XH5s6QA+6g/G7Rof9ImObYK3zY02nZk
-         A+3Sa7XXXueRqlOzBUMIEOrNSPijpjVq9aPI4BUqtXHPgiDAyG4wxLmZEZBmsSWYkXiV
-         Lz7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794254569; x=1794859369;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
-        b=bf9rjzrbHagzhO5eKWy8yP7EpOTyy4oVK23agsE61K7fglluhPAXor02OF0GcvT3JB
-         ql8VzCF1LqPcROgvmq0WxiSyUnxPc29lItnCD9MoDIHEXqAELEVfOt9Q0SPj6AwvThAA
-         0xr8mcxvljcLeNjQ8YHeIzL1gJmWGplOGz8690pUD45wecc/PlQVnSSs8sa/GTXHcYQe
-         KeX9HofdnuMbh/pQ+ThsIteCP4Xv1j/26O39jYY6AzgjKLpA6Ewpp9lq+hpXrTXhEMhU
-         his/A2AOB7AXZTUgRC7+/ecQONTayyv19kHull0craQyIqhcqcF1PaOdC0HKFvf8L8B+
-         ARiQ==
-X-Forwarded-Encrypted: i=1; AL+hErFphcNypultwdrCL1CNWil/0QtRQfjiCHpVQqmXB+t+2mnnn9M/6X9MzO+gBx92i038xvVQuYIw8k9g@lists.linux.dev
-X-Gm-Message-State: APuU4Z+5qVB+9BSL4jAZzus8ODZklgRh3uklpZQVJWz8El/n7gDMFrbb
-	sWHeR8M31P1eDzD+oFtzcg75DJJYe5kp+kdWkZFzsjae996bRMFT7DylTKpzYgbiiH54O8gx0aD
-	Nke2pESzQVMm0MB1q/106DEcNH73U1AzRtJ7KVCW7
-X-Gm-Gg: AYBFou2WGWan4Rk6C/i6v4VwKoFVKJNg59YwvWVclHqSdKHKj1PCpidobIx2J+vEInK
-	gqrE3LLUAUXOsgI09Uw5qSxerym++qGW/GLbN57xIqCrX6yRehPgiZ2gUh4rL1A4G+OdwtumMS4
-	8YVaLuJnI1jLCEXAtmevhtk3jo1D/Y5TXH1XMl2bio4BEpNDZx6dE2Yxga2NxqvqGAOkyeMV4qO
-	9qfdR+e9zRis1ZIwllPmgt9CPQMNou9iyfUxn4tvWED0Zc3uUyb6hgfbtMn7OGVFt27sB7slIhU
-	1U34WutOXJNgK9R0l5J4HckwVp8KEsqgAqJ9X5jfevHs2pkr46yado/B7NdxXl1mRU3EN8Z07HI
-	ly7YyWfETULYekJ8h9LzpVnQwTJgmPS3CT5UnDPvEb18DIRnoU7PswZQlAh1K0kSXZKNxv1WOYe
-	vySMt6Of5TzcnCdG+tsi+K1cOmdRqy7laKBQ0Mf0tRJh9d
-X-Received: by 2002:a05:6122:218b:b0:5ea:b04a:cefd with SMTP id
- 71dfb90a1353d-5ee0d0a58a3mr105598e0c.7.1794254568208; Mon, 09 Nov 2026
- 12:02:48 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 9 Nov 2026 12:02:47 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261105-tdx-selftests-v16-16-2024e8fa517a@google.com>
-References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com> <20261105-tdx-selftests-v16-16-2024e8fa517a@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kmrS1twX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794257702; x=1825793702;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=auhSrNaYOPJNFujFxRkBsRNtO2Uc+tj9FzTatr7sER0=;
+  b=kmrS1twXcH0yFlxS0yaznBTisezxxAuD8UXFuE6AyH1pPYest6dtAeJT
+   clwmDUHi50rjZxCPNQI4rRhOtQ2jFutEoW+2QNP8Ss5Cm1xyQCUfrjsqb
+   5UynWjdH7Ouxq6nxSJEucWjvtAtdsV6ELXsM1PwyF/pHvcSPSEMWd3Rv0
+   LPFwJTUbpQaoCdFcCU+40vafgvV9CujO9pQeO8AnCQTz+PkShM0OmOB5d
+   f2H8vjoRJy9emS8ncCQuyfEQR1IoqcvX+5XVQWq5GaLJEErVygGHRpgEV
+   kJ7wZAEWjYfhki6sCZd5vha3VcES0u3NbGGRNySSebGf1gr9ManKkYV1F
+   A==;
+X-CSE-ConnectionGUID: wudGc8FnQVajizpskSbgVw==
+X-CSE-MsgGUID: m3arRSLqTlijMnt6Ep6K6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2872766"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2872766"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 12:55:01 -0800
+X-CSE-ConnectionGUID: IVpcitA6TsWQVFPL2XWkVw==
+X-CSE-MsgGUID: HrBS35uUT/+CBVyHYUZr2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="8100554"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.20]) ([10.125.111.20])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 12:54:58 -0800
+Message-ID: <e1fe8fa5-7bcd-46e3-bfe8-368582304222@intel.com>
+Date: Mon, 9 Nov 2026 13:54:57 -0700
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -109,73 +72,162 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 9 Nov 2026 12:02:47 -0800
-X-Gm-Features: AclHuK93pizTTBvqPPHn8tyB102k3E6xp0ArgfRjiMFhvMMSdBvoYQSIxOQgtlQ
-Message-ID: <CAEvNRgGQqdrcLcYbSbiXmFRAHwvGW5Ha_2NPWhMNs-qpnWhZCg@mail.gmail.com>
-Subject: Re: [PATCH v16 16/20] KVM: selftests: Load private memory and
- finalize TDX VM in kvm_arch_vm_finalize_vcpus()
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
+ and establish streams after acceptance
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ Jiri Pirko <jiri@resnulli.us>, "Tian, Kevin" <kevin.tian@intel.com>,
+ Alexey Kardashevskiy <aik@amd.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Steven Price <steven.price@arm.com>, Kiryl Shutsemau <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Jonathan Cameron <jic23@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ "patches@lists.linux.dev" <patches@lists.linux.dev>
+References: <20261103151643.GI274202@nvidia.com>
+ <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
+ <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
+ <20261104134119.GR274202@nvidia.com>
+ <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
+ <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
+ <20261106193018.GK770409@nvidia.com>
+ <53bc57bf-1ee1-407a-b48b-bc6b2deee12a@intel.com>
+ <20261108183337.GL770409@nvidia.com>
+ <2b89b830-f1e4-4304-93ee-40287a4b5b2d@intel.com>
+ <20261109185315.GS770409@nvidia.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20261109185315.GS770409@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Lisa Wang <wyihan@google.com> writes:
 
-> From: Sagi Shahar <sagis@google.com>
->
-> Initialize TDX private memory and finalize the TDX VM after VM and VCPU
-> creation.
->
-> Hook tdx_load_private_memory() and tdx_vm_finalize() into
-> kvm_arch_vm_finalize_vcpus() to avoid the need for every TDX selftest to
-> manually load initial private memory and finalize the VM. While this
-> prevents TDX selftests that use vm_create() helpers from customizing
-> memory before it is locked, no current selftests require this.
->
-> In TDX, finalization is a mandatory step to make the TD runnable. It
-> also finalizes the MRTD of the VM's initial memory and state, locking
-> them in for future attestation and preventing any further modifications.
->
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> ---
->  tools/testing/selftests/kvm/lib/x86/processor.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index 11db6a3b0366..ee8a1715d844 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -1503,6 +1503,14 @@ bool kvm_arch_has_default_irqchip(void)
->  	return true;
->  }
->
-> +void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
-> +{
-> +	if (is_tdx_vm(vm)) {
-> +		tdx_load_private_memory(vm);
-> +		tdx_vm_finalize(vm);
-> +	}
-> +}
-> +
->  void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu, gpa_t smram_gpa,
->  		 const void *smi_handler, size_t handler_size)
->  {
->
-> --
-> 2.56.0.455.g6c5a503b38-goog
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+On 11/9/26 11:53 AM, Jason Gunthorpe wrote:
+> On Mon, Nov 09, 2026 at 10:37:14AM -0700, Dave Jiang wrote:
+> 
+>> One thing on TDX is that TDH.SPDM.CONNECT also runs a
+>> GET_MEASUREMENTS of its own during the connect, and the kernel
+>> doesn't choose its nonce. The kernel wouldn't hand that one to
+>> userspace. Measurements only come out through the two flows, with a
+>> user nonce.
+> 
+> Why? Seems like another wasted operation..
+
+The TDX module runs it as part of the connect and with the current module the host can't skip it. I'll discuss with Elena and see if this can be different.
+
+> 
+>> That works for TDX. tdx-host's relay is one function today. It takes
+>> the module's request from a page shared with the module and calls
+>> pci_tsm_doe_transfer(), so att_spdm_doe_exchange() drops in there.
+> 
+> Yeah, it looks like it works for everyone.
+> 
+> I sketched out this library, and it is basically half or more of the
+> in-kernel SPDM in just a different form. Basically all the reply
+> message processing and de-framing abstracted into something a little
+> different.
+> 
+> So in terms of *net* code needed it seems like very little
+> 
+> But it brings forward "rust spdm" or something in a new form as a
+> pre-condition to do the TSMs. Which is annoying for sure.
+> 
+>> I tried a quick version of the capture in a test hack with the TDX
+>> Module It rebuilt the VCA, slot 0's chain and
+>> KEY_EXCHANGE/KEY_EXCHANGE_RSP from the relayed messages, and the
+>> kernel's own check of the KEY_EXCHANGE_RSP signature passed. Agreed
+>> it's more of a debugging aid. Two things I encountered:
+> 
+> So you (AI'd?) something basic up to do the captures and showed that
+> indeed the right data comes through and the general notion is OK?
+
+Yes. LLM assisted test hack in tdx-host's relay.
+> 
+> That's great, it matches what all the analysis points to. I could find
+> no blocking issue on this idea.
+> 
+>> - The DOE payloads carry dword padding, so the capture has to trim
+>>   each message to its SPDM length before hashing. KEY_EXCHANGE was
+>>   160 bytes as a DOE payload and 158 as an SPDM message.
+> 
+> Yeah, I couldn't belive it when my AI pointed to this. Nobody thought
+> to preserve an actual length so any SPDM over DOE implementation needs
+> to be very, very painfully calculate a length from the message content
+> and algorith negotiation.
+> 
+> My AI predicts 1000-2000 lines of code very careful spec derived code
+> just to remove this padding. Such a big spec mistake.
+> 
+>> - The chain hash in the KEY_EXCHANGE_RSP transcript is over the
+>>   whole SPDM chain structure (length, reserved, root hash,
+>>   certificates), not just the DER certificates. That's how the
+>>   device and the TDX Module compute it.
+> 
+> Definitely, it would need to capture the certificate stuff in just the
+> right way.
+> 
+> The optional chunking features are a bit tricky, but I don't think a
+> 1.2 only implementation needs them. They seem necesary for future
+> post-quantum.
+> 
+> This also formalizes the version locking: the TSM FW cannot use a SPDM
+> version that the kernel does not understand. I think this was already
+> basically true, trying to do the 1.3 multi-slot flow is not going to
+> work out with out kernel support to move the additional data. Maybe
+> nobody noticed, but with this scheme it would be really formal.
+> 
+> In practice this means all the TSMs will need the kernel to tell it
+> what SPDM versions it can go up to.
+
+TDX has no input for that today. Will discuss with Elena.
+
+> 
+> So I'm a little bit stuck here. Some thoughts:
+> 
+> 1) I think this removes alot of code from the TSM drivers. All this
+>    stuff they have to go back and get the data after the fact, or the
+>    thing that is almost like this in RMM, goes away. The TSM drivers
+>    are very slim, just run their communicate loops.
+> 2) Clear uniform path to 1.3, stop after GET_DIGESTS, let userspace
+>    inspect the certificates, continue with the slot. Again drivers can
+>    be super simple, just need to pause at the right point in the
+>    sequence.
+> 3) The data collected and presented to userspace is perfectly uniform
+>    governed only by the SPDM specification. There is a clear path to
+>    adopt newer versions in the kernel with in-kernel SPDM that
+>    instantly with nearly no-code works with all the TSM drivers.
+> 4) This is about half of in-kernel SPDM, the receive buffer
+>    reassembly, certificate chain reassembly, x509, padding stripping.
+>    Each a complicated topic on its own. We always imagined having
+>    in-kernel SPDM, so I view this as effectively free code - contigent
+>    on organizing the in-kernel SPDM implementation in a properly
+>    modular way.
+> 5) Without AI this looks actually fairly scary. I can see why people
+>    wanted to avoid it with different schemes to have the TSM do some
+>    of the work. Yet we planned to do it anyhow for in-kernel SPDM so..
+> 6) With AI this is probably a weeks work I suppose to really expertly
+>    polish and make excellent tests.
+> 7) There is clear overlap with Alistair's work, I don't have a sense
+>    right now how close some of the parts in that series are to fitting
+>    this shape.
+> 
+> I will look more closely at Alistair's series to see how close it is
+> already.
+> 
+> But, I am strongly tempted to make a draft placeholder in C with AI as
+> a way to get alignment and try it out. Something we can throw out if a
+> Rust version comes along.
+
+Sounds good. I can test on TDX when you have something.
+
+> 
+> Jason
+
