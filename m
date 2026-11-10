@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794284463;
-	b=s6n3j7BczX7kguO5jyW6aDI8R5t5d/Eln8VNQHcUSzs3oqHK7dNWoa+2qgPp/kMwP7e0
-	 Yil+EQizIGwkG8q3jPkBrz2Ed/PHW66YpCgYbadVBXJWtHq7qw7SKOEcbPjfVVaYj/HL3
-	 aezfv6TMMkp5zp+nzuStNEm6aup/cgfKyGDbJnrZ5h25HkOc5c+QvJtbtTAxCkfwRbr2A
-	 RKZrzc73+R/wEWTpGls554pl7QRS5hcQ9uembaNgyA3fsjnJnHaqhbHhwEf6WEru7SAip
-	 bEwDObdoEhOmj8HVj05M61Kp+MvgJOI0otAaoLL5fKo6ysY5WYFKuGK/TeJwt+iWLJg==
+	t=1794284472;
+	b=KvXCfUdUE2VfIXnx8WF4a+hO7A1NeV19PLNfnQAldJ53ntv5h0PRWQqxQ1GDUBPDL7DW
+	 Z/MPTsMFxVb+E2KA879bIY7lR4yS8XQtzB9d3Hban/+Zu2zl4tYFHS3jhwB5yA2Coo2FY
+	 jbNOKGZLjZg6EOX8ZqZWakaoeUQz+sTmdyZj6MEj6nlqkrWOYC3/uqavdLoJxmmYQH3qI
+	 vmbKBldIzQr7uRSK74PPZsnwYEPQF+B8CT8P/xgqZGN06ncJsB/hQ6adbP19SpOT5Duc2
+	 SqapyUivzTv8VJ/VSt2Krb6SFKKmblvCehOA/USdKu0qNG1/TLw3qSw4Xxk12sXVGHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794284463;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794284472;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=Zyt2Bz/rIR/RhhcPSDpg8Xgw63qkgtmvP9go9YSwbK8=;
-	b=UqQ8XAVGVXNSyvkoXvVS5poKM/f5Ajwr+N0VVfcGzhS991cY9urordEafM2n9NJmxHr8
-	 jyPTeUGiESB8wfoLN+9nKR3ETjaJxhVLMF9TgVE6Ry8uGtabMkWBLGZQhdWtr9a9CkIXG
-	 /dZtdTca7HhSVKD4M7D+cxuZv27lKaprkVG2Y3LKW9XN5DwZxC4d525KSirFB1xu/f0zn
-	 Q38DRuOhGfhoeAq3q46WWtrSpA7g9yRhr9zyZSedUkmBg+zY+U7/Qu8ZqPk7dKZdM7+Mb
-	 jOC6qoV37+Q1qPn6/TZk+dhC8jCRfEuq5eEDxD4bjmXpvgGRiRJrq1nCBYn2rLvMYGA==
+	bh=EwvKeArnVMX8NeJ2nNsuyd5kMrTehXi5rqXuoXnCGcg=;
+	b=OFNTViDFLOj2eIfP48Qn4/aWiqkzce+RDQfmaOsBXDBY6Vh7+oS4xoQT3E3nGjqdaMG5
+	 9XaLqSsS9rDmrrzAiXGhqJXN3IF0DT9vxqkjgkHPEDKpTSkbLCqbHr8mtwJBJelDQTIxg
+	 Annadsm7sg7o5895ReB9f0eGKLN8Xp+XPMZeZeTKwiM8/fv0a/Azae1MHXJ9+pWj2XEbx
+	 CzcZfZ30Tle6kNZWyLc9emnEEy73/FCOBShaJZKVR5dG/tynFB2/Hn7K8kmXEZdyFbEoa
+	 X/YVOX7m7gnAcclctsZ0w8olxaDqphUBe1wUefk1mmFuqKfEk1IntoesYFs8ehn8Kiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hlSmcAnQ;
-	arc=none smtp.remote-ip=74.125.82.46
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0tCC2mQt;
+	arc=none smtp.remote-ip=74.125.82.49
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD71606A321
-	for <linux-coco@lists.linux.dev>; Tue, 10 Nov 2026 04:21:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BAD71606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAF5606E8CD
+	for <linux-coco@lists.linux.dev>; Tue, 10 Nov 2026 04:21:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DAF5606E8CD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hlSmcAnQ
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1b3a05f8b5bso2462307c88.1
-        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 20:21:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0tCC2mQt
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-15dd124bbe7so1816036c88.1
+        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 20:21:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794284462; x=1794889262; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1794284470; x=1794889270; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Zyt2Bz/rIR/RhhcPSDpg8Xgw63qkgtmvP9go9YSwbK8=;
-        b=hlSmcAnQhKgGl1SbLBGIZpblPtJ5S7KZPlb3zQX5gzlg2PFbAnlrwYF5DEPmJSegFt
-         YncmMyAe+bJ8jcXjM1eSYT2JkQFuvYsZIz4AIqHvj9ILRhtazCHvmHF9XROPhW0V/iYK
-         K/5b6wUK++WlU3lgM+qC1fDMV4wDd7PMBGmwB2L+Caz3VKDeKkImyL7Kv2m2mtd1gHs+
-         gK8hpz9rmXPu0wZvkcW3FnvhulxVdSasSFrY9bP+jdUJNcHsUPQxW8aSwbNNd0v4GD3Z
-         OGxy00eUrTVY4/C1tlO2WZyJT0rr3S7G7N3n0DdXtsfOB0TdgO2Pr6kef6G3awMNCeDI
-         5T/w==
+        bh=EwvKeArnVMX8NeJ2nNsuyd5kMrTehXi5rqXuoXnCGcg=;
+        b=0tCC2mQtZJSDN/jbhj1BUdUyMUNLqA5Hq5bOqZTt/NJjzdeTQH1fSdrmeuPlhCJ9i9
+         Vp90n8jw0FSQbQLvo8ghoqOKs0RctVlkHQRI0KXJUJoeauZKgjPhtsu+Wc7jaBAOTB5H
+         cgf1lCDYghT6h3hn8JLbe2zmbUOgwL6MeVKfGgALoWd21L5abpkVX9/eUMzfBA4cvQbd
+         sPCT8yxBsKMcjTJOYPj7YK+r00NgseQGwFug9FPhY1k+H4z9AD7c5KGoaZI/lFJkroI4
+         F+h0dLlKVjMGWtYv7B6ZTLCTiKvCd6A4mfLxRqgoDAMO2MJ6yY/XyZTtOyVBkBr2gWwe
+         Il4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794284462; x=1794889262;
+        d=1e100.net; s=20260707; t=1794284470; x=1794889270;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Zyt2Bz/rIR/RhhcPSDpg8Xgw63qkgtmvP9go9YSwbK8=;
-        b=YmC8Bfaj/Hp7ni9RoRvgjN3CHQnwJKQeQ+odDbqpKtAIKxhPZGfSgUAK7UPpbaIR9Q
-         gRLGxJWlspBpxGUCQuwkljq2ipMxMFbWCM7ZOWS1RHobqgaI+peFv7vbxeMi2XVSLVRS
-         8FgMYSuZGuvmnCdwmC60CKzHut4YJ1iatPOTzAcidG8GeMSPBsSAcHZn6yxaJWAWdIMz
-         t8ZaaTY/Ig1fSfq+JQ6i3ch9+96RlQMvcDXCjixZwlqqL+daFX7JVT16S4e8Ghyl5Fbe
-         8/0ELQ4tAKx8IUFL5bg0s9UE2ZrXDp6J9LI8hxXsQHXs3r2joXaoczvzs/6ob7+YZ+Jl
-         CHcQ==
-X-Forwarded-Encrypted: i=1; AL+hErEn45S1E/ODoF1poreJjecNWkTwjTGw2N9NYLLULrZwrGAB3h5VkEoqeVyKFqyL/08kF2JdPJZKe623@lists.linux.dev
-X-Gm-Message-State: APuU4Z/mBQINUgelgUD+Vc0MfzACyXVk0ptbZwenaxTLhBaalecrFKs9
-	10hSXg6MStuQz4+2xveaf93yKUkBOEc6bR6pF5qL+CahdF/TxygfT9qp
-X-Gm-Gg: AYBFou2/tJ7fMiEs3v6PWJtebtp+pPAJCkMhKyXLEbBwMcMMaU7FRNy8VKB22KA/FDP
-	+SkbCYWmMs49g2uQvpsjG0HsZlrkvTtitbd3s6ZHLqKYNIQXlnkZbzOHAw7hk7cXm+HURosbgvg
-	RcqFkBcU9YmWz/H7NgrWVJteVlz1k2iRLTJCDklcOXMPvvHKq5Td1vwrrabX6YqN5nOT2VZZDNh
-	wHEI2Peyohh3QcnNofbb0+icohI4V0O83D9wwWSrZgjKkSSiw1C0Aap6N9/Yj5xzTGQuI31LAds
-	1Lqw7PVN2z5uOcYzCDIBN1ppcNA5DqWOdrJmfrhbPJcqPiZ8Y/3h1Vy6eAxhT3CnU/T6nbBjMBg
-	xPzxSbFhOMF5IHfvrlrIcxAgKlNEp8Wpj8+jjjQyuEJoTtBVDweVjwaN0zmblXa8eepHU/SfS2e
-	4zovvgD4hq0uVpE91o4jYB2ro6ggW9nDwP+540Bbjv0BjJDwQTdbaMdXUo8n0qDIa7G5FXI08Xc
-	84h9naTuYdBE07/ydx6OHgsPC1Zt2nMcDfn+8Jb+34OdN0eNQFAdol582xhyMHYNAj2guXH0zUD
-	uvt1cHUNeCfRmChnGohjYnm00Bn4x+gIAqjLgBEunyu165A=
-X-Received: by 2002:a05:7022:f8a:b0:1a7:7160:ffc8 with SMTP id a92af1059eb24-1b3b60039e7mr2636172c88.10.1794284461889;
-        Mon, 09 Nov 2026 20:21:01 -0800 (PST)
+        bh=EwvKeArnVMX8NeJ2nNsuyd5kMrTehXi5rqXuoXnCGcg=;
+        b=P1y9uVqUsBWAs+E+L7qqciiOBtUPmcQ2H0MJht8Hp5vlkk7bvNqg6P58BQeh9qb1YY
+         PyBGcjzLnEJk83LyxubDew6Q9xrOV9EFhx1P78OgBqrpvwA1IQ9HDkHdl0TU1aOlTsER
+         07lCW9RN4UYhNmltlIV4ps1LKe3+E0KwmZoHNTkHa9cqz6NsQPdRzW5eZ7D9wQi4K0O1
+         udNfDOpS4mRJeMjE/OLcbh/2zJqGQ792v8VUi3RYLVUh/bqHxuI9A5PkU/lmPoksKCJ5
+         lPAqyQ29NxaHGC78q9Bjna9KiQzyTuKK8hHOsW5iRFHYHNt4oUU/pVTxSy8ksl6dIsnl
+         6LIQ==
+X-Forwarded-Encrypted: i=1; AL+hErH7NQcQ+l4TaDsz3wIMuEIvBj+zrntCobOXMubMWe33nfhvcTDpKQZvrJei0s/R55JmC2B2u66hvQ2v@lists.linux.dev
+X-Gm-Message-State: APuU4Z8KMzzUyK/ArR9XfKzvroYp7K/gdA4AX6DgoslwIgj+yqIeuZU4
+	g6G7BW8QhOpK3pvFP6NUVTfjqWxJ1BjPSKTZAtKYvWhppkpvGcuebF0E
+X-Gm-Gg: AYBFou1n17nxClvdg754AFVnRiObktsEXJULdcWlciKcN1M7LFErXi8E5LK/2WyNmoV
+	AK3K3A5jx7BQ6RRievSD8A3EhuhlEvEgvubfzUomlQYwV3Oil5u+BWZo49216nH5dJEh/WJdYvY
+	B4YKhttf/7sPhecVL0acPp02VoRWMttYhNPQyZLarHSlpEPrnrDYJIYqeb56pD8+YkVe8uh92pl
+	O55aO/20G9zc24AN6sdTlgT0o2H1VDKQlNO9VQseCFGkXHiIgQbplftu5v4A1dofKCYgOkC+J6H
+	wEBGsqpjkSpho66vaMJ4l6sJ+YO3KSDoWNinPcO8akHA9Di1P7ck9aLeWGXOENSAa6WoZIb54xG
+	xCTEObLEZfS7qgJix++jvWWBPe9dK21RiFKU5qUMZkIji6AcU8wy9WXyn5Hil8UaawafsLxCW+R
+	+vO4iKP9m3ND+4+wDZ7VwoCZj4my1Y+CZlfmNI4mIL/Q675zFR+bsbGLVAx5nVmtvwwfWWhAprl
+	2Jtb3ToRdERDzJu4U3w+KbhZRx79qDue87+sagN5a9QCkwnRRs34zPhrrTVsXYLcJmk7JmXdTr/
+	lI85lMwMR99mD0rsLYQ46qpJ1l+jou6PIf4eaUEsJK9Se4c=
+X-Received: by 2002:a05:701b:2613:b0:1b3:b6d3:b91c with SMTP id a92af1059eb24-1b3b6d3b976mr1747101c88.7.1794284470328;
+        Mon, 09 Nov 2026 20:21:10 -0800 (PST)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.20.54
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.21.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 20:21:01 -0800 (PST)
+        Mon, 09 Nov 2026 20:21:09 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: bhelgaas@google.com,
@@ -105,9 +105,9 @@ Cc: gary@garyguo.net,
 	benno.lossin@proton.me,
 	alex.gaynor@gmail.com,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v6 16/25] rust: kernel: Add crypto hash bindings
-Date: Tue, 10 Nov 2026 14:18:23 +1000
-Message-ID: <20261110041832.1730924-17-alistair.francis@wdc.com>
+Subject: [PATCH v6 17/25] lib: rspdm: Support SPDM negotiate_algorithms
+Date: Tue, 10 Nov 2026 14:18:24 +1000
+Message-ID: <20261110041832.1730924-18-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261110041832.1730924-1-alistair.francis@wdc.com>
 References: <20261110041832.1730924-1-alistair.francis@wdc.com>
@@ -124,192 +124,581 @@ Content-Transfer-Encoding: 8bit
 
 From: Alistair Francis <alistair.francis@wdc.com>
 
-Initial support for the kernel crypto hash bindings, which will be used
-by the SPDM library.
-
-This is just a few functions that the Rust SPDM implementation will use
-in the next few commits.
+Support the NEGOTIATE_ALGORITHMS SPDM command.
 
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- lib/Kconfig         |   1 +
- rust/kernel/hash.rs | 141 ++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs  |   2 +
- 3 files changed, 144 insertions(+)
- create mode 100644 rust/kernel/hash.rs
+ lib/rspdm/consts.rs    |  61 +++++++++++
+ lib/rspdm/lib.rs       |   4 +
+ lib/rspdm/state.rs     | 169 +++++++++++++++++++++++++++++-
+ lib/rspdm/validator.rs | 233 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 466 insertions(+), 1 deletion(-)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index daf219282f441..7b1952c5d5c18 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -593,6 +593,7 @@ config RSPDM
- 	depends on RUST
- 	select KEYS
- 	select CRYPTO
-+	select CRYPTO_HASH2
- 	select ASYMMETRIC_KEY_TYPE
- 	select ASYMMETRIC_PUBLIC_KEY_SUBTYPE
- 	select X509_CERTIFICATE_PARSER
-diff --git a/rust/kernel/hash.rs b/rust/kernel/hash.rs
-new file mode 100644
-index 0000000000000..84b3c79a2895f
---- /dev/null
-+++ b/rust/kernel/hash.rs
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
+index 43be144251190..bcc149de77425 100644
+--- a/lib/rspdm/consts.rs
++++ b/lib/rspdm/consts.rs
+@@ -45,7 +45,68 @@
+ 
+ pub(crate) const SPDM_CERT_CAP: u32 = bit_u32(1);
+ pub(crate) const SPDM_CHAL_CAP: u32 = bit_u32(2);
++pub(crate) const SPDM_MEAS_RESP_CAP: u32 = bit_u32(3) | bit_u32(4);
++pub(crate) const SPDM_KEY_EX_CAP: u32 = bit_u32(9);
+ pub(crate) const SPDM_MULTI_KEY_CAP: u32 = bit_u32(26) | bit_u32(27);
+ 
+ pub(crate) const SPDM_REQ_CAPS: u32 = SPDM_CERT_CAP | SPDM_CHAL_CAP;
+ pub(crate) const SPDM_RSP_MIN_CAPS: u32 = SPDM_CERT_CAP | SPDM_CHAL_CAP;
 +
-+// Copyright (C) 2026 Western Digital
++pub(crate) const SPDM_NEGOTIATE_ALGS: u8 = 0xe3;
 +
-+//! Wrappers around the Linux kernel crypto hash APIs.
-+//!
-+//! C headers: [`include/crypto/hash.h`](srctree/include/crypto/hash.h).
-+//!
-+//! Reference: <https://www.kernel.org/doc/html/latest/crypto/devel-algos.html#hashing-hash>
++pub(crate) const SPDM_MEAS_SPEC_DMTF: u8 = bit_u8(0);
 +
-+use core::ptr::NonNull;
-+use kernel::prelude::*;
-+use kernel::{
-+    bindings,
-+    error::{
-+        from_err_ptr,
-+        to_result, //
-+    },
++#[cfg(CONFIG_CRYPTO_RSA)]
++pub(crate) const SPDM_ASYM_RSASSA_2048: u32 = bit_u32(0);
++pub(crate) const _SPDM_ASYM_RSAPSS_2048: u32 = bit_u32(1);
++#[cfg(CONFIG_CRYPTO_RSA)]
++pub(crate) const SPDM_ASYM_RSASSA_3072: u32 = bit_u32(2);
++pub(crate) const _SPDM_ASYM_RSAPSS_3072: u32 = bit_u32(3);
++#[cfg(CONFIG_CRYPTO_ECDSA)]
++pub(crate) const SPDM_ASYM_ECDSA_ECC_NIST_P256: u32 = bit_u32(4);
++#[cfg(CONFIG_CRYPTO_RSA)]
++pub(crate) const SPDM_ASYM_RSASSA_4096: u32 = bit_u32(5);
++pub(crate) const _SPDM_ASYM_RSAPSS_4096: u32 = bit_u32(6);
++#[cfg(CONFIG_CRYPTO_ECDSA)]
++pub(crate) const SPDM_ASYM_ECDSA_ECC_NIST_P384: u32 = bit_u32(7);
++#[cfg(CONFIG_CRYPTO_ECDSA)]
++pub(crate) const SPDM_ASYM_ECDSA_ECC_NIST_P521: u32 = bit_u32(8);
++pub(crate) const _SPDM_ASYM_SM2_ECC_SM2_P256: u32 = bit_u32(9);
++pub(crate) const _SPDM_ASYM_EDDSA_ED25519: u32 = bit_u32(10);
++pub(crate) const _SPDM_ASYM_EDDSA_ED448: u32 = bit_u32(11);
++
++#[cfg(CONFIG_CRYPTO_SHA256)]
++pub(crate) const SPDM_HASH_SHA_256: u32 = bit_u32(0);
++#[cfg(CONFIG_CRYPTO_SHA512)]
++pub(crate) const SPDM_HASH_SHA_384: u32 = bit_u32(1);
++#[cfg(CONFIG_CRYPTO_SHA512)]
++pub(crate) const SPDM_HASH_SHA_512: u32 = bit_u32(2);
++
++// If the crypto support isn't enabled don't offer the algorithms
++// to the responder
++#[cfg(CONFIG_CRYPTO_RSA)]
++pub(crate) const SPDM_ASYM_RSA: u32 =
++    SPDM_ASYM_RSASSA_2048 | SPDM_ASYM_RSASSA_3072 | SPDM_ASYM_RSASSA_4096;
++#[cfg(not(CONFIG_CRYPTO_RSA))]
++pub(crate) const SPDM_ASYM_RSA: u32 = 0;
++
++#[cfg(CONFIG_CRYPTO_ECDSA)]
++pub(crate) const SPDM_ASYM_ECDSA: u32 =
++    SPDM_ASYM_ECDSA_ECC_NIST_P256 | SPDM_ASYM_ECDSA_ECC_NIST_P384 | SPDM_ASYM_ECDSA_ECC_NIST_P521;
++#[cfg(not(CONFIG_CRYPTO_ECDSA))]
++pub(crate) const SPDM_ASYM_ECDSA: u32 = 0;
++
++#[cfg(CONFIG_CRYPTO_SHA256)]
++pub(crate) const SPDM_HASH_SHA2_256: u32 = SPDM_HASH_SHA_256;
++#[cfg(not(CONFIG_CRYPTO_SHA256))]
++pub(crate) const SPDM_HASH_SHA2_256: u32 = 0;
++
++#[cfg(CONFIG_CRYPTO_SHA512)]
++pub(crate) const SPDM_HASH_SHA2_384_512: u32 = SPDM_HASH_SHA_384 | SPDM_HASH_SHA_512;
++#[cfg(not(CONFIG_CRYPTO_SHA512))]
++pub(crate) const SPDM_HASH_SHA2_384_512: u32 = 0;
++
++pub(crate) const SPDM_ASYM_ALGOS: u32 = SPDM_ASYM_RSA | SPDM_ASYM_ECDSA;
++pub(crate) const SPDM_HASH_ALGOS: u32 = SPDM_HASH_SHA2_256 | SPDM_HASH_SHA2_384_512;
++
++pub(crate) const SPDM_OPAQUE_DATA_FMT_GENERAL: u8 = bit_u8(1);
+diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
+index 9b0211ae76f55..2d5eddd9fdc8c 100644
+--- a/lib/rspdm/lib.rs
++++ b/lib/rspdm/lib.rs
+@@ -272,6 +272,10 @@ fn from(code: SpdmErrorCode) -> Self {
+         return e.to_errno() as c_int;
+     }
+ 
++    if let Err(e) = state.negotiate_algs() {
++        return e.to_errno() as c_int;
++    }
++
+     -(EPROTONOSUPPORT as i32)
+ }
+ 
+diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
+index cb6a351fe6085..169d0d3fee9bd 100644
+--- a/lib/rspdm/state.rs
++++ b/lib/rspdm/state.rs
+@@ -12,31 +12,62 @@
+     bindings,
+     device::Device,
+     error::Error,
++    hash::Shash,
+     page::PAGE_SIZE,
 +    str::CStr,
+     sync::aref::ARef,
+     validate::Untrusted, //
+ };
+ 
+ use crate::consts::{
++    SPDM_ASYM_ALGOS,
+     SPDM_ERROR,
+     SPDM_GET_VERSION_LEN,
++    SPDM_HASH_ALGOS,
++    SPDM_KEY_EX_CAP,
+     SPDM_MAX_VER,
++    SPDM_MEAS_RESP_CAP,
++    SPDM_MEAS_SPEC_DMTF,
+     SPDM_MIN_VER,
+     SPDM_MULTI_KEY_CAP,
++    SPDM_OPAQUE_DATA_FMT_GENERAL,
+     SPDM_REQ,
+     SPDM_RSP_MIN_CAPS,
+     SPDM_VER_10,
+     SPDM_VER_11,
+     SPDM_VER_12, //
+ };
++
++#[cfg(CONFIG_CRYPTO_SHA256)]
++use crate::consts::SPDM_HASH_SHA_256;
++#[cfg(CONFIG_CRYPTO_ECDSA)]
++use crate::consts::{
++    SPDM_ASYM_ECDSA_ECC_NIST_P256,
++    SPDM_ASYM_ECDSA_ECC_NIST_P384,
++    SPDM_ASYM_ECDSA_ECC_NIST_P521, //
 +};
++#[cfg(CONFIG_CRYPTO_RSA)]
++use crate::consts::{
++    SPDM_ASYM_RSASSA_2048,
++    SPDM_ASYM_RSASSA_3072,
++    SPDM_ASYM_RSASSA_4096, //
++};
++#[cfg(CONFIG_CRYPTO_SHA512)]
++use crate::consts::{
++    SPDM_HASH_SHA_384,
++    SPDM_HASH_SHA_512, //
++};
+ use crate::validator::{
+     GetCapabilitiesReq,
+     GetCapabilitiesRsp,
+     GetVersionReq,
+     GetVersionRsp,
++    NegotiateAlgsReq,
++    NegotiateAlgsRsp,
+     SpdmErrorRsp,
+     SpdmHeader,
+-    GET_CAPABILITIES_RSP_SZ, //
++    GET_CAPABILITIES_RSP_SZ,
++    NEGOTIATE_ALGS_RSP_SZ, //
+ };
+ 
+ /// Transport for exchanging SPDM messages with a responder device.
+@@ -87,6 +118,27 @@ pub(crate) struct SpdmState<T: Transport> {
+     /// Cached capabilities of responder. Received during GET_CAPABILITIES
+     /// exchange.
+     pub(crate) rsp_caps: u32,
++    /// Asymmetric key algorithm for signature verification of CHALLENGE_AUTH
++    /// and MEASUREMENTS messages. Selected by responder during
++    /// NEGOTIATE_ALGORITHMS exchange.
++    pub(crate) base_asym_alg: u32,
++    /// Hash algorithm for signature verification of CHALLENGE_AUTH and
++    /// MEASUREMENTS messages. Selected by responder during
++    /// NEGOTIATE_ALGORITHMS exchange.
++    pub(crate) base_hash_alg: u32,
++    /// Hash algorithm for measurement blocks. Selected by responder during
++    /// NEGOTIATE_ALGORITHMS exchange.
++    pub(crate) meas_hash_alg: u32,
 +
-+/// Synchronous hash transformation plus its descriptor buffer.
-+pub struct Shash {
-+    shash: NonNull<bindings::crypto_shash>,
-+    desc: NonNull<bindings::shash_desc>,
-+    desc_len: usize,
-+    desc_capacity: usize,
-+    hash_len: usize,
-+    name: &'static CStr,
-+}
++    /// Human-readable name of `base_asym_alg`'s signature encoding. Passed
++    /// to the crypto subsystem when calling `verify_signature()`.
++    base_asym_enc: &'static CStr,
++    /// Signature length of `base_asym_alg` (in bytes). S or SigLen in SPDM
++    /// specification.
++    sig_len: usize,
 +
-+impl Shash {
-+    /// Allocates a hash transformation and its descriptor buffer.
-+    pub fn new(name: &'static CStr) -> Result<Self> {
-+        // SAFETY: `name.as_char_ptr()` is a valid NUL-terminated C string.
-+        // `crypto_alloc_shash()` returns a valid pointer or an ERR_PTR.
-+        let shash =
-+            from_err_ptr(unsafe { bindings::crypto_alloc_shash(name.as_char_ptr(), 0, 0) })?;
-+        let shash = NonNull::new(shash).ok_or(ENOMEM)?;
++    /// Hash transformation for `base_hash_alg` computation.
++    crypto: Option<Shash>,
+ }
+ 
+ impl<T: Transport> SpdmState<T> {
+@@ -109,6 +161,12 @@ pub(crate) fn new(
+             validate,
+             version: SPDM_MIN_VER,
+             rsp_caps: 0,
++            base_asym_alg: 0,
++            base_hash_alg: 0,
++            meas_hash_alg: 0,
++            base_asym_enc: c"",
++            sig_len: 0,
++            crypto: None,
+         }
+     }
+ 
+@@ -265,4 +323,113 @@ pub(crate) fn get_capabilities(&mut self) -> Result<(), Error> {
+ 
+         Ok(())
+     }
 +
-+        // SAFETY: `shash` is a valid `crypto_shash` handle.
-+        let desc_size = unsafe { bindings::crypto_shash_descsize(shash.as_ptr()) } as usize;
-+        // SAFETY: `shash` is a valid `crypto_shash` handle.
-+        let hash_len = unsafe { bindings::crypto_shash_digestsize(shash.as_ptr()) } as usize;
-+        let desc_len = core::mem::size_of::<bindings::shash_desc>() + desc_size;
++    fn update_response_algs(&mut self) -> Result<(), Error> {
++        match self.base_asym_alg {
++            #[cfg(CONFIG_CRYPTO_RSA)]
++            SPDM_ASYM_RSASSA_2048 => {
++                self.sig_len = 256;
++                self.base_asym_enc = c"pkcs1";
++            }
++            #[cfg(CONFIG_CRYPTO_RSA)]
++            SPDM_ASYM_RSASSA_3072 => {
++                self.sig_len = 384;
++                self.base_asym_enc = c"pkcs1";
++            }
++            #[cfg(CONFIG_CRYPTO_RSA)]
++            SPDM_ASYM_RSASSA_4096 => {
++                self.sig_len = 512;
++                self.base_asym_enc = c"pkcs1";
++            }
++            #[cfg(CONFIG_CRYPTO_ECDSA)]
++            SPDM_ASYM_ECDSA_ECC_NIST_P256 => {
++                self.sig_len = 64;
++                self.base_asym_enc = c"p1363";
++            }
++            #[cfg(CONFIG_CRYPTO_ECDSA)]
++            SPDM_ASYM_ECDSA_ECC_NIST_P384 => {
++                self.sig_len = 96;
++                self.base_asym_enc = c"p1363";
++            }
++            #[cfg(CONFIG_CRYPTO_ECDSA)]
++            SPDM_ASYM_ECDSA_ECC_NIST_P521 => {
++                self.sig_len = 132;
++                self.base_asym_enc = c"p1363";
++            }
++            _ => {
++                dev_err!(&self.dev, "Unknown asym algorithm\n");
++                return Err(EPROTO);
++            }
++        }
 +
-+        let desc_vec = match KVec::from_elem(0u8, desc_len, GFP_KERNEL) {
-+            Ok(desc_vec) => desc_vec,
-+            Err(e) => {
-+                // SAFETY: `shash` was allocated above and must be freed if the
-+                // descriptor allocation fails.
-+                unsafe {
-+                    bindings::crypto_free_shash(shash.as_ptr());
-+                }
-+                return Err(e.into());
++        let hash_name = match self.base_hash_alg {
++            #[cfg(CONFIG_CRYPTO_SHA256)]
++            SPDM_HASH_SHA_256 => c"sha256",
++            #[cfg(CONFIG_CRYPTO_SHA512)]
++            SPDM_HASH_SHA_384 => c"sha384",
++            #[cfg(CONFIG_CRYPTO_SHA512)]
++            SPDM_HASH_SHA_512 => c"sha512",
++            _ => {
++                dev_err!(&self.dev, "Unknown hash algorithm\n");
++                return Err(EPROTO);
 +            }
 +        };
 +
-+        let (desc_buf, _desc_len, desc_capacity) = desc_vec.into_raw_parts();
++        self.crypto = Some(Shash::new(hash_name)?);
 +
-+        debug_assert_eq!(
-+            desc_buf.addr() % core::mem::align_of::<bindings::shash_desc>(),
-+            0,
-+            "kmalloc alignment insufficient for shash_desc"
-+        );
-+        let desc = NonNull::new(desc_buf.cast::<bindings::shash_desc>()).ok_or(ENOMEM)?;
++        Ok(())
++    }
 +
-+        // SAFETY: `desc` points to an allocation of `desc_len` bytes, which is
-+        // exactly large enough for a `shash_desc` header and its trailing
-+        // algorithm state. No explicit init is needed as
-+        // `crypto_shash_digest()` re-initialises the descriptor on each call.
-+        unsafe {
-+            (*desc.as_ptr()).tfm = shash.as_ptr();
++    pub(crate) fn negotiate_algs(&mut self) -> Result<(), Error> {
++        let mut request = NegotiateAlgsReq::default();
++        request.header.version = self.version;
++
++        if self.version >= SPDM_VER_12 && (self.rsp_caps & SPDM_KEY_EX_CAP) == SPDM_KEY_EX_CAP {
++            request.other_params_support = SPDM_OPAQUE_DATA_FMT_GENERAL;
 +        }
 +
-+        Ok(Self {
-+            shash,
-+            desc,
-+            desc_len,
-+            desc_capacity,
-+            hash_len,
-+            name,
++        // We never offer extended algorithms or algorithm structures, so a
++        // compliant response is exactly NEGOTIATE_ALGS_RSP_SZ bytes.
++        let rsp_sz = NEGOTIATE_ALGS_RSP_SZ.min(self.data_transfer_sz as usize);
++
++        request.length = NegotiateAlgsReq::WIRE_SIZE as u16;
++
++        let mut request_buf = request.to_bytes()?;
++
++        let response_vec: KVec<u8> = KVec::from_elem(0u8, rsp_sz, GFP_KERNEL)?;
++
++        let response: NegotiateAlgsRsp = self
++            .spdm_exchange(request_buf.as_mut_slice(), response_vec)?
++            .validate(&*self)?;
++
++        self.base_asym_alg = response.base_asym_sel;
++        self.base_hash_alg = response.base_hash_sel;
++        self.meas_hash_alg = response.measurement_hash_algo;
++
++        if self.base_asym_alg & SPDM_ASYM_ALGOS == 0 || self.base_hash_alg & SPDM_HASH_ALGOS == 0 {
++            dev_err!(&self.dev, "No common supported algorithms\n");
++            return Err(EPROTO);
++        }
++
++        let meas_hash_valid = if self.rsp_caps & SPDM_MEAS_RESP_CAP != 0 {
++            response.measurement_specification_sel == SPDM_MEAS_SPEC_DMTF
++                && self.meas_hash_alg.count_ones() == 1
++        } else {
++            response.measurement_specification_sel == 0 && self.meas_hash_alg == 0
++        };
++
++        // /* Responder shall select exactly 1 alg (SPDM 1.0.0 table 14) */
++        if self.base_asym_alg.count_ones() != 1
++            || self.base_hash_alg.count_ones() != 1
++            || !meas_hash_valid
++            || response.other_params_sel != request.other_params_support
++        {
++            dev_err!(&self.dev, "Malformed algorithms response\n");
++            return Err(EPROTO);
++        }
++
++        self.update_response_algs()?;
++
++        Ok(())
++    }
+ }
+diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
+index 66212f0faf5f1..335f2f43dc07c 100644
+--- a/lib/rspdm/validator.rs
++++ b/lib/rspdm/validator.rs
+@@ -8,12 +8,16 @@
+ //! <https://www.dmtf.org/dsp/DSP0274>
+ 
+ use crate::consts::{
++    SPDM_ASYM_ALGOS,
+     SPDM_CAP_SUPPORTED_ALGORITHMS,
+     SPDM_CTEXPONENT,
+     SPDM_GET_CAPABILITIES,
+     SPDM_GET_VERSION,
++    SPDM_HASH_ALGOS,
++    SPDM_MEAS_SPEC_DMTF,
+     SPDM_MIN_DATA_TRANSFER_SIZE,
+     SPDM_MIN_VER,
++    SPDM_NEGOTIATE_ALGS,
+     SPDM_REQ_CAPS,
+     SPDM_VER_10,
+     SPDM_VER_11,
+@@ -492,3 +496,232 @@ fn validate(unvalidated: KVec<u8>, context: &'c SpdmState<T>) -> Result<Self, Se
+         })
+     }
+ }
++
++pub(crate) struct NegotiateAlgsReq {
++    pub(crate) header: SpdmHeader,
++
++    pub(crate) length: u16,
++    pub(crate) measurement_specification: u8,
++    pub(crate) other_params_support: u8,
++
++    pub(crate) base_asym_algo: u32,
++    pub(crate) base_hash_algo: u32,
++
++    pub(crate) ext_asym_count: u8,
++    pub(crate) ext_hash_count: u8,
++    pub(crate) mel_specification: u8,
++    // ext_asym
++    // ext_hash
++    // resp_alg_struct
++}
++
++impl NegotiateAlgsReq {
++    pub(crate) const WIRE_SIZE: usize = mem::size_of::<SpdmHeader>() + 28;
++
++    pub(crate) fn to_bytes(&self) -> Result<KVec<u8>> {
++        let mut out = self.header.to_bytes()?;
++
++        out.extend_from_slice(&self.length.to_le_bytes(), GFP_KERNEL)?;
++        out.push(self.measurement_specification, GFP_KERNEL)?;
++        out.push(self.other_params_support, GFP_KERNEL)?;
++
++        out.extend_from_slice(&self.base_asym_algo.to_le_bytes(), GFP_KERNEL)?;
++        out.extend_from_slice(&self.base_hash_algo.to_le_bytes(), GFP_KERNEL)?;
++
++        out.extend_from_slice(&[0u8; 12], GFP_KERNEL)?;
++
++        out.push(self.ext_asym_count, GFP_KERNEL)?;
++        out.push(self.ext_hash_count, GFP_KERNEL)?;
++        out.push(0u8, GFP_KERNEL)?;
++        out.push(self.mel_specification, GFP_KERNEL)?;
++
++        Ok(out)
++    }
++}
++
++impl Default for NegotiateAlgsReq {
++    fn default() -> Self {
++        NegotiateAlgsReq {
++            header: SpdmHeader::new(SPDM_NEGOTIATE_ALGS),
++
++            length: 32,
++            measurement_specification: SPDM_MEAS_SPEC_DMTF,
++            other_params_support: 0,
++            base_asym_algo: SPDM_ASYM_ALGOS,
++            base_hash_algo: SPDM_HASH_ALGOS,
++            ext_asym_count: 0,
++            ext_hash_count: 0,
++            mel_specification: 0,
++        }
++    }
++}
++
++/// Size of  everything up to the variable-length algorithm arrays (ExtAsymSel).
++pub(crate) const NEGOTIATE_ALGS_RSP_SZ: usize = mem::size_of::<SpdmHeader>() + 32;
++
++#[expect(dead_code)]
++pub(crate) struct NegotiateAlgsRsp {
++    pub(crate) header: SpdmHeader,
++
++    pub(crate) measurement_specification_sel: u8,
++    pub(crate) other_params_sel: u8,
++
++    pub(crate) measurement_hash_algo: u32,
++    pub(crate) base_asym_sel: u32,
++    pub(crate) base_hash_sel: u32,
++
++    pub(crate) mel_specification_sel: u8,
++    pub(crate) ext_asym_sel_count: u8,
++    pub(crate) ext_hash_sel_count: u8,
++
++    pub(crate) ext_asym: KVec<u32>,
++    pub(crate) ext_hash: KVec<u32>,
++    pub(crate) resp_alg_struct: KVec<RespAlgStruct>,
++
++    /// The actual length of the SPDM message. `raw_bytes` might be longer
++    /// as it includes transport specific padding.
++    length: usize,
++
++    /// Entire response, used for the transcript hash.
++    raw_bytes: KVec<u8>,
++}
++
++impl NegotiateAlgsRsp {
++    #[expect(dead_code)]
++    pub(crate) fn as_bytes(&self) -> Result<&[u8], Error> {
++        self.raw_bytes.get(..self.length).ok_or(EPROTO)
++    }
++}
++
++impl<'c, T: Transport> Validate<'c, Untrusted<KVec<u8>>, &'c SpdmState<T>> for NegotiateAlgsRsp {
++    type Err = Error;
++
++    fn validate(unvalidated: KVec<u8>, context: &'c SpdmState<T>) -> Result<Self, Self::Err> {
++        let header: SpdmHeader =
++            Untrusted::new(unvalidated.get(0..4).ok_or(EPROTO)?).validate(context)?;
++
++        if header.code != SPDM_NEGOTIATE_ALGS - 0x80 {
++            return Err(EPROTO);
++        }
++
++        if header.version != context.version {
++            dev_err!(&context.dev, "Invalid version response\n");
++            return Err(EPROTO);
++        }
++
++        // Make sure all of the fixed length data is included
++        if unvalidated.len() < NEGOTIATE_ALGS_RSP_SZ {
++            dev_err!(&context.dev, "Truncated algorithm response\n");
++            return Err(EPROTO);
++        }
++
++        let resp_len = u16::from_le_bytes(
++            unvalidated
++                .get(4..4 + mem::size_of::<u16>())
++                .ok_or(EPROTO)?
++                .try_into()
++                .map_err(|_| EPROTO)?,
++        );
++
++        let measurement_specification_sel = *unvalidated.get(6).ok_or(EPROTO)?;
++        let other_params_sel = *unvalidated.get(7).ok_or(EPROTO)?;
++
++        // Helper to read a little-endian `u32`
++        let read_le32 = |offset: usize| -> Result<u32, Error> {
++            Ok(u32::from_le_bytes(
++                unvalidated
++                    .get(offset..offset + mem::size_of::<u32>())
++                    .ok_or(EPROTO)?
++                    .try_into()
++                    .map_err(|_| EPROTO)?,
++            ))
++        };
++
++        let measurement_hash_algo = read_le32(8)?;
++        let base_asym_sel = read_le32(12)?;
++        let base_hash_sel = read_le32(16)?;
++
++        let mel_specification_sel = *unvalidated.get(31).ok_or(EPROTO)?;
++        let ext_asym_sel_count = *unvalidated.get(32).ok_or(EPROTO)?;
++        let ext_hash_sel_count = *unvalidated.get(33).ok_or(EPROTO)?;
++
++        // We currently never request extended algorithms or algorithm structures
++        if header.param1 != 0 || ext_asym_sel_count != 0 || ext_hash_sel_count != 0 {
++            dev_err!(
++                &context.dev,
++                "Responder selected unsupported extended algorithms\n"
++            );
++            return Err(EPROTO);
++        }
++
++        let mut offset = NEGOTIATE_ALGS_RSP_SZ;
++
++        let mut ext_asym = KVec::new();
++        for _ in 0..ext_asym_sel_count {
++            ext_asym.push(read_le32(offset)?, GFP_KERNEL)?;
++            offset += mem::size_of::<u32>();
++        }
++
++        let mut ext_hash = KVec::new();
++        for _ in 0..ext_hash_sel_count {
++            ext_hash.push(read_le32(offset)?, GFP_KERNEL)?;
++            offset += mem::size_of::<u32>();
++        }
++
++        let mut resp_alg_struct = KVec::new();
++        for _ in 0..header.param1 {
++            let alg_type = *unvalidated.get(offset).ok_or(EPROTO)?;
++            let alg_count = *unvalidated.get(offset + 1).ok_or(EPROTO)?;
++            let fixed_alg_count = (alg_count >> 4) as usize;
++            let ext_alg_count = (alg_count & 0xf) as usize;
++            offset += 2;
++
++            let mut alg_supported = KVec::new();
++            alg_supported.extend_from_slice(
++                unvalidated
++                    .get(offset..offset + fixed_alg_count)
++                    .ok_or(EPROTO)?,
++                GFP_KERNEL,
++            )?;
++            offset += fixed_alg_count;
++
++            let mut alg_external = KVec::new();
++            for _ in 0..ext_alg_count {
++                alg_external.push(read_le32(offset)?, GFP_KERNEL)?;
++                offset += mem::size_of::<u32>();
++            }
++
++            resp_alg_struct.push(
++                RespAlgStruct {
++                    alg_type,
++                    alg_count,
++                    alg_supported,
++                    alg_external,
++                },
++                GFP_KERNEL,
++            )?;
++        }
++
++        if resp_len != offset as u16 {
++            dev_err!(&context.dev, "Incorrect response length reported\n");
++            return Err(EPROTO);
++        }
++
++        Ok(NegotiateAlgsRsp {
++            header,
++            measurement_specification_sel,
++            other_params_sel,
++            measurement_hash_algo,
++            base_asym_sel,
++            base_hash_sel,
++            mel_specification_sel,
++            ext_asym_sel_count,
++            ext_hash_sel_count,
++            ext_asym,
++            ext_hash,
++            resp_alg_struct,
++            length: offset,
++            raw_bytes: unvalidated,
 +        })
 +    }
-+
-+    /// Return the name of the hash
-+    #[inline]
-+    pub fn name(&self) -> &'static CStr {
-+        self.name
-+    }
-+
-+    /// Return the length of the hash output (in bytes)
-+    #[inline]
-+    pub fn hash_len(&self) -> usize {
-+        self.hash_len
-+    }
-+
-+    /// Computes a one-shot digest into `out`, which must be exactly the digest
-+    /// size of the selected hash algorithm.
-+    #[inline]
-+    pub fn digest(&mut self, data: &[u8], out: &mut [u8]) -> Result {
-+        if out.len() != self.hash_len {
-+            return Err(EINVAL);
-+        }
-+
-+        let data_len = u32::try_from(data.len()).map_err(|_| EINVAL)?;
-+
-+        // SAFETY: `self.desc` was created by `Shash::new()` and points to a
-+        // valid `shash_desc` with a valid `tfm`. `out` is checked above to be
-+        // exactly `crypto_shash_digestsize()` bytes.
-+        unsafe {
-+            to_result(bindings::crypto_shash_digest(
-+                self.desc.as_ptr(),
-+                data.as_ptr(),
-+                data_len,
-+                out.as_mut_ptr(),
-+            ))
-+        }
-+    }
 +}
-+
-+impl Drop for Shash {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.desc` was produced from a `KVec<u8>` allocation by
-+        // `into_raw_parts()` in `Shash::new()`, and `desc_len` and
-+        // `desc_capacity` are the exact values handed out at that time.
-+        let desc_vec = unsafe {
-+            KVec::<u8>::from_raw_parts(
-+                self.desc.as_ptr().cast::<u8>(),
-+                self.desc_len,
-+                self.desc_capacity,
-+            )
-+        };
-+        drop(desc_vec);
-+
-+        // SAFETY: `self.shash` is a valid handle created by `crypto_alloc_shash()`.
-+        unsafe {
-+            bindings::crypto_free_shash(self.shash.as_ptr());
-+        }
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index a3c54971e9dea..0cf6eab448d08 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -82,6 +82,8 @@
- pub mod fwctl;
- #[cfg(CONFIG_GPU_BUDDY = "y")]
- pub mod gpu;
-+#[cfg(CONFIG_CRYPTO_HASH2 = "y")]
-+pub mod hash;
- #[cfg(CONFIG_I2C = "y")]
- pub mod i2c;
- pub mod id_pool;
 -- 
 2.56.0
 
