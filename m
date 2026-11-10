@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794284386;
-	b=nj+MkqP7O0Tfovrz1zRJrzbEUPcjNSEZitaLppRJ59xH7JaYCQjIfLLbwd13Iy2D6AWP
-	 PFmoKNddAwqTY+NG926/j9Pr+WOtuMXai1TGp+xzIeAfXezSCP0Y4NpqydHSlSPdNCYIb
-	 lnuHlBa4Lc+948fD1SC07i86ZMa+5514IurkRv9EZlWEJfear2CMcnASYfIXFBoI9rWDh
-	 r3XOHf4KBQDMtAd0CCMJ/+sJjUdV1GDpfe2701gjNk3rdanNJqJCmYLoR31bHQR6KXOpK
-	 8JF3dCh7/AAJ53HpVSmctt4al7SdIeaqO4fcNTk3xUqJW8scMLwJlDeL8IOX4dBYhxQ==
+	t=1794284394;
+	b=y3YgOkW1pHi/ri6oFgOZE+deoHPCmfUk8k85szY1zMmD4Ufq7yBjP/fzi0ws8afzRXeK
+	 E+rs40H6kR0gv14xpFpugg4SZ3MAkacDXksswt5Zhsps1ieT/i8zi1enykjXpJ+gbkRGi
+	 PcIknZHW9WXCS/rcV74kjM3q5MufL1KYSfU5QcuXN7eLVEOeOim8VH52QtoM0XwMeHbJq
+	 Y5BUN6nMLunI3KNISouPmAS3tpedBgpE0wWZ7RTWCA5P6+5IA42qolPMVp8Ds2HgXQFe4
+	 wqk6m2Fxvf7ja6Dp9jyPZWc0rh9f0DuFS7otq9gVlGkeirUnhXGhaXTWciHl/U6zD2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794284386;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794284394;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=GWNZ8zQxqiZGzpWyot+03nwu4qhuEeSDcx/Yq9DH+WA=;
-	b=CBgkHvqg6pku/mCs3LMmke2sDMR1VPsEAp+DEQnXnoSiH8RDxaF7X2Hrf0oDxiERBuIl
-	 O4T2gJvmgSUJAoHg8Mz9UIAwJD5lNDmWteFpjuvhcfAO2XtJtS70zBcg1uVc4wDvfDCM3
-	 SSpbPBTr80gmRTeywxPaCR4xDPZVnW4iAvSDQDjAQB+6GytIinYyTBybVlrBTrt5vpS9N
-	 cTBTPVjh2wnL+nK/+nE4OIAhCYBHq81qe460lIF9TKaqvHHy20djuFo24CenvmVEBFIoU
-	 w6GE0wCIqmS+zJ84mYzZjpBaR5Y/AdCkRki93xK2BLqWUpFveaaX5P39oth4OaHjFbA==
+	bh=3AxS6ewNN37c8Z1T2Uoj4Jwsnbq6o66JX4RBhLIPEDs=;
+	b=XAOyVcpj2T9bvomWtyy01OTfRHEbF5xhaftlEHfXoJdMS5wVFgabV8D0QvdS2bBUodHy
+	 rOUUnJNmBNZFq8gPIu4JiTvePwJ6KrUXN1Sng/0exZ28/GlOqpARV4BOG0ghmBm6YXosZ
+	 JaDZ/VlgjYPf90sZi45qktGmPlsysgIUtgTo/PCl7My/nNEYC5jTfq/vi75TSkqQPa/za
+	 v5sbe5FMhiBjZ/BdoSZbAusdS59N/fBpQRn+TKeLSqzxUzfeogV68+X5mMcAN3emX2wp0
+	 EaD2Yd0fJvfrLLGfSRd7MHPbA44CwJwESOiigy8iKSOjlCK52QM1+a1cZxM5rmese4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="s/vjsfgA";
-	arc=none smtp.remote-ip=74.125.82.49
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="H/8Bxj22";
+	arc=none smtp.remote-ip=74.125.82.181
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F7F606E8EC
-	for <linux-coco@lists.linux.dev>; Tue, 10 Nov 2026 04:19:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0F7F606E8EC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0F460A2636
+	for <linux-coco@lists.linux.dev>; Tue, 10 Nov 2026 04:19:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D0F460A2636
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s/vjsfgA
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1b3a05f8b5bso2461090c88.1
-        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 20:19:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H/8Bxj22
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3720addb068so2720675eec.1
+        for <linux-coco@lists.linux.dev>; Mon, 09 Nov 2026 20:19:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794284385; x=1794889185; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1794284393; x=1794889193; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GWNZ8zQxqiZGzpWyot+03nwu4qhuEeSDcx/Yq9DH+WA=;
-        b=s/vjsfgAkD3ih+wq0lJvbjYOVlnjstqcaFpUO2CpqODu8uYOcLorGae4tuQrZho+BG
-         1Ro6IrR8Ypb+ACPE/LrgCv+FQ91lV6ba4TtaadMvZ4XKyyQWy8hRhvIjpcJSRIBZNHI0
-         +uPWYHRQBfaWwrsoHSUujA5uvqESY/eO6d0fL2GLIcKAbLI4PjikqXaAWjUcGkoLJ3ss
-         6INkL8iMLYPfXIg8fPut1zF9umTRqNSzt/fvpXmrbmtHUOIoWSxc1X/7LUM7SglWOB7q
-         fRmo1zlLb79zvdBkNsDAvI/023ZKfuqCTrC8USwr/ozVgnD7ssFQKnh/MOEubKxxahWK
-         L4jA==
+        bh=3AxS6ewNN37c8Z1T2Uoj4Jwsnbq6o66JX4RBhLIPEDs=;
+        b=H/8Bxj22wEG3t7pxgENEdBX8fWtS8SIDnp7pyl648eJ8GKxUbkhJu9GajlbC731pVj
+         g15O1wMW5Agdq9JKPR8dAUA7P8VL1TbXbMDDer6Rzc/w5cpPXV4E/P2fLw9JJsQSP4Yn
+         fq1xGi3bjQ7WNKbrphBQ12SFeITi80kbgS6mDDIneUHhHWiwkG4/g41k5FzSFu+sQVEr
+         pxksL4fYcCgUw3k1HgSgrcYdbfM3s1eg4lE1SW/Di3l/ryRgXSac8jpqR0ah7udcg87Q
+         exB1NgU0LuEYsH+QixNf8rK+lBn0AOFGEkzzYuE9owrH5VF8WnWzdsixxUDHt1bWEjRJ
+         BdzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794284385; x=1794889185;
+        d=1e100.net; s=20260707; t=1794284393; x=1794889193;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GWNZ8zQxqiZGzpWyot+03nwu4qhuEeSDcx/Yq9DH+WA=;
-        b=lvU/SdXPkjilOIQZPz76V6+Avq4sTWRjMZ4/vUxWicPN86HFp2xN4QSVGICFDZKr6N
-         M5n5t8l49Xbgzg4GbGNs/K8y5guqbXKENnpeSHNtXQ8HeMPRsgWp08AzcUS2tVSDvhKG
-         jpSLfnTjI2mKXixdiNdfnBhrlFL9ReMkLMz8ZTnAOZIOBY/2/Zym2cOzreNGf2XYgwDV
-         feI3oxwY7G0uYq7WFPiHVvMg/BkKy13Pa0m07/8TiT1Vmg2Q222J59HK55XRVvk2XAFm
-         rnKYdj3DUOubTV+PdmcFSk4LtpOtk6hAeCOJTzYk2BfNlZeKHt9l35JRUleDhSBje27M
-         OwkA==
-X-Forwarded-Encrypted: i=1; AL+hErG0Ovfa+Ig0h6rFJ3vQ6hJM6U/3b/lOCodeORpjotlZeyHg7ssV8pZg38f2IuEwCfu/qojPvD0sfDjg@lists.linux.dev
-X-Gm-Message-State: APuU4Z9NodENvhjsnTnkxNTukkJJv+Nr+/0J892ZXotEQvIHqox8jTad
-	IwO1WwySmvVvTmPxYQcNixzEOSlqyLF84jo5eNVrSpMY7gceaMg9yaAQ
-X-Gm-Gg: AYBFou2cC7HskYQxjYYsFXJgHFB0cQgaFdQkI1szZxcjeoBjU8geTQTGJM7lz7vkeAd
-	qJoLZ4gZf3FQtIZfmIskgY00Bm8Iy7M73bjeraAiBzIOjG8rpFkPP4moMs2a5Mft8uCigv2MI89
-	lvyV0c+E6k28a7tbCvY1nVWCHaQ7XZ8IvbrfdgaLqAlIRe9rKPxO5u7YMdwuvCR4q0lxXDqoDZr
-	XC2wufKbWVFmvBf6+dSmKISG81Mk6nkZnq0cdbRFXouBpYiv3GIysvZi+abZIvwcPao094YB5nm
-	CyYOjpgTNEYcmWA23SEY9ee4buZ7fWZyVdjIOsBzi8lD5jng2n5UQZWrtBu7pLlOj67OZ9PMqdT
-	mDRkwQmr42S/xREnrZFHOBs/4iaohMs+NKLGEpzB7L181kXGduiFf+r23zxxCiKk1GU5qWxiJ/O
-	K1FBZr/saJTrSpRsfotiA9v/I4pUrcejXEC+NhIluzI2GyQrroOIRNOSS1mE35cObzuoAPRh3fu
-	fEd838oPTTGa4yCU9yYaYXenjJt8oj28FJ4yqFxcRMpluUl2ShHFwtXHGKweHCIrRBpFSAtBs6E
-	csIHMBKXNLg6kS60wb9oXIPn2Mo4s8WbzGiDEZasd/iIe9o=
-X-Received: by 2002:a05:701b:450c:10b0:149:49c:233 with SMTP id a92af1059eb24-1b3b603e878mr2107744c88.27.1794284384921;
-        Mon, 09 Nov 2026 20:19:44 -0800 (PST)
+        bh=3AxS6ewNN37c8Z1T2Uoj4Jwsnbq6o66JX4RBhLIPEDs=;
+        b=MbI2SwTMsX+3aFFOF5WUkLdIYiyHjItbj87pagRaxdi/nfR1C5tY9z3OzCgWyhwx6d
+         mxy6Z5W77CUEA+oKQHa9NSEiOyeKZGFpUhP7cdQBQjL0iSjeYqL/129DdTpZXYbn6nnz
+         EoOD11FXv8z1jUFAoVZIDvTBvgPjO0oNftvM7vAg6nKluLJ5wD0a016fK6xLNQWpX0hZ
+         U9wbKAo8tzji+BXyQrxwg+J1qd3bpTKeZHeDmPaAt9KVCJ6dnXnfWI3li1v//Y5opHh6
+         lnpQ+UPUQxHG9AaxLIhvU6XKN+WVgDVz9ZsvUilyd0wc3iduVn710apuazI6lV5g+ZMo
+         44ow==
+X-Forwarded-Encrypted: i=1; AL+hErER51d9Dyi1iyPrppvxyxzu0iFE8BiB/B5lBNuh2iO0j7H8G4bpAFdK5br97sJCHWHtW24BzUCN0euq@lists.linux.dev
+X-Gm-Message-State: APuU4Z8Sd4ABIgnBtnyR/EXuiyB7ZSRli6IHxhJzG5q+uS9y8c2p2SyM
+	RreGHoZTZK9dWcjFIcjdqXcABlnh+u5SYevEx5Obv/oLPaH66EocCQjs
+X-Gm-Gg: AYBFou3QeXDpLtHI2IaM+auiuT1Z8iUprz8B7kJz8Rjeinb/PlGO4ZpqtYF5lQmhGZ/
+	rSGBrXQaiJ9YYpn/CqIQkqe3moRxcsCB1dQYDnKELYd47cbH3soQDyvnyecwbbBKvWAbDONjY+Q
+	E+Qxq1oNFPwFVFDBfjlnbWny1IE+8pxQGa60i7whpGneCkYiHTZ/0ezFMdHUzOu9HP83qrAqWLh
+	oZqC8V2Y6VYHARMv7csTI9pNYLkcicsWE0YXMDgiwCZ7nQltCEyulyD4uxLTShfdEJ9gvwE4e1k
+	4CrtEsM3akpNu/VDj7ngcJUPtUULm/+1tVnwR7EthLKuuXz8lIaqxSRgDaVWKdNltyufnxQ0QHo
+	F8lJTYyDteGguBtX1V/IMIeBaLQ6emJ7mLCO9E7KURkzzXyLx1E3MGiKBmhmtlK2AMYFIgymPF+
+	rW5aJ+XF109uG6JhCLqE7M4h+u7E3yvi+urLS5ABigfHY9RFfU36IfRsU8pdPxXHiD1vKI8M3HK
+	VpX/bxvEjo6TvZxwrDwm2gM2Ggvc7uz3+gbqF6tCBUjw3OeTJ7A67OCMW2qHhSidC4GH1nwA4oH
+	1zYJhajV6iK/UWIRzEG2ul/Mlyp94rQ+VUlPfael1RoQ624=
+X-Received: by 2002:a05:701b:2807:b0:144:fb31:a597 with SMTP id a92af1059eb24-1b3b61860eemr1668909c88.47.1794284393237;
+        Mon, 09 Nov 2026 20:19:53 -0800 (PST)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.19.37
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.19.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 20:19:44 -0800 (PST)
+        Mon, 09 Nov 2026 20:19:52 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: bhelgaas@google.com,
@@ -105,9 +105,9 @@ Cc: gary@garyguo.net,
 	benno.lossin@proton.me,
 	alex.gaynor@gmail.com,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v6 07/25] rust: add bindings for hash.h
-Date: Tue, 10 Nov 2026 14:18:14 +1000
-Message-ID: <20261110041832.1730924-8-alistair.francis@wdc.com>
+Subject: [PATCH v6 08/25] rust: device: Expose Device as_raw() publicly
+Date: Tue, 10 Nov 2026 14:18:15 +1000
+Message-ID: <20261110041832.1730924-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261110041832.1730924-1-alistair.francis@wdc.com>
 References: <20261110041832.1730924-1-alistair.francis@wdc.com>
@@ -124,69 +124,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Alistair Francis <alistair.francis@wdc.com>
 
-Make the functions crypto_shash_descsize(), crypto_shash_digestsize()
-and crypto_free_shash() available to Rust.
+We are going to call the as_raw() function later as part of the SPDM
+library, so expose it publicly.
 
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers/hash.c             | 22 ++++++++++++++++++++++
- rust/helpers/helpers.c          |  1 +
- 3 files changed, 24 insertions(+)
- create mode 100644 rust/helpers/hash.c
+ rust/kernel/device.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3791af0aadc73..4992bc3194e7e 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -28,6 +28,7 @@
-  */
- #include <linux/hrtimer_types.h>
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 2291d85b6849e..be89e9023b09f 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -262,7 +262,8 @@ pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
  
-+#include <crypto/hash.h>
- #include <linux/acpi.h>
- #include <linux/gpu_buddy.h>
- #include <drm/drm_device.h>
-diff --git a/rust/helpers/hash.c b/rust/helpers/hash.c
-new file mode 100644
-index 0000000000000..1e50fe16c5031
---- /dev/null
-+++ b/rust/helpers/hash.c
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <crypto/hash.h>
-+
-+#ifdef CONFIG_CRYPTO_HASH2
-+
-+__rust_helper unsigned int rust_helper_crypto_shash_descsize(struct crypto_shash *tfm)
-+{
-+	return crypto_shash_descsize(tfm);
-+}
-+
-+__rust_helper unsigned int rust_helper_crypto_shash_digestsize(struct crypto_shash *tfm)
-+{
-+	return crypto_shash_digestsize(tfm);
-+}
-+
-+__rust_helper void rust_helper_crypto_free_shash(struct crypto_shash *tfm)
-+{
-+	crypto_free_shash(tfm);
-+}
-+
-+#endif /* CONFIG_CRYPTO_HASH2 */
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index d62c7be1ca7bd..0dcdad905f0ef 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -67,6 +67,7 @@
- #include "fs.c"
- #include "fwctl.c"
- #include "gpu.c"
-+#include "hash.c"
- #include "interrupt.c"
- #include "io.c"
- #include "irq.c"
+ impl<Ctx: DeviceContext> Device<Ctx> {
+     /// Obtain the raw `struct device *`.
+-    pub(crate) fn as_raw(&self) -> *mut bindings::device {
++    #[inline]
++    pub fn as_raw(&self) -> *mut bindings::device {
+         self.0.get()
+     }
+ 
 -- 
 2.56.0
 
