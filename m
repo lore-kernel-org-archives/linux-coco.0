@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.19
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794381911;
-	b=sLviqGD6iCTK8/vJtmK31nUMUggOMM3baza4MJ6QZY4gNB83Xti6a/UISpKLJ205Pb2U
-	 dY4oGOB3ZWRCtF7I0g8ylwf3E4NWvq7LezPfdagZ6SKqezJ2yq2BlTg7JGWPpLDxgplcx
-	 TeyeVb5L0nyknh21zotPGssRvgVGJIm9MIpHf2mPpNH+FU9TgZZ/54INanjuR5hsgtqO/
-	 T5U5mihk2TY91LIVc+frt4zl+fJVHbCdXCn4+k1q/YhI2WL1FoFbkkqVbNGLLHmTofR2v
-	 dCWnb+3wF7piWQufyZZY3Y9lG+hZiHf9CH/5oLDbX++d7XlHApvnNI3+/e2bhHGTrJg==
+	t=1794383881;
+	b=JpfrBSBjLfauvnhMIKm1QabglEREe6YRv3BKmw0peMkou5Zx+XGoVka/UqSKonEU2UEn
+	 1QeenebDC5FB/38IxOrzpY0Lo8Br+ntFiaYGwi3lZMgkPwc480woXW0Mu1IjpY23gI105
+	 rPn07A382aKORbdJV4iHjrXMxRbLzNrDcyhKLsVc6wa3zQb2jT7JXoxLkA89B6V13z6By
+	 apberfdHFrSc7fk2kD4Xc3vIwAlvTrwi7XbFNDoMctZZZyyq6vEjPdrjbq+0pE9PEZTE4
+	 gbIBPa9M5sfVtvI8Wm0WpyzoDE6rpb1wO+noqbk4ah+LlI8QSUWBdgP06RY8l2B7fFw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794381911;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794383881;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
@@ -27,88 +27,88 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=v9RcGRlxnphpW+NyisaoHp1xwjz835uJNujfbjZzgoQ=;
-	b=mgL2DcMyAc31TnQxpwPPlWSsqATUl3e5EGLJIW6kuoWFusVbfSmP9uIfnlhjylIbf8nv
-	 S8u8xnz4Ox55CDU6cJ+PYrayBJGC1qQoEK66zjS7fH2stFDikMk8k2xIO7UgCeCpu63Ve
-	 +vGYiM7GIWCmpNO6iBHHEiXcUD1LFVl62XOLt/gLstpVX8RZhwzb67TMeX4imaZjT69bn
-	 mtD74uy5elGHNnhk1fq7kRLELPusY50ukEBQIMTVRycbLRLE8QBhyDrioXIYTlfW/6dz8
-	 /hKC9GyLp+UWQASApKVuCahoZiTaalda+/NAeGUPTkH9vTd5GInDoGBbw96JNR1sIhA==
+	bh=K5n/FQvKhipajNUNAc44zdwaemBJbMHgCBPfhAJsjTE=;
+	b=Vk/U6vTgNJRXKO/5aEvha/bKpUHQTokZh7/lfnK989ORubRvhzpjWq7fdDWwev6xMVye
+	 4cD/J1AKxdEyoOnkQAbQjQKCdIOIEAYpFJHK/x/EDKNzeOnuJOUDSKnjjbFW+ElW77z9u
+	 3Dww22h+t+k8GvwS00O7607zTUVbajVnrKEkJmYpFtsXCsX4xrm6ctDO6bS/exXSAo56G
+	 NEtW7ZQh69q4DAu2dh351fYdlRLWhqvFwHf5nkUcogJCWwDuxLGNVjEWwfJeB44WOMjy5
+	 lqWLoUqQyFDm3CdeClLAUEk8AM8a6q7e17I15jC11Xng2H4uq/0/38iDua6U279XuaQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RkahbkIp;
-	arc=fail smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Hratg650;
+	arc=fail smtp.remote-ip=198.175.65.19
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F9606A327
-	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 07:25:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C33F9606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C25606A320
+	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 07:58:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1C25606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RkahbkIp
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Hratg650
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794381909; x=1825917909;
+  t=1794383881; x=1825919881;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=O31UqqVGNDcrHiGeppNd9Tw0KlSinU79rebFJgp/RmA=;
-  b=RkahbkIpgMJ7NMkYZY/o+skkpDyx6AJBPSy0LU4vam+niepxV+dEqsNL
-   MmsJsPdtZAKVcvgBNRhFcQc89W+QkvrPGQOYrTA9s/H7bOoi/b2OuHbFB
-   NE7iT9xOUtyuP0sU03a5nykvTO72U8KYbH3iDc2OM1G2PnrBewyq5wQfT
-   GcDWgiEkHaIpOe+LyXLdK/e7CE+0934OvRCOU44lc9LhVDRG2jUJSqGz6
-   9E0gE2TMii4C6o2qUn2sSM2w8OrejChjR6sIh4/ydCbZ1+DU36c8znWij
-   tjHcoXb/Yb+/gzKOnU3hoMMrU2MI25O7nxOaIKgmsUnXtwlonb0u8NIAm
-   Q==;
-X-CSE-ConnectionGUID: /5CyXhDWT0axu2ixLebovw==
-X-CSE-MsgGUID: DZTKpecKTZuACal7vXz17Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3041853"
+  bh=XQIWPlJOggAchJCUyuilIbvP46JemBDdgqNuZi1ZbwQ=;
+  b=Hratg650Gw4YYcgR0cVLBhJ2kp+93A9o1BFMXbnVh52d5K6gTR4jez0d
+   8xnjY4tksTmN7JSENRtkO2aMseON+eHzzg0Po/fHxS4x8Un+7CxK0VWA9
+   OcTTaYA1VFNoPJrUINyhP8m6SXYDyCxbTI7RsepsKcReCYt487nNhLhR3
+   CTgYfX56VNGCFoft1udOORSnos20C5YACIILo8eFKUTCn3qNfGFqHlEG7
+   eIGyD/x7Gt1EgT9ZG01FIpzIIBMBQmW7in89Ee31XxR09dMmoTrA+uyJX
+   tlHUSw4WxKjv/xozdBssiSuSftYpU+r7lTgk5Bkmuw3LlVxZhHSSnkayE
+   w==;
+X-CSE-ConnectionGUID: ylt3F8hOShOiq5QvQmxhBA==
+X-CSE-MsgGUID: bdBhx+xVTs6lrgJ0wah4Ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3194285"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3041853"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 23:25:09 -0800
-X-CSE-ConnectionGUID: +nfXSzr+SVmWqobT2kYOmQ==
-X-CSE-MsgGUID: +QQ708ZISoatGuupMXGxeQ==
+   d="scan'208";a="3194285"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 23:57:58 -0800
+X-CSE-ConnectionGUID: lzHQiXHzTAyJ1Up+0hvNVg==
+X-CSE-MsgGUID: AoloGWjzQUiggKNsNZSsrA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="8330496"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 23:25:09 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+   d="scan'208";a="8704032"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 23:57:57 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 10 Nov 2026 23:25:08 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.56; Tue, 10 Nov 2026 23:57:57 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 23:25:08 -0800
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.25)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 23:57:57 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.39) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 10 Nov 2026 23:25:08 -0800
+ 15.2.2562.56; Tue, 10 Nov 2026 23:57:57 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ioeMMuiTAFfXy/T4mUrz5r/Hk/pW/mQ9DBsKPMQNkq9mebShbjEARIHWycqqAQH7leiO5noPDA+FUUBT+bnRV1xB1oHUzk6FfzTMib83KZoM7ZecPm3Y1be8jurGkPkaDSa5yMdUNOQnlSFksdaMyse3utVb63inEFHG95qerqHr+2Eya+3G+tpGUBPj5HuouV2dWojtqBcqWY7L+dwSMYA9dtiD4xQUFXt4Z39rAl02xYFerCe3N/7qGvx6ws0L6t7ibgbIHrpumLJbr9TYAeAUkRQnMbd5cgP6XdkrP2FqQjfDXGfBrhZE1aTjRTKQuBqTYBBuvdzFannwg3d83A==
+ b=jv+8XUlqKTYM5KMTe3ojZtNrnc1q3x6goBvzxx1LbBe3fWXHZahRi7SXT64ZhaUCNauFShqraYgYQJnpGwmDfSxi9RtbNOAAWdk/0ZEvUXOkoLkux3XDjsdqbz+WwZSOuL5V88lg/6TS26QaGa8PgexMLCY6umpcHV5r7e6fQESQYQbFOO6jvGxT31gV3ovpdDQsN2z7LVpfXE+oWYX0Z5JOnSZqv03usuOB+dItNglZpi7p9tJ0xJGbH5G16MdZE/tTWu3c3kUueKEXVfSGQKIYBPTPddEWBwK0BOX6TEpoVFtH4ay0ASHhAekqjrhvpP8T4aMYNzgs7F0axvWvOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v9RcGRlxnphpW+NyisaoHp1xwjz835uJNujfbjZzgoQ=;
- b=qETGAVW50hGGCT6rTcIRzUuY1UsSe+UQAHowvK/1LzQMndvwiD1Ru2NOMm6FjRD+F2D6TbayYE7lo1RiMlY9ftfh4s7Xa9E+gdpPOfg31CIRw5alkpLBQNz88/IwCzW/MovMc4zz9yXN7anx8sL5nO1T0vE7HfPFvup+CyTmpKqAq0U7jL+rSyHtukFIuszzdF09RvCsqCzsui4GOaKhQ7xYUwImYB/N0ANogjLyytJTbsg7RSW8t2IsL8Yh23jpCBJmLGVsdJl+uoRxdmXCHqdY6MfxML71nEoyjv3HTyniVEKIxXcTREd15XqyB53BbJRisDq8VOzYxc8EPvHmyQ==
+ bh=K5n/FQvKhipajNUNAc44zdwaemBJbMHgCBPfhAJsjTE=;
+ b=bfkB0d9XCDcloQrgAOr3J2EUvDe4fIJo6yUqSY8WnER/5UI5gBSUhyzK+S73lLoo3EV5a1Hu0wReWP7XztVImpZvrMbujuZXtasILymOVgNEGTs+C3VWqv27rmN+AxiTcbfjNk78HPOVNWukXonYZTRwgt6Nr/lEKNNhBm9un/ATCYJG0K1xK4q2drXw1eX57GZlyxF9QCORd7bBl3uyTuSJq+zNMUJwi7QAIxB+zk/NwJR5JBV1aNd1+KIEmxMi7rhCwosC1LybuDdVqFjFNx5gZgsVcbbJL8o4HwISZGOkzrCx88AEmgZIwHzjCmD7KcqfFVAMhB7Syw4L/Q9jVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
- by DS6PR11MB9896.namprd11.prod.outlook.com (2603:10b6:8:460::24) with
+ by DS0PR11MB7261.namprd11.prod.outlook.com (2603:10b6:8:13d::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
- 2026 07:25:07 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 11 Nov
+ 2026 07:57:54 +0000
 Received: from IA0PR11MB8380.namprd11.prod.outlook.com
  ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
  ([fe80::ea8e:eec4:f8d3:f95d%5]) with mapi id 15.21.0592.010; Wed, 11 Nov 2026
- 07:25:06 +0000
-Date: Wed, 11 Nov 2026 15:24:54 +0800
+ 07:57:54 +0000
+Date: Wed, 11 Nov 2026 15:57:40 +0800
 From: Chao Gao <chao.gao@intel.com>
 To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
 CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
@@ -119,17 +119,17 @@ CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
 	<x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com"
 	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
 	<bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>
-Subject: Re: [RFC PATCH v2 2/2] x86/virt/seamldr: Support multiple sigstruct
- pages
-Message-ID: <avQYRizeudYt-fbj@intel.com>
+Subject: Re: [RFC PATCH v2 1/2] x86/virt/seamldr: Support large TDX module
+ binaries
+Message-ID: <avQf9L0CYU0LfgJh@intel.com>
 References: <20261106132159.1551365-1-chao.gao@intel.com>
- <20261106132159.1551365-3-chao.gao@intel.com>
- <91506ebc258a9db8b2aa47310a03b60e3c653314.camel@intel.com>
+ <20261106132159.1551365-2-chao.gao@intel.com>
+ <0ee3d9592e4e73bd0e5bedafc836033fdfc9f120.camel@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <91506ebc258a9db8b2aa47310a03b60e3c653314.camel@intel.com>
-X-ClientProxiedBy: SI3PR01CA0004.apcprd01.prod.exchangelabs.com
- (2603:1096:4:296::15) To IA0PR11MB8380.namprd11.prod.outlook.com
+In-Reply-To: <0ee3d9592e4e73bd0e5bedafc836033fdfc9f120.camel@intel.com>
+X-ClientProxiedBy: JH0PR01CA0061.apcprd01.prod.exchangelabs.com
+ (2603:1096:990:57::8) To IA0PR11MB8380.namprd11.prod.outlook.com
  (2603:10b6:208:485::21)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -141,121 +141,201 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|DS6PR11MB9896:EE_
-X-MS-Office365-Filtering-Correlation-Id: ecd5106d-cf9c-433c-97e8-08df3fc4e85d
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|DS0PR11MB7261:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec785bd9-b0d8-497b-25b9-08df3fc97d4e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|261009223027099003|10067099003|261022115727099003|261028144727099003|261102123227099003|261026140227099003|261026121527099003|261021121427099003|261022075727099003|261022105027099003|11063799006|4143699003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: ISWx2Ak8LcCFp7DpC0rlgp87LfNyePBLXQdrmtdYAkn//MkeuFMQilY6zm8pIy+LL3I/uNxgBueA6BSpMLG0opAa9BV7Y/3mh4bxf1SY7wpQILyPYB8Dz6g1BvH5JzkBTfJBaeDU1jxA2E3tJr9vPc0Je2o/RjvHNvjKucd1fIVaA1Hw+A1Hvkxv6PxlJxp97ldeo3SBnNZ+KgjBc1XQK6Nf/2lOd626HESBs/X2l22Ag3c/GMU8gxPJTGcmBY3sF8IqXNJlkNRf4ATzdB0SAPyvU1O+zh5f3BUQSwo7/xWSzKedlJYwtOXRe5WGHXvj2Mac+BoinrK72pAOSNfFMMwHkai2jnAMs3Amy9YIhfzQ6r8zKeIYNei4qwgWrg8aeJgZKicMUYgc+XyUS8Tze6B9IKbctsx8TJYMkNP0NsJ12OaVKopY5VJWy5+Eyj+f+BbHDHqpjorFq4mMMW2nuiJuY3Viym+qjO7dRtPx68L88m0AYxu3GVVfXPHbsYIOEXqsvv5F9J4J/Rs4TRTUZgLRAMc3wECFJx0H2oq7yrFV2TlWirlXCyCGtjeQAszBBpDdVPIV1GsgY/z0fidKAHrt5CbTing0VG1TRQJZRt4h3ojfJEcKg+rzxkIpZYVlxyldZu8GQrjD/QzPtoTyjgICyaVvFhtFDx2Obim8DoQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(261009223027099003)(10067099003)(261022115727099003)(261028144727099003)(261102123227099003)(261026140227099003)(261026121527099003)(261021121427099003)(261022075727099003)(261022105027099003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|18002099003|22082099003|10067099003|261022105027099003|56012099006|11063799006|261102123227099003|261026121527099003|261022115727099003|261028144727099003|261026140227099003|261021121427099003|261009223027099003|4143699003|261022075727099003;
+X-Microsoft-Antispam-Message-Info: qGT/M/1c4rBx7A/qyPXtTUwtBSILrksN0vUNggyKQsRTNdq9X6D4PzUd9Af+hqk3Un4eCpcz4C/2XkVDqQe/qxPvnNWVhMN+AhlwYzSEgVhHXhuRw1izGRPGKL3J/erQ2FGUJ8sqA0+4DHMseIqZ8MRaQ3uInl97ud/nSOTABunYtuwuvGPRI2l04CuwKwIaHb+Cc6WLv13Jy6/Rf83xD1WaDguGlAbmUBNcQkR+JzVFooq7zYjZk5lrWNOlVm503BX8C559cnWNMmFWB2ljVndEvhrhcfTCqig05SvooZ/KalD8lE0euCfluZNFEuc4mcSVS9puX6tH8mNPZULx7v5F/Z22ntGkkXbJniQHk2X1UCBRaSaf4QF19TR8J+euu738sVE8vOklr02teQeyL47Hi26Uycnuh6aaZOT2fzN/Libx6EW2PEz6qVKq2Lu754kZsKuMNcYTxwPo/yi1ybUn9TR9ykwf5j36voBoofVhtW1ojs2EWN+iRSKf/DNZ/sgDszUCr9Ld2LigmUH5O6xVgAZXwC4jZYFtkePEejxkqLfTCZvZqhZ9qhvFivm8BhGAnDTt11p7jcpmmmsD99wNH50lMTYtEuCC5EIl3LKAxFDyrg6KpnrJnE4S8VYiQ9vZsN+KpFjupP2OP2vhWLVBOsawIR5NEUkEqlMlevQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(18002099003)(22082099003)(10067099003)(261022105027099003)(56012099006)(11063799006)(261102123227099003)(261026121527099003)(261022115727099003)(261028144727099003)(261026140227099003)(261021121427099003)(261009223027099003)(4143699003)(261022075727099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DVJ0hQNy6/oRJBaaFMV+A1f9ZX474DdmiGOqFANG4ebZsGpLTLEBbTSB9Wh0?=
- =?us-ascii?Q?SBD2LOPbYQQGX91M0iRC8fWetdkwNouNb0LwlF5cb0CIYbIOKlnLzeEPA2Bw?=
- =?us-ascii?Q?JEzbw+foHl5hBbSV8mu3c+/gf0K36W9gb7sN0SgfumQaknh2JyOqOb11nyxH?=
- =?us-ascii?Q?UmlZWIXDmh2RGMcSKDkhRRKLrwgeJb/3HeRlhiJRZvglwNKeuPMZcUvh+5wo?=
- =?us-ascii?Q?RRMIT2NSHLdLc1W7sXOEGtSiEt33dKkaVBB2SLeJu4wf6WjbR5cJ3rDysZhb?=
- =?us-ascii?Q?jQY0QcnYiX60hqtOjAv4gQLGJ2itMW7317g4h3ZzA1mlP6Um4UNiW1BbVw5d?=
- =?us-ascii?Q?vWgjQ746yD5HP5G8EETsh1WKyS+bSG6587pBtTAzgEN2ipIKcaL1nynDFfml?=
- =?us-ascii?Q?7KPfRU+OJ8Vhi0X6unhFV9AbJ6ux5KFSLNTpcGWiMDY9pUcnc2ehp8jW6Ylr?=
- =?us-ascii?Q?LmiDI0ZygW8mn2kztzBFtDuhs0FUzR6WpvH4wDAoE4pL4Kyibj3ISdlgAg5T?=
- =?us-ascii?Q?Qt1MQafwnImxXbXVZJtSNLVxR16UAyTDSVng6IxrGYKcOzp1gHuzQ7lSSkHE?=
- =?us-ascii?Q?1K/BrMzYWO+nlCMdHJoHFOH946Qtf9i0tV5bMc/TG3SvrpoFeBcAidPSFiMp?=
- =?us-ascii?Q?DpHmZJg/C7UddwICM6WcAZJHQvJfqczYV9Qm4WRj7hPT31TsSRk/DBrLs47o?=
- =?us-ascii?Q?WHuaykPB7uqW61zIlNTUBRombcbhrlX2xYiXTf5WVQ2peTGtFcLVqijR23F3?=
- =?us-ascii?Q?X3QUO2W0rl7sZ6O0T1q9Vs8o6GDy/GOZycKo2sCXMI5osYBebX9h3LfUAdrf?=
- =?us-ascii?Q?pdEVXReKFuy7L0WhWoEb0J3x9JijeoZP856MZGjWyftQ8FPDZC/v9ge9fMEn?=
- =?us-ascii?Q?UA5hlnz+GrghapMmkLvya/LgrU+27+6nKqTZ80XeC8VSQe9swcCmuw9yZ1Vu?=
- =?us-ascii?Q?ba7cv1GoY5eu+pFwv46K5PxhS9kdERB9gCEQUnG99hL1n/fFV6Qn8RGt7Rse?=
- =?us-ascii?Q?r5pwmuuQ0DIlRDrFzPfkSsXeOcIaeOrAgC+8KBmYeLMKO3u2I/+mGe+fWXDq?=
- =?us-ascii?Q?M8CFVzwgbZaNXc+EyHGSuEYtg94WBpPFLRwZSb5tfVVNcKQD9bru02kYi4l4?=
- =?us-ascii?Q?i5sKh/7vw5rMA7x0APQpScj/+nSG+L0QjlI471/5JSdRHi2aCsed08L1+zWq?=
- =?us-ascii?Q?iv0NPpDs+dhr6iIVIWHAk0CzZfIbceB46y0j43w2/sMFKALqpnsmcN+z1spG?=
- =?us-ascii?Q?HYx00gLzzAyeCOrmvr3Cc2wqibP8WGSgUBm0jhGPRWwIUS8O5Nfbd8eCNcEX?=
- =?us-ascii?Q?5dOxt0umygdMFo8F5iqdI6Pzdk04XTt9P1raoap9PK4FZ0DvDtx7YqJ7pDt2?=
- =?us-ascii?Q?Me+KlQALTeb7SvwB97Ih+5MyeLDxB1/wI1Zx/YKyGMC06qxjQXlBA+YaWV23?=
- =?us-ascii?Q?qDw+xKrEPdQc+PwWfhEHYHTRTJoLkBdrFXFQNz8K02BqpB6auxxh565XSHy7?=
- =?us-ascii?Q?wxleKfQ2c1UI09kwVS08LPCO9nsugbxVnkl4kqudVby9reHaI4rc1qUL4TbC?=
- =?us-ascii?Q?BELYUbPLDise1AA0LZbC7dOJROe1gcIUXrQWI9wrD8kqXAfnTFZ2UdNJC/IS?=
- =?us-ascii?Q?Ce8MvrgdT8R58avsLywGDW6F8j4ZUiG/D4/NGv+DF/TS11YFgOjf4F+PSHA8?=
- =?us-ascii?Q?YRL2FsBfeBZDu22T+qz54QfGASOCCx5hqBu7a14IFq25HwO2IbRWhsxsyaX6?=
- =?us-ascii?Q?NeHbfNInpw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: bbT8n8JCBDe1gkkIbk08yjvmzYA7qPzVlqLeWoZ8zg36cw0cN+xUaf9vpyJfdujhCzmKgdwATuIB2bZcYNOFYwgTH6j7nKLux/zLmxtEiQpHU+2FxV7hkZLu9shMEUq7nPu8Jn/TS4JHr/O8xNaN3ewiH7AB4Er9aULrR6GItChfpgNJfpFobQLeizN+bo37pY2xlRgUPe9u+5P+AJHfXT3JGhcNFhcJjDY3MiOsGoImQkvujZihzkp1yDgJy9MIizaRxZai3+1ChSP6bsIf65YDlq/oCwa0yzVUvncuoVIbZdO2AgLtGcK4Jlw2h2DAQsJBYY5O54xNzPrMpp2ceg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ecd5106d-cf9c-433c-97e8-08df3fc4e85d
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?F/H3cr9LTAQN06EkP+8UcREq4bTPu50zvsI1WgwjdDYgqEN/CjdLvxvSQ8sS?=
+ =?us-ascii?Q?V2HWZiOPpGCHclH1KdEgAfZko5c2ylixtp1zFOMZGYKOu7zF+S3QeQeasZZE?=
+ =?us-ascii?Q?gt2OKlSRHbaoOLMgSEgrD32Iuu12ef9QdTX67Kjm7LKQYIMpTOtYhH810mUY?=
+ =?us-ascii?Q?TS2OsnV+Rt1zDnhxvRPKTl1h1FaaTHFFfVn9NHgCbzTOeBIdN55QrqMEM8u3?=
+ =?us-ascii?Q?eUH3XRccBlS6UpfFRuK1KciUx61AxpGZIMG/1vkZDtAh2aDKHQWbV/6L06kE?=
+ =?us-ascii?Q?IZwIKFOMjoY6cqfWmBCtAP1linpLvfubw2YUgvQql+16vUOGvkzJ46ZEnnOa?=
+ =?us-ascii?Q?YJU2A7cgIF/1oHGvmImQuDh48sckwdmP8gRbI8CqfvJmieyGhbkoQEBHPDVA?=
+ =?us-ascii?Q?d0QtUuySOxb+9i0lKM3WvGt4M7AAO8MIlKkpyLZ4iPklIgqCTRrywFrIar9y?=
+ =?us-ascii?Q?hkBGRB74OlVH0a6zMndKu2TZXpsGRkHPwO3s0r+WOf3YHAZmrfoAqf1Cavvx?=
+ =?us-ascii?Q?4orjjdOY5LUJK8yB1OCrHpS0qSV8amGRyDosq2GHYW2pkSI91tGVztp1zmHW?=
+ =?us-ascii?Q?qBIWhs8et6AFaTSse8aQc7jZen2vdGfq+yP1HPkTnFKsk+mkndPl9eIz0FCI?=
+ =?us-ascii?Q?4+6M3zpIUgbs5guRzGRD9fkgWkLfTr7Dufwa4rvXqrwawmjyW2R0GNFCJm/t?=
+ =?us-ascii?Q?GwNfUBdUHcaEfxm4ZhLQVQUwwbZMKimoljBwadooBK0/kDQ9kA7DSf32Tp0q?=
+ =?us-ascii?Q?bLGpdOJ6bdabIzSa3w4k4JMsVX+I6K5jc2t1rVHbCxOrO/nMb7g6eBzPQojv?=
+ =?us-ascii?Q?juIL7/WdH790/OxWGHorDtL+z8wgqg13WaCVD7LX2OajFhPqBOqyV8MmcAm/?=
+ =?us-ascii?Q?k+mK89bQL0CyO+Ge1nE2larrCXc92UMC2aROjRRQqLu2wifoG0gAtmvPQPP1?=
+ =?us-ascii?Q?pZuoAFkhZO22spzq8nIZ1ySpI1Yf5rqEytMQtxWSqWYFf7RUkLj9I8bciqK3?=
+ =?us-ascii?Q?7TukobRWnFGqs34GRlrxlhxdg7LzjKn2S1NxOWj6gqq+ZxMDq0Fqpx7R986g?=
+ =?us-ascii?Q?wpWIp8+r72Jk/fmiS4KHAPY8dSp33LLDEJ73px1rAQ+myLyBu1RHe085IvQa?=
+ =?us-ascii?Q?mvqbXzN8skWWA0RFT5fUjJVaYW902ahF1DEI6QOjyzWdjxqIeXhnckpGI1d4?=
+ =?us-ascii?Q?Xo2jX7mcEjRl3veVNN50l0WZ/pdEThcVfiApmaPMSLJgrJLR1q8Eqtv4PxxX?=
+ =?us-ascii?Q?nV7FQLhFsuOA8TBbxzRLYlYs5xzbS0QZltGrKMIJtYkiTwo1kdWhws1etFx+?=
+ =?us-ascii?Q?/PQ76It9shUhbqnqSpA0TYfe/fdbYNxUV0g7qClNVvWOchCWX2QpYvdUrjuy?=
+ =?us-ascii?Q?gu4D6DvsmO7bLcWky1iSMqYsBr+oJh186xAxuDMFPPtHszi7N6hNqazbRXNa?=
+ =?us-ascii?Q?rOEh8TP5qu+KSNmkdps6OEvSwbakY+qP1TyqCaONsMHNLDWXYFjUqPUhF0AD?=
+ =?us-ascii?Q?N3cXFiLYnFIduJqvWCLzvqZzBT2sKJI+3RCYkLA1EpN9EyoPruBIc4j0g+6n?=
+ =?us-ascii?Q?TnSjC2AqTLCm884mzrZKGmRiZZUfB1wDRT55jL3E/83VEDusNRy+YnJExR7E?=
+ =?us-ascii?Q?bYa1dX+aYRhU9ueyIxJxHJGqa/n6R6Y5WaZKgRf6e1XTuMs8AwwkHFcTKX26?=
+ =?us-ascii?Q?Sphh4OLGzv0noIQl085e7d8sYtL4hHExRwQA4kGpZCbGVf7pZnQSB8NsyJ6i?=
+ =?us-ascii?Q?aFCY61gjKg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: xJRfsfErWAvpDGhwdp9CbHnFvv7fUNZc/v80TOgjYmDSn+ftrG0EwS8sHqw8tQMReKAeCpdwsNqkyGc8JEdURYRKVcMAghBYn6aNE7u2unqpuxrS7f4ndlOqplqhNjwbGAc1EHuUM8NYNhBOu78WGQ5ABqp12HIJQwvJPswycQn+zHi5ObW+CIwukctI124Pm+EOHrowoHhzw1+DtlYFSJaTmOw8UHa6dNxsc16vThys0cfKTQ6A6CIV3RPpqAn2j+NBF+XRIUz631NaAiIy8sVXJV0WJlotS8ZAZTYb7chWAvhqNEWxZmaU2kJ0Xtp2SY5W6gXWXCgunye05txFHA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec785bd9-b0d8-497b-25b9-08df3fc97d4e
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 07:25:05.9050
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 07:57:54.0181
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I+MTux9yDQVQ21uhyZXc03RbyJYPHkZ67yMADRZDnipjpg86M4gbxKlhjVqrZz3Wrhv2xVsBR2w4ELEc/d3ReQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB9896
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4uAMyH0FBre56TV1wgZ3VXt6gJi1CCWQdxVHxBdzIW4KtbJAdApg3qbCvp0kwORCq2irS14DflkBmAXW7IntQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7261
 X-OriginatorOrg: intel.com
 
-On Tue, Nov 10, 2026 at 06:12:32AM +0800, Edgecombe, Rick P wrote:
+On Tue, Nov 10, 2026 at 06:34:29AM +0800, Edgecombe, Rick P wrote:
 >On Fri, 2026-11-06 at 05:21 -0800, Chao Gao wrote:
->> Each TDX module update image carries a sigstruct, which is passed along
->> with the module binary to P-SEAMLDR. 'struct seamldr_params' has a single
->> physical address slot for it, so a sigstruct can be at most one 4KB page.
+>> The module binary is handed to P-SEAMLDR as a list of page physical
+>> addresses in 'struct seamldr_params'. The list has 496 entries, which
+>> caps a module at 496 pages.
 >
->"it" could refer to the module binary or the sigstruct, until you piece it
->together at the end. Also struct seamldr_params could be introduced. To answer:
->Is it the TDX module ABI? Or the kernels internal struct?
+>nit. change it to "...caps a module at the same number of pages".
 
-Agreed. How about:
-
-Each TDX module update image carries a sigstruct, which is passed to
-P-SEAMLDR along with the module binary. The P-SEAMLDR ABI ('struct
-seamldr_params') has a single physical address slot for the sigstruct,
-so the sigstruct can be at most one 4KB page.
+Ack.
 
 >
 >> 
->> TDX modules are moving to a post-quantum signature algorithm. Its
->> signatures are far larger than the ones in use today, so the sigstruct
->> no longer fits in 4KB.
+>> TDX modules are gaining features and are about to outgrow that limit.
 >> 
->> The P-SEAMLDR ABI was extended for this. It now has four sigstruct
->> address slots instead of one, for sigstructs of up to 16KB. A new
->> 'version' value of 1 tells P-SEAMLDR that this layout is in use.
+>> The P-SEAMLDR ABI was extended to chain the list across 4KB pages. For
+>> a module over 495 pages, the last of the 496 entries points to another
+>> page of entries instead of to a module page. The last entry of that
+>> page can point to yet another page, and so on, until every module page
+>> is listed.
 >> 
->> Extend 'struct seamldr_params' to match the new ABI. The sigstruct
->> address list is already populated in a loop over all sigstruct pages, so
->> raising SEAMLDR_MAX_NR_SIG_PAGES is enough to fill the new slots
+>> Grow module_pages_pa_list[] so that 'struct seamldr_params' spans
+>> multiple pages (16 for now), and use the extra pages as the chained
+>> pages. The last entry of each page then points to the entry right after
+>> it, which starts the next page. These link entries do not hold module
+>> pages, so leave them out of the maximum module page count.
+>> 
+>> The 16-page size is somewhat arbitrary. It fits modules of up to about
+>> 32MB, far above the roughly 2MB of current modules. It wastes 60KB for
+>> today's modules, which is fine because the memory is freed right after
+>> the update. Sizing module_pages_pa_list[] per module would mean either
+>> moving the allocation after the image header is validated, or allocating
+>> from an unvalidated page count. Either way it is more code churn.
+>> 
+>> Do not query P-SEAMLDR for chaining support. Userspace selects the update
+>> image and is responsible for ensuring the module is compatible with
+>> P-SEAMLDR.
+>> 
+>> Thanks to Yilun for the idea of allocating the chain pages together
+>> with 'struct seamldr_params'.
 >
->Missing period. Also, the existing loop is a bit strange. I wonder if it needs
->to be explained, but the explanation is probably that it was not adapted
->properly after this change was removed from the original series.
+>I'm not sure what this means.
 
-Will fix the period.
+I previously allocated the chained pages separately, as many as the module
+needed, and linked them from 'struct seamldr_params'. Yilun suggested
+growing 'struct seamldr_params' to include the chained pages, so a single
+allocation covers both.
 
-The loop was intentional. Commit 23a81e6cce15 ("x86/virt/seamldr: Allocate
-and populate a module update request") kept sigstruct_pages_pa_list as an
-array because it was expected to grow to four pages. This was called out in
-the changelog of that commit.
+I will credit Yilun with a Suggested-by tag.
 
-I would add one sentence to say so:
+>> -#define SEAMLDR_MAX_NR_MODULE_PAGES	496
+>> +/*
+>> + * module_pages_pa_list[] spans multiple pages. The last entry of each
+>> + * page points to the next page and does not hold a module page, so the
+>> + * maximum number of module pages is the array size minus one entry per
+>> + * page.
+>> + *
+>> + * SEAMLDR_PARAMS_NR_PAGES is somewhat arbitrary. It allows modules of
+>> + * up to about 32MB. Increase it if modules outgrow that.
+>> + */
+>> +#define SEAMLDR_PARAMS_NR_PAGES		16
+>> +#define SEAMLDR_NR_MODULE_PA_ENTRIES	(496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
+>
+>I think you should describe the math a little bit here. 496 is the space in the
+>original format, but the last one is now a pa pointer, right? So can't be used
+>as a page of module data. And then each successive page is 511 entries and then
+>a pa pointer? So is the math actually right?
 
-  Extend 'struct seamldr_params' to match the new ABI. The sigstruct
-  address list is already populated in a loop over all sigstruct pages, so
-  raising SEAMLDR_MAX_NR_SIG_PAGES is enough to fill the new slots. The
-  loop was written that way in anticipation of this change.
+As Binbin explained, SEAMLDR_NR_MODULE_PA_ENTRIES counts all entries,
+including the ones that point to the next page. That is 496 in the first
+page and 512 in each following page ...
 
 >
->> 
->> Set 'version' to 1 only when the sigstruct spans more than one page. Old
->> P-SEAMLDRs reject version 1, so this keeps updates with a single-page
->> sigstruct working on them.
->> 
->> Do not query P-SEAMLDR for version 1 support. Userspace selects the
->> update image and is responsible for ensuring the module is compatible
->> with P-SEAMLDR.
->> 
->> AI was used under supervision to review code and workshop logs
->
->Missing period. But this phrase is starting to become kind of boiler plate in
->all of these patches. I wonder if it's still needed. AI review is now the
->exception. Maybe move it below the "---" for this time? Dave can move it up
->easily if he thinks it helps.
+>> +#define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
 
-Will drop this phrase from both patches.
+... this subtracts one pointer entry per page.
+
+How about:
+
+/*
+ * 'struct seamldr_params' spans this many pages. The number is somewhat
+ * arbitrary. Increase it if modules outgrow it.
+ */
+#define SEAMLDR_PARAMS_NR_PAGES         16
+
+/*
+ * module_pages_pa_list[] has 496 entries in the first page and 512 in
+ * each following page. The last entry of each page is reserved to point
+ * to the next page and cannot hold a module page.
+ */
+#define SEAMLDR_NR_MODULE_PA_ENTRIES    (496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
+#define SEAMLDR_MAX_NR_MODULE_PAGES     (SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
+
+>>  #define SEAMLDR_MAX_NR_SIG_PAGES	1
+>>  
+>>  /*
+>> @@ -48,10 +59,10 @@ struct seamldr_params {
+>>  	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
+>>  	u8	reserved[104];
+>>  	u64	module_nr_pages;
+>> -	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
+>> +	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
+>>  } __packed;
+>>  
+>> -static_assert(sizeof(struct seamldr_params) == 4096);
+>> +static_assert(sizeof(struct seamldr_params) == SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE);
+>>  
+>>  /*
+>>   * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+>> @@ -129,17 +140,24 @@ struct tdx_image {
+>>  /*
+>>   * Given a vmalloc() allocation, write all of the backing physical
+>>   * addresses to pa_list[]. Caller guarantees that the array is big
+>> - * enough.
+>> + * enough. If pa_list[] spans multiple pages, point the last entry
+>> + * of each page to the next page.
+>>   */
+>>  static void populate_pa_list(u64 *pa_list, const u8 *vmalloc_addr, u32 vmalloc_len_pages)
+>>  {
+>> -	int i;
+>> +	int i, j;
+>>  
+>> -	for (i = 0; i < vmalloc_len_pages; i++) {
+>> +	for (i = 0, j = 0; i < vmalloc_len_pages; i++) {
+>>  		unsigned long offset = i * PAGE_SIZE;
+>>  		unsigned long pfn = vmalloc_to_pfn(&vmalloc_addr[offset]);
+>>  
+>> -		pa_list[i] = pfn << PAGE_SHIFT;
+>
+>How about a little:
+>/* If the current entry is the last in the page. */
+
+Sure. I reworded it slightly to also say what the hunk does:
+
+		/* Point the last entry of a page to the next page. */
+
+>
+>> +		if (PAGE_ALIGNED(&pa_list[j + 1])) {
+>> +			pa_list[j] = __pa(&pa_list[j + 1]);
+>> +			j++;
+>> +		}
+>> +
+>> +		pa_list[j] = pfn << PAGE_SHIFT;
+>> +		j++;
+>>  	}
+>>  }
+>>  
+>
