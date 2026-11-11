@@ -1,71 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794369422;
-	b=xsOu4zDUWWYYNvr7rzVMUn1UyRaAMZ9u48YRa8RjFkuHwSoNaygMBAf6V/vEE04qKJpL
-	 fvyaoQAM4tVKUOo/vKlHElULsiDL7zq91+4cZA2nXW1JFR8FUPbXn/oclszNN9bVJfvdP
-	 9Ol9bpslj22cqkm0uzk1UsL8vIm/ebJeSMO08J6oVLGIdrdlWtFTif7Hpqixc6dEEFDeN
-	 6pcIzjFZSf0XFsu77y9dnkewlvFOlsHgiczesu7OCNTdEPBBpwrbMui4CLqCEbdgABhEH
-	 aCxfx1Ep1GgBpCHtXp8vNGvwKQpa2QSWnz6LbJxMAqGpiJZq5C3+BLHeJeQikt4gDEw==
+	t=1794369427;
+	b=R0QdbioGorRLMCkV31ihBFTaNEBT9X+BCzism6vyUteFDzN8ur7IYuciyOK81RzPSoQ7
+	 kJgdBoPvt6oDgDnXdSJsg7p+b6tS9VWd+MaXHmote017Unb/lYWDxOYFiJPuu5IsTRF2K
+	 m0NwOIhtY6Md9mP5W4H27/u9nA2ExQZxIRAVx9XPPU8Pr7Et6JhTttx3SoFnWYGqF2AfZ
+	 CccYbzv/aO5J2YRrdgwlritWqwaod63ViDUOxhJ9U7Owg4zS2VsqOUGen9QMTWK/4nkmi
+	 Me2AMQAkQv8o30OlxlCWd2SL5MgUYbCe6E95ksHKOHkexHf9BYnJmYOFMSYm71q/aWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794369422;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794369427;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=aW52MSVMDUNqdZBYe8tY4GK6/Ss5cefT5msxBqz4Pw8=;
-	b=EUkqjR8xyGVfDqJhTbqBX5eyQgr/kBf5YQ/3aFfAjWqoOlj7ZlxiX5+wJ2HJI1tDlY36
-	 nrQalnJ7LHw9mekPqp7Hv30ojC2KB27YULP7/Cq6GCYpzU8HS2uUMm/DKvY+Z3JtZYjrD
-	 xGBcVTjsjI1t4lUsR2YaTwZyfXhz5e/EWC9MpDr2I0FA9WrBuH7WYPeijOhW7nTAw7uzO
-	 EL7FBfc84/a1TeeZNGnYUVV6CMAhCqQ2sWQUfl6s1oKwQvT4S5r/sFjuWtEz4SRUEGP2k
-	 h4R3UA9I+28UYpxL5RsVT68X8bpbqRvEktvn9rWiVR98acyvEwU0nTMonJ1lBHQOPsQ==
+	bh=CSEz8qxghozwaDtTAs+AP/lbLZJS5cfpZ0YaPk3UawY=;
+	b=TdZ/Xq4G50fUw4zWHipueRkwDDtvgds7SdewQsclIgx12a8JLFjBHYGrf9BQv9Oz0aTC
+	 CGj7mDIjT+hEZYX++qYGPu2Dw/uUjT5aPCT6iK69+hDhMYmtvhsm/+yAHCdsHWUF5dpme
+	 WK+5R4cZjrEYxAKq/gTzyt6JXMOloWUYl0BWyRC5QkuY1UMokvOmwu1jnwg+SLcNpZV5D
+	 5aR8ets+fegy4slnE9xcjV7IbJ5yWfIPyxckRZqGdNjxSfDLjHZ2QJiRu9rzGWhqAK3Jp
+	 1VnP+IjAsxH6MrwMvc3eh8h3qKDRTrFgUFbxmPg8vr8AiOrq10+bC2ahyqV8uBTSGjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VAZ7groP;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dAwJfF3K;
 	arc=none smtp.remote-ip=198.175.65.21
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D04606A327
-	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 03:57:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13D04606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30DF606A321
+	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 03:57:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B30DF606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VAZ7groP
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dAwJfF3K
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794369422; x=1825905422;
+  t=1794369427; x=1825905427;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=ytxrf9xHT5lRbCb14me1YZtsQUFkAuoEaA5HyzvQy6U=;
-  b=VAZ7groPif+2a/JenjCgleJjJWKmNIVHfr5yIbchAagxTF3p4Z/Btokp
-   t44ls8fo5u+xVNI94qzSFPf+Y4IU/jOw2ikoAhcUtluJxF23qF5HFV2Sc
-   9WxOYBPUxfqE2Hjr+02txH6LNL2mnSp5JTcbPnSbTAIOT5CD6xdRhp2kQ
-   R+Tz1G3GS/J3f8ykwSvCnrVvdoAnh85ouLq+gyUrsZQ86DwdMFIeOftIf
-   dmzIbxVzBHZWyf2BYhUEyC15KwY5DRwvLAcKxq8WJJz6F8aaaMDccFmad
-   zAxxfWXRv2JfkOL37m1TuXFUh/MfE/WaEvZ9k7xsePbLSlDNxqi8hB8bC
-   Q==;
-X-CSE-ConnectionGUID: Jek/kbdBQ/mYV5t5yQffhQ==
-X-CSE-MsgGUID: x2d876RGTRCqOK+x8Ghc6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3220274"
+  bh=1AgkZMDZ9wupKpCh5EP7vtfRDJS7fB/MjH80W+f07lc=;
+  b=dAwJfF3Kn0tNnki9kbmgrPCy0olgLnRfbbUNkqFpdPrP7u8Ln29ScggN
+   0ubi+6xHKn/U2b2ccyb509ejji/LINA4ktaC88SefyM2v3/y/OzI/+Azn
+   68copSynapPFH96tGG2n62YxfyYR3eXqaCGN08ymhECleCKkJUcrCznPL
+   FWjoeyi7DOqLroV3Z2fKYmsY1SvgN2p7dGaq7NUe7xL1+HXl53zZOn2/7
+   +6IBfi4nl1ZCY2n9NA+wCygZ+TSZrXrTHWpkT8t+wljPjFJpmEV/PSmfy
+   iC6NzHXehRLGTwkHQs4jEO0NQBfwhUk4IJVs9/jtauuN4caCmAMGNUpAZ
+   A==;
+X-CSE-ConnectionGUID: n7beqWw1QRKHPpKcuSSQUg==
+X-CSE-MsgGUID: a8OhRsAxQcuDy0B1WCXc1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3220279"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3220274"
+   d="scan'208";a="3220279"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:57:02 -0800
-X-CSE-ConnectionGUID: iTq/pHswSaqElNNUK2y9EA==
-X-CSE-MsgGUID: dfeMHGvDSzuLBsUsydYiPA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:57:07 -0800
+X-CSE-ConnectionGUID: +8MGP+gYReaiQ6k3MS2Zhg==
+X-CSE-MsgGUID: dXsbyxssTFKDp7T4cpu9UQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="10199227"
+   d="scan'208";a="10199240"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
-  by fmviesa013.fm.intel.com with ESMTP; 10 Nov 2026 19:56:58 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 10 Nov 2026 19:57:03 -0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-Date: Wed, 11 Nov 2026 11:48:42 +0800
-Subject: [PATCH v5 1/6] x86/virt/tdx: Move TDH.SYS.CONFIG operations into a
- wrapper
+Date: Wed, 11 Nov 2026 11:48:43 +0800
+Subject: [PATCH v5 2/6] x86/virt/tdx: Configure add-on features on TDX
+ module init
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,7 +77,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-tdx-module-ext-v5-1-c74f764abc3d@linux.intel.com>
+Message-Id: <20261111-tdx-module-ext-v5-2-c74f764abc3d@linux.intel.com>
 References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
 In-Reply-To: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
 To: x86@kernel.org, linux-coco@lists.linux.dev, 
@@ -91,122 +91,127 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
  peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
  chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3847;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4418;
  i=yilun.xu@linux.intel.com; h=from:subject:message-id;
- bh=ytxrf9xHT5lRbCb14me1YZtsQUFkAuoEaA5HyzvQy6U=;
- b=owGbwMvMwCH2Zztz45IFPbcYT6slMWR9frp89cES5hdna4Ilv8dlfa+cEbB03cKLFj4rJiQ8N
- zTcvao2tqOThUGMg8FQTJFlgccspynts5i2ftp5DWYOKxPIEGGZysyc0jy9ilKHzLyS1By95Pxc
- Bi5OAZgq7gyGf0pT0z93fb0+6ULpPZWwq8d6dR6LH1u279ZuPrtJwT2n1lkwMpxe4qXupdludvV
- jm+pP3xeX+GXyU2tdZoXofXU7vbZ2HgsA
+ bh=1AgkZMDZ9wupKpCh5EP7vtfRDJS7fB/MjH80W+f07lc=;
+ b=owGbwMvMwCH2Zztz45IFPbcYT6slMWR9frpcT+3Kz62Pk+aJHj+4I8rB083KUk9E0PJf0f3Fx
+ jMusqmKdHSyMIhxMBiKKbIs8JjlNKV9FtPWTzuvwcxhZQIZIixTmZlTmqdXUeqQmVeSmqOXnJ/L
+ wMUpAFN14xfDX7mMp1qHT235dnh6OuvMTYHT7Z4Iqs3c8tj4aNf5KUZ3J01jZFi7YH30efNPoQr
+ 8jztCJ9/+s2VtjaOX4N3Mm/KvjriX63ICAA==
 X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
  fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
 
-TDH.SYS.CONFIG is currently not wrapped in a SEAMCALL wrapper because it
-is not exposed to external callers (such as KVM), also because the
-level of TDX ABI details needed to perform the call is low enough to
-flow well with the calling code.
+The TDX architecture identifies some features that are off by default.
+They are classified as add-on features because enabling them affects
+existing TDX systems: they may change existing feature behavior, or
+reserve more memory.
 
-But as more configurations are being added to this SEAMCALL leaf, more
-ABI details are leaked into the surrounding caller code, which decreases
-the readability of the caller logic. The first case is that the Dynamic
-PAMT (DPAMT) change [1] tweaks the R8 argument based on whether DPAMT is
-supported by the loaded TDX module.
+However, the impact of the first add-on features will be low enough to
+pursue a simple approach - the kernel just enables them when supported.
+If a feature with a very high overhead appears in the future, this can
+be revisited.
 
-A follow-up case comes as the TDX architecture has evolved the ABI to
-introduce new leaf versions. The host must select the version to call
-based on what new features are supported by the loaded TDX module.
+The TDX module extends TDH.SYS.CONFIG with a new register argument to
+specify which add-on features to enable. This new argument is a bitmap
+that uses the same feature bits as TDX_FEATURES0. Note that Dynamic PAMT
+is an exception: although it is an add-on feature, it is controlled via
+a legacy, dedicated register argument [1].
 
-Before the version selection makes the caller logic even messier, move
-the register ABI operations into a wrapper.
+Pass the bitmap of features that are supported by both kernel & TDX
+module to TDH.SYS.CONFIG. Initially, the bitmap is 0. It will be updated
+to contain specific feature bits as full kernel support lands.
+
+The TDX module requires leaf version 1 for TDH.SYS.CONFIG when passing
+the new bitmap argument. Set the version field to 1 if the argument is
+used to enable any add-on feature, otherwise keep the version as 0. This
+retains backward compatibility with older modules that don't recognize
+version 1.
 
 The original changelog was written by hand. AI was used to help correct
 grammatical errors and polish individual sentences for better
 readability.
 
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Link: https://lore.kernel.org/all/20260904215841.303070-10-rick.p.edgecombe@intel.com/ # [1]
 ---
 v5:
- - Drop the tdmr_info_pa_array stuff (Dave)
- - Simplify the changelog (Dave)
- - Remove all Reviewed-by tags due to code change
+ - Simplify the changelog, saved 5 lines
  - Better clarify the AI usage
 
 v4:
- - Cut the redundant opening words in the 1st paragraph (Rick)
+ - Add explanation why kernel enables add-on features solely on
+   available support in the 3rd paragraph of the changelog. (Rick)
  - Collect Reviewed-by tags
 
 v3:
- - sizeof(tdmr_pa_array->phys[0]) instead of sizeof(u64) (Rick)
- - Re-phrase the code comments for struct tdmr_info_pa_array (Tony)
- - Refactor the changelog
+ - Update the stale changlog for bitmap arg of the wrapper (Chao)
+ - s/get_tdx_addon_features0()/get_tdx_usable_addon_features0() (Tony)
  - Collect Reviewed-by tags
 
 v2:
+ - Don't pass addon_features0 parameter around, get it in the wrappers
+  (Dave)
  - Remove TDH.SYS.UPDATE wrapper (Dave & Rick)
- - Talk about the handling of in-memory ABIs for SEAMCALL wrappers
-   (Rick)
- - Refactor the entire changelog according to Rick's suggestion (Rick)
- - Add code comment for struct tdmr_info_pa_array (AI nitpicker)
- - Use kernel data type for nr_tdmr_pa parameter (AI nitpicker)
+ - Drop the changelog section explaining why add-on feature enabling is
+   needed in this series, as it is a generally understood pattern (Rick)
+ - Add a note in the changelog that Dynamic PAMT is not enabled via the
+   new bitmap argument (Rick)
+ - Add __init tag for get_tdx_addon_features0() (AI nitpicker)
 
 v1:
- - This patch is split out from the last series (Rick)
+ - Use tdx_module_args.version to assign SEAMCALL leaf versions (Dave)
+ - Remove DICE specific descriptions (Rick)
+ - Remove the global var tdx_addon_features0 (Chao)
+ - Add a Macro to collect kernel supported add-on feature bits (Rick)
+ - Changelog & code comments change
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 96ced0494b68..c7bd0b01786d 100644
+index c7bd0b01786d..3bfe78b4b538 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1033,10 +1033,26 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+@@ -1033,9 +1033,19 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
  
  #define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
  
-+static __init int tdx_sys_config(u64 *tdmr_pa_array, unsigned int nr_tdmr_pa,
-+				 u64 global_keyid)
++/* List all kernel-supported add-on features0 bits here */
++#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
++
++static __init u64 get_tdx_usable_addon_features0(void)
 +{
-+	struct tdx_module_args args = {
-+		.rcx = __pa(tdmr_pa_array),
-+		.rdx = nr_tdmr_pa,
-+		.r8 = global_keyid,
-+	};
-+
-+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-+		pr_info("Enable Dynamic PAMT\n");
-+		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
-+	}
-+
-+	return seamcall_prerr(TDH_SYS_CONFIG, &args);
++	return tdx_sysinfo.features.tdx_features0 &
++		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
 +}
 +
- static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 				    u64 global_keyid)
+ static __init int tdx_sys_config(u64 *tdmr_pa_array, unsigned int nr_tdmr_pa,
+ 				 u64 global_keyid)
  {
--	struct tdx_module_args args = {};
- 	u64 *tdmr_pa_array;
- 	size_t array_sz;
- 	int i, ret;
-@@ -1058,16 +1074,8 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 	for (i = 0; i < tdmr_list->nr_consumed_tdmrs; i++)
- 		tdmr_pa_array[i] = __pa(tdmr_entry(tdmr_list, i));
++	u64 addon_features0 = get_tdx_usable_addon_features0();
+ 	struct tdx_module_args args = {
+ 		.rcx = __pa(tdmr_pa_array),
+ 		.rdx = nr_tdmr_pa,
+@@ -1047,6 +1057,15 @@ static __init int tdx_sys_config(u64 *tdmr_pa_array, unsigned int nr_tdmr_pa,
+ 		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
+ 	}
  
--	args.rcx = __pa(tdmr_pa_array);
--	args.rdx = tdmr_list->nr_consumed_tdmrs;
--	args.r8 = global_keyid;
--
--	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
--		pr_info("Enable Dynamic PAMT\n");
--		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
--	}
--
--	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
-+	ret = tdx_sys_config(tdmr_pa_array, tdmr_list->nr_consumed_tdmrs,
-+			     global_keyid);
++	/*
++	 * Use SEAMCALL version 1 that supports add-on features if any are
++	 * requested. Otherwise use version 0 for backward compatibility.
++	 */
++	if (addon_features0) {
++		args.r9 = addon_features0;
++		args.version = 1;
++	}
++
+ 	return seamcall_prerr(TDH_SYS_CONFIG, &args);
+ }
  
- 	/* Free the array as it is not required anymore. */
- 	kfree(tdmr_pa_array);
 
 -- 
 2.25.1
