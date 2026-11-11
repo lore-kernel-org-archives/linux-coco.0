@@ -1,74 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794413446;
-	b=eLDH90syX4iidjvF9qSnu+njUVds90HojYS1iZZg7lj6tOodlAST9U10g5tpwehkwWZR
-	 atcUAI83pO39mjP5prCujwFIR6VIpIT8SJUh8022atIY6Sw5tQV1h72C25d6PEVzS+ymP
-	 WHWMXGaPlBPzDrNQd5evEf4qA+vAjJJigMPevxXaWr59wO6eYSeAYQpmoTEQ6s3RUUHdp
-	 bqzbEplriG6yWNhx9cP7nguUl3p5pXv4N+8OPTzvRYe1Uo1zwLTxngYaEoMoHk9ubL3Dr
-	 YSEM2teolZTBvYevdwGYB9GUWK94bGxd/npRsUzWsrl3fK4Ds3uyGXWLUk9Zia8fjOA==
+	t=1794414289;
+	b=LguS4L/C5WSxHQjcBqGo47W5NSmzeRI1P3BCgi3C2eeZ6iMmMeFo28eXou67k3GzSq9j
+	 tmWFyvZDqg6scEI5wOVI6cahnP7NNxy8xz7AFg2C1FElLOnE+0xW7wBV2fbLW4BT4jpOz
+	 QvEzbYIhdcddXctMi8zo6e8y81dWYb5/HorlZP90ilV3OapfgN6tPfy8g6ALATtkCurPF
+	 amnz/YBg/BgCxyjeRKBdlVuV1zg1/YV8f5tLNJUbNcFXyutt0A2WZjgkM0RbE/fjXuO18
+	 nEDNBOQhzTk3pOPjljQuTbnMNcRaHUrAriNkw1SqRBKvlk2kndz4xxGbaSDkC5VZwoA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794413446;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=/fQfvN//SsC5kV/BzNX6zgi6Mg1pRUnE62HeFEaVagc=;
-	b=oQGvhLflK11vkVCYtvSFsBadiYU5/HdIpueK5WgCnFzBn+12jt/IEPovrStkCTS8qhVj
-	 CjgDQx0QQWj7g0GOYHgPKMucXAgybYLkhc6+rxsam3JIkPDytFcPGGzHMm7yGpHFo4oOs
-	 gfm3AYl4z+c34mCieG8oN86umRMtj3Gs7rRxE3XJ/tP5Rh7z/YVgUSGArnfKUv4Wdu3LR
-	 Kfqf2aud6bHa/dg01ieftDcxAw9kzyOHGL36oRe4dVGWVGHm0FrnNSCOE6HBIZUQBqYCv
-	 xPdJOyCsfml3E2LHRAiQ7yDf6rGnUIatyNTn2tCGn90ntwZBTYUt5zgRjS8rZdiLLRQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794414289;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=OjsO/ys/ad/piKfPb2QV+3VHWakKPWNbmqHXdLgFmLM=;
+	b=TAlS4BP/FKQP+gSjTm29iRsk7DiwNwl5D1+h9STkgob+ee9toFgU5LIB1knHw4PsPrMl
+	 FiLeRcYVu++M+ymVz7dDdgET99m7+L1jhnc7WhSezh/Z5CUXVgWE5NRMF0QyMrlKT3hIG
+	 biOdlgP2uKu7b2WyoYbUlnKh+RRzk4OT1rUT+xTMwyqRJMkpS53vaf7RnKO7A1O/iqpwd
+	 dxq7KA4AN6ETKch/7NYaTBcvYcHTxtgzm/WLB+mWrXMGb8paX0U839xi63uaou/NjC1z9
+	 c8Na9m93aFLKogZmlmTT03Nv8tvIyPblZPMLvTcYDWh3nsgXPs4oFzgcry77/mq7CbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YoZafIF2;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9R3bt8I;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C157606A331
-	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 16:10:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C157606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B006606A324;
+	Wed, 11 Nov 2026 16:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YoZafIF2
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3b0a13ae043so3921020a91.0
-        for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 08:10:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794413446; x=1795018246; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/fQfvN//SsC5kV/BzNX6zgi6Mg1pRUnE62HeFEaVagc=;
-        b=YoZafIF2pQpoWwSMC3jQCZfrYW/Ctic7owYy3TNGllxZlwgxbvGPPXeQJymO+/iX+J
-         NBzN8cLmAkWd6+0Pg5ZhzPhEER+BBtLlMY/YrbmleQRQfBpKWh30yD54WwzeAlJIgevD
-         NitIMWFfveUnSlpg+XN+AbuLmwOT7P7ogKbpQXIOuGL1gpli2mRDlkBvTY83LIyGMiEb
-         wPT5Y91cj2eV7F+qBnXnqxsZCgVeEmkYgWKhHg3+lKO+YeuTkQ2cr1XqzrQG3tuImW8V
-         NUW+UJAgx5iB9pWAHbWWyumR76jWM1+M8S5Qs5zQInOes3t2vCnHrO6yp+3tlmvx5dpT
-         uf+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794413446; x=1795018246;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/fQfvN//SsC5kV/BzNX6zgi6Mg1pRUnE62HeFEaVagc=;
-        b=oXq0Bal4M3m0rTxB7pxIUaQTqVedjnP836T8Lt0QzK1QfuFhhT+05DCwtZrNkZ/2KC
-         rffWLxb0OcT7XISMcyHmsBBUVrVIerCLGMym0H7Q4UJZ2iIuqdDLrhY5xy7zb/8SmIYA
-         qmUt0w2h0UHiy9EtyZZUndEyGompJfnbii4qhGVs16kmpxnZijMBtKO36T9SFBkKYh4z
-         SeZKq4LftBDYrWfNUqA7W26HnLsRBly7PKyepcXC0PfyaD9E7xk1xNHpbxCZcUgXxiTB
-         aw3GUYy95lyecyzRtmDkUaY/dh+JYGsYMaF6J0g1Ux9MGgJNfpdkSoB+LEfJQQ3n84Eg
-         7T/A==
-X-Forwarded-Encrypted: i=1; AL+hErE5Cqc2IpGUR3pBkb8xSRE4CYzG0sk+q5WM5wrAgvLPP2+vsWxNpwR1xNo8wxcjqw/OUqYFEySeX6Oi@lists.linux.dev
-X-Gm-Message-State: APuU4Z+g9vXNvtLgxhCeL1/M/j1GkJh4l/pVbyRWAk/M8y4LZMAKx1yM
-	wdrzG0M0pWc41mMXbikB3SCQymiODznxd7049L2Bdt44k1Q9MMxNN/qhcJDot5H78eR/VbOMRow
-	Qho2yyg==
-X-Received: from pjbkn15.prod.google.com ([2002:a17:90b:480f:b0:3ae:b67:263])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2f86:b0:39e:6c68:c77a
- with SMTP id 98e67ed59e1d1-3b182f2699emr2883420a91.48.1794413445538; Wed, 11
- Nov 2026 08:10:45 -0800 (PST)
-Date: Wed, 11 Nov 2026 08:10:44 -0800
-In-Reply-To: <833af78b-60b9-4031-88e0-555363f8dd0b@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9R3bt8I
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EF51F00A05;
+	Wed, 11 Nov 2026 16:24:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794414289;
+	bh=OjsO/ys/ad/piKfPb2QV+3VHWakKPWNbmqHXdLgFmLM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=D9R3bt8IMlmKCvjpNgRgysgj8jSfI13uGBJNO/Gz7VeltIMkdQtWk7rTUbnL+hSKP
+	 yw446sJdMUoV63jGJWmoLXrdm1ER/+eKiRPANmy8/oVLQQIHoxwQk4097d3gNv9RJN
+	 kPGqM0dBGFUDQwamvB9bgVigbzfmgo2HAwhl9bStSXnCsJPMOT+eRSw3AJbBNyDXRc
+	 8huwLIoPnXNi9b/6DowoNI3g+6A06OaWwxGcf8k5/7RxZl9Us0FcZzRZntTE+c9g0z
+	 h2AVNfplmuc6dmcm7rJeSw5ylRkvChp9Qq2tOVm3kX5/SsTu3LunBg9pwpNtEIVykp
+	 A7793R8G+sFfg==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: "Tian, Kevin" <kevin.tian@intel.com>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Krishna Reddy <vdumpa@nvidia.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: RE: [PATCH v8 10/15] PCI/TSM: Add vIOMMU-bound device contexts
+In-Reply-To: <SA2PR11MB4844957D715CDA1CC614E8C38C762@SA2PR11MB4844.namprd11.prod.outlook.com>
+References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
+ <20261104161632.3547423-11-aneesh.kumar@kernel.org>
+ <SA2PR11MB4844957D715CDA1CC614E8C38C762@SA2PR11MB4844.namprd11.prod.outlook.com>
+Date: Wed, 11 Nov 2026 21:54:32 +0530
+Message-ID: <yq5a4idntjy7.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,67 +86,81 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com>
- <20261105-tdx-selftests-v16-12-2024e8fa517a@google.com> <833af78b-60b9-4031-88e0-555363f8dd0b@intel.com>
-Message-ID: <avSThO-PZPrIfT5g@seanjc-mac.roam.internal>
-Subject: Re: [PATCH v16 12/20] KVM: selftests: Call KVM_TDX_INIT_VCPU when
- creating a new TDX vcpu
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
-	Ira Weiny <iweiny@kernel.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
-	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Wed, Nov 11, 2026, Xiaoyao Li wrote:
-> On 11/6/2026 7:46 AM, Lisa Wang wrote:
-> > diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> > index 4330290d29e9..9d951f67b3b5 100644
-> > --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> > +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> > @@ -46,9 +46,31 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
-> >  		    #cmd, ret, errno, strerror(errno), hw_error);	\
-> >  })
-> >  
-> > +#define __tdx_vcpu_ioctl(vcpu, cmd, _flags, arg)			\
-> > +({									\
-> > +	union {								\
-> > +		struct kvm_tdx_cmd c;					\
-> > +		unsigned long raw;					\
-> > +	} tdx_cmd = { .c = {						\
-> > +		.id = (cmd),						\
-> > +		.flags = (u32)(_flags),					\
-> > +		.data = (u64)(arg),					\
-> > +	} };								\
-> > +									\
-> > +	__vcpu_ioctl(vcpu, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> > +})
-> > +
-> > +#define tdx_vcpu_ioctl(vcpu, cmd, flags, arg)				\
-> > +({									\
-> > +	int ret = __tdx_vcpu_ioctl(vcpu, cmd, flags, arg);		\
-> > +									\
-> > +	TEST_ASSERT(!ret, "%s failed, rc: %i errno: %i (%s)",		\
-> 
-> Nit: tdx_vm_ioctl() uses %d for ret, while it uses %i for ret. It's better to
-> make them consitent.
+"Tian, Kevin" <kevin.tian@intel.com> writes:
 
-Ugh, KVM is anything but consistent.  I didn't even realize half the macros use
-%i instead of %d.
+>> From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> Sent: Thursday, November 5, 2026 12:16 AM
+>> 
+>> An IOMMUFD vDEVICE represents a physical device within a virtual IOMMU
+>> (vIOMMU) for a guest. It must use the same TEE Security Manager as its
+>> vIOMMU. Pinning the vIOMMU backend keeps its tsm_dev registered, but
+>> does not preserve the connection between the physical function 0 (PF0)
+>> PCI device and that TSM.
+>> 
+>> Add a per-vDEVICE PCI TSM context. Verify that the PCI device and the
+>> vIOMMU use the same tsm_dev, and account active contexts on PF0. Reject
+>> disconnect with -EBUSY until all dependent vDEVICEs release their
+>> contexts.
+>
+> We really don't need so many vIOMMU/vDEVICE notations here,
+> especially in following code/comments. It's just about a tsm context
+> which holds the pf0 from disconnected. Then let's describe/code it
+> from that angle.
+>
+>> +struct pci_tsm_context *pci_tsm_context_get(struct pci_dev *pdev,
+>> +					    struct tsm_dev *viommu_tsm_dev)
+>
+> could clarify that each get returns a new context even on a same device.
+>
+> s/viommu_tsm_dev/tsm_dev/. It's just a parameter to be matched against.
+>
+>>  {
+>> -	struct pci_tsm_pf0 *tsm_pf0;
+>> -	struct pci_tdi *tdi;
+>> -
+>> -	if (!kvm)
+>> -		return -EINVAL;
+>> +	struct pci_tsm_context *context;
+>> +	struct pci_tsm_pf0 *pf0;
+>> 
+>>  	guard(rwsem_read)(&pci_tsm_rwsem);
+>> +	if (!pdev->tsm || !is_link_tsm(pdev->tsm->tsm_dev))
+>> +		return ERR_PTR(-EOPNOTSUPP);
+>> +	/*
+>> +	 * The vdevice can use a different PCI function from VIOMMU_ALLOC.
+>> The
+>> +	 * module pin keeps the vIOMMU's TSM registered, but does not
+>> freeze this
+>> +	 * function's link. Match its current TSM before pinning the link below.
+>> +	 */
+>
+> this is the example needing a rewrite...
+>
 
-I chose to "fix" tdx_vm_ioctl() purely because it has the completely unnecessary
-PRIx64:
+I'll simplify this and document the vIOMMU tsm_dev reference in the CCA
+code.
 
-	TEST_ASSERT(!ret,						\
-		    "%s failed, rc: %i errno: %i (%s) hw_error: 0x%lx",	\
-		    #cmd, ret, errno, strerror(errno), hw_error);	\
+	/* The device must be connected to the TSM requested by the caller. */
+	if (pdev->tsm->tsm_dev != tsm_dev)
+		return ERR_PTR(-EXDEV);
+
+>
+>> +	if (pdev->tsm->tsm_dev != viommu_tsm_dev)
+>> +		return ERR_PTR(-EXDEV);
+>> 
+>> -	if (!pdev->tsm)
+>> -		return -EINVAL;
+>> +	pf0 = to_pci_tsm_pf0(pdev->tsm);
+>> +	if (!pf0)
+>> +		return ERR_PTR(-ENXIO);
+>
+> No need to check the return error as other places do?
+
+I didn't quite follow this feedback. Are you asking why we check for
+!pf0 here but not in other paths? If so, I think we can drop this check
+as well, since a valid pdev->tsm should imply a valid pf0.
+
+-aneesh
