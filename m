@@ -1,99 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.47
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794417444;
-	b=hadTkVg8iNlq9wjWWKnEs5IFMXMjGGgV51h0zrMZMTUJgEF+AOa6Rm/tmDprV+rdjDLL
-	 mY3wAJSGeJ4xQM2d2RmdWrz/js5xIF3waXDWxi2hXqgPkoVEOwXOw+G5oDOe3JOsjkx0N
-	 JMrulEcrMeaIeGV5GjTx/qSWwppN9XOb4os7GeH2gba9RVk+hyU6l7syTTEqsOdyqkt9z
-	 4SE8B9KAkAADzrkMLfIHzrAujcoYbjxfn+F5BrJPxyVe4yJqjT4JB7fLlG6xfyaTQ8/8p
-	 QHbrSqPm9oydJMh+H06Y9g4azVDMX2BFQemylo5AU/sxwHl1yB+Nn0FAW8TlUBtGImQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794417444;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:MIME-Version:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Content-Type;
-	bh=CHXsNJZUxPCo5A6HmwAJQBYdpTzsqa07OU0Prn+ncRc=;
-	b=BbFqHzJ0Gl+De1DW4IzTB8EFMKNPKdgthBPiLsjvSA2L73nELvQ5wmYKhn+cBlePfDdt
-	 L50BBD3skkLrPvVthI0z3BpOtZ5HTBVJQYMm9Ez1idWy2JMJ/NiRLn+6pwh2JGwxmOzz3
-	 18QI1kPRZ7a+wN7ymVLJeVhlQvKLzsfHvyspCoCMqdJEm1I5MiXg1y5+l/bm9A7AYVdp+
-	 CPUhbPYQVZ2xP1+gSqjTkNNP6/RvTK6zgB/Csk2pf9Zh8vCqa4eL3j0fOyvKAJAZy01fQ
-	 3AanrwWGuG2mCva9ruIiDWm71c7BNo8MCoGUtI9wzi0uooahYQQ4WXulruY52JgfUNg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QL1ohugN;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.47
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794417477;
+	b=KKLC/HBkAZkV8b9DO4ZRhWLTPGqBN26gyLaHT+h3xM6B/udVp9pbYgLsJMKzBxcey1ZO
+	 R82+jKPv/Kn6SeUOp9DutdYAgS1DDeHm91PSZGzv3zIPd/4aM5cmj75dVsPaFJZy2xE19
+	 4hX9vPcIb/K1/kii/YTIlyYu6hB+Wv1jcIci3JrUoMiPMyoKxajuM2/QiWtW/IYMGbe7N
+	 RpN/gnkdl9umtXReHtpOyMRed2tSBNtlfiqb4FlCDespu2gR8V2BEBdLt9C2JcAPzkD9a
+	 v5DDOrlJTojwt7ASGcVXuX2jIhx5JwY4nqmxSO6gui7l1EiBm2ZOkyjvoTuberJSsFA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794417477;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=aYc6TQFiJmyshVr2VWxnAYpxH7I6QL5S37wt5PeFjLM=;
+	b=OI4GZRHzbprYzteqNPqzE94R9UN9uASkLyd8VsjW2i3XG8S/a+rAcnpwshNa4224iKBM
+	 m8oJfTaBIn/fqgj7p4b17PBFQzSg3UDSi/apd7Ge8immfkwTqAuz61ZcJ25tGasTo7evo
+	 Yl9nWX/lNM15WgtwJuvmff2W19PbEA3utZ+f526aP2RESd808W8oJzeGTDhQwjsGNMzgM
+	 HWoW4Xr8+XVw0YXDOpCY4P3JSXXPlEBLUTxXj9dgXrFlKDlP4PYmu4NEX26db5pNVmVWF
+	 y9A8+LGTht1Rm9gPWwaNGBf97ucVOB1fvracftBAcEt5K0HavfivW3KYWBIozPwcJvA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVSf5qWm;
+	arc=none smtp.remote-ip=198.175.65.19
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BA3606A324
-	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 17:17:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16BA3606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F91606A321
+	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 17:17:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6F91606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QL1ohugN
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91e98301805so33479436d6.1
-        for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 09:17:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794417443; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pYlEI7El4pzkMHAzVV5nj31eITZZt7fe1Do8992AiYev6PDaqjt5eDhtCbcVQh28Gg
-         SVLSu+DqiMAHIaQZLmhYPlphhTjBsi/+AbNQXdJv4zcobFo4gvSzpjcmtHQnYZMhRP2s
-         TPe3pUohHOgvWUHmoQ0qkSRmjzdgm1hl5BjcFYkTDfqKF1GvlaPq7ouTtXrvKneNUIyG
-         carHN6G5NDjJJC/Kfda6AIB4Q61K0hA1bBB7SZIpqOsxG6TiLE/Sm69J8tNf3tHz8dmA
-         fC4MfAGt3mckxe0yhN8G8blA2EJa+oNZiUTUm+ZK33flikKtKb0pGJurJLQ1IX0M31A4
-         VVRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=CHXsNJZUxPCo5A6HmwAJQBYdpTzsqa07OU0Prn+ncRc=;
-        fh=Gl4NfJmnFHBxqpjcFRGUKAPNlLucdtvGNNqV0bv7lHI=;
-        b=G/KyFyMWdDnDRBU6zIvvj2xEyuIgPqEoWNxUx/WcW8UcaLIQd1PcutA+tWr2lUNDzq
-         zXY3TjEP35BFy+sCo4J9ua9Vlx23sL/0fe9Fa6lMSUlrUCWPVKQqB6iwuJep/i3I6iw5
-         6Qc/42+LaHpYVwC7ZkHvSt7ozvKBLrDaEBMWU0HiSjm8eaErGVrIrwfyvZ5pjo9Fi8g0
-         aX+2lRmtfOxOpxPCcoMWmZLQQFgk2QMBalc3d88hkiERFiSNYEYZg/4zaIumbIMZBXAl
-         KaA/ygfbSqZiq7e3lV0b676sKlFayO9ETMJQcM84R82C7Obwb8QSelr5UGCdPTjkmWTs
-         e0Rw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794417443; x=1795022243; darn=lists.linux.dev;
-        h=content-type:to:subject:message-id:date:mime-version:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=CHXsNJZUxPCo5A6HmwAJQBYdpTzsqa07OU0Prn+ncRc=;
-        b=QL1ohugNLdL8jKmBRtBKT0BUwiXjS8xKbbQ8cGN4mY7lgPhJkKU2k69N374Z9m4NWL
-         gWz+gQ/gBoUFoiV3s7bro5c8j0dI2lR4rr5v7j+agEdwk4bkfCSHhEgn3Apo2SWVMSva
-         +oQUMyB6MG3hZLYehRqYvikLqshrzAJ8d4+hOV5K90CUo4zEYIOluUOgdzfMFpPrApNf
-         y/wBuCaJdxpxFrmmxZqWaXfwxD8SZCoKcRwmKWcejgQzNk4ViS/zepcGLiIGJ61k2K7C
-         xf6cbYDFcdp0ZqR74DQAOWUKSyF1Gr72L1Duiuye35qxg6MRBAHe05IA3Ko2qOsttFGQ
-         CIzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794417443; x=1795022243;
-        h=content-type:to:subject:message-id:date:mime-version:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CHXsNJZUxPCo5A6HmwAJQBYdpTzsqa07OU0Prn+ncRc=;
-        b=tqgscx5vNYhJpmsW4fvQIGSdUr2eXSLJ0aWSgLAaeSqaATN5HXAZczMfR5Bb0M46IT
-         c8CiGHLg7To0fV24pqhLP9e2VY8E6JB4lGlkxYcvHM+Hiz4wzWzcClqvcYZ0MmoqpcYh
-         qRhAX8CtaLJikDiP4s1y2dODYsSu9IVS4cqf57rM7eAByq4lv1IVal+Lafa7BZrkrgws
-         fC5nQxOe1CUy3nKA+09wJQTfQFyocSKFYHXJKnK0dsFwqGfZDHcIr0Md5IApylmaeYSx
-         U3PHbyDtXxSen9NYH/0JnN/Vsx7OIikMBth7nbjLziWVcWzuZLbGOqCt+NQF2q3Q9DUa
-         W1eA==
-X-Gm-Message-State: APuU4Z+OFm2Sh30UVkK4udpq8fHKEamzgaONZSkWE9yI+xyozsCZcvXc
-	pZs0SVfqPQLjStc0dEZ0b8kfhwdAjl2lDM1JZroORV4s+fC0uQJG7fnNxOfIbOhqukuNAzWzY/w
-	K3i4cLXZSTPf8MX5LVAh7MAOP3Fe7J+CzzMz/CS+BhNxmG7jcQfMikNYaAXE=
-X-Gm-Gg: AYBFou1KRcM3HQKgpLgSgUEK+BuPqzuL3WEvQua22T2LZ1WFV1kHr5hEoRfvK3Ctuwq
-	TubfLpvvt9ec8xQ28xXiF1Zs2S70CQAeoi69q8M3L18RW1dojssK2zxltMzMD7y9QxwC33rMqSQ
-	HZtWpFHYlIx8InLJa8YwErcU7q1AYHcqITHJ2UJ+XvOryDUzHzyM7/InBJ21faEi3MG/XpP474F
-	+5WEmnslED347ra2zUoHizP3IjY34l+wQxHcaTSLEg6iQerqo9sEg1rAITisfEsZ38YGYFKmf2o
-	Rx8GZ1SyIRSnfAbxLf+mF2rzrUouuNowN3MgAJBWsJZ6VZTrxzkTeIG86FbJBBbxF/58Ql3WZEi
-	edkiI5wE07K21BdL8gJFPeDFZ9YrBQTy/lryoIcXdBfw009WwyK+MF8sfmiqlBPfHRUG7Bs2JV3
-	w3dULR8hCwNdDlkVEThhv16gYCD/AmDD+SySl9gpvXJFCJHGAq
-X-Received: by 2002:a05:6214:2c10:b0:91e:eeeb:5ab9 with SMTP id
- 6a1803df08f44-91f03f95987mr55271816d6.16.1794417436892; Wed, 11 Nov 2026
- 09:17:16 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 11 Nov 2026 09:17:16 -0800
-From: Ackerley Tng <ackerleytng@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVSf5qWm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794417477; x=1825953477;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9h+SOuV2JorUEvU3zSn8GmfEBQ5z2NPxmYGV4bE90qw=;
+  b=mVSf5qWmDZ4xDRgnP6/XRCCj0/gowX73pPJXLsexkgvzW6cD+a+j3pm9
+   CqoHe5C0K1PEvkuszd4sTAvp2FYTxZASCAWTLF7WWOnNMdRRndjbZKAy/
+   GsvXLZn87peIgcv9Vv46D7QZQTNBvt+elklTiSW2n60/siKZLBOc0p41A
+   Hi7P1CmTWzUVDoXmMBI3juuRXy413I19F6vl45dLM2zmHNgKitYL3PAfX
+   kv97zjAVQ53vRMqYs4GTDGDFLmB02CwXTfrR35nWOrn4eoKIsKScUBhmS
+   BwoVO8y5uGIfxfDXXcqt9ZD0ADBuaBFIRbV4soDeFPjV8gdhFKosVCaO9
+   Q==;
+X-CSE-ConnectionGUID: 8wkt4lC5Qoukk2lp7ivp0Q==
+X-CSE-MsgGUID: CmFkWQcMR7udnnOAZ/tJrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3237202"
+X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
+   d="scan'208";a="3237202"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 09:17:56 -0800
+X-CSE-ConnectionGUID: lFmZw9txTsqnb0hBWg7mpw==
+X-CSE-MsgGUID: XMizP/EzSK+XFVQ/tWbM8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
+   d="scan'208";a="8803116"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa001.fm.intel.com with ESMTP; 11 Nov 2026 09:17:53 -0800
+Date: Thu, 12 Nov 2026 01:09:52 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, yilun.xu@intel.com, arjan.van.de.ven@intel.com,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [RFC PATCH v2 1/2] x86/virt/seamldr: Support large TDX module
+ binaries
+Message-ID: <avShYPmuMItx/tsJ@yilunxu-OptiPlex-7050>
+References: <20261106132159.1551365-1-chao.gao@intel.com>
+ <20261106132159.1551365-2-chao.gao@intel.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,32 +85,79 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Date: Wed, 11 Nov 2026 09:17:16 -0800
-X-Gm-Features: AclHuK-JW-dz-s3WPckdlk--4-Q2gCEfYsudv4IbzOOLXO2CTOfiTXaBjvjq8wg
-Message-ID: <CAEvNRgHLXryXj57HttDu+ZD6ogS3oRo0A360F0Bt9V1Fu=Rt0Q@mail.gmail.com>
-Subject: [Cancelled] bi-weekly guest_memfd upstream call on 2026-11-12
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	KVM <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106132159.1551365-2-chao.gao@intel.com>
 
-Hi,
+On Fri, Nov 06, 2026 at 05:21:55AM -0800, Chao Gao wrote:
+> The module binary is handed to P-SEAMLDR as a list of page physical
+> addresses in 'struct seamldr_params'. The list has 496 entries, which
 
-Tomorrow's guest_memfd upstream call will be cancelled in favor of KVM
-Forum :) See y'all at KVM forum or in 2 weeks!
+Is it better we specify why 496 entries?
 
----
+  The struct seamldr_params is contained in a 4KB page, the first 128
+  bytes of the page are the metadata, the rests are the list of page
+  phsical addresses for the module binary.
 
-The meeting notes can still be found at [1], where we also link
-recordings and collect current guest_memfd upstream proposals. If you
-want an google calendar invitation that also covers all future meetings,
-just write Ackerley or David a mail.
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+> caps a module at 496 pages.
+> 
+> TDX modules are gaining features and are about to outgrow that limit.
+> 
+> The P-SEAMLDR ABI was extended to chain the list across 4KB pages. For
 
-[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+With the knowledge of the first 4KB page, it is nature to say the ABI
+extends the list to more 4KB pages.
 
-Thanks,
+> a module over 495 pages, the last of the 496 entries points to another
+> page of entries instead of to a module page. The last entry of that
 
-Ackerley
+Maybe we don't have to emphasize the 495/496? The last entry of each
+page points to the next page.
+
+> page can point to yet another page, and so on, until every module page
+> is listed.
+> 
+
+[...]
+
+> -#define SEAMLDR_MAX_NR_MODULE_PAGES	496
+> +/*
+> + * module_pages_pa_list[] spans multiple pages. The last entry of each
+> + * page points to the next page and does not hold a module page, so the
+> + * maximum number of module pages is the array size minus one entry per
+> + * page.
+> + *
+> + * SEAMLDR_PARAMS_NR_PAGES is somewhat arbitrary. It allows modules of
+> + * up to about 32MB. Increase it if modules outgrow that.
+> + */
+> +#define SEAMLDR_PARAMS_NR_PAGES		16
+> +#define SEAMLDR_NR_MODULE_PA_ENTRIES	(496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
+
+The number 496 is not meaningful when the seamldr_params is no longer
+one page size. We need comments to explain how it is derivee. But instead
+of text explanation, is it better:
+
+#define SEAMLDR_NR_MODULE_PA_ENTRIES	(SEAMLDR_PARAMS_NR_PAGES * 512 - 16)
+
+Or:
+
+#define SEAMLDR_NR_MODULE_PA_ENTRIES	\
+	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE -	\
+	  offsetof(struct seamldr_params, module_pages_pa_list)) / \
+	 sizeof(u64))
+
+> +#define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
+>  #define SEAMLDR_MAX_NR_SIG_PAGES	1
+>  
+>  /*
+> @@ -48,10 +59,10 @@ struct seamldr_params {
+>  	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
+>  	u8	reserved[104];
+>  	u64	module_nr_pages;
+> -	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
+> +	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
+>  } __packed;
+>  
+> -static_assert(sizeof(struct seamldr_params) == 4096);
+> +static_assert(sizeof(struct seamldr_params) == SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE);
