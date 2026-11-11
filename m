@@ -1,88 +1,138 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794384254;
-	b=FqvEnYjmlpKAaHQb+QtvXGc0Rw1a7nsXND1HkNaxVLUGN+n3jVmJeb/L6HL5RiQ3/+zq
-	 fACyvj7VdYLyM5HOu5zViUWmGYq1unBygm4Kxrkgey1sSiD4XXrclqAE2PNgTrm/DVJhy
-	 GeAXejJenQnQP9kvHolHBqTI1BoOIdcmdliupz+2Kli+jz3Sa7EbL7SWXz7rPBUA5ugrt
-	 4vKovQNfD9k+F4ii/8SAyHsaU8L6AD6zsy0vkopWXMzqdAC5CqOIvjVpatC2QvKtM6kIJ
-	 iBfPwrtEogfHbkGFdUHKvFJMo38mU/mYOhdKBrR/3Di5cRG4OujpOxOqxpozYtnIxxQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794384254;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=6ZX9xvQWpUVBtKirtXVOPyYer8VApveUOjqJsL69dxI=;
-	b=qVgs3XSzzilEzV/bJlBWrYr9gBhwSYAm/8WLIu7tHSpG4IUkS6QqrnFhYzgNjq/cZfF1
-	 rTLgLs38wQu16cnUpEhqW5BJi4QPm95WDiID9YCLgAdbMqYMDzcd2AhMsB3HCvn5b/9dg
-	 s7VqCTtNvBXaWp5ivxXbD5fGF1iM72OqJ0EWOasq4IGZiHiM6++XP+8PsBE878BHqIAQV
-	 qjRPve7v1RVihIpNZL2K2OPWkgZefuGtvmsrS+7oP1GsS/mobdyId4S7+lPkPFACFoH0w
-	 Msgx0tlMYwD8UGohlfOVJj6Vj8odWhXmLle/UK7A2P0OyiBZscEq97cNMCwRMpowaSA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=HL6nEIr1;
-	arc=none smtp.remote-ip=209.85.221.44
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.20
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1794386774;
+	b=5V4RJj82oBjmS7D/hQm8b04ipiBCyRmFN4dkMd0fF3cVNgAIFB+RQek4oqOoWA0VKaAq
+	 Gv2ZlFi7V2DlFUXkbPjyjila0xc7/RDn+qnqNSs3rxl2f6W4FPZf2LWX4qGDg9oyYv3ML
+	 qSmRDTGPDn1FfOTmaRTepghBXWxTu3qE84ZYHho/GdCtDSnI57TJ6YigpfI+7o6ZA3far
+	 kWm1SxKUngklU4ajq86eQ3jt26YhD6A/YAihUYtm3MdTgJMVYYbw9OGJsue2mkOoCKJAx
+	 jHaZmI5U1GhG52iGc3T6MhgUlI8MniChMbIWrkg+OHVUsT4e9GH/u5Oy2RgWmEcFL5w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794386774;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=S8H52j7m/Y99NanXvrKsgMwIF3oIhzf54jzkrfllO2o=;
+	b=gtGf0E6e5sMHoBa9tVgwffLjx2vibsF2mq2PvbkgrlLdSQ8qH2YrYYTG4hUvFikWrC+G
+	 vu+lW3MHe2vILPthvNiH5WLOkzV5o0ffX/lFT9eNttAQQJak8B3ZLYQ/0sONmu0Hbvg+T
+	 RIoYqYKUN2qbB8O2BP2k58Q5oa4UfA+NqRJD8r49OwjeQxJr1C2UBeqiHhtBC5691oON0
+	 2Ld2NVq2K/GbdU3TYolg6Ab5BBnAyi8hfl5/s5vdolqeslTT91pepvrSykn2QTBfKmOIh
+	 abNh6VthBbtoTpUUNuQkcGS3xYuiO2+wCZv9OxiBLV8tAJiHl1hwvymI3JJ3NO7sGsQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hKLfQSHJ;
+	arc=fail smtp.remote-ip=198.175.65.20
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB584606A327
-	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 08:04:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB584606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2F6606A326
+	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 08:46:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B2F6606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=HL6nEIr1
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48e1d0e5dafso1889426f8f.1
-        for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 00:04:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794384252; x=1794989052; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=6ZX9xvQWpUVBtKirtXVOPyYer8VApveUOjqJsL69dxI=;
-        b=HL6nEIr1vhtJpJZ+UOQracbNndbf7X78bcBsPGos+A2O17CbXsbsea6BEXiUAR5OjR
-         ek49RknmM5PXMNtm3GJS+xXxExsYYI/jyZ0RaFnElrRUrdwIeNuivfGiXUN0VC4ftGVc
-         h9pxm6/eUWE+D7URzX90Avpzk0D3IwTFsFLaqWXbRzfQUe+rzkpmnBldZJ0cGfmc62Ph
-         RGhSqC9mlW69LAC/25YZouGdtRykMPSZIfl9t63bAAr/ohbPm7piAe5fESl0PTn8xcvB
-         DmAOf43kslHO/gMv56ePcXR7Gc4JpKEH98CLcVgQMEbpMuLbGSRx2h/xioAFD99Y88JP
-         pRjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794384252; x=1794989052;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=6ZX9xvQWpUVBtKirtXVOPyYer8VApveUOjqJsL69dxI=;
-        b=pMc4eIa6IB3qW7lspcH9k7d+uMbIdJf9IljZJLtOa73isupllXK1EcgrL4gnBJ5bts
-         UB8pF/DAw3KvNuJGxl7na2y3gYvfhk8t5Kv0dhTqFKPbM4/zQvjodkCxN2VEblRl8Dag
-         d9sL4dEjJGvO58fm1uvZaqtZTP9luagU8pCcm1OGPlZlBbpAc2XBYFHfZSf/6wCC/U5G
-         xsh3DDc3sljZo9UWW9gL8ZoRZ1Zbzh8vjNFwc6GYOdtAM/b4BrvijVCqvcs2v1OK5+vQ
-         1GXX4+ZYn5zyejSQqU3oB+Nse9Iba2L+y5szBACovUHJg1XJJu7nuFqo/Q7G0yA1FCCG
-         oJ4g==
-X-Forwarded-Encrypted: i=1; AL+hErE9T2XicqpFYITRy1xG9rqI4RuurNnSOwtkJ4XfZ34a6Qzm76mHKM7J7oHBKk7VXIbecGm8ynKTB+cm@lists.linux.dev
-X-Gm-Message-State: APuU4Z84D5e7Iyt/hPGQnIS6BYpymnNIYshY+OosGBUh1H81jA41Q+Od
-	oBnfZXjRyz24l9f6yBBKaZbY4bwnqjcV0xoJCD4R7iswJ7AFqV0QZoWFul50wW9P79g=
-X-Gm-Gg: AYBFou0m4mtqM9iqwSKprpYWywig8N38V/XkjUiDqajtgvpYGuS46ejOIEgJPBGom0U
-	58kIE1ripPHM3dCHCec4wLK0RNKAMaX6o+RbnqIAJFNggz8SaVYctVgMtTLRsTBAtaugFqc4jzi
-	nk2x7J27sI3pXGOQT1FJLwInvrk4zC7FE3oJ0UKr1BCkBcrOkVQTrtxSSe9yl13jZXorqrt/ySy
-	sOu+zu/LBvVEAMLtyc4uKlpHO5KSJZ9GuS9lGVRZPVro296cmbv6SVQ7Nxa2K5PUJXaQEHX8kSd
-	04RES2m2cAKidvlQEzeokijj68Tz5LMi5GbllfaNg5rbrOmIjB7GryMP20UxfOe/HekC/wXRyzg
-	/rL3jvr7dg0nYhGcG1v3Dx3MnJ2O3ZP/sqjLAvRlsdBBBeE3Kt20DOfRFlFz9jlEwkJg2ojrIDi
-	3SFxPTOv+aDFPw7lY0sNw3WKefXoxOdaQVMgTJUnhQcfZaAmfvC52zt5UEyXc7XQvhyiciAaYNq
-	oyFzdn6zymkaDuMyCVdy57TLQYX1wLoeo9n9v6ngwOw9fgEhM/9ipIv93jH96b5w8uPYOB3ciQj
-	lalN4Z3VkUVLxLwEYURS4F3tzBM8p/Ca
-X-Received: by 2002:a05:600c:19d0:b0:4b5:d95c:2380 with SMTP id 5b1f17b1804b1-4ba09375b5amr24148075e9.11.1794384251894;
-        Wed, 11 Nov 2026 00:04:11 -0800 (PST)
-Received: from [192.168.0.20] ([212.21.133.162])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01fea9eesm193932935e9.11.2026.11.11.00.04.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 00:04:11 -0800 (PST)
-Message-ID: <03a36011-eddf-4d89-9d86-1cc3998f89c3@suse.com>
-Date: Wed, 11 Nov 2026 10:04:09 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hKLfQSHJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794386773; x=1825922773;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Ta0BH50H78xHnOVAtVBgMei7eUfte2clVZ3U+HO5qpk=;
+  b=hKLfQSHJZAZq5lnBFI03PAExUFmHQyDDZxMJxBiAAIdAvNYeJL5edlqE
+   zKGmvmvFS00s1rA/GWkjQeukj86VSmwjSnvktytmLTOiKiORWKbApD5QX
+   TJIbSPSGIdUSugVcpEEeqoiltb2cbDlQi+pVOOldcgSesLxIwfDz4Agf2
+   JuN9yB1bImhZN0JvMPM0BJmwGnRMKbX8o19eDiC3ufRLqzqBUUL+6Ph94
+   I0FXzZTr6EiGZVjlmGxiGloCwOAj1kP/DvUdO7/KceNhfnhetVEQiV3ok
+   LuM4coPwb5SHOR/BEq287Ibm0cgsYXkn6m59YWE4xeobh3VUj0f/uQfpi
+   A==;
+X-CSE-ConnectionGUID: kxzpIsy2S8i7JK5ePi2Y5g==
+X-CSE-MsgGUID: /A/xuih9RleP7RcAgZilBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3186248"
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="3186248"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 00:46:12 -0800
+X-CSE-ConnectionGUID: g8KFQPksRuufFbrLnp3o8w==
+X-CSE-MsgGUID: 5NZgkUaTQdyhPkdlhGeaSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="8550832"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 00:46:12 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 11 Nov 2026 00:46:11 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Wed, 11 Nov 2026 00:46:11 -0800
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.59) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 11 Nov 2026 00:46:10 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ysWvqjXUDyU/Gke7nQ1ZEomI0qw0BbeiNdw83K/OkG8DpMJNcPIV25OkWDeEEQ/Lf0TgDpJGAjg/Exw09w8/04U55zbzH8lXVQKZELlb1cRODPVMSPAGW3lnkvWRdaS5gpyC87qplmLU2JW9LTsK87kFoqyl5VCS3pyZsIO0NsztR9O9xY86CFmfUol6pu54/tJQhoKkZV6AopgAFbO6VfwRWpOJjABQxb6Nq8vUKDxzOLen7MQRNwSG9CCymhXW22H0kXxYIJugjawBFzwX+KSPeRZa9xNshbaOgYvuDIrpOwKTEkkQFd3aK3MyaSc1UM44R1vv7D84dF3TyP00IA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S8H52j7m/Y99NanXvrKsgMwIF3oIhzf54jzkrfllO2o=;
+ b=O/RV8IDAfHza2zcVmFBhcW5szUeBSuu8p9dKWiJyAuch2MESq3ynbf9VqDdQol3wQiOY+DOcYn4erLFE9oTXLluQkNuU1nW9gZsJ2IE4+LrDxOKlj+ZuHJ30QIkWC4wtE8stmz1NhdUQP1rcMzzgQab+3K9gyh40tC9DrRKtwsVnSJGeo/FZ8GmyYkGTFsmDKDupJ8Y+R55D762IXvdfPybx104wcgw8QvSrDgmIq1OTd+Lsbtcf6gMrVWab76y+GGyhRezeic6qA9/A+zG0yzcFeUFRNtgnRMD+Ghah994Q+eHLZL89fjkham9rGHQiP2sS+PKVLnxoEwsWpfX23w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
+ by SN7PR11MB6994.namprd11.prod.outlook.com (2603:10b6:806:2ad::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
+ 2026 08:46:08 +0000
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d%5]) with mapi id 15.21.0592.010; Wed, 11 Nov 2026
+ 08:46:08 +0000
+Date: Wed, 11 Nov 2026 16:45:56 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+CC: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Van De Ven, Arjan"
+	<arjan.van.de.ven@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com"
+	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
+	<bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>
+Subject: Re: [RFC PATCH v2 1/2] x86/virt/seamldr: Support large TDX module
+ binaries
+Message-ID: <avQrRFuTOMcDUbqg@intel.com>
+References: <20261106132159.1551365-1-chao.gao@intel.com>
+ <20261106132159.1551365-2-chao.gao@intel.com>
+ <0ee3d9592e4e73bd0e5bedafc836033fdfc9f120.camel@intel.com>
+ <dc2d49c8-18ac-4f24-bd49-1f81ce300562@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <dc2d49c8-18ac-4f24-bd49-1f81ce300562@linux.intel.com>
+X-ClientProxiedBy: SI1PR02CA0038.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::15) To IA0PR11MB8380.namprd11.prod.outlook.com
+ (2603:10b6:208:485::21)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -92,506 +142,109 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
- operations
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>
-Cc: "Hansen, Dave" <dave.hansen@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
- "mingo@redhat.com" <mingo@redhat.com>, "Peng, Chao P"
- <chao.p.peng@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "Verma, Vishal L" <vishal.l.verma@intel.com>, "hpa@zytor.com"
- <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "Gao, Chao"
- <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "aik@amd.com" <aik@amd.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <20260924041032.1096569-7-zhenzhong.duan@intel.com>
- <8c892695-7ec5-4d93-a74b-487fe535c3f4@suse.com>
- <IA3PR11MB913605FFABBBC42C1FF341E192982@IA3PR11MB9136.namprd11.prod.outlook.com>
- <03c80e1b-2a47-466a-a042-c736f640d3c7@intel.com>
- <IA3PR11MB91368A7BCDAF146ECDC6A4CB92602@IA3PR11MB9136.namprd11.prod.outlook.com>
- <IA3PR11MB9136FE2B23CA52EC68EF2139926E2@IA3PR11MB9136.namprd11.prod.outlook.com>
- <bd0f63af98521d76e0d34ea31f18accc063d1d27.camel@intel.com>
- <IA3PR11MB9136FEF30F06D8D5118B389292692@IA3PR11MB9136.namprd11.prod.outlook.com>
- <a63e7dbdba277b5a551ec74d09144e97f55504dc.camel@intel.com>
- <IA3PR11MB91369A1E95D047DBEDB53B7892722@IA3PR11MB9136.namprd11.prod.outlook.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <IA3PR11MB91369A1E95D047DBEDB53B7892722@IA3PR11MB9136.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|SN7PR11MB6994:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8961dc4c-d21c-4c92-e034-08df3fd03a6b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|18002099003|22082099003|10067099003|4143699003|11063799006|261028144727099003|261022115727099003|261102123227099003|261026121527099003|261021121427099003|56012099006|261022105027099003|261026140227099003|261022075727099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info: QvKGHRTold/1AR+UNQd5cWpdwnW9Wuo3T/ZYXHAAmk7XJHDovBmRtlgehd4H2Wgs/fuG+Jo5tq8/6rmwfFFWPBQkk8txHF4+4FkjYe2DqSguMvSHCb5GMBkwjZhlWUuRkTS1EQdQuThnAsTDLFP6HSwEfo2A6AjZxBRTCpKTphq4SihhfwBuTKOnY+47QOTG7LA9wmOXDegq78GWKCcLDE4qIYnATLpFayy4ZbF/T++LN2teIaSnF5kf06/acWJMMtSzeZvyf5ACVyviymv18gr2REiniQQk+fV+XwBz/ypEKlpqJJVKKNHZ6xiJD9YWKXHdrzCjR2IcowK7jOXm5aybl5cHJJ8EywrXAxk3/owmDPn/8V3QtkmWZPGiII9UX2yHkwF5tyK+gZNMGEGldUnIHAR5fJ2jOehcNBRJC8vKgDE1yHrd5LEJeBv94LSRDBhtvNNHGXNvW9FF7yIt6w+/4S3Ntc9A6uotNGuwJLNs0KKtctgwkgN16boCmn73v6oXMcy1JrgOopB0D04yVxN+2QD8kcWrunByZzjqj1MVO2IDjazPz0QCax7dWqe+BbLCpgmPFxzq8NcqCcwt9nLz/PcfJBCr3uSOXGHfkAukYkZeoX6kyujgTpNNP8wU3bqkQK3zRbQL1XZW5yMXwM5csOhDjDymF+72Le9GJ38=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(22082099003)(10067099003)(4143699003)(11063799006)(261028144727099003)(261022115727099003)(261102123227099003)(261026121527099003)(261021121427099003)(56012099006)(261022105027099003)(261026140227099003)(261022075727099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3yrIOXTvmdk7e3dIojlfhdMh4MUig4uP4mjCb1c62iyqLW0GLJoSNtybqLja?=
+ =?us-ascii?Q?WNyHSbzIpRbbf6X3MI2AYttgFAycrisgBSRPzXZ14V2EcotVhivwXWU+BZT0?=
+ =?us-ascii?Q?RFULYvM/opsmIKOhkQi/+0shUpnG+jRjdVm9vxSTqWNFobleGsRwNwQDv0+e?=
+ =?us-ascii?Q?ToQ6hUrxuQLwZ6ZBDDOJde0HLMnzE2nONKHPw9InNFyvfQO0FHfKZkpFZd/j?=
+ =?us-ascii?Q?x4nQo70nkeQUYTASkVMCiMqOIN35VnUA/l17I0ja66CMWBohfkMnmHzb6TB7?=
+ =?us-ascii?Q?8g2pP9V/XJgb5Y7ZJYK1MdO8AJl+LZc56CZW8/8jy8MI4ApBpuqtfwLr8KK3?=
+ =?us-ascii?Q?255bJRoiRn9A6r4pqeHFEJ+PZPYLz+M+IMbhs/1AtZtLI9Ty/waTpPTaNUoe?=
+ =?us-ascii?Q?w+XBAXQ2MSsmJbHDiF0uXo3POnYwgt/BNpAm+0LJujoxrYY2P0Qe/pVmdR/x?=
+ =?us-ascii?Q?ScDENQj0wCqjU1uNBS8sZ2tHVMat9VZbE3ELOPoH0G6rq7hh03V7I0cye2r/?=
+ =?us-ascii?Q?n/Hg/gO9VdMKufLJ0WeSdzZDBj1TwMBBozcpFGe6HoaH+/2FbxXudlZYOsQ6?=
+ =?us-ascii?Q?v32WeS+BGDOrXLLyMbyzAxCDrZmtcfwOaLBtGpRMH7pqRFF8ZZnJRGrAw4yI?=
+ =?us-ascii?Q?WLya0ZCRGgaCYGfuocQZHdvIpbHlTngPhxXP1EMSZtvsWjYzoMQvxGeDLk8Y?=
+ =?us-ascii?Q?vbamYH7PCSpNYpluPt4nQPDnp+e/ntW3pD0xfiB8sjJRaPDEqqup1ushMD3o?=
+ =?us-ascii?Q?02kfseLWbHjz3f+wdAP5B6DWfDyZtE4g1sENC0XKRYnwwCVbzMJQ9T8iFrgr?=
+ =?us-ascii?Q?a7+3scNQLYF2BkHL745gjyGXLaEN1kViIPOMYOxy829HuN0FCZCna1SaOnbR?=
+ =?us-ascii?Q?1id3RcOeoLvz+7iQ7T4zUKh2KEoxSpVDffcMaDVlVdH9Zb7I681MiIfX5yMI?=
+ =?us-ascii?Q?NMJ1QJaSa0xgc98X9yfFVOQB1s64j/OVFmpY11ifm1bL4v+uFVXSsRj9jxYm?=
+ =?us-ascii?Q?KNve1vzrD+qdiayo3CvC5OgF1A0GBb5KOg9ULRNjDSawb4IUoUX1GXRmeTx4?=
+ =?us-ascii?Q?T97cCBsA8webnE6fvuyRUmCovKEtnz4NLFELUttsK5zJsRSsYzWLZCRV7518?=
+ =?us-ascii?Q?p0uRNCqCJenZQomqn5MXux55Ez1f+O8WJ6Y1erUt7Wd7FB/jmCM1XJ6BBbck?=
+ =?us-ascii?Q?iI09GTk5YGU9qQmMyk1Q9YUggf9V0pUH5po1w8tULU3usn4X6I7Es0l+f8BQ?=
+ =?us-ascii?Q?CtWXEFFd9FB+I569krBv8ecj4SGJFYgMZw0+QTqEmiR2Sz/otqq8vhUtru+B?=
+ =?us-ascii?Q?tbceF2vLTOiRR1OjF6742wIUPM2XIbyNs2uwupRRJ0Jkks0/fLgq6TLYlPj4?=
+ =?us-ascii?Q?Ph9Dfmhw8sMH/djE44cjtmIQSkSxExn0uG0C4wsrANcOLF5IQtz4/uOfuwOr?=
+ =?us-ascii?Q?L7NdqrTGIiBdrjuzy4b/HnxdvtNufZBdEi+iQOc2Mi5C1dJ7ka6zWupuZPz0?=
+ =?us-ascii?Q?eEZNCZET9cQZ4sqxNF9KwGscNh3C3yuA8ZjVAZ4CKXZRy+8G5K1OGb79eMkZ?=
+ =?us-ascii?Q?dtUB5eOuTZDj7BuiVaHFzUr11JhnfieS5X9my5ivh3kxW95w6HuTVyA3hS9Q?=
+ =?us-ascii?Q?nv6Nnpqdrkaptx01xbsNlx2KXwhB+jcTrgpFmJOm942hBrboNq3Di6OKSkuI?=
+ =?us-ascii?Q?/sAaRVhk+QAwcDRGYP4CvR/nuA8WURik5b/7E95k8v4W5E5mhWJEU09Eg5gL?=
+ =?us-ascii?Q?a+YYv6psZQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: 05eHKLPSX/r+s+jOmcd0r/zXWFHB7qv54KlYlfOV7TqRY2cXaTOum7+29CMocy9v72XNEe1CK/tKXkRNrEXUpAR/ajFWX2W9ysyLbLGUU+j6jB7cTdW0NRkF1sXYRjKo0UQZM8dlGvrddCQ2/3lCAT88A6cRsQhU5F0ZYekjkC3EXePM0+5wrvxb9H3yhrE6AX4Zt2R72GJNj+U2Ubxw+vaX2kRr3fEQI5P3HwAd/uOJF0Ai2dDwouv32x5SLlkNr6WCWF+/yWO+xKp6KRVFxgpQSJ9UOPrHxxkOwetZNUkjv20DyfQ0C8KhEIkS8KtQJ9WHhyiWBXdtUbNKX8jaNg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8961dc4c-d21c-4c92-e034-08df3fd03a6b
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 08:46:07.9643
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OYiOvSrQXukp+jppNFhUj3Dq3TUgL5LyHBDhkYXL7HJpegp5tCYMcIvZn57I9q5KfwqYJpsLM0f4zJ9UApXk1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6994
+X-OriginatorOrg: intel.com
 
-
-
-On 10.11.26 г. 11:40 ч., Duan, Zhenzhong wrote:
-> 
-> 
->> -----Original Message-----
->> From: Edgecombe, Rick P <rick.p.edgecombe@intel.com>
->> Subject: Re: [RFC PATCH 06/15] virt: tdx-guest: Support TDI bind and unbind
->> operations
->>
->> On Tue, 2026-11-03 at 08:49 +0000, Duan, Zhenzhong wrote:
+On Tue, Nov 10, 2026 at 02:34:17PM +0800, Binbin Wu wrote:
+>>> pages. The last entry of each page then points to the entry right after
+>>> it, which starts the next page. These link entries do not hold module
+>>> pages, so leave them out of the maximum module page count.
 >>>
->>>> -----Original Message-----
->>>> From: Edgecombe, Rick P <rick.p.edgecombe@intel.com>
->>>> On Thu, 2026-10-29 at 03:26 +0000, Duan, Zhenzhong wrote:
->>>>> I want to discuss this further.
->>>>>
->>>>> If the TSM driver successfully locks a device but later fails to
->> unlock
->>>> it,
->>>>
->>>> Can you explain some concrete scenarios where this would happen? We can
->>>> think
->>>> about whether it is required for an initial minimal set that does
->> something
->>>> useful.
+>>> The 16-page size is somewhat arbitrary. It fits modules of up to about
+>>> 32MB, far above the roughly 2MB of current modules. It wastes 60KB for
+>>> today's modules, which is fine because the memory is freed right after
+>>> the update. Sizing module_pages_pa_list[] per module would mean either
+>>> moving the allocation after the image header is validated, or allocating
+>>> from an unvalidated page count. Either way it is more code churn.
 >>>
->>> I can think of some rare cases: the TDCM hypercall may return an
->> error(e.g., a messing VMM or TDI device firmware),
->>>
->>
->> I'm not clear whose fault this is.
->>
->>>   or TDCM hypercall polling timeout(e.g., heavy load in host).
->>
->> Heavy load in the host leads to broken flag being set? This is pretty
->> similar to
->> the issues around the BUSY errors. You really need to think through how
->> this is
->> all going to work.
-> 
-> I found current implementation did not handle a polling timeout well,
-> so I reworked it following the GetQuote implementation. The shared buffer
-> is now allocated per device instead of per command. After a timeout,
-> further commands fail with -EBUSY until the VMM reports the pending
-> command complete, and the buffer is leaked only if that command is still
-> pending when the device is unlocked.
-> 
-> Below is the reworked patch that handles polling timeout, I'd like to seek
-> comments on this new implementation early, comments welcome!
-> 
->      virt: tdx-guest: Add TDCM helper infrastructure
-> 
->      Add internal helpers that send TDCM commands to the host and wait for
->      them to complete, using a buffer shared with the VMM. The tdx-guest
->      driver uses them to manage the TDI of an assigned TEE-IO device, for
->      example to bind or unbind it.
-> 
->      A TDCM VMCALL acknowledges command submission, but the command may
->      remain pending after it returns. GHCI allows asynchronous completion and
->      defines status polling and event notification as completion methods. A
->      valid notification vector (32-255) enables event notification.
+>>> Do not query P-SEAMLDR for chaining support. Userspace selects the update
+>>> image and is responsible for ensuring the module is compatible with
+>>> P-SEAMLDR.
+>
+>Although the change log above has mentioned "For a module over 495 pages,
+>...", a 496-page module was compatible with the P-SEAMLDR without chaining
+>support, but now it requires P-SEAMLDR with chaining support.  Is it worth
+>calling out this change to userspace?
 
-Remove last sentence, this is an implementation detail of the vent 
-notification which is not even being used. It's sufficient to say there 
-are 2 methods and you've chosen polling and then say *WHY* you have 
-chosen it, which you do with the following paragraph.
+Yes. I will call out this behavior change in the changelog and explain why
+it does not break backward compatibility.
 
-> 
->      Use status polling instead of event notification. TDCM commands are only
->      issued when a device is locked, unlocked or accepted, which are
->      infrequent administrative operations, so polling adds little overhead
->      and avoids setting up an interrupt vector and its completion handling.
+>>>  /*
+>>>   * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+>>> @@ -129,17 +140,24 @@ struct tdx_image {
+>>>  /*
+>>>   * Given a vmalloc() allocation, write all of the backing physical
+>>>   * addresses to pa_list[]. Caller guarantees that the array is big
+>>> - * enough.
+>>> + * enough. If pa_list[] spans multiple pages, point the last entry
+>>> + * of each page to the next page.
+>
+>I was wondering why SEAMLDR_MAX_NR_MODULE_PAGES	is not
+>(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES + 1), since I thought
+>the last page should all be the addresses for module pages.
+>
+>But I find the code below always treats the last entry of a page as the pointer
+>to the next page, i.e. SEAMLDR_MAX_NR_MODULE_PAGES is indeed
+>(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES), but I am not sure the
+>comment is clear enough.
 
-This can be simplified, just say that mechanism is only used during 
-setup which is a small part of the whole process and polling has been 
-chosen for simplicity, no need to go into detail about interrupt vector 
-setting up and what not.
+Right. The last entry of a page never holds a module page, and the last page is
+no exception. I will call out this in the comment below:
 
-> 
->      After the VMCALL returns, check the shared status and, while the command
->      is still pending, poll it with a sleep of at most 1 ms until a 10-second
->      timeout expires. Each DOE request-response exchange may take up to one
->      second, the limit set by the PCIe specification and used by Linux's DOE
->      code. In testing, BIND used the most exchanges of any TDCM command, at
->      three, so 10 seconds leaves room for those exchanges and additional host
->      processing. This is a guest-side timeout, not a GHCI completion
->      guarantee, and does not bound the time spent in the VMCALL itself.
-
-I find this somewhat way too verbose with implementation detail which 
-can be derived from just looking at the code.
-
-> 
->      Converting memory between private and shared is expensive and breaks up
->      large direct-map and EPT mappings. Keep one shared buffer per TDI
->      context: allocate it and convert it to shared when the device is
->      locked, and convert it back and free it when the device is unlocked,
->      rather than converting memory for every command. All TDCM commands for
->      a device run under its device lock, which serializes use of the buffer.
-
-Again, way too many implementation detail. Just say the memory is 
-initialized at device lock and freed when you are finished.
-
-> 
->      Only the command helper writes to the buffer. It takes the command data
->      from the caller and copies it in once the VMM no longer owns the buffer.
->      GHCI defines TDCM commands that carry command data, so the helper
->      accepts it even though the commands used initially carry none.
-> 
->      Treat the response as VMM-controlled: read its length once, require
->      exactly the expected size for fixed-size responses or at most the
->      caller's maximum otherwise, and leave reading or copying the data to
->      the caller.
-
-Remove this paragraph, it simply restates what the code is doing. The 
-gist is that once the TDCM is sent we have to treat the contents of buf 
-as coming from an outside party.
-
-> 
->      If a command is still pending at timeout, reject further commands with
->      -EBUSY while the VMM still reports it as pending, as GetQuote does. The
->      VMM may still complete such a command, so its effect is unknown to the
->      guest. The operation that issued it fails, and userspace can retry it
->      by writing the PCI TSM sysfs attribute again, which issues the command
->      again.
-> 
->      When the device is unlocked, or locking fails, convert the buffer back
->      to private and free it. If a timed-out command is still pending at that
->      point, leak the buffer instead: the VMM may still write the response,
->      and freed pages can be reused.
-> 
->      tdx_tdcm_run() is initially unused. A following patch uses it to
->      execute the TEE-IO support check during device locking.
-
-Those sentence convey no useful information whatsoever, the 
-__mabybe_unused in the code, which even gets removed in a feature patch 
-already say this.
-
-> 
->      Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> 
->      ---
->      rfcv2:
->          - move TDCM specific declaration into connect.c (Nikolay)
->          - Explain asynchronous completion and polling choice (Nikolay, Xiaoyao)
->          - Use GHCI-style names for TDCM error constants (Xiaoyao)
->          - Split TDCM helpers into a separate patch (Xiaoyao)
->          - Replace cleanup attributes with explicit cleanup paths (Rick, Xiaoyao)
->          - Keep one shared TDCM buffer per device, allocated at lock, and return
->            -EBUSY while a timed-out command is pending; leak the buffer only if
->            that command is still pending at unlock
->          - Check command and response sizes against the buffer at build time
-> 
-> diff --git a/drivers/virt/coco/tdx-guest/connect.c b/drivers/virt/coco/tdx-guest/connect.c
-> index ead245c6b120..70bd68994259 100644
-> --- a/drivers/virt/coco/tdx-guest/connect.c
-> +++ b/drivers/virt/coco/tdx-guest/connect.c
-> @@ -7,15 +7,94 @@
-> 
->   #define pr_fmt(fmt)            KBUILD_MODNAME ": tdx_connect: " fmt
-> 
-> +#include <linux/iopoll.h>
->   #include <linux/pci.h>
->   #include <linux/pci-tsm.h>
-> +#include <linux/set_memory.h>
->   #include <linux/tsm.h>
-> +#include <linux/units.h>
->   #include <asm/tdx.h>
-> 
->   #include "tdx-guest.h"
-> 
-> +enum tdcm_operation {
-> +       TDCM_OP_CHECK_TEEIO_SUPP        = 1,
-> +       TDCM_OP_BIND                    = 2,
-> +       TDCM_OP_GET_DEV_INFO            = 3,
-> +       TDCM_OP_GET_TDI_REPORT          = 4,
-> +       TDCM_OP_START_TDI               = 5,
-> +       TDCM_OP_GET_TDI_STATE           = 6,
-> +       TDCM_OP_UNBIND                  = 7,
-> +};
-> +
-> +enum tdcm_status {
-> +       TDCM_STATUS_WAIT                = 0,
-> +       TDCM_STATUS_COMPLETED           = 1,
-> +       TDCM_STATUS_ERROR               = 2,
-> +};
-> +
-> +enum tdcm_error {
-> +       TDCM_TDX_MODULE_ERROR           = 10,
-> +       TDCM_TDXIO_DEVICE_ERROR         = 11,
-> +       TDCM_SPDM_MESSAGE_ERROR         = 12,
-> +       TDCM_IDE_KM_MESSAGE_ERROR       = 13,
-> +       TDCM_TDISP_MESSAGE_ERROR        = 14,
-> +       TDCM_INVALID_STATE              = 15,
-> +};
-> +
-> +struct tdvmcall_tdcm {
-> +       __u16 operation;  /* See enum tdcm_operation */
-> +       __u8  version;
-> +       __u8  rsvd0;
-> +       __u32 rsvd1;
-> +
-> +       __u8  status;     /* See enum tdcm_status */
-> +       __u8  error;      /* See enum tdcm_error */
-> +       __u16 rsvd2;
-> +       __u32 rsvd3;
-> +
-> +       __u32 data_length;
-> +
-> +       __u8  data[];
-> +} __packed;
-> +
-> +/*
-> + * Size of the shared TDCM buffer, header included. Commands in this driver
-> + * exchange at most a few bytes of data. Grow this if a command needs more,
-> + * e.g. for TDI reports.
-> + *
-> + * Every command and response size passed to tdx_tdcm_run() is a constant
-> + * that must fit in TDCM_MAX_DATA_SZ. Check each one with static_assert()
-> + * next to its caller.
-> + */
-> +#define TDCM_BUF_SIZE          PAGE_SIZE
-> +#define TDCM_MAX_DATA_SZ       (TDCM_BUF_SIZE - sizeof(struct tdvmcall_tdcm))
-> +
-> +/*
-> + * The DOE response timeout is one second per exchange. Expect that 10 seconds
-> + * is enough time for the host to complete a TDCM command.
-> + */
-> +#define TDCM_POLL_TIMEOUT_US   (10 * USEC_PER_SEC)
-> +#define TDCM_POLL_DELAY_US     1000
-> +
-> +/**
-> + * struct tdx_devsec - TDX Connect context for a locked TDI
-> + * @pci: PCI TSM devsec context
-> + * @tdcm_buf: Buffer shared with the VMM for TDCM commands, TDCM_BUF_SIZE
-> + *           bytes. Allocated at lock and freed at unlock, so memory is not
-> + *           converted between private and shared on every command. Only
-> + *           tdx_tdcm_run() writes to it. Callers may read response data
-> + *           after tdx_tdcm_run() returns 0.
-> + * @tdcm_in_flight: An earlier command timed out and the VMM may still own
-> + *                 @tdcm_buf. Cleared once the VMM reports its completion.
-> + *
-> + * All TDCM commands for a device run under its device lock, which serializes
-> + * use of @tdcm_buf and @tdcm_in_flight.
-> + */
->   struct tdx_devsec {
->          struct pci_tsm_devsec pci;
-> +       struct tdvmcall_tdcm *tdcm_buf;
-> +       bool tdcm_in_flight;
->   };
-> 
->   static struct tdx_devsec *to_tdx_devsec(struct pci_tsm *tsm)
-> @@ -23,6 +102,155 @@ static struct tdx_devsec *to_tdx_devsec(struct pci_tsm *tsm)
->          return container_of(tsm, struct tdx_devsec, pci.base_tsm);
->   }
-> 
-> +static struct pci_dev *tdx_devsec_pdev(struct tdx_devsec *tdevsec)
-> +{
-> +       return tdevsec->pci.base_tsm.pdev;
-> +}
-> +
-> +static int tdx_tdcm_buf_alloc(struct tdx_devsec *tdevsec)
-> +{
-> +       struct tdvmcall_tdcm *buf;
-> +
-> +       buf = alloc_pages_exact(TDCM_BUF_SIZE, GFP_KERNEL);
-> +       if (!buf)
-> +               return -ENOMEM;
-> +
-> +       if (set_memory_decrypted((unsigned long)buf, PHYS_PFN(TDCM_BUF_SIZE))) {
-> +               pci_err(tdx_devsec_pdev(tdevsec),
-> +                       "Failed to convert TDCM buffer to shared, leaking it\n");
-> +               return -EIO;
-> +       }
-> +
-> +       tdevsec->tdcm_buf = buf;
-> +       return 0;
-> +}
-> +
-> +static void tdx_tdcm_buf_free(struct tdx_devsec *tdevsec)
-> +{
-> +       struct tdvmcall_tdcm *buf = tdevsec->tdcm_buf;
-> +
-> +       if (!buf)
-> +               return;
-> +
-> +       tdevsec->tdcm_buf = NULL;
-> +
-> +       /*
-> +        * A timed-out command may still be pending in the VMM. Leak the
-> +        * buffer so a late response cannot land in the pages after they
-> +        * are reused.
-> +        */
-> +       if (tdevsec->tdcm_in_flight &&
-> +           READ_ONCE(buf->status) == TDCM_STATUS_WAIT) {
-
-Is the read_once even needed in here?
-
-> +               pci_warn(tdx_devsec_pdev(tdevsec),
-> +                        "TDCM command still pending, leaking TDCM buffer\n");
-> +               return;
-> +       }
-> +
-> +       if (set_memory_encrypted((unsigned long)buf, PHYS_PFN(TDCM_BUF_SIZE))) {
-> +               pci_err(tdx_devsec_pdev(tdevsec),
-> +                       "Failed to convert TDCM buffer to private, leaking it\n");
-> +               return;
-> +       }
-> +
-> +       free_pages_exact(buf, TDCM_BUF_SIZE);
-> +}
-> +
-> +/**
-> + * tdx_tdcm_run() - Execute a TDCM command and wait for its completion
-> + * @tdevsec: TDI context
-> + * @operation: TDCM operation, see enum tdcm_operation
-> + * @cmd_data: Command data to send, or NULL
-> + * @cmd_data_sz: Size of @cmd_data in bytes, 0 for none
-> + * @max_rsp_data_sz: Response data size, or the largest accepted if
-> + *                  @rsp_data_sz is given. 0 for no response data.
-> + * @rsp_data_sz: NULL for a fixed-size response, which must be exactly
-> + *              @max_rsp_data_sz bytes. Otherwise accept 1 to
-> + *              @max_rsp_data_sz bytes and return the size here.
-> + *
-> + * Copy @cmd_data into the shared buffer only once the VMM no longer owns it.
-> + * On success, response data is at tdevsec->tdcm_buf->data. It is VMM-written:
-> + * read it once or copy it out, before the next TDCM command reuses the buffer.
-> + *
-> + * Return: 0 on success, -EBUSY if an earlier timed-out command is still
-> + * pending in the VMM, or another negative errno on failure.
-> + */
-> +static int __maybe_unused tdx_tdcm_run(struct tdx_devsec *tdevsec,
-> +                                      u16 operation, const void *cmd_data,
-> +                                      u32 cmd_data_sz, u32 max_rsp_data_sz,
-> +                                      u32 *rsp_data_sz)
-> +{
-> +       struct pci_dev *pdev = tdx_devsec_pdev(tdevsec);
-> +       struct tdvmcall_tdcm *buf = tdevsec->tdcm_buf;
-> +       bool bad_len;
-> +       u32 data_len;
-> +       u8 status;
-> +       int ret;
-> +       u64 r;
-> +
-> +       /*
-> +        * After a timeout the VMM may still be processing the earlier command
-> +        * and writing its response. Don't touch the buffer until it is done,
-> +        * as GetQuote does.
-> +        */
-> +       if (tdevsec->tdcm_in_flight) {
-> +               if (READ_ONCE(buf->status) == TDCM_STATUS_WAIT)
-
-Is it even needed in here, you don't poll on it to assume adjacent reads 
-might be merged?
-
-> +                       return -EBUSY;
-> +               tdevsec->tdcm_in_flight = false;
-> +       }
-> +
-> +       /*
-> +        * Stale response data from an earlier command is VMM-written and never
-> +        * trusted, so only the header needs resetting.
-> +        */
-> +       memset(buf, 0, sizeof(*buf));
-> +       buf->operation = operation;
-> +       buf->status = TDCM_STATUS_WAIT;
-> +       buf->data_length = cmd_data_sz;
-> +       if (cmd_data_sz)
-> +               memcpy(buf->data, cmd_data, cmd_data_sz);
-> +
-> +       r = tdx_hcall_tdcm(pdev, virt_to_page(buf), TDCM_BUF_SIZE >> PAGE_SHIFT);
-> +       if (r) {
-> +               pci_err(pdev, "TDCM command %u submission failed: 0x%llx\n",
-> +                       operation, r);
-> +               return -EIO;
-> +       }
-> +
-> +       ret = read_poll_timeout(READ_ONCE, status, status != TDCM_STATUS_WAIT,
-Is it even needed in here as well, while you do poll it's in a fresh 
-function call?
-
-> +                               TDCM_POLL_DELAY_US, TDCM_POLL_TIMEOUT_US, false,
-> +                               buf->status);
-> +       if (ret) {
-> +               /* The next command fails with -EBUSY until the VMM is done */
-> +               tdevsec->tdcm_in_flight = true;
-> +               pci_err(pdev, "TDCM command %u timed out\n", operation);
-> +               return ret;
-> +       }
-> +
-> +       /* Ensure subsequent data reads are ordered after the status observation */
-> +       virt_rmb();
-> +
-> +       /* Read the VMM-controlled length once, then validate the cached copy */
-
-nit: Pointless comment, it's obvious from the code what's going on.
-
-> +       data_len = READ_ONCE(buf->data_length);
-> +
-> +       if (rsp_data_sz)
-> +               bad_len = !data_len || data_len > max_rsp_data_sz;
-> +       else
-> +               bad_len = data_len != max_rsp_data_sz;
-> +
-> +       if (status != TDCM_STATUS_COMPLETED || bad_len) {
-> +               pci_err(pdev,
-> +                       "TDCM command %u failed: status 0x%x, error 0x%x, max_rsp_data_sz 0x%x, returned 0x%x\n",
-> +                       operation, status, READ_ONCE(buf->error),
-> +                       max_rsp_data_sz, data_len);
-> +               return -EIO;
-> +       }
-> +
-> +       if (rsp_data_sz)
-> +               *rsp_data_sz = data_len;
-> +
-> +       return 0;
-> +}
-> +
-
-<snip>
-
+/*
+ * module_pages_pa_list[] has 496 entries in the first page and 512 in
+ * each following page. The last entry of each page is reserved to point
+ * to the next page and cannot hold a module page. This applies to the
+ * final page too.
+ */
+#define SEAMLDR_NR_MODULE_PA_ENTRIES    (496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
+#define SEAMLDR_MAX_NR_MODULE_PAGES     (SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
