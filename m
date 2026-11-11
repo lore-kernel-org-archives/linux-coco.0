@@ -1,115 +1,136 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.5
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794379580;
-	b=Wv32kggyEMnYHXcI9xMX9uc0Yqr8iFIdg2wItSTxa6gIiS5DVptuqHXNEowkC5DBqvLH
-	 bUO3kdTehLiH8ZKjGefZo1Wb/ugBpwnI7x4hKbdPlzwU6/XIJY2wcTUm6FsUvp1bce4af
-	 Z1AE+Pch8u5H6niq6nAfjYCfmbaCc/B4YyF4CXohp1TGCjVe1vPKK5LSRy/HckWvgEU4U
-	 koBMt1fIMm/nMT+4wv5/LPocd+BBL349iUdbmvwpe+hvczoNPUeTiZBLyax3EMos2QPl9
-	 Iim8pF4lS3fq/cAjdyVBtZH4UiXo8uxidWD8YIgIOB81dLgPR+1zdcFhNHcdxcMxGDA==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.8
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1794381911;
+	b=sLviqGD6iCTK8/vJtmK31nUMUggOMM3baza4MJ6QZY4gNB83Xti6a/UISpKLJ205Pb2U
+	 dY4oGOB3ZWRCtF7I0g8ylwf3E4NWvq7LezPfdagZ6SKqezJ2yq2BlTg7JGWPpLDxgplcx
+	 TeyeVb5L0nyknh21zotPGssRvgVGJIm9MIpHf2mPpNH+FU9TgZZ/54INanjuR5hsgtqO/
+	 T5U5mihk2TY91LIVc+frt4zl+fJVHbCdXCn4+k1q/YhI2WL1FoFbkkqVbNGLLHmTofR2v
+	 dCWnb+3wF7piWQufyZZY3Y9lG+hZiHf9CH/5oLDbX++d7XlHApvnNI3+/e2bhHGTrJg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794379580;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794381911;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
 	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
 	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
 	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=iDHNbTfN8fe4cWobWA9wi32IMexnI2+d8shnispRp/I=;
-	b=BFdynJbDI0fBPed8YNTfBTxq3hzUn3ATAzas/lbt+WX2XRLGe86/Ia4FN4nr3RwqF2Gw
-	 N91KUAMQr3Z+LX4sXOMfeHidK3+AJOs9b9e5/gWa8hOBzd4Bv+roozn7RXen3USCpUMLg
-	 wZFFr6TINoxsxNgOBZoijC4ByAu+7EFWTVJ4ZKsLRgk1nX+TgzjiV1WgPpD0VZ9PAPA5N
-	 k9hgB8keHEqplV61v7A6zwsTVGVm+V63liZvFkh4XOIWmtBMbw+e3FH0H8CZhS0UEt3Vp
-	 GjSX5MTQc93PjlLD5GgEzBCbHxSOmyHu3gGZLwqztMl+3hxx+uFFyjk5AZh4I20zPPQ==
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=v9RcGRlxnphpW+NyisaoHp1xwjz835uJNujfbjZzgoQ=;
+	b=mgL2DcMyAc31TnQxpwPPlWSsqATUl3e5EGLJIW6kuoWFusVbfSmP9uIfnlhjylIbf8nv
+	 S8u8xnz4Ox55CDU6cJ+PYrayBJGC1qQoEK66zjS7fH2stFDikMk8k2xIO7UgCeCpu63Ve
+	 +vGYiM7GIWCmpNO6iBHHEiXcUD1LFVl62XOLt/gLstpVX8RZhwzb67TMeX4imaZjT69bn
+	 mtD74uy5elGHNnhk1fq7kRLELPusY50ukEBQIMTVRycbLRLE8QBhyDrioXIYTlfW/6dz8
+	 /hKC9GyLp+UWQASApKVuCahoZiTaalda+/NAeGUPTkH9vTd5GInDoGBbw96JNR1sIhA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=T6iiQkpa;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.5
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012005.outbound.protection.outlook.com [40.93.195.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RkahbkIp;
+	arc=fail smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12691606A32D;
-	Wed, 11 Nov 2026 06:46:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 12691606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F9606A327
+	for <linux-coco@lists.linux.dev>; Wed, 11 Nov 2026 07:25:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C33F9606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=T6iiQkpa
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RkahbkIp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794381909; x=1825917909;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=O31UqqVGNDcrHiGeppNd9Tw0KlSinU79rebFJgp/RmA=;
+  b=RkahbkIpgMJ7NMkYZY/o+skkpDyx6AJBPSy0LU4vam+niepxV+dEqsNL
+   MmsJsPdtZAKVcvgBNRhFcQc89W+QkvrPGQOYrTA9s/H7bOoi/b2OuHbFB
+   NE7iT9xOUtyuP0sU03a5nykvTO72U8KYbH3iDc2OM1G2PnrBewyq5wQfT
+   GcDWgiEkHaIpOe+LyXLdK/e7CE+0934OvRCOU44lc9LhVDRG2jUJSqGz6
+   9E0gE2TMii4C6o2qUn2sSM2w8OrejChjR6sIh4/ydCbZ1+DU36c8znWij
+   tjHcoXb/Yb+/gzKOnU3hoMMrU2MI25O7nxOaIKgmsUnXtwlonb0u8NIAm
+   Q==;
+X-CSE-ConnectionGUID: /5CyXhDWT0axu2ixLebovw==
+X-CSE-MsgGUID: DZTKpecKTZuACal7vXz17Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3041853"
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="3041853"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 23:25:09 -0800
+X-CSE-ConnectionGUID: +nfXSzr+SVmWqobT2kYOmQ==
+X-CSE-MsgGUID: +QQ708ZISoatGuupMXGxeQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="8330496"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 23:25:09 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 10 Nov 2026 23:25:08 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Tue, 10 Nov 2026 23:25:08 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.25)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 10 Nov 2026 23:25:08 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oI2GiSJZ+HNbtGhztJGsYyT2mOPUAU8b9RW1Lj3fItRy1VgYzhpsz8efZlE2Vio4MXRcxlorRrravQxB/MlwUTTlYW1Q3kr832FzwxuOyYBrxEiF+TLpbIUg8LFi3eUGJbrde/9nXYreCQ4GI/4Rva5LKaXkerbBJtfHApYpjBvjlfI2rn4RRLVUXZuObXLefkHkFQUQfnUH/JmNS8WV1lf/Jy3gXEYsCwAhp5tMtn1iJ2CXeAjjScwXrQ2q72pZQTbGReVzv8FWQpktjPI0rqjDmTXbCHnyP/lDeP0Rfpk/gnqe+9nL7xgjYAl9Aqnb/Ja8PYLxksVeAi/VuZiMJQ==
+ b=ioeMMuiTAFfXy/T4mUrz5r/Hk/pW/mQ9DBsKPMQNkq9mebShbjEARIHWycqqAQH7leiO5noPDA+FUUBT+bnRV1xB1oHUzk6FfzTMib83KZoM7ZecPm3Y1be8jurGkPkaDSa5yMdUNOQnlSFksdaMyse3utVb63inEFHG95qerqHr+2Eya+3G+tpGUBPj5HuouV2dWojtqBcqWY7L+dwSMYA9dtiD4xQUFXt4Z39rAl02xYFerCe3N/7qGvx6ws0L6t7ibgbIHrpumLJbr9TYAeAUkRQnMbd5cgP6XdkrP2FqQjfDXGfBrhZE1aTjRTKQuBqTYBBuvdzFannwg3d83A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iDHNbTfN8fe4cWobWA9wi32IMexnI2+d8shnispRp/I=;
- b=kIkn+A76i1bqGU4tTWZQi3KrYRrZnvm4fqZz4c4waC2RHTaonpDPfHgH3CvibqD1q2rp288b2nfRHrcNGMdWuPnneI5dSC0+qcN4i9jg7lsVZjeuWS6bYn2RRw03XQz0P4NbuKTjVdqwxg2PHkBtu8Dq+vFKzGYOFFgn45JCNST/11MyNiL+yo8ccDMXXl/UvX9KD1e3PBf8QNlmz+al3wbVQH21fffXLDKXtJQQoGArS0ZZzcV0HuD+qAPf2lio2X1I3vMkxeXlf0XxgvgThXu/mrXev+F4bis2QBW1Jl89TIHpZ789/+iVTG7XeYGP6g3I3m6k6K8Qx7Ig+MCVUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iDHNbTfN8fe4cWobWA9wi32IMexnI2+d8shnispRp/I=;
- b=T6iiQkpanC2Kr/vazjGs7XWpXElfVz6VMsFUMpV/msw9pyj+YzRnIFwHXnyDaKB+ZT4kyFouH4b6+X+jHCbGYrijesKUYDzo5btlkjJ63pt2SvFNB/0RR5vkDmlSq8b1D1EXtQZd8BvSYZ2YqoU3zJNXQ3zoshcltK2F97LcrSs=
-Received: from SJ0PR05CA0174.namprd05.prod.outlook.com (2603:10b6:a03:339::29)
- by CH8PR12MB9744.namprd12.prod.outlook.com (2603:10b6:610:27a::7) with
+ bh=v9RcGRlxnphpW+NyisaoHp1xwjz835uJNujfbjZzgoQ=;
+ b=qETGAVW50hGGCT6rTcIRzUuY1UsSe+UQAHowvK/1LzQMndvwiD1Ru2NOMm6FjRD+F2D6TbayYE7lo1RiMlY9ftfh4s7Xa9E+gdpPOfg31CIRw5alkpLBQNz88/IwCzW/MovMc4zz9yXN7anx8sL5nO1T0vE7HfPFvup+CyTmpKqAq0U7jL+rSyHtukFIuszzdF09RvCsqCzsui4GOaKhQ7xYUwImYB/N0ANogjLyytJTbsg7RSW8t2IsL8Yh23jpCBJmLGVsdJl+uoRxdmXCHqdY6MfxML71nEoyjv3HTyniVEKIxXcTREd15XqyB53BbJRisDq8VOzYxc8EPvHmyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
+ by DS6PR11MB9896.namprd11.prod.outlook.com (2603:10b6:8:460::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Wed, 11 Nov
- 2026 06:46:14 +0000
-Received: from MW1PEPF00018894.namprd03.prod.outlook.com
- (2603:10b6:a03:339:cafe::27) by SJ0PR05CA0174.outlook.office365.com
- (2603:10b6:a03:339::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Wed, 11
- Nov 2026 06:46:13 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MW1PEPF00018894.mail.protection.outlook.com (10.167.249.171) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Wed, 11 Nov 2026 06:46:13 +0000
-Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 11 Nov
- 2026 00:46:00 -0600
-From: Sairaj Kodilkar <sarunkod@amd.com>
-To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>, Dapeng Mi <dapeng1.mi@linux.intel.com>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, Ethan Nelson-Moore
-	<enelsonmoore@gmail.com>, Ingo Molnar <mingo@redhat.com>, Jeff Layton
-	<jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Karl Mehltretter
-	<kmehltretter@gmail.com>, Kiryl Shutsemau <kas@kernel.org>, Marco Elver
-	<elver@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Randy Dunlap
-	<rdunlap@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Robin
- Murphy" <robin.murphy@arm.com>, Sairaj Kodilkar <sarunkod@amd.com>, "Sean
- Christopherson" <seanjc@google.com>, Shuah Khan <skhan@linuxfoundation.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Thomas Gleixner
-	<tglx@kernel.org>, Vasant Hegde <vasant.hegde@amd.com>, Will Deacon
-	<will@kernel.org>, <iommu@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: [PATCH v7 7/7] iommu/amd: Provide kernel command line option to enable GAPPI
-Date: Wed, 11 Nov 2026 12:12:42 +0530
-Message-ID: <20261111064242.29336-8-sarunkod@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261111064242.29336-1-sarunkod@amd.com>
-References: <20261111064242.29336-1-sarunkod@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
+ 2026 07:25:07 +0000
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d%5]) with mapi id 15.21.0592.010; Wed, 11 Nov 2026
+ 07:25:06 +0000
+Date: Wed, 11 Nov 2026 15:24:54 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Van De Ven, Arjan"
+	<arjan.van.de.ven@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com"
+	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
+	<bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>
+Subject: Re: [RFC PATCH v2 2/2] x86/virt/seamldr: Support multiple sigstruct
+ pages
+Message-ID: <avQYRizeudYt-fbj@intel.com>
+References: <20261106132159.1551365-1-chao.gao@intel.com>
+ <20261106132159.1551365-3-chao.gao@intel.com>
+ <91506ebc258a9db8b2aa47310a03b60e3c653314.camel@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <91506ebc258a9db8b2aa47310a03b60e3c653314.camel@intel.com>
+X-ClientProxiedBy: SI3PR01CA0004.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:296::15) To IA0PR11MB8380.namprd11.prod.outlook.com
+ (2603:10b6:208:485::21)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -119,198 +140,122 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW1PEPF00018894:EE_|CH8PR12MB9744:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e59ca2e-2b1a-40ca-eb96-08df3fbf7a7b
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|DS6PR11MB9896:EE_
+X-MS-Office365-Filtering-Correlation-Id: ecd5106d-cf9c-433c-97e8-08df3fc4e85d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700016|82310400026|23010399003|921020|261009223027099003|261026121527099003|11063799006|56012099006|261028144727099003|261021121427099003|261021123027099003|261022075727099003|10067099003|261026140227099003|261022105027099003|261102123227099003|22082099003|18002099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	hIkLur5YuPPiZlp5Hrcz3jPH0GZxJEldBO99+9k2x91DOp8nsOMH1PYOsmVKMSKOom6BHrmJen9kF/OJtNgeyVrbPQflJk8jaOtTPCfyW/PuCqj96eh4u9iwZF2qen7BtaL/dMsF+BtidnNA8i9L7SzUelM1+OJeYru5jFUdII1vhBPKORFcU7+UV3Y4HE6OLx+zqqAPcpavqcRjeKGUqUPqFVHt18xKYbHNvqOWjxLGkEzHp43GxuWSjHxw9JrPVN7McMBSP64S9HFHuDnMUgsTTu7aOxbYphgL9izkccGYb8w4ZmgftpbjEH0BWM6wQl6BDDZr7RlVE+MjkBTMQelrynsB1NxK3Od9gqV3mVbLcheAKuHtIf43c7CYbICIphbW6fUA3vSutWA0dEbuu+6DskRirvBCzU6gjL9jrenr5bO9oqcMiOBtmiyLhIDj9kjgu4pphUibn16cgeEW9Q6p55kRvzf16tDtIF9g/GYsLd8W5P7ZwdYGIE7g3GhmgqDTphJM/EGbrZsUCoQ89ZrgPGeWmPVqNh+o5o7O4pPagBnh8OqV+RjMJqqeB5SiLhW3kZ9dtPR4gNOk3cBYObWJPJSUmsWqJ9nc23m21Dt/3SFzaIb6a8uSE6Uv/xBUJrfhVVA8976iyqf7x10DgmgjSq6oDZCpluRxwscm0BDsaCBAQtxCg1179kvTh1+O1V86kJe0QyZqahSudvqYPbMm4Azh7b290UHoPccPhcaYn6hdIc2aswWEkB9iXogD
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700016)(82310400026)(23010399003)(921020)(261009223027099003)(261026121527099003)(11063799006)(56012099006)(261028144727099003)(261021121427099003)(261021123027099003)(261022075727099003)(10067099003)(261026140227099003)(261022105027099003)(261102123227099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|261009223027099003|10067099003|261022115727099003|261028144727099003|261102123227099003|261026140227099003|261026121527099003|261021121427099003|261022075727099003|261022105027099003|11063799006|4143699003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: ISWx2Ak8LcCFp7DpC0rlgp87LfNyePBLXQdrmtdYAkn//MkeuFMQilY6zm8pIy+LL3I/uNxgBueA6BSpMLG0opAa9BV7Y/3mh4bxf1SY7wpQILyPYB8Dz6g1BvH5JzkBTfJBaeDU1jxA2E3tJr9vPc0Je2o/RjvHNvjKucd1fIVaA1Hw+A1Hvkxv6PxlJxp97ldeo3SBnNZ+KgjBc1XQK6Nf/2lOd626HESBs/X2l22Ag3c/GMU8gxPJTGcmBY3sF8IqXNJlkNRf4ATzdB0SAPyvU1O+zh5f3BUQSwo7/xWSzKedlJYwtOXRe5WGHXvj2Mac+BoinrK72pAOSNfFMMwHkai2jnAMs3Amy9YIhfzQ6r8zKeIYNei4qwgWrg8aeJgZKicMUYgc+XyUS8Tze6B9IKbctsx8TJYMkNP0NsJ12OaVKopY5VJWy5+Eyj+f+BbHDHqpjorFq4mMMW2nuiJuY3Viym+qjO7dRtPx68L88m0AYxu3GVVfXPHbsYIOEXqsvv5F9J4J/Rs4TRTUZgLRAMc3wECFJx0H2oq7yrFV2TlWirlXCyCGtjeQAszBBpDdVPIV1GsgY/z0fidKAHrt5CbTing0VG1TRQJZRt4h3ojfJEcKg+rzxkIpZYVlxyldZu8GQrjD/QzPtoTyjgICyaVvFhtFDx2Obim8DoQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(261009223027099003)(10067099003)(261022115727099003)(261028144727099003)(261102123227099003)(261026140227099003)(261026121527099003)(261021121427099003)(261022075727099003)(261022105027099003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Mb+lFa7Pp3CW1DUDGgaZXuAGiJrNmU5znRQ5a+TX+7WRXKG1ZSkjNGci0ouwjjZqdtvqMMqDuOKJgNNlNWlThEXMG1zUaDNbuPnTFVmFPhm7BhuIP5hpHQ9nyfkd/b6Yr58UX6HENcri0r4Ed/9N+jPxADbfZoUcLlP3wDbhgqdf0X7XQ4l/6qIODCKdedh7XBwnR+6uc5rVZMmnECTtM0YJA6NL5SZ0ZeSsLHJmg7RGFH/4EV4xvu9vC1wkk4gJ7API0n8TXnpg+kN69ypdFCAa+E9e9VYXTDuEuw/FLW8Kdu5D8Ki74eHDSqxx4g43UXU+VRjEn3Nw0gci7U0azRBLeHcfEMO/HaJ0jILW3C0+8PIik37AX3AJHHVCR89zvCtpYvmgLDtameZegYpFeSMYciaTI0eBCcHE0ZJEYJcTwiYErj6aszwdxa/Q96r7
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 06:46:13.4798
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DVJ0hQNy6/oRJBaaFMV+A1f9ZX474DdmiGOqFANG4ebZsGpLTLEBbTSB9Wh0?=
+ =?us-ascii?Q?SBD2LOPbYQQGX91M0iRC8fWetdkwNouNb0LwlF5cb0CIYbIOKlnLzeEPA2Bw?=
+ =?us-ascii?Q?JEzbw+foHl5hBbSV8mu3c+/gf0K36W9gb7sN0SgfumQaknh2JyOqOb11nyxH?=
+ =?us-ascii?Q?UmlZWIXDmh2RGMcSKDkhRRKLrwgeJb/3HeRlhiJRZvglwNKeuPMZcUvh+5wo?=
+ =?us-ascii?Q?RRMIT2NSHLdLc1W7sXOEGtSiEt33dKkaVBB2SLeJu4wf6WjbR5cJ3rDysZhb?=
+ =?us-ascii?Q?jQY0QcnYiX60hqtOjAv4gQLGJ2itMW7317g4h3ZzA1mlP6Um4UNiW1BbVw5d?=
+ =?us-ascii?Q?vWgjQ746yD5HP5G8EETsh1WKyS+bSG6587pBtTAzgEN2ipIKcaL1nynDFfml?=
+ =?us-ascii?Q?7KPfRU+OJ8Vhi0X6unhFV9AbJ6ux5KFSLNTpcGWiMDY9pUcnc2ehp8jW6Ylr?=
+ =?us-ascii?Q?LmiDI0ZygW8mn2kztzBFtDuhs0FUzR6WpvH4wDAoE4pL4Kyibj3ISdlgAg5T?=
+ =?us-ascii?Q?Qt1MQafwnImxXbXVZJtSNLVxR16UAyTDSVng6IxrGYKcOzp1gHuzQ7lSSkHE?=
+ =?us-ascii?Q?1K/BrMzYWO+nlCMdHJoHFOH946Qtf9i0tV5bMc/TG3SvrpoFeBcAidPSFiMp?=
+ =?us-ascii?Q?DpHmZJg/C7UddwICM6WcAZJHQvJfqczYV9Qm4WRj7hPT31TsSRk/DBrLs47o?=
+ =?us-ascii?Q?WHuaykPB7uqW61zIlNTUBRombcbhrlX2xYiXTf5WVQ2peTGtFcLVqijR23F3?=
+ =?us-ascii?Q?X3QUO2W0rl7sZ6O0T1q9Vs8o6GDy/GOZycKo2sCXMI5osYBebX9h3LfUAdrf?=
+ =?us-ascii?Q?pdEVXReKFuy7L0WhWoEb0J3x9JijeoZP856MZGjWyftQ8FPDZC/v9ge9fMEn?=
+ =?us-ascii?Q?UA5hlnz+GrghapMmkLvya/LgrU+27+6nKqTZ80XeC8VSQe9swcCmuw9yZ1Vu?=
+ =?us-ascii?Q?ba7cv1GoY5eu+pFwv46K5PxhS9kdERB9gCEQUnG99hL1n/fFV6Qn8RGt7Rse?=
+ =?us-ascii?Q?r5pwmuuQ0DIlRDrFzPfkSsXeOcIaeOrAgC+8KBmYeLMKO3u2I/+mGe+fWXDq?=
+ =?us-ascii?Q?M8CFVzwgbZaNXc+EyHGSuEYtg94WBpPFLRwZSb5tfVVNcKQD9bru02kYi4l4?=
+ =?us-ascii?Q?i5sKh/7vw5rMA7x0APQpScj/+nSG+L0QjlI471/5JSdRHi2aCsed08L1+zWq?=
+ =?us-ascii?Q?iv0NPpDs+dhr6iIVIWHAk0CzZfIbceB46y0j43w2/sMFKALqpnsmcN+z1spG?=
+ =?us-ascii?Q?HYx00gLzzAyeCOrmvr3Cc2wqibP8WGSgUBm0jhGPRWwIUS8O5Nfbd8eCNcEX?=
+ =?us-ascii?Q?5dOxt0umygdMFo8F5iqdI6Pzdk04XTt9P1raoap9PK4FZ0DvDtx7YqJ7pDt2?=
+ =?us-ascii?Q?Me+KlQALTeb7SvwB97Ih+5MyeLDxB1/wI1Zx/YKyGMC06qxjQXlBA+YaWV23?=
+ =?us-ascii?Q?qDw+xKrEPdQc+PwWfhEHYHTRTJoLkBdrFXFQNz8K02BqpB6auxxh565XSHy7?=
+ =?us-ascii?Q?wxleKfQ2c1UI09kwVS08LPCO9nsugbxVnkl4kqudVby9reHaI4rc1qUL4TbC?=
+ =?us-ascii?Q?BELYUbPLDise1AA0LZbC7dOJROe1gcIUXrQWI9wrD8kqXAfnTFZ2UdNJC/IS?=
+ =?us-ascii?Q?Ce8MvrgdT8R58avsLywGDW6F8j4ZUiG/D4/NGv+DF/TS11YFgOjf4F+PSHA8?=
+ =?us-ascii?Q?YRL2FsBfeBZDu22T+qz54QfGASOCCx5hqBu7a14IFq25HwO2IbRWhsxsyaX6?=
+ =?us-ascii?Q?NeHbfNInpw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: bbT8n8JCBDe1gkkIbk08yjvmzYA7qPzVlqLeWoZ8zg36cw0cN+xUaf9vpyJfdujhCzmKgdwATuIB2bZcYNOFYwgTH6j7nKLux/zLmxtEiQpHU+2FxV7hkZLu9shMEUq7nPu8Jn/TS4JHr/O8xNaN3ewiH7AB4Er9aULrR6GItChfpgNJfpFobQLeizN+bo37pY2xlRgUPe9u+5P+AJHfXT3JGhcNFhcJjDY3MiOsGoImQkvujZihzkp1yDgJy9MIizaRxZai3+1ChSP6bsIf65YDlq/oCwa0yzVUvncuoVIbZdO2AgLtGcK4Jlw2h2DAQsJBYY5O54xNzPrMpp2ceg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecd5106d-cf9c-433c-97e8-08df3fc4e85d
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 07:25:05.9050
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e59ca2e-2b1a-40ca-eb96-08df3fbf7a7b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MW1PEPF00018894.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9744
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: I+MTux9yDQVQ21uhyZXc03RbyJYPHkZ67yMADRZDnipjpg86M4gbxKlhjVqrZz3Wrhv2xVsBR2w4ELEc/d3ReQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB9896
+X-OriginatorOrg: intel.com
 
-Enable GAPPI when the IOMMU GAPPISup extended feature bit is set and
-the kernel is booted with the amd_iommu=gappi kernel parameter.
+On Tue, Nov 10, 2026 at 06:12:32AM +0800, Edgecombe, Rick P wrote:
+>On Fri, 2026-11-06 at 05:21 -0800, Chao Gao wrote:
+>> Each TDX module update image carries a sigstruct, which is passed along
+>> with the module binary to P-SEAMLDR. 'struct seamldr_params' has a single
+>> physical address slot for it, so a sigstruct can be at most one 4KB page.
+>
+>"it" could refer to the module binary or the sigstruct, until you piece it
+>together at the end. Also struct seamldr_params could be introduced. To answer:
+>Is it the TDX module ABI? Or the kernels internal struct?
 
-Document the option in Documentation/admin-guide/kernel-parameters.txt
-and mechanism in Documentation/arch/x86/iommu.rst.
+Agreed. How about:
 
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
----
- .../admin-guide/kernel-parameters.txt         |  3 +-
- Documentation/arch/x86/iommu.rst              | 22 +++++++++++++
- drivers/iommu/amd/amd_iommu_types.h           |  2 ++
- drivers/iommu/amd/init.c                      | 33 ++++++++++++++++---
- 4 files changed, 55 insertions(+), 5 deletions(-)
+Each TDX module update image carries a sigstruct, which is passed to
+P-SEAMLDR along with the module binary. The P-SEAMLDR ABI ('struct
+seamldr_params') has a single physical address slot for the sigstruct,
+so the sigstruct can be at most one 4KB page.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0b3c140babd9..54c01621fc92 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -456,7 +456,8 @@ Kernel parameters
- 				          to 4 KiB.
- 			v2_pgsizes_only - Limit page-sizes used for v1 page-tables
- 				          to 4KiB/2Mib/1GiB.
--
-+			gappi           - Use GAPPI instead of GALOG for vCPU
-+				          wakeup notification.
- 
- 	amd_iommu_dump=	[HW,X86-64]
- 			Enable AMD IOMMU driver option to dump the ACPI table
-diff --git a/Documentation/arch/x86/iommu.rst b/Documentation/arch/x86/iommu.rst
-index 79c33560299b..6bac30f5abbd 100644
---- a/Documentation/arch/x86/iommu.rst
-+++ b/Documentation/arch/x86/iommu.rst
-@@ -150,3 +150,25 @@ AMD Fault reporting
- 
- 	AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0007 address=0xffffc02000 flags=0x0000]
- 	AMD-Vi: Event logged [IO_PAGE_FAULT device=07:00.0 domain=0x0007 address=0xffffc02000 flags=0x0000]
-+
-+
-+AMD vCPU wakeup Mechanism
-+--------------------------
-+
-+GALOG
-+^^^^^
-+
-+GALOG is a legacy notification path to wakeup the vCPU waiting on an interrupt.
-+When IOMMU receives an interrupt destined to vCPU which is scheduled out, it
-+updates the vAPIC backing page IRR and appends vCPU tags to a shared GA log
-+buffer and raises a single GA log interrupt. IOMMU driver scans this buffer to
-+decide which vCPU to wakeup.
-+
-+GAPPI
-+^^^^^
-+
-+GAPPI is an alternative to GALOG.  With GAPPI enabled, the IOMMU still updates
-+the guest vAPIC backing page IRR, but may deliver a physical APIC interrupt
-+directly to IRTE[Destination], using IRTE[GATag][7:0] as the vector. This
-+distributes host wakeup notifications across CPUs instead of centralizing them
-+in a log buffer. This can be enabled by adding option amd_iommu=gappi
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 4600674baf84..47c7e7d28df4 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -79,6 +79,7 @@
- #define FEATURE_X2APIC		BIT_ULL(2)
- #define FEATURE_NX		BIT_ULL(3)
- #define FEATURE_GT		BIT_ULL(4)
-+#define FEATURE_GAPPI		BIT_ULL(5)
- #define FEATURE_IA		BIT_ULL(6)
- #define FEATURE_GA		BIT_ULL(7)
- #define FEATURE_HE		BIT_ULL(8)
-@@ -181,6 +182,7 @@
- #define CONTROL_EPH_EN		45
- #define CONTROL_XT_EN		50
- #define CONTROL_INTCAPXT_EN	51
-+#define CONTROL_GAPPI_EN	55
- #define CONTROL_GCR3TRPMODE	58
- #define CONTROL_IRTCACHEDIS	59
- #define CONTROL_SNPAVIC_EN	61
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 054ef7262f3c..6a248327047a 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -486,6 +486,9 @@ static void iommu_disable(struct amd_iommu *iommu)
- 	iommu_feature_disable(iommu, CONTROL_GALOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_GAINT_EN);
- 
-+	/* Disable IOMMU GAPPI */
-+	iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 	/* Disable IOMMU PPR logging */
- 	iommu_feature_disable(iommu, CONTROL_PPRLOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_PPRINT_EN);
-@@ -2376,7 +2379,7 @@ static void print_iommu_info(void)
- {
- 	int i;
- 	static const char * const feat_str[] = {
--		"PreF", "PPR", "X2APIC", "NX", "GT", "[5]",
-+		"PreF", "PPR", "X2APIC", "NX", "GT", "GAPPI",
- 		"IA", "GA", "HE", "PC"
- 	};
- 
-@@ -3102,6 +3105,13 @@ static void enable_iommus_vapic(void)
- 	struct amd_iommu *iommu;
- 
- 	for_each_iommu(iommu) {
-+		/*
-+		 * Disable GAPPI, do not check amd_iommu_gappi as it may be
-+		 * false in new kexec kernel even though previous kernel has
-+		 * enabled it.
-+		 */
-+		iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 		/*
- 		 * Disable GALog if already running. It could have been enabled
- 		 * in the previous boot before kdump.
-@@ -3131,18 +3141,27 @@ static void enable_iommus_vapic(void)
- 	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))
- 		return;
- 
-+	if (amd_iommu_gappi &&
-+	    !(check_feature(FEATURE_GAPPI) &&
-+	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-+		pr_warn("GAPPI is not supported.\n");
-+		amd_iommu_gappi = false;
-+	}
-+
- 	/* Enabling GAM and SNPAVIC support */
- 	for_each_iommu(iommu) {
--		if (!iommu_ga_log_enable(iommu))
-+		if (amd_iommu_gappi)
-+			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
-+		else if (!iommu_ga_log_enable(iommu))
- 			return;
--
- 		iommu_feature_enable(iommu, CONTROL_GAM_EN);
- 		if (amd_iommu_snp_en)
- 			iommu_feature_enable(iommu, CONTROL_SNPAVIC_EN);
- 	}
- 
- 	amd_iommu_irq_ops.capability |= (1 << IRQ_POSTING_CAP);
--	pr_info("Virtual APIC enabled\n");
-+	pr_info("Virtual APIC enabled with %s\n",
-+		amd_iommu_gappi ? "GAPPI" : "GALOG");
- #endif
- }
- 
-@@ -3893,6 +3912,12 @@ static int __init parse_amd_iommu_options(char *str)
- 		} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
- 			pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
- 			amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-+		} else if (strncmp(str, "gappi", 5) == 0) {
-+#ifdef CONFIG_IRQ_REMAP
-+			amd_iommu_gappi = true;
-+#else
-+			pr_warn("amd_iommu=gappi ignored, IRQ remapping is not enabled\n");
-+#endif
- 		} else {
- 			pr_notice("Unknown option - '%s'\n", str);
- 		}
--- 
-2.34.1
+>
+>> 
+>> TDX modules are moving to a post-quantum signature algorithm. Its
+>> signatures are far larger than the ones in use today, so the sigstruct
+>> no longer fits in 4KB.
+>> 
+>> The P-SEAMLDR ABI was extended for this. It now has four sigstruct
+>> address slots instead of one, for sigstructs of up to 16KB. A new
+>> 'version' value of 1 tells P-SEAMLDR that this layout is in use.
+>> 
+>> Extend 'struct seamldr_params' to match the new ABI. The sigstruct
+>> address list is already populated in a loop over all sigstruct pages, so
+>> raising SEAMLDR_MAX_NR_SIG_PAGES is enough to fill the new slots
+>
+>Missing period. Also, the existing loop is a bit strange. I wonder if it needs
+>to be explained, but the explanation is probably that it was not adapted
+>properly after this change was removed from the original series.
 
+Will fix the period.
+
+The loop was intentional. Commit 23a81e6cce15 ("x86/virt/seamldr: Allocate
+and populate a module update request") kept sigstruct_pages_pa_list as an
+array because it was expected to grow to four pages. This was called out in
+the changelog of that commit.
+
+I would add one sentence to say so:
+
+  Extend 'struct seamldr_params' to match the new ABI. The sigstruct
+  address list is already populated in a loop over all sigstruct pages, so
+  raising SEAMLDR_MAX_NR_SIG_PAGES is enough to fill the new slots. The
+  loop was written that way in anticipation of this change.
+
+>
+>> 
+>> Set 'version' to 1 only when the sigstruct spans more than one page. Old
+>> P-SEAMLDRs reject version 1, so this keeps updates with a single-page
+>> sigstruct working on them.
+>> 
+>> Do not query P-SEAMLDR for version 1 support. Userspace selects the
+>> update image and is responsible for ensuring the module is compatible
+>> with P-SEAMLDR.
+>> 
+>> AI was used under supervision to review code and workshop logs
+>
+>Missing period. But this phrase is starting to become kind of boiler plate in
+>all of these patches. I wonder if it's still needed. AI review is now the
+>exception. Maybe move it below the "---" for this time? Dave can move it up
+>easily if he thinks it helps.
+
+Will drop this phrase from both patches.
