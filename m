@@ -1,84 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794479525;
-	b=WbYOfzL3WMbNlgjYJp7qWtYGvStmSuj+CSqfc/K/eDdHfV6hU9yNz8O3yruz4DmVGjNj
-	 Rqjz1SByt2mEKKDo49osr8LYhhP3TgcVc4OHVRyP4zsnk3yRcwjHb1FJX2hULpX/fCRDA
-	 QvrkqrnRxMvMSqFbuaM57wn+qyRfJBSI/qyNCb6u4NrenXmjLZ2QOBDhJjVNY8P+2G2CQ
-	 2goHxUv6bY+DYbISx3LF2z8m7rieDvv4W6GPBaXHWMvzcDszi6JVIcdIbwfDPUUGnhOOq
-	 VTZQDPAey+Rl4+SLlPQi/dumHPLQEcipoQ4HrBRkiBf95rWnapUAk9jQGUCW8aFsaPA==
+	t=1794480199;
+	b=cjdPq9oQIk5K56+U74s2rDclb3fkXEiLcNfJyGKx/7jVEx4RPzAKgHsYFp1rLmKJfZwC
+	 s+WLW/Oi/gpceDp/hmH1BZxKTiVAAGV944c5LdYNMbDT7vGSz0OnSvScjaySQm1x87Bv1
+	 m8vvHO53Byr9ynDJcl8f9q7isWfOemZ+Hxq3tTzJPO4glvLQgCVnQohO70qCiLaDF9THs
+	 YpoALuLo74O3grZCMZp7Gy5JysG7RQoVUIoWjImGdYCYmxwqZmLeNw+ONVxe8QizHfFgi
+	 GqvIie1UQU4eVHkX4y961fGcB7NekYO3pnvMz0/L/kqvE+dPFraDC5nXP2Pc+MQnU4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794479525;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=DaFOdktrS9fp8GjCaaexp9MaiiYjCXQTieg0RYTagzo=;
-	b=xtf9fL+dXb8tiQaISrdxJhpcJ9SrJrehGscmU2Xl4FO7FDL+crlRjknB3dU5ZRK0hBbV
-	 TUd+lEzwS6ONOrmYxPeiffrPSsQW+GiweFE0RzY/RZZ+KEzXeZyz+gMD3bknadlTPj4+1
-	 sv9Rmgppl7n1BJ37ZdtkdudVzVrDzZMnBHN3FbCznk5fiORCK5PXPxaabBZIqFL3Ybdl8
-	 5n6bHyaWDg0lhC8VpVp0AmsgF9t0EdPsLGYIMpEI627elu1aUqqJrXu0+kiXgZE3wZLxk
-	 KPC30mv5P4+OF9JoJ+UUZ478xiaeBPnMus7ZUaFmFisn+D147Ru4N+mCr4iDbUkeZ8w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794480199;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=X2j4x6ETnjsd3Kk7UiXLGfpl+QRCIcV4hL4S2HQyUOs=;
+	b=MzejDdPRvwXxd679rBbS9hZhH1PLzvsgiRDYnhTh2+UJlCg0RIN3I3dugNSM5dxhFyR/
+	 BLEE97nc8M/ADjLAx85nb19nMhxnOOEtw6RKKI8nFSkk042im3rJJJ/8jhMWCdAQfKsH1
+	 CMSlIN5jfjcSL6qspndvNuJeOxIe0wwHr0U5rR+9zx1sNLbIvAgZaa0t3a6vOCc/ObShl
+	 ezygRY5EsVcLVOX0Vfl7ug8zsMLTwy1cCB9A3zoxCdOPllOd4c60uH35N3zfWxQJ8Za7M
+	 kLsybJHORsYlAfirtvh7wFYxbSXOJLxV45eVKcwoaNULSSktBcGuYEiBpME/RoOfVjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SVCKZF+a;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51DA606A32A;
-	Thu, 12 Nov 2026 10:32:05 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="sz/bRcPX";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A51606A337;
+	Thu, 12 Nov 2026 10:43:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78A51606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SVCKZF+a
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9843A1F00A05;
-	Thu, 12 Nov 2026 10:31:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794479525;
-	bh=DaFOdktrS9fp8GjCaaexp9MaiiYjCXQTieg0RYTagzo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=SVCKZF+auGmqT7JSUb746d9UAYnxXK8NWFfq/0oYpoErPWvB81l2FLR7ZNtt1TzRs
-	 SOfI8u76neTSvF2w5qbIOVuKL+j0Qdh6z4NfLSuKTzJC1HYiLRrvVCW+ItdeGsyYhB
-	 0xlkYqobVHgprk7YC6bfI9EaNr8ah+XrX4cNJm0+dsmvib7BsjEv9Z3jN2rLkg2sGR
-	 MI32t1e5nR4llWY0pS55Dcb/MdeZz4OkIAu7g3AqoCR6aOMCNrkFy4bHY133gLUfKu
-	 NvKAmHPiobyEkFiawUS89SUAGf2RECSFN4yWnkCah3YSfAeSzsWc22rZpjE4HCsa5S
-	 l3Qlv9hfTFjNQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: "Tian, Kevin" <kevin.tian@intel.com>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Krishna Reddy <vdumpa@nvidia.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: RE: [PATCH v8 11/15] iommufd/viommu: Select vIOMMU operations
- before allocation
-In-Reply-To: <SA2PR11MB4844544BB238847916EA3A038C762@SA2PR11MB4844.namprd11.prod.outlook.com>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-12-aneesh.kumar@kernel.org>
- <SA2PR11MB4844544BB238847916EA3A038C762@SA2PR11MB4844.namprd11.prod.outlook.com>
-Date: Thu, 12 Nov 2026 16:01:54 +0530
-Message-ID: <yq5ay0aypch1.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sz/bRcPX
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9CC8C153B;
+	Thu, 12 Nov 2026 02:43:14 -0800 (PST)
+Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76C8C3F673;
+	Thu, 12 Nov 2026 02:43:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794480197; bh=xDR73f4nxpZk5DSaOewf66eooDmTQ5dy0pwmOSiLIuw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sz/bRcPXFEyNa7belfSW5kTpVnMxp65VhQF1lieCCf0rIAi0oiwk3xn+JZFcig9CD
+	 1gcmn08lsRczfyJ6K8ZbBvOpIDzJ9EnXmgUZqfKoqEarzelQvs12nZW7bi6qrs3iCC
+	 KiUIJYqG1GFIcWLl7RHP5oXDUOBXgOfs70RBQC7E=
+Message-ID: <1e02dfff-c1ad-46bb-9834-fd4bbaa46179@arm.com>
+Date: Thu, 12 Nov 2026 10:43:13 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -88,64 +53,132 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/12] KVM: arm64: guest_memfd: Check mmap support when
+ preparing memslot
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <20261111145758.217946-3-steven.price@arm.com>
+ <fbc33983-cb8a-48e4-854f-ce009cc5668f@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <fbc33983-cb8a-48e4-854f-ce009cc5668f@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-"Tian, Kevin" <kevin.tian@intel.com> writes:
+On 11/11/2026 15:21, Suzuki K Poulose wrote:
+> On 11/11/2026 14:57, Steven Price wrote:
+>> Check the guest_memfd backing file when deciding whether an arm64
+>> memslot has mappable memory rather than checking whether the slot is
+>> gmem only. A public helper function is added to be able to reuse the
+>> static kvm_gmem_supports_mmap() function.
+>>
+> 
+> Please could you explain why we need this ? Why not rely on
+> kvm_memslot_is_gmem_only(), which already tells
+> kvm_gmem_supports_mmap() ? With inplace conversion support gmem supports
+> mmap.
 
->> From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->> Sent: Thursday, November 5, 2026 12:16 AM
->> 
->> Physical IOMMU drivers currently provide the vIOMMU size and
->> initialization callbacks through iommu_ops. The initialization callback
->> then selects and installs the corresponding iommufd_viommu_ops.
->> 
->> Add iommu_ops::get_viommu_ops() to select the operations from the
->> physical device and requested vIOMMU type before allocation. Move the
->> size and initialization callbacks into iommufd_viommu_ops. The core can
->> then validate the selected operations, allocate the driver structure,
->> initialize it, and install the operations.
->> 
->> Convert AMD, Arm SMMUv3, Tegra CMDQV, and the selftest backend to the
->> new interface.
->> 
->> Selecting the operations early allows subsequent changes to use
->> implementation-specific vIOMMU properties, including when validating the
->> parent HWPT.
->
-> what does "implementation-specific" mean? Isn't every existing vIOMMU
-> type already implementation specific?
->
+Unless I'm missing something it's still possible to create a guest_memfd
+that doesn't support mmap() by not passing the GUEST_MEMFD_FLAG_MMAP
+flag. So kvm_memslot_is_gmem_only() doesn't actually guarantee that it's
+a guest_memfd that supports mmap().
 
-How about I update this to.
+> 
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>
+>> ---
+>> Changes since v1:
+>> - New patch in v2. Check the guest_memfd backing file rather than the
+>>    memslot flag when deciding whether arm64 can map the backing memory.
+>> ---
+>>   arch/arm64/kvm/mmu.c     | 7 ++++---
+>>   include/linux/kvm_host.h | 1 +
+>>   virt/kvm/guest_memfd.c   | 6 ++++++
+>>   3 files changed, 11 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 1db10d8d6db7..a146f6cde3d0 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -2839,10 +2839,11 @@ int kvm_arch_prepare_memory_region(struct kvm
+>> *kvm,
+>>           return -EFAULT;
+>>         /*
+>> -     * Only support guest_memfd backed memslots with mappable memory,
+>> since
+>> -     * there aren't any CoCo VMs that support only private memory on
+>> arm64.
+>> +     * Protected VMs currently require guest_memfd backed memslots with
+>> +     * mappable memory to support shared mappings.
+>>        */
+>> -    if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
+>> +    if (kvm_arch_has_private_mem(kvm) && kvm_slot_has_gmem(new) &&
+>> +        !kvm_gmem_slot_supports_mmap(new))
 
-The current code requires a valid parent HWPT before calling
-viommu_init(), which selects the vIOMMU operations. A later patch adds
-an operations flag indicating that a vIOMMU type does not require a parent
-HWPT. Selecting the operations earlier allows the core to check that flag
-before deciding whether to look up and validate a parent HWPT.
+Sashiko has identified I've screwed up this condition though.
+kvm_arch_has_private_mem(kvm) shouldn't be in there as that allows a
+non-private VM to bind a non-mmappable gmem.
 
->
->> 
->>  /*
->>   * This function is assigned to struct
->> iommufd_viommu_ops.alloc_domain_nested()
->> - * during the call to struct iommu_ops.viommu_init().
->> + * when the vIOMMU operations are selected.
->>   */
->>  struct iommu_domain *
->>  amd_iommu_alloc_domain_nested(struct iommufd_viommu *viommu, u32
->> flags,
->
-> the comment sounds changing the semantics.
->
-> ideally it's still assigned at viommu_init(), just from iommufd_viommu_ops
-> instead of iommu_ops now.
+>>           return -EINVAL;
+>>         /* guest_memfd is incompatible with MTE. */
+>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+>> index e7fc94e2910a..f65728a713ec 100644
+>> --- a/include/linux/kvm_host.h
+>> +++ b/include/linux/kvm_host.h
+>> @@ -2614,6 +2614,7 @@ static inline bool kvm_is_private_gfn(struct kvm
+>> *kvm, gfn_t gfn)
+>>     #ifdef CONFIG_KVM_GUEST_MEMFD
+>>   bool kvm_gmem_is_private_gfn(struct kvm *kvm, gfn_t gfn);
+>> +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot);
+>>   bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm);
+>>     static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index 8c97a69b16dc..3dd8d227bebb 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -442,6 +442,12 @@ static bool kvm_gmem_supports_mmap(struct inode
+>> *inode)
+>>       return GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_MMAP;
+>>   }
+>>   +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot)
+>> +{
+>> +    /* The guest_memfd file is pinned while preparing a new memslot. */
+> 
+> We should gate this on kvm_slot_has_gmem() and how do we ensure that the
+> call comes after it is prepared ?
 
-How about
- /*
-  * This function is assigned to struct iommufd_viommu_ops.alloc_domain_nested()
-- * during the call to struct iommu_ops.viommu_init().
-+ * during the call to struct iommufd_viommu_ops.viommu_init().
-  */
+I'm not sure what you mean by "gate this on kvm_slot_has_gmem()" - yes
+this function only makes sense on a gmem slot - the user above checks
+that first. I'm not sure what value the function should call if you call
+it on a non-gmem slot?
 
--aneesh
+Thanks,
+Steve
+
+>> +    return kvm_gmem_supports_mmap(file_inode(slot->gmem.file));
+>> +}
+>> +
+>>   static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>>   {
+>>       struct inode *inode = file_inode(vmf->vma->vm_file);
+> 
+> 
+> Cheers
+> Suzuki
+
