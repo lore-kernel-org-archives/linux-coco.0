@@ -1,124 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794505212;
-	b=Lb0vP9fXzuQ9C9BqOU3LhKmlELFFXMUWkmemzOdIT1wcHI2wpBIDsQiMUiHncgJmsvFh
-	 tGwPmYr6LrbYc3Ui6RsY/RT7GVQcsBcd8Quzhkn49Bq0VH9pyzIHio7/8/g5jQje6YtRs
-	 0bdTO2SA7g0vYauvJuhMe3ReuE4A8RO2Hgg87ZkLhUCwZ2S6mvi78qZWezMwEOwqKx5Ws
-	 6CUOZT1kBk3nlGhrT1Z4B7jYl9fPG4WibT1ogoOSS9Ju2KN8XqfmrosdpVcSiaJLFIYSp
-	 JujGvUxQuRBPeZxAprmq42TXevOZDExRnPsGY29PIwAFgXfWYOezamSrcc8gynnX3tw==
+	t=1794521981;
+	b=a6p94EfdJaKTbsLVbJyJnP00VwSv6pA5/wtJJgIQcP6ic362XwrFSaUXVmF2UYN5XIE8
+	 fA/mEQsB6qj9dB8bTOj5AHVHgt160qqB0zmM7bF+w8PZTw96BJheXsFx3U6t3TA0Uqz3m
+	 6kBWmYVQarhpRNfrkPg5uerWGs7AVJ4hlMDHVyOu35U3AW5rs7qfcVmdSduFwwrJlRw7P
+	 mSk0xP2kEq0pV/ykuLNw49cShRoZ4oIc6fANuixJtrmuz1pr2o89TN6eRDJ2Kd/BLv7lm
+	 gB79UA7brlQMa0YfTDbg73vWYd3Tn0haXvZAjL8hMWt4iyO6Hbfl073puMMph8b0cnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794505212;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=GMK7MSqRNNJITd9VKn9EN01v+V/w/ND04vZqm17dQrA=;
-	b=hrR3iUHLES1aSwq2ffgGszOCeqd2A1xkP229ikB1/ol8vmgHFMww8b5hg7Lk2lWV6MMB
-	 MHDudFt9M6ltrywiYUStimD3rAcDJq89LAv4k3Q3cybIBeG5WUcmjYlbo56kAH95HYXLV
-	 Wi+yM5vklguI1/jA+gx1mWGNf9vVJk5ED6+vw4s7GGG1w9SreiOUKnfusVs8T3YcHmUNl
-	 e+DyFdYwDp7KP4sLTGjmV+x3vxNv5X+jpQogKIBp6r+oNTYjWL9It84lgsDDpmof0LZIq
-	 M1T9hOxEp2UzuDtfE9xfE5rnWk7tip4dfRSzZBn0UFsBubsitsI9o+I+QOWlt8rDseg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794521981;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=MdFOkR9T1vyvJTEbm/GmyrakOZfYhcZ9ZgO9mPMwqgE=;
+	b=N4eGRyHzaLSeWnyH93Tbvyy71kSqiLbwFpgp4kB5jL+bkknBhbPbBGoV3/VLcEmTMh8g
+	 3FUkoBs6/JHYFV0kTDEY3v8r3aanmzDxU1w4Kaw9Ze0/qpmNgpxI1w2fbDizu0HtxaRuw
+	 NMAQR8/jxuiajfliFJGIGp9pOIo76ZCnDf0juYZVeFRziVk361sfsESD8jTwd/vRicBWs
+	 YHYUurI0W9XHdp8TKlLS4r63tr7lzD3vVRg9vm1ZRxOfj5qvpxrr6yK57ovwzJ9IfVWdm
+	 j+Ohpvvx+wMIlFIYU6SkRjmQV3SObF+F8sl94U2/jf7TPF18HutDqPwYUmlzQhISfSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=CqV1uTWZ;
-	arc=none smtp.remote-ip=209.85.160.177
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KkJPMBad;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF587606C342
-	for <linux-coco@lists.linux.dev>; Thu, 12 Nov 2026 17:40:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF587606C342
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BE1606A31C;
+	Thu, 12 Nov 2026 22:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=CqV1uTWZ
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-53397554beaso42712281cf.3
-        for <linux-coco@lists.linux.dev>; Thu, 12 Nov 2026 09:40:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794505211; x=1795110011; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GMK7MSqRNNJITd9VKn9EN01v+V/w/ND04vZqm17dQrA=;
-        b=CqV1uTWZLD1L9NUEhI2miAOIlg2p8ADhRgdBZNi/jB7KVrktxCFGZpG8aV3NgcbXFZ
-         OWgv+DZIi38KQK1QkKH/EPpymiyHVP6eSTndDzO0mDx9EIhPcaU0t2FcGvuWY14Mc7UL
-         +iu0irxg40LxiWHzftdkFD4EdL7cciS3GNDvQZSBOoArB6mvY+xc4KCU7W4ARensaN3k
-         o9BP3qpEgCfhrdYyRG154oTynuTKUvJTnpTfsZYLRRwgsvMJAB9avNyfMHd25Hp+C3tx
-         uE6U+CLgzKTkdnjvko4rr/YkqM4vS7ZgUrm/w0Z4EUbzumidhgmrpKIdLrsMB043Ubc9
-         EXLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794505211; x=1795110011;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GMK7MSqRNNJITd9VKn9EN01v+V/w/ND04vZqm17dQrA=;
-        b=DAakkgOWGju2eb1+y3w20FOdZ4T4lSko305mp5efI2FLxUuhfQTQyYqeRSAX2e0OdX
-         dkOfgI5A8HHzuPWFtF9RapVOmsNeRDzWFZVVe8UID/NkWxlBYBVy3cgWt8VrXWlhpfrx
-         ScwFTWMF9jKUGVujYztLy4d0CI8yZniCiXC3WjWunEYWBIr60SHuK1VCOI5qtmcLYEz2
-         bvEJRqP6nXaJ09l8zx1tyXr7rzNPLN3qX5iemlf+h75WUxUKswRp5PEpTlURBFQI/MrY
-         IEv+iM4w+qeGYmXVg0NuE6Sx3xvaFkIz8dwZgrMODUOHGHNIT+WSPu8AFw1G/O8S/TPB
-         ZJsA==
-X-Forwarded-Encrypted: i=1; AL+hErFRgAICj6EkucYUD0BQCc0oUxjWt0HYkujLbWgzS8xKftnCMW8FrC6euhYVYR/N0sJ4d24NKISMUGfN@lists.linux.dev
-X-Gm-Message-State: APuU4Z+XRSZ5r05VeLdgvdpb2ppvsHyuq1jllVKhmT0aNcIF6Ta4itfF
-	/W0iu4hA8EOgHNkWQ3mXSZLjdfkMrco97lOrdPIdid8uCmE8LNzheD8wFWyGEcngJHw=
-X-Gm-Gg: AYBFou3KzPEO0px7aO0A18DwAW7vPvub+vvH6ypErVtReYrE/wIy1E6TrDNwT6ihrKm
-	qTARMiUdoltfxNlm/9V0CrWYGYt9tKZWNVkWNqnmYdMgQSh//VubculjgB02bqmErFYMJA17714
-	CyL05b53kKhquVRm8HCotp9jZTfHU2gPO7TgtlsIugq6vjw+LztlrF5SFwMjvw76qbwn2wXH53S
-	5wcoQZ/AfvGuYo8eH9F5C4u9ntaScH5L5JcF8PYZ7CPhSypLZ8Ch0mRuj7X6HHezBZLx1pc9lqM
-	AyPJuIUVt+pBNSvc5oiySTvp26plbCL3SdY98AKlD6DIrBpn4RrUnkUux7gxrWuM9Y6KfYzxK3H
-	78DnV06X8lg9lHZGEJKWAq+Nyc92YsXgDLfNQwRzunFqsUUVz9ZDmTkDdtODUFLGqZl1/7ekbOg
-	piFTB6d8qedqcjpEh/kXAoJ7r5C3ytPsLJf736ZA/AeLI2V4vUgVf7nyYYcXEhA4emc4Di5+OUg
-	CZfWGmJikj/b6IiH0tUDPAuoW/qOK/kH0z6hm7lJ5QNTwCcuKSxmQuPzxlrvs09M59eQgZmH95o
-	ihVcjA==
-X-Received: by 2002:ac8:5fcb:0:b0:533:8e6b:260e with SMTP id d75a77b69052e-55ac78597d2mr1668441cf.31.1794505210728;
-        Thu, 12 Nov 2026 09:40:10 -0800 (PST)
-Received: from ziepe.ca ([142.166.156.71])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d70489sm890336d6.21.2026.11.12.09.40.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 09:40:10 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xRYmP-0000000FjX1-1XQV;
-	Thu, 12 Nov 2026 13:40:09 -0400
-Date: Thu, 12 Nov 2026 13:40:09 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH v8 06/15] iommufd/device: Hold a KVM file reference for
- the device lifetime
-Message-ID: <20261112174009.GB2532299@ziepe.ca>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-7-aneesh.kumar@kernel.org>
- <CO1PR11MB4835982DE81AFE060EEE01B88C762@CO1PR11MB4835.namprd11.prod.outlook.com>
- <97053bb6-c221-4ae0-972c-603b194ec25a@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KkJPMBad
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A31C1F000C4;
+	Thu, 12 Nov 2026 22:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794521981;
+	bh=MdFOkR9T1vyvJTEbm/GmyrakOZfYhcZ9ZgO9mPMwqgE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=KkJPMBadtLEVv4ypOglQwOiufTUuvQXpZInKdUsDfVLX5m16RASaLRZGF3Pfpwq5k
+	 Z3l76XFR6I6l2Ruv8Kj3Nwk4AFyFkGuK9xYfnJeQQTscKJVWq3zctGaoNQdWQbyQZM
+	 JTfhw6EKmkNKKAx4UaeNOGU3vdAc9pBpcDvKS3OVMw3C+ZTuYa3o9nolv7dXk4a7kM
+	 FNCFi6+G/UdRgo8wHU+FMyG3JGJMXBoJe6ln/FqhEDt8uoLumgEFgCtVUE6ufwZEUz
+	 22ZFh7iknY4Ssw62qkkSZGpWu/c5KtAOmDmY1R2c/TjcUPFbtZo/AbBjdVW5PwfokN
+	 nqgy8nw1bs8qA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xRd8r-0000000F2ee-31UM;
+	Thu, 12 Nov 2026 22:19:38 +0000
+Date: Thu, 12 Nov 2026 22:22:52 +0000
+Message-ID: <87ld6x8zb7.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev,	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,	Mike Rapoport <rppt@kernel.org>,	Pasha
+ Tatashin <pasha.tatashin@soleen.com>,	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,	Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>,	Jason Gunthorpe <jgg@ziepe.ca>,	Joerg Roedel
+ <joro@8bytes.org>,	Marek Szyprowski <m.szyprowski@samsung.com>,	Robin
+ Murphy <robin.murphy@arm.com>,	Steven Price <steven.price@arm.com>,	Sumit
+ Semwal <sumit.semwal@linaro.org>,	Suzuki K Poulose
+ <suzuki.poulose@arm.com>,	Thomas Gleixner <tglx@kernel.org>,	Will Deacon
+ <will@kernel.org>,	Russell King <linux@armlinux.org.uk>,	Benjamin Gaignard
+ <benjamin.gaignard@collabora.com>,	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,	Mark Rutland <mark.rutland@arm.com>,	Radu
+ Rendec <radu@rendec.net>,	"T.J. Mercier" <tjmercier@google.com>,	Madhavan
+ Srinivasan <maddy@linux.ibm.com>,	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,	Shrikanth Hegde
+ <sshegde@linux.ibm.com>,	Alexander Gordeev <agordeev@linux.ibm.com>,	Gerald
+ Schaefer <gerald.schaefer@linux.ibm.com>,	Heiko Carstens
+ <hca@linux.ibm.com>,	Vasily Gorbik <gor@linux.ibm.com>,	Christian
+ Borntraeger <borntraeger@linux.ibm.com>,	Sven Schnelle
+ <svens@linux.ibm.com>,	Ingo Molnar <mingo@redhat.com>,	Borislav Petkov
+ <bp@alien8.de>,	Dave Hansen <dave.hansen@linux.intel.com>,	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,	Kiryl Shutsemau <kas@kernel.org>,	Rick
+ Edgecombe <rick.p.edgecombe@intel.com>,	"K . Y . Srinivasan"
+ <kys@microsoft.com>,	Haiyang Zhang <haiyangz@microsoft.com>,	Wei Liu
+ <wei.liu@kernel.org>,	Dexuan Cui <decui@microsoft.com>,	Long Li
+ <longli@microsoft.com>,	Paolo Bonzini <pbonzini@redhat.com>,	Vitaly
+ Kuznetsov <vkuznets@redhat.com>,	Andy Lutomirski <luto@kernel.org>,	Peter
+ Zijlstra <peterz@infradead.org>,	dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev,	linaro-mm-sig@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,	kvmarm@lists.linux.dev,	patches@lists.linux.dev
+Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
+In-Reply-To: <yq5ah5huoteu.fsf@kernel.org>
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+	<20261104164555.3555725-15-aneesh.kumar@kernel.org>
+	<86zevn1c9a.wl-maz@kernel.org>
+	<yq5ah5huoteu.fsf@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -127,41 +100,57 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97053bb6-c221-4ae0-972c-603b194ec25a@amd.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: aneesh.kumar@kernel.org, linux-coco@lists.linux.dev, akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, catalin.marinas@arm.com, christian.koenig@amd.com, jgg@ziepe.ca, joro@8bytes.org, m.szyprowski@samsung.com, robin.murphy@arm.com, steven.price@arm.com, sumit.semwal@linaro.org, suzuki.poulose@arm.com, tglx@kernel.org, will@kernel.org, linux@armlinux.org.uk, benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, mark.rutland@arm.com, radu@rendec.net, tjmercier@google.com, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, kas@kernel.org, rick.p.edgecombe@intel.com, kys@microsoft.
+ com, haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com, pbonzini@redhat.com, vkuznets@redhat.com, luto@kernel.org, peterz@infradead.org, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Nov 12, 2026 at 11:25:46PM +1100, Alexey Kardashevskiy wrote:
-> > > Once the remaining KVM file references are released, a later ioctl on
-> > > the still-open iommufd can access the stale pointer:
-> > > 
-> > >    iommufd_fops_ioctl()
-> > >      iommufd_viommu_alloc_ioctl()
-> > >        iommufd_get_device()         /* finds the surviving device ID */
-> > >        get_file(idev->kvm_file)     /* accesses the freed KVM file */
-> > > 
-> > > Take a KVM file reference when binding the device and release it when
-> > > the iommufd_device is actually destroyed. Release it before the igroup
-> > > check in the destructor so that bind failure cleanup is covered too.
-> > > Document the ownership in the bind API and device structure.
-> > 
-> > I don't think this needs to be fixed. There is already a WARN_ON()
-> > in iommufd_object_destroy_user() and many bad things could
-> > happen afterwards...
-
-Yeah, it shouldn't be fixed like this.
-
-Either we need to rethink that warn_on path for some way to actually
-wait forever or we leave it.
-
-AFAIK nothing here is going to make that warn on trigger.
-
-> > If we really think an ioctl could take more than 60s in sane scenarios,
+On Fri, 06 Nov 2026 15:45:29 +0000,
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> wrote:
 > 
-> It is quite possible when some TSM operation involves (in)validation
-> of hundreds GBs of MMIO.
+> Marc Zyngier <maz@kernel.org> writes:
+> 
+> > On Wed, 04 Nov 2026 16:45:55 +0000,
+> > "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+> >> 
+> >> VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
+> >> not allowed.  Remove the page allocation from this atomic path.
+> >> 
+> >> Use a blocking allocation for the boot CPU and record the resulting table
+> >> order.  Allocate a page of that order from the sleepable CPU hotplug prepare
+> >> stage for each secondary CPU.  Consume the preallocated page only when the CPU
+> >> cannot inherit an existing redistributor or ITS table.
+> >> 
+> >> Reclaim unused preallocations after the CPU reaches the online state, and from
+> >> the prepare-state teardown when CPU bring-up aborts.
+> >
+> > No. The way to do it is to move the ITS probing out of the
+> > non-sleepable CPU hotplug path.
+> >
+> > I proposed a potential hack at [1] (which I find far more palatable
+> > than this proposal), but the real fix is to probe the ITSs as
+> > devices.
+> >
+> 
+> Could you share a bit more detail on what you have in mind?
+> 
+> Are you suggesting that we create a platform device for each ITS and
+> initialize it through the driver's probe callback, while the rest of the
+> GIC initialization stays in the existing early boot path?
+> 
+> Would that mean the main GIC is operational during early boot, while
+> ITS-dependent features, such as MSI delivery and direct injection, become
+> available after the ITS devices probe?
+> 
+> Is that the split you have in mind?
 
-That won't be under these locks though.
+Yes. Then once this is done, all the tables become normal DMA
+allocations, for which there should already be adequate support.
 
-Jason
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
