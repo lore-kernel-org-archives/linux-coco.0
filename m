@@ -1,68 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794498484;
-	b=h8JClwASKt71ZCpUHOpjGCJXGcngy74TltH9w3YiNORzOiAjpwoAFAv78L3q5Vu7twvf
-	 cIwb0uyB2ekaWAR2MeYwEdLNQftkMTGfkc7GnD4MWTpJP+yVAHxwWPcly1f7SrLArP3i/
-	 PmX7hfiuipGEE4wDg7sW3oGynW2HY8N11OxrX48GHuGkGlDnFvvqE7QrDUKutVaR5XOT5
-	 NJMsx2KrF17VupKerTkoelpDnjIcIhUICOt5z7Zu1OAw4ef8A1qURCG/hnY4I4WCyZwYT
-	 xciFQMX+4hjoaAZTZMcOkkl/Rjr8b5Au8rqAzEQMQyAsdbCpHms40UFKOYlTozArgLQ==
+	t=1794499818;
+	b=PVlxWB4g2uEiao0I5O/LXE7Ax5fhZ1OfsoX49Y9146lmdFSR4hFpY6yU0/zVBk2t7sjY
+	 jnUgTpfRqmJDMRmBMMMsOO29Whrlmb13O+oNYVLlf0P88/+RPXYCjnUz1axi3B0fJMfys
+	 eqs4EDWSqdwdnwu8hV7a8VKrijO/kE0oS+NWTJRpfx1nzrziL5rdkSZVF7MlucpPiGL28
+	 sHXkgmNJedHxCnHNjtr6fGS6LIxKVibtCeTd1bLri1TzmsFcTxLw+hoWgr5JJiuPwNFrd
+	 iTxZynD0Cs+jTkxs5rEY/MWxt7Va8BsMyDe6Kf7HVUXn7HOlvHfwpEpb5HQWAjTWj1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794498484;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Nhoq+o2AeDmgf3/B6h8p9oadn4HbvW4I9vcVLPoehOw=;
-	b=qqBLiuazpMFHEdOwq81FgFmVHQEbNxMOpQUkOl1NAO1L7a33MYNkuSS/ZKKp3XbviL0p
-	 w25Nh+GGmBobk+Yci6VeAPoaq5xfix5XqeG062I8F4QfG0wlXHGeodXJ8wiSGXMl57nwq
-	 kW5Hl1C0oHmcEs90j787gJXCEQVHUILKnUdYbBxm/XqH+cQIls4nTHUY8X6ipEhe1Jnev
-	 QTiPlZompvS15//fAH/GlLWqi6BUoO/u6li6/QN0E5yovvz60RGOZPp66z2aZQsvUo8kU
-	 pIN2PfEhrSzMW7aXalOcZPhZrxZbdp95JUBigZ9QlFeAiGWQWtVPNM+sSQG2Sr5bT4A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794499818;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=NyJ+wR05o+PC3wSvFLyYczzwPBzneUQ3BZvLf0UVclw=;
+	b=TupPYcVRfE3NuiVcUe6cvcbL/Jtw3+HM7E+PU/GTUU9cy5nPRMR+uf0NuGW/9Un5lmQC
+	 YUclV4BniMalYsRLgjdy1K3Z9XJkDyi3kEIpXd89/K3gtwOoyYDUk9UrMKTuIWIdYuCl8
+	 kq7yjHH3lOoGOO3BjhpGV6KmDliPY2+3VNWOwZpvgi5ATIxjXZVR6DfuVssGHZOCQEtAz
+	 oyPesK1LGj8/94SlH2NKFPcdCtMGvtKvIsL0D3Pa4VHySG12hgM6radLz+bHnkgqkuDG4
+	 jBfdoWu7BUyxNpyFjz4Q3T91F+fomrWSuK2r1Z/MEC4WDZ6NVV/13JzZnRYkI0yB5ig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JTXFbsAh;
-	arc=none smtp.remote-ip=192.198.163.7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E2A606A321;
-	Thu, 12 Nov 2026 15:48:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46E2A606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=aFOih66d;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4523606A327;
+	Thu, 12 Nov 2026 16:10:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4523606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JTXFbsAh
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794498485; x=1826034485;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=eS7l2d7PKAcY7eMFzNb1ANKCPKCISimctsodaPJo3Pc=;
-  b=JTXFbsAhXdByQNcdhT4sCPWGdzePI0Blb7BemiAlnGEnJKiSpCl8sOm/
-   LBGoLI3azeIcWs4dmv/pAuth4/bsIbW0dyDAR1aohG2ElnmwWgLU4elgq
-   LqO5kPjRPIEtJd5pR2b1J4IBNWzyRL6Iyk8svN/u2tb4M2u4A0rPUJaXW
-   qQ6lrDlYWQhg4xddpxZXkKsKJyizKhF5XqumMBA1/QUK3/QZgf/ax1vpE
-   Hg3qkmGAMJdTT3TGmqbaMxhXI0whvKtgruV21Tuy7URYDzs1QjZ10Hi0G
-   6+zx9sKMYuF3U3zzI0dIPx4GDIzRL+cTL0x8I2/gP4smFrg1NdglCEewY
-   g==;
-X-CSE-ConnectionGUID: X4VkpnMXTyuCMNeHa/PIWg==
-X-CSE-MsgGUID: O8ICs5qATJ6JjU6h4mgmmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3157205"
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="3157205"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 07:48:03 -0800
-X-CSE-ConnectionGUID: ge6dskz2SgGLmKSGJaxWDQ==
-X-CSE-MsgGUID: WmvcEHbcRcCvtAp7Jskxcg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="9248431"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.173]) ([10.125.111.173])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 07:48:01 -0800
-Message-ID: <21bd5c40-7d32-450d-93a9-7d5ff6693c34@intel.com>
-Date: Thu, 12 Nov 2026 08:47:59 -0700
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=aFOih66d
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECF6D1516;
+	Thu, 12 Nov 2026 08:10:13 -0800 (PST)
+Received: from [10.57.67.215] (unknown [10.57.67.215])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFCD63F673;
+	Thu, 12 Nov 2026 08:10:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794499816; bh=eI6HLMNYzVDBvHBVufuc5J2FJd7cWcvR6MgqBPZ4zpI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aFOih66dfccYzufBc17r9WpthMTMDuR4BQ3PUFO1D9Lg/lw4bQSAaTCb9TwdLfPD4
+	 qdkLALALRiwLntg+u0S0ZgUxKzw7lLwT19Hh6W6NHS+t7Vu2NwDFeVMuUrt/qOGe4b
+	 trnAx8mxKRgqky/enezXsehZ5oy4T0NueLBrtZjU=
+Message-ID: <256e6390-437d-4427-969d-5b774e79861d@arm.com>
+Date: Thu, 12 Nov 2026 16:10:11 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,213 +54,331 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
- and establish streams after acceptance
-To: Jason Gunthorpe <jgg@nvidia.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Jiri Pirko <jiri@resnulli.us>, "Tian, Kevin" <kevin.tian@intel.com>,
- Alexey Kardashevskiy <aik@amd.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Steven Price <steven.price@arm.com>, Kiryl Shutsemau <kas@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Jonathan Cameron <jic23@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "patches@lists.linux.dev" <patches@lists.linux.dev>,
- Alistair <alistair23@gmail.com>
-References: <20261102172640.GB274202@nvidia.com>
- <DS4PPFA84FA90FC31B41ECA1F6ACF6D0600E7692@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261103151643.GI274202@nvidia.com> <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
- <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261104134119.GR274202@nvidia.com>
- <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
- <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
- <20261106193018.GK770409@nvidia.com> <yq5a5wy2qtjs.fsf@kernel.org>
- <20261112145254.GL738765@nvidia.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20261112145254.GL738765@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 02/11] KVM: arm64: CCA: Introduce Realms
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-3-steven.price@arm.com>
+ <avL9kNR2mGmqmcA9@FCCLS0092175.localdomain>
+ <45104e19-4197-4584-895a-0486c0782c9c@arm.com>
+ <bc0a6290-ddca-4005-9d22-b74833f435b9@arm.com>
+ <d938b49d-331e-4332-ac01-911708f6135b@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <d938b49d-331e-4332-ac01-911708f6135b@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-
-On 11/12/26 7:52 AM, Jason Gunthorpe wrote:
-> On Thu, Nov 12, 2026 at 03:07:43PM +0530, Aneesh Kumar K.V wrote:
->>> Like a whole bunch of TSM FW API just to do this:
+On 11/11/2026 11:46, Steven Price wrote:
+> On 11/11/2026 10:14, Suzuki K Poulose wrote:
+>> On 11/11/2026 10:11, Steven Price wrote:
+>>> On 10/11/2026 11:42, Kohei Enju wrote:
+>>>> Hi Steve,
+>>>
+>>> Hi Kohei,
+>>>
+>>>> On 11/02 14:12, Steven Price wrote:
+>>>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>>
+>>>>> Add foundational work for supporting Realms.
+>>>>>    - Add a new VM flavor.
+>>>>>    - At KVM init, check if the KVM can support Realms (though not
+>>>>> functional
+>>>>>      yet) and will be advertised by static key kvm_rmi_is_available.
+>>>>> This
+>>>>>      will be turned on in a later patch, once we have all the bits and
+>>>>>      pieces ready. For now check if we are blessed with KVM_MODE_RMM.
+>>>>>    - Add realm specific tracking in kvm_arch. Since Realm and
+>>>>> protected pKVM
+>>>>>      states are mutually exclusive, move them into a union.
+>>>>>    - Also adjust the memslot preparation checks to reflect the changes.
+>>>>>
+>>>>> Please note that we cannot create Realm VMs yet. This requires further
+>>>>> changes to the UABI and core RMI driver support, which will come later.
+>>>>>
+>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>>> ---
+>>>>>    arch/arm64/include/asm/kvm_emulate.h   | 16 +++++++
+>>>>>    arch/arm64/include/asm/kvm_host.h      | 57 +++++++++++++++++-------
+>>>>>    arch/arm64/include/asm/kvm_rmi.h       | 61 ++++++++++++++++++++++
+>>>>> ++++
+>>>>>    arch/arm64/include/asm/virt.h          |  1 +
+>>>>>    arch/arm64/kvm/Makefile                |  2 +-
+>>>>>    arch/arm64/kvm/arm.c                   | 24 ++++++++--
+>>>>>    arch/arm64/kvm/hyp/include/nvhe/pkvm.h |  2 +-
+>>>>>    arch/arm64/kvm/hyp/nvhe/switch.c       |  4 +-
+>>>>>    arch/arm64/kvm/hyp/nvhe/timer-sr.c     |  2 +-
+>>>>>    arch/arm64/kvm/mmu.c                   | 13 +++---
+>>>>>    arch/arm64/kvm/rmi.c                   | 18 ++++++++
+>>>>>    11 files changed, 169 insertions(+), 31 deletions(-)
+>>>>>    create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+>>>>>    create mode 100644 arch/arm64/kvm/rmi.c
+>>>>>
+>>>>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
+>>>>> include/asm/kvm_emulate.h
+>>>>> index 334211b8b2ee..32021bdf2610 100644
+>>>>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>>>>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>>>>> @@ -831,4 +831,20 @@ static inline void kvm_reset_vcpu_psci(struct
+>>>>> kvm_vcpu *vcpu,
+>>>>>        vcpu_set_reg(vcpu, 0, reset_state->r0);
+>>>>>    }
+>>>>>    +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
+>>>>> +{
+>>>>> +    return READ_ONCE(kvm->arch.realm.state);
+>>>>> +}
+>>>>> +
+>>>>> +static inline void kvm_set_realm_state(struct kvm *kvm,
+>>>>> +                       enum realm_state new_state)
+>>>>> +{
+>>>>> +    WRITE_ONCE(kvm->arch.realm.state, new_state);
+>>>>> +}
+>>>>> +
+>>>>> +static inline bool kvm_realm_is_created(struct kvm *kvm)
+>>>>> +{
+>>>>> +    return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) !=
+>>>>> REALM_STATE_NONE;
+>>>>> +}
+>>>>> +
+>>>>>    #endif /* __ARM64_KVM_EMULATE_H__ */
+>>>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
+>>>>> asm/kvm_host.h
+>>>>> index ccd2dc8f73c3..7d0222047ca1 100644
+>>>>> --- a/arch/arm64/include/asm/kvm_host.h
+>>>>> +++ b/arch/arm64/include/asm/kvm_host.h
+>>>>> @@ -29,6 +29,7 @@
+>>>>>    #include <asm/kvm.h>
+>>>>>    #include <asm/kvm_asm.h>
+>>>>>    #include <asm/kvm_hcall.h>
+>>>>> +#include <asm/kvm_rmi.h>
+>>>>>    #include <asm/vncr_mapping.h>
+>>>>>      #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+>>>>> @@ -48,6 +49,13 @@
+>>>>>    #define KVM_VCPU_MAX_FEATURES 10
+>>>>>    #define KVM_VCPU_VALID_FEATURES    (BIT(KVM_VCPU_MAX_FEATURES) - 1)
+>>>>>    +#define KVM_REALM_VCPU_VALID_FEATURES            \
+>>>>> +    (BIT(KVM_ARM_VCPU_POWER_OFF)        |    \
+>>>>> +     BIT(KVM_ARM_VCPU_PSCI_0_2)        |    \
+>>>>> +     BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)    |    \
+>>>>> +     BIT(KVM_ARM_VCPU_SVE)            |    \
+>>>>> +     BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
+>>>>> +
+>>>>>    #define KVM_REQ_SLEEP \
+>>>>>        KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+>>>>>    #define KVM_REQ_IRQ_PENDING        KVM_ARCH_REQ(1)
+>>>>> @@ -409,6 +417,7 @@ enum kvm_arm_vm_flavor {
+>>>>>        VM_PKVM,        /* Normal guests on pKVM */
+>>>>>        MARKER(__VM_PROTECTED),
+>>>>>        VM_PROTECTED_PKVM,    /* Protected VM */
+>>>>> +    VM_REALM,        /* CCA */
+>>>>>        VM_FLAVOR_MAX
+>>>>>    };
+>>>>>    @@ -502,11 +511,14 @@ struct kvm_arch {
+>>>>>        /* Count the number of VNCR_EL2 TLBs */
+>>>>>        atomic_t vncr_tlb_count;
+>>>>>    -    /*
+>>>>> -     * For an untrusted host VM, 'pkvm.handle' is used to lookup
+>>>>> -     * the associated pKVM instance in the hypervisor.
+>>>>> -     */
+>>>>> -    struct kvm_protected_vm pkvm;
+>>>>> +    union {
+>>>>> +        /*
+>>>>> +         * For an untrusted host VM, 'pkvm.handle' is used to lookup
+>>>>> +         * the associated pKVM instance in the hypervisor.
+>>>>> +         */
+>>>>> +        struct kvm_protected_vm pkvm;
+>>>>> +        struct realm realm;
+>>>>> +    };
+>>>>>      #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
+>>>>>        /* Nested virtualization info */
+>>>>> @@ -1572,30 +1584,43 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>>>>      #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+>>>>>    -#ifdef __KVM_NVHE_HYPERVISOR__
+>>>>> +#define kvm_vm_is_protected(kvm)    ((kvm)->arch.vm_flavor >=
+>>>>> __VM_PROTECTED)
+>>>>>    -#define kvm_vm_is_protected(kvm)            \
+>>>>> -    (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor ==
+>>>>> VM_PROTECTED_PKVM))
+>>>>> +#ifdef __KVM_NVHE_HYPERVISOR__
+>>>>>    /*
+>>>>>     * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to
+>>>>> convert the
+>>>>>     * pointer to the hyp VA. With pKVM, the nVHE code runs with the
+>>>>> hyp_vcpu,
+>>>>> - * which is populated correctly and is gated on
+>>>>> is_protected_kvm_enabled().
+>>>>> + * which is populated correctly. Always vcpu_is_protected_pkvm(),
+>>>>> which is
+>>>>> + * gated on is_protected_kvm_enabled().
+>>>>> + */
+>>>>> +#define vcpu_is_protected(vcpu)        BUILD_BUG_ON(1)
+>>>>> +#else
+>>>>> +#define vcpu_is_protected(vcpu)        kvm_vm_is_protected((vcpu)-
+>>>>>> kvm)
+>>>>> +#endif
+>>>>> +
+>>>>> +#define kvm_vm_is_protected_pkvm(kvm)                    \
+>>>>> +    (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor ==
+>>>>> VM_PROTECTED_PKVM))
+>>>>> +
+>>>>> +/*
+>>>>> + * Rely on is_protected_kvm_enabled() check in
+>>>>> kvm_vm_is_protected_pkvm() to
+>>>>> + * make sure the vcpu->kvm is always valid VA in the context
+>>>>>     */
+>>>>> -#define vcpu_is_protected(vcpu)                        \
+>>>>> +#define vcpu_is_protected_pkvm(vcpu)                    \
+>>>>>        ({                                \
+>>>>>            struct kvm *__kvm = READ_ONCE((vcpu)->kvm);        \
+>>>>>                                        \
+>>>>> -        (__kvm && kvm_vm_is_protected(__kvm));            \
+>>>>> +        (__kvm && kvm_vm_is_protected_pkvm(__kvm));        \
+>>>>>        })
+>>>>
+>>>> I've tested the integration branch and found that the secondary CPU
+>>>> bring-up fails:
+>>>>       [    1.426502] smp: Bringing up secondary CPUs ...
+>>>>       [    9.194442] CPU1: failed to come online
+>>>>       [    9.194558] CPU1: failed in unknown state : 0x0
+>>>>       [    9.197714] smp: Brought up 1 node, 1 CPU
+>>>>       [    9.197775] SMP: Total of 1 processors activated.
+>>>>
+>>>> It seems that this patch missed replacing a use of
+>>>> vcpu_is_protected() introduced by the following commit:
+>>>>
+>>>>       25d726dddc23 ("KVM: arm64: Reject host power-on of a vCPU that
+>>>> EL2 holds powered off")
+>>>>
+>>>> The following diff fixes the issue for me. Also, though not included in
+>>>> the diff, I think vcpu_is_protected() in __pkvm_create_hyp_vcpu() should
+>>>> be replaced with vcpu_is_protected_pkvm() as well.
+>>>
+>>> Thanks for the patch - I'll include that in v2.
 >>
->> Can you help me understand why we need to snoop the DOE messages? IIUC,
->> the earlier proposal for 1.2 was to use Rust SPDM to perform the
->> following:
+>> Please could we make it something like this :
 >>
->> GET_VERSION
->> GET_CAPABILITIES
->> NEGOTIATE_ALGORITHMS
->> GET_DIGESTS
->> GET_CERTIFICATE for all slots in the slot_mask returned by GET_DIGESTS
->> CHALLENGE using the slot 0 key (At this point, we can also verify that
->> we received the certificates for all slots supported by the device.)
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index 4edcaf1090f9..2108c1bf5481 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -989,7 +989,8 @@ static bool kvm_arm_vcpu_suspended(struct kvm_vcpu
+>> *vcpu)
+>>   /* Only the guest's CPU_ON may start a vCPU EL2 holds powered off. */
+>>   bool kvm_pkvm_vcpu_is_powered_off(struct kvm_vcpu *vcpu)
+>>   {
+>> -       return READ_ONCE(vcpu->arch.mp_state.mp_state) ==
+>> KVM_MP_STATE_UNINITIALIZED;
+>> +       return vcpu_is_protected_pkvm(vcpu) &&
+>> +               READ_ONCE(vcpu->arch.mp_state.mp_state) ==
+>> KVM_MP_STATE_UNINITIALIZED;
+>>   }
 > 
-> At least I wasn't proposing exactly this.. CHALLENGE ideally has to be
-> connected to KEY_EXCHANGE, ie they use the same nonce or get digests
-> is hashed by the TSM or something to have the full value that 1.3
-> brings.
+> This part looks good.
 > 
-> I've also been told that not many devices are implementing CHALLENGE,
-> so this may not be that useful to invest in..
+>>   int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
+>> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
+>> index b01f8d44033f..b7606c3542f8 100644
+>> --- a/arch/arm64/kvm/psci.c
+>> +++ b/arch/arm64/kvm/psci.c
+>> @@ -68,7 +68,7 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu
+>> *source_vcpu)
+>>           * STOPPED before that is the VMM's pause.
+>>           */
+>>          if (!kvm_arm_vcpu_stopped(vcpu) ||
+>> -           (vcpu_is_protected(vcpu) && !
+>> kvm_pkvm_vcpu_is_powered_off(vcpu))) {
+>> +           !kvm_pkvm_vcpu_is_powered_off(vcpu)) {
+>>                  if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
+>>                          ret = PSCI_RET_ALREADY_ON;
+>>                  else
 > 
-> But the main issue is we have to use the TSM to initiate
-> NEGOTIATE_ALGORITHMS because that defines what the contents of the
-> slots will be, and a rustspdm has to follow the TSM's selection.
+> I think this is broken. kvm_pkvm_vcpu_is_powered_off() is defined as:
 > 
-> So, any version of this flow would require capture as a building block
-> anyhow, and you have this awkward version where TSM does all the
-> negotiation then rustspdm injects its own messages according to the
-> TSM selected rules.
+> bool kvm_pkvm_vcpu_is_powered_off(struct kvm_vcpu *vcpu)
+> {
+> 	return vcpu_is_protected_pkvm(vcpu) &&
+> 		READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_UNINITIALIZED;
+> }
 > 
-> It is possible but very hard, so I think we should set it aside. This
-> is something to reach for if the vendors don't want to agree on FW
-> changes as part of the 1.3 upgrade to improve things.
+> So if !vcpu_is_protected_pkvm() then it's always false, so this would
+> break non-pKVM VMs.
+
+Bah, you are right. I think the whole thing needs to go in a helper.
+Something like
+
+kvm_arm_vcpu_is_turned_on()
+
+For now, lets fix the call and deal with it later.
+
+Suzuki
+
 > 
->> The host then select a slot and use it to establish the IDE connection?
->> (For intel we can only select slot 0 here?)
+> Thanks,
+> Steve
+> 
 >>
->> What does snooping provide in this context?
+>> i.e, check for pkvm vcpu as it should have been in the first case,
+>> rather than spilling the check for protected vcpu and an explicit
+>> check to see if that is powered off ?
+>>
+>>
+>> Suzuki>
+>>> Thanks,
+>>> Steve
+>>>
+>>>> Thanks,
+>>>> Kohei
+>>>>
+>>>> ---8<---
+>>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>>>> index 522a837637fe..be676c13e219 100644
+>>>> --- a/arch/arm64/kvm/arm.c
+>>>> +++ b/arch/arm64/kvm/arm.c
+>>>> @@ -960,7 +960,8 @@ static void __kvm_arm_vcpu_power_off(struct
+>>>> kvm_vcpu *vcpu, u32 mp_state)
+>>>>    /* The guest's own CPU_OFF: EL2 has already powered the vCPU off. */
+>>>>    void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+>>>>    {
+>>>> -       u32 mp_state = vcpu_is_protected(vcpu) ?
+>>>> KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
+>>>> +       u32 mp_state = vcpu_is_protected_pkvm(vcpu) ?
+>>>> +                      KVM_MP_STATE_UNINITIALIZED :
+>>>> KVM_MP_STATE_STOPPED;
+>>>>
+>>>>           spin_lock(&vcpu->arch.mp_state_lock);
+>>>>           __kvm_arm_vcpu_power_off(vcpu, mp_state);
+>>>> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
+>>>> index b01f8d44033f..6674e8d6ff4c 100644
+>>>> --- a/arch/arm64/kvm/psci.c
+>>>> +++ b/arch/arm64/kvm/psci.c
+>>>> @@ -68,7 +68,7 @@ static unsigned long kvm_psci_vcpu_on(struct
+>>>> kvm_vcpu *source_vcpu)
+>>>>            * STOPPED before that is the VMM's pause.
+>>>>            */
+>>>>           if (!kvm_arm_vcpu_stopped(vcpu) ||
+>>>> -           (vcpu_is_protected(vcpu) && !
+>>>> kvm_pkvm_vcpu_is_powered_off(vcpu))) {
+>>>> +           (vcpu_is_protected_pkvm(vcpu) && !
+>>>> kvm_pkvm_vcpu_is_powered_off(vcpu))) {
+>>>>                   if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
+>>>>                           ret = PSCI_RET_ALREADY_ON;
+>>>>                   else
+>>>>
+>>>
+>>
 > 
-> Capturing the transcript makes everything 100% perfectly consistent
-> for everyone. Userspace sees *the transcript* as defined by SPDM not
-> some mangled, truncated or processed version that the TSM decides to
-> provide.
-> 
-> Userspace gets to see KEY_EXCHANGE which means the verifier can prove
-> the certificate binding, this is the ONLY way to let the verifier do
-> this proof if it wants.
-> 
-> Further with capture we have a nice primitive to pause and do slot
-> selection before going to KEY_EXCHANGE. If we know the kernel has
-> capture then the ideal FW design for 1.3 multikey is much simpler and
-> clearer (more like ARM).
-> 
-> Also, ARM decided to do capture already, but directed by the TSM.  I
-> think it is the right and best idea, they just made the implementation
-> too narrowly specific. eg it doesn't split up VCA, it doesn't capture
-> 100% of everything to get KEY_EXCHANGE, etc. Trivial to fix while
-> upgrading to support 1.3
-> 
-> Finally, Intel actually seems to need Linux managed capture (Seriously
-> Intel, WTF?) as they don't have any other way to get the VCA, and
-> without the VCA the measurement signature cannot be checked. I hope
-> they still have time in their spec process to adopt the ARM approach.
-
-This has already been raised internally and will be addressed. The TDX module will return VCA with the measurements. The host will get it in device info and the guest through GetDeviceInfo.
-
-DJ
-
-> 
-> The ultimate goal is to get *consistency*, especially a consistent
-> uAPI. The second long term goal is I want the guest and host to show
-> the same data out of the same uAPI for attestation. The guest should
-> not have an inferior view.. It will take some spec changes to get
-> there.
-> 
-> I've now gone through all the exiting choices all the TSMs have made
-> and here is what I'm thinking
-> 
-> 1) The uAPI presents a transcript interface, every message and reply
->    individually presented to userspace. Perfectly future extensible to
->    include GET_DIGESTS with 1.3 and whatever else comes down the road.
->    These are consistent spec defined message blobs 100% the same for
->    every single SPDM implementation and TSM.
->    The kernel will start with a partial transcript, but the API
->    can carry a full one as we improve with no uAPI change.
->    The guest will see partial transcript until/if vmm/guest changes
->    are made
-> 
-> 2) The uAPI presents the x509 certificate chains in a consistent spec
->    defined way that userspace can hash back to GET_DIGESTS
-> 
-> 3) The uAPI presents the signed measurement result and tdisp in
->    a consistent spec defined way
-> 
-> 4) We have the four step
->       Start
->       Get certificate
->       Finish using slot
->       Accept
->    Flow I mentioned earlier
-> 
-> 5) We start without complicated capture. ARM will collect VCA with its
->    in built capture. AMD will do a measurement collection during
->    'Finish' and extract VCA from its blob. Common code will transform
->    both VCAs into a truncated transcript.
-> 
->    Intel don't get a VCA at this point, so no signature verification.
-> 
-> 7) We implement common direct capture and throw away the VCA code from
->    the drivers. Intel can work. Every host driver has 100% perfect
->    transcript.
-> 
-> 8) We have a nice think and Linux sets a recommendation what the FW
->    TSM interface should look like and try to badger the TSM FW spec
->    authors into something more consistent than this mess as part of
->    a 1.3 multikey update.
-> 
->    If everyone can standardize on ARM-like TSM managed capture, with
->    the proper breakdown and data inclusion then we can get 100%
->    consistency without a complicated capture process in the kernel.
-> 
-> 9) The VMM uses the above common interface to reconstruct the
->    RHI/GHCI/AMD. That mess doesn't leak into the kernel on the host.
->    I checked this and everyone but Intel is fine to construct their
->    host/guest channel from the common interface.
-> 
->    Ie fetch the x509 bundle and reform it into whatever was speced,
->    then undo it and put it back into the x509 bundle for the guest
->    attestation subsystem.
-> 
->    Except for Intel all the guest defined digests can be calculated
->    from the common spec messages. Well, maybe AMD has an issue, their
->    spec is too vauge to tell exactly what bytes are digested.
-> 
-> IMHO ARM has the design that is closest to perfect, a few tweaks and
-> it would be excellent and support 1.3 multikey.
-> 
-> AMD's is weird but at least what they have for 1.2 can be made to
-> work. Will need to be rethought to get get 1.3 multi-key. Copy ARM.
-> 
-> Intel.. Is wrong IMHO. It is still unreleased, is it too much to hope
-> you could just copy more from ARM?
->  1) No easy way to get the VCA, no easy way to do capture
-> 
->  2) Wrong digests design for the guest. SPDM_DEVICE_ATTESTATION_INFO_T
->     is a terrible idea since it is not grounded in any spec. The other
->     two have multiple guest digests computed directly over spec
->     defined objects.
-> 
->  3) Even if you like SPDM_DEVICE_ATTESTATION_INFO_T it includes
->     TDISP_CAPABILITIES for some bad reason. Nobody else even
->     exports this info from their TSM or digests it. Thus Intel would
->     need unique API for the VMM to even build
->     SPDM_DEVICE_ATTESTATION_INFO_T. Not nice.
-> 
->  4) How does future extension work? Oh you probably have to pass 
->     SPDM_DEVICE_ATTESTATION_INFO_T as an opaque blob through to the
->     VMM. Lovely, so only Intel needs a special Intel specific blob
->     uAPI? Bah. This is a very bad idea.
-> 
->  5) Several unnecessary collections during connection setup.
-> 
->  6) Confusing/bad implementation of 'TSM selected nonce' and
->     "recollection"
-> 
->  7) Lack of an API to do evidence colllection for the host, the only
->     provided API always changes the guest visible information.
->     Not nice.
-> 
-> Jason
 
