@@ -1,84 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794476275;
-	b=z0fb37j3uIrI2WQ0Daenp3Xs6jXGsUzW6bsTnHToRD3zCuO2fYLVYriWKGza3HLD10fi
-	 pcTMg+Z7kTWsaQTIfZUruRmqgzSxQKT2oEIbb/7J6HLvwnE+P+d2adOyXqZXYM3uxGLMS
-	 Qur87RrRWpggpQKacP59o+OC5KuAq3v/qwJKD4B1kOi89x1VP1gzEn/UobtkiIa70AX1c
-	 HaENFOXybbfv71C78a52M0qRaktYr3J2SF7bg3lG0MEZCyMO8SW0Ae7pfDGPzh1lPIW7k
-	 EcBBiCHSr+s9IP+NtHITQJDRzrgh6RMLUzQupzJDc6BqXbdMiE3e+3l8kyL2KFUVFNQ==
+	t=1794476499;
+	b=pnJOtCmeHjH8T5SC3v+VsIRVymX7xvKRPGfM09HVPzVr+Ipk4gxzgYCoW+GxtHfY8sso
+	 4Y/kXcCmtMGEbptXi23fNrncgo/U2bRp8Wta7yYIWQ7tclwYUO7SfwlwSqD2qufRvMEe6
+	 b2qlm+iJvevPZ5uej7v5z9AkrM+ze9sN3eIyvNGxIt1eV9uGgnKPjtK17Uht2/2iSq0R3
+	 aTAeQxud4Vk4ZBto/eZqJqLSOL2/MDoh4FdjEKqtmjhlcUYY+SEDU0HrP2Bx8zttaNnKd
+	 LMUCb4j6j/Fkg7kapx+ltBJDTLbXk1Nu61TILYMKHFAUzjuRL44CpjxOLSoxLWMsetg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794476275;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=wxRCE/LxPKOqv1o6tdSJqmKO1PZhC9s43hWGJ13wQD8=;
-	b=mPoIFVF+0v75C9vj8YstCZaLexqXQqAOKARSCLwL6E0DKSgG/b0OYFUia8++bvWa9UMx
-	 t4OWJh5vuYc4AkrdUbAsrHC8+0KzU2sS0Sv9+47AKm8pjbd1d7OKlKmv2gbAw0cucHUNF
-	 NWRFbuO9QhtnxlMDbCbMDrgjNLFvp6e3xr55sBiFolyoFUG1oB+ej2W4viqjgVStlxcLJ
-	 1c+sIp6+r4+/BEJW6Bwh11Chxl8v1wJjIX51t55WId0htKMxb6tCwp5U9mjdhfWNKRJUD
-	 cYCRTmYh/3QDp/6z4YdSXcVVH7mJhJNxaVcr0jVNZaVGKQ763B/oTAyWkv9MpeugMtw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794476499;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=220ugqDuyQyPHtA/XrNCqAcUUimFC+lFQ4mNPAn6NRA=;
+	b=aWGBEVJi5H7hoL9o6vkBWT3vu/GgfSrl6lhfRKDlGgOsQkkoGJ8eElocApMvjPJesfez
+	 vOKFZSud8j/1BBgEkGaXQV+QR/TJqdhUv7wus7R9elye2M2IJQiLJxVcdJI8zlHNdfSHM
+	 SzIt5t2NQGUB7KJ8ckxDekvz5buujrzmH2OKpabWKZoNMgZqZ3wjLV//w6p8zFs9oJ4Vj
+	 S8/CpWQD0J3D+EMiqOfMx7lywaIzyA40JfZ6tVDfx5hQ7a61g/O+HA1pyKImbJQlPAxoF
+	 fI4vALLV1AqIAa/JZ47F+LJJR+zluc2scD7FDEz0/qHihNnTxV/A1T1o5BlcGcK03wA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZohskrI/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B537606A321;
-	Thu, 12 Nov 2026 09:37:54 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="vmzj/Kff";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D78606A886;
+	Thu, 12 Nov 2026 09:41:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5D78606A886
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZohskrI/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F365E1F00A05;
-	Thu, 12 Nov 2026 09:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794476274;
-	bh=wxRCE/LxPKOqv1o6tdSJqmKO1PZhC9s43hWGJ13wQD8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ZohskrI/RQHQ3nr7RVll07GwmQqVVIdjCSuQyixKhz4IWTWjo9IyYMg7JF0BpBzBD
-	 oZR0tDxPhgWgQ9OnT4Rwe2pRWYUISHgnuBICZNmn6GWPsaQj4+UGg5QPS0tc8UReOM
-	 7T5PEFFT1BtMAl7f5vZzFxbvtCOLm/HFbIFllJtzEC8BxnZq/KW3mIEYOY3/8O+6gj
-	 n7lfoynPM64P9ZsR+OaIa6PyGk07bB6aR25zTYMojFdcbxHpUwSiFjpt9EHMmTrxky
-	 Ue3SklGO4UCYjS6jm7Vwm2JT3KL0tiVuV9mM68SRQjdMOqXI/z3yNXEROztqCxcQKE
-	 y1p7bfZrHcnWA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Jiri Pirko <jiri@resnulli.us>, "Tian,
-	Kevin" <kevin.tian@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>, "Edgecombe,
-	Rick P" <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot
- zero and establish streams after acceptance
-In-Reply-To: <20261106193018.GK770409@nvidia.com>
-References: <yq5apkwqa5ve.fsf@kernel.org>
- <DS4PPFA84FA90FCEFB18E5620217FDCA728E76A2@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261102172640.GB274202@nvidia.com>
- <DS4PPFA84FA90FC31B41ECA1F6ACF6D0600E7692@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261103151643.GI274202@nvidia.com>
- <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
- <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261104134119.GR274202@nvidia.com>
- <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
- <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
- <20261106193018.GK770409@nvidia.com>
-Date: Thu, 12 Nov 2026 15:07:43 +0530
-Message-ID: <yq5a5wy2qtjs.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vmzj/Kff
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09344153B;
+	Thu, 12 Nov 2026 01:41:35 -0800 (PST)
+Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C443D3F632;
+	Thu, 12 Nov 2026 01:41:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794476498; bh=wsUciV+efeTQCIVGRFWUTHzo6OWjjig7oVL2Hlvu3Do=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vmzj/KffMUnSTgxJ9oWy92AHHsu+KlvSL1PYaGD6G5XriiSu8w8KE7KGTzZaTN6U5
+	 CER5uSOeYHgUJTU2rmyJyLEMApaNv/fSaEtfVj0gBCjwmC88P/COYdfHvGwPi1GTMG
+	 BNkhuxNjxLgDR3CtZUwX6xR3qq/K74GnFMcPcVQY=
+Message-ID: <a25321ce-7593-4c75-a529-e19c273638ef@arm.com>
+Date: Thu, 12 Nov 2026 09:41:26 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -88,77 +53,108 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/12] KVM: arm64: CCA: Prepare Realm memory management
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <avV-P2_fOkFWQVnM@FCCLS0092175.localdomain>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <avV-P2_fOkFWQVnM@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On 12/11/2026 09:08, Kohei Enju wrote:
+> Hi Steve,
 
-> On Fri, Nov 06, 2026 at 08:53:39AM -0700, Dave Jiang wrote:
->> 
->> 
->> On 11/4/26 9:54 AM, Dave Jiang wrote:
->> > 
->> > 
->> > On 11/4/26 6:41 AM, Jason Gunthorpe wrote:
+Hi Kohei,
 
- [ ... 13 lines skipped ... ] 
+> On 11/11 14:57, Steven Price wrote:
+>> This series adds the memory management plumbing for CCA, building on the
+>> basic RMM support [1]. Thank you to those who reviewed v1 - I'm
+>> attempted to address all the comments.
+>>
+>> The patches introduce internal Realm VM state and RMI feature checks,
+>> prepare Realm stage-2 setup and teardown, and provide RTT mapping and
+>> invalidation helpers. Realm memslots are restricted to the lower half
+>> of the IPA space because the protected and shared halves alias each
+>> other. The final patch connects the helpers to KVM's stage-2 MMU
+>> operations.
+>>
+>> This is the memory management portion of the larger Realm host series.
+>> Realm descriptor creation, REC entry and exit, activation, and the new
+>> uAPI follow in the integration stack. This series alone does not enable
+>> Realm creation.
+>>
+>> As before there's an integration branch[2] that includes the realm
+>> creation, REC entry/exit etc building on top of this series. I've also
+>> pushed a git branch[3] of just this series.
+>>
+>> Changes since v1:
+>> - Add a guest_memfd prerequisite patch that checks whether the backing
+>>   file supports mmap when preparing an arm64 memslot.
+>> - Combine the RMI availability and feature checks into one patch, and
+>>   move Realm vCPU feature restrictions to the integration stack.
+>> - Correct Realm IPA sizing and RTT teardown, including teardown before
+>>   activation, RTT accounting, and handling of missing or folded RTTs.
+>> - Rework RTT mapping to respect IPA and physical alignment, handle
+>>   partial RMI progress, and retry interrupted operations.
+>> - Preserve private mappings when a Realm guest_memfd memslot deletion is
+>>   rejected, and tighten Realm fault handling and stage-2 destruction.
+>>
+>> [1] https://lore.kernel.org/all/20261007073537.2454351-1-suzuki.poulose@arm.com/
+>> [2] https://gitlab.arm.com/linux-arm/linux-cca
+>>     branch: cca-host-mm/v2/integration
+>> [3] https://gitlab.arm.com/linux-arm/linux-cca
+>>     branch: cca-host-mm/v2/mm
+>>
+>> Steven Price (7):
+>>   KVM: arm64: CCA: Reserve the RMM mode
+>>   KVM: arm64: guest_memfd: Check mmap support when preparing memslot
+>>   KVM: arm64: CCA: Check RMI support and features at init
+>>   KVM: arm64: CCA: Add basic infrastructure for creating a realm
+>>   KVM: arm64: CCA: Tear down RTTs
+>>   KVM: arm64: CCA: Add Realm RTT mapping and invalidation helpers
+>>   KVM: arm64: CCA: Support runtime faulting of memory
+>>
+>> Suzuki K Poulose (5):
+>>   KVM: arm64: CCA: Introduce Realms
+>>   KVM: arm64: Handle attributes in stage2_unmap_range
+>>   KVM: Allow architectures to reject memslot changes before invalidation
+>>   KVM: arm64: CCA: Prevent memslot modifications after Realm creation
+>>   KVM: arm64: CCA: Add Realm stage-2 MMU operations
+> 
+> I've tested the integration branch [2] including this series on our
+> hardware using the QEMU-VMM proposed in:
+>   https://lore.kernel.org/qemu-devel/20261002202026.1204110-1-mathieu.poirier@linaro.org/
+> 
+> The Realm guest VM (32 vCPUs, 16 GiB RAM) booted successfully. To
+> exercise the guest with a more realistic workload, I also performed a
+> full Linux kernel build, which completed successfully.
 
->> I generated a diagram that hopefully better reflects Option A with TDX better than the current public documentations:
->> 
->> Option (a) on TDX, with the current TDX Connect ABI: slot 0 only, no TDX
->> change. Numbers in the left margin point to the notes below.
->> 
->>   ---->   call                 <- - -   return
->>   <---->  SPDM request and response in clear text, relayed by the host
->>   <====>  the same, inside the SPDM session
->
-> It looks OK, thanks.
->
-> I have a few thoughts
->
-> 1) I would very much like it if the core SPDM code in the kernel
->    can snoop the DOE messages from the TSM. If we do this then the
->    kernel can directly capture the full transcript:
->
->> (4)  |                    |                       | GET_VERSION            |
->>      |                    |                       |<---------------------->|
->>      |                    |                       | GET_CAPABILITIES       |
->>      |                    |                       |<---------------------->|
->>      |                    |                       | NEGOTIATE_ALGORITHMS   |
->>      |                    |                       |<---------------------->|
->>      |                    |                       | GET_CERTIFICATE slot 0 |
->>      |                    |                       |<---------------------->|
->> (5)  |                    |                       | KEY_EXCHANGE slot 0    |
->
-> With perfect consistency on all vendors.
->
-> Further, it will also be able to capture the GET_CERTIFICATE during
-> the preamble so again we get greater consistency for everyone.
->
-> I'm very interested in this because it frees the uABI from any
-> variation in choices the TSM may have made. I have the full perfect
-> transcript in the kernel and I will ALWAYS present the same uABI to
-> userspace regardless what the TSM offers.
->
-> Like a whole bunch of TSM FW API just to do this:
+Awesome - thank you very much for testing.
 
-Can you help me understand why we need to snoop the DOE messages? IIUC,
-the earlier proposal for 1.2 was to use Rust SPDM to perform the
-following:
+> A Tested-by tag might not be carried over to the next revision, if any,
+> but anyway, for this series:
+> 
+> Tested-by: Kohei Enju <enju.kohei@fujitsu.com>
 
-GET_VERSION
-GET_CAPABILITIES
-NEGOTIATE_ALGORITHMS
-GET_DIGESTS
-GET_CERTIFICATE for all slots in the slot_mask returned by GET_DIGESTS
-CHALLENGE using the slot 0 key (At this point, we can also verify that
-we received the certificates for all slots supported by the device.)
-
-The host then select a slot and use it to establish the IDE connection?
-(For intel we can only select slot 0 here?)
-
-What does snooping provide in this context?
-
--aneesh
-
-
+Thanks,
+Steve
 
