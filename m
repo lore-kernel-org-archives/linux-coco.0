@@ -1,84 +1,116 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794484763;
-	b=vhisrV047fAF+i8C/Ly5PxTL6hlRZQZ9LhRN9U95YRPIwk9OgJyNvCho6MOP7ere30Qk
-	 s9+rJHm8UAfIfuuKvQzGFXd4BFii1aBn2fhrFNPPjmziThBNH6HllDRfQcDK/aV6U1D/N
-	 Al+STxLiRwFmCZFps2kco7LfBgrajHQ0jY/XFAOOG1xAuu+sX9/XpKn1i9mIJvxRIAVNO
-	 +twNL+iP7Z7EDVPLPsjecggCJqCm4qsH8zA+ZJTKrtXmFwkPswGkr99AAst+wMGe5FeRp
-	 CinA8TEb8yFooFAQKwFB+UHWRlHnhx28Ge+Ip3+LIQOKlgcUDq+LQjypluQDIp1BdVw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794484763;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=dZfij8Ivbo850EMf4X4H6hd0rBMJmTn82NT+hkeDdK4=;
-	b=HGvbbTa7YZ0/TqYXf50r5+dOcC7IeLV/OPE89UU3+42ZIXoYlsQiwGJPHFXtCr8dBRQH
-	 uyYxGGq5x5Vd4oeMQWYx2dJa+qd8seWgaXslxEkh5IOY1Hb92ApofodJB3oQf14EyTLUU
-	 yZ09vtPXBiHLr1yqcpfMzNipv9DuIPuFBGxHmsTqM1gZe9I6gTKuXnMHcZ6P06uBtR7aU
-	 ATlWGnF/CZCHvWqrtBWR0DlWDu8ymsdOpim+pe9kQQ7eNDR6jJCd+wDv8IlgahRJ0HHnF
-	 Y6tcpExEsMDcrpsbHoDxt7GM4sPTsZdbOdk8y4kPqx56hN9WlHk9RG9zaobEwZQniyg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MAvSJI8M;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.61
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794486360;
+	b=gw7sJDwrpWHw86XyHXcg1tzp5WtImWRXoOjfDjTPjv/T9bKed0gqDwrJhwTuk59E8zNk
+	 usQetFqkWML7uNbibHQahWz8wzOypn/yx2aGmDzq6EKyctPky/JRs4A79zbIgS7MCrpeA
+	 B0WN4kyzOP4moTP6mUoyCyBKpNLFyUHiplDAaRml1a4ydMxxgI7kyELDsEnPAPClEVchE
+	 opKD/AHW5DrAHuzE+AIzhNaJz4SNMMk0O0V7iN0SbjTEdgpSHo9ZOJI7QgR1lyPR2Fups
+	 399AtJ6Uspi9avrU0tJLhRFcIzC1OAPXqZyke9ljRm9dU2Irxh3BE0UrI6G3FNuiBlg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794486360;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=pO3YEKGxi+3qRd5rGZDqJBcroU+l4uX2l6hv38gngDE=;
+	b=4KGejCZBeHIq2wGLDiIiCfY8z4SSDNa3YeShc/RW05viCLF8UrZ9PWiHDKg0w819nlwb
+	 g95wBILZPJLyftcqulBRM9qWjjK5apeL35bsywT7isTI36pkEnkdqykYyTR+fuLgtuxGK
+	 fanVmVmEBFUIwbAWY7Vjdb+v/WPrnNTMMfsoCLY/fvsKO1a4aMNYtiuKeQx4wcQWuV9iz
+	 TGCcWZSO9IoiSs9n+kDZ4k6UuD4qRfmx5nVfcyIprYi7AvSq7Fl9zWUOxQ64Dp7ep62Zg
+	 9K1hRKNJLs++dwinbdHfg1pK29iQd07ebwCc6du3GA/s0/8XqhwtfkOirWB/hCc4ngg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Y5haXcI2;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.61
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010061.outbound.protection.outlook.com [52.101.56.61])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D0B606A88D;
-	Thu, 12 Nov 2026 11:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433F0606A323;
+	Thu, 12 Nov 2026 12:26:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 433F0606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MAvSJI8M
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B781F00A07;
-	Thu, 12 Nov 2026 11:59:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794484762;
-	bh=dZfij8Ivbo850EMf4X4H6hd0rBMJmTn82NT+hkeDdK4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MAvSJI8MfGsC2DOUgxr8BEjv8QyT+8eTHZkaoP5FeG2QN6roNxmILNLbq2muIIYjo
-	 /WV8YzG/Z9o3Zx+i4Z2oozyDCHYux4cyQGf0SxIHcF50NbpNQoxnO3AVaujPQ+uHLT
-	 XGPHv/bGL4+YuGrCxoKqdOtgmnwmk/0Zzyu8eryDiJ1Rlg1cqZQKjn0J70T12tLTWi
-	 kZFxtFe10D7iKNA3hMLrM9/Kt5IBU06UMYWLCMd7eWlId78gmh9cQABgto+psYwiqr
-	 NUju/SooCxdRaQFBywYvhH8jK1BF3WroSvoiWbBjXDdDCcFxVaUszd684k6yHAwVq7
-	 BCXyobxr+QMWg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id C1DC71980047;
-	Thu, 12 Nov 2026 06:59:18 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 12 Nov 2026 06:59:20 -0500
-X-ME-Sender: <xms:Fqr1ak272VecbDQ9jXtTulx7h_XDkAZmtiU0CMBbYHDNOuUpG6RBbQ>
-    <xme:Fqr1aj_hSHkh6oQJRfNQSizQdRAssetUdHIDwfr6imPAGOQxWe2gimUxXdRTudzKf
-    bv9fNJjmQjfd9VqmswesRwIbJeogZ2G3s0JFA1IU1Ae9V4mADoA4QE>
-X-ME-Received: <xmr:Fqr1aqeSpr5g1iT1RwJTuEaiLMrBglpVP6AgFZUmqOA6502iRjKsWhnYz1A>
-X-ME-Proxy-Cause: dmFkZTF5BU3WKP534phhHhe91k0ltQ4AEcFtiJEGzM5fvraOsxf/CFFg94zJJiqAvx4MC7
-    5G0d3Vaycvut1/TS01R4AQCvQudUjPvHvi4ITQUT+gSumV4dJ+nWwtffp4zM2sG9Qakcft
-    80LUcZHh3jlAZxiy/qC5wYiXInBRNL7m/cuH4S4+4+V2YtKKGAOr6Q4sN0HSRK5eQ4dKKy
-    INqTBMLT/vJA9jJX8Ro3Ha1nGs6AXVWGfo7nkTyy/Kc0uJk9pP9dbjt7Vv4AOLipphcCDC
-    1pmzDhBY8jYKgt5qyEDRApnHLss25fh9YXwGsPczHz4U4vMksNf+outF9GGsQ1KOhBByaX
-    KM31tmmA9W6b4JBrVNb97UOplCZhktLk5GAkkhgV1Z5kUY7T9itjLDDdySdphyARbWROga
-    ewYyvZBoNJEcRiEgrREihRMXzNCRB+5qn1wBpMh0fVznbU/DRh0kdqvrpYHFIO0azopj9B
-    X7T5V5F9Ncz+S9Xt+41+jcu325mOjKKF+psye6uog27smL8fEXVziH3vXhZg/wqwS1UYeh
-    lBBRWEzhYj0bJBdZdC6eDxqJKko8abBb+SeEvBA5uxCG1RLAZIUoeSsMM9O/MYpZacqcwL
-    woltQmaAuM883WEOIYuDqD71i5r0/iriczau0iXd2kaIWlDJ7xasSnsFMLgA
-X-ME-Proxy: <xmx:Fqr1av5KReVWErtPQqDZz-WjpMj7qvfHg5XxC5DOvWiNreGWeUN5sA>
-    <xmx:Fqr1amN7UeLC9tHaGajH6oZA4PCQio60F4TKJEN9Z8DuJ9hkt_Aujg>
-    <xmx:Fqr1ao7C-vh-q4ZkbQbez4QmdZwmM_4HhP3rVCMr-9cfnihobyrBag>
-    <xmx:Fqr1alyqNRWqgZ5uOSd1Rehn44rX-y5A3LEPu6Y50g2v3Ac4tusM4A>
-    <xmx:Fqr1agRClIUjlRp08CLhHiK3-DYcWmdHHVA4hkRJeY1sQVisguCEN-qd>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Nov 2026 06:59:17 -0500 (EST)
-Date: Thu, 12 Nov 2026 11:59:16 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Manuel Ebner <manuelebnerli@mailbox.org>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/virt/tdx: remove kernel-doc syntax from comment
-Message-ID: <avWp_b6x719N2_AA@thinkstation>
-References: <20261111214540.681690-2-manuelebnerli@mailbox.org>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Y5haXcI2
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AQYUjLqUzQxSex2VvLS71snSDnnoEIqGSJ3iFFfonTLcdmpuny+xzjG3g/sYXtOmBGONFqH1IUo3GETEXVpHh8z5ce0TOZcOCnjeom1hKSwnDDDJbFJ2XmZa2btThCOjymdCtv99DYXpiIXK8mLBFB3qV6wJN1FEBp+C/H+idMBu4rn+KlNuvLSXutfbmsPw/NjLqfOB2SqjloDAu3LtFwHUDFeo3sysGfwhAuRHlAGQPzstkrB/dbECwSpJE2ToKnFSer7mScViejEEIJBbcf8Mr9ivCIetidqHxUFW9GCwMaedOCErbbUipTMiQ8EKBKgzdL2pCzYRwHG5IOsl1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pO3YEKGxi+3qRd5rGZDqJBcroU+l4uX2l6hv38gngDE=;
+ b=QMFO7VN1Ra4wsj0SvpLSP25upAlJKYzXRlLVuBS35FsGiOBhC9oP+YKB88DP7k47iVGQKllgb+jhXJ7aUeua1/y47OfIoPaFF/SunRUPjRqjMlgGUNMckcdgOpNEC3EaJqhHVv5V1y3Jhx97T/qO1JwxKKjZ22x2QnVOAxY0SN4ULDSoTlNlq+NnQeIrGkCb2VXCROWp1IGhMsa2q/z6EZ2R0ELdw7Z6MhkD+o3lAJEg5BfJyFlN3JbG8Z5TLC0wkBo8xr4FIxBSXDa/rgmjIGSbnE/PkannWZYsUCOB6srv8HGp+VcYUkqyWrDCo/gMlkzxKdrQ07u+zt6/GjFe2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pO3YEKGxi+3qRd5rGZDqJBcroU+l4uX2l6hv38gngDE=;
+ b=Y5haXcI2zDd0kJRNnCxAGWUoMoZi7yjKcZe0pK9Ww0M8UdbUx9/QPNWUkFb3AeDZjXAQnVtf2fqkGaYryNqmQpwYG+bNmR8MCLdsMLBR/ggzhVu6Pdhdgmv7uN93tFk+m4cprEnguHn3WtYnuV4YSn6wAV3U8AfBZ4IhTByMUsU=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by CYXPR12MB9320.namprd12.prod.outlook.com
+ (2603:10b6:930:e6::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
+ 2026 12:25:56 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0615.007; Thu, 12 Nov 2026
+ 12:25:56 +0000
+Message-ID: <97053bb6-c221-4ae0-972c-603b194ec25a@amd.com>
+Date: Thu, 12 Nov 2026 23:25:46 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 06/15] iommufd/device: Hold a KVM file reference for
+ the device lifetime
+To: "Tian, Kevin" <kevin.tian@intel.com>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Krishna Reddy <vdumpa@nvidia.com>,
+ Lukas Wunner <lukas@wunner.de>, Nicolin Chen <nicolinc@nvidia.com>,
+ Robin Murphy <robin.murphy@arm.com>, Samuel Ortiz <sameo@rivosinc.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Steven Price <steven.price@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
+ <20261104161632.3547423-7-aneesh.kumar@kernel.org>
+ <CO1PR11MB4835982DE81AFE060EEE01B88C762@CO1PR11MB4835.namprd11.prod.outlook.com>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <CO1PR11MB4835982DE81AFE060EEE01B88C762@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY8P282CA0017.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:29b::24) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -88,20 +120,147 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111214540.681690-2-manuelebnerli@mailbox.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|CYXPR12MB9320:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a4d9e9e-6899-48c1-b747-08df40b8199d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|22082099003|261009223027099003|18002099003|261022105027099003|261022075727099003|261026121527099003|261028144727099003|261026140227099003|56012099006|10067099003|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	SFbBhZmUBGbyU3KQ4BC2JUG6eOWvYIOdzuaLP+70mVGYditDrPPB+Sp27r0OX9m7rYsPjZpLl1dGhKwV6BwlM6P+escBaVeOyM5plMtBBXYEaAFqabS+Z0KrutRs/6yiVIVkmIL+kAGZM0iVqnkmCdpLPEm77/UU2KbDl2OuFW9Odh0qGK4Upq0bzlwKsfQLHKACIaTTSup0u4KrTlC6+iSZ2d3R8tF4N9sWCwpVdtcwyf+v/T3yOrEdJFOtbfGYNuRRZxSl4jV7Zph1XiCpGjJVqlnIsNyB7eZaASlYbgjsZZuO88/xrCV+bX0CKTk3ity42wOpX/k2Ff/vDq29DTuOF2uzBBzKtvnTK/cgGR7Cmt+w5S5GAQRg4m386SWq5+kGWF3P4Pv7kj1n9Jkf5PbYuNzDZtJFKKaILe2uxdU+uDj7eqSn7L9Q9jXG74kPkyin1+FyF2iG5r31PqpfjbcyNg5lcVIadDP7tIWMRCu9IRou1HFjYoCI9QDu8xgRvpI9efo9E6jEvTiWaOk4wyfYMdSsVsnyvDn1B1ntrX0zsEhpx1AmXYEhFcX664MzYtBnWABRnZ4IV+yYDqIhM2FiuRJXbJ6XcWTVLYaoEyz1x9lHZP9jAVMRu3n2nlCKCf20m6BzPsiHhZ80GHGhA4oJnF6+mZ3CMeUjeJ0XiIs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(22082099003)(261009223027099003)(18002099003)(261022105027099003)(261022075727099003)(261026121527099003)(261028144727099003)(261026140227099003)(56012099006)(10067099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T0wwMTVIVHZPN1FpcFlsT0Z5Z1dDMlVDYXZEOVZ5MEcwY1ZZQXpzNm9rcUto?=
+ =?utf-8?B?d0piZ2t0S1NVV0hMK2tEWXhBOGtzY2tscHZPbkR6Y0ViMm9wM3BmQ1ZmQjdQ?=
+ =?utf-8?B?RmVTSHZDWkFQSlVvbTBkSjFjTmNpWUZlampzZ215RGdCQWgySFhZalA2ZEdY?=
+ =?utf-8?B?NjZLT3RyUGdKZVQvRTdoNytuR2FmcFBNMndya1lvTGk2cGQ0SHlwTnpsZ3B1?=
+ =?utf-8?B?bDF0anV1c2NxSzNqNEZlZWwvc2EzNmF6TVg5TGgwQ2Q1N2ZJRHBONExxRmxH?=
+ =?utf-8?B?SkxlblhlTHRTeVovZ2VSdEY1Y1EycFAwdDcwNUJkUGxUVGJOZzZGS045cFJS?=
+ =?utf-8?B?dllRaWdZM25JSTRObkQwekRZZXpEVk5DMXNsc0loeVFqQ3FiSjdvdUZDZHln?=
+ =?utf-8?B?b1NKYjhoV1JHdmFwWElJL1pKeFczZUVja2N1TTJ2dnpGajBDYjc1emM3R0xn?=
+ =?utf-8?B?N096UnJlYUVMWHFzcGJpSTNaMUtjTzN3V0dIcTJPZUFTeU5WZFVOajcxZWNX?=
+ =?utf-8?B?K00vOUJDQWlVdWJJSUcySUJWNkxYdUJxOUNGanJYekMyd0V0dE5Ma3kwb0RU?=
+ =?utf-8?B?OXhXNHBJZENReDR3SXVhTVloQzI2OENhOFE5ckhVQWhHRUFaZTFvQ3dhQ0NM?=
+ =?utf-8?B?S0pHK09lTXIxUG9SUmZZelV6N25HUHdsTElCaHJlZi8vWXMvZGplbW9PeVor?=
+ =?utf-8?B?TU9OVG56clZaZWJiMzNhR1FlelRxbmJJaXNoc0Zibko2b3dvcy8wWE5FdzVI?=
+ =?utf-8?B?MmJzMDBlUXpJWWs1MmVOdE1BNlFuVWlRS3dZbkhjRTU0UnpPNEM0ZmEvVWI0?=
+ =?utf-8?B?bVVWdWs0SkwvTkNmb1dDUUludDl0VDhDbXhXS3ZpdlVYRFpoM0ZoODdibTJn?=
+ =?utf-8?B?Ulo4dncydFdpSUlkOVM0YzBvUEh5ejVlZXNVUkpNNzRIUjZsS3NWeERkZnNo?=
+ =?utf-8?B?OXJoODNLOE9yRUExbC9GZDhUYkgzVkpYWFNXYTJpS0ZYZGFPNkt4dmZtZERr?=
+ =?utf-8?B?UnA4blhqYStaVGErVGJZdTRkb0VwRThhbGZNL3JqV2MydHc1Q1pmUmJjeUdD?=
+ =?utf-8?B?T2lMU0txNjZUZlhhT2V5QWQ4Mjl2cTZHUzE2RGVkd0RLck91cDBpRG5DclhC?=
+ =?utf-8?B?QzRJZnJJMlloTVFGdlpsamdnc0gzbmw4K3lNMjMrazJ5TjJEZ3dGek1pd2dw?=
+ =?utf-8?B?bG4yUTdXK2k2bnNaQ0F0aXRaMnAvcW1Uc2xmbjJmMzNPcmtnb3Y1WDhLMnVI?=
+ =?utf-8?B?dmIxM1JFdy9VQlNLQWl4NG5Ua3A4WGRzU21qZDB3THF2Y3BwUjJaNkJuU0JX?=
+ =?utf-8?B?aU5yZHRqM2ljNVhOWkM2VGppczdvdU4yd1ZocnEvUUFMUi9TWnVVZFAxaUpK?=
+ =?utf-8?B?Q2JRNEV0anQ3RkNzY3Avai9ZYm43eUZ0QXhVNXFuajFhb29yNklnUTBycXQx?=
+ =?utf-8?B?cEg0d3BGeHAzVDhTeXJkZHJ3ZmJkcm00UEY4Q1BmNTZLMmI2eXNGY1NzOE1q?=
+ =?utf-8?B?YnFTcWtMWHd1U25mRldCZ3VOYmVrU3ZOZ1M3MjZBc3RhRE5hdFMyK1FONTBO?=
+ =?utf-8?B?a1pNRkdOUGhUUmJZU204V0ZIMGUvY1RDOWo3aEhhUVczWVB5WGZtMGgzb3hW?=
+ =?utf-8?B?YkdpbEg1N01oMnZFZFNoWHhnSXBWaGQ3eVZMekc1K2F1dko1ZWlsYkhhWFpH?=
+ =?utf-8?B?VFM5MW13YUNqRzFNd3hWRzlqVnVWMG0vTEl2SGNxSkh5cnhwakdITUx2Y0dk?=
+ =?utf-8?B?Vkg0M2l1U2FocGNWeXRZL3dMUmh2TnJ1V3YvWDAyV243aTZFeUI3RGpsODl3?=
+ =?utf-8?B?bkY5RVF4dGpLL3ExM01EY0txc0U2dXZHWGF3T3JFSGVmZjU5SFk4di94dlh1?=
+ =?utf-8?B?VStDTFJXYnJ1djU0bnc1VTFSbWE4SGdwRHowUEVpdlQ1WGtZWjdxeHV4MCta?=
+ =?utf-8?B?aloyMmY5eDdyQkIrVERjbmJjdC9najRvZ3FpQTNPK0hjQUdBdTVIM1J3QXpO?=
+ =?utf-8?B?dnRWZFQ4SkM2bXVnd2FkOWthajFmczVwUGhlYW1aSUttNkxRQXZod3I4ZTlI?=
+ =?utf-8?B?Vis0Y0g1NVNYd2JqdjlHNWttMEZyZkNlZE90T0ExbG5LMGc0THVqeElvQVhL?=
+ =?utf-8?B?QTUyWGxSNHBTa3dNYlhMeEE5MDNFenFvRVNnYm1Cc2lZUlIyODB2aWFFS0VV?=
+ =?utf-8?B?VTlFWEJScWRHb2xUT21KTVhYMFpLRUpxU1VqTWloUFUwa3c5d3VURUU4bVRt?=
+ =?utf-8?B?VU9Wb3JZbXQ2bHdyU1ZqNHJnenVkWGY4eEZiS3Q5WUttbEQxT0tUd3JDTEdm?=
+ =?utf-8?Q?Wuq0kfl4CedOay8yfZ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a4d9e9e-6899-48c1-b747-08df40b8199d
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 12:25:56.0407
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NWLaChzp0Ih1ZjEDmbKjZOp1XPZqIaUd7NUx5niTG48Kfy2qpLeh4u1rt/uzc1QR2QqD2IYC3NuZhIpCmz20Fw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9320
 
-On Wed, Nov 11, 2026 at 10:45:40PM +0100, Manuel Ebner wrote:
-> Remove kernel-doc syntax form multiline comment, fixing:
->   $ ./scripts/kernel-doc --none arch/x86/virt/vmx/tdx/tdx.c
->   Warning: arch/x86/virt/vmx/tdx/tdx.c:123 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
->    * Enable VMXON and then do one-time TDX module per-cpu initialization SEAMCALL
+On 6/11/26 18:16, Tian, Kevin wrote:
+>> From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> Sent: Thursday, November 5, 2026 12:16 AM
+>>
+>> The KVM file stored in an iommufd_device currently relies on the
+>> reference held by VFIO while the device is open. Normally, unbind waits
+>> for outstanding device references before VFIO drops its KVM reference.
+>> However, REMOVE_WAIT only waits for 60 seconds. If that timeout expires,
+>> the device object remains in the iommufd xarray.
+>>
+>> For example, an IOMMU_GET_HW_INFO ioctl can hold a device reference
+>> while
+>> blocked on a userspace buffer fault:
+>>
+>>    iommufd_fops_ioctl()
+>>      iommufd_get_hw_info()
+>>        iommufd_get_device()
+>>          iommufd_get_object()
+>>            iommufd_lock_obj()       /* takes users and wait_cnt refs */
+>>        copy_to_user() / clear_user() /* may block before putting refs */
+>>
+>> A concurrent final release of the VFIO device file takes this path:
+>>
+>>    vfio_device_fops_release()
+>>      vfio_df_unbind_iommufd()
+>>        vfio_df_close()
+>>          vfio_df_device_last_close()
+>>            vfio_df_iommufd_unbind()
+>>              vfio_iommufd_physical_unbind()
+>>                iommufd_device_unbind()
+>>                  iommufd_object_destroy_user()
+>>                    iommufd_object_remove(..., REMOVE_WAIT)
+>>                      iommufd_object_dec_wait() /* timeout: -EBUSY */
+>>                    WARN_ON(ret)
+>>        vfio_device_put_kvm()
+>>          fput(device->kvm)
+>>
+>> iommufd_object_destroy_user() warns on -EBUSY but does not propagate it:
+>> iommufd_device_unbind() returns void. Thus VFIO close effectively ignores
+>> the unbind failure and proceeds to drop its KVM file reference even
+>> though the iommufd_device is still alive and its ID remains usable.
+>>
+>> Once the remaining KVM file references are released, a later ioctl on
+>> the still-open iommufd can access the stale pointer:
+>>
+>>    iommufd_fops_ioctl()
+>>      iommufd_viommu_alloc_ioctl()
+>>        iommufd_get_device()         /* finds the surviving device ID */
+>>        get_file(idev->kvm_file)     /* accesses the freed KVM file */
+>>
+>> Take a KVM file reference when binding the device and release it when
+>> the iommufd_device is actually destroyed. Release it before the igroup
+>> check in the destructor so that bind failure cleanup is covered too.
+>> Document the ownership in the bind API and device structure.
 > 
-> Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
-> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> I don't think this needs to be fixed. There is already a WARN_ON()
+> in iommufd_object_destroy_user() and many bad things could
+> happen afterwards...
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+imho it is just a right thing to do - hold a reference to the pointer in a structure.
+
+> If we really think an ioctl could take more than 60s in sane scenarios,
+
+It is quite possible when some TSM operation involves (in)validation of hundreds GBs of MMIO.
+
+> it's a more complex issue to be handled in iommufd core.
+> 
+>>
+>> Fixes: d8bb80c8f0e5 ("iommufd/device: Associate KVM file pointer with
+>> iommufd_device")
+> 
+> btw no fix tag for an issue introduced by an earlier patch in the
+> same series.
+
++1. should be just squashed into 05/15. Thanks,
+
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Alexey
+
