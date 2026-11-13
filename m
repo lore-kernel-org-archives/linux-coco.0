@@ -1,119 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794581580;
-	b=wvgSygGeshTclVaUraUf3rQLTfIoB6vQFu0wjhyR956t4UbHVb+59FgqMSv+BIKJaTSz
-	 qBdfuuYDSsZQlkMfkl7QsTf9q3kUpRQ4OpNatUW3Qab5kjFPc9yQ1y5y9TjRtP5ZQBHz0
-	 d6HswqLbPNZoHn7xCyyYOm68PeaWlIeSeooiTs86kDliiglJow5g//R7hKuciO+07+LCB
-	 35ElXKbEgC4WkUc1dC+ercfQEUW6f/7WsAebIDsoY44JGuEuvC8YZlf3Zw47gFGBhehyo
-	 M6u73eTvy0xZHVxcyEQavCnku1mxTmEKSWitqxNz3V42z8ogNktebPETuUWyH1GKpQQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794581580;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=jO9jNNlT0QbkwMhUiZk+RB2T7QTvoyuMQ9uyVuRaiDQ=;
-	b=uEXI6Da/7Q1yam7axaB9KXD2qkovVZ8aHrs3dN7yYADBy0Rn/FMwY8qNH5BNDsYS+bRi
-	 tWFtdEgE+hnmkrfIYQVljPUPdFymLDn7XKn7YIp9Vo1reM1tiw9iiFM9n/RvPImdWPwkH
-	 2liyYF1kJCDY1EwsKuz1wh6bwTaC3rzRzUszvUuZZaiy/qEVpJuhTIb6mdQnogbNcd8sg
-	 qZa99/CMQTneycDxQStvdOfwvUtx5w/KLocA1kQrw+P7XInmGqwVWmob1iGZXpUIgf+P9
-	 FEK57jGRFPaFEC6VUNjDLCQ4oC6aVgbt61At0CI/w9v5gV3G96QJOieiUNy32Z7/ggQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gU3ajPk0;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.18
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011018.outbound.protection.outlook.com [52.101.57.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A26606A8AE;
-	Fri, 13 Nov 2026 14:52:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73A26606A8AE
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794582328;
+	b=0BpqLILmY51Z6d9qZzfepNfHg64DIcciirrKFqdnfnGcxNxAUOgI2jbig+hxb/eVG6Hc
+	 8Ib8G66xWRubjmA7HHYyi5uoIV02+9A/tgZuVo7p59x/5YkSFCDM04iI1oCng37kz649Y
+	 vnyHZJR6/VWpCftbmb3WtCvNbJDgOfawhW+tXZAbLxt6LIDu9N+w6aeTkFqxghYYhOKBq
+	 gUR4Vs6V0P/+dVTvLSaSVC5OAs5s7HJkMc3gciVoKmicMS+zCepDIRAszoMhm7+hFarXx
+	 ZN54ctQqGEDVDms2mWsIvf4Wh8iWPoG8Egz/dlb24UakAJEBCL4F4T2WzYfz3XLViDQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794582328;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=HqxJh8LeLomMq9f8MfMcaLKTjFwsymN5lyDButZPjvk=;
+	b=e1ZfqWMcvpscW7gsirYZWfGsOlTha8tGLsOzREM7EwJlw2EQ3TCE0jK0fO9F5s3H1KjV
+	 NebfhoCILkTUZpu8tXNLWT45uNNLUPZhWs+p22SdCVxew26kySBj81Vcp+2ZsIVTE42a0
+	 Ee2BkiJyK2QsT79wkoofDkSs2HMNiJeAPWevsahyRX2bBX6dzj/zEI0fJB6tZ78+dZOI/
+	 Fd2t25gRW4X6P9CnpFl8e150fGZvxrEgZfKiNUowLxr1myatIkodI46PsrcyixatT97rH
+	 6srAdhuagwfMPCVMs0hYGzAJmyr6nRowtgxmi9Y3qKlSD0tZWY/ZYc5mNuDxcgnV08Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=M12fhF5I;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF22C606A886;
+	Fri, 13 Nov 2026 15:05:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF22C606A886
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gU3ajPk0
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g0u0G+1bw3oZQF7Vm8FS/nO/J6quI8+O3T4LeOqU9fLhtzrqTgkUEDHIwoK0njZKFxCL+6fiRBetRP+jowZ8ajGS82NMO1WSYuI+KD74j7UE5uHXU/PI3xdPwKj8LvKtM/Tu3+ECSqv5MUue4h58OOtzyOjqDd7WwZ+4YYNWvxMimKTAtWX3mXx6UMuTt6/uAnt/YWSPaK+K4jmd4o9QZ6YuJlXVmbdSoRKpaOv3y7+bckhZsZut288iickPL8tLXXMGs9CScLWWIlMRTf6fdPCee0N/qz4G/LOyZm+QvVPcw+mP7LA8Vp4yY7IxKlyrx7F07NtC//KxsHllnxWsHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jO9jNNlT0QbkwMhUiZk+RB2T7QTvoyuMQ9uyVuRaiDQ=;
- b=i7yBj8+tDojvM05Je3yMiU5G0pupHfl4Y70pDXVnMU9NkHziecJvsMkPPnyWaEcuoRJtYHf1a44u94gBdTvlQOEq9sOkl1M/lFZC1Y3z4id72ZBquc69I72h4RT/EAYxZQHxKpSeNRSbytOtO0YslEJ+uhy/1uu2bQpcQvYjBkWuSglmfKqan/FI7FlkTtkYvfA1ly6ma3hLqiSDUlnXBMxHbRiPpZAOte1CmHNn5azEpmkDqMm2QpTot9uLx2CpA8br4VNdTNAw8i6uQCPY/0Z4KrrgCFhesEVKNJHJ85YhcfOH22o0ZCzMUya0/dsME2WLIyeHqqBTVNVJ0/4Zhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jO9jNNlT0QbkwMhUiZk+RB2T7QTvoyuMQ9uyVuRaiDQ=;
- b=gU3ajPk0N1/bXeRsFnizY1iqI899t3uHK7WHYM6njL7cKINqdZhfpLW10UdhehEpHtzf50GPL6bv9omxzqdrtqvkpgUivteGj8YA7faQHsmsITYwFuPHTnoetZrefHxHo14dXwJ1+ov97UHTFpLn153pOejVvUaAVqwSlXCN4BMHgjsNHz2NaX9M7AyzxcRvJElb0S5rkUq7V6LODCSTeDbM3bLtibVCg1LpMi29ve344bwnnZ2b6VxeBhc3V+CiYiFAZBvn+Hqo0DR849CsEGZtgEgiMgN1eE/6+4cVstmcxp2PDl7yj0pbNBrf6+kO9bkm4L0ntvvX5zJJ/lorVQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by BY1PR12MB8446.namprd12.prod.outlook.com
- (2603:10b6:a03:52d::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Fri, 13 Nov
- 2026 14:52:51 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0615.009; Fri, 13 Nov 2026
- 14:52:50 +0000
-Date: Fri, 13 Nov 2026 10:52:49 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Jiri Pirko <jiri@resnulli.us>, "Tian, Kevin" <kevin.tian@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	Alistair <alistair23@gmail.com>
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
- and establish streams after acceptance
-Message-ID: <20261113145249.GA3706007@nvidia.com>
-References: <20261103151643.GI274202@nvidia.com>
- <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
- <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261104134119.GR274202@nvidia.com>
- <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
- <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
- <20261106193018.GK770409@nvidia.com>
- <yq5a5wy2qtjs.fsf@kernel.org>
- <20261112145254.GL738765@nvidia.com>
- <yq5abj7tm7q4.fsf@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5abj7tm7q4.fsf@kernel.org>
-X-ClientProxiedBy: YT3PR01CA0087.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:84::29) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=M12fhF5I
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B8F08339;
+	Fri, 13 Nov 2026 07:05:23 -0800 (PST)
+Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9241B3F85F;
+	Fri, 13 Nov 2026 07:05:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794582326; bh=2gGXFp8DdyWHzkZJ43mrMnXa6dxyde9ZLLQErPALNlk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M12fhF5IG8zd3yUh+xgUfyYz2F3btGRXZlVpEAyINOpwsQxA8xB/FOm1zVQL4FAem
+	 VLqMnYwAqaQvDT7PCtdtpGqOnixkolvb0d1FdtUphga8a4/EFH30E5XAu9c43h09L4
+	 eltIQJWe0rcYG3s6IbtO4xXe5jcQSTYZTXTnUXTs=
+Message-ID: <6c362b9e-6ac3-4cbb-8e9d-d666f87ef8c2@arm.com>
+Date: Fri, 13 Nov 2026 15:05:18 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -123,226 +53,371 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|BY1PR12MB8446:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6fe54acf-e589-4193-dc25-08df4195ca09
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|23010399003|366016|10067099003|4143699003|11063799006|56012099006|261021135927099003|261022115727099003|261026121527099003|261022105027099003|261021121427099003|261026140227099003|261028144727099003|261022075727099003|261102123227099003|261102130727099003|261009223027099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	asLCwiaOzNa6hUszyK8O3AtLaO9aFuinT//8rysDN639PhsYM+XVuYsAlmJIfncjIbeD9MpiosyhspI46WGFBwQ+fUHu+Z3vraRg7pX2RNUdNRvqlNSNgb0f/UX0pe14TObN5k3Yk/DmWLjeqm4mDx/KkOhedLLVmIYLSsphjE/rT97KNHfryADN8BLXoBq1eaulv0uG+cQHyRV2XCdlEYmidm2WZMzwqO1xNwk1i4eIrH+EijZfwPL0pmwCHzkcMXG59sGWnV8jon+Fzl61fyVL1rg3++1Jx7c3pN8OxmAKtfEGlxwFGGW60Hlc7sONbcime8iDYnWjBzRcPItUUlT4TpsN8obD/0WE47ehTNP9enRbK7hDbGE35ON7a7E6Z21T0g9ebxfWUqChvVgOWa9hyMTk13zhD2owNG9RnnqFLBkp7QtFQhrudzVdBClSX712mz40Y6R6E8Lgo23YVNPD1vEDuOQDwLcyl5c4mpF9ScR0mAYIrxHdDWC7KkTIwgdxK3cMQr+uDU5TJM6nnmp3R11udAzUzZUjETWdkJUL4mav9lCRQNCY6GaUuOazdorTr8pElAoVMPFeOMqeFQlaUtN2cn3iOrQ8ub06plO1uJcVIJrwFPA/PdshfmJPxkyn5V0Cgfmaa/WPM/S+u8hs9Xcn5ttRez0Q4F+dbHQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(23010399003)(366016)(10067099003)(4143699003)(11063799006)(56012099006)(261021135927099003)(261022115727099003)(261026121527099003)(261022105027099003)(261021121427099003)(261026140227099003)(261028144727099003)(261022075727099003)(261102123227099003)(261102130727099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eoit1OVT4RRSwN92gIx/fop1dajDoUV3nXxxrVBmAwWeLfcziB2HWRwiP3Oa?=
- =?us-ascii?Q?8RNrLfrypgdBVxajQ8c2uS420ShJz2UG55IJO8z8Y9fgAKHPu42Z/esw5wmj?=
- =?us-ascii?Q?L3Z51oFA67rxMIoxBJ1OsQJS+HXf5QLTIkkuo04j66LVolEqDVaPFBDbC4C4?=
- =?us-ascii?Q?c+pH2PgbZm+LonjkucYaKAFG/LHcF6ZYF8OO1k6/2S9bKEhG7VOxj+t0LDi3?=
- =?us-ascii?Q?EHrwm40eXW1ITCE1gCUf/X2pd3O9H2u33uvHh2SJiguvxkoOhmlv+uWEUCbt?=
- =?us-ascii?Q?8fviIMkcSJVqfRb73qEMaT/xTBGxjs/2AEG63MJrmONswmWnUbjJcLDJF8SR?=
- =?us-ascii?Q?azPoaw7O2XQeYZqSPvla5qHimsSRCuR4oCOAUGSp71zre5vPavgMbsymV4+g?=
- =?us-ascii?Q?MSyEoniiqGOHUpFI0/LcSyjHsqFYEyj+a7HAbKMX1J7sAA9HRA8RosWQ3Ex2?=
- =?us-ascii?Q?s62d6I3lj7gGrpC+1LVpO6gy1ITu2/dhd29lJoW6ILmMtoNLUDcwrMrZhEKC?=
- =?us-ascii?Q?Meme57zyqghzyWSqPmGo3Xy3rDg7rdFu66TlWf7UXmYq3J6vp7f6x5iBXjwV?=
- =?us-ascii?Q?kG6EwPK01P0g+nKOjGm3o2qcBCb0Df2iptC3gcVz4HT3YTpff53dNX9OK5GG?=
- =?us-ascii?Q?Tk/K9hgRg+r/Y3uLFsRnvW+AYa9vcgTi7dmfMdRkq/5UGILANo4JScxoPMVE?=
- =?us-ascii?Q?MJ/1PV1PY7y35hzQ/sJqLAr7gW0Ztj31I4a9HxYG8tAt1HKeLrIVVCD5RZcU?=
- =?us-ascii?Q?Stcfa+gOVZHPzTdgQ1UBQymJSut9zwtq5uMiwh/t1pZjZIVu9xxXL0NanLQR?=
- =?us-ascii?Q?fInHc+0/sGB3Bkb2rTnfMLk0pEAFGxyctgkkL4XNexOhya9g2qtEYm1NJn/u?=
- =?us-ascii?Q?JGwKxtgf6iboCiPWifuQtEBd1ml2eBUu9mkYIIs9ia7m/2Ebc01R69k3zABc?=
- =?us-ascii?Q?AFRdGQerAlbIlcjeuqXcNApiv/eSbJi4ouqfyhFH3ny5qqb1MMtqB/YvAjIb?=
- =?us-ascii?Q?xFGhcnfmUJvT7C0PbSkWyvcrNin84HVnOdUNK0pUrn20t2CSf82FIkByBoom?=
- =?us-ascii?Q?rK1LAFBO6AeuIGJ4FhpDO02A704V4VRQbiLdvY8et4j/NWCWh5GSHvhp8fvB?=
- =?us-ascii?Q?3Cse3G50dJh9ElyfWRII+uH70ZXfbPs5JCCSqBvA7yztVVeX015Lm+kykPgJ?=
- =?us-ascii?Q?6bMPUEPwLn/nAtQN3MRLa0x3m93z4sjs1JtrtHbbkql7ynrLWm+GpTxMjTxr?=
- =?us-ascii?Q?OoQLks1+5tpRSRTYggoDZYtixzUk+hMtjXpeL6Hni4QnV9TdoG/JwJNPktuS?=
- =?us-ascii?Q?8D8TcOdrjiSQJSjpnjTdGHNBmUTLLuEEa28fYkYBF+LVb6qPTGqs0ZJTO+dk?=
- =?us-ascii?Q?foC4byMuVC8vWCPK07ez6yLGiMLD+lMpWUq6N6EUA9DffIUAm8SPgsJ7YXEg?=
- =?us-ascii?Q?bPcjJE+RcW++FeSUWJWDYgwFwp/nAZacLJxE0P3nQEeuXW5nZP/LdCdK/9ap?=
- =?us-ascii?Q?FfatIKngNThiihDL+8mQJN2o9LMQSRqoaHFZPBUm3ixZrieov2NcEcE2aAYV?=
- =?us-ascii?Q?nRrnDNZwoG77h3ZbvC4XGrIuX/F6vHkke59os/7Qh57ek8KzcpeVnSlONs8b?=
- =?us-ascii?Q?iR6/qcwJM0twgxGfkFfXKGAIKd6Q3559ii2bpImC2ZsyUbeUAV6C8eetozrG?=
- =?us-ascii?Q?BNUdqmdSjY2Il12y92lrnJ8aPzpyGjIqYYGfms0NbidTvFLq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fe54acf-e589-4193-dc25-08df4195ca09
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 14:52:50.7382
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UAyXn2dwUEGVl8Gfj7L0MCkGoRh7Kq8qxPNJKvlBOGcX/fOqCMdcfuEJ0RFARsMP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR12MB8446
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/12] KVM: arm64: CCA: Tear down RTTs
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <20261111145758.217946-8-steven.price@arm.com>
+ <e1690e53-70fb-47fe-bd06-4758b1e196d2@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <e1690e53-70fb-47fe-bd06-4758b1e196d2@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 13, 2026 at 02:24:59PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@nvidia.com> writes:
+On 13/11/2026 01:04, Suzuki K Poulose wrote:
+> On 11/11/2026 14:57, Steven Price wrote:
+>> The RMM owns the stage 2 page tables for a realm, and KVM must request
+>> that the RMM creates/destroys entries as necessary. The physical pages
+>> to store the page tables are delegated to the realm as required, and can
+>> be undelegated when no longer used.
+>>
+>> Creating new RTTs is the easy part, tearing down is a little more
+>> tricky. The result of realm_rtt_destroy() can be used to effectively
+>> walk the tree and destroy the entries (undelegating pages that were
+>> given to the realm).
+>>
+>> Tear down a created Realm whether it is still new or has been activated.
+>> Unmap the Realm IPA space once during stage-2 teardown. Defer
+>> destruction of non-root RTTs until final Realm destruction, after
+>> REALM_TERMINATE and before destroying the RD; root RTTs remain until the
+>> RD has gone away.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>
+>> ---
+>> Changes since v1:
+>> - Tear down created Realms in both NEW and ACTIVE states. Fix the
+>>    RTT start level, page accounting on failed undelegation, and
+>>    handling of RTT granules returned by RMI.
+>> ---
+>>   arch/arm64/include/asm/kvm_rmi.h |   9 ++
+>>   arch/arm64/kvm/mmu.c             |  18 ++-
+>>   arch/arm64/kvm/rmi.c             | 189 +++++++++++++++++++++++++++++++
+>>   3 files changed, 215 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
+>> asm/kvm_rmi.h
+>> index f1a1ed6b91f5..58d825e40bdf 100644
+>> --- a/arch/arm64/include/asm/kvm_rmi.h
+>> +++ b/arch/arm64/include/asm/kvm_rmi.h
+>> @@ -57,6 +57,7 @@ enum realm_state {
+>>    * @sro: Preallocated SRO state context for Realm MMU operations
+>>    * @state: The lifetime state machine for the realm
+>>    * @ia_bits: Number of valid Input Address bits in the IPA
+>> + * @stage2_unmapped: The Realm stage-2 mappings have been removed
+>>    */
+>>   struct realm {
+>>       void *rd;
+>> @@ -70,6 +71,7 @@ struct realm {
+>>       struct rmi_sro_state *sro;
+>>       enum realm_state state;
+>>       unsigned int ia_bits;
+>> +    bool stage2_unmapped;
+>>   };
+>>     void kvm_init_rmi(void);
+>> @@ -77,5 +79,12 @@ u32 kvm_rmm_ipa_limit(void);
+>>     int kvm_init_realm(struct kvm *kvm);
+>>   void kvm_destroy_realm(struct kvm *kvm);
+>> +int kvm_realm_teardown_stage2(struct kvm *kvm);
+>> +
+>> +static inline bool kvm_realm_is_private_address(struct realm *realm,
+>> +                        unsigned long addr)
+>> +{
+>> +    return !(addr & BIT(realm->ia_bits - 1));
+>> +}
+>>     #endif /* __ASM_KVM_RMI_H */
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 9df3f8d5b4ef..be014f6c00e7 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
+>> kvm_s2_mmu *mmu, unsigned long t
+>>       return err;
+>>   }
+>>   +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
+>> +{
+>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>> +
+>> +    mutex_lock(&kvm->arch.config_lock);
+>> +    if (kvm_realm_state(kvm) == REALM_STATE_NEW ||
+>> +        kvm_realm_state(kvm) == REALM_STATE_ACTIVE) {
+>> +        kvm_set_realm_state(kvm, REALM_STATE_DYING);
+>> +        WARN_ON(kvm_realm_teardown_stage2(kvm));
+>> +    }
+>> +    mutex_unlock(&kvm->arch.config_lock);
+>> +}
+>> +
+>>   void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>>   {
+>> -    kvm_free_stage2_pgd(&kvm->arch.mmu);
+>> +    if (kvm_realm_is_created(kvm))
+>> +        kvm_realm_uninit_stage2(&kvm->arch.mmu);
+>> +    else
+>> +        kvm_free_stage2_pgd(&kvm->arch.mmu);
 > 
-> > On Thu, Nov 12, 2026 at 03:07:43PM +0530, Aneesh Kumar K.V wrote:
-> >> > Like a whole bunch of TSM FW API just to do this:
+> We added kvm_free_stage2_pgd() from kvm_destroy_realm() for Realms in
+> the previous patch. Should we move that here since, this is where we
 > 
->  [ ... 38 lines skipped ... ] 
+> 1. Deal with tearing down stage2
+> 2. And more importantly we are skipping it for Realms.
+
+I'm not quite sure what you're asking for here. We can't free the stage2
+PGD while the realm is existing (because the RMM has the pages) - so we
+defer it.
+
+>>       kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>>   }
+>>   diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index 69c628cfb6c7..b904e6541fb0 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -11,16 +11,193 @@
+>>   #include <asm/kvm_pgtable.h>
+>>   #include <asm/virt.h>
+>>   +static inline unsigned long rmi_rtt_level_mapsize(int level)
+>> +{
+>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+>> +        return PAGE_SIZE;
+>> +
+>> +    return (1UL << ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
+>> +}
+>> +
 > 
-> >
-> > Capturing the transcript makes everything 100% perfectly consistent
-> > for everyone. Userspace sees *the transcript* as defined by SPDM not
-> > some mangled, truncated or processed version that the TSM decides to
-> > provide.
-> >
-> > Userspace gets to see KEY_EXCHANGE which means the verifier can prove
-> > the certificate binding, this is the ONLY way to let the verifier do
-> > this proof if it wants.
-> >
+> We agreed to use kvm_granule_size() instead of this ?
 > 
-> To clarify, is this only needed if the verifier wants to perform an
-> independent verification? The RMM already verifies KEY_EXCHANGE_RSP, and
-> we trust the RMM.
+> https://lore.kernel.org/all/cb183290-3fee-4535-aa3e-5cc172c2323a@arm.com
 
-Yeah, I'm not so sure how useful it is, but if you ever want this,
-then the uABI has to be structured like this. I don't see any reason
-to forbid it, people have asked for it before, and it is easier uABI
-to maintain long term than the alternatives.
+That was a screw-up when I was squashing fixes back in - the next patch
+removes the code. I'll fix this up in the next version so it never
+appears. Thanks for pointing it out.
 
-> > Further with capture we have a nice primitive to pause and do slot
-> > selection before going to KEY_EXCHANGE. If we know the kernel has
-> > capture then the ideal FW design for 1.3 multikey is much simpler and
-> > clearer (more like ARM).
-> >
-> > Also, ARM decided to do capture already, but directed by the TSM.  I
-> > think it is the right and best idea, they just made the implementation
-> > too narrowly specific. eg it doesn't split up VCA, it doesn't capture
-> > 100% of everything to get KEY_EXCHANGE, etc. Trivial to fix while
-> > upgrading to support 1.3
+>>   u32 kvm_rmm_ipa_limit(void)
+>>   {
+>>       return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+>>   }
+>>   +static int get_start_level(struct realm *realm)
+>> +{
+>> +    return 4 - max(2, stage2_pgtable_levels(realm->ia_bits));
 > 
-> So, not everyone needs DOE snooping? Architectures without a
-> firmware-directed capture mechanism can use DOE snooping to collect the
-> required data on the host. Would the flow for SPDM 1.2 look like the
-> following?
+> I don't think we need this "max()". ia_bits is guaranteed to be
+>>= 32bit (ARM64_MIN_PARANGE_BITS, see kvm_init_ipa_range()), implying
+> that we have at least 2 levels on all page sizes.
 
-IMHO ARM has it nearly right, and if you can do TSM directed capture
-then you don't need kernel snooping. Kernel snooping has the drawback
-that the kernel has to understand every message the TSM sends and
-every option it negotiates. This is a troublesome coupling, so it
-would be good to avoid it.
+Ah, very true - Sashiko complained, but I hadn't noticed
+ARM64_MIN_PARANGE_BITS provided an effective minimum. I'll remove the
+max() and add a comment.
 
-But breaking up a VCA blob has the same troublesome coupling as
-snooping, so we need the TSM directed capture to work in a transcript
-form, see blow.
+>> +}
+>> +
+>> +static void free_rtt(phys_addr_t phys)
+>> +{
+>> +    kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>> +    if (rmi_free_delegated_page(phys))
+>> +        kvm_account_pgtable_pages(phys_to_virt(phys), 1);
+> 
+> Is there a reason why remove the account before freeing ? Could we do
+> this after we have reclaimed it ?
 
-Your diagram is basically what ARM does already, I don't see an issue
-with ARM's implementation as-is for 1.2 support.
+Sashiko again:
 
-> |                                 | KEY_EXCHANGE_RSP                 |
-> |                                 |<---------------------------------|
-> |                                 | Verify response signature        |
-> |                                 |                                  |
-> | NEW: cache complete             |                                  |
-> | KEY_EXCHANGE request and        |                                  |
-> | KEY_EXCHANGE_RSP, with signature|                                  |
+> Does calling kvm_account_pgtable_pages() after rmi_free_delegated_page()
+> access the page after it has already been freed and uncharged from its
+> memcg?
 
-This is not the change I would suggest.
+Basically the problem is that rmi_free_delegated_page() frees the page
+back to the allocator. So doing the account after freeing means that
+technically the page could have been reused.
 
-ARM has everything fine, the RmiDevCommExit tells the OS how to build
-up the transcript.
+>> +}
+>> +
+>> +/*
+>> + * realm_rtt_destroy - Destroy an RTT at @level for @addr.
+>> + *
+>> + * Returns - Result of the RMI_RTT_DESTROY call, and:
+>> + * @rtt_granule:    RTT granule, if the RTT was destroyed.
+>> + * @next_addr:        IPA corresponding to the next possible valid
+>> entry we
+>> + *            can target
+>> + */
+>> +static long realm_rtt_destroy(struct realm *realm, unsigned long addr,
+>> +                  int level, phys_addr_t *rtt_granule,
+>> +                  unsigned long *next_addr)
+>> +{
+>> +    unsigned long out_rtt;
+>> +    long ret;
+>> +
+>> +    ret = rmi_rtt_destroy(virt_to_phys(realm->rd), addr, level,
+>> +                  &out_rtt, next_addr);
+>> +
+>> +    if (ret == RMI_SUCCESS)
+>> +        *rtt_granule = out_rtt;
+>> +
+>> +    return ret;
+>> +}
+>> +
+>> +static int realm_tear_down_rtt_level(struct realm *realm, int level,
+>> +                     unsigned long start, unsigned long end)
+>> +{
+>> +    ssize_t map_size;
+>> +    unsigned long addr, next_addr;
+>> +
+>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+>> +        return -EINVAL;
+>> +
+>> +    map_size = rmi_rtt_level_mapsize(level - 1);
+>> +
+> 
+> We agreed to add a WARN_ON() here to ensure the start address is aligned ?
 
-The only issue is how the cache_object_id was layed out.
+Indeed, and again I've managed to put it in the wrong commit (see the
+next patch). I'll fix this in the next revision.
 
-It should be a range of objects, one per transcript message. eg use
-0x80 -> 0xff as
- 0x80 - request #0
- 0x81 - reply #0
- 0x82 - request #1
- 0x83 - reply #1
-  ...
+>> +    for (addr = start; addr < end; addr = next_addr) {
+>> +        phys_addr_t rtt_granule;
+>> +        long ret;
+>> +        unsigned long align_addr = ALIGN(addr, map_size);
+>> +
+>> +        next_addr = ALIGN(addr + 1, map_size);
+>> +
+>> +        if (next_addr > end || align_addr != addr) {
+>> +            /*
+>> +             * The target range is smaller than what this level
+>> +             * covers, recurse deeper.
+>> +             */
+>> +            ret = realm_tear_down_rtt_level(realm,
+>> +                            level + 1,
+>> +                            addr,
+>> +                            min(next_addr, end));
+>> +            if (ret)
+>> +                return ret;
+>> +            continue;
+>> +        }
+>> +
+>> +        ret = realm_rtt_destroy(realm, addr, level,
+>> +                    &rtt_granule, &next_addr);
+>> +        if (ret < 0)
+>> +            return ret;
+>> +
+>> +        switch (RMI_RESULT_STATUS(ret)) {
+>> +        case RMI_SUCCESS:
+>> +            free_rtt(rtt_granule);
+>> +            break;
+>> +        case RMI_ERROR_RTT:
+>> +            if (next_addr > addr) {
+>> +                /* Missing RTT, skip */
+>> +                break;
+>> +            }
+>> +            /*
+>> +             * We tear down the RTT range for the full IPA
+>> +             * space, after everything is unmapped. Also we
+>> +             * descend down only if we cannot tear down a
+>> +             * top level RTT. Thus RMM must be able to walk
+>> +             * to the requested level. e.g., a block mapping
+>> +             * exists at L1 or L2.
+>> +             */
+>> +            if (WARN_ON(RMI_RESULT_DATA_LEVEL(ret) != level))
+>> +                return -EBUSY;
+>> +            if (WARN_ON(level == KVM_PGTABLE_LAST_LEVEL))
+>> +                return -EBUSY;
+>> +
+>> +            /*
+>> +             * The table has active entries in it, recurse deeper
+>> +             * and tear down the RTTs.
+>> +             */
+>> +            next_addr = ALIGN(addr + 1, map_size);
+>> +            ret = realm_tear_down_rtt_level(realm,
+>> +                            level + 1,
+>> +                            addr,
+>> +                            next_addr);
+>> +            if (ret)
+>> +                return ret;
+>> +            /*
+>> +             * Now that the child RTTs are destroyed,
+>> +             * retry at this level.
+>> +             */
+>> +            next_addr = addr;
+>> +            break;
+>> +        default:
+>> +            WARN_ON(1);
+>> +            return -ENXIO;
+>> +        }
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int realm_tear_down_rtt_range(struct realm *realm,
+>> +                     unsigned long start, unsigned long end)
+>> +{
+>> +    /*
+>> +     * Root level RTTs can only be destroyed after the RD is
+>> destroyed. So
+>> +     * tear down everything below the root level
+>> +     */
+>> +    return realm_tear_down_rtt_level(realm, get_start_level(realm) + 1,
+>> +                     start, end);
+>> +}
+>> +
+>> +static int realm_destroy_rtts(struct kvm *kvm)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +    unsigned int ia_bits = realm->ia_bits;
+>> +
+>> +    lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +    return realm_tear_down_rtt_range(realm, 0, (1UL << ia_bits));
+>> +}
+>> +
+>> +static void realm_unmap_stage2(struct kvm *kvm)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +
+>> +    lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +    if (realm->stage2_unmapped)
+>> +        return;
+>> +
+>> +    write_lock(&kvm->mmu_lock);
+>> +    kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
+>> +                   BIT(realm->ia_bits - 1), true);
+>> +    write_unlock(&kvm->mmu_lock);
+>> +
+>> +    realm->stage2_unmapped = true;
+>> +}
+>> +
+>> +int kvm_realm_teardown_stage2(struct kvm *kvm)
+>> +{
+>> +    lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +    realm_unmap_stage2(kvm);
+>> +    return 0;
+>> +}
+>> +
+>>   void kvm_destroy_realm(struct kvm *kvm)
+>>   {
+>>       struct realm *realm = &kvm->arch.realm;
+>>       size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+>>   +    guard(mutex)(&kvm->arch.config_lock);
+> 
+> Do we need to document, why we need this mutex ?
 
-Then include every single message that is part of the signature. OS
-reconstructs VCA from this. Trivial to include KEY_EXCHANGE in 1.2,
-GET_DIGESTS in 1.3 and then whatever else 1.x brings down the
-road. You have enough IDs to capture 64 transcript messages.
+I'll add a comment.
 
-That ARM can capture encrypted messages this way is cool too, if that
-becomes useful it can append to the transcript encrypted items as
-well!
-
-I imagine an ECN with a OS negotiated opt-in "Improved flow for 1.3"
-that changes things like this, and below as a package.
-
-> | NEW: request slot discovery     |                                  |
-> |-------------------------------->| GET_DIGESTS / DIGESTS [secure]   |
-> | Relay ciphertext                |<-------------------------------->|
-> | Receive RMM-exported slot info  |                                  |
-> |<--------------------------------|                                  |
-
-Intel did this, IDK if we need to for RMM, at least not like this..
-
-We really want the certificates to be loaded at the start before doing
-key_exchange. That is when they are most useful.
-
-So when we fix this for 1.3 the opt in should trigger a transcript'd
-GET_DIGEST in plain text and certificate collection from all the slots
-in plain text.
-
-1.3 will sign GET_DIGESTS during KEY_EXCHANGE
-1.2 RMM could issue CHALLENGE if the device supports it right before
-    KEY_EXCHANGE and transcript it
-1.2 RMM could issue GET_DIGESTS inside the session and fail if != to
-    the plaintext
-
-These approaches keep a consistent flow where we get the certificates
-before doing KEY_EXCHANGE so we can set the slot.
-
-The final 1.3 opt in change is to not use the slot passed to
-RMI_PDEV_CREATE(), but instead change RMI_PDEV_SET_PUBKEY() to input
-the slot, pubkey and certificate hash. Have a pause in the flow prior
-to RMI_PDEV_SET_PUBKEY where userspace will read the certificates and
-input the slot.
-
-I view all of this as a new opt-in feature the OS can select to enable
-all these new rules together. When the RMM supports it then we get a
-more complete transcript, early slot selection, multikey, and early
-visibility to all certificate chains.
-
-In terms of change to RMM it is very minor.
-
-> If GET_DIGESTS and GET_CERTIFICATE(selected slot) are issued after the
-> secure session is established, DOE snooping cannot capture their
-> plaintext responses. I am therefore still unclear how the DOE snooping
-> design handles this data.
-
-As above, the TSM needs to issue these in plaintext because we need
-the information to do slot selection before doing KEY_EXCHANGE. This
-is essential for 1.3 multikey..
-
-> In the end, the host has the certificate chain for slot 0, which was
-> used to establish the secure SPDM session, and the certificate chain for
-> the selected slot, which was fetched over that trusted session. The RMM
-> also returns the chain digests. The host can compare the leaf keys for
-> slot 0 and the selected slot, 
-
-This only works for 1.2 where all leaf keys have the same PUBKEY. In
-1.3 that's not true anymore, so this logic falls apart. You need to
-sign the GET_DIGESTS and present all the slot opts to userspace so it
-selects a strong key as the signing key for KEY_EXCHANGE.
-
-It is why I don't see value in fixing 1.2 like this, it only works for
-1.2 and we need to fix it again for 1.3. It is better to make 1.2 look
-like the 1.3 flow.
-
-> BTW, this proposal does require RMM changes. I have also omitted SPDM
-> 1.3 multi-key support from this diagram because it will be easier to
-> follow once the SPDM 1.2 flow is clear.
-
-IMHO, leave everything alone as is today. We can make it work well
-enough as is.
-
-Make a ECN for a 1.3 opt in broadly like the above that fits better
-into how I sketched the kernel uAPI. Do this once we all agree to the
-new uAPI. The kernel will always try to use this new mode if RMM
-supports it and userspace gets a better 1.3 experiance.
-
-There would a similar opt in change on the RHI side to transfer the
-new object list.
-
-Jason
+Thanks,
+Steve
