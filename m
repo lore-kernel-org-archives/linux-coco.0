@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794586154;
-	b=V0dCsXJkTlK9PaM14WFRErwXjT6g4MshB96JG149AvdeZdl0r3FautwpAHL74y5JUwqw
-	 YgvTdCx66eVLOPtsvzg4laky4u5lhjtA8AsPY9PUx1PuAb4cT5fD8Aezezm7745nHgAhu
-	 Huolp/m3wIvcpAf/PgiApG4bH6b/FIAkbTXZIG4ZbuJTg0AjgdRQMuXuofBVYclVeCVG5
-	 fEV1nZURR91+sQevjA2xJ77WckY6Jb30gF+vdUcWvLFX7Q0JQn/2TJU0JkF14z5MsIznZ
-	 HH7+vVunCIA2R5FLbe+qTOxTGDzzr7q7rqKLY+m9dG+IcMEcc8fbGR2jrghcTQhkPdA==
+	t=1794586159;
+	b=hnrLnFXYKIk1qwSjvdteKC8kVNPvU8SZroW7foW6sDTczvVhn7TDpbdE3nJy51FKJIhV
+	 9wwGWH7m0Cj/Hnw4WtwuYyn07Vr41XkFziZ8DU8hijYeZKz14RuIQdV+nn2tcr4unbHOP
+	 iMuUS7zUOXSue44xV1HcsTs23sl26s1jxP0jppvM4NG7ys4lcdTW2evAr7UEOUUbK4gBK
+	 JA9JHmA0GVUbMyHUtKImr45kW+tMwpUucMPFP0VQhaa35bgKR/LmLadIC+5dOJXfjzd6U
+	 hM26kUc57Z5d5fTcJjFivUHgZZymLMWG3yBqz8qZSr/43qAPNQGi+yg+JRglMpyDWOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794586154;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794586159;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=lgIDHYZpE/qu0aCHlcnYkvZglETZnS1O0+wZshReRlk=;
-	b=Uy1LhRqUe5HGmaFzfTtETc/UpnbswqKn24jMY/qseXldiHCoZAW6zFYOetKH9jx5z5mH
-	 gpmeqlMmdApmgzPh1QrX4YCbB9Zhm9Lbc+ipQPk+GACKCjHFTr9qKfvwbynvAtd3b/O8i
-	 r5dxEI2j7J5fZcK/GZAiBlxH1f7QY4GbtgBDs5i2VSEEVR2KugxUeNZWnhvrSSTF4edRq
-	 GSM0TqG6nPGZ+hyKLBFTOL3zGGlozte1X72AiZcvrTEnPMOriHVOxmFuydEuUvzXc+BqZ
-	 E59SHkrMMRjmL8FdgVRFiPmtGMTALHAzwXXyPdjCYESI8zB32BlJ/peAJ1fjbWvPumA==
+	bh=fe4bgBaIiB/j0pKiN/Uekhorosg6jaRf4sL0ssWap9g=;
+	b=xHraPAngdZP/FQAPmGrLSGvYqa07/LntKeIh9MobZqoWS2rOd1cd2JY43m9pjBMH2y1N
+	 vgAUwpzZFaw3Y6MvORPrxoESc3ftDxvdTCuatwM8p27bjuPA4vpRMzW+teX9rvkJPc7N7
+	 MwFZiVhRlpOOtfzDBEodpKlbVPWAtP32xecJKbePH4QHB9mEAfCUyjYYwVITuZBrfopCx
+	 tUHAP13nIVkSWkHAQpgPSj7z1Q+vMacxKFwI6Sh6pF9c+kmjG5XVanMbBjh7AsblWtnX3
+	 97H1oJVdHC22+W8HCgzEc8QNyANdUH4Ldy5i5UB9e7NcWQVtNzsdTh5glgGt1MFQEeg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=zF3f0iN3;
-	arc=none smtp.remote-ip=209.85.221.47
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=uXtA4pyc;
+	arc=none smtp.remote-ip=209.85.221.49
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47907607A331
-	for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 16:09:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47907607A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3171B606BA85
+	for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 16:09:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3171B606BA85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=zF3f0iN3
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48e3b22e971so564579f8f.0
-        for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 08:09:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=uXtA4pyc
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-492fcbfaa87so613160f8f.3
+        for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 08:09:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1794586153; x=1795190953; darn=lists.linux.dev;
+        d=resnulli.us; s=google; t=1794586156; x=1795190956; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lgIDHYZpE/qu0aCHlcnYkvZglETZnS1O0+wZshReRlk=;
-        b=zF3f0iN3JocrF2txVztCOtCxsXv7s54LFZgF8RNmFFfx/U1jh7GBculESYh31Bu3lp
-         2vABMaPD82eW1LCdwZ2yF57zLcfu8zSOiQ8uOP/wW5ql26Msw4hPOVyg8UvNQSZxLvKS
-         0dgNXaR9li6ifCKch6bzqQSvUvZ0M+2vQ42t0yC99XTsvj4bOfg9q+PxwdCnSCb91S9z
-         k2HjGF20gcZ11va4muBfw4Sj2U3JGy6y6b1uLfD80GL1DGpI0hEsSM0gECtC8gZxoZlR
-         ZfOQ5iKxaNmvH7iaVOuCOvRo1zu3Iizi5w0uVn7P5hx4IHzeLEyW08nkPY0UHnrfPFtX
-         SBXw==
+        bh=fe4bgBaIiB/j0pKiN/Uekhorosg6jaRf4sL0ssWap9g=;
+        b=uXtA4pycWfkjIycJ5I5xgssqZV2mF4By+IwOfiFfxpsrSrz94k/sLEvFXZl1eu3BS9
+         UQsaik/WcL8eU/7IPI3SxLphyleXi6b1iY06zxlZpAnuHAbZNSnNb8gJ1Mj9ktYOlSBS
+         AT2ffoMbNSEqaPWf1sxoz5y8UXur+TijSF8La28KlVz4mrtY/X1U23VAiQuMh2ah442T
+         KNU+lWU1nTU+ijdJ4xeNLMHrywFDQhM3l0Db2LQLZM8fs2qZ1DMdknRcg5iS1eiWqgOJ
+         xOC/Pi93a9Bqvj3ApImC9zsLoxCSd6Le6Hsva7Oo0xQY/9kpsGdxqe70n21//I33zXJ0
+         MNrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794586153; x=1795190953;
+        d=1e100.net; s=20260707; t=1794586156; x=1795190956;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lgIDHYZpE/qu0aCHlcnYkvZglETZnS1O0+wZshReRlk=;
-        b=NX18DRwQa29iT9rQDggWETVaL3Kw6LuKr6LjG9BCDQTCkKLhrkkvlXVYGL//rQU4vk
-         qTEzXxWal0PiwG24TB8mcEhOOX4xaqx6sBWWKWuzWbTWY5AHjbWQz8H50OiDHiGleZji
-         Rn9ULeefFBI62B8mGqEntGPkbjAT0E6TwvAY/9+egz3I4AkSpBTsHmfKrolXxFgU3Zss
-         GrRf6zbcV7cJdu0mh3LZPNzPTC1TbRDXja0lK6v8FIMoHccWOs0rekMRjj1Vpay1jdg4
-         j+WGRoTPtcCnzmTnQWhE3B1kRFwJdiJbBFlRDnWMA6hJUIx43FzMPK4kNEPkVHDjGo6C
-         NPlg==
-X-Gm-Message-State: APuU4Z/H0j56u5T/Y2JsaCquhyr9B+PsnhKRsDP5VZw1u9fO9o9lVNtC
-	QTv34ilxOdB4eHphjdYN4vNjSzNssY9UgSIXhdgFROowgyfuDWbLY5+MyWAclFinMfKrwLjBASz
-	78SVa
-X-Gm-Gg: AYBFou19banryQhxnOtE9oX/ZEzk4S465dCm0OtiAFBfDj2lJLLO3C2h17MN9k+P5h2
-	54oqvx0WF8rOirPYfJ+7Met3iwl4SQgIJSN7SNiSJn/Dvle+5p5n3HCRt014A5mua94WlOlko3X
-	maRQVIK/MEVYPloBk7it8tL0HqWgKSqHZFbHvdOFiTsRJ+LDyNoH0sjmlQaQnNIU1G5+aoPexYU
-	s9MdD3VLvklweh7v7VNp/8hoAEQ6WfW8zHWYOp5YwktBjbEN/AZ011GmFxkab3Spd/bhVxB3XUG
-	X+WgMfxWhWZYFPu+AeA2jzuWwInCa7hkKk6QDSr/X6vLwYx/ZxNxug36ciTxcyYVYQC+UxeoO9E
-	ML7nIP5S/ReFUKiFxiPx+VXI285NEwlhDBTp43CrADrx0m0DjHvarcx36TdCNRvB+lsei5fYh8A
-	T1XJGNB2AOv7S7hYh8c8hwo3BO6SSE/0tfpEKjYaL6lu9xNjNo7eRyV0SMe7MlcAi3S83J+KAJe
-	+D1AtHCsEzpzrQgh2bRhVMbuG0egpKVSFYInOh+MR5DYaNTc2R8bminlEHFLbwP3qSrvgXnvypa
-	M21C2aBODG7hpOibFcrxfwYuU7l+bhUmjgEvfxFQ
-X-Received: by 2002:a05:6000:1603:b0:492:7969:b4d2 with SMTP id ffacd0b85a97d-49c740bcf2cmr4478882f8f.40.1794586152436;
-        Fri, 13 Nov 2026 08:09:12 -0800 (PST)
+        bh=fe4bgBaIiB/j0pKiN/Uekhorosg6jaRf4sL0ssWap9g=;
+        b=dZhU979lryMOLFLrBvDxo83i5r6JGsaHJhAzC5S+nwh6aRXi/xNlvH72TiPxNcBj7D
+         l5ACouF2drS/C49iGSIsRupsFOfnWlz7SMIlwh5vEI3Yv5cgd8jreGB+YCOMQpbaeoHH
+         E7wH9AYiZlR7IDfljUGeYQBVv1lo3uQo67aUq3SJsNlrIX30ceQB9oZjeXSDT/ghse5I
+         6Dblh6d20+AJinKtbnv9T4v0YlHyGvLQWJcT9Xu1WoAIhLB+7ML5u56kMnuharXI5ad6
+         L9MjwDw1gKjR8yaAmvueizOoNYPbzvVw2A2Z1QLkHXi6wRdUuTTqyaQV7KndZtkyPgwN
+         ZnWQ==
+X-Gm-Message-State: APuU4Z9Up2157XKJ2o+pfo3Kl/nCQXibsQ1td/PKsLr8xrTZfqvZE5VD
+	ii2UkdnwBjBffFbnarIy9EojMwc63cGnNJKYdnv1x+IkXHwqJ+a9FR9TmVIUGntMmqqR9iBgiYw
+	/dbtG
+X-Gm-Gg: AYBFou0uN+kgVzD4oe9/Qo97p3QrqoL5fO5l5QZn8+SUaWKzLo1Gw3i8ScJWdwpc7S+
+	dWlCdGHf2mPwCQSVDU8KUhDM8sNyw13eSTrSk7+Pca5yOwsDF/tq28ZPpBVK5qP5LdslSTlg7+f
+	gQx70ErgVZfd8lRE+lG0zwV+fjo94n6/xWkteDm8CKdGMDo1PneTnyxJKYO7YCRxpHy2G+Af/TB
+	OJzXm5l2XmwHcNxtYabPHdmyLajP7nxfP0tr4cDlPNhDZ5gu9J0hP5j+dFLZcVxEgpCxcRSWpRM
+	Rcxn0h2woeIQRNQ45vtYfuN+jj1+ozsaZ0ivxHmOhV6eLGCgTVMp+fD329Eha+twUPyEoWqlmpz
+	iCoxCWOhluTcUYgMRK8pDI0CiU9SNPBEH+i7xKHCMIheOEz3K/ejOg9MKB7h1Uccv5KYpBeYzUB
+	3MtzmaBYfxlipTVoaoS02yjJJcfKHzLIW32/2YyVlDyV/GUAgQ1OCioZYTdS5+oFyOHIDQqUwLe
+	nt514xXrfcuw81n1u0+uwRlkCin8tE0gxeg4ZB4HCx144tkc4EOQxRs94MukrA0oZBs7vNcsJKO
+	bvdzsB26tNqD2neuZ63OyTQMorJxiJnoaSSNFw0=
+X-Received: by 2002:a05:600c:4ecd:b0:4a1:e6a9:4086 with SMTP id 5b1f17b1804b1-4bb5599a73fmr72240055e9.0.1794586156386;
+        Fri, 13 Nov 2026 08:09:16 -0800 (PST)
 Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c60da0a03sm4852529f8f.53.2026.11.13.08.09.11
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb566cec2esm49224095e9.1.2026.11.13.08.09.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 08:09:12 -0800 (PST)
+        Fri, 13 Nov 2026 08:09:15 -0800 (PST)
 From: Jiri Pirko <jiri@resnulli.us>
 To: linux-coco@lists.linux.dev
 Cc: linux-kernel@vger.kernel.org,
@@ -115,9 +115,9 @@ Cc: linux-kernel@vger.kernel.org,
 	dave.jiang@intel.com,
 	nik.borisov@suse.com,
 	sergii.dmytruk@3mdeb.com
-Subject: [PATCH RFC v2 8/9] attestation: Add the TDX family specification and generated files
-Date: Fri, 13 Nov 2026 17:08:37 +0100
-Message-ID: <20261113160838.2512652-9-jiri@resnulli.us>
+Subject: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
+Date: Fri, 13 Nov 2026 17:08:38 +0100
+Message-ID: <20261113160838.2512652-10-jiri@resnulli.us>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261113160838.2512652-1-jiri@resnulli.us>
 References: <20261113160838.2512652-1-jiri@resnulli.us>
@@ -134,330 +134,577 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Define the TDX attestation family and reserve family ID 2. Add its ABI
-snapshot, registry entry and generated kernel and UAPI files.
+Build the TDX attestation provider into tdx-guest when attestation is
+enabled. Expose the Quote, MRTD and RTMR operations through the same
+helpers as the native interfaces, which stay as they are, and label
+each Quote as a legacy or a DICE one by its first bytes [1]. Where
+ACPI describes a CCEL table, also return the firmware's event log as
+evidence, for a verifier replaying the RTMRs.
 
-The ABI is intentionally specification-first. The generated descriptor
-is linked with the provider implementation in the following patch.
+[1] https://lore.kernel.org/all/avNfZ0lLl-OrkCHs@intel.com/
 
 Assisted-by: Cursor: GPT-5.6 Sol
 Assisted-by: Cursor: Claude Opus 5.5
 Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
 RFC->RFCv2:
-- generated the kernel files into drivers/virt/coco/tdx-guest/
-- dropped the family's priv lifecycle hook
-- generated an extension fill in place of a stub fill
-- wrote the spec as op trees and records
-- numbered every enum member
-- moved the generated UAPI headers to include/uapi/ctlv/
-- documented every item of the spec
-- put each field's doc above its generated helpers
-- gave the legacy and DICE Quote formats as evidence-vendor-format
-  values
-- said message instead of wire
+- built the provider into tdx-guest in place of the attestation-tdx
+  module
+- embedded struct attestation_dev in the provider's state
+- accounted the evidence buffer to its caller's memcg
+- dropped the MR-journal boundary claim from the TDX documentation
+- returned the CCEL event log as an event-log evidence object
+- dropped the total output length
+- documented the provider as part of tdx-guest
+- reported the 64-byte challenge length as a list entry
+- used the helpers generated for the rewritten spec
+- wrote the evidence objects with attestation_evidence_write()
+- dropped the RTMR read caps, as every MR can be read
+- said record instead of nest, the root being one
+- took the UAPI headers from include/uapi/ctlv/
+- dropped the TDREPORT evidence object, which /dev/tdx_guest keeps,
+  and labelled each Quote as a legacy or a DICE one
+- described the provider for userspace in a document of its own
 ---
- .../ctlv/abi/ctlv-attestation-tdx.yaml        | 21 ++++++
- Documentation/ctlv/abi/families.registry.yaml |  1 +
- Documentation/ctlv/families.yaml              |  1 +
- Documentation/ctlv/generated-files.yaml       |  7 ++
- .../ctlv/specs/ctlv-attestation-tdx.yaml      | 25 +++++++
- MAINTAINERS                                   |  1 +
- .../coco/tdx-guest/ctlv_attestation_tdx_gen.c | 65 +++++++++++++++++++
- .../coco/tdx-guest/ctlv_attestation_tdx_gen.h | 44 +++++++++++++
- include/uapi/ctlv/ctlv_attestation_tdx_gen.h  | 42 ++++++++++++
- include/uapi/ctlv/ctlv_families_gen.h         |  1 +
- 10 files changed, 208 insertions(+)
- create mode 100644 Documentation/ctlv/abi/ctlv-attestation-tdx.yaml
- create mode 100644 Documentation/ctlv/specs/ctlv-attestation-tdx.yaml
- create mode 100644 drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.c
- create mode 100644 drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.h
- create mode 100644 include/uapi/ctlv/ctlv_attestation_tdx_gen.h
+ .../userspace-api/attestation-tdx.rst         |  59 ++++
+ Documentation/userspace-api/attestation.rst   |  10 +
+ Documentation/virt/coco/tdx-guest.rst         |   8 +
+ drivers/attestation/Kconfig                   |   4 +
+ drivers/virt/coco/tdx-guest/Kconfig           |   4 +-
+ drivers/virt/coco/tdx-guest/Makefile          |   6 +
+ drivers/virt/coco/tdx-guest/attestation.c     | 313 ++++++++++++++++++
+ drivers/virt/coco/tdx-guest/internal.h        |  18 +
+ .../coco/tdx-guest/{tdx-guest.c => main.c}    |   7 +
+ 9 files changed, 428 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/userspace-api/attestation-tdx.rst
+ create mode 100644 drivers/virt/coco/tdx-guest/attestation.c
+ rename drivers/virt/coco/tdx-guest/{tdx-guest.c => main.c} (98%)
 
-diff --git a/Documentation/ctlv/abi/ctlv-attestation-tdx.yaml b/Documentation/ctlv/abi/ctlv-attestation-tdx.yaml
+diff --git a/Documentation/userspace-api/attestation-tdx.rst b/Documentation/userspace-api/attestation-tdx.rst
 new file mode 100644
-index 000000000000..f8dc3c085c71
+index 000000000000..ca0ed209143b
 --- /dev/null
-+++ b/Documentation/ctlv/abi/ctlv-attestation-tdx.yaml
-@@ -0,0 +1,21 @@
-+# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+%YAML 1.2
-+---
-+# Checked-in ABI snapshot of the ctlv-attestation-tdx family, from
-+# Documentation/ctlv/specs/ctlv-attestation-tdx.yaml, written by
-+# "make -C tools/ctlv regen".
-+#
-+# Updating the file is how a UAPI change gets reviewed; an update that
-+# removes or renumbers anything, narrows a bound, or makes a member required
-+# is an ABI break, whatever the file says afterwards.
-+family: {name: ctlv-attestation-tdx, id: 2, inherits: ctlv-attestation}
-+enums:
-+  evidence-vendor-format: {quote: 1, quote-dice: 2}
-+records:
-+  device-info:
-+    id: 0x00010000
-+    fields:
-+      mrconfigid: {number: 1, type: binary, length: 48}
-+      mrowner: {number: 2, type: binary, length: 48}
-+      mrownerconfig: {number: 3, type: binary, length: 48}
-+fills: {device-info: device-info}
-diff --git a/Documentation/ctlv/abi/families.registry.yaml b/Documentation/ctlv/abi/families.registry.yaml
-index 7a5c6af29565..0f55cc4f2e35 100644
---- a/Documentation/ctlv/abi/families.registry.yaml
-+++ b/Documentation/ctlv/abi/families.registry.yaml
-@@ -6,3 +6,4 @@
- families:
-   - ctlv
-   - ctlv-attestation
-+  - ctlv-attestation-tdx
-diff --git a/Documentation/ctlv/families.yaml b/Documentation/ctlv/families.yaml
-index dbb0243b873d..27bafae3ca66 100644
---- a/Documentation/ctlv/families.yaml
-+++ b/Documentation/ctlv/families.yaml
-@@ -16,3 +16,4 @@
- families:
-   - ctlv
-   - ctlv-attestation
-+  - ctlv-attestation-tdx
-diff --git a/Documentation/ctlv/generated-files.yaml b/Documentation/ctlv/generated-files.yaml
-index 00a56634805d..e78997f13334 100644
---- a/Documentation/ctlv/generated-files.yaml
-+++ b/Documentation/ctlv/generated-files.yaml
-@@ -23,3 +23,10 @@ families:
-       uapi-header: include/uapi/ctlv/ctlv_attestation_gen.h
-       kernel-header: drivers/attestation/generated/ctlv_attestation_gen.h
-       kernel-source: drivers/attestation/generated/ctlv_attestation_gen.c
++++ b/Documentation/userspace-api/attestation-tdx.rst
+@@ -0,0 +1,59 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+  - name: ctlv-attestation-tdx
-+    source: Documentation/ctlv/specs/ctlv-attestation-tdx.yaml
-+    outputs:
-+      uapi-header: include/uapi/ctlv/ctlv_attestation_tdx_gen.h
-+      kernel-header: drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.h
-+      kernel-source: drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.c
-diff --git a/Documentation/ctlv/specs/ctlv-attestation-tdx.yaml b/Documentation/ctlv/specs/ctlv-attestation-tdx.yaml
-new file mode 100644
-index 000000000000..0093015b4991
---- /dev/null
-+++ b/Documentation/ctlv/specs/ctlv-attestation-tdx.yaml
-@@ -0,0 +1,25 @@
-+# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+%YAML 1.2
-+---
-+# The attestation device of an Intel TDX guest: Quotes of its TDREPORT, the
-+# CCEL event log, MRTD and RTMR0 to RTMR3.
-+family: ctlv-attestation-tdx
-+inherits: ctlv-attestation
++===============
++TDX attestation
++===============
 +
-+enums:
-+  # Fills ctlv-attestation's evidence-vendor-format.
-+  evidence-vendor-format:
-+    # An Intel TDX DCAP Quote, from the host's quoting enclave.
-+    - quote
-+    # A DICE-based TDX Quote, an EAT in a CBOR Web Token.
-+    - quote-dice
++With ``CONFIG_ATTESTATION``, the TDX guest driver registers an attestation
++device of the ``ctlv-attestation-tdx`` family, whose specification is
++``Documentation/ctlv/specs/ctlv-attestation-tdx.yaml``. Its ``device-info``,
++the ``info`` of ``device-get``, carries ``mrconfigid``, ``mrowner`` and
++``mrownerconfig``, 48 bytes each.
 +
-+records:
-+  # Fills ctlv-attestation's device-info.
-+  device-info:
-+    # MRCONFIGID of the TD, the ID of its non-owner configuration.
-+    mrconfigid: binary(48)
-+    # MROWNER of the TD, the ID of its owner.
-+    mrowner: binary(48)
-+    # MROWNERCONFIG of the TD, the ID of its owner's configuration.
-+    mrownerconfig: binary(48)
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 172b20d5fdd1..0734efa1a78f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4442,6 +4442,7 @@ F:	Documentation/ctlv/specs/ctlv-attestation*
- F:	Documentation/driver-api/attestation.rst
- F:	Documentation/userspace-api/attestation*.rst
- F:	drivers/attestation/
-+F:	drivers/virt/coco/tdx-guest/*attestation*
- F:	include/linux/attestation*
- F:	include/uapi/ctlv/ctlv_attestation*
++Measurement registers
++=====================
++
++==  =====  ==============  =======  ======
++ID  Name   Register index  Bank     Extend
++==  =====  ==============  =======  ======
++0   mrtd   none            SHA-384  no
++1   rtmr0  0               SHA-384  yes
++2   rtmr1  1               SHA-384  yes
++3   rtmr2  2               SHA-384  yes
++4   rtmr3  3               SHA-384  yes
++==  =====  ==============  =======  ======
++
++Each ``mr-read`` takes a TDREPORT.
++
++The TSM-MR files,
++``/sys/devices/virtual/misc/tdx_guest/measurements/rtmr[0123]:sha384``, extend
++the same RTMRs as ``mr-extend``. Firmware and the boot loader usually extend
++RTMR0 to RTMR2 before the kernel starts, which leaves RTMR3 to the running
++system.
++
++Evidence
++========
++
++==  ========  =========  =================  =========  ========
++ID  Object    Class      Formats            Challenge  Binds
++==  ========  =========  =================  =========  ========
++0   Quote     signed     quote, quote-dice  64 bytes   every MR
++1   CCEL log  event-log  ccel               none       no MR
++==  ========  =========  =================  =========  ========
++
++The challenge goes into the REPORTDATA the Quote carries. The host's quoting
++service returns a DCAP Quote or a DICE-based one, and the device names it
++``quote`` by its header's version and TEE type, or ``quote-dice`` by the CBOR
++magic it starts with. Both are ``ctlv-attestation-tdx``'s vendor formats. A
++Quote of neither fails ``evidence-get`` with ``EPROTO``.
++
++The log is there where the firmware describes its CC event log with an ACPI
++CCEL table, and is the whole log area. It does not change after boot, and one
++call returns it with the Quote.
++
++The TDREPORT is MAC'd for the platform, not signed, so it is no object;
++``TDX_CMD_GET_REPORT0`` of ``/dev/tdx_guest`` returns it.
++
++A guest has one TDX device, which a udev rule can give a stable name::
++
++    ENV{CTLV_FAMILY}=="ctlv-attestation-tdx", SYMLINK+="attestation/tdx"
+diff --git a/Documentation/userspace-api/attestation.rst b/Documentation/userspace-api/attestation.rst
+index 16646d8b60d7..32ecaf5cba35 100644
+--- a/Documentation/userspace-api/attestation.rst
++++ b/Documentation/userspace-api/attestation.rst
+@@ -282,3 +282,13 @@ The reply carries ``mr-generation``, the MR generation after the extension.
+     have or repeats one, or a digest has the wrong length.
  
-diff --git a/drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.c b/drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.c
+ Access is read-write.
++
++Providers
++=========
++
++What each provider's family adds, and what its device produces:
++
++.. toctree::
++   :maxdepth: 1
++
++   attestation-tdx
+diff --git a/Documentation/virt/coco/tdx-guest.rst b/Documentation/virt/coco/tdx-guest.rst
+index 46e316db6bb4..16afc8e5a6ef 100644
+--- a/Documentation/virt/coco/tdx-guest.rst
++++ b/Documentation/virt/coco/tdx-guest.rst
+@@ -50,3 +50,11 @@ TDX reference material is collected here:
+ https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html
+ 
+ The driver is based on TDX module specification v1.0 and TDX GHCI specification v1.0.
++
++Attestation device
++==================
++
++With ``CONFIG_ATTESTATION``, the driver also registers an attestation device,
++described in Documentation/userspace-api/attestation-tdx.rst. It shares the
++TDREPORT, Quote and RTMR paths, and their locks, with the misc ioctl, the
++TSM-report configfs interface and the TSM-MR sysfs attributes.
+diff --git a/drivers/attestation/Kconfig b/drivers/attestation/Kconfig
+index a6bfb17dd480..4307b28e679e 100644
+--- a/drivers/attestation/Kconfig
++++ b/drivers/attestation/Kconfig
+@@ -10,3 +10,7 @@ menuconfig ATTESTATION
+ 	  translate the common operations to their native service.
+ 
+ 	  If you are unsure, say N.
++
++if ATTESTATION
++
++endif # ATTESTATION
+diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
+index dbbdc14383b1..aa6687979a6f 100644
+--- a/drivers/virt/coco/tdx-guest/Kconfig
++++ b/drivers/virt/coco/tdx-guest/Kconfig
+@@ -1,12 +1,14 @@
+ config TDX_GUEST_DRIVER
+ 	tristate "TDX Guest driver"
+ 	depends on INTEL_TDX_GUEST
++	depends on ATTESTATION || !ATTESTATION
+ 	select TSM_REPORTS
+ 	select TSM_MEASUREMENTS
+ 	help
+ 	  The driver provides userspace interface to communicate with
+ 	  the TDX module to request the TDX guest details like attestation
+-	  report.
++	  report. With ATTESTATION, it also registers a TDX attestation
++	  device.
+ 
+ 	  To compile this driver as module, choose M here. The module will
+ 	  be called tdx-guest.
+diff --git a/drivers/virt/coco/tdx-guest/Makefile b/drivers/virt/coco/tdx-guest/Makefile
+index 775cb463f9c8..027cc16e1df3 100644
+--- a/drivers/virt/coco/tdx-guest/Makefile
++++ b/drivers/virt/coco/tdx-guest/Makefile
+@@ -1,2 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_TDX_GUEST_DRIVER) += tdx-guest.o
++
++tdx-guest-y := main.o
++tdx-guest-$(CONFIG_ATTESTATION) += attestation.o ctlv_attestation_tdx_gen.o
++
++# The generated family header includes its parent's.
++ccflags-y += -I $(srctree)/drivers/attestation/generated
+diff --git a/drivers/virt/coco/tdx-guest/attestation.c b/drivers/virt/coco/tdx-guest/attestation.c
 new file mode 100644
-index 000000000000..8795febbdeeb
+index 000000000000..1bb2e7b66928
 --- /dev/null
-+++ b/drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.c
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+/*
-+ * Generated from Documentation/ctlv/specs/ctlv-attestation-tdx.yaml by
-+ * tools/ctlv/ctlv-regen.sh. Do not edit.
-+ */
-+/* CTLV-GEN kernel source */
++++ b/drivers/virt/coco/tdx-guest/attestation.c
+@@ -0,0 +1,313 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <crypto/sha2.h>
++#include <linux/acpi.h>
++#include <linux/attestation.h>
++#include <linux/ctlv.h>
++#include <linux/err.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/unaligned.h>
 +
-+#define _CTLV_GENERATED_METADATA_ONLY
-+#include <linux/array_size.h>
-+#include <linux/build_bug.h>
-+#include <linux/ctlv_family.h>
-+#include <linux/export.h>
-+
-+#include <uapi/ctlv/ctlv_gen.h>
-+#include <uapi/ctlv/ctlv_attestation_tdx_gen.h>
++#include <uapi/linux/tdx-guest.h>
 +
 +#include "ctlv_attestation_tdx_gen.h"
++#include "internal.h"
 +
-+static const struct ctlv_node_schema device_info_fill_node_schemas[] = {
-+	CTLV_NODE_SCHEMA_ROOT(1, 3, 3),
-+	CTLV_NODE_SCHEMA_BINARY(CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MRCONFIGID, 1, 48, 48),
-+	CTLV_NODE_SCHEMA_BINARY(CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MROWNER, 1, 48, 48),
-+	CTLV_NODE_SCHEMA_BINARY(CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MROWNERCONFIG, 1, 48, 48),
++struct tdx_attestation {
++	struct attestation_dev att;
++	const struct tdx_guest_info *info;
++	void __iomem *log;
++	size_t log_length;
 +};
 +
-+/* The extension points this family fills. */
-+static const struct ctlv_ext_fill_schema ctlv_attestation_tdx_ext_fill_schemas[] = {
-+	CTLV_EXT_FILL_SCHEMA(CTLV_FAMILY_ATTESTATION, CTLV_ATTESTATION_EXT_DEVICE_INFO,
-+			     device_info),
++static struct tdx_attestation *tdx_att;
++
++static struct tdx_attestation *to_tdx_attestation(struct attestation_dev *att)
++{
++	return container_of(att, struct tdx_attestation, att);
++}
++
++static const enum hash_algo tdx_attestation_algorithms[] = {
++	HASH_ALGO_SHA384,
 +};
 +
-+/* The enum extension points this family fills. */
-+static const struct ctlv_enum_fill_schema ctlv_attestation_tdx_enum_fill_schemas[] = {
-+	CTLV_ENUM_FILL_SCHEMA(CTLV_FAMILY_ATTESTATION,
-+			      CTLV_ATTESTATION_ENUM_EXT_EVIDENCE_VENDOR_FORMAT, 2),
++static const struct attestation_mr_props tdx_attestation_mrs[] = {
++	{
++		.id = 0,
++		.name = "mrtd",
++		.algorithms = tdx_attestation_algorithms,
++		.algorithms_count = ARRAY_SIZE(tdx_attestation_algorithms),
++	},
++	{
++		.id = 1,
++		.name = "rtmr0",
++		.algorithms = tdx_attestation_algorithms,
++		.algorithms_count = ARRAY_SIZE(tdx_attestation_algorithms),
++		.has_register_index = true,
++		.register_index = 0,
++		.extendable = true,
++	},
++	{
++		.id = 2,
++		.name = "rtmr1",
++		.algorithms = tdx_attestation_algorithms,
++		.algorithms_count = ARRAY_SIZE(tdx_attestation_algorithms),
++		.has_register_index = true,
++		.register_index = 1,
++		.extendable = true,
++	},
++	{
++		.id = 3,
++		.name = "rtmr2",
++		.algorithms = tdx_attestation_algorithms,
++		.algorithms_count = ARRAY_SIZE(tdx_attestation_algorithms),
++		.has_register_index = true,
++		.register_index = 2,
++		.extendable = true,
++	},
++	{
++		.id = 4,
++		.name = "rtmr3",
++		.algorithms = tdx_attestation_algorithms,
++		.algorithms_count = ARRAY_SIZE(tdx_attestation_algorithms),
++		.has_register_index = true,
++		.register_index = 3,
++		.extendable = true,
++	},
 +};
 +
-+/* The family ID is its position in the central registry. */
-+const struct ctlv_family_schema ctlv_attestation_tdx_schema = {
-+	.name = "ctlv-attestation-tdx",
-+	.family_id = 2,
-+	.ext_fill_schemas = ctlv_attestation_tdx_ext_fill_schemas,
-+	.ext_fill_schemas_count = ARRAY_SIZE(ctlv_attestation_tdx_ext_fill_schemas),
-+	.enum_fill_schemas = ctlv_attestation_tdx_enum_fill_schemas,
-+	.enum_fill_schemas_count = ARRAY_SIZE(ctlv_attestation_tdx_enum_fill_schemas),
++#define TDX_QUOTE_HEADER_LEN 48
++#define TDX_QUOTE_TEE_TYPE_TDX 0x81
++
++static const struct attestation_evidence_format tdx_attestation_quote_formats[] = {
++	{ .vendor = true, .value = CTLV_ATTESTATION_TDX_EVIDENCE_VENDOR_FORMAT_QUOTE },
++	{ .vendor = true, .value = CTLV_ATTESTATION_TDX_EVIDENCE_VENDOR_FORMAT_QUOTE_DICE },
 +};
 +
-+/* Maximum uevent cost for this family chain. */
-+static_assert(150 <= CTLV_UEVENT_MAX_LEN);
-+static_assert(5 <= CTLV_UEVENT_MAX_VARS);
-+
-+/* Extension-point callbacks. */
-+static const struct ctlv_ext_ops ctlv_attestation_tdx_ext_ops[] = {
-+	CTLV_EXT_OPS(CTLV_FAMILY_ATTESTATION, CTLV_ATTESTATION_EXT_DEVICE_INFO,
-+		     ctlv_attestation_tdx_device_info),
++static const struct attestation_evidence_format tdx_attestation_log_formats[] = {
++	{ .value = CTLV_ATTESTATION_EVIDENCE_FORMAT_CCEL },
 +};
 +
-+/* Family descriptor used by ctlv_init(). */
-+const struct ctlv_family ctlv_attestation_tdx_family = {
-+	.schema = &ctlv_attestation_tdx_schema,
-+	.parent = &ctlv_attestation_family,
-+	.ext_ops = ctlv_attestation_tdx_ext_ops,
-+	.ext_ops_count = ARRAY_SIZE(ctlv_attestation_tdx_ext_ops),
++static const struct attestation_evidence_challenge_length
++tdx_attestation_challenge_lengths[] = {
++	{ .min = TDX_REPORTDATA_LEN, .max = TDX_REPORTDATA_LEN },
 +};
-+EXPORT_SYMBOL_NS_GPL(ctlv_attestation_tdx_family, "CTLV");
-diff --git a/drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.h b/drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.h
-new file mode 100644
-index 000000000000..99c3cbc41a39
---- /dev/null
-+++ b/drivers/virt/coco/tdx-guest/ctlv_attestation_tdx_gen.h
-@@ -0,0 +1,44 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++
++/* The log comes last, so a guest without a CCEL table can leave it out. */
++static struct attestation_evidence_supported_object
++tdx_attestation_evidence_objects[] = {
++	{
++		.evidence_class = ATTESTATION_EVIDENCE_SIGNED,
++		.formats = tdx_attestation_quote_formats,
++		.formats_count = ARRAY_SIZE(tdx_attestation_quote_formats),
++		.challenge_lengths = tdx_attestation_challenge_lengths,
++		.challenge_lengths_count =
++			ARRAY_SIZE(tdx_attestation_challenge_lengths),
++		.max_length = TDX_GUEST_QUOTE_MAX_LEN,
++		.binds_mrs = true,
++	},
++	{
++		.evidence_class = ATTESTATION_EVIDENCE_EVENT_LOG,
++		.formats = tdx_attestation_log_formats,
++		.formats_count = ARRAY_SIZE(tdx_attestation_log_formats),
++	},
++};
++
++/* The object count and the total length are set at init. */
++static struct attestation_evidence_caps tdx_attestation_evidence_caps = {
++	.objects = tdx_attestation_evidence_objects,
++};
++
 +/*
-+ * Generated from Documentation/ctlv/specs/ctlv-attestation-tdx.yaml by
-+ * tools/ctlv/ctlv-regen.sh. Do not edit.
++ * A DCAP Quote's header starts with its version, 4 or 5, and TEE type. A
++ * DICE-based Quote, a CBOR Web Token, starts with the CBOR magic, d9 d9 f7.
 + */
-+/* CTLV-GEN kernel header */
++static int tdx_attestation_quote_label(const u8 *quote, size_t length,
++				       struct attestation_evidence_format *format)
++{
++	format->vendor = true;
++	if (length >= TDX_QUOTE_HEADER_LEN &&
++	    (get_unaligned_le16(quote) == 4 || get_unaligned_le16(quote) == 5) &&
++	    get_unaligned_le32(quote + 4) == TDX_QUOTE_TEE_TYPE_TDX) {
++		format->value = CTLV_ATTESTATION_TDX_EVIDENCE_VENDOR_FORMAT_QUOTE;
++		return 0;
++	}
++	if (length >= 3 && !memcmp(quote, "\xd9\xd9\xf7", 3)) {
++		format->value = CTLV_ATTESTATION_TDX_EVIDENCE_VENDOR_FORMAT_QUOTE_DICE;
++		return 0;
++	}
++	return -EPROTO;
++}
 +
-+/* Kernel metadata and family API of the ctlv-attestation-tdx CTLV family. */
++static void __iomem *tdx_attestation_log_map(size_t *length)
++{
++	struct acpi_table_header *header;
++	struct acpi_table_ccel *ccel;
++	void __iomem *log = NULL;
 +
-+#ifndef _LINUX_CTLV_ATTESTATION_TDX_GEN_H
-+#define _LINUX_CTLV_ATTESTATION_TDX_GEN_H
++	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
++		return NULL;
++	ccel = container_of(header, struct acpi_table_ccel, header);
++	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
++	    ccel->log_area_minimum_length &&
++	    ccel->log_area_minimum_length <= UINT_MAX)
++		log = acpi_os_map_iomem(ccel->log_area_start_address,
++					ccel->log_area_minimum_length);
++	if (log)
++		*length = ccel->log_area_minimum_length;
++	acpi_put_table(header);
++	return log;
++}
 +
-+#include <linux/ctlv_family.h>
-+#include <linux/err.h>
-+#include <linux/errno.h>
++static int
++tdx_attestation_evidence_get(struct attestation_dev *att,
++			     const struct attestation_evidence_request *request,
++			     struct attestation_evidence_result *result)
++{
++	struct tdx_attestation *tdx = to_tdx_attestation(att);
++	size_t index, length;
++	void *buffer;
++	int ret = 0;
 +
-+#include <uapi/ctlv/ctlv_attestation_tdx_gen.h>
++	for (index = 0; !ret && index < request->objects_count; index++) {
++		const struct attestation_evidence_object_request *object =
++			&request->objects[index];
++		struct attestation_evidence_object_result *produced =
++			&result->objects[index];
 +
-+#include "ctlv_attestation_gen.h"
++		buffer = kvmalloc(object->supported_object->max_length,
++				  GFP_KERNEL_ACCOUNT);
++		if (!buffer)
++			return -ENOMEM;
 +
-+extern const struct ctlv_family_schema ctlv_attestation_tdx_schema;
++		if (object->supported_object == &tdx_attestation_evidence_objects[0]) {
++			ret = tdx_guest_quote_get(request->challenge, buffer,
++						  &length);
++			if (!ret)
++				ret = tdx_attestation_quote_label(buffer, length,
++								  &produced->format);
++		} else {
++			memcpy_fromio(buffer, tdx->log, tdx->log_length);
++			length = tdx->log_length;
++			produced->format = tdx_attestation_log_formats[0];
++		}
 +
-+/* device-info of ctlv-attestation: fill callback. */
-+int ctlv_attestation_tdx_device_info_fill(struct ctlv *ctlv, struct ctlv_op_ctx *ctx,
++		if (!ret)
++			ret = attestation_evidence_write(object, buffer, length);
++		if (!ret)
++			produced->length = length;
++		kvfree(buffer);
++	}
++	return ret;
++}
++
++static int tdx_attestation_mr_read(struct attestation_dev *att, unsigned int mr_id,
++				   struct attestation_digest_set *values)
++{
++	static const enum tdx_guest_mr native_mrs[] = {
++		TDX_GUEST_MR_MRTD,
++		TDX_GUEST_MR_RTMR0,
++		TDX_GUEST_MR_RTMR1,
++		TDX_GUEST_MR_RTMR2,
++		TDX_GUEST_MR_RTMR3,
++	};
++
++	if (mr_id >= ARRAY_SIZE(native_mrs) ||
++	    values->values_count != 1 ||
++	    values->values[0].algorithm != HASH_ALGO_SHA384)
++		return -EINVAL;
++	return tdx_guest_mr_read(native_mrs[mr_id], values->values[0].data);
++}
++
++static int
++tdx_attestation_mr_extend(struct attestation_dev *att, unsigned int mr_id,
++			  const struct attestation_digest_set *values)
++{
++	if (mr_id < 1 || mr_id > 4)
++		return -EOPNOTSUPP;
++	if (values->values_count != 1 ||
++	    values->values[0].algorithm != HASH_ALGO_SHA384)
++		return -EINVAL;
++	return tdx_guest_rtmr_extend(mr_id - 1, values->values[0].data);
++}
++
++static const struct attestation_provider tdx_attestation_provider = {
++	.evidence_get = tdx_attestation_evidence_get,
++	.mr_read = tdx_attestation_mr_read,
++	.mr_extend = tdx_attestation_mr_extend,
++	.evidence_caps = &tdx_attestation_evidence_caps,
++	.mrs = tdx_attestation_mrs,
++	.mrs_count = ARRAY_SIZE(tdx_attestation_mrs),
++};
++
++int ctlv_attestation_tdx_device_info_fill(struct ctlv *ctlv,
++					  struct ctlv_op_ctx *ctx,
 +					  const struct ctlv_cursor *request,
-+					  struct ctlv_cursor *record);
++					  struct ctlv_cursor *record)
++{
++	const struct tdx_guest_info *info =
++		to_tdx_attestation(attestation_from_ctlv(ctlv))->info;
++	bool ok;
 +
-+extern const struct ctlv_family ctlv_attestation_tdx_family;
++	ok = ctlv_attestation_tdx_device_info_mrconfigid_put(record, info->mrconfigid,
++							     sizeof(info->mrconfigid));
++	ok &= ctlv_attestation_tdx_device_info_mrowner_put(record, info->mrowner,
++							   sizeof(info->mrowner));
++	ok &= ctlv_attestation_tdx_device_info_mrownerconfig_put(record,
++								 info->mrownerconfig,
++								 sizeof(info->mrownerconfig));
++	return ok ? 0 : -EMSGSIZE;
++}
 +
-+#ifndef _CTLV_GENERATED_METADATA_ONLY
++int tdx_attestation_register(struct device *parent,
++			     const struct tdx_guest_info *info)
++{
++	struct attestation_evidence_caps *caps = &tdx_attestation_evidence_caps;
++	struct tdx_attestation *tdx;
++	size_t log_length = 0;
++	void __iomem *log;
++	int ret;
 +
-+/* Writing a reply. An append is atomic; a record ends with ctlv_record_end(). */
-+/* MRCONFIGID of the TD, the ID of its non-owner configuration. */
-+CTLV_PUT_BINARY(ctlv_attestation_tdx_device_info_mrconfigid,
-+		CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MRCONFIGID, CTLV_SCHEMA_BINARY)
-+/* MROWNER of the TD, the ID of its owner. */
-+CTLV_PUT_BINARY(ctlv_attestation_tdx_device_info_mrowner,
-+		CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MROWNER, CTLV_SCHEMA_BINARY)
-+/* MROWNERCONFIG of the TD, the ID of its owner's configuration. */
-+CTLV_PUT_BINARY(ctlv_attestation_tdx_device_info_mrownerconfig,
-+		CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MROWNERCONFIG, CTLV_SCHEMA_BINARY)
-+#endif /* _CTLV_GENERATED_METADATA_ONLY */
++	log = tdx_attestation_log_map(&log_length);
++	tdx_attestation_evidence_objects[1].max_length = log_length;
++	caps->objects_count = ARRAY_SIZE(tdx_attestation_evidence_objects);
++	if (!log)
++		caps->objects_count--;
 +
-+#endif /* _LINUX_CTLV_ATTESTATION_TDX_GEN_H */
-diff --git a/include/uapi/ctlv/ctlv_attestation_tdx_gen.h b/include/uapi/ctlv/ctlv_attestation_tdx_gen.h
-new file mode 100644
-index 000000000000..77339ca50ca5
---- /dev/null
-+++ b/include/uapi/ctlv/ctlv_attestation_tdx_gen.h
-@@ -0,0 +1,42 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+/*
-+ * Generated from Documentation/ctlv/specs/ctlv-attestation-tdx.yaml by
-+ * tools/ctlv/ctlv-regen.sh. Do not edit.
-+ */
-+/* CTLV-GEN uapi header */
++	tdx = attestation_alloc(parent, &tdx_attestation_provider,
++				&ctlv_attestation_tdx_family, struct tdx_attestation, att);
++	if (IS_ERR(tdx)) {
++		ret = PTR_ERR(tdx);
++		goto err_unmap;
++	}
++	tdx->info = info;
++	tdx->log = log;
++	tdx->log_length = log_length;
++	ret = attestation_register(&tdx->att);
++	if (ret) {
++		attestation_put(&tdx->att);
++		goto err_unmap;
++	}
++	tdx_att = tdx;
++	return 0;
 +
-+/*
-+ * Constants of the ctlv-attestation-tdx CTLV family. Types and op IDs are complete; the message
-+ * format carrying them is in <ctlv/ctlv.h>.
-+ *
-+ * The inherited ctlv-attestation header is included here, so one include covers the whole effective
-+ * schema.
-+ */
++err_unmap:
++	if (log)
++		acpi_os_unmap_iomem(log, log_length);
++	return ret;
++}
 +
-+#ifndef _UAPI_CTLV_CTLV_ATTESTATION_TDX_GEN_H
-+#define _UAPI_CTLV_CTLV_ATTESTATION_TDX_GEN_H
++void tdx_attestation_unregister(void)
++{
++	if (!tdx_att)
++		return;
++	attestation_unregister(&tdx_att->att);
++	if (tdx_att->log)
++		acpi_os_unmap_iomem(tdx_att->log, tdx_att->log_length);
++	attestation_put(&tdx_att->att);
++	tdx_att = NULL;
++}
 +
-+#include <ctlv/ctlv.h>
-+#include <ctlv/ctlv_attestation_gen.h>
-+#include <ctlv/ctlv_families_gen.h>
-+
-+/* enum evidence-vendor-format, an extension point of ctlv-attestation */
-+enum _ctlv_attestation_tdx_evidence_vendor_format {
-+	/* An Intel TDX DCAP Quote, from the host's quoting enclave. */
-+	CTLV_ATTESTATION_TDX_EVIDENCE_VENDOR_FORMAT_QUOTE = 1,
-+	/* A DICE-based TDX Quote, an EAT in a CBOR Web Token. */
-+	CTLV_ATTESTATION_TDX_EVIDENCE_VENDOR_FORMAT_QUOTE_DICE = 2,
-+};
-+
-+/* device-info */
-+/* MRCONFIGID of the TD, the ID of its non-owner configuration. */
-+#define CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MRCONFIGID \
-+	CTLV_TYPE(CTLV_FAMILY_ATTESTATION_TDX, 0x00010000, 1)
-+/* MROWNER of the TD, the ID of its owner. */
-+#define CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MROWNER \
-+	CTLV_TYPE(CTLV_FAMILY_ATTESTATION_TDX, 0x00010000, 2)
-+/* MROWNERCONFIG of the TD, the ID of its owner's configuration. */
-+#define CTLV_ATTESTATION_TDX_T_DEVICE_INFO_MROWNERCONFIG \
-+	CTLV_TYPE(CTLV_FAMILY_ATTESTATION_TDX, 0x00010000, 3)
-+
-+#endif /* _UAPI_CTLV_CTLV_ATTESTATION_TDX_GEN_H */
-diff --git a/include/uapi/ctlv/ctlv_families_gen.h b/include/uapi/ctlv/ctlv_families_gen.h
-index 83f6a257ddf2..849671f8681d 100644
---- a/include/uapi/ctlv/ctlv_families_gen.h
-+++ b/include/uapi/ctlv/ctlv_families_gen.h
-@@ -13,6 +13,7 @@
- enum _ctlv_family {
- 	CTLV_FAMILY_ROOT = 0,
- 	CTLV_FAMILY_ATTESTATION = 1,
-+	CTLV_FAMILY_ATTESTATION_TDX = 2,
- };
++MODULE_IMPORT_NS("ATTESTATION");
++MODULE_IMPORT_NS("CTLV");
+diff --git a/drivers/virt/coco/tdx-guest/internal.h b/drivers/virt/coco/tdx-guest/internal.h
+index d57a8c385aff..fc10e68d231a 100644
+--- a/drivers/virt/coco/tdx-guest/internal.h
++++ b/drivers/virt/coco/tdx-guest/internal.h
+@@ -5,6 +5,8 @@
+ #include <crypto/sha2.h>
+ #include <linux/types.h>
  
- #endif /* _UAPI_CTLV_CTLV_FAMILIES_GEN_H */
++struct device;
++
+ #define TDX_GUEST_QUOTE_MAX_LEN ((128 * 1024) - 24)
+ 
+ struct tdx_guest_info {
+@@ -27,4 +29,20 @@ int tdx_guest_mr_read(enum tdx_guest_mr mr, u8 value[SHA384_DIGEST_SIZE]);
+ int tdx_guest_rtmr_extend(unsigned int rtmr,
+ 			  const u8 value[SHA384_DIGEST_SIZE]);
+ 
++#if IS_ENABLED(CONFIG_ATTESTATION)
++int tdx_attestation_register(struct device *parent,
++			     const struct tdx_guest_info *info);
++void tdx_attestation_unregister(void);
++#else
++static inline int tdx_attestation_register(struct device *parent,
++					   const struct tdx_guest_info *info)
++{
++	return 0;
++}
++
++static inline void tdx_attestation_unregister(void)
++{
++}
++#endif
++
+ #endif /* _TDX_GUEST_INTERNAL_H */
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/main.c
+similarity index 98%
+rename from drivers/virt/coco/tdx-guest/tdx-guest.c
+rename to drivers/virt/coco/tdx-guest/main.c
+index c49454ec0b18..bcda631a0232 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/main.c
+@@ -522,6 +522,12 @@ static int __init tdx_guest_init(void)
+ 	if (ret)
+ 		goto free_quote;
+ 
++	/* The other interfaces stay up without the attestation device. */
++	ret = tdx_attestation_register(tdx_misc_dev.this_device,
++				       &tdx_guest_info);
++	if (ret)
++		pr_warn("attestation device registration failed: %d\n", ret);
++
+ 	return 0;
+ 
+ free_quote:
+@@ -537,6 +543,7 @@ module_init(tdx_guest_init);
+ 
+ static void __exit tdx_guest_exit(void)
+ {
++	tdx_attestation_unregister();
+ 	tsm_report_unregister(&tdx_tsm_ops);
+ 	free_quote_buf(quote_buf);
+ 	misc_deregister(&tdx_misc_dev);
 -- 
 2.56.0
 
