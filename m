@@ -1,83 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794587898;
-	b=iUy43IO9CU7iJ+fkEl6Y5P/AKjbJ/6k8jeN6fPpqEAtJveMpj12uv5hKajk4wqlZCiDI
-	 9qOMeFHtqY5dumkNKKnuqbTGqFRy136OVrm8eHy6r4a2zBzlKLwc7YlBARe1WWoHkjSGG
-	 fs1739lp/ZxJiJrX+qd9H/NGULSR6s2NzbPGxUqIecqQX2FXn1eJxo8i7OVF4rkS9L3MU
-	 5fIZNexrnw0vZvxTgkHczgOIsDK75G6s14UAinPw2QjZV9hE7g7X4CLgcnGiMtW5qI+ul
-	 yWjxS7HHoCX1PvewfryidBPmuPEd9WCEkfeAIlQGzd0Q4IqlFPDMCmpoDVyoN9rzE3w==
+	t=1794588022;
+	b=imUajuqOUVxOvXhQPc7ER2mSOJvPd2oxuNGYcGtfjIhvLbsLXKrw5j+fMBYqG/acIYQZ
+	 hE2D3t4E/X7U1Rr91UvSZKAqM+62tA/mRd62TQwyDNK5RXxxBzpdqxEAfFZWSm1kI0ap4
+	 hLULQ8Sh9CSSbWsRvs7OmcAV79awp9zWXcFTlStOI92o9iwofT6e2EgRUHJvz14wDblh9
+	 b1buVfjmw6yLQXICtn0hVHShaL4DBgCTgRbBWg8jhjGaLdhdBD+GnwQCSQOf28F5/mOf/
+	 cTgITqwVctWFnsFhPOXFJ3f/jBrIqQjXI3fpHttfHSE1QCvk8TM2++MawOB6wRnc2lA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794587898;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=ECa4v0ymAEdrf36TMzDEI0AgHj/I0QXy3tVu9aZBtW4=;
-	b=ueqOeRtdb/5ye0aR0mC87y389TskUmtVekbrxCycpI49Fe3uX14qwaFOBP7aCKpjtg0e
-	 gQkKcpPHf4I2FpMYZ6k/xz9AhWZgkxuXugXCTBUXG1kfzFnuQQ56SAor9a3l5vzJevf3W
-	 PGX9TRpvttk6yR9aJhAeCNIxBherTVDprgnqzFPodz9KjlY5djPIToRYrIrsyY9tZsQfN
-	 tmosa1XmChtO3Rgweti/zXA7tIY1VZU0nunICq2QIcTEa4vrU6nC8s2K8+a+kGWJEyqLM
-	 IKptNrouy1HhWIynJMTWnx+8WFI5Xk2iQDxLzWq7vy11gSau6dvOMM10r5mDLEzQQjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794588022;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=4hrO+e6psKT0G9cQKzDJd2tFoUjCcpj/bUYIzTJU/8M=;
+	b=tMmWl1j4q7UhNjoECwjDW7R3c8xfXP0Zl3Aqxyr4TNl5LSAbbtcf3OudJ2yYZekW0cJF
+	 94pBk16K4otZiYF13yfc/MvjLrwZ7cc3wCwZobgFBI2CIX5VjIH6pky6Hy6yyIvp+XrQv
+	 4w5xTphRrsRcys3A08MxJaUvG1sn4aMYR00y3OAfOy0nd9U7nbQ1mABeYkLqmpDjRTqqz
+	 1G1Bk+FXovddhTukjTz9TF7BmA3aNZKeXh4Z6awCwKW+62u8r49/w47hvmvqVTXK/oByf
+	 84CJ37XzZEPlmxzfKlReyid3Ow/0H/lODUo6aEwMZCJ+CNWzSMj3l2sM4ITV0PM3x6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iX1d2mZ/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1BD606A330;
-	Fri, 13 Nov 2026 16:38:18 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XPh8lR4z;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F98D60A263C;
+	Fri, 13 Nov 2026 16:40:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F98D60A263C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iX1d2mZ/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9676D1F000C4;
-	Fri, 13 Nov 2026 16:38:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794587898;
-	bh=ECa4v0ymAEdrf36TMzDEI0AgHj/I0QXy3tVu9aZBtW4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=iX1d2mZ/T9JW07gRBi0bTpYJ8ny9oV2nJWyeH963h9j69ap/dzU+NeIqvOaCYedLN
-	 5BQ41dZBFRz1xHpduw41bnWTcUiHT7Orm2jIT0cqqIamj8dOavABVdTKw+A3JAt5Md
-	 pbf/IJfJIMPCuuyxeHZNMQsON8HDW2+6gqxSkoN4zeckmDZRwzbWxN76UpiG4kk6/S
-	 m74W6qYKPIc0wn0W19SsFA3npGAfclNaOC9NtWS4mEfZy4puIs7Cv1hEHM9T9MaxK5
-	 4tM+wXqbHwdhubDy2mefcKnDT5dbe4Y4mIDVJ8aEtg6w44+wOA1zRj7qW+QRR9qXjD
-	 YZ7IKjSF87A1g==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Dave Jiang <dave.jiang@intel.com>, "Reshetova,
-	Elena" <elena.reshetova@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Jiri Pirko <jiri@resnulli.us>, "Tian,
-	Kevin" <kevin.tian@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>, "Edgecombe,
-	Rick P" <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	Alistair <alistair23@gmail.com>
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot
- zero and establish streams after acceptance
-In-Reply-To: <20261113145249.GA3706007@nvidia.com>
-References: <20261103151643.GI274202@nvidia.com>
- <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
- <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261104134119.GR274202@nvidia.com>
- <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
- <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
- <20261106193018.GK770409@nvidia.com> <yq5a5wy2qtjs.fsf@kernel.org>
- <20261112145254.GL738765@nvidia.com> <yq5abj7tm7q4.fsf@kernel.org>
- <20261113145249.GA3706007@nvidia.com>
-Date: Fri, 13 Nov 2026 22:08:06 +0530
-Message-ID: <yq5a5wy0n0up.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XPh8lR4z
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C2191143D;
+	Fri, 13 Nov 2026 08:40:16 -0800 (PST)
+Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 781C93F673;
+	Fri, 13 Nov 2026 08:40:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794588019; bh=1zidGf96h2mILbQOIPvQvH9eE0PFWLwBTyMugXxtTL4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XPh8lR4z4sGOr6mc4nQmdxCkus7p7kE/+H+/rLmcfw3HxIpswM+njx6Syluzaz/ze
+	 05XTW09R9RvMuuTRSunsyOCczODX5k9giTJzyZxEZLII0ZN+dyCy/UIr/JAQ0N/IVq
+	 kdwS1SAyCKpQDILcvHcFg8Q5vEdb44ljRsxG/D8k=
+Message-ID: <adc28bdc-ced8-4627-8ec7-23b767e7d445@arm.com>
+Date: Fri, 13 Nov 2026 16:40:12 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -87,99 +53,181 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/12] KVM: arm64: CCA: Tear down RTTs
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <20261111145758.217946-8-steven.price@arm.com>
+ <e1690e53-70fb-47fe-bd06-4758b1e196d2@arm.com>
+ <6c362b9e-6ac3-4cbb-8e9d-d666f87ef8c2@arm.com>
+ <020d220a-6f21-46a9-a0d6-51e56a7b3a5a@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <020d220a-6f21-46a9-a0d6-51e56a7b3a5a@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On 13/11/2026 16:26, Suzuki K Poulose wrote:
+> On 13/11/2026 15:05, Steven Price wrote:
+>> On 13/11/2026 01:04, Suzuki K Poulose wrote:
+>>> On 11/11/2026 14:57, Steven Price wrote:
+>>>> The RMM owns the stage 2 page tables for a realm, and KVM must request
+>>>> that the RMM creates/destroys entries as necessary. The physical pages
+>>>> to store the page tables are delegated to the realm as required, and
+>>>> can
+>>>> be undelegated when no longer used.
+>>>>
+>>>> Creating new RTTs is the easy part, tearing down is a little more
+>>>> tricky. The result of realm_rtt_destroy() can be used to effectively
+>>>> walk the tree and destroy the entries (undelegating pages that were
+>>>> given to the realm).
+>>>>
+>>>> Tear down a created Realm whether it is still new or has been
+>>>> activated.
+>>>> Unmap the Realm IPA space once during stage-2 teardown. Defer
+>>>> destruction of non-root RTTs until final Realm destruction, after
+>>>> REALM_TERMINATE and before destroying the RD; root RTTs remain until
+>>>> the
+>>>> RD has gone away.
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>>
+> 
+> ...
+> 
+>>>>      #endif /* __ASM_KVM_RMI_H */
+>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>>> index 9df3f8d5b4ef..be014f6c00e7 100644
+>>>> --- a/arch/arm64/kvm/mmu.c
+>>>> +++ b/arch/arm64/kvm/mmu.c
+>>>> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
+>>>> kvm_s2_mmu *mmu, unsigned long t
+>>>>        return err;
+>>>>    }
+> 
+> ...
+> 
+>>>>    void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>>>>    {
+>>>> -    kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>>> +    if (kvm_realm_is_created(kvm))
+>>>> +        kvm_realm_uninit_stage2(&kvm->arch.mmu);
+>>>> +    else
+>>>> +        kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>>
+>>> We added kvm_free_stage2_pgd() from kvm_destroy_realm() for Realms in
+>>> the previous patch. Should we move that here since, this is where we
+>>>
+>>> 1. Deal with tearing down stage2
+>>> 2. And more importantly we are skipping it for Realms.
+>>
+>> I'm not quite sure what you're asking for here. We can't free the stage2
+>> PGD while the realm is existing (because the RMM has the pages) - so we
+>> defer it.
+> 
+> I understand. My point is, we are deferring the stage2 free for Realm
+> in this patch, without explicitly showing where it is done. We have
+> introduced that as part of kvm_destroy_realm() in Patch 6.
+> 
+> My recommendation is to add kvm_free_stage2_pgd() to kvm_destroy_realm()
+> in this patch, where we are showing when this is deferred to. e.g.,
+> this patch functionally leaves the reader with no clue when this is
+> actually freed.
+> 
+> Does that make sense ?
 
-> On Fri, Nov 13, 2026 at 02:24:59PM +0530, Aneesh Kumar K.V wrote:
->> Jason Gunthorpe <jgg@nvidia.com> writes:
->> 
->> > On Thu, Nov 12, 2026 at 03:07:43PM +0530, Aneesh Kumar K.V wrote:
+Ah, yes move the code between patches - I thought you were suggesting
+somehow moving the code between functions (hence I was very confused).
 
- [ ... 153 lines skipped ... ] 
+Yes, I can move the kvm_destroy_realm() code changes into this patch.
 
-> IMHO, leave everything alone as is today. We can make it work well
-> enough as is.
->
-> Make a ECN for a 1.3 opt in broadly like the above that fits better
-> into how I sketched the kernel uAPI. Do this once we all agree to the
-> new uAPI. The kernel will always try to use this new mode if RMM
-> supports it and userspace gets a better 1.3 experiance.
->
+Thanks,
+Steve
 
-This would be the below sequence right?
+> 
+>>
+>>>>        kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>>>>    }
+>>>>    diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>>>> index 69c628cfb6c7..b904e6541fb0 100644
+>>>> --- a/arch/arm64/kvm/rmi.c
+>>>> +++ b/arch/arm64/kvm/rmi.c
+>>>> @@ -11,16 +11,193 @@
+>>>>    #include <asm/kvm_pgtable.h>
+>>>>    #include <asm/virt.h>
+>>>>    +static inline unsigned long rmi_rtt_level_mapsize(int level)
+>>>> +{
+>>>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+>>>> +        return PAGE_SIZE;
+>>>> +
+>>>> +    return (1UL << ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
+>>>> +}
+>>>> +
+>>>
+>>> We agreed to use kvm_granule_size() instead of this ?
+>>>
+>>> https://lore.kernel.org/all/cb183290-3fee-4535-aa3e-5cc172c2323a@arm.com
+>>
+>> That was a screw-up when I was squashing fixes back in - the next patch
+>> removes the code. I'll fix this up in the next version so it never
+>> appears. Thanks for pointing it out.
+>>
+>>>>    u32 kvm_rmm_ipa_limit(void)
+>>>>    {
+>>>>        return u64_get_bits(rmi_feat_reg(0),
+>>>> RMI_FEATURE_REGISTER_0_S2SZ);
+>>>>    }
+>>>>    +static int get_start_level(struct realm *realm)
+>>>> +{
+>>>> +    return 4 - max(2, stage2_pgtable_levels(realm->ia_bits));
+>>>
+>>> I don't think we need this "max()". ia_bits is guaranteed to be
+>>>> = 32bit (ARM64_MIN_PARANGE_BITS, see kvm_init_ipa_range()), implying
+>>> that we have at least 2 levels on all page sizes.
+>>
+>> Ah, very true - Sashiko complained, but I hadn't noticed
+>> ARM64_MIN_PARANGE_BITS provided an effective minimum. I'll remove the
+>> max() and add a comment.
+>>
+>>>> +}
+>>>> +
+>>>> +static void free_rtt(phys_addr_t phys)
+>>>> +{
+>>>> +    kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>>>> +    if (rmi_free_delegated_page(phys))
+>>>> +        kvm_account_pgtable_pages(phys_to_virt(phys), 1);
+>>>
+>>> Is there a reason why remove the account before freeing ? Could we do
+>>> this after we have reclaimed it ?
+>>
+>> Sashiko again:
+>>
+>>> Does calling kvm_account_pgtable_pages() after rmi_free_delegated_page()
+>>> access the page after it has already been freed and uncharged from its
+>>> memcg?
+>>
+>> Basically the problem is that rmi_free_delegated_page() frees the page
+>> back to the allocator. So doing the account after freeing means that
+>> technically the page could have been reused.
+> 
+> Thanks, for the explanation, that makes sense.
+> 
+> Cheers
+> Suzuki
+> 
 
-
-Host                              RMM                              Device
-|                                 |                                  |
-| RMI_PDEV_CREATE(No slot)        |                                  |
-| NEW: enable multikey flow       |                                  |
-|-------------------------------->|                                  |
-|                                 |                                  |
-| RMI_PDEV_COMMUNICATE loop       |                                  |
-|-------------------------------->|                                  |
-|                                 | GET_VERSION / VERSION            |
-|                                 |<-------------------------------->|
-|                                 | GET_CAPABILITIES / CAPABILITIES  |
-|                                 |<-------------------------------->|
-|                                 | NEGOTIATE_ALGORITHMS / ALGORITHMS|
-|                                 |<-------------------------------->|
-| Cache VCA exported by RMM       |                                  |
-|<--------------------------------|                                  |
-|                                 |                                  |
-|              Require MULTI_KEY_CONN_RSP = true                     |
-|                                 |                                  |
-|                                 | GET_DIGESTS / DIGESTS            |
-|                                 |<-------------------------------->|
-| NEW: cache complete discovery   | Retain DIGESTS in signing        |
-| messages exported by RMM        | transcript                       |
-|<--------------------------------|                                  |
-|                                 |                                  |
-| NEW: request certificate slot 0 |                                  |
-|-------------------------------->|                                  |
-| RMI_PDEV_COMMUNICATE loop       | GET_CERTIFICATE(slot 0) /        |
-|-------------------------------->| CERTIFICATE response chunks      |
-|                                 |<-------------------------------->|
-| Cache chain exported by RMM     | Check against slot 0's digest    |
-|<--------------------------------|                                  |
-|                                 |                                  |
-| NEW: request certificate slot 1 |                                  |
-|-------------------------------->|                                  |
-| RMI_PDEV_COMMUNICATE loop       | GET_CERTIFICATE(slot 1) /        |
-|-------------------------------->| CERTIFICATE response chunks      |
-|                                 |<-------------------------------->|
-| Cache chain exported by RMM     | Check against slot 1's digest    |
-|<--------------------------------|                                  |
-|                                 |                                  |
-|             Discovery complete; waiting for public key             |
-|             Chains and DIGESTS are good                            |
-|                                 |                                  |
-| Extract slot S's leaf key       |                                  |
-| RMI_PDEV_SET_PUBKEY(key S)      |                                  |
-|-------------------------------->|                                  |
-|                                 |                                  |
-| RMI_PDEV_COMMUNICATE loop       | KEY_EXCHANGE(slot S)             |
-|-------------------------------->|--------------------------------->|
-|                                 | KEY_EXCHANGE_RSP                 |
-|                                 |<---------------------------------|
-|                                 | Verify signature using key S     |
-|                                 | over:                            |
-|                                 |   VCA                            |
-|                                 |   DIGESTS                        |
-|                                 |   slot S's chain hash            |
-|                                 |   key-exchange messages          |
-|                                 |                                  |
-| NEW: cache complete             |                                  |
-| KEY_EXCHANGE request and        |                                  |
-| KEY_EXCHANGE_RSP, with signature|                                  |
-|<--------------------------------|                                  |
-|                                 |                                  |
-|                                 | FINISH / FINISH_RSP              |
-| Relay                           |<-------------------------------->|
-|                                 |                                  |
-|                         PDEV_READY                                 |
-|                  Secure session established                        |
-|                                 |                                  |
-|                                 |                                  |
-
--aneesh
