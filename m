@@ -1,49 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794570588;
-	b=DwtBdD+OLc2WNi6BNLhTHDcPcETlZyKh95G9rVMbyoAMZs9XzWZpMfCR1TtKv+oGvNcl
-	 Q9159Q7Dc65cBv/GYSUaiHsKMzstOyv5lvRJwzxtppT1TfYR5BPBjrr4+Kx3zuzmvLv2r
-	 k4iUoME/pPqUtuIb3GvFan7DkPpjYIx9deA73CnBox4bHiJlbsUJ1fzOeiS37Y0hukW/Y
-	 WVP9hSBpXwa8cC3mkt8aUn92eAdZWvx1fUiYi7iLs/NFLwydg1JgmacYNs1gbQ5BrqAUC
-	 iporjPzIFLrZXo01Z5zYhXcP5GNVdPHMIZdjm/MwZLX0MNXVnIR4qwOtvNRMDIiRLyg==
+	t=1794576365;
+	b=svEF3Eog4TeFaWradFW03YpFTHkcqSbN3xBlI7R8hQxH1cSOtW8AjIfCv16Y90we1qhv
+	 Al/28iuXTZjI1uNnKfa5e0m8dCAyFpN2eE8nn5rOSr+lm815ZPG9DFJ0faZVGBJHrvxfZ
+	 Ij96BW+IXjINscrk6UCECgv81CJyEwjGrwBvWqJcY73TW2i0/HyWL5BgjUXYRAXDSlXh5
+	 tbvk1Ry3aABrGxGrjwv2ANnirDrPGbbJ0GQyw1yCWUVDh5zosyKKD5S9h+SxmZqZ6g9TH
+	 aUrPxkdO5izQAdpMjiry5YwjrQtsJJTUyP9Is73J91SbToS+Hq+k9ubfE2g9uUllYaw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794570588;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=PDXGfWB4PZogCYntKNGgT7hTDVutfH++L88sgu7Hiws=;
-	b=yJvzY2QjgOao+3Qpg19uh0QnRFd7CDRG5YuocB7nuAgs5Lv+0rnDTFJOzSk198yl33sZ
-	 HbGT3mQQ994W7qkUZ3T1tUDYq1wxEGZ+0NKiNHpg1lvaq6MZok0Ktb1E/hQgzrHmj+20I
-	 tg/roBQgKpKS2JzGLvd407b/1yL1wRJpBvI1hzki1yLIBzuN+Oaz+vdNy4AKfZB08Cfs4
-	 PzD6dHlcJ0PEZIz9a73Hxcz5EyYxLWVSaMhwKa3t//ga9pDDYqhlVRGdfF877uPmSdoOn
-	 QqjN5e+AehCJCfsIwR9NMyx8yocgPxhACkfNtYiuT8LFsK6o3DCJjjpWx1AtUDJwKsw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794576365;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=uozLgHIJcCRVIWGDkYXRUzxamxNdBt+/LrMuLz+mwMI=;
+	b=MNRWOWgpgTM6WEZdUrMIRJ70dj9YfhvkvIzVKLBL9g/kKBilz5jBrLSkEdxAAVCwPJtK
+	 WG02fP3z7dp6ra0iYVdejQ2/Tz6CUKB1vmOX3esDDa3GUmIrDC4VXrbetblotOZH+gI1N
+	 aVUsAf/mrsRVSt+Z4Vhln1xIL2X/drddsgbAoA7IndwxQaNraE2RN/VMzGlC7/m/IAY/a
+	 S+M4p8l5eGpCmjoK8gM4aEsbzgEG4Fq3+oftL4aRsDqsFBUwPlT65ZebVakfcbSPDCYJD
+	 Gzhcfpejz/5M+tfNhzogU4qmCn1HQ1sAS1vOr/DvW0uIAi7QB6zGbjw/yiya8NguLew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d9PNrozM;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7347E606A31C;
-	Fri, 13 Nov 2026 11:49:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7347E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gduD1r5A;
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2ED606A332
+	for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 13:26:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A2ED606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d9PNrozM
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 926252F;
-	Fri, 13 Nov 2026 03:49:42 -0800 (PST)
-Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6ABAE3F85F;
-	Fri, 13 Nov 2026 03:49:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794570585; bh=U3MSbDzd0AoPEKAIE+49xX+i32d6XfNe3/DShPyZg/E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d9PNrozMFDmUla99J4Yoh5+4HUNgGxTEn9+mEf4To874n2aUoByE3QRP/x/XrYgD3
-	 lBvVKh1SuIIL6rPr30Qe2vhvIgU+TpHjxaqL82fBpzjytUEktPV4wchettmIgNd282
-	 HyQOoi6z1NTm8c1CmIg78h1plo0xyDQqEHByEC5A=
-Message-ID: <f09683c5-0bd9-4a59-b860-0c3bafa52da6@arm.com>
-Date: Fri, 13 Nov 2026 11:49:37 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gduD1r5A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794576364; x=1826112364;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JHDAA9GQ4cle8mcEUojmH66XcPzPvCOf30Osct56EHk=;
+  b=gduD1r5AnvwflVvtZveQnXzKMIvXEzKXzhs1ZHf/HFwdsNAyr8Wzk4BE
+   JnKkBXo78AVaPLvrkmxvV//e/rqyaBy+9JVEaWoAJUWzTEUahOelGJ9u3
+   iJUYG9cmrWHaYElzCJXMs/MEnMAMRbRPekPYH3y467QmpUbyjRDIcjTE0
+   QO4CjYDddHiw5ODVLLXaiRBnBLw9QJ9n9o3WJ3+lWzbwJdNJk/TBfeO2m
+   ijmFYeuLy4KyOUPBt6oEaw66BRPdTU9xW6e9mSbKHhHQB3QVUUQwud1HE
+   VxKvvOE4Ctaiz1z7xFHXrTQzXDVxR4j1q9BBGqL6j+nefvJ7D165m9plB
+   A==;
+X-CSE-ConnectionGUID: b9aQcxD6QymsRmn5sCLaMw==
+X-CSE-MsgGUID: Lp8Bn/9DSie7iZygpweUzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3391429"
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="3391429"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 05:26:04 -0800
+X-CSE-ConnectionGUID: Er+W26QyRNC/UrHD4NE/dg==
+X-CSE-MsgGUID: QkWApvgoRmGXBcHIZhw0QA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="10698097"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa011.fm.intel.com with ESMTP; 13 Nov 2026 05:25:58 -0800
+Date: Fri, 13 Nov 2026 21:17:42 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Ankit Agrawal <ankita@nvidia.com>
+Cc: linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dave@stgolabs.net, jic23@kernel.org,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, jgg@nvidia.com, aneesh.kumar@kernel.org,
+	aik@amd.com, iweiny@kernel.org, ming.li@zohomail.com,
+	icheng@nvidia.com, bhelgaas@google.com, smadhavan@nvidia.com,
+	ilpo.jarvinen@linux.intel.com,
+	Smita.KoralahalliChannabasappa@amd.com,
+	andriy.shevchenko@linux.intel.com, linux-coco@lists.linux.dev,
+	terry.bowman@amd.com, nik.borisov@suse.com, brads@mainlining.org,
+	lukas@wunner.de, rrichter@amd.com, gourry@gourry.net
+Subject: Re: [RFC PATCH v2 1/5] PCI/TSM: Create MMIO descriptors via TDISP
+ Report
+Message-ID: <avcN9pz4mCRKA5zM@yilunxu-OptiPlex-7050>
+References: <20261105152909.53452-1-ankita@nvidia.com>
+ <20261105152909.53452-2-ankita@nvidia.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -53,216 +89,169 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/12] KVM: arm64: CCA: Check RMI support and features
- at init
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261111145758.217946-1-steven.price@arm.com>
- <20261111145758.217946-5-steven.price@arm.com>
- <4ccf4e34-bf7e-48da-bd70-acfed1e5ce04@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <4ccf4e34-bf7e-48da-bd70-acfed1e5ce04@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105152909.53452-2-ankita@nvidia.com>
 
-On 12/11/2026 16:39, Suzuki K Poulose wrote:
-> Hi Steven
+On Thu, Nov 05, 2026 at 03:29:05PM +0000, Ankit Agrawal wrote:
+> After pci_tsm_bind() and pci_tsm_lock() the low level TSM driver is
+> expected to populate the TDISP GET_DEVICE_INTERFACE_REPORT response
+> payload for the device.
 > 
-> On 11/11/2026 14:57, Steven Price wrote:
->> Wire RMI initialization into KVM startup and select ARM_RMM_RMI.
->> Proceed only when RMM mode is selected and RMI is available. If
->> KVM uses LPA2, require RMM LPA2 support. Also require SHA-256
->> measurement support.
->>
->> Define a disabled kvm_rmi_is_available static key for later Realm
->> capability checks. The key is enabled after the remaining Realm
->> support is in place.
+> Add pci_tsm_mmio_alloc()/pci_tsm_mmio_free() to parse that report into
+> a set of encrypted MMIO ranges, and pci_tsm_mmio_setup()/
+> pci_tsm_mmio_teardown() to mark those ranges as encrypted in iomem via
+> a new encrypted_iomem_resource tree (IORES_DESC_ENCRYPTED). With those
+> descriptors the TSM driver can use pci_tsm_mmio_setup() to inform
+> ioremap() how to map the device per the device expectations. The VM
+> is expected to validate the interface with the relying party before
+> accepting the device for operation.
 > 
-> Given all of this is only used for the UABI (KVM_CAP_ARM_RMI and
-> others), does it make sense to move this patch to the next batch
-> of the CCA support and keep this only to sort out the memory
-> management support ? Similarly for the Patch 1 ?
+> pci_tsm_mmio_alloc() also recovers the obfuscated starting address for
+> each encrypted MMIO range, since the VM is never disclosed the HPA
+> that correlates to the GPA of the device's MMIO. The obfuscated
 
-True, I can move this patch (and patch 1) out and include it as part of
-a future series.
+I think we need to make clear why we need to parse the obfuscated
+addresses like this. IIUC what the guest really needs are the BarID &
+the offset within the Bar, so that it knows exactly where the MMIO range
+lies. That requires the obfuscation never affects the address bits
+for the in-Bar offset. Thus the MRO should be Bar aligned. And since
+there is only one MRO across all MMIO ranges, it has to be aligned to the
+largest Bar size.
+
+> address is BAR aligned.
+
+The obfuscated address is not BAR aligned, the MRO should be Bar aligned.
+
+> 
+> BAR alignment is not mandated by the PCI TDISP specification. So this
+> relies on the TSM implementation: the MMIO reporting offset (MRO) it
+> programs must be a multiple of the largest BAR size so that the
+> in-BAR offset of a reported range can be recovered as
+> (reported address % BAR size). Arm CCA specifies this in DEN0137
+> section A9.6.2 ("This algorithm assumes that the MRO value is a
+> multiple of the BAR size") and recommends the RMM pick
+> MRO = x * 2^n with 2^n >= the largest BAR size.
+> 
+
+I think the following doesn't belong to the changelog, could be put
+under ---
+
+> Based on an original patch by Aneesh Kumar K.V [1], and cherry-picked
+> from Dan Williams' upstream commit [2]. Major functional differences
+> from Dan's posting is due to the lack of evidence-store infrastructure
+> yet (device_evidence / DEVICE_EVIDENCE_TYPE_REPORT). The
+> pci_tsm_mmio_alloc() takes the raw report bytes directly from the caller
+> instead of pulling them from a device evidence store.
+> 
+> Link: https://lore.kernel.org/linux-coco/20251117140007.122062-8-aneesh.kumar@kernel.org/ [1]
+> Link: https://lore.kernel.org/all/20260705220819.2472765-15-djbw@kernel.org/ [2]
+> 
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> Reviewed-by: Bradley Morgan <brads@mainlining.org>
+> ---
+>  drivers/pci/tsm.c       | 239 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/ioport.h  |   2 +
+>  include/linux/pci-tsm.h |  33 ++++++
+>  kernel/resource.c       |   8 ++
+>  4 files changed, 282 insertions(+)
+> 
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> index 5fdcd7f2e820..d074bfd18d40 100644
+> --- a/drivers/pci/tsm.c
+> +++ b/drivers/pci/tsm.c
+> @@ -9,11 +9,16 @@
+>  #define dev_fmt(fmt) "PCI/TSM: " fmt
+>  
+>  #include <linux/bitfield.h>
+> +#include <linux/overflow.h>
+>  #include <linux/pci.h>
+>  #include <linux/pci-doe.h>
+>  #include <linux/pci-tsm.h>
+> +#include <linux/range.h>
+> +#include <linux/sizes.h>
+> +#include <linux/slab.h>
+>  #include <linux/sysfs.h>
+>  #include <linux/tsm.h>
+> +#include <linux/unaligned.h>
+
+Didn't find it needed.
+
+>  #include <linux/xarray.h>
+>  #include "pci.h"
+
+[...]
+
+> +int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
+> +{
+> +	int i;
+> +
+> +	device_lock_assert(&pdev->dev);
+> +	if (pdev->dev.driver)
+> +		return -EBUSY;
+> +
+> +	for (i = 0; i < mmio->nr; i++) {
+> +		struct resource *res = pci_tsm_mmio_resource(mmio, i);
+> +		int j;
+> +
+> +		if (resource_size(res) == 0 || !(res->flags & IORESOURCE_MEM))
+> +			break;
+> +
+> +		/* Only require the caller to set the range, init remainder */
+> +		*res = DEFINE_RES_NAMED_DESC(res->start, resource_size(res),
+> +					     pci_name(pdev), IORESOURCE_MEM,
+> +					     IORES_DESC_ENCRYPTED);
+> +
+> +		for (j = 0; j < PCI_NUM_RESOURCES; j++)
+
+You've changed to pci_dev_for_each_resource in Patch 3, why not change
+it here? Then Patch 3 would be clearer.
+
+> +			if (resource_contains(pci_resource_n(pdev, j), res))
+> +				break;
+> +
+> +		/* Request is outside of device MMIO */
+> +		if (j >= PCI_NUM_RESOURCES)
+> +			break;
+> +
+> +		if (insert_resource(&encrypted_iomem_resource, res) != 0)
+> +			break;
+> +	}
+> +
+> +	if (i == mmio->nr)
+> +		return 0;
+> +
+> +	mmio_teardown(mmio, i);
+> +
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_mmio_setup);
+> +
+
+[...]
+
+> +/**
+> + * struct pci_tsm_mmio_entry - an encrypted MMIO range
+> + * @res: MMIO address range (typically Guest Physical Address, GPA)
+> + * @tsm_offset: Host Physical Address, HPA obfuscation offset added by the TSM.
+> + *		Translates report addresses to GPA.
+> + */
+> +struct pci_tsm_mmio_entry {
+> +	struct resource res;
+> +	u64 tsm_offset;
+
+As mentioned [1], could you replace tsm_offset by mmio_range_index
+according to this patch [2]
+
+[1] https://lore.kernel.org/all/atIY1Joa%2F%2F+hCRcr@yilunxu-OptiPlex-7050/
+[2] https://lore.kernel.org/all/20260924041032.1096569-8-zhenzhong.duan@intel.com/
+
+
+Others LGTM.
+
+BTW: Is it possible we merge this patch alone when we collect enough
+reviews? This is about PCIe TSM and several other series depend on it.
+
 
 Thanks,
-Steve
-
-> Cheers
-> Suzuki
-> 
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->>
->> ---
->> Changes since v1:
->> - Combine the separate v1 RMI availability and LPA2/SHA-256 feature
->>    check patches into one initialization patch.
->> ---
->>   arch/arm64/include/asm/kvm_rmi.h |  2 ++
->>   arch/arm64/include/asm/virt.h    |  1 +
->>   arch/arm64/kvm/Kconfig           |  1 +
->>   arch/arm64/kvm/Makefile          |  2 +-
->>   arch/arm64/kvm/arm.c             |  5 ++++
->>   arch/arm64/kvm/rmi.c             | 42 ++++++++++++++++++++++++++++++++
->>   include/linux/arm-rmi-cmds.h     |  5 ++++
->>   7 files changed, 57 insertions(+), 1 deletion(-)
->>   create mode 100644 arch/arm64/kvm/rmi.c
->>
->> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
->> asm/kvm_rmi.h
->> index 67f16793b4d0..3194daaacf2b 100644
->> --- a/arch/arm64/include/asm/kvm_rmi.h
->> +++ b/arch/arm64/include/asm/kvm_rmi.h
->> @@ -56,4 +56,6 @@ struct realm {
->>       enum realm_state state;
->>   };
->>   +void kvm_init_rmi(void);
->> +
->>   #endif /* __ASM_KVM_RMI_H */
->> diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/
->> virt.h
->> index b546703c3ab9..92cec42952f4 100644
->> --- a/arch/arm64/include/asm/virt.h
->> +++ b/arch/arm64/include/asm/virt.h
->> @@ -87,6 +87,7 @@ void __hyp_reset_vectors(void);
->>   bool is_kvm_arm_initialised(void);
->>     DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
->> +DECLARE_STATIC_KEY_FALSE(kvm_rmi_is_available);
->>     static inline bool is_pkvm_initialized(void)
->>   {
->> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
->> index cecea0820e52..d067063a3686 100644
->> --- a/arch/arm64/kvm/Kconfig
->> +++ b/arch/arm64/kvm/Kconfig
->> @@ -34,6 +34,7 @@ menuconfig KVM
->>       select GUEST_PERF_EVENTS if PERF_EVENTS
->>       select KVM_GUEST_MEMFD
->>       select KVM_GENERIC_PRE_FAULT_MEMORY
->> +    select ARM_RMM_RMI
->>       help
->>         Support hosting virtualized guest machines.
->>   diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
->> index 7aaeeb84e788..66a719ab5b6b 100644
->> --- a/arch/arm64/kvm/Makefile
->> +++ b/arch/arm64/kvm/Makefile
->> @@ -16,7 +16,7 @@ CFLAGS_handle_exit.o += -Wno-override-init
->>   kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
->>        inject_fault.o va_layout.o handle_exit.o config.o \
->>        guest.o debug.o reset.o sys_regs.o stacktrace.o \
->> -     vgic-sys-reg-v3.o fpsimd.o pkvm.o \
->> +     vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o \
->>        arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
->>        vgic/vgic.o vgic/vgic-init.o \
->>        vgic/vgic-irqfd.o vgic/vgic-v2.o \
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index e06cc390a3d6..318e8a4b19f8 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -42,6 +42,7 @@
->>   #include <asm/kvm_nested.h>
->>   #include <asm/kvm_pkvm.h>
->>   #include <asm/kvm_ptrauth.h>
->> +#include <asm/kvm_rmi.h>
->>   #include <asm/sections.h>
->>   #include <asm/stacktrace/nvhe.h>
->>   @@ -112,6 +113,8 @@ long kvm_get_cap_for_kvm_ioctl(unsigned int
->> ioctl, long *ext)
->>       return -EINVAL;
->>   }
->>   +DEFINE_STATIC_KEY_FALSE(kvm_rmi_is_available);
->> +
->>   DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
->>     DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_base);
->> @@ -3272,6 +3275,8 @@ static __init int kvm_arm_init(void)
->>         in_hyp_mode = is_kernel_in_hyp_mode();
->>   +    kvm_init_rmi();
->> +
->>       if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
->>           cpus_have_final_cap(ARM64_WORKAROUND_1508412))
->>           kvm_info("Guests without required CPU erratum workarounds
->> can deadlock system!\n" \
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> new file mode 100644
->> index 000000000000..f4c45021c6f7
->> --- /dev/null
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -0,0 +1,42 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2023-2026 ARM Ltd.
->> + */
->> +
->> +#include <linux/arm-rmi-cmds.h>
->> +#include <linux/kvm_host.h>
->> +
->> +#include <asm/kvm_pgtable.h>
->> +#include <asm/virt.h>
->> +
->> +static int rmm_check_features(void)
->> +{
->> +    if (kvm_lpa2_is_enabled() &&
->> +        !rmi_has_feature(0, RMI_FEATURE_REGISTER_0_LPA2)) {
->> +        kvm_err("RMM doesn't support LPA2\n");
->> +        return -ENXIO;
->> +    }
->> +
->> +    if (!rmi_has_feature(1, RMI_FEATURE_REGISTER_1_HASH_SHA_256)) {
->> +        kvm_err("RMM doesn't support SHA-256 measurements\n");
->> +        return -ENXIO;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> +void kvm_init_rmi(void)
->> +{
->> +    if (kvm_get_mode() != KVM_MODE_RMM)
->> +        return;
->> +
->> +    if (!is_rmi_available()) {
->> +        kvm_info("Realm VM support is disabled because RMI is not
->> available\n");
->> +        return;
->> +    }
->> +
->> +    if (rmm_check_features())
->> +        return;
->> +
->> +    /* Future patch will enable static branch kvm_rmi_is_available */
->> +}
->> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
->> index a84e50ac851c..6f43eac7c7be 100644
->> --- a/include/linux/arm-rmi-cmds.h
->> +++ b/include/linux/arm-rmi-cmds.h
->> @@ -67,6 +67,11 @@ static __always_inline void
->> rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *reg
->>     unsigned long rmi_feat_reg(unsigned int index);
->>   +static inline bool rmi_has_feature(unsigned int index, unsigned
->> long feature)
->> +{
->> +    return !!(rmi_feat_reg(index) & feature);
->> +}
->> +
->>   int rmi_delegate_range(phys_addr_t phys, unsigned long size,
->>                  phys_addr_t *out_phys);
->>   int rmi_undelegate_range(phys_addr_t phys, unsigned long size);
-> 
-
+Yilun
