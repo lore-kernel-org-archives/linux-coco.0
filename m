@@ -1,83 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794537692;
-	b=IW18zF7L8L4A0XGTOr9PIabHSR2ED5em3R/bnIoIi79Z1OIefqVFUPlY0cpJ3V/Oh5mP
-	 p4qXLltx3F4MZbS0B8ITugNp75z/Yl35GlEKLEgd3slvSxkGu0Wl9h6YqrAxqdLxQXh0o
-	 vmG/fkTZdUPk0Eq8v7Vxmain410OwXYw5BLcT4ZByZ5dZaReXel+jpxMa7F1SzXdEzI2/
-	 BEx0KI5IJ3aeCy17k8oi6L9R5slvfAWBwKJrYdylb6GoLESnlMd3yYMpljwtUccHywPv2
-	 CcujnqaNYi5XgCBMstDkbDa3bSsmAyn57hGzSFsME919C6eLWdF7+vZTt5M6Klze3/g==
+	t=1794548999;
+	b=eic1KbWdu2yU+IufpTmLfzXpKSkMs/C+unULU3utQuRnHjGcgJxA3eK5rLnpfFP4QA0y
+	 c5F5yLVttM7MDr8plxxzK+d06B2ZDgm6yOPRrAzTE5LG571vQZzlBlNV2efFU3FW7RjkV
+	 vYNDqglvD/2kIm6jW4IFv0DkEPrAx2EDN5RA0tzUCYnkPulgtnc3dcphccmDT6yMn+7jx
+	 KFZ8N76fCa+1R0fsoD8DA2hCDzGdWbb/p7c3V1RMHhXHPLgY0Xmgu5oJNBeqW+hbvGGOX
+	 qfXtMZ/lT+NCsNQsgy6SSU6bAZV1oOAZ8A3EC3qQzfYXK7cg8k3adW51DYpOd89fo9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794537692;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=gBLRbdIh+LOD0PevJaJe8TSF6KckpKn/iVBrS7ZcSAc=;
-	b=i+XAbYxIMpsJDnGyXuHj3pRn+WElb0JxOGelEk2DzW/Oogu3dKhhc2dN21Geiadlr53e
-	 kW58QgihO8il/cmheGnT9mBMv8v7z5D96icpM9Yd8lGstRcHyyml9dWbFtdyWuVlQLoSx
-	 C4v021mYBQHKqZx92jt28QXX0oh88mlxwAqe5CFheUX0Qr9+ZZIH9S3NWR9KiHJzFfIGp
-	 jaEA0D9tgZ4/5tkRlwuE7el6ZMycX5SKG6zC91V2T7Zj42kRKkPls6vEMqBW3esdbIIuw
-	 0NAOBlPco3WQcLOFTSSwjMw9+5Spr1RGLNXuxvtnJkwMhGjCADzDL+mrpy7OzcnoBdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794548999;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=1QCHCXTpwhaXOHfzz5l15bpjdkFUiznzxAOCYs8/1D0=;
+	b=tPwp9jUs9ypXgFTNorDrTFFVWxnlPxGW2loTel60SRHCfHNGCWAoqNbh/MW1a7FezTmJ
+	 cekm66ohFho2r2s15PxHDBJF+WZAtr9IjzJuwxzzB9E6rkqVT1n97tYpV2gIZ1UnbcC2r
+	 Sy8WYCoEbJ/ZnXcXAAi5D7l3/GSQS5wDUupzbyGQXYf5t/Ag3lnVjo7RYB8CPcIlXuSLT
+	 qqqbFfQWZ+IDfcSUN0yyDosISuoa+DjFe+jzCizCJi/m4FLM/NhKUNLeV8gJkWrfxkomm
+	 ZJecprt5F+jvxIv2M1uUCFx7xfDf/bXXw3E8fPERMwpwnwONvvN2nJ411OLjD7ukEpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mn1Qeguw;
-	arc=none smtp.remote-ip=192.198.163.15
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n+IV7MCg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE13606A88A
-	for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 02:41:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FE13606A88A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BFD606A31C;
+	Fri, 13 Nov 2026 05:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mn1Qeguw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794537691; x=1826073691;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4V2SgnKTNwhI09clxRTUJWfBPyNHYEtlXfaPtxpTjKY=;
-  b=mn1QeguweeCN7YXRr8opbSbxKl4TrEBZJ0EM5MXpc2y/ffyT8/2if9Xf
-   AZwV7nYQOajHFhW1i3xuprikZ9Wc1BU4wabhw3Ztn4rpXZavu3G5zkjGv
-   rKlZYhS76d4LMm0yo5ciXVObK2VDjVKciv2ljSoC/MkQJITf/Io+1i1hL
-   Cdo+RhF8bEcI16AeLN4VDpx5UMQCqSM+rpG7LV35kuLb8o72RDPJ4x9Z3
-   LgWO0Njgl4TOsOLIF0LkY62uxAQTy2y+Z0T1yfFha6PCAA3BwMdAv6qhx
-   RXOYlaEqjIGroLqSZIMIUU/7e3gbPNDury7vC7lj19WuQATeg51D90JAh
-   A==;
-X-CSE-ConnectionGUID: o0WcqD1XR3GTrfJCz/MzKg==
-X-CSE-MsgGUID: 1y55GVtdSO2wSxvRGj+1mA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3340171"
-X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="3340171"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 18:41:30 -0800
-X-CSE-ConnectionGUID: tO8JdJuiTsGKI3SvsSQqUw==
-X-CSE-MsgGUID: XXgC8xDFQTWS89ZR9B0tJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="8887034"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2026 18:41:28 -0800
-Date: Fri, 13 Nov 2026 10:33:15 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, yilun.xu@intel.com, arjan.van.de.ven@intel.com,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [RFC PATCH v2 1/2] x86/virt/seamldr: Support large TDX module
- binaries
-Message-ID: <avZ266oL0cvea157@yilunxu-OptiPlex-7050>
-References: <20261106132159.1551365-1-chao.gao@intel.com>
- <20261106132159.1551365-2-chao.gao@intel.com>
- <avShYPmuMItx/tsJ@yilunxu-OptiPlex-7050>
- <avU7Dz3IFylm7Tae@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n+IV7MCg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2A01F000C6;
+	Fri, 13 Nov 2026 05:49:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794548998;
+	bh=1QCHCXTpwhaXOHfzz5l15bpjdkFUiznzxAOCYs8/1D0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=n+IV7MCgQdlJEEHAi6QKi/kWy8yzp/3uca4izpMGuczcmGYuWXP3sYO6HEulgaSBr
+	 jiPtYks0VWhhv6b2H6VteZ5IaAhh5Zd1R7Q4rLovkGkISG7tPg3bxeb2G1DXjlB6qP
+	 VDyDvwuF4X1U7cRFjeD2owWdYNi28hs7F7wxcGqpCUmQtrw4osKtcRuZM/NooYos0O
+	 sJd4CYmm5Y50NXab3eCYjqRnjvTWUiEw4GDByC7PDQE+k0Q4B6nt+VDWI6ysFMK5zr
+	 /KLvD3AiUaFTwd3rQgKN4RRszouPPgU26Q/Db8U6YHBXoV5XrhRsmcRCyb/Io6mwFw
+	 l2Ohtqal/D2+Q==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Alexey Kardashevskiy <aik@amd.com>, iommu@lists.linux.dev
+Cc: Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v8 02/15] virt: coco: tsm: Remove the device from lookup
+ before PCI teardown
+In-Reply-To: <9eb572d7-fa3a-4734-9773-44a3fb465b6a@amd.com>
+References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
+ <20261104161632.3547423-3-aneesh.kumar@kernel.org>
+ <9eb572d7-fa3a-4734-9773-44a3fb465b6a@amd.com>
+Date: Fri, 13 Nov 2026 11:19:45 +0530
+Message-ID: <yq5ajymhmgau.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -87,130 +84,64 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avU7Dz3IFylm7Tae@intel.com>
+Content-Type: text/plain
 
-On Thu, Nov 12, 2026 at 12:05:35PM +0800, Chao Gao wrote:
-> On Thu, Nov 12, 2026 at 01:09:52AM +0800, Xu Yilun wrote:
-> >On Fri, Nov 06, 2026 at 05:21:55AM -0800, Chao Gao wrote:
-> >> The module binary is handed to P-SEAMLDR as a list of page physical
-> >> addresses in 'struct seamldr_params'. The list has 496 entries, which
-> >
-> >Is it better we specify why 496 entries?
-> >
-> >  The struct seamldr_params is contained in a 4KB page, the first 128
-> >  bytes of the page are the metadata, the rests are the list of page
-> >  phsical addresses for the module binary.
-> 
-> ...
-> 
-> >
-> >
-> >> caps a module at 496 pages.
-> >> 
-> >> TDX modules are gaining features and are about to outgrow that limit.
-> >> 
-> >> The P-SEAMLDR ABI was extended to chain the list across 4KB pages. For
-> >
-> >With the knowledge of the first 4KB page, it is nature to say the ABI
-> >extends the list to more 4KB pages.
-> >
-> >> a module over 495 pages, the last of the 496 entries points to another
-> >> page of entries instead of to a module page. The last entry of that
-> >
-> >Maybe we don't have to emphasize the 495/496? The last entry of each
-> >page points to the next page.
-> 
-> I would rather drop 496 and 495 from these paragraphs. Readers do not
-> need the exact limit here, since the code has the numbers. How about:
-> 
-> 
-> The module binary is handed to P-SEAMLDR as a list of page physical
-> addresses in 'struct seamldr_params'. The list must fit in a single 4KB
-> page along with a few other fields, which caps a module at just under
-> 2MB.
-> 
-> TDX modules are gaining features and are about to outgrow that limit.
-> 
-> The P-SEAMLDR ABI was extended to continue the list on more chained 4KB
-> pages. The last u64 of each page holds the physical address of the next
-> page in the chain.
+Alexey Kardashevskiy <aik@amd.com> writes:
 
-Yes, this flow is what I expect.
+> On 5/11/26 03:16, Aneesh Kumar K.V (Arm) wrote:
+>> PCI connect looks up a TSM by ID under pci_tsm_rwsem. Previously,
+>> tsm_unregister() released that lock after tearing down PCI state while
+>> the TSM was still in the class lookup. 
+>
+> tsm_unregister() is not touching that lock, what do I miss?
+>
 
-> 
-> >
-> >> page can point to yet another page, and so on, until every module page
-> >> is listed.
-> >> 
-> >
-> >[...]
-> >
-> >> -#define SEAMLDR_MAX_NR_MODULE_PAGES	496
-> >> +/*
-> >> + * module_pages_pa_list[] spans multiple pages. The last entry of each
-> >> + * page points to the next page and does not hold a module page, so the
-> >> + * maximum number of module pages is the array size minus one entry per
-> >> + * page.
-> >> + *
-> >> + * SEAMLDR_PARAMS_NR_PAGES is somewhat arbitrary. It allows modules of
-> >> + * up to about 32MB. Increase it if modules outgrow that.
-> >> + */
-> >> +#define SEAMLDR_PARAMS_NR_PAGES		16
-> >> +#define SEAMLDR_NR_MODULE_PA_ENTRIES	(496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
-> >
-> >The number 496 is not meaningful when the seamldr_params is no longer
-> >one page size. We need comments to explain how it is derivee. But instead
-> >of text explanation, is it better:
-> >
-> >#define SEAMLDR_NR_MODULE_PA_ENTRIES	(SEAMLDR_PARAMS_NR_PAGES * 512 - 16)
-> 
-> The 16 here would still need explaining. It would also be confusing,
-> because the macro right below subtracts a different 16
-> (SEAMLDR_PARAMS_NR_PAGES) to get SEAMLDR_MAX_NR_MODULE_PAGES.
-> 
-> >
-> >Or:
-> >
-> >#define SEAMLDR_NR_MODULE_PA_ENTRIES	\
-> >	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE -	\
-> >	  offsetof(struct seamldr_params, module_pages_pa_list)) / \
-> >	 sizeof(u64))
-> 
-> offsetof() does not work here. The macro sizes module_pages_pa_list[]
-> inside 'struct seamldr_params', where the struct is still incomplete. The
-> compiler reports:
-> 
-> 	error: invalid use of undefined type 'struct seamldr_params
-> 
-> How about:
-> 
-> /*
->  * module_pages_pa_list[] fills the rest of 'struct seamldr_params' after
->  * its first 128 bytes. The last entry of each page is reserved to point
->  * to the next page and cannot hold a module address. The last entry of
->  * the final page is never used.
->  */
-> #define SEAMLDR_NR_MODULE_PA_ENTRIES	(((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE - 128)) / sizeof(u64))
+pci_tsm_unregister(). It uses guard(rwsem_write)(&pci_tsm_rwsem), so the
+lock is released when pci_tsm_unregister() returns. We previously called
+device_unregister() only after that.
 
-Yes, that's good to me. Though 128 still needs explaination, but much
-easier than one 496 + (n-1) * 512.
+>
+>> A racing connect could then
+>> attach a new PCI context that the teardown would never see.
+>> 
+>> Remove the device from the class lookup first, then take the PCI write
+>> lock to drain in-flight operations and destroy their contexts. Drop the
+>> device reference only after PCI teardown completes.
+>> 
+>> Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Encryption")
+>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> ---
+>>   drivers/virt/coco/tsm-core.c | 22 ++++++++++++++--------
+>>   1 file changed, 14 insertions(+), 8 deletions(-)
+>> 
+>> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
+>> index e784993353d8..f79135986102 100644
+>> --- a/drivers/virt/coco/tsm-core.c
+>> +++ b/drivers/virt/coco/tsm-core.c
+>> @@ -56,26 +56,25 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
+>>   	return no_free_ptr(tsm_dev);
+>>   }
+>>   
+>> -static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
+>> -						 struct pci_tsm_ops *pci_ops)
+>> +static int tsm_register_pci(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
+>
+> Why changing a pointer to an int here as later tsm_register() converts
+> it back to a pointer?
+>
 
-> #define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
-> 
-> >
-> >> +#define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
-> >>  #define SEAMLDR_MAX_NR_SIG_PAGES	1
-> >>  
-> >>  /*
-> >> @@ -48,10 +59,10 @@ struct seamldr_params {
-> >>  	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
-> >>  	u8	reserved[104];
-> >>  	u64	module_nr_pages;
-> >> -	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
-> >> +	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
-> >>  } __packed;
-> >>  
-> >> -static_assert(sizeof(struct seamldr_params) == 4096);
-> >> +static_assert(sizeof(struct seamldr_params) == SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE);
+At the end of the series we have
+static int tsm_register_pci(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
+
+
+>
+> And I never understood what is _reset for here (so +1 for that) but
+> now we have tsm_register_pci() and pci_tsm_register() which is weird.
+> May be just open code it? Thanks,
+>
+
+How about rename that to 
+__tsm_register(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
+
+
+-aneesh
