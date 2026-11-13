@@ -1,84 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794560110;
-	b=4Lu+Iwyvq8X/X6nyQ72nuQrvcprSwxHaa4vsz3LZScWbm//oxF8BTSI6cjsmc0GvLjVs
-	 SGzqY6oV9ZPwQvxHJWyWRtl3ODRnvPgvBRFz7sU2jn+DBXIKfAyZ11NYFEgMcbmzdYpLh
-	 1FsyyEtpR7Td/b9URn91jOZHj+130/42IYt2qRxb32fDmHN6z4jzh44mVlGt0DIEGLLXR
-	 eMvGRYz6sVHZREDK079x0LOTzrI/Bz1f0hoBvmgVYDzrM6+WxgbnSvGC+EeQ4vGpO0SlH
-	 xiV0fQb+hiBNth5eTVPxrZ2T61bmnoQiJzSNm/GFRWBcxK2AnzXmZWUkCTowwWLxhYA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794560110;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=eJ31T/Lr5TEyidApeRQUGzQiBzD9JD228sfEvM4u9sg=;
-	b=zY3axuU5gDGDXo2F70NVYq8rhMxQQ2Xwdn1U9sIcpAvYjbG4659+E6M3HBQ7hNlZQyhk
-	 RYX0bpHL7tbfReZc+NwdFxz94wX8t8UMOGSQNvXTHHu7WOrhMtS5l/s4TRck6mmizVaNn
-	 SPefbxMKxXRmudpz0cX9yZxCLT0lMj+oHY8GLKi3RDRzQSwQXkRnEj9UvlJj8lj+BFKpn
-	 AhEe1p2GvGjPekYM13+ekeTqyyrz6wTajjPf53TZrpuTfT51WWpksw/4PEGueu9IOBopN
-	 HOEeTrGnkXDl0aqnBcx7X+zqi3Bxf9+ZDPR8h9U//DLAuO/gw5j8vKzw3gy09oysOVA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DkCVkZSA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794560995;
+	b=gitViazw/Vqn9zr5SLM/ZSqOlCee0u7KrUIpG9K9TqoeToDpgffJcORUYfmdWS4s0J3U
+	 Z5r+Sg9BX5rEiw+3I5ykLWf28qyLgtuDR7yvNiWlTZdHCk795AVM+GxbjFAGWzzEEFctB
+	 8cqo480haEBHBeTBE9FyaRxUEJZZDRFSp4WFGOuuJVTZNxJszwOjqejHLlZdQK0o6Rh3p
+	 vG9OrtrHEY3uieNZKczQZ71GkONtQEfDs7sAZu3rFtQoGPdbA5R1uMR+gLGGDluVIDSfK
+	 477NRtOy9a8mljkx9TfSztgd0691kt7E46G4SkDay52mSohchT6diLXGhxYLLZxwamw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794560995;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
+	b=VrGf43ikAbiSJdjXvgP/iWxyxYV3CTvia5L3YXYvAKDJSghTIluo/BRY7ML3Y53BdprK
+	 jIERT2MAIIjlrGVbc8OjeLPkJ0B1gphz/agZae5dBXJdJr63oC0T64yYK87MyqxX9Blws
+	 aLmBGZDvtrT/7yVvCWuZe6exq9WaePHEarh81qaQkQBPllMWQBQpecTL9+mlV7jDEpjPE
+	 mBJC3WlcJk6O1VoYspDftUkkKC29L+Y2jQPfMvkorowjGmw2UjW6/J01ksfhpH+/Q6DWd
+	 LpRdqrnY5lu8acGT+qvIuZdsq710InkVjReGd6+EIRjevDzXFSB5EZ/SxnwSVDRmoPw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=flashbots.net;
+	spf=pass smtp.mailfrom=flashbots.net;
+	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=VXJdAQT4;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.47
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E8C606A31C;
-	Fri, 13 Nov 2026 08:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A37606A32A
+	for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 09:09:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3A37606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DkCVkZSA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD011F000C4;
-	Fri, 13 Nov 2026 08:55:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794560110;
-	bh=eJ31T/Lr5TEyidApeRQUGzQiBzD9JD228sfEvM4u9sg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=DkCVkZSAoCpscFh6hXJ9lMZ4AtmBK4/3KrjesL144ZQswE32c9zsfPxnN51GYNbnO
-	 X8n/lnuIfuxfmRNqTIMpvyOBpZYKMMoKdwFaTxWIh4Fe0SprNnwoU+n25BrtlORCcy
-	 h69sqaegkmWGSbH7nCZnVTau+ED+6WEYxO8G5rqPLHf4yUMTtnuhXb2Krj5C3BUSJ3
-	 RPcJbKr5/6yNx7tGoBK4ZMI8TIAnHG+zZD6WaYDDDQw3CL1QAa60lz0hk/oMVz1PKD
-	 GVGOje7+zRhIBFSCKuBNcf0jD4JFy1AI+Js0jBi63gYhF8LXKHWSJVuzVULjK2kMfU
-	 00dkafaMbPT2Q==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Dave Jiang <dave.jiang@intel.com>, "Reshetova,
-	Elena" <elena.reshetova@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Jiri Pirko <jiri@resnulli.us>, "Tian,
-	Kevin" <kevin.tian@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>, "Edgecombe,
-	Rick P" <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	Alistair <alistair23@gmail.com>
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot
- zero and establish streams after acceptance
-In-Reply-To: <20261112145254.GL738765@nvidia.com>
-References: <20261102172640.GB274202@nvidia.com>
- <DS4PPFA84FA90FC31B41ECA1F6ACF6D0600E7692@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261103151643.GI274202@nvidia.com>
- <aurmtTe4ObBQhC4S@yilunxu-OptiPlex-7050>
- <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261104134119.GR274202@nvidia.com>
- <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
- <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
- <20261106193018.GK770409@nvidia.com> <yq5a5wy2qtjs.fsf@kernel.org>
- <20261112145254.GL738765@nvidia.com>
-Date: Fri, 13 Nov 2026 14:24:59 +0530
-Message-ID: <yq5abj7tm7q4.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=VXJdAQT4
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-451a49abd8aso1196043fac.3
+        for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 01:09:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794560993; cv=none;
+        d=google.com; s=arc-20260327;
+        b=U4eIa/KUktCHGUL2IR39NeWprcHhn34tvN4lCekI8FA++3BCSx7kN0p8ll6IPcjexM
+         tPGN5RhH++lk4bxUWCVTq1q+irUs9bLg9M+z4XpmlmSSxyZupinCq5FOb/2CCqUdx5zx
+         SU6TIewSZDN9lHInE0qpz88vMKuPcDMkdHRh+foWsbzrUc4P/cr9vEBKDWW71FhAyfyb
+         8mt6y7x3sDVlRhdrLaB4mAJh2UEyFVzub5/JXWlR/mIZiSn8iB8X+Ba8SJsp83RAE8w+
+         6TmM+lQlBbmnSiqiLy4jXZAIL85tYTI2VFQrZ3Dsxq0bsULHoxZef1HhuipBdZUWdyip
+         oFsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
+        fh=M9THYZZ49yDl9K+uwebjYfNcoGCOQn4AWyopo4Vuvu0=;
+        b=TtBUKNim0bXbrpipqZSpJe1BSP6bsaQVELPSm6cuxX8QffHbkCKNxl5PZ6DMs51yFe
+         Gfwk+nWbIL0+1LDhAeSEEFsMsXY0is3CDdEEcnNUdUYLtmxx/r7aPE+0jMzsPGL2FzVZ
+         wTH6SaL1+ocFCzskXsKSH0m61Af7//Kq3B8hycTkE73WLfsRDIRd4NGOuaoB9HJUoXf1
+         aaslT4u7VnDLPdQm9RzJ8uRgGj0I8/kgHG4j7F8P1C6Yv25TxQmiBi1Bh5A4FlNgvvfA
+         Ymv9zOiekNL3yotCpm6dQHd+Nd+CXVWoeUHLHC9kNf1mmZGiXUAA2SlcvaZKWGa3mRar
+         IKow==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flashbots.net; s=google; t=1794560993; x=1795165793; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
+        b=VXJdAQT4+HK6pFwBtMJQITZU7nfmW3SM+4rnF/ZoWb18SXjxeZg7psggsDgQKdSZtP
+         9/ctEQe6mA1hFhy7jKYr2SuJKGCq93yZx7y98VUat9d846nrVQpNvHkAvySBOSoZ3Tpo
+         5By+ESYSDcoqcwzjZutKq7PcnPIo5CNa4NiPj+u7SP2X173AKPjILZjuPIS6g50LogYJ
+         4vyQTD43FkrKS/hHzuUKNKU0lFSykQT5Glsf3vCy2D4qGfm3x8JUJvRLeAeZDP4aY7Qf
+         KDBZBNPIpyTVMD3CqbfwcujvClj60OIVfBnDgYmW8BHHAE7idozr8mI4QrzVoYD/PJ4X
+         kDag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794560993; x=1795165793;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
+        b=DP/Y75zDfrwWh0Gmpg18RM14TIOwhqV7Ol3rnnkbxNY+AnStG4J51eHalcGOWvaxx/
+         xyznrPyhu45qM86mxxxovBFrDhsAz+T9HMMw81M/NIwbjsfsteqXUPrz+2v4dabVrerw
+         9R4rBD0WaZzDJ8iNcG51jx5XxUDDA0y3Tpefsxr1iDuXCYOIq1Ovl/G/Qfe48YqZ5mx0
+         J79Oj1NFhWnFigqjT4lgprcpwaEiYvjM+68wiQ+grRlaco/FhsasV8MxddE+y7mVRK2Y
+         zx2cWstd08VPRRmD8kWS5KYx44FlOxk1KikJaFBMd0//pKcZNenC+LzYoflYiC3twimU
+         Mntg==
+X-Forwarded-Encrypted: i=1; AL+hErEwzSuNtpa+0CHjRonJv9pYF+39ovxYCxHLAoikboJdorBYYQmZGOXUcqYmpq1tH6TzPxadJUBaHIjt@lists.linux.dev
+X-Gm-Message-State: APuU4Z+SLd+t/CGmVxDLHSrnTtVTJlXuvGOFsqyctQSmk5zveAHT5hse
+	j+v4bJWcaY1fnbTctdJE52OPS97SY+Ko9PXrk6pLWJaditjyzwJMXtHLKgFeKZmYcMpZSdagRWB
+	CKBIbNzFcl7AJSmKrj4q65v46lZWncXASI3zBLO7eUQ==
+X-Gm-Gg: AYBFou2piDqPhhQDBJhqnQ5p133MyOVlGBy45EPk+DZHxhBgkOazdvS0rm28PVxggze
+	n6fjHmH8Fl7xe4I4uISn32LwO85CnbYTzdfz9XJkhI4kmJChmifUacOoqhjfPZYZJmsJ4IZES8J
+	unm+O2L5W6Yp22av8H8h0uf7lCUabcARD6WEdW9u/JCXq+dVraaV+h8gH4xlmx52XIz+q/7942S
+	08ZWp4mcFLIy40iIZuZsSgIH4N15Ij1DOmdjRAF9KkLp1VFaoMWTy+tGohHeGp2ffvcqes6GACb
+	Lj0QKtA7MjUWLxa9NxuZvr0EQ/OTDWgHZ0komT4BG3zA0ZAkjCvRauBbWQs+aqJsEA0WNDl6HYC
+	PQQ47VACZA1EkEV/Ef60LH6PyqrrqdUJON0ZDtnqdU3WFPnpl/2e+H0w1lmh27pwfrG4UEPFlXu
+	4bZ4sq+2G4XSInmTqU9EPSuALn62TrnFtMVJlZ7ISwk7amLL+tgd1HmOG68AbEQENeiINxgIFPF
+	w==
+X-Received: by 2002:a05:6870:e135:b0:43b:b245:30ac with SMTP id
+ 586e51a60fabf-4afdf492b47mr2095487fac.16.1794560993407; Fri, 13 Nov 2026
+ 01:09:53 -0800 (PST)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -88,132 +105,26 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
+ <3b582cdcfe37f1d01ee71611ab2611f845261089.camel@intel.com> <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com>
+In-Reply-To: <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com>
+From: Moe Mahhouk <moe@flashbots.net>
+Date: Fri, 13 Nov 2026 09:09:41 +0000
+X-Gm-Features: AclHuK8gjoF7QTD6gz3W2dlc8aBwAvH7LfNyoPplzwlNGb-GET7hpsX60d1d4kI
+Message-ID: <CAKV3HMOnY9LXvtFjnNKzfhVwxf7v-ZqDrRfceyLeVLP82x=bnQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v3_0=2F2=5D_virt=3A_tdx=2Dguest=3A_Fi?=
+	=?UTF-8?Q?x_and_speed_up_the_wait_for_a_Quote?=
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "Aktas, Erdem" <erdemaktas@google.com>, 
+	"djbw@kernel.org" <djbw@kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Miao, Jun" <jun.miao@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
-
-> On Thu, Nov 12, 2026 at 03:07:43PM +0530, Aneesh Kumar K.V wrote:
->> > Like a whole bunch of TSM FW API just to do this:
-
- [ ... 38 lines skipped ... ] 
-
->
-> Capturing the transcript makes everything 100% perfectly consistent
-> for everyone. Userspace sees *the transcript* as defined by SPDM not
-> some mangled, truncated or processed version that the TSM decides to
-> provide.
->
-> Userspace gets to see KEY_EXCHANGE which means the verifier can prove
-> the certificate binding, this is the ONLY way to let the verifier do
-> this proof if it wants.
->
-
-To clarify, is this only needed if the verifier wants to perform an
-independent verification? The RMM already verifies KEY_EXCHANGE_RSP, and
-we trust the RMM.
-
->
-> Further with capture we have a nice primitive to pause and do slot
-> selection before going to KEY_EXCHANGE. If we know the kernel has
-> capture then the ideal FW design for 1.3 multikey is much simpler and
-> clearer (more like ARM).
->
-> Also, ARM decided to do capture already, but directed by the TSM.  I
-> think it is the right and best idea, they just made the implementation
-> too narrowly specific. eg it doesn't split up VCA, it doesn't capture
-> 100% of everything to get KEY_EXCHANGE, etc. Trivial to fix while
-> upgrading to support 1.3
->
-
-So, not everyone needs DOE snooping? Architectures without a
-firmware-directed capture mechanism can use DOE snooping to collect the
-required data on the host. Would the flow for SPDM 1.2 look like the
-following?
-
-Host                              RMM                              Device
-|                                 |                                  |
-| RMI_PDEV_CREATE(slot 0)         |                                  |
-|-------------------------------->|                                  |
-|                                 |                                  |
-| RMI_PDEV_COMMUNICATE loop       |                                  |
-|-------------------------------->|                                  |
-|                                 | GET_VERSION / VERSION            |
-|                                 |<-------------------------------->|
-|                                 | GET_CAPABILITIES / CAPABILITIES  |
-|                                 |<-------------------------------->|
-|                                 | NEGOTIATE_ALGORITHMS / ALGORITHMS|
-|                                 |<-------------------------------->|
-| Cache VCA exported by RMM       |                                  |
-|<--------------------------------|                                  |
-|                                 |                                  |
-|                                 | GET_CERTIFICATE(slot 0) /        |
-|                                 | CERTIFICATE response chunks      |
-|                                 |<-------------------------------->|
-| Cache chain exported by RMM     |                                  |
-|<--------------------------------|                                  |
-|                                 |                                  |
-|                         PDEV_NEEDS_KEY                             |
-|                                 |                                  |
-| Extract slot 0's leaf key       |                                  |
-| RMI_PDEV_SET_PUBKEY(key 0)      |                                  |
-|-------------------------------->|                                  |
-|                                 |                                  |
-| RMI_PDEV_COMMUNICATE loop       | KEY_EXCHANGE(slot 0)             |
-|-------------------------------->|--------------------------------->|
-|                                 | KEY_EXCHANGE_RSP                 |
-|                                 |<---------------------------------|
-|                                 | Verify response signature        |
-|                                 |                                  |
-| NEW: cache complete             |                                  |
-| KEY_EXCHANGE request and        |                                  |
-| KEY_EXCHANGE_RSP, with signature|                                  |
-|<--------------------------------|                                  |
-|                                 |                                  |
-|                                 | FINISH / FINISH_RSP              |
-| Relay                           |<-------------------------------->|
-|                                 |                                  |
-|                         PDEV_READY                                 |
-|                                 |                                  |
-| NEW: request slot discovery     |                                  |
-|-------------------------------->| GET_DIGESTS / DIGESTS [secure]   |
-| Relay ciphertext                |<-------------------------------->|
-| Receive RMM-exported slot info  |                                  |
-|<--------------------------------|                                  |
-|                                 |                                  |
-| NEW: request certificate slot 1 |                                  |
-|-------------------------------->| GET_CERTIFICATE / CERTIFICATE    |
-| Relay ciphertext                | [secure session]                 |
-|                                 |<-------------------------------->|
-| Cache RMM-exported chain 1      | Retain reference chain digest    |
-|<--------------------------------|                                  |
-|                                 |                                  |
-
-That is, we can use the existing RMI_PDEV_COMMUNICATE-based host caching
-to obtain this data, while issuing GET_DIGESTS and GET_CERTIFICATE for
-the selected slot over the secure session established by the RMM? (these
-blobs will be returned from RMM with req_send = 0 and req_cache = 1)
-
-If GET_DIGESTS and GET_CERTIFICATE(selected slot) are issued after the
-secure session is established, DOE snooping cannot capture their
-plaintext responses. I am therefore still unclear how the DOE snooping
-design handles this data.
-
-In the end, the host has the certificate chain for slot 0, which was
-used to establish the secure SPDM session, and the certificate chain for
-the selected slot, which was fetched over that trusted session. The RMM
-also returns the chain digests. The host can compare the leaf keys for
-slot 0 and the selected slot, and can be sure that it received all
-supported slots because the slot information was obtained over the
-secure SPDM session.
-
-If the verifier wants to independently verify the session in addition to
-the verification already performed by the RMM, it can do so because it
-has the VCA, the slot 0 certificate chain, and the
-KEY_EXCHANGE/KEY_EXCHANGE_RSP transcript. This independent verification
-is optional?
-
-BTW, this proposal does require RMM changes. I have also omitted SPDM
-1.3 multi-key support from this diagram because it will be easier to
-follow once the SPDM 1.2 flow is clear.
-
--aneesh
+This is a gentle reminder; it has been 10 days since my last reply
+without feedback. Do you have any thoughts on it?
+Kind regards
