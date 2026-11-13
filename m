@@ -1,49 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794531882;
-	b=i+k210JFXV2pEtEhMk5mB9TiBPmNz3KkmVzqqhN42Nd1Vdu/JjNoYkgjXBj8DK/SLc9T
-	 frF81u3wyY8fVxjwdJp15E3Qao2snc9rfMeIdwSsP8MR+PdNlMN+s0ul/5WMAuf45eCwF
-	 VNdPc+TwuCgzX1jZI2CdttBhlIlilgFIrwu6opEMTSeJ2ikh/T9o98Syvxq2hTupY/eKa
-	 Wfl08W4shEUft0P6DfeclF3CTJ2FWr/vV5FP1yJM0gq57eWJE1AEyTTtSZWOp7HblVaSu
-	 zhL3pLT4Y3vPzjABAUOiznKmzoyZkxh366DLQ8tOz1kLanP6X+YcDbnfb7dtrhQd+JQ==
+	t=1794537692;
+	b=IW18zF7L8L4A0XGTOr9PIabHSR2ED5em3R/bnIoIi79Z1OIefqVFUPlY0cpJ3V/Oh5mP
+	 p4qXLltx3F4MZbS0B8ITugNp75z/Yl35GlEKLEgd3slvSxkGu0Wl9h6YqrAxqdLxQXh0o
+	 vmG/fkTZdUPk0Eq8v7Vxmain410OwXYw5BLcT4ZByZ5dZaReXel+jpxMa7F1SzXdEzI2/
+	 BEx0KI5IJ3aeCy17k8oi6L9R5slvfAWBwKJrYdylb6GoLESnlMd3yYMpljwtUccHywPv2
+	 CcujnqaNYi5XgCBMstDkbDa3bSsmAyn57hGzSFsME919C6eLWdF7+vZTt5M6Klze3/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794531882;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=gVbU/8JPE5V4Tpy3sU+jiRyX3k8tAyApN/EFzo86Rhs=;
-	b=S7MjqONTXXa8QQ/jTkmDUOBJcsocHj6npgrllrUcTvCcEOc/AumBJK2xAEe9dyzx9+8N
-	 mYm2De595SJ8jQVjNmjqoq+tHcdo8Z2WYWdb+hj/9bdJftoJzj8Y8GGWcqi8/HH02qEgA
-	 YSXLatmZht2QEo3RkW/xbJeMLST2QLEzdDULVUZf9TtAvvOGXI+iTYnRcbHCY9DIWDLgg
-	 BRL3/l/YqY4iiOa3i5jZtiGReEMwXN2Kdm8opHnTYlpJXPRlnq/VOhqEnvlhwsdAWp3W3
-	 O5IG9xzQeEu0di+zW8TG2NvJczQQ9oQq4GXNpv1frbYUJzGPMGhrb8xZLuQbT8TOO7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794537692;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=gBLRbdIh+LOD0PevJaJe8TSF6KckpKn/iVBrS7ZcSAc=;
+	b=i+XAbYxIMpsJDnGyXuHj3pRn+WElb0JxOGelEk2DzW/Oogu3dKhhc2dN21Geiadlr53e
+	 kW58QgihO8il/cmheGnT9mBMv8v7z5D96icpM9Yd8lGstRcHyyml9dWbFtdyWuVlQLoSx
+	 C4v021mYBQHKqZx92jt28QXX0oh88mlxwAqe5CFheUX0Qr9+ZZIH9S3NWR9KiHJzFfIGp
+	 jaEA0D9tgZ4/5tkRlwuE7el6ZMycX5SKG6zC91V2T7Zj42kRKkPls6vEMqBW3esdbIIuw
+	 0NAOBlPco3WQcLOFTSSwjMw9+5Spr1RGLNXuxvtnJkwMhGjCADzDL+mrpy7OzcnoBdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=EAeqLQhu;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A51C606A327;
-	Fri, 13 Nov 2026 01:04:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A51C606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mn1Qeguw;
+	arc=none smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE13606A88A
+	for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 02:41:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FE13606A88A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=EAeqLQhu
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C9E9169C;
-	Thu, 12 Nov 2026 17:04:36 -0800 (PST)
-Received: from [10.57.67.215] (unknown [10.57.67.215])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC15A3F632;
-	Thu, 12 Nov 2026 17:04:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794531879; bh=9dMYhU0WWNPR+Ta4CK4SjyDUrDPMjrGxgkSS46Xa71E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EAeqLQhuToMk7SuICWPxyDE3Ru/0zt9OIGnbLWxeIMBMnawdnAWAiXgKwUhCMoE5I
-	 0TiiFj2Ker405Hyb4Z7ggwhCgllTXx3XD0Az0umrkvY4SnBM6H56bym2cv3bTOS21h
-	 efQZzplsXmEFAQz2xfKoEuLgjF3L6MikLDrO5yRo=
-Message-ID: <e1690e53-70fb-47fe-bd06-4758b1e196d2@arm.com>
-Date: Fri, 13 Nov 2026 01:04:34 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mn1Qeguw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794537691; x=1826073691;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4V2SgnKTNwhI09clxRTUJWfBPyNHYEtlXfaPtxpTjKY=;
+  b=mn1QeguweeCN7YXRr8opbSbxKl4TrEBZJ0EM5MXpc2y/ffyT8/2if9Xf
+   AZwV7nYQOajHFhW1i3xuprikZ9Wc1BU4wabhw3Ztn4rpXZavu3G5zkjGv
+   rKlZYhS76d4LMm0yo5ciXVObK2VDjVKciv2ljSoC/MkQJITf/Io+1i1hL
+   Cdo+RhF8bEcI16AeLN4VDpx5UMQCqSM+rpG7LV35kuLb8o72RDPJ4x9Z3
+   LgWO0Njgl4TOsOLIF0LkY62uxAQTy2y+Z0T1yfFha6PCAA3BwMdAv6qhx
+   RXOYlaEqjIGroLqSZIMIUU/7e3gbPNDury7vC7lj19WuQATeg51D90JAh
+   A==;
+X-CSE-ConnectionGUID: o0WcqD1XR3GTrfJCz/MzKg==
+X-CSE-MsgGUID: 1y55GVtdSO2wSxvRGj+1mA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3340171"
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="3340171"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 18:41:30 -0800
+X-CSE-ConnectionGUID: tO8JdJuiTsGKI3SvsSQqUw==
+X-CSE-MsgGUID: XXgC8xDFQTWS89ZR9B0tJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="8887034"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2026 18:41:28 -0800
+Date: Fri, 13 Nov 2026 10:33:15 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, yilun.xu@intel.com, arjan.van.de.ven@intel.com,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [RFC PATCH v2 1/2] x86/virt/seamldr: Support large TDX module
+ binaries
+Message-ID: <avZ266oL0cvea157@yilunxu-OptiPlex-7050>
+References: <20261106132159.1551365-1-chao.gao@intel.com>
+ <20261106132159.1551365-2-chao.gao@intel.com>
+ <avShYPmuMItx/tsJ@yilunxu-OptiPlex-7050>
+ <avU7Dz3IFylm7Tae@intel.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -53,352 +87,130 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/12] KVM: arm64: CCA: Tear down RTTs
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261111145758.217946-1-steven.price@arm.com>
- <20261111145758.217946-8-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20261111145758.217946-8-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avU7Dz3IFylm7Tae@intel.com>
 
-On 11/11/2026 14:57, Steven Price wrote:
-> The RMM owns the stage 2 page tables for a realm, and KVM must request
-> that the RMM creates/destroys entries as necessary. The physical pages
-> to store the page tables are delegated to the realm as required, and can
-> be undelegated when no longer used.
+On Thu, Nov 12, 2026 at 12:05:35PM +0800, Chao Gao wrote:
+> On Thu, Nov 12, 2026 at 01:09:52AM +0800, Xu Yilun wrote:
+> >On Fri, Nov 06, 2026 at 05:21:55AM -0800, Chao Gao wrote:
+> >> The module binary is handed to P-SEAMLDR as a list of page physical
+> >> addresses in 'struct seamldr_params'. The list has 496 entries, which
+> >
+> >Is it better we specify why 496 entries?
+> >
+> >  The struct seamldr_params is contained in a 4KB page, the first 128
+> >  bytes of the page are the metadata, the rests are the list of page
+> >  phsical addresses for the module binary.
 > 
-> Creating new RTTs is the easy part, tearing down is a little more
-> tricky. The result of realm_rtt_destroy() can be used to effectively
-> walk the tree and destroy the entries (undelegating pages that were
-> given to the realm).
+> ...
 > 
-> Tear down a created Realm whether it is still new or has been activated.
-> Unmap the Realm IPA space once during stage-2 teardown. Defer
-> destruction of non-root RTTs until final Realm destruction, after
-> REALM_TERMINATE and before destroying the RD; root RTTs remain until the
-> RD has gone away.
+> >
+> >
+> >> caps a module at 496 pages.
+> >> 
+> >> TDX modules are gaining features and are about to outgrow that limit.
+> >> 
+> >> The P-SEAMLDR ABI was extended to chain the list across 4KB pages. For
+> >
+> >With the knowledge of the first 4KB page, it is nature to say the ABI
+> >extends the list to more 4KB pages.
+> >
+> >> a module over 495 pages, the last of the 496 entries points to another
+> >> page of entries instead of to a module page. The last entry of that
+> >
+> >Maybe we don't have to emphasize the 495/496? The last entry of each
+> >page points to the next page.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+> I would rather drop 496 and 495 from these paragraphs. Readers do not
+> need the exact limit here, since the code has the numbers. How about:
 > 
-> ---
-> Changes since v1:
-> - Tear down created Realms in both NEW and ACTIVE states. Fix the
->    RTT start level, page accounting on failed undelegation, and
->    handling of RTT granules returned by RMI.
-> ---
->   arch/arm64/include/asm/kvm_rmi.h |   9 ++
->   arch/arm64/kvm/mmu.c             |  18 ++-
->   arch/arm64/kvm/rmi.c             | 189 +++++++++++++++++++++++++++++++
->   3 files changed, 215 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index f1a1ed6b91f5..58d825e40bdf 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -57,6 +57,7 @@ enum realm_state {
->    * @sro: Preallocated SRO state context for Realm MMU operations
->    * @state: The lifetime state machine for the realm
->    * @ia_bits: Number of valid Input Address bits in the IPA
-> + * @stage2_unmapped: The Realm stage-2 mappings have been removed
->    */
->   struct realm {
->   	void *rd;
-> @@ -70,6 +71,7 @@ struct realm {
->   	struct rmi_sro_state *sro;
->   	enum realm_state state;
->   	unsigned int ia_bits;
-> +	bool stage2_unmapped;
->   };
->   
->   void kvm_init_rmi(void);
-> @@ -77,5 +79,12 @@ u32 kvm_rmm_ipa_limit(void);
->   
->   int kvm_init_realm(struct kvm *kvm);
->   void kvm_destroy_realm(struct kvm *kvm);
-> +int kvm_realm_teardown_stage2(struct kvm *kvm);
-> +
-> +static inline bool kvm_realm_is_private_address(struct realm *realm,
-> +						unsigned long addr)
-> +{
-> +	return !(addr & BIT(realm->ia_bits - 1));
-> +}
->   
->   #endif /* __ASM_KVM_RMI_H */
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 9df3f8d5b4ef..be014f6c00e7 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
->   	return err;
->   }
->   
-> +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
-> +{
-> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
-> +
-> +	mutex_lock(&kvm->arch.config_lock);
-> +	if (kvm_realm_state(kvm) == REALM_STATE_NEW ||
-> +	    kvm_realm_state(kvm) == REALM_STATE_ACTIVE) {
-> +		kvm_set_realm_state(kvm, REALM_STATE_DYING);
-> +		WARN_ON(kvm_realm_teardown_stage2(kvm));
-> +	}
-> +	mutex_unlock(&kvm->arch.config_lock);
-> +}
-> +
->   void kvm_uninit_stage2_mmu(struct kvm *kvm)
->   {
-> -	kvm_free_stage2_pgd(&kvm->arch.mmu);
-> +	if (kvm_realm_is_created(kvm))
-> +		kvm_realm_uninit_stage2(&kvm->arch.mmu);
-> +	else
-> +		kvm_free_stage2_pgd(&kvm->arch.mmu);
+> The module binary is handed to P-SEAMLDR as a list of page physical
+> addresses in 'struct seamldr_params'. The list must fit in a single 4KB
+> page along with a few other fields, which caps a module at just under
+> 2MB.
+> 
+> TDX modules are gaining features and are about to outgrow that limit.
+> 
+> The P-SEAMLDR ABI was extended to continue the list on more chained 4KB
+> pages. The last u64 of each page holds the physical address of the next
+> page in the chain.
 
-We added kvm_free_stage2_pgd() from kvm_destroy_realm() for Realms in
-the previous patch. Should we move that here since, this is where we
+Yes, this flow is what I expect.
 
-1. Deal with tearing down stage2
-2. And more importantly we are skipping it for Realms.
+> 
+> >
+> >> page can point to yet another page, and so on, until every module page
+> >> is listed.
+> >> 
+> >
+> >[...]
+> >
+> >> -#define SEAMLDR_MAX_NR_MODULE_PAGES	496
+> >> +/*
+> >> + * module_pages_pa_list[] spans multiple pages. The last entry of each
+> >> + * page points to the next page and does not hold a module page, so the
+> >> + * maximum number of module pages is the array size minus one entry per
+> >> + * page.
+> >> + *
+> >> + * SEAMLDR_PARAMS_NR_PAGES is somewhat arbitrary. It allows modules of
+> >> + * up to about 32MB. Increase it if modules outgrow that.
+> >> + */
+> >> +#define SEAMLDR_PARAMS_NR_PAGES		16
+> >> +#define SEAMLDR_NR_MODULE_PA_ENTRIES	(496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
+> >
+> >The number 496 is not meaningful when the seamldr_params is no longer
+> >one page size. We need comments to explain how it is derivee. But instead
+> >of text explanation, is it better:
+> >
+> >#define SEAMLDR_NR_MODULE_PA_ENTRIES	(SEAMLDR_PARAMS_NR_PAGES * 512 - 16)
+> 
+> The 16 here would still need explaining. It would also be confusing,
+> because the macro right below subtracts a different 16
+> (SEAMLDR_PARAMS_NR_PAGES) to get SEAMLDR_MAX_NR_MODULE_PAGES.
+> 
+> >
+> >Or:
+> >
+> >#define SEAMLDR_NR_MODULE_PA_ENTRIES	\
+> >	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE -	\
+> >	  offsetof(struct seamldr_params, module_pages_pa_list)) / \
+> >	 sizeof(u64))
+> 
+> offsetof() does not work here. The macro sizes module_pages_pa_list[]
+> inside 'struct seamldr_params', where the struct is still incomplete. The
+> compiler reports:
+> 
+> 	error: invalid use of undefined type 'struct seamldr_params
+> 
+> How about:
+> 
+> /*
+>  * module_pages_pa_list[] fills the rest of 'struct seamldr_params' after
+>  * its first 128 bytes. The last entry of each page is reserved to point
+>  * to the next page and cannot hold a module address. The last entry of
+>  * the final page is never used.
+>  */
+> #define SEAMLDR_NR_MODULE_PA_ENTRIES	(((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE - 128)) / sizeof(u64))
 
+Yes, that's good to me. Though 128 still needs explaination, but much
+easier than one 496 + (n-1) * 512.
 
->   	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
->   }
->   
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 69c628cfb6c7..b904e6541fb0 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -11,16 +11,193 @@
->   #include <asm/kvm_pgtable.h>
->   #include <asm/virt.h>
->   
-> +static inline unsigned long rmi_rtt_level_mapsize(int level)
-> +{
-> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
-> +		return PAGE_SIZE;
-> +
-> +	return (1UL << ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
-> +}
-> +
-
-We agreed to use kvm_granule_size() instead of this ?
-
-https://lore.kernel.org/all/cb183290-3fee-4535-aa3e-5cc172c2323a@arm.com
-
-
-
->   u32 kvm_rmm_ipa_limit(void)
->   {
->   	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
->   }
->   
-> +static int get_start_level(struct realm *realm)
-> +{
-> +	return 4 - max(2, stage2_pgtable_levels(realm->ia_bits));
-
-I don't think we need this "max()". ia_bits is guaranteed to be
- >= 32bit (ARM64_MIN_PARANGE_BITS, see kvm_init_ipa_range()), implying
-that we have at least 2 levels on all page sizes.
-
-> +}
-> +
-> +static void free_rtt(phys_addr_t phys)
-> +{
-> +	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
-> +	if (rmi_free_delegated_page(phys))
-> +		kvm_account_pgtable_pages(phys_to_virt(phys), 1);
-
-Is there a reason why remove the account before freeing ? Could we do
-this after we have reclaimed it ?
-
-> +}
-> +
-> +/*
-> + * realm_rtt_destroy - Destroy an RTT at @level for @addr.
-> + *
-> + * Returns - Result of the RMI_RTT_DESTROY call, and:
-> + * @rtt_granule:	RTT granule, if the RTT was destroyed.
-> + * @next_addr:		IPA corresponding to the next possible valid entry we
-> + *			can target
-> + */
-> +static long realm_rtt_destroy(struct realm *realm, unsigned long addr,
-> +			      int level, phys_addr_t *rtt_granule,
-> +			      unsigned long *next_addr)
-> +{
-> +	unsigned long out_rtt;
-> +	long ret;
-> +
-> +	ret = rmi_rtt_destroy(virt_to_phys(realm->rd), addr, level,
-> +			      &out_rtt, next_addr);
-> +
-> +	if (ret == RMI_SUCCESS)
-> +		*rtt_granule = out_rtt;
-> +
-> +	return ret;
-> +}
-> +
-> +static int realm_tear_down_rtt_level(struct realm *realm, int level,
-> +				     unsigned long start, unsigned long end)
-> +{
-> +	ssize_t map_size;
-> +	unsigned long addr, next_addr;
-> +
-> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
-> +		return -EINVAL;
-> +
-> +	map_size = rmi_rtt_level_mapsize(level - 1);
-> +
-
-We agreed to add a WARN_ON() here to ensure the start address is aligned ?
-
-
-Suzuki
-
-
-> +	for (addr = start; addr < end; addr = next_addr) {
-> +		phys_addr_t rtt_granule;
-> +		long ret;
-> +		unsigned long align_addr = ALIGN(addr, map_size);
-> +
-> +		next_addr = ALIGN(addr + 1, map_size);
-> +
-> +		if (next_addr > end || align_addr != addr) {
-> +			/*
-> +			 * The target range is smaller than what this level
-> +			 * covers, recurse deeper.
-> +			 */
-> +			ret = realm_tear_down_rtt_level(realm,
-> +							level + 1,
-> +							addr,
-> +							min(next_addr, end));
-> +			if (ret)
-> +				return ret;
-> +			continue;
-> +		}
-> +
-> +		ret = realm_rtt_destroy(realm, addr, level,
-> +					&rtt_granule, &next_addr);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		switch (RMI_RESULT_STATUS(ret)) {
-> +		case RMI_SUCCESS:
-> +			free_rtt(rtt_granule);
-> +			break;
-> +		case RMI_ERROR_RTT:
-> +			if (next_addr > addr) {
-> +				/* Missing RTT, skip */
-> +				break;
-> +			}
-> +			/*
-> +			 * We tear down the RTT range for the full IPA
-> +			 * space, after everything is unmapped. Also we
-> +			 * descend down only if we cannot tear down a
-> +			 * top level RTT. Thus RMM must be able to walk
-> +			 * to the requested level. e.g., a block mapping
-> +			 * exists at L1 or L2.
-> +			 */
-> +			if (WARN_ON(RMI_RESULT_DATA_LEVEL(ret) != level))
-> +				return -EBUSY;
-> +			if (WARN_ON(level == KVM_PGTABLE_LAST_LEVEL))
-> +				return -EBUSY;
-> +
-> +			/*
-> +			 * The table has active entries in it, recurse deeper
-> +			 * and tear down the RTTs.
-> +			 */
-> +			next_addr = ALIGN(addr + 1, map_size);
-> +			ret = realm_tear_down_rtt_level(realm,
-> +							level + 1,
-> +							addr,
-> +							next_addr);
-> +			if (ret)
-> +				return ret;
-> +			/*
-> +			 * Now that the child RTTs are destroyed,
-> +			 * retry at this level.
-> +			 */
-> +			next_addr = addr;
-> +			break;
-> +		default:
-> +			WARN_ON(1);
-> +			return -ENXIO;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int realm_tear_down_rtt_range(struct realm *realm,
-> +				     unsigned long start, unsigned long end)
-> +{
-> +	/*
-> +	 * Root level RTTs can only be destroyed after the RD is destroyed. So
-> +	 * tear down everything below the root level
-> +	 */
-> +	return realm_tear_down_rtt_level(realm, get_start_level(realm) + 1,
-> +					 start, end);
-> +}
-> +
-> +static int realm_destroy_rtts(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	unsigned int ia_bits = realm->ia_bits;
-> +
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +	return realm_tear_down_rtt_range(realm, 0, (1UL << ia_bits));
-> +}
-> +
-> +static void realm_unmap_stage2(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +	if (realm->stage2_unmapped)
-> +		return;
-> +
-> +	write_lock(&kvm->mmu_lock);
-> +	kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
-> +			       BIT(realm->ia_bits - 1), true);
-> +	write_unlock(&kvm->mmu_lock);
-> +
-> +	realm->stage2_unmapped = true;
-> +}
-> +
-> +int kvm_realm_teardown_stage2(struct kvm *kvm)
-> +{
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +	realm_unmap_stage2(kvm);
-> +	return 0;
-> +}
-> +
->   void kvm_destroy_realm(struct kvm *kvm)
->   {
->   	struct realm *realm = &kvm->arch.realm;
->   	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->   
-> +	guard(mutex)(&kvm->arch.config_lock);
-
-Do we need to document, why we need this mutex ?
-
-Suzuki
+> #define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
+> 
+> >
+> >> +#define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
+> >>  #define SEAMLDR_MAX_NR_SIG_PAGES	1
+> >>  
+> >>  /*
+> >> @@ -48,10 +59,10 @@ struct seamldr_params {
+> >>  	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
+> >>  	u8	reserved[104];
+> >>  	u64	module_nr_pages;
+> >> -	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
+> >> +	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
+> >>  } __packed;
+> >>  
+> >> -static_assert(sizeof(struct seamldr_params) == 4096);
+> >> +static_assert(sizeof(struct seamldr_params) == SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE);
