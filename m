@@ -1,99 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794563322;
-	b=0vrXYCVBVMwNUDNBc64SPGvndM6M+BcND8ME2K6nM8V8THji4jrzHOtJQdqXlMMNcN65
-	 k1Nv8Udwk7jddw5dgLGBwINxTktZ1j2FUuDvrKNLQPKiQPr28SVro32SI4q+RUNmGqfVE
-	 S7WAuNQSTEsSyojsqUOVmIvjHSQOa5wuUgP9wvj9pWzPaOp+u21eeaQVzXenKzlKIGiwn
-	 CiAIkeOaa2/5XD0FMJfjlPHKYTaOVbfc8lE/SM4Q7MtCru4E+JHk4vcvHSfK+Hvb2I3Hh
-	 S2SUtdxBbL8QSja0FI6BGvY2TSj9yYfHB0gQDts05jBN7UDKdbaZaaXB4HelaD7Bbhg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794563322;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=SZEm3fBRIvJbx/BoWtbu1KusfNuPE7i14QPaGaBXJ5E=;
-	b=e6NYhRN5vhwNaowbkOjQeN47/CKdM0b3b3jsIodsWPfNhmbBPCbju/VqdOLXCtzPu0y/
-	 kPC776oEw3ySIgaJqOWmKGro8yTYj6qUTFvDlRv4kmYh3H2/ycfA0NBKXZqYiPQAlOhfz
-	 3u+TK5FIVUPwKCwrBZM854J8RD9lUPBPIxCIVqs3tpx1laD09dtZurivVWk8eVvVImahZ
-	 KuE6FYisME5aFJGvo09wbiv/TSckCUmqsTH3Oq8Xa5UNWaeIAJDTNroK4/9MYUeePQOyd
-	 34BpJwV8JZDY6vWZtzD0Djoy/l4OUIo709aem/TkP4GCt9BChoxAYxRUdr1fCDegfPQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KTXcpQzy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.48
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E52F606A881
-	for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 09:48:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E52F606A881
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794570588;
+	b=DwtBdD+OLc2WNi6BNLhTHDcPcETlZyKh95G9rVMbyoAMZs9XzWZpMfCR1TtKv+oGvNcl
+	 Q9159Q7Dc65cBv/GYSUaiHsKMzstOyv5lvRJwzxtppT1TfYR5BPBjrr4+Kx3zuzmvLv2r
+	 k4iUoME/pPqUtuIb3GvFan7DkPpjYIx9deA73CnBox4bHiJlbsUJ1fzOeiS37Y0hukW/Y
+	 WVP9hSBpXwa8cC3mkt8aUn92eAdZWvx1fUiYi7iLs/NFLwydg1JgmacYNs1gbQ5BrqAUC
+	 iporjPzIFLrZXo01Z5zYhXcP5GNVdPHMIZdjm/MwZLX0MNXVnIR4qwOtvNRMDIiRLyg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794570588;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=PDXGfWB4PZogCYntKNGgT7hTDVutfH++L88sgu7Hiws=;
+	b=yJvzY2QjgOao+3Qpg19uh0QnRFd7CDRG5YuocB7nuAgs5Lv+0rnDTFJOzSk198yl33sZ
+	 HbGT3mQQ994W7qkUZ3T1tUDYq1wxEGZ+0NKiNHpg1lvaq6MZok0Ktb1E/hQgzrHmj+20I
+	 tg/roBQgKpKS2JzGLvd407b/1yL1wRJpBvI1hzki1yLIBzuN+Oaz+vdNy4AKfZB08Cfs4
+	 PzD6dHlcJ0PEZIz9a73Hxcz5EyYxLWVSaMhwKa3t//ga9pDDYqhlVRGdfF877uPmSdoOn
+	 QqjN5e+AehCJCfsIwR9NMyx8yocgPxhACkfNtYiuT8LFsK6o3DCJjjpWx1AtUDJwKsw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d9PNrozM;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7347E606A31C;
+	Fri, 13 Nov 2026 11:49:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7347E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KTXcpQzy
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-7143451981fso1063067eaf.3
-        for <linux-coco@lists.linux.dev>; Fri, 13 Nov 2026 01:48:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794563321; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ima73Wg9ELUKpxoCWkWVptcbYz/Zo8gid1dxKxymyylnGgkmMGMuOeHKaEpXiiSpi4
-         N5xgwvVkCMooZvwsqo8oFWsXH1MTq5Vb5MP3ufElN+Nrno7TmL7vOIWpk++/w+rsq6bL
-         m/F4yN61bp75k7QJAH+BsqZ2ZWDVYrDZdmUz+W0qInrgCn1jbHlmRJFWlGBZomSAJGb3
-         CggnXqmYhVnu2LSyQUqaDeU+9l5Z+JeMNUWttxSl/HBSD07rnRhQvu5z/BE81uphz+3O
-         xTdd/IlgteOfCUw8rWGazdJmUPexxuy5UTmCr3OfKS0sMP/O/X8dMl9jULqdskWq+uIr
-         bNWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=SZEm3fBRIvJbx/BoWtbu1KusfNuPE7i14QPaGaBXJ5E=;
-        fh=gW82avkGK4o4FkbyzBBvIspFHEB8ZQ2fhJZO73CLJ5c=;
-        b=h5HN45hzsr53vV5vfxwNBx8wIcSDB3IHBQvi0FKqd8YwM0YtVySgUixxbCLRbWmSH2
-         MQsIzZxMMw5uRyllaM/CGPT6oPrypXkACYmcGoHW4x/uW6aROGQ3ZBILd+r7bnrnIGby
-         D8zlLzo4KZNoYqQtCCHnROo2/cUqQI6+XKdrYDuyZHpomcogcyyQSvmj3oXOcKnUsFGt
-         5i69yTEkdH2G1S1YB2VQHdpjWITvKKxdFRQXf81+/PtAG7a1zWMX03RFyqZaTpET3K8r
-         XFFp9S/zeQl9+NRL/F1CcFsu7yT+8WSIwcXsxxAZ8RJsQ9bJcSBOOmJeFjXw70fEkyz1
-         tAvA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794563321; x=1795168121; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SZEm3fBRIvJbx/BoWtbu1KusfNuPE7i14QPaGaBXJ5E=;
-        b=KTXcpQzymCBVjqSf4ajgKRAisNgARJK4tLJhJNSOFjGSh0+fLDUKQJdMhyKqk/DerA
-         wxAl3xm5wpIRHzc5EyTZ9//aP9LAXeqni3G0afqMDZ/J4sDTivDxXLyx274b/aKUhlwa
-         SMISka/x/rG9KpemozZSj0VUMaObtC+PcKMIDCKr7nwnSGd9VFcowyQ1Wfo1SJhzvldy
-         XJEPM7ZycymDsYOyORq+DGMfeq0MEW30oayhlp0gko6bXPqQXhF6nLwXXxclERrBfhMX
-         fO+P7L8Nt6FizzPKjX9uJXVKktGO+MGGC32pGRpJ0SEaN2QRmcW5S24pjhrb31EiKX8T
-         eeYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794563321; x=1795168121;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SZEm3fBRIvJbx/BoWtbu1KusfNuPE7i14QPaGaBXJ5E=;
-        b=cVz6OwLvxRh+9WuHKe99y6iYg0pu3h1xwrku0VDLx08W93vNStM/9jDR5NPgaGUa8A
-         n96Y1Le35Slk6w3Cawr1f/YnkmM9xNI4SkhVo5Cim42x/WK+iIZwDMtrBzCPD+Th7zlN
-         ZMBp1YyeCyI1y0Y6DLTYQt7Sa6r91jUlXy+Q+57OLRR81NyqNZywF/4JcjvLOScszK8V
-         zZ80NDt4j9lQPjsGfY3lb/bsEN3nyXkWXOvJdwwZ+lxgBF/OaOCEZ+AWN9HucR7zpRmK
-         sTxRPxPZ06VzGt5lzyv0VxNAKBkPd1Ji5dpmbOjBL1LG8V4/M13YBdnOmM5otOfMzpIV
-         wqVA==
-X-Forwarded-Encrypted: i=1; AL+hErEjBGHX9NEBwV+nTqafhope/vOzQnlSK2N7W49t6lQH7hNdKhOJ+1rNGCSNaOjdnCWu8IN+SmLILf/y@lists.linux.dev
-X-Gm-Message-State: APuU4Z8c+Um2+PYKFkiLfnV4TqwLzSh+M4rppw9CGS6MQLZP0KCcFT33
-	rTO/EMyKSTn8b09YuTj3xL4WgiHgiwwli3EY+XKT28vTyZjRDdyfRZ+9zJC6YxMxTnIJ9/49j5W
-	50is3VB4o6IrPcWHhGsz6oW9YxioZSz4=
-X-Gm-Gg: AYBFou0L3CbfHnoJ0r9akrLiLP7ou1XRsqzGJnv2q+IFYHEb7q6QVCBVjkoFTeT63pB
-	kxA6Nh8OmsMtMWqhmNS4CXMpg8WIF+w2vdTBTkHTz2LWdJ9fbYxs9VYnNcEZLV1NpX5Vn5CzjXv
-	TpZX0/U53Uly/ckJ5/0AWXXgWf0nZQ16dJSSUN60uXi2IA4xKk7eraowHixyA0Q/eeg/h+ONirv
-	t/LS+zcoNPQ7tGbJf0sFanTGoRmiRxHmKTLs8x5Ma6hoVNNqI0CY2FnemUFaARj2YDdqL8qFq41
-	wYhpLETgLZAocuXoSmfZ0AwT6dLpxXEyNR0HrGPyTJVgEkWUe2njU/IvQtC3CYxFFk36eErC+wq
-	aYOhZy7boEYUVEb2t98wPCmylVtD4EE9CvJK6WsEmeS3xq4pjswUwys5PIeiD
-X-Received: by 2002:a05:6820:6fc4:b0:716:e2c3:e48 with SMTP id
- 006d021491bc7-71ab50e864emr1017445eaf.58.1794563320647; Fri, 13 Nov 2026
- 01:48:40 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d9PNrozM
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 926252F;
+	Fri, 13 Nov 2026 03:49:42 -0800 (PST)
+Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6ABAE3F85F;
+	Fri, 13 Nov 2026 03:49:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794570585; bh=U3MSbDzd0AoPEKAIE+49xX+i32d6XfNe3/DShPyZg/E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=d9PNrozMFDmUla99J4Yoh5+4HUNgGxTEn9+mEf4To874n2aUoByE3QRP/x/XrYgD3
+	 lBvVKh1SuIIL6rPr30Qe2vhvIgU+TpHjxaqL82fBpzjytUEktPV4wchettmIgNd282
+	 HyQOoi6z1NTm8c1CmIg78h1plo0xyDQqEHByEC5A=
+Message-ID: <f09683c5-0bd9-4a59-b860-0c3bafa52da6@arm.com>
+Date: Fri, 13 Nov 2026 11:49:37 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,66 +53,216 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20260821201432.879450-1-Ashish.Kalra@amd.com>
-In-Reply-To: <20260821201432.879450-1-Ashish.Kalra@amd.com>
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Fri, 13 Nov 2026 10:48:29 +0100
-X-Gm-Features: AclHuK-l_3UXJP1eTJDtPvdLhfXvgmrVR8-YQaX4h4dQv4VKuNhz7ofGxIqEsbY
-Message-ID: <CAM9Jb+hD1Pq_fT7Km23vxTKf43MHUn0g5s1ue453WuN817gLBA@mail.gmail.com>
-Subject: Re: [PATCH] x86/sev: Skip DR7 write during kexec when it would
- trigger an unserviceable #VC
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Srikanth Aithal <Srikanth.Aithal@amd.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	"Gupta, Pankaj" <pankaj.gupta@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/12] KVM: arm64: CCA: Check RMI support and features
+ at init
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <20261111145758.217946-5-steven.price@arm.com>
+ <4ccf4e34-bf7e-48da-bd70-acfed1e5ce04@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <4ccf4e34-bf7e-48da-bd70-acfed1e5ce04@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> machine_kexec() calls hw_breakpoint_disable(), which writes DR7. On
-> SEV-ES/SNP guests that do not have DebugSwap enabled, DR7 accesses are
-> intercepted and delivered to the guest as a #VC exception, which must be
-> serviced through the GHCB.
->
-> By the time machine_kexec() runs, snp_kexec_finish() (called from
-> native_machine_shutdown()) has already converted the per-CPU GHCBs and
-> the boot GHCB back to private and set boot_ghcb to NULL, tearing down the
-> GHCB infrastructure. The DR7 write therefore raises a #VC that
-> dereferences a NULL GHCB pointer, causing a page fault and the kexec to
-> fail.
->
-> The NULL boot_ghcb pointer is a result of commit 3645eb7e3915 ("x86/fred:
-> Fix early boot failures on SEV-ES/SNP guests"): that change makes
-> __sev_get_ghcb() return the now-NULL boot_ghcb in this window, turning
-> the previously-benign teardown-window #VC (a bogus VMGEXIT the host
-> rejected but survived) into a NULL dereference.
->
-> Skip the DR7 write in this case. Its value is not needed across kexec
-> because the new kernel re-initializes DR7. Guests with DebugSwap enabled
-> context-switch DR7 in hardware and do not intercept the write, and
-> non-encrypted guests are unaffected, so both continue to call
-> hw_breakpoint_disable() as before.
->
-> Add a CC_ATTR_GUEST_DEBUG_VIRT confidential-computing attribute, so the
-> debug-register-virtualization state (AMD DebugSwap) is queried through
-> cc_platform_has().
->
-> Reported-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
-> Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+On 12/11/2026 16:39, Suzuki K Poulose wrote:
+> Hi Steven
+> 
+> On 11/11/2026 14:57, Steven Price wrote:
+>> Wire RMI initialization into KVM startup and select ARM_RMM_RMI.
+>> Proceed only when RMM mode is selected and RMI is available. If
+>> KVM uses LPA2, require RMM LPA2 support. Also require SHA-256
+>> measurement support.
+>>
+>> Define a disabled kvm_rmi_is_available static key for later Realm
+>> capability checks. The key is enabled after the remaining Realm
+>> support is in place.
+> 
+> Given all of this is only used for the UABI (KVM_CAP_ARM_RMI and
+> others), does it make sense to move this patch to the next batch
+> of the CCA support and keep this only to sort out the memory
+> management support ? Similarly for the Patch 1 ?
 
-I stumbled upon this issue while testing kexec on SNP on 7.4rc2.
+True, I can move this patch (and patch 1) out and include it as part of
+a future series.
 
-I confirm this patch fixes issue for me.
+Thanks,
+Steve
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Tested-by: Pankaj Gupta <pankaj.gupta@amd.com>
+> Cheers
+> Suzuki
+> 
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>
+>> ---
+>> Changes since v1:
+>> - Combine the separate v1 RMI availability and LPA2/SHA-256 feature
+>>    check patches into one initialization patch.
+>> ---
+>>   arch/arm64/include/asm/kvm_rmi.h |  2 ++
+>>   arch/arm64/include/asm/virt.h    |  1 +
+>>   arch/arm64/kvm/Kconfig           |  1 +
+>>   arch/arm64/kvm/Makefile          |  2 +-
+>>   arch/arm64/kvm/arm.c             |  5 ++++
+>>   arch/arm64/kvm/rmi.c             | 42 ++++++++++++++++++++++++++++++++
+>>   include/linux/arm-rmi-cmds.h     |  5 ++++
+>>   7 files changed, 57 insertions(+), 1 deletion(-)
+>>   create mode 100644 arch/arm64/kvm/rmi.c
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
+>> asm/kvm_rmi.h
+>> index 67f16793b4d0..3194daaacf2b 100644
+>> --- a/arch/arm64/include/asm/kvm_rmi.h
+>> +++ b/arch/arm64/include/asm/kvm_rmi.h
+>> @@ -56,4 +56,6 @@ struct realm {
+>>       enum realm_state state;
+>>   };
+>>   +void kvm_init_rmi(void);
+>> +
+>>   #endif /* __ASM_KVM_RMI_H */
+>> diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/
+>> virt.h
+>> index b546703c3ab9..92cec42952f4 100644
+>> --- a/arch/arm64/include/asm/virt.h
+>> +++ b/arch/arm64/include/asm/virt.h
+>> @@ -87,6 +87,7 @@ void __hyp_reset_vectors(void);
+>>   bool is_kvm_arm_initialised(void);
+>>     DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
+>> +DECLARE_STATIC_KEY_FALSE(kvm_rmi_is_available);
+>>     static inline bool is_pkvm_initialized(void)
+>>   {
+>> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+>> index cecea0820e52..d067063a3686 100644
+>> --- a/arch/arm64/kvm/Kconfig
+>> +++ b/arch/arm64/kvm/Kconfig
+>> @@ -34,6 +34,7 @@ menuconfig KVM
+>>       select GUEST_PERF_EVENTS if PERF_EVENTS
+>>       select KVM_GUEST_MEMFD
+>>       select KVM_GENERIC_PRE_FAULT_MEMORY
+>> +    select ARM_RMM_RMI
+>>       help
+>>         Support hosting virtualized guest machines.
+>>   diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+>> index 7aaeeb84e788..66a719ab5b6b 100644
+>> --- a/arch/arm64/kvm/Makefile
+>> +++ b/arch/arm64/kvm/Makefile
+>> @@ -16,7 +16,7 @@ CFLAGS_handle_exit.o += -Wno-override-init
+>>   kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>>        inject_fault.o va_layout.o handle_exit.o config.o \
+>>        guest.o debug.o reset.o sys_regs.o stacktrace.o \
+>> -     vgic-sys-reg-v3.o fpsimd.o pkvm.o \
+>> +     vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o \
+>>        arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+>>        vgic/vgic.o vgic/vgic-init.o \
+>>        vgic/vgic-irqfd.o vgic/vgic-v2.o \
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index e06cc390a3d6..318e8a4b19f8 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -42,6 +42,7 @@
+>>   #include <asm/kvm_nested.h>
+>>   #include <asm/kvm_pkvm.h>
+>>   #include <asm/kvm_ptrauth.h>
+>> +#include <asm/kvm_rmi.h>
+>>   #include <asm/sections.h>
+>>   #include <asm/stacktrace/nvhe.h>
+>>   @@ -112,6 +113,8 @@ long kvm_get_cap_for_kvm_ioctl(unsigned int
+>> ioctl, long *ext)
+>>       return -EINVAL;
+>>   }
+>>   +DEFINE_STATIC_KEY_FALSE(kvm_rmi_is_available);
+>> +
+>>   DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
+>>     DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_base);
+>> @@ -3272,6 +3275,8 @@ static __init int kvm_arm_init(void)
+>>         in_hyp_mode = is_kernel_in_hyp_mode();
+>>   +    kvm_init_rmi();
+>> +
+>>       if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
+>>           cpus_have_final_cap(ARM64_WORKAROUND_1508412))
+>>           kvm_info("Guests without required CPU erratum workarounds
+>> can deadlock system!\n" \
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> new file mode 100644
+>> index 000000000000..f4c45021c6f7
+>> --- /dev/null
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -0,0 +1,42 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2023-2026 ARM Ltd.
+>> + */
+>> +
+>> +#include <linux/arm-rmi-cmds.h>
+>> +#include <linux/kvm_host.h>
+>> +
+>> +#include <asm/kvm_pgtable.h>
+>> +#include <asm/virt.h>
+>> +
+>> +static int rmm_check_features(void)
+>> +{
+>> +    if (kvm_lpa2_is_enabled() &&
+>> +        !rmi_has_feature(0, RMI_FEATURE_REGISTER_0_LPA2)) {
+>> +        kvm_err("RMM doesn't support LPA2\n");
+>> +        return -ENXIO;
+>> +    }
+>> +
+>> +    if (!rmi_has_feature(1, RMI_FEATURE_REGISTER_1_HASH_SHA_256)) {
+>> +        kvm_err("RMM doesn't support SHA-256 measurements\n");
+>> +        return -ENXIO;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +void kvm_init_rmi(void)
+>> +{
+>> +    if (kvm_get_mode() != KVM_MODE_RMM)
+>> +        return;
+>> +
+>> +    if (!is_rmi_available()) {
+>> +        kvm_info("Realm VM support is disabled because RMI is not
+>> available\n");
+>> +        return;
+>> +    }
+>> +
+>> +    if (rmm_check_features())
+>> +        return;
+>> +
+>> +    /* Future patch will enable static branch kvm_rmi_is_available */
+>> +}
+>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+>> index a84e50ac851c..6f43eac7c7be 100644
+>> --- a/include/linux/arm-rmi-cmds.h
+>> +++ b/include/linux/arm-rmi-cmds.h
+>> @@ -67,6 +67,11 @@ static __always_inline void
+>> rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *reg
+>>     unsigned long rmi_feat_reg(unsigned int index);
+>>   +static inline bool rmi_has_feature(unsigned int index, unsigned
+>> long feature)
+>> +{
+>> +    return !!(rmi_feat_reg(index) & feature);
+>> +}
+>> +
+>>   int rmi_delegate_range(phys_addr_t phys, unsigned long size,
+>>                  phys_addr_t *out_phys);
+>>   int rmi_undelegate_range(phys_addr_t phys, unsigned long size);
+> 
 
-Best regards,
-Pankaj
