@@ -1,86 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794827393;
-	b=UtomO97XaY2/GxeOvDuMxayae1tfhwPKIb8uG4uQKvlOqDkUlzKE/7L4vR9bGVtJm4nw
-	 deWDkc7hcOMWT9tr3wC4doSWCyj85+fmX7VUGYzyZHCIVhCl9iaJc7+y246NPdRhbzCFk
-	 8HDrMvF4kHjNDtf0gMqipTPxvcfTZmRkLsFdN/MXOf0lCoF3555DwX0P07gYLxmnl8eBC
-	 rHNs6xEkFiPLT59bB0MimJNXt3l0tKpuXS2VYFiWEw1Yugnbey04t6xV+MrIjdCtyoHzh
-	 E2i7H7NPq1gbigK65zZiO+ttXoEkDEYo1qP5lk6PGXfdH7thsnMr814cp7wFbPaZqig==
+	t=1794827394;
+	b=hqcbxpT9XpWtEx+lnLgZZVohY+Ngwdl95pQ6T4vL66iwHIjqDIx9ZJts62uOBcdz5dI6
+	 uC6e9LLI+aGE93LZ0r3iMA5/NACZT4Vto2z9pkGudfyh/wmtaGLeFphJzTkUTcDkKYan4
+	 dK+95jN6t7s8iF7F+FMiHLtCtuUgG9mo+3V/6FjmIeSkjQ07sUCkyMI5a5IHvLoxXKdrc
+	 v5cp/QRD9Zt5yXVMxu1NmmdXBYKSc6sobXuYzE5EtU5rETRz8gu5oO4gdaToeqysx9ykn
+	 DDGMbTL79azLlNCNjJTJGN87B4bLLzItjP4rHxDZ2mFeW1ZkYsf0y+1rH9/aPJWfzHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794827393;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794827394;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=P3cJOvgm1t/vUBV/SgDsnTWVy5reKbszdOnvyiXGN6k=;
-	b=23MVx8jrlbvTvGqvlCyoTfia0YeMc8K99SEPFz36G/g6UvONOiwVmTmK0ii8J4zxT3KI
-	 YbVmi6emWBuGo1aUirpHB05NT+rN025fW9znNJr/Odo0s7l5JEEHSjIquAZiFhMQJGZi9
-	 Tmh6/JodSZskRxplo+HgXLR2agCGN9AZ5UGSBudsv5PCXK5Jv0vGYHwCBYlWSM7/3HrBH
-	 cgoXqiqrHqKUacrVoZrIbD2IWJNDQyScnOBcE9W6sUcvwxUXmdlZFPvE6rseg1Sf1QeRs
-	 ETBxxGIMIPx/aGQvhbxE5BoNtO9YZ5k2IOkiHeSRkx3f9RJiNPmGOOZfyd5QGluTu9w==
+	bh=I50HoopRxa3buonCeeRPTdblT7XpCyHv/F3JuXs3y4U=;
+	b=NHX37sW9IM1H99/6VirK+jsyW2Mj4pBZqUQgZPpJctmrL6l++GdUOYK0BTz8yhjolOBW
+	 kAn5SmRRMQjdjjsZZ2ug6r9pfldt44TKR2okh+K048Y0/+/9bzd/FVmdBl1m44cFuawkN
+	 cL8wEp2ueydXtGXkR3Q2fbudN8DTbUjHtw1OF9jPEKG1pyFRNbcM6YjhZ5Sux4hbpRYRT
+	 kOPfnO3w+4QsEo7leQccFaIH3Fa0Us5/s3GCsVDrQB/on3EAioLrVI/dtwvyBZeSGl6nj
+	 JbqFz2OqYWdkNftc+Hc6JIX5bSDxdgxpd67hq/m2cM4AHeMS9By268LkA4pKJetcVdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ehJ6Jh7z;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M0VUsFTw;
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E19E606FA49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE96D606FA5C
 	for <linux-coco@lists.linux.dev>; Mon, 16 Nov 2026 11:09:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E19E606FA49
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE96D606FA5C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ehJ6Jh7z
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M0VUsFTw
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1794827394; x=1826363394;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WX4WJPA0q/4AFwvPGb2TbFrG51YgUZPK8MybkUla+48=;
-  b=ehJ6Jh7zij9Uf3XkAM2MNyqmnGBngVPAY5GJmIjphuIPm+Ur0bBdQXUh
-   wyVdlwx9iMPGM+ol/tPM95xXYbXaPwwKaysR41nMFSxoe8LkL4q/SJusf
-   UOXWG9T+dirL1wqKzxo/c96Bm8ZjqnOWv9E7aKWZPXutJqUWEJlHGYGgs
-   3xFFbkWaDk5j5VOUiT5Kq2kkC4O9+KxPAa+M18OOsytoeeCVXBP9DudpM
-   y/wrhcWCfxLbpta47eaJAhnuPahNcKjrZ3Mv34rCsOPMjaE38KCbHu3jL
-   k433OsaaOdQNwdzMi09DzbQ2rve+ILNed7JIUSzlDRFws75E+nJSEi+/i
+  bh=2AXhRaZ6LXJexE1z27G0MrbSL970RhGYxsDjZz3cj9k=;
+  b=M0VUsFTwwHP5kQHQ/YYosnK0amSREq17X24OLpsrCIEJE6/DmxBJJmks
+   GOrXCmciyLuuKi/AnRFvDACC8djU0eXxJX9kqv3NreeUewc2xRB7LjZaR
+   GvfgxyoWF1mnrRwEl2IB0WRSv9UxjKMOI3Z5hI4S4IQBOmwHYxJoTHvZF
+   06vdnw+RhEr3yJCDyOwNwL+5qycS/kivrRydPlLjwZBYk4dpasK4XlCEM
+   9mSLc4G242GOHxXnCbmqVNu40q9sHScVu2yRQF8Zmsv9VcD0Z7kJVBscC
+   Z13J6nqywKRIqEEsa5wMUoKEN7TVF5BVWqcTYTMhEmZEFL0Wc8tNqRUjR
    w==;
-X-CSE-ConnectionGUID: JcsoRwG5QXGlw1CilaluXw==
-X-CSE-MsgGUID: DUIJpIboRT2jtiLP6kfXpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3429609"
+X-CSE-ConnectionGUID: su6aTWvpTcSu+W9U2R68zQ==
+X-CSE-MsgGUID: 77Rn6bVXTAOksB6QpD+NRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3429614"
 X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="3429609"
+   d="scan'208";a="3429614"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:53 -0800
-X-CSE-ConnectionGUID: 3YCKRXbhSay3EmMiCPSV/A==
-X-CSE-MsgGUID: fl6FsRpvRGaeCKZWG1igZw==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:54 -0800
+X-CSE-ConnectionGUID: HHCspzSSRB+PBfABOgJyRw==
+X-CSE-MsgGUID: qwSVI+qUS+u3QjTNG73DAw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="9848122"
+   d="scan'208";a="9848125"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:53 -0800
 From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
+To: x86@kernel.org,
 	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Cc: rick.p.edgecombe@intel.com,
 	kevin.tian@intel.com,
 	yilun.xu@intel.com,
 	chao.p.peng@intel.com,
 	baolu.lu@linux.intel.com,
 	chao.gao@intel.com,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: [RFC PATCH 2/7] coco/tdx-host: Establish an SPDM session with the device
-Date: Mon, 16 Nov 2026 03:10:20 -0800
-Message-ID: <20261116111037.3478844-3-chao.gao@intel.com>
+	Kiryl Shutsemau <kas@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [RFC PATCH 3/7] coco/tdx-host: Exchange SPDM messages through DOE
+Date: Mon, 16 Nov 2026 03:10:21 -0800
+Message-ID: <20261116111037.3478844-4-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261116111037.3478844-1-chao.gao@intel.com>
 References: <20261116111037.3478844-1-chao.gao@intel.com>
@@ -95,247 +91,98 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Setting up PCIe link encryption requires a secure channel to the device
-to exchange keys. This channel is an SPDM session over the device's PCI
-DOE mailbox.
+The TDX module cannot access a device's DOE mailbox, so the kernel
+relays SPDM messages between the TDX module and the device. The TDX
+module produces and consumes whole DOE data objects, header included,
+but pci_tsm_doe_transfer() takes only the payload and builds the header
+itself.
 
-The TDX module cannot access the DOE mailbox but needs to exchange SPDM
-messages with the device, so the host relays SPDM messages between the
-two.
+Define struct pci_doe_header and struct pci_doe_msg to describe a DOE
+data object. Strip the header from each request before passing the
+payload to pci_tsm_doe_transfer(), and rebuild the header around the
+device's response before handing it back to the TDX module.
 
-TDH.SPDM.CONNECT establishes the session and TDH.SPDM.DISCONNECT tears
-it down. Both may need several message exchanges with the device.
-Whenever the TDX module has a message for the device, the SEAMCALL
-returns with a dedicated status code. The host sends the message to the
-device and calls the SEAMCALL again with the device's response, until
-the SEAMCALL completes.
-
-Call both SEAMCALLs in such a loop. The DOE transfer itself is a stub
-for now.
-
-Pass the messages through two pages per device, one for each direction.
-One pair is enough because PCI/TSM serializes operations on a device.
-
-The TDX module limits how many TDH.SPDM.CONNECT and TDH.SPDM.DISCONNECT
-calls can run at the same time. The limit is implementation-specific,
-and a call over the limit fails with TDX_OPERAND_BUSY. For simplicity,
-serialize them across all devices with a mutex.
+An alternative is to add a PCI DOE API that takes whole data objects.
+This would avoid the conversion, but the TDX-TSM driver would be its
+only user.
 
 Based on work by Yilun.
 
+AI suggested defining the DOE header and object structures in place of
+the bit operations, and dropping the endian conversions.
+
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/include/asm/shared/tdx_errno.h |   1 +
- drivers/virt/coco/tdx-host/main.c       | 131 +++++++++++++++++++++++-
- 2 files changed, 130 insertions(+), 2 deletions(-)
+ drivers/virt/coco/tdx-host/main.c | 49 ++++++++++++++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-index ee411b360e20..6581cec7e097 100644
---- a/arch/x86/include/asm/shared/tdx_errno.h
-+++ b/arch/x86/include/asm/shared/tdx_errno.h
-@@ -27,6 +27,7 @@
- #define TDX_EPT_WALK_FAILED			0xC0000B0000000000ULL
- #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
- #define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
-+#define TDX_SPDM_REQUEST			0x00000F5700000000ULL
- 
- /*
-  * TDX module operand ID, appears in 31:0 part of error code as
 diff --git a/drivers/virt/coco/tdx-host/main.c b/drivers/virt/coco/tdx-host/main.c
-index 919e77ae2326..32755d70dac5 100644
+index 32755d70dac5..86299658ae45 100644
 --- a/drivers/virt/coco/tdx-host/main.c
 +++ b/drivers/virt/coco/tdx-host/main.c
-@@ -44,11 +44,26 @@ static inline u32 tdisp_func_id(struct pci_dev *pdev)
- 	return func_id;
- }
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/sysfs.h>
+ #include <linux/pci.h>
++#include <linux/pci-doe.h>
+ #include <linux/pci-tsm.h>
+ #include <linux/tsm.h>
  
-+#define SPDM_CAP_HBEAT		BIT(13)
-+#define SPDM_CAP_KEY_UPD	BIT(14)
-+
-+struct spdm_config_info_t {
-+	u32 vmm_spdm_cap;
-+	u8 spdm_session_policy;
-+	u8 certificate_slot_mask;
-+	u8 raw_bitstream_requested;
-+	u8 reserved[4089];
-+} __packed;
-+
-+static_assert(sizeof(struct spdm_config_info_t) == 4096);
-+
- struct tdx_tsm_link {
- 	struct pci_tsm_pf0 pci;
- 	u32 func_id;
- 
- 	u64 spdm_id;
-+	struct page *in_msg;
-+	struct page *out_msg;
- 	unsigned int spdm_mt_nr_pages;
- 	void *spdm_mt;
- };
-@@ -58,9 +73,89 @@ static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
+@@ -73,9 +74,55 @@ static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
  	return container_of(tsm, struct tdx_tsm_link, pci.base_tsm);
  }
  
-+static int tdx_spdm_msg_exchange(struct tdx_tsm_link *tlink)
-+{
-+	/* TODO: implement the PCI DOE transfer */
-+	return 0;
-+}
++struct pci_doe_header {
++	u16 vendor;
++	u8 type;
++	u8 rsvd0;
++	u32 length: 18; /* in DWORDs */
++	u32 rsvd1: 14;
++} __packed;
++
++struct pci_doe_msg {
++	struct pci_doe_header header;
++	u8 payload[];
++} __packed;
 +
 +/*
-+ * When serving SEAMCALLs, the TDX module extensions work like service thread
-+ * pools. The number of service threads is limited per service type (or
-+ * "per extension" in terms of TDX). When the host issues a request via
-+ * SEAMCALL but the TDX module can't find an available thread, it returns
-+ * TDX_OPERAND_BUSY. Currently the thread number limit for the TDISP extension
-+ * is 1. So a mutex could work to prevent SEAMCALL busy returns.
++ * The TDX module produces and consumes complete DOE data objects, but
++ * pci_doe() takes only the payload and builds the header itself. Strip
++ * the header from the request and rebuild it for the response.
 + */
-+static DEFINE_MUTEX(tdx_spdm_lock);
+ static int tdx_spdm_msg_exchange(struct tdx_tsm_link *tlink)
+ {
+-	/* TODO: implement the PCI DOE transfer */
++	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
++	struct pci_doe_msg *req  = page_address(tlink->out_msg);
++	struct pci_doe_msg *resp = page_address(tlink->in_msg);
 +
-+static int tdx_spdm_xfer_handler(struct tdx_tsm_link *tlink, u64 sret,
-+				 u64 out_msg_sz)
-+{
++	size_t req_sz		= req->header.length * sizeof(u32);
++	size_t resp_sz		= PAGE_SIZE;
++
++	size_t req_payload_sz	= req_sz  - sizeof(struct pci_doe_header);
++	size_t resp_payload_sz	= resp_sz - sizeof(struct pci_doe_header);
++
++	void *resp_payload_addr	= resp->payload;
++	void *req_payload_addr	= req->payload;
++
++	u8 type = req->header.type;
++
 +	int ret;
 +
-+	if (sret == TDX_SPDM_REQUEST) {
-+		ret = tdx_spdm_msg_exchange(tlink);
-+		if (ret < 0)
-+			return ret;
-+
-+		return -EAGAIN;
++	ret = pci_tsm_doe_transfer(pdev, type,
++				   req_payload_addr, req_payload_sz,
++				   resp_payload_addr, resp_payload_sz);
++	if (ret < 0) {
++		pci_err(pdev, "spdm msg exchange fail %d\n", ret);
++		return ret;
 +	}
 +
-+	if (sret == TDX_SUCCESS)
-+		return 0;
++	resp->header.vendor = PCI_VENDOR_ID_PCI_SIG;
++	resp->header.type = type;
++	resp->header.length = (ret + sizeof(struct pci_doe_header)) / sizeof(u32);
 +
-+	return -EIO;
-+}
-+
-+static int tdx_spdm_session_connect(struct tdx_tsm_link *tlink)
-+{
-+	struct spdm_config_info_t *spdm_conf;
-+	u64 sret, out_msg_sz;
-+	int ret;
-+
-+	/* create & fill SPDM configuration buffer - a single page */
-+	spdm_conf = kzalloc_obj(*spdm_conf);
-+	if (!spdm_conf)
-+		return -ENOMEM;
-+
-+	spdm_conf->certificate_slot_mask = 0xff;
-+
-+	do {
-+		mutex_lock(&tdx_spdm_lock);
-+		sret = tdh_spdm_connect(tlink->spdm_id,
-+					virt_to_page(spdm_conf),
-+					tlink->in_msg, tlink->out_msg,
-+					NULL, &out_msg_sz);
-+		mutex_unlock(&tdx_spdm_lock);
-+		ret = tdx_spdm_xfer_handler(tlink, sret, out_msg_sz);
-+	} while (ret == -EAGAIN);
-+
-+	kfree(spdm_conf);
-+
-+	return ret;
-+}
-+
-+static void tdx_spdm_session_disconnect(struct tdx_tsm_link *tlink)
-+{
-+	u64 sret, out_msg_sz;
-+	int ret;
-+
-+	do {
-+		mutex_lock(&tdx_spdm_lock);
-+		sret = tdh_spdm_disconnect(tlink->spdm_id, tlink->in_msg,
-+					   tlink->out_msg, &out_msg_sz);
-+		mutex_unlock(&tdx_spdm_lock);
-+		ret = tdx_spdm_xfer_handler(tlink, sret, out_msg_sz);
-+	} while (ret == -EAGAIN);
-+
-+	WARN_ON(ret);
-+}
-+
- static int tdx_spdm_create(struct tdx_tsm_link *tlink)
- {
- 	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-+	struct page *in_msg_page, *out_msg_page;
- 	struct tdx_hpa_list_info info;
- 	unsigned int nr_pages;
- 	u64 spdm_id, sret;
-@@ -70,12 +165,21 @@ static int tdx_spdm_create(struct tdx_tsm_link *tlink)
- 	if (!tdx_sysinfo)
- 		return -ENXIO;
- 
-+	ret = -ENOMEM;
-+	in_msg_page = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+	if (!in_msg_page)
-+		return ret;
-+
-+	out_msg_page = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+	if (!out_msg_page)
-+		goto out_free_in_msg;
-+
- 	nr_pages = tdx_sysinfo->tdx_connect.spdm_mt_page_count;
- 
- 	spdm_mt = alloc_pages_exact(nr_pages * PAGE_SIZE,
- 				    GFP_KERNEL | __GFP_ZERO);
- 	if (!spdm_mt)
--		return -ENOMEM;
-+		goto out_free_out_msg;
- 
- 	ret = tdx_hpa_list_info_setup(&info, spdm_mt, nr_pages);
- 	if (ret)
-@@ -92,11 +196,17 @@ static int tdx_spdm_create(struct tdx_tsm_link *tlink)
- 
- 	tlink->spdm_id = spdm_id;
- 	tlink->spdm_mt = spdm_mt;
-+	tlink->in_msg = in_msg_page;
-+	tlink->out_msg = out_msg_page;
- 	tlink->spdm_mt_nr_pages = nr_pages;
  	return 0;
- 
- out_free_spdm_mt:
- 	free_pages_exact(spdm_mt, nr_pages * PAGE_SIZE);
-+out_free_out_msg:
-+	__free_page(out_msg_page);
-+out_free_in_msg:
-+	__free_page(in_msg_page);
- 	return ret;
- }
- 
-@@ -112,16 +222,33 @@ static void tdx_spdm_delete(struct tdx_tsm_link *tlink)
- 		return;
- 	}
- 
-+	__free_page(tlink->in_msg);
-+	__free_page(tlink->out_msg);
- 	free_pages_exact(tlink->spdm_mt, tlink->spdm_mt_nr_pages * PAGE_SIZE);
- }
- 
- static int tdx_spdm_session_setup(struct tdx_tsm_link *tlink)
- {
--	return tdx_spdm_create(tlink);
-+	int ret;
-+
-+	ret = tdx_spdm_create(tlink);
-+	if (ret)
-+		return ret;
-+
-+	ret = tdx_spdm_session_connect(tlink);
-+	if (ret)
-+		goto out_spdm_delete;
-+
-+	return 0;
-+
-+out_spdm_delete:
-+	tdx_spdm_delete(tlink);
-+	return ret;
- }
- 
- static void tdx_spdm_session_teardown(struct tdx_tsm_link *tlink)
- {
-+	tdx_spdm_session_disconnect(tlink);
- 	tdx_spdm_delete(tlink);
  }
  
 -- 
