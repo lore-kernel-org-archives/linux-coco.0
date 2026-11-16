@@ -1,145 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.127
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794835376;
-	b=zDbxIiKkk0qMMiTsSZSWOpai4jNkOBCB5EJmsKvUKSTfy0igsQTp7VKtsoTEXSjlPrFh
-	 29uQlN/nysFINmIglAS6LYSimoowF9Igzc77pLrNuCadMIcstdubXvT4NMQ5XE+ZI5bEN
-	 j4hXCQ/kcf97DvvmOj5wkXFABp8e+7hj3gYvo7G8cyi+RCM6hMh1FgOlI88EfY0+f396i
-	 nhbTAeU7C+fylm+IvC/4kGLBoNilJ3VzhvzLL0vatQRZkMA4HRGDTSqsj3Td0Z5TLuWQc
-	 tfIvWAbCaIC9sX9FK29yVtePxa6icy2xLWbitNrWjrPnQMJxrPFOsK+C1M7yLeF2rKA==
+	t=1794836056;
+	b=HMXUbSgBATOaKFbE6ZKs0DRGXKqJPnBmEoXtSTr+Z4lyscC6gHqPkTMkfrIfvVE46Zhz
+	 Ji/ujbHQiq6eTYwAVyZT3LUJx+llCmcIBxtivN81j7OCF3//9LIJN9ZqUw72NtecJW1p3
+	 BfQIAU1KmwiGSvMHJ194iT9Ug0QiNHUSO1AMiiSRBU/YBpIt9sIknmECzKpOlXEpOsgFh
+	 NmTmC0oNsexSaK+mpwz9NStyvDT/1l292DRMtPbiv3dk8g1gm5xrSA/6JZ/O2GoCr6UJ/
+	 6sGp5FxH3nka+BIrEmKQaQBorlHE6UJi2Mzf66XOfVWyNcCUfMbgVcgQGgRn6BBat4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794835376;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Ip0og70Tt8f+28eOZ5F6oTc6DjrtMrQ1wymW+Uokrdw=;
-	b=m58pej5E74i866+NEet1sKNStdsancVcApuBOWNXOjvHuCJ38VQUqypqD4KJ3NfWzBge
-	 zk43A142LiUR/saJKnXwvEiRBkec0mwLc5DnWJDPywK70VGQum3QWle2XaDFqj4YzRr59
-	 OohUTzXMoj3jlQWfVTY5si3GXzcfQoi07j1leOx1E8CGMCikoXHtOJj5qmqNol4j6COc1
-	 kRVK8kKWYK4twYDJAL3zLBu73fQT9YdzCCGfHEIGL1Kyg4p2liuiTVmMgCWWuTifRW8xQ
-	 3MojHMQVjR/XHAIfCyBGEhBnv4XNV5jAv3lDGHkcP1E0DUOQd7vVmcsukABwGbvOtEQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794836056;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=kFki2hBsnHrC0juVnTO+KTiVDm5TzD8rtd8Do1S8nSI=;
+	b=ebV0dRw8DQyXArG42xi+KZMvpqrzA561isTaEZa3rTw0Ppmcaglgu2weCamx2J/HPtJX
+	 pTOexEuIDQJyoAus/0gVfwIax4CcC1/2Jdf0wBCP2IPicPHhLmzsNI9WlyZcnEYSdjAqi
+	 VE05LWFXZ0QZdxmNTMX2KyvhD+8D0ctaUNOCJjMcSYExFB35HHi1/86BfOmeaGrqzc5DO
+	 GU0NBaV1V08m8omO4sbXBiBknyB9zf4FM5lPG5mTbAAKSj9Y3CjUqgHbZVR4Gg0l215a0
+	 R+/6KJVTQOZqBCaIKBU3KZKpcU6DlK+4akaVCM12CZ+Rpavf+Ft6xs9Ti2Ablfdkavg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b="CubF/Gca";
-	arc=none smtp.remote-ip=209.85.160.174
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cVjD1IIy;
+	arc=none smtp.remote-ip=95.215.58.127
+Received: from mta1.migadu.com (out-127.mta1.migadu.com [95.215.58.127])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A73606A332
-	for <linux-coco@lists.linux.dev>; Mon, 16 Nov 2026 13:22:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97A73606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6782E606A329
+	for <linux-coco@lists.linux.dev>; Mon, 16 Nov 2026 13:34:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6782E606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=CubF/Gca
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-55bd96affd2so33972501cf.1
-        for <linux-coco@lists.linux.dev>; Mon, 16 Nov 2026 05:22:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794835375; x=1795440175; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ip0og70Tt8f+28eOZ5F6oTc6DjrtMrQ1wymW+Uokrdw=;
-        b=CubF/GcaiGFCo3GZWG2pELmqF4rZ40ATX0kx85qe7Z8AAvQlvgHscvAGv6ruClcDvS
-         oeFYKBO9uR/eExr/GZz6leE7D36V+SFmt3HFGpNGIrKY/YHYJVm1fi8VoWVYykbIJTMq
-         zle9F8jweprPSbgzRjCw8luh0sWSgzLHNKO+QzIFtvkDzLPvzPQc7ZGWOZdG6mhpnMPP
-         Gw0JpzaMQLs4DL9i12WoXZgMbeKDGd82gEw3YDpuezYDws1mr9HVhQGlrn1w3BPIyqsF
-         J6EkL1pwH2dTo8otz19u6MQjuEPvZIC8iEiP6O5tvGkeLkFEYS9KJrn5M7yn5Fjdf+Sf
-         veVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794835375; x=1795440175;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ip0og70Tt8f+28eOZ5F6oTc6DjrtMrQ1wymW+Uokrdw=;
-        b=0S4Tdv7xDjU+JseVsPaoTJp+R08THqIX7IhqESdozF8e58cgGkIvmtNqFmn9g5Pj+y
-         Xq1sxto6CbOPXLuN/P+wSO4bw4+JlQlwuS51L28soP/56wKobr1qfN1ulyWbpX6FhBOi
-         K199DaxTbmwALRDtoDNE29N2XtRUUShnEfdpsdzKNt1cdRC38lI78KxLHCNH1REUm8QW
-         e/7DMtmJLsVISVDM8XS2XMFGA2NjpF/J2r3TCVbCdz+jGOM5Tq+tRjpBXyj0X07bI2Pu
-         w+0NvnuYavuS0OovBc9YEM3aE2pjysC+lhuRaQe9aRNf5BoiwAMygmsRKI9eMLP44Xov
-         jHEg==
-X-Forwarded-Encrypted: i=1; AL+hErE1Hr2/XocMGV30A+8+CYnFyxjqK5p6A69PEh8p0cuwk9S/p46nNQ3YNarro78W12KDhPhB6i/KJ4Pc@lists.linux.dev
-X-Gm-Message-State: APuU4Z+9wVz5MvtiSIlpME5ZhRbgjJ65UDQQjU2LuTXoBZ/q7EveexGX
-	ZjUOSv66N4ZlsRa/0plXHs1r3T67l1a6/VeR/jff8uCDccRAWSOnLy9kv3LejnXLtfg=
-X-Gm-Gg: AYBFou1RShwfBcHbt6MIicZtLvmKvO5QI69X7psggyoN5RqP7l/agNw4g1R4y1dmG57
-	KAwKNyAM6Xi2cSfcBCLF/0lTCv6OOexB0qiPWxB0JHDXIY35SrJ7imKVmiCGdemSNLzSkJ4ZtgW
-	wuDZlrSkoYCfcpwJ1/wjqwcz0/n+x0uQM7dyS1DZWLbkX9A94MOqZgoN2ylWXSqukCMfef6GS9X
-	UtCmiPo8fbJ5vubgLuG2rHDgiKJcj0J3CszjHzsrPjjYYoyZx7ururm+IlQliJ3274oNSVZcJCS
-	yDyLJk+6mgBczlYoN8ACrSjmVLGdL7qdZhZJiRMKiK9JySAW1ErS1xDwZeIw9tRjHQEYeUO1tCC
-	BeWGq/nrZfwcX8Af5vqgiwWNXO8cDKanQ4DnPmDH6V8MvOOdLbiefVqQMeVRCvkEn5aew5uQpzX
-	m8myEUq6hfzJ6hTwfZpQtj3DLt+Mjf4iHrFiCXZVGS+iDLAjGqFuVkSdQURHeiaZAAf2P2SiCB+
-	pEcWV7jbt+cNNz8+fifhfiASd1umJRfUOSRgMJqC1iVcwzX7gQ/AJTJzBBvqu9sL8BDc2lcyqRA
-	PHBM7Q==
-X-Received: by 2002:a05:622a:e190:20b0:55b:9d8d:f29e with SMTP id d75a77b69052e-55b9d8df528mr93734571cf.9.1794835373441;
-        Mon, 16 Nov 2026 05:22:53 -0800 (PST)
-Received: from ziepe.ca ([142.166.156.71])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55ad0f07afesm80824241cf.16.2026.11.16.05.22.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 05:22:52 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xSwfb-00000009Kvw-33KL;
-	Mon, 16 Nov 2026 09:22:51 -0400
-Date: Mon, 16 Nov 2026 09:22:51 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Michael Roth <michael.roth@amd.com>, pankaj.gupta@amd.com
-Subject: Re: [PATCH v10 00/13] coco: guest: Add a shared-granule allocator
- for host-shared memory
-Message-ID: <20261116132251.GJ2532299@ziepe.ca>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <0524abf4-2306-4046-aade-c23aa7d1e0e6@arm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cVjD1IIy
+X-Envelope-To: linux-coco@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=kFki2hBsnHrC0juVnTO+KTiVDm5TzD8rtd8Do1S8nSI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794836053; v=1; x=1795440853;
+ b=cVjD1IIyjvB3aeptttsmfmPZky+MtqINq24PqHtlxmox00kfdTfv5yl2cCXlBxJrPyWSfYea
+ Jsr+TaIOrLPOdDhKzwi3ow9GFAoXUpW84HAcfl/KlFLJfFwQA5UcNs340C/oZBVESo8N2UYG5J1
+ j9+BGuax2ZJYGWybXbamWdDM=
+X-Envelope-To: linux-coco@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id a1a2d5f3dd575a5f;
+	Mon, 16 Nov 2026 13:34:13 +0000
+X-Mizu-Trace-ID: a1a2d5f3dd575a5f
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so10087e87.0
+        for <linux-coco@lists.linux.dev>; Mon, 16 Nov 2026 05:34:09 -0800 (PST)
+X-Gm-Message-State: APuU4Z//nlRMsBtlr/MWfc7ap4ZNMv2IS2/xiVVrTuOEWCeD8TW2Z9Cw
+	Z3Dyuk4utbhYjHAO5/hEVPPxLHLtuqNlX4ysxOtPiq64HpsH3rcAuTuwvf3G19n5GlapgLKvn7M
+	YNRUUCBu6C/F/hEOinhf66yfy8ZN4cBlgh3I51c1E
+X-Received: by 2002:a05:6512:3087:b0:5bf:b994:6598 with SMTP id
+ 2adb3069b0e04-5c17d98271emr226475e87.6.1794836047954; Mon, 16 Nov 2026
+ 05:34:07 -0800 (PST)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -149,44 +65,64 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0524abf4-2306-4046-aade-c23aa7d1e0e6@arm.com>
+References: <20261116091137.94252-1-aneesh.kumar@kernel.org> <20261116091137.94252-3-aneesh.kumar@kernel.org>
+In-Reply-To: <20261116091137.94252-3-aneesh.kumar@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Mon, 16 Nov 2026 13:33:31 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTw7QzzkQYKV3jyvW5mqZQMenTfm=kus9i87tYqACDOv0Q@mail.gmail.com>
+X-Gm-Features: AclHuK93q6K13zN84KswjEKi9cVQgC-Cy80dn3a2peCMzM1qEee3TapGEGzaKvg
+Message-ID: <CA+EHjTw7QzzkQYKV3jyvW5mqZQMenTfm=kus9i87tYqACDOv0Q@mail.gmail.com>
+Subject: Re: [PATCH v10 02/13] mm: Zero memory during shared memory transitions
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Steven Price <steven.price@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>, 
+	"T.J. Mercier" <tjmercier@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, "K . Y . Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, 
+	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev, 
+	Vincent Donnefort <vdonnefort@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 16, 2026 at 10:09:35AM +0000, Suzuki K Poulose wrote:
-> Cc Michael Roth, Alexey, Pankaj Gupta
-> 
-> On 16/11/2026 09:11, Aneesh Kumar K.V (Arm) wrote:
-> > 
-> > This series tightens the alignment requirements for buffers that are shared
-> > between confidential-computing guests and the host, and adds a common
-> > allocator for host-shared memory.
-> > 
-> > When a guest runs with private memory, buffers shared with the hypervisor
-> > are not only accessed by the guest. They are also accessed by the host
-> > kernel, and the host may manage the corresponding shared/private state at a
-> > granularity larger than the guest page size.
-> > 
-> > Architectures such as Arm can detect incorrect accesses to Realm physical
-> > address space PFNs through GPC faults. However, relying on that as the only
-> > line of defence is fragile and can still lead to kernel crashes. The risk
-> > is especially visible for shared buffers that are later mmapped into
-> > userspace, such as guest_memfd or dma-buf backed allocations. Once
-> > userspace can access the mapping, the kernel cannot guarantee that
-> > applications will only touch the intended 4K region rather than the whole
-> > host page mapped into their address space. Those userspace addresses may
-> > also be passed back into the kernel and accessed through the linear map,
-> > resulting in a GPC fault.
-> 
-> IIUC, AMD SEV-SNP also has a similar requirement for other reasons, to
-> align the "shared" allocations within a guest (2MB ?, as mentioned by
-> David Kaplan at the LPC).
-> 
-> Michael, Alexey,
-> 
-> Please could you share your thoughts on this series ?
+Hi Aneesh,
 
-Yes, I think we concluded at LPC that AMD should use this series with
-a 2MB setting rather than try to do their HW assisted smash/unsmash
+On Mon, 16 Nov 2026 at 09:12, Aneesh Kumar K.V (Arm)
+<aneesh.kumar@kernel.org> wrote:
+[...]
+> Keep allocations on platforms without memory encryption on the ordinary page
+> allocator path so the original GFP constraints, including __GFP_ZERO, remain
+> intact. Remove post-transition memset() calls that are now redundant and
+> explicitly clear allocations on paths where no transition occurs.
+>
+> This intentionally makes every private-to-shared transition destructive;
+> callers can no longer use set_memory_decrypted() to preserve existing contents.
 
-Jason
+pKVM shares memory in place, and a guest has to be able to share
+memory it has already set up, as Vincent pointed out [1]. That was one
+of the primary reasons for in-place conversion in guest_memfd.
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/avro44jUWOARFzul@google.com/
