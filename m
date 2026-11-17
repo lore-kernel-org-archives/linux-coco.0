@@ -1,62 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.150
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794932285;
-	b=pWTRIZJ/gwm4gHhbZmCsWxUARj9zsO4M/tmTh0fY4trpBdKZ4O/VXjPXfGuPZwNXv2I/
-	 /V9rH2SnXahbiSRVjZ/aKOmICXW0HFhlQlOV+Y0jsuUpVy5OyYygoPOSWrnNcEjINFQds
-	 W8SiU7gqy4keyZvkCEKxoq0ARXCjz6XGZ89NwjsrNgJhTg/HXJhPomincFdeQ2cvVDWMc
-	 gunONUOa1MV0XXEyR1h3+GulT95N6FVtIzB5DYPIfI+TjADrYnolSnbL7U5MrYfXTq6CS
-	 XV5lOvG/pBSgbzNpIwTlWEbpad9Hp6fI4XGcbZqLoVxmElku9coBsGfO9smFo/sEVpQ==
+	t=1794942051;
+	b=PLHftf6GgC94ntlbEUPscjzWSETHu7O/+hyUsX422TUsIRT1VN9+bDWGSTPsyN4dYniL
+	 hsxKiY1ClawrZjOX7+oS4nEsM+l319pdVZ/zA4yj0VIuk1lTGRmSYBa2MF2JK+Cz0cHP5
+	 xfQzcob30Kvy/4TAoHbXnrJdPoet9OA1QdztdZfXG83dPefqfluV3hsrDX3Wzv47Wc1ww
+	 1tl+BcM+cyAKrpco1SjmMc5R3YAjd5MjeBZQR8an4UX/2TrSIEKAwwGZ5PQZ+VO0GgoH/
+	 cXrGx/e8GU5n7tEBGbyWe45ADxMHwpMrj9mkLREtqimbLMldcG9rFWRSgO1AxqBXs6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794932285;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=nVQSkvxSA2D4E7wBBlcWxeerY52SIX8ZzPPc0+UbW0Q=;
-	b=eQAzzQPignYJqCTpKzoNfxJ3ybm/sQGN4ePZMQk7QlLZFdj6Hwmgtr8Dc6izopqcIvyV
-	 nKejLrxM3Kg7ERCX8jHV1Ue4BG2VyCsmFQTlQtGCU15bcVIrn6RnX2NotsR9fZw+vGWNI
-	 3dc1u9uDXCX7G4gEhvyrEZEzTNRH9c89Vg8VKdyHUp9LBz7TFUT4r7Q8oofD1bWGMsiWU
-	 dIveTjrw6VoliYUCTWF81pNnM2t3OSnlNXei8NaOTYV9rJC2fvOxXp14JRHKhlZM6QHaB
-	 Xq/gwUVK6sJZmLjfNDalegwm7DkC2OxO4kexYq6SKnBmG1UEWTTMPjXSXYC6xIsx4FA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794942051;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:X-Spamd-Result:
+	 X-Spam-Score;
+	bh=CaN1LpAY/rYpOSX3vn4qY28pucw6xrwJAN6nlpek30M=;
+	b=sJjYpXyYWhCWOuYR8IQ4FyIzFAFFrLs2lo+u8bEX/6Wv5Y5R7k/IigD700f+VUhlAsOb
+	 iWsaNlKJqEbh8RM9byIp7kODB8fhnL05shFDI6dgC/10DsAfvWVL1SltxkEcDlqxY7/rb
+	 7bBtl/CUSa0Hv85fQzxbkqCXz2hSOf2I3RUdrmIPaHvVb1DPfkcTQkFzIhvTs53LmMV3p
+	 1VNpGksn2d+g0cr2ecVw1zo1JFV33X8rHBXh9VHqbB9sEvnIQFxNoAyKEh/uv4CwScwpd
+	 MFvdaihaOHH10vRl3aW3R2uFm4ugmj1ggy91+TtaW39B0qgC+9DWNNZ8pCUBk+kICgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZtFmZjnh;
-	arc=none smtp.remote-ip=95.215.58.150
-Received: from mta1.migadu.com (out-150.mta1.migadu.com [95.215.58.150])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=WwvpG6Ah;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b="p/ju88Ic";
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A7E606D81F
-	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 16:18:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01A7E606D81F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657AF606A32C
+	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 19:00:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 657AF606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZtFmZjnh
-X-Envelope-To: linux-coco@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=6gwDumgKWifTcW7wg2iaB3gIO2cxXQFF5pgKIzED2/A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794932282; v=1; x=1795537082;
- b=ZtFmZjnh4kBx9rtbLJUBTQ99odrbwM5TmsIAzIc/k/J1WTn9M4F5V3/bgLsbdeZMD5qPpflo
- MukFzXnDXZ/7kciJG8hI6fS8bHKBv0x+aYgfhn2g2sTmKQKe1nKyysTy3UfcBPpx5A5SpQpVzdd
- yU5HPKJFtKH2W3y6uqHIq494=
-X-Envelope-To: linux-coco@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 686f0e4f41021204;
-	Tue, 17 Nov 2026 16:18:02 +0000
-X-Mizu-Trace-ID: 686f0e4f41021204
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so11148e87.0
-        for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 08:17:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFrFEzBWwKVTeqrfLvuadntm+0dalqRPa42j3K3hD6UwAqWOp5FTNmisuq6KEe3638z6q2OGa5ZA30P@lists.linux.dev
-X-Gm-Message-State: APuU4Z+fa9aVjs+pj+xwywiPtcmqxWz6ZLF6jSLHKJOcoBbYIjWSsJTl
-	yK/BKxbl4Rmo4q0WJ/h/CBa8c9TG4J4G9SWKFKvTyf6DWWmg4oADgvdsXcyV77DdAA/S9ihkz9m
-	cSjxAe982VejnNFP0RVxsIged69nA9ojxWrtl3vdE
-X-Received: by 2002:a05:6512:3b93:b0:5c1:5bc5:f373 with SMTP id
- 2adb3069b0e04-5c1a21bcf91mr172153e87.15.1794932276673; Tue, 17 Nov 2026
- 08:17:56 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=WwvpG6Ah;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=p/ju88Ic
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 594E81F7DB;
+	Tue, 17 Nov 2026 19:00:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1794942048; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=CaN1LpAY/rYpOSX3vn4qY28pucw6xrwJAN6nlpek30M=;
+	b=WwvpG6AhzMBZ6Wzp52161HjqJHItZONFNKoMtgxag0KnG35kcK92zO5lI8EbL78gOtr+Y3
+	v0zkVNx3nmkE/LdBC2aFKNzrJMQnfkSQb5vCgdZPuMhRZoJ/JxspwQusFFHI6eVO7AYFJ0
+	CFXTLX+PPhN7uHzyk8K4Q5qSVCSvpVY=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1794942047; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=CaN1LpAY/rYpOSX3vn4qY28pucw6xrwJAN6nlpek30M=;
+	b=p/ju88IcbkFuLfp2JQFJryDtjzoYCwssKV3qqApLP5YhivmIcfJcYSHigQCpBlfd0eJHxl
+	hUhMN7Cm4+/UUErF+Cv0DC65C8tFjZlxHjorK+u34W+tmjBGamSlTC0qcZiWufwkfwco2q
+	J/kuR5csTp4f3BvbQGAMPGmBFpTTAYI=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E43091334C;
+	Tue, 17 Nov 2026 19:00:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id h4RiL16k/GqcWQAAD6G6ig
+	(envelope-from <nik.borisov@suse.com>); Tue, 17 Nov 2026 19:00:46 +0000
+From: Nikolay Borisov <nik.borisov@suse.com>
+To: x86@kernel.org
+Cc: seanjc@google.com,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH] x86/virt/tdx: Don't print error if CPU doesn't support TDX
+Date: Tue, 17 Nov 2026 21:00:41 +0200
+Message-ID: <20261117190041.158949-1-nik.borisov@suse.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -66,88 +87,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261111145758.217946-1-steven.price@arm.com> <20261111145758.217946-12-steven.price@arm.com>
- <c5ebf936-fbc6-4910-be59-9e89ff3a625e@arm.com>
-In-Reply-To: <c5ebf936-fbc6-4910-be59-9e89ff3a625e@arm.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 17 Nov 2026 16:17:20 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTxz18a-8YcJPu7Vdib5xo4bLV-2CedLJxzh+76KuWG0YQ@mail.gmail.com>
-X-Gm-Features: AclHuK9hGzky46Uw9aIIH7RYxIzDHZDA5jw0n1Qmc2z6Ij7OwGUMvY7c8hZrsUo
-Message-ID: <CA+EHjTxz18a-8YcJPu7Vdib5xo4bLV-2CedLJxzh+76KuWG0YQ@mail.gmail.com>
-Subject: Re: [PATCH v2 11/12] KVM: arm64: CCA: Support runtime faulting of memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Kohei Enju <enju.kohei@fujitsu.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spamd-Result: default: False [-11.80 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.995];
+	MIME_GOOD(-0.10)[text/plain];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email];
+	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -11.80
 
-Hi Suzuki,
+There's still plenty of Intel CPUs which do not support TDX and when a
+recent kernel is booted on those the user always sees the following
+error:
 
-(sorry for the resend, my email client mangled the first one)
+	virt/tdx TDX not supported by hostplatform.
 
-On Mon, 16 Nov 2026 18:36:29 +0000, Suzuki K Poulose
-<suzuki.poulose@arm.com> wrote:
-> On 11/11/2026 14:57, Steven Price wrote:
-[...]
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-[...]
-> > @@ -1791,12 +1799,18 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
-> >           void *memcache = NULL;
-> >           gfn_t canonical_gfn;
-> >           int ret;
-> > +        bool is_private = false;
-> >
-> > -        if (!perm_fault) {
-> > +        if (KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
-> > +                return -EINVAL;
-> > +
-> > +        if (!perm_fault || kvm_arch_has_private_mem(kvm)) {
->
-> should this be s/kvm_arch_has_private_mem/kvm_vm_is_realm ? I dont think
-> this would be required for pKVM yet ?
->
-> Also, I wonder why pKVM doesnt need mmu cache pages with permission
-> faults with gmem. They do for user_mem_abort().
-> (may be because they assume Gmem is always single page ? in which case
-> we could also have the same behavior)
+The same is also printed on all AMD CPUs. Fix by using pr_info.
 
-gmem_abort() only maps single pages, so a permission fault there just
-relaxes permissions and doesn't use the memcache. In user_mem_abort(),
-a pKVM permission fault can map a block, and that uses the memcache.
-So yes, the top-up on a permission fault here is only for Realms.
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+---
 
-[...]
-> > @@ -1817,13 +1831,35 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
-> >           /* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
-> >           smp_rmb();
-> >
-> > +        if (kvm_arch_has_private_mem(kvm)) {
->
-> --8>--
->
-> > +                switch (kvm->arch.vm_flavor) {
-> > +                case VM_REALM:
-> > +                        is_private = kvm_realm_is_private_address(&kvm->arch.realm,
-> > +                                                                  s2fd->fault_ipa);
->
-> Could we for now use
->                 is_private = private_ipa_fault(kvm, s2fd->fault_ipa);
->
-> In other words use a wrapper for detecting if a given ipa is private or
-> not ? May be something like:        kvm_ipa_is_private(kvm, ipa)? (choose ipa
-> to make it explicit, it is arm64 thing).
->
-> Where, pKVM could hook in its own check.
-I'd keep the switch. pKVM can add its own case when it uses this path.
+Contrary to Pet Shop Boy's song - it's not a sin to not support TDX, yet :)
 
-Cheers,
-/fuad
+ arch/x86/virt/vmx/tdx/tdx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 96ced0494b68..b2962da24701 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1276,7 +1276,7 @@ static __init int tdx_enable(void)
+ 	int ret;
+ 
+ 	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
+-		pr_err("TDX not supported by the host platform\n");
++		pr_info("TDX not supported by the host platform\n");
+ 		return -ENODEV;
+ 	}
+ 
+--
+2.56.0
+
