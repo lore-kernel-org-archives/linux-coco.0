@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.67
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.25
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794878327;
-	b=1gtHzGAM+yWe5hYZ6aOxNrmtaSQihoZMLr8QVpv2oUOlv6a+URPGWa19OMFKjW9q7TMe
-	 2sNDThkwoEgwtKoEIcLZ+9BJUMhEvhzsEoORYp1eBHgoH4NzqM5ZALpFZ/JnBfbj6zfU0
-	 MgEklXN23L/vNA2eYxOgsUy1xD0K+Yh/P5QjYWVrR8CAU4LfGiAf2Yp03hZndNoB5VzeO
-	 P0ma/EXD2Qez+NlOtpghXhNxUs9qJVFq7k6j2dSFdyuSGQHGROmkHDCiKi5Ht1ZfrrXBu
-	 OrfFQN77welVnTC2XeqUtx6tP/mJu9zL/+vGs84WWQYgY5idRYs60ot479GXw3P50+Q==
+	t=1794884820;
+	b=0SsrDm+j+bYU8RfhBcRp65FBpvhS0rvFtLgBwVEM+c8p8v9SlMseDO4pgSqpRKiDzndN
+	 m1hn/IJ99FOtPy63NlpKUAR7WILjcw7GfvbX3+Ft72fWJIhy16SiwxORSsjvKoK00529m
+	 35mijrdsbAcnA/DPn79+TiRikfu92Tzz7ZMwJ9RfUCRAPUrvhVno0lrhR9V2axCMIC4DJ
+	 yo53j9UWi7f96tKzRbKF+mwBcwCb4PCAaYymPIy6I78G1RBbFqUr5QlXUw7lInxpu49f0
+	 xoNLRj6BA+enxKOFqz9riG0L4Hd0TDYiCqT+SuQOCXJg5U4JgEW2gyhlfgoZL2IDkbA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794878327;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794884820;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,95 +24,78 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=gbczNrw1Qxnh71rCmYRXJS3YYFCROZTFA/hK0/XDoWs=;
-	b=4mIGfQKweTkZhUwPz6osOqaG1WaCUS6M0eEEcsEyEEK1BcT1mYXktXojkiWehRlh9LB3
-	 6Yx3rIQwYy+0rflJK3qQVMz3wtsGdx6yk+LDcNKNDKD/FcVBqQirXksu1IyWZ/yf+NSsw
-	 gid9O1E0pNYOISKMJ5eX3BZ5KYrc5D7Odz+OTQc+2TwgroRI23FytflcMQbi4wtUpgIsm
-	 0V9eaU321koLIfaK10RR9eEHeCyLfuYfqUfmLrp0T6r34z9nKqncfF+vbSWoR2qcKWR/c
-	 zfj5Hr9SeUr4aeqdCzWyXAQPEqaBclGjPiJBgMR5W2c2wEkkOE2Xfwv9uv3CU7uenUA==
+	bh=sOhdfQoq69ElVt7wOSLvb0bMiErXQz2SrDCJYjLzKRI=;
+	b=FSsCCJga59Ca3T9oeCuxqt9/f9Za8t63wDgEUzkhERIW6ryPDM9Z+NYahg8IJ1kOrHL3
+	 ySakoY6OHpY8nkus3/gCq+QswZ+CXivSvmZKmToxYSUawma9sfxIM3Da+bElm+8U7fG5Z
+	 0nD8NBMynymeam0LQFpjzAV0ap4EcvuA+qY4x0X2BHcvDUNW/JhH1w6eKrbB4bDJZw+7+
+	 Qn49hvdsF4sjRO7t+tfd4l4CEgU/e+uTxct0omW9pUFX1jAlibcukvygOkgxfHhnfaO3b
+	 uYT8Oy6xyfCwD4zkvNVXQMb7B0pm3BAKjyaSqX27CATjEsmc66kMNXD7Qtszfb8V8Qw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=U4UWIPbl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.67
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012067.outbound.protection.outlook.com [52.101.48.67])
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=kgjOA6iA;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.25
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012025.outbound.protection.outlook.com [52.101.43.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71EA606A31C;
-	Tue, 17 Nov 2026 01:18:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C71EA606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B9E606A323
+	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 03:06:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17B9E606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=U4UWIPbl
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=kgjOA6iA
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pTAEf6odJRjaAhO6zZGy+kDir27pUBWetrFN6nq1Slj5tEGKUhOyjXspDo4+HCa+QXkc5I8NI6Gszu+CAXE7nurs6yOf2aymUY1tx/GTGKKroUhhV+u74EbRBo644N2zrurKTJvfX4YxGHkLUByw0TRT1DPpQ4r6GTeb+Dlny8B51eAxqUh1k4KyDD0zs10ecv7HjtBig3Dw4+vduBuKtEpGF6D2QGDujzSfvmOwTNwoU//T3BxFAtmlU3gygGmNZ0fYuyNcOnVZ9Tv7/2IAbCXM0HhIvQ9xLS2t2yqTT37vq301lbvSSObLd0kr12vd80bbAjNNTLBUZHGzNzjCmw==
+ b=UXlJaVkNr7XmLZo6C2etfekBoAUv5QzRhWXVE7kiFaqhQ3PrUF+xV13XOi1r13NeQLYf6P6lcQTCskNkHimVr6XSS1DAp/oxHABJlzLajgRUSCsMRcED6kZfBgTe64ZEoHnv+jIAgUrUwbywGNpD0dd+keX6VWCUQK2Toof55sCW5cGPbNQpAkau5S8DV06IitejdoEBQQ5z2M/be4uBFiWjVrQwqTu9K55AqRhPp20dxUD2yk/gUVI41HJeswCiSqvK2Hbu/H3/zpJQ2FGjguqaSWPjySFdKj0am8ajxgi5LYI+KcS7BZrEwv3oYYu3GE2Y4TLoK6Hf8ZdaJyEI2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gbczNrw1Qxnh71rCmYRXJS3YYFCROZTFA/hK0/XDoWs=;
- b=zS0Pk+vVLXHicuKgyMs3jN+TOftNrjPbf023Snubo3PfYN/7en+K0xifmEDoRel3VQATiJbieIcNv7wtpOKhtA23PtxTNdYnZE1EVj9UIbSlN2nwtq1YJf0+inTZ6ICK5FdNNdbr/Xd0yJf59R1j+SGuaU+iQQizPR0xjC0ZS5z2pb4+7NbYc9DbieqGnC8PkrOT5IgihMhkkQYOSA7lHpnvgPLu6+OQGffE9XjzrrtQ7gusEuYcanNiVqs4cHyijM2WKKiTWVrhGjwL804Z+WEIeBmwgxePftGPZ3aW99mljCHuPTClCM4rskD/QPlqASD7GnMn8GFSWPxfNhyPYg==
+ bh=sOhdfQoq69ElVt7wOSLvb0bMiErXQz2SrDCJYjLzKRI=;
+ b=sE++WU5U1heDNvxgnexKr2wAun8PBGa79wIXv+BX6rK7bHnAljasc0za4CRnmxn2VMOK6E0H9/bIw0M92Nep8VtHWqli7+cQ+XE/a84vkFFH19eVlaix29yTZeaTcVV+xaMqcaATlxZpmWbfKDabzTQAl/h1V73R8+RgNRWHqLNr5ETTJi5DNWr5oQGJGOT2EPns3FgO242iDL4+9TWMGPjjJf1yX0BUMnLeIFca+FKjFP2Yf5sNG2R0P2epiONRRcswcPk4tCgZPTJn6wnitL3cRn6nVhlIw7V3lauZf8krzlOEJqug7bK/6R0JAvKHpgVRyonZvgPz0qfr8qiwGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gbczNrw1Qxnh71rCmYRXJS3YYFCROZTFA/hK0/XDoWs=;
- b=U4UWIPblsgP4XHxK0A0rvXHyRkVlpJy9fUY02U2K7owcRGOwAbSBO471neD848miaX7b3rWh8M6MD0xYFWKXUa8M1LQJrH7/sVCW6QeO6+eWwb2FwrZBhTq66mWX+Hsgk1dLtvECeLlHN8+px8jemkvmnjOqAR4HmoDh5RconNU0sWt3JKFA90T6IHwiLkIlZv77qt4fOM4o57KMhcc4QM+53IxzF133nYbUSPkDCjpEzDXX1iPTV2YU+0DxatZlrmuM7EHqWSgom281Gox8a8mqjrjD2p4wsF3pqpYQ0ItQgoZCf9mWaeTjlmb2xz/+uMEyVfcsSjRBD3DrSlpjVA==
+ bh=sOhdfQoq69ElVt7wOSLvb0bMiErXQz2SrDCJYjLzKRI=;
+ b=kgjOA6iAMfPUQcBAZBV3vq6yBI6q7iGNPphXjSM43RIorKJL5mVGoqeeKKXBUMZs5sJWqXBuaB8oDD1PAQyD7hPtaGi+PdhMn5bokD5E//qsMfbDZjc7PpZQ9mKnaxF7R4t2E3TlHjDxAFaxlKyZq6h6BEgsuH1Y3bc0SbIoubM=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by MW6PR12MB8757.namprd12.prod.outlook.com
- (2603:10b6:303:239::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Tue, 17 Nov
- 2026 01:18:39 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 01:18:39 +0000
-Date: Mon, 16 Nov 2026 21:18:37 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Jiri Pirko <jiri@resnulli.us>, "Tian, Kevin" <kevin.tian@intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
- and establish streams after acceptance
-Message-ID: <20261117011837.GG2245175@nvidia.com>
-References: <20261109185315.GS770409@nvidia.com>
- <e1fe8fa5-7bcd-46e3-bfe8-368582304222@intel.com>
- <20261109234032.GT770409@nvidia.com>
- <IA3PR11MB91609724D29DA39CB0AAE25AE7722@IA3PR11MB9160.namprd11.prod.outlook.com>
- <20261110142038.GE738765@nvidia.com>
- <DS4PPFA84FA90FC31803C37BDCA2C11FCFCE7712@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261111141315.GI738765@nvidia.com>
- <73d5e5b5-2626-4107-8f0d-2203c53ddd43@amd.com>
- <20261112123127.GK738765@nvidia.com>
- <b0efaf47-5a94-4922-98b7-2000ae9a405f@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0efaf47-5a94-4922-98b7-2000ae9a405f@amd.com>
-X-ClientProxiedBy: BL1PR13CA0363.namprd13.prod.outlook.com
- (2603:10b6:208:2c0::8) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by CH3PR12MB9729.namprd12.prod.outlook.com
+ (2603:10b6:610:253::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
+ 2026 03:06:55 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
+ 03:06:55 +0000
+Message-ID: <3c82411b-dfec-4b26-9e7f-777c8f1ecb6d@amd.com>
+Date: Tue, 17 Nov 2026 14:06:47 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/6] x86/virt/tdx: Add extra memory to TDX module for
+ the extensions
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com,
+ kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com,
+ sohil.mehta@intel.com, adrian.hunter@intel.com, kishen.maloor@intel.com,
+ tony.lindgren@linux.intel.com, peter.fang@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com,
+ artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
+References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
+ <20261111-tdx-module-ext-v5-3-c74f764abc3d@linux.intel.com>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <20261111-tdx-module-ext-v5-3-c74f764abc3d@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P282CA0070.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:203::16) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -123,150 +106,129 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|MW6PR12MB8757:EE_
-X-MS-Office365-Filtering-Correlation-Id: 46b817e4-2a2a-4032-f8fd-08df4448b5d7
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|CH3PR12MB9729:EE_
+X-MS-Office365-Filtering-Correlation-Id: b4780fb2-42d2-42de-8f55-08df4457d627
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|4143699003|261021121427099003|261022105027099003|261028144727099003|261021123027099003|11063799006|261022115727099003|261026140227099003|261102123227099003|56012099006|261021135927099003|22082099003|18002099003|261026121527099003|10067099003|3023799007;
+	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|6133799003|22082099003|18002099003|261009223027099003|261022075727099003|261022105027099003|261021121427099003|261026121527099003|261026140227099003|261028144727099003|56012099006|11063799006|10067099003|261102123227099003|261102124527099003|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	Zu3maTY2E7o4PhYa2VnhhMNXsxiH1ITuMpDNyMOXh953StsVmyFpCSZxyhNZBzz1h75vs7CnwedUdlE+FQW2bj3Dz3+ISAlSTjy5biycuBUFgpWIXIZMOd0+fgBZifymaLl4c0dlaEPheWp3bFmMfhxcK4KTXKAa1PKOzlZRjWkN6H3kB+G8aeZ7Z6FV/SOcrJnJlCa/ZWvxITaLhFu4v7TDlZPoD9C26ccGL2N4Xfc6nqvQ2bAmq3Nn71YV8ea4h8Kzsgl/kwvMwrgFtjLk83uiapQbKfyX1zf0z3YWxoA3DI2Mu3ood8Xt8pGvWX5ZmF04Qm7yWCqxgozU3Kspa6zxNV9uwOpFSNPoVJC+7KBNSwn21n65GOrmieZ5MgfPP2RK5f4A9FuWKdcue0WWbFGmGNSsN2pE6Kj+IeeKdE1+yZ9HmNnUGM8DlQfQhhyGCPft1CEDIGQ/crjLyq8TJWJ6ke9rgphDIdfsJVLVo6vt5jYrH3d6ZGT1XAiZcW7RsVJ8UJMOQqmI3CGs5eWnAOnzlcHxLsRZHWdb/Ion7D9ydx6uMYrB52N6OdNIm3iKyjtxtJBjcV/oJuGiNnHIyNJnJIOX0sYNAM8ytGvag9t8CQDfGbqL1o3KJIhTkDhv47474P7ZS0JHpAi1ueJmb0PF3GdOsoVrbEcA4vzs6/Q=
+	QRm3OvKMtyLsgxSLZE6B7QEFmZWlbQGtdOZS9P47S/V9CRVUSrOBleF/cNkKeWrLrj2uChA55QVNk/1ioB7DY/+19FxjrSJIHfkz9/ebxLfGZG4COQNiyrX/KXKR6yE9vLyJQlNPhbUHZFfk7KlZUzJ56h7/vNGFdwJYGbSHlYTQIy9jw1zAe9X8PtuNr6pjSY0Q77DcI+KLcgRHHS51UyNoUqDQwV1eIh4dR7uKCjnlxKxDD4N/oJKgYHihN0qAWWmeJ8y/qoHL8anZXCBcnSLDsY+nZn8rhIjcPIHFlt5n2nRztSkO3ZqJsiemU6Nsk9vn2pC4kDlzTN1z0np16nfXMtCLTThKVCKxYgv70KgX4yUq/+nG69BIE73Hrbdo9DtlfFeDU/ZJBkuEG6FcoxyjEmcF3dsFC5OZjMraFaj+keqK9UFHmX6aRyvqYWYITLQwvOr0gugYyffqloVd3Zkfj9L78Dt80qqoLOfbu/CD1BovSxMf0wxeG7sv1VE7EE/jqAZMutSHHBohi4gZwJHoQLiWDgmV4UEDY+nJhIcfjtzYSyEPRSwJ1GUomOxldoVu7ctR1nIWBjlDSWPfrERGRPD+msZ0wKyRzGfw8QrQMbIDezsSmN0RSY+nhs0XyrrFX7eBvOpyZIzKAdwBMz+X7igGgiSgjy0zUz7zlPg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(4143699003)(261021121427099003)(261022105027099003)(261028144727099003)(261021123027099003)(11063799006)(261022115727099003)(261026140227099003)(261102123227099003)(56012099006)(261021135927099003)(22082099003)(18002099003)(261026121527099003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(6133799003)(22082099003)(18002099003)(261009223027099003)(261022075727099003)(261022105027099003)(261021121427099003)(261026121527099003)(261026140227099003)(261028144727099003)(56012099006)(11063799006)(10067099003)(261102123227099003)(261102124527099003)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6ZyAUk/xKbe38iA8lfzrhXW6HOb5LRjiq8DTmRGRh/AIn0fwgqCdAyM0zN/H?=
- =?us-ascii?Q?gC/PnIvby4zeordmW4I3jahf8NbLZe6ppHurH2Td+PbUjTX+eedVQjJjYSlV?=
- =?us-ascii?Q?wAEoQ84+Z3jO2bggZOOnkFenohv/IfjvcGSwc7A1kSSSZwOvL/iLtyjc3uUK?=
- =?us-ascii?Q?CEDaZ0qHyga8Me0tkjTqftKoqz55Q5QEOf2yaR0g7oy7IgtTdKZd9Bcpn/9x?=
- =?us-ascii?Q?KmaERCZsHNeGIi/uDOSq/9tso8tKt4o9gZXDXIn27uU4lk9D6LHUkMtLyrus?=
- =?us-ascii?Q?lEOYCafzsl+rKCUjx0YjgpNygdc9DVyotcJLPlydEO+8DYaXIJD/igLX/UZ/?=
- =?us-ascii?Q?k3qJbF8fjjFy17jh8PRjblmKoCLLdFOSjWMm7jCnKwTrBXyMmfl0aQneLIH7?=
- =?us-ascii?Q?CqEG8ZaKgs19wLzMB9idwA83Du7b3k3pwEwcCtIrOTvcbk9Au0WrJ9cySfyo?=
- =?us-ascii?Q?/toVwJjtCzhiTa168fK9NdbAE6jQSisf956WrFWwDGmQ3F0c+7HjkULYFf2R?=
- =?us-ascii?Q?GvejOkUelb7Ue/acLkH8F4ngViY5qdIglLhfqnLAADiF+ykqVaoAqDu6hrDO?=
- =?us-ascii?Q?GGVvKWJVMkTyewHbXzl92G9woVzKyWwvJlQCS69jQktEoqKwn2GTyrX4DIN9?=
- =?us-ascii?Q?LO66v895rU2jkgu/lJQZWV4XFVX9NH8cJiZ4zkFnMRud746AFfsN6lfO3vqj?=
- =?us-ascii?Q?zlLx1RnIeQOXyJaUAl17PCosMwkV76U0N1YQzS4U1tUmyfjNHVsxiaVVkWXn?=
- =?us-ascii?Q?7Atd7xN4C63h8nkOcp/xlL4UqWpLr5O6kuujCao91Lc1Bwfw6uAevd6MHTcH?=
- =?us-ascii?Q?vPRYHRw9THZrk+gGAaKxFmiT99e77lKo5w5yUSxInM+hd4eQVI6rMmesuAqZ?=
- =?us-ascii?Q?wRLUEQKIVb6NQ62mD8hNq0q6/khvgx+r8S0JtIZT/1bVmbUi+XboSkZgGst1?=
- =?us-ascii?Q?Frujt0daR0CacsI7x/K6QNqO1sTTKXAVOlzIwXCGZlrNWfOARw4faDXdbaH9?=
- =?us-ascii?Q?MDfDoIjp8c1EjFH6o7HJmOST2Bh5Dy5JVe1IhQ9tj5fInOp9yOk/rt2PUvLq?=
- =?us-ascii?Q?GbiPpOlkT7lMbPXjLxylYtSA5S1A6qw2WOOGFZzpfk8uNoCpm5STaaxtX3hR?=
- =?us-ascii?Q?JJoKuJlohbBwqHINx5sB1Evcy42GnLdvFtJ9B5Mvut2VIq2+0McUrfKoQ01B?=
- =?us-ascii?Q?nLA0/wFzZIrbgGpu7IUjABMxQKiORCKHZJNH4+pm7rVh30GEE9gN4wMvFzwQ?=
- =?us-ascii?Q?9Mk40Lrxc6TWQyoMwYF5oMq7pyAvDJgBmxHrQ7sEjLdWWlRwG9h/N0NmC5jH?=
- =?us-ascii?Q?wbsnGBDuecT8U4VPjogcJFCDnjYP9OoWY69oE/ZjWRa/RayATEUj9h2OC14j?=
- =?us-ascii?Q?67YS8Oon1fyUPsSUo1fhr6Q7utcK+jbnI9l6s6oCIhugcxeZKPccM18fyd6V?=
- =?us-ascii?Q?Y3TqhA+OAuQH4UgY1OHFCsfQJeI95z8uvFS41UogSsirrmEVEasZTWUbA9PP?=
- =?us-ascii?Q?cTtjs/lSUnMVoLihniLe8Qlanr1Ox3XpfrJGTwhToef3gzwCNjb1b5vpbsZs?=
- =?us-ascii?Q?6iw+b19kPvM11cgOedWvquSrwIGS13kixAI3GLq3cwuTqe2MZe4CLmHe+0UA?=
- =?us-ascii?Q?gVb3R0rUZ0kDEKuE1AykZDe/+bb8wTpz+h3Hv72E6zXsJ9yLi2YFWhtD6C36?=
- =?us-ascii?Q?q+7jgl41daro0kisNnZ7xkZ0Ro0Jwh8pMd8z8L6B1a33coymTf0qUgylTBQp?=
- =?us-ascii?Q?YGmvVeCx9Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46b817e4-2a2a-4032-f8fd-08df4448b5d7
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+	=?utf-8?B?R29MRWRmc3o4RXZmWFk1ZGYrYjJIeHg4OEpFdjVFUmhHdjI0azFvdW9Zdjcw?=
+ =?utf-8?B?UFlSTFoxa0FDK3dqWnhLYnhwNGlCc3JPMXJzMGFpdHhkL1ZjaGUydkNMMWhE?=
+ =?utf-8?B?KytsWjluVTBKNFNoN1dqbUxBdjlGOVB2cXlna0VKV01VOHVMd2tPUndIWFZv?=
+ =?utf-8?B?MnhIeXRuT1hhWGxBMUJNbm9PZ1dPTkxWSi9nS3VVb0xUWm5VQlhwNGJ5WDd4?=
+ =?utf-8?B?Q0FIWUxGakpRVEZVUzdvWElQZVRqSjNxU1dnTnZWdThKb3hDcnUyem9kNWlW?=
+ =?utf-8?B?Z1JvVnk3aVhtMWJsSWFra3VocjgzZzA0QzhsdG1wS21MNFl3TU9HRUEzS2F1?=
+ =?utf-8?B?bFlUS29uNXhoUjBDY3pzbnY0djJUbXFSRXhLVGJ4MFNRcTd5ektqU09ib0JW?=
+ =?utf-8?B?bDlGTmhhbUsrUFdkM3VUbzNlRTNDRW9DNjRlT3Q3L21Vc2dMNXlRNmdhU0cy?=
+ =?utf-8?B?NDh6THMxVGJPR2xGKzM3S3N0ckNFTm5uUFFyMisvMlNGSmJPQmwrLzVBN2ps?=
+ =?utf-8?B?OFllREhkYWRZNGxqcnE0MndIZEE4VzhPVWdXL1Bubi9ueUpRTU40TmpDYWo0?=
+ =?utf-8?B?eVVMQWF4d2hDeUtRNXBjZERNWDY2aGJlcXU1dGk3bTZJeWNwTS9IRnhpQ1F6?=
+ =?utf-8?B?cjFDczNPUnpOVVJxZE44NjY1RDlpM1V6QkJ1eWxNWlJrY2dpZ3RnYzBWSXVU?=
+ =?utf-8?B?VE1Zei9lNEIvYW5rM0ZLYVcrS1Q2cC9La2xlem5kajVBYWh3NlByeXorSU0z?=
+ =?utf-8?B?SVlvbmxJNzNvY2k3MklTWEVYR1RBT0lIcFZ3YmREMTJVQjUyMjVkT2ZPNTJW?=
+ =?utf-8?B?RlYwMCtyb2dxb3JCZmZBR1FVQmc4MjdtU0pFVjVrOWo5a21mYk8zV1pDWFl0?=
+ =?utf-8?B?cG1lQWhBeXJ1S1V1Y1JrNHlLQld1QXpmY2dKSUE5bFdkc3VvM0JHTjlja3Qv?=
+ =?utf-8?B?OGdONkRQMXJaZzk4TnlURGlzU1pTZm9MUHJQNDczZFloMnliU3NzTG1URVFC?=
+ =?utf-8?B?b25SOEhLRkVoWldLdlhtS09PMWRueDYrYnRKZnp6TDd6THlYbFlMN1U1U29P?=
+ =?utf-8?B?Z3BKTTlMYTNxaVdaZzhhVnoveXJhbDMwVjlGZ21nZlh4WnhzRHNUZVREckY2?=
+ =?utf-8?B?OGV4aEhlWWJ5R0RWT1ZPZjFDdmQrYWFLRnpSTjR2VWN6ZDdQU2xRc1grWFdU?=
+ =?utf-8?B?VGlhTUwwcXhHdlFMSFhSb1JHOWlEN0lLQmJib0VObWlhM1NjNW9WR09nbmRQ?=
+ =?utf-8?B?dTMzNlN1alU1MHZ3eHFscTZmNi9BVkcvYkNDaTRKMzdRTzNBYWZpejRhWVRq?=
+ =?utf-8?B?Y3JtNzBGYkkzNU9TVXB3cWRvTWdPcXc0ZUtPZjA5aGlhbVlTZklWUjkwK1ZS?=
+ =?utf-8?B?dnlXek0xdkdFL0VOR0FOR1N4bzgxZ3hlY2RaclBIc3dNUkxLQjlRcUNWN2hz?=
+ =?utf-8?B?YXZQSGdZUFF1OHZLWWovc0FGZGxudUNlZzdIL0c5V1F0enZudEZXbm9LRXZm?=
+ =?utf-8?B?WHRKSnhwNG9mOWtHL0pFWXkrZVNmemUvczErYlc1cCtiUC93RzAwdjdKbmVV?=
+ =?utf-8?B?K3hQdHhhQ3RyajFRRzBrNFRzWVA1VXVIbUtCWFZNUFFWN2IxRzNPMXhkd0JJ?=
+ =?utf-8?B?ajZRSWMyVk00TU5QTWxhQ1IxRy8wa2lqN3BUU2MreEI3b0d0TDVVYTJFSWxY?=
+ =?utf-8?B?WnYrNkxyS2dtcHVPMjZzWlJkRDltS1B1YVFRT1hXQzBaTWpqSHBFS2tIZ01T?=
+ =?utf-8?B?dVdZdWJKcXUzdFU4dHh4WTkwRHVYTVIrUmxzLzNYcUVBZ3RJc1YwcjloMG9F?=
+ =?utf-8?B?Y1JESG9iT09SdGJueWRLWmx1aXY2Yk1QOXdGaFFGVlRMOFFlTysvZGhTRkNq?=
+ =?utf-8?B?S2cydjczbUpxeDV1bWlkK0RWdUxMWkJIM1RaZUo4Mkl2VWJwYVBwR0dmM1Rr?=
+ =?utf-8?B?VkpEWEVnOHg0VStYUFBHMXhuNCtYS3RGMHVtRmtkUkplS3hqdDJZVThZWWQr?=
+ =?utf-8?B?OHZNbzcvRCtza2Ntb1VoMEQzU2VZZHJtWFd2cUcwdkZweDhvYXlVdWJMZDgw?=
+ =?utf-8?B?dnZYR1dpbEliWDFXajRLaitzRzdSZDYvUkhuUEJHd2NsU2ZCcnBYWEZuYmJo?=
+ =?utf-8?B?UVFnd0xOUC8rcVp6ME5RRmd0dWFaYVh4ZGhGT0JYbW8wZHRJaFQwaUlQM01J?=
+ =?utf-8?B?V1hEN1lUZFZXMHRSWS9YdDd5aWNKYWIzdnZHaUtuL0p0cmdQQzQ4T2NKTUE5?=
+ =?utf-8?B?MTFiMjdGUGJXenpkV2lHTHZOdUxDL0ljZjFJWlJDZVl1T3FWckxOWWVjb2NM?=
+ =?utf-8?Q?IAD+YODrHC9t5KrEpL?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4780fb2-42d2-42de-8f55-08df4457d627
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 01:18:39.0975
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 03:06:55.8091
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sPwGdw0IanjPa00zqDyj3aTpqRkJhl4G326AsKXfpk7Xe7wJE20LwHWzQYfBYNli
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8757
+X-MS-Exchange-CrossTenant-UserPrincipalName: AwGTxp/9ZavnnkeXnLEgPpMofrVsCyr5WvmrWnsRjqqnlZflSf42jOlbq2qqGLm6SgMoZ3kiGHdC3SshaZKYDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9729
 
-On Tue, Nov 17, 2026 at 11:48:26AM +1100, Alexey Kardashevskiy wrote:
-> > Again, my reference threat is the hypervisor programs the device to do
-> > DMA after 1 second and then tricks the guest into doing DMA
-> > ENABLE. This must be prevented by the guest and device co-operating.>
-> > For a concrete example, imagine a RDMA NIC. The hypervisor boots it up
-> > and establishes a remote QP with RDMA access to all memory. Passes it
-> > to the guest and the guest does DMA ENABLE. Hypervisor suspends the
-> > guest immediately after and rewrites all its memory via the network.
+On 11/11/26 14:48, Xu Yilun wrote:
+> TDX module extensions need memory for their execution environment to
+> serve SEAMCALL leafs. The TDX architecture implements the extensions
+> in such a way that they use the memory outside of SEAM range, so the
+> kernel should add the memory upfront at initialization time.
 > 
-> Then the HV is in the guest's TCB, no?
-
-No, it has access to an unlocked PCI device. That should never make
-the HV part of the guest TCB. Creating that barrier is entire point of
-TDISP.
-
-> I do not know anything about RDMA NICs but there must be some access
-> control. How is this different than giving the host an SSH key to
-> the guest's root account, for example?
-
-It is completely different. The entire point of TDISP is to take a PCI
-device in the system and then allow the guest to accept it into its
-TCB.
-
-My point is: when the guest accepts the device it cannot be "Dirty"
-with state and commands loaded into it by the untrusted hypervisor!
-
-> > Devices MUST have protections against these kinds of attacks built
-> > into their LOCKED/RUN state transitions and verification, somehow. No
-> > spec says how to do this.>
-> > Pretty much any device that does DMA can be tricked into doing
-> > something like this :(
->
-> So we basically want guarantees that bus master is off when
-> transitioning to RUN, is that right?
-
-No. We need guarentees that the device is *clean* before we do DMA
-ENABLE.
-
-Clean means something like "just reset"
-
-IIRC we can't change bus master while in RUN anyhow, that is not how
-any of this is expected to work.
-
-We expect the device to respond to RUN and LOCK and do one of the
-options I gave.
-
-> A TDI measurements could include the VF config space but we do not
-> have TDI measurements... Huh.
+> Introduce a new memory adding process backed by a new SEAMCALL leaf
+> TDH.EXT.MEM.ADD. The kernel queries TDX module how much memory needed,
+> allocates it, adds it to the module, and never gets it back. Note that
+> the process requires Dynamic PAMT backing. A subsequent patch adds the
+> support. This doesn't break bisectability cause the extensions can't be
+> enabled yet without a feature that uses them.
 > 
-> Sorry but it sounds like the device driver is the one which has deep
-> enough knowledge of the device and, upon transitioning to RUN, can
-> tell the device to stop/reset (via encrypted MMIO) while keeping DMA
-> blocked.
-
-Too late, DMA has already been activated, that breaks our model to try
-to activate DMA somehow after the driver starts. Plus many devices
-cannot reset themselves just from mmio..
-
-The device knows what it is doing, the device has to respond to TDISP
-in an appropriate way to give this guarantee, or it is security broken.
-
-> > > We run the attestation without a bound driver now so the device is
-> > > quiet but so far PCIe TDISP did not require this.
-> > 
-> > There are many things the specs don't *require* but have to be done in
-> > a certain way to get security. Enabling dma and binding a driver
-> > before taking a measurement is obviously security wrong.
+> The TDX module accepts the memory in the form of an HPA array. This
+> array is passed via a single 64-bit SEAMCALL leaf parameter, which
+> encodes two values: the PFN of the container page holding the array, and
+> the number of entries in the array. Create a helper to encode this
+> format and name it after the TDX module term: HPA_LIST_INFO.
 > 
-> Well, I meant that the driver can start with encrypted MMIO (or not
-> encrypted) and untrusted DMA (SWIOTLB or vIOMMU with only shared
-> mappings) and then, after the attestation, switch to trusted DMA
-> (and remap everything).
+> TDX module extensions consume tens of megabytes memory that will never
+> be returned to the host. Use contiguous page allocation to isolate these
+> large blocks entirely. This is a simple way to avoid permanent memory
+> fragmentation: requiring the full size to be contiguous is more
+> expensive than needed but should be good during the boot time. Print the
+> allocation amount on TDX module extensions initialization for
+> visibility.
+> 
+> The TDX module provides a metadata field "required_pages" to indicate
+> the required memory size. This metadata is meaningful only after the
+> add-on feature configuration. Don't read and cache the metadata in
+> tdx_sysinfo. Instead read it right before allocating memory for the
+> extensions, when it is guaranteed to be valid.
+> 
+> The original changelog was written by hand. AI was used to help correct
+> grammatical errors and polish individual sentences for better
+> readability.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
+> An alternative solution is to use a loop that gives memory on a memory
+> error code - TDX_EXT_MEMORY_POOL_REQUIRED, add one page per iteration
+> until TDH.EXT.INIT succeeds. Something like:
+> 
+> 	do {
+> 		ret = tdh_sys_init();
+> 		if (ret == TDX_EXT_MEMORY_POOL_REQUIRED)
+> 			tdh_ext_mem_add(); //single page
+> 	} while (ret == TDX_EXT_MEMORY_POOL_REQUIRED);
+> 
+> This approach is slightly simpler as we don't have to query the module
+> for the total memory, no memory pre-allocation or segmentation math.
+> But allocating a single 4K page per iteration may cause permanent memory
+> fragmentation.
 
-That's not our goal in Linux. We want unmodified drivers to work with
-TDISP devices in RUN.
+Why not allocating new memory in 2MB chunks, reducing fragmentation? Thanks,
 
-> Say, it is a the only NIC in the guest and the VM wants to run it as
-> trusted but the attestation server is outside. Reloading the driver
-> is just easier.
 
-A flow where the VM self-attests is really weird, and I don't think it
-can really be made secure in cases when the NIC is involved. We want
-to log the attestation (Eg to a PCR) and then the online verification
-can check if the lohged measurement is acceptable or not. Since the
-log is tamper proof we have a record of exactly what was accepted
-before it could have compromised the VM.
+-- 
+Alexey
 
-> Right now my guests request measurements with a guest userspace
-> provided nonce and the PSP talks to the device to get them.
-
-This is basically right.
-
-Jason
