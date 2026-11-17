@@ -1,101 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.25
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.63
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794884820;
-	b=0SsrDm+j+bYU8RfhBcRp65FBpvhS0rvFtLgBwVEM+c8p8v9SlMseDO4pgSqpRKiDzndN
-	 m1hn/IJ99FOtPy63NlpKUAR7WILjcw7GfvbX3+Ft72fWJIhy16SiwxORSsjvKoK00529m
-	 35mijrdsbAcnA/DPn79+TiRikfu92Tzz7ZMwJ9RfUCRAPUrvhVno0lrhR9V2axCMIC4DJ
-	 yo53j9UWi7f96tKzRbKF+mwBcwCb4PCAaYymPIy6I78G1RBbFqUr5QlXUw7lInxpu49f0
-	 xoNLRj6BA+enxKOFqz9riG0L4Hd0TDYiCqT+SuQOCXJg5U4JgEW2gyhlfgoZL2IDkbA==
+	t=1794899462;
+	b=cO2BgFpxZYOzbele6S6Y3no3eK5DIJD1/SqhhPCmYOsuiGfodOjGALDUlKXCCa61Ktfm
+	 z4qFlnHppWyQVAByBmipaYCVYWXFO9rp1EOP3rq9IrnaIBmiWMo2PiXHY2x8KcHAL4adZ
+	 dI4rwpyeTG7sCiHpjaKxFNzwfiIxgkoxyccqXEg1dxDfXgygatB/gYNW+LW2PVhX5HxHr
+	 c/Pr10lROsexeZYzXZARYs4mrwkCnAJ6150mEjUErNjH5fgYjaNVxP1dySZAq44pZPgEL
+	 vx3kb4lLIStsP/xQS1s8W4lwZJmW7TCd072PtrCh0t5x0dlB/OtVCTI4pV84INDEE2A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794884820;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794899462;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-EOPAttributedMessage:
 	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=sOhdfQoq69ElVt7wOSLvb0bMiErXQz2SrDCJYjLzKRI=;
-	b=FSsCCJga59Ca3T9oeCuxqt9/f9Za8t63wDgEUzkhERIW6ryPDM9Z+NYahg8IJ1kOrHL3
-	 ySakoY6OHpY8nkus3/gCq+QswZ+CXivSvmZKmToxYSUawma9sfxIM3Da+bElm+8U7fG5Z
-	 0nD8NBMynymeam0LQFpjzAV0ap4EcvuA+qY4x0X2BHcvDUNW/JhH1w6eKrbB4bDJZw+7+
-	 Qn49hvdsF4sjRO7t+tfd4l4CEgU/e+uTxct0omW9pUFX1jAlibcukvygOkgxfHhnfaO3b
-	 uYT8Oy6xyfCwD4zkvNVXQMb7B0pm3BAKjyaSqX27CATjEsmc66kMNXD7Qtszfb8V8Qw==
+	bh=KeJFt+9H17LiXBHaNeznIeiRG5buG5pNmTaeKTspgoU=;
+	b=EPmcMfY5h06M3vLN/ieef7rer6iZu+9kTUIUCvvTZ335WLQi3PaYrs6zO0UTF3aOF9Ht
+	 6i5qe2bYQ82/Jy0AGxj5c57OnCYQTXysCSKsXBQbwWaWas3KMt0cLBAMTigJLGaQxLyll
+	 2fw/djIUb9o7O+6PabQXzvVRCwCDnEVrxgy5qKG7wTJbDMmPIKwRpMg/NI9cuiK6Je8rR
+	 1Wh8pTdW4iqQWb5bqmuQKGJwWOhi/s8wio65aFtS73Hdl1ilbO9EGIMLlVESf3Bf4JF6p
+	 V/P9McQrCvq5izXInohTL1Ha8SHV6cjKlP8eGlXiOonfapr0x2KZ+CVdrlvVISnZGlQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=kgjOA6iA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.25
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012025.outbound.protection.outlook.com [52.101.43.25])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g53PHGcC;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.63
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011063.outbound.protection.outlook.com [40.107.208.63])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B9E606A323
-	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 03:06:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17B9E606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD93606A883
+	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 07:11:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EBD93606A883
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=kgjOA6iA
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g53PHGcC
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UXlJaVkNr7XmLZo6C2etfekBoAUv5QzRhWXVE7kiFaqhQ3PrUF+xV13XOi1r13NeQLYf6P6lcQTCskNkHimVr6XSS1DAp/oxHABJlzLajgRUSCsMRcED6kZfBgTe64ZEoHnv+jIAgUrUwbywGNpD0dd+keX6VWCUQK2Toof55sCW5cGPbNQpAkau5S8DV06IitejdoEBQQ5z2M/be4uBFiWjVrQwqTu9K55AqRhPp20dxUD2yk/gUVI41HJeswCiSqvK2Hbu/H3/zpJQ2FGjguqaSWPjySFdKj0am8ajxgi5LYI+KcS7BZrEwv3oYYu3GE2Y4TLoK6Hf8ZdaJyEI2w==
+ b=wkz1y/k3dTwmBT11wzb6LipwhLNpF0e3TOgI50c422YbNn/xAAaxgeDDuFH+lfgT386i7CCuCF9mZ3cpo0b+10C/KHU5NAcW7gJM5FVvRrG1Rq5Oo5v0sdThdhWTE9V2drl6d+4zVcu0ZQxIxZM4sNXHYh8F0DF5+Q2m5hcYFsmd9xztIb/5OqhPkApHE3eDoCJ2pBlCn4KJXiJxeYdrjwZjaQyFFTUBre2iMk/nfDABJmEyO+cVqm+jm4vyA8HHyc0BWS0eJ23Q4dGAbx0dOuzxFNTpn9sGxTk33In+3a0joUdA0XwKbd/dwQl1H8HHmaXG/+rsT6oB4P4yE8lB9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sOhdfQoq69ElVt7wOSLvb0bMiErXQz2SrDCJYjLzKRI=;
- b=sE++WU5U1heDNvxgnexKr2wAun8PBGa79wIXv+BX6rK7bHnAljasc0za4CRnmxn2VMOK6E0H9/bIw0M92Nep8VtHWqli7+cQ+XE/a84vkFFH19eVlaix29yTZeaTcVV+xaMqcaATlxZpmWbfKDabzTQAl/h1V73R8+RgNRWHqLNr5ETTJi5DNWr5oQGJGOT2EPns3FgO242iDL4+9TWMGPjjJf1yX0BUMnLeIFca+FKjFP2Yf5sNG2R0P2epiONRRcswcPk4tCgZPTJn6wnitL3cRn6nVhlIw7V3lauZf8krzlOEJqug7bK/6R0JAvKHpgVRyonZvgPz0qfr8qiwGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=KeJFt+9H17LiXBHaNeznIeiRG5buG5pNmTaeKTspgoU=;
+ b=hSy4GezN+/T7KDv0EvBrJX4Bq4tSvmd9twgaIfyQ2X4IMVdP63lXesw7C2861ljbESY66a3oSGfYA1c3MwVXdMXWQmkgZ9+LnRqbHhiz89uR6y0SKVeh6vmaJnY7peisQXNa0DTA7nq3cSUC0Dt3um6YdW2+tkxn9ESY712is1hd+s6KHwA9NEF7iE8OzfbtgT0IBQP1XJ8D4B/0ISfBRiDkIfj0JBbdFl7LWmby5x0kvq3nj+pfY6R+tU2ZlxgcaNpW1MzTdZ4GMnH1f6K6t+CuwV13BnBgBD4XdQMTM/b2J9tGSwI9j5wAyA4GcWs1TKc/OoWTccf+AIsq75sb3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sOhdfQoq69ElVt7wOSLvb0bMiErXQz2SrDCJYjLzKRI=;
- b=kgjOA6iAMfPUQcBAZBV3vq6yBI6q7iGNPphXjSM43RIorKJL5mVGoqeeKKXBUMZs5sJWqXBuaB8oDD1PAQyD7hPtaGi+PdhMn5bokD5E//qsMfbDZjc7PpZQ9mKnaxF7R4t2E3TlHjDxAFaxlKyZq6h6BEgsuH1Y3bc0SbIoubM=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by CH3PR12MB9729.namprd12.prod.outlook.com
- (2603:10b6:610:253::20) with Microsoft SMTP Server (version=TLS1_2,
+ bh=KeJFt+9H17LiXBHaNeznIeiRG5buG5pNmTaeKTspgoU=;
+ b=g53PHGcCBTnFyIa3MzRgnqwOk/U0paJW5f93Fv7LSXVjZ/6YqjxdR8q9tio2oa6VjLBWwLIe+/yzNz+6db9wcPp9jfUOQsw2Agad6pR/SIJ5u0pHyOnd2o3LYnrIeK2y39uJvJE9i4Rzv2NJi0BkLFl++XNHm0KCYgyQEcdlAAw=
+Received: from CH0PR03CA0105.namprd03.prod.outlook.com (2603:10b6:610:cd::20)
+ by CH2PR12MB4327.namprd12.prod.outlook.com (2603:10b6:610:7d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 03:06:55 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 03:06:55 +0000
-Message-ID: <3c82411b-dfec-4b26-9e7f-777c8f1ecb6d@amd.com>
-Date: Tue, 17 Nov 2026 14:06:47 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/6] x86/virt/tdx: Add extra memory to TDX module for
- the extensions
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com,
- kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com,
- sohil.mehta@intel.com, adrian.hunter@intel.com, kishen.maloor@intel.com,
- tony.lindgren@linux.intel.com, peter.fang@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com,
- artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
- <20261111-tdx-module-ext-v5-3-c74f764abc3d@linux.intel.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <20261111-tdx-module-ext-v5-3-c74f764abc3d@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P282CA0070.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:203::16) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+ 2026 07:10:56 +0000
+Received: from CH2PEPF00000144.namprd02.prod.outlook.com
+ (2603:10b6:610:cd:cafe::a3) by CH0PR03CA0105.outlook.office365.com
+ (2603:10b6:610:cd::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.14 via Frontend Transport; Tue,
+ 17 Nov 2026 07:10:56 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH2PEPF00000144.mail.protection.outlook.com (10.167.244.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Tue, 17 Nov 2026 07:10:56 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 17 Nov
+ 2026 01:10:55 -0600
+Received: from [192.168.1.100] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Tue, 17 Nov 2026 01:10:52 -0600
+Message-ID: <09c667a7-f5b7-42ff-aca9-838495738d3d@amd.com>
+Date: Tue, 17 Nov 2026 12:40:46 +0530
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -105,130 +101,168 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] x86/sev: Skip DR7 write during kexec when it would
+ trigger an unserviceable #VC
+To: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
+	<nikunj@amd.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+References: <20261116230335.1161521-1-Ashish.Kalra@amd.com>
+Content-Language: en-US
+From: "Aithal, Srikanth" <Srikanth.Aithal@amd.com>
+In-Reply-To: <20261116230335.1161521-1-Ashish.Kalra@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|CH3PR12MB9729:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4780fb2-42d2-42de-8f55-08df4457d627
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000144:EE_|CH2PR12MB4327:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d77631d-9709-498d-14f9-08df4479ecfd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|6133799003|22082099003|18002099003|261009223027099003|261022075727099003|261022105027099003|261021121427099003|261026121527099003|261026140227099003|261028144727099003|56012099006|11063799006|10067099003|261102123227099003|261102124527099003|4143699003;
+	BCL:0;ARA:13230040|376014|36860700016|1800799024|82310400026|23010399003|261026121527099003|261022105027099003|11063799006|56012099006|261021123027099003|261009223027099003|261021121427099003|10067099003|261102123227099003|261026140227099003|261028144727099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	QRm3OvKMtyLsgxSLZE6B7QEFmZWlbQGtdOZS9P47S/V9CRVUSrOBleF/cNkKeWrLrj2uChA55QVNk/1ioB7DY/+19FxjrSJIHfkz9/ebxLfGZG4COQNiyrX/KXKR6yE9vLyJQlNPhbUHZFfk7KlZUzJ56h7/vNGFdwJYGbSHlYTQIy9jw1zAe9X8PtuNr6pjSY0Q77DcI+KLcgRHHS51UyNoUqDQwV1eIh4dR7uKCjnlxKxDD4N/oJKgYHihN0qAWWmeJ8y/qoHL8anZXCBcnSLDsY+nZn8rhIjcPIHFlt5n2nRztSkO3ZqJsiemU6Nsk9vn2pC4kDlzTN1z0np16nfXMtCLTThKVCKxYgv70KgX4yUq/+nG69BIE73Hrbdo9DtlfFeDU/ZJBkuEG6FcoxyjEmcF3dsFC5OZjMraFaj+keqK9UFHmX6aRyvqYWYITLQwvOr0gugYyffqloVd3Zkfj9L78Dt80qqoLOfbu/CD1BovSxMf0wxeG7sv1VE7EE/jqAZMutSHHBohi4gZwJHoQLiWDgmV4UEDY+nJhIcfjtzYSyEPRSwJ1GUomOxldoVu7ctR1nIWBjlDSWPfrERGRPD+msZ0wKyRzGfw8QrQMbIDezsSmN0RSY+nhs0XyrrFX7eBvOpyZIzKAdwBMz+X7igGgiSgjy0zUz7zlPg=
+	h7FIcdTpL62zsdI7j+MrUTptP1sydnefkozhEZEVOtoAUp7HfSpvsdD7ts05BwwqDaLakO0TguJWs+3RyozmFvHioLqfp5+2m9IPtWxr63jjYWEH+UQdsDJI1UUq+roS5x+LkvvD1cbBFIBJDfMPcYwuuaDMjiZ0AGVKoO1WBY15q3eAzAeGsZKQmOZgGo4a/QZbX1MbEva+0k86r9REOWs6Djn7Cd6U9nRvIAvnOxv2tmMbohFPJzCWkqTWwCnueIsYhsd70Tr3HTObDNAluFGZrfHG6RmJyzeaDVxjzXEnXWNE3zVwk8mITcWOaFUjISkR/c6wJQYP/3fMShnu8sTrM3Vo6RyS5o+eOZI1xxKbxpuk61ZiIwANhdCp+yTgMtcuifcSAFlIBavnyTbchEcL3nGkV/Q6ox/JfAcdFTIHdZeAlvRkFOtxZnp5+9Qv0DQ277fae7uVrfXszyZZ/RbqE4JJSwC16jpWXp+NMkDTgh+zRIROnjnkOnv5xSudu6tH0O96QSjU6xHj7t1dqaPErrPR5SR/QyCVtkxtyBpZF9SWM+YJEvqkho45EOpNLpgHxGaMvmzc1jwVKz71Ca55uWNIL8jmkruC3EFFJw4qYmwHLRfGgACNYPF96W0mcCZP8/iVhe8kkzWtJgNGDgdHinCGZoqNna0Ls8FHJcJMUTTjYLMH5yEJwAOTQJNoga7yjfCnxHj9Up61imjZoA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(6133799003)(22082099003)(18002099003)(261009223027099003)(261022075727099003)(261022105027099003)(261021121427099003)(261026121527099003)(261026140227099003)(261028144727099003)(56012099006)(11063799006)(10067099003)(261102123227099003)(261102124527099003)(4143699003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(1800799024)(82310400026)(23010399003)(261026121527099003)(261022105027099003)(11063799006)(56012099006)(261021123027099003)(261009223027099003)(261021121427099003)(10067099003)(261102123227099003)(261026140227099003)(261028144727099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R29MRWRmc3o4RXZmWFk1ZGYrYjJIeHg4OEpFdjVFUmhHdjI0azFvdW9Zdjcw?=
- =?utf-8?B?UFlSTFoxa0FDK3dqWnhLYnhwNGlCc3JPMXJzMGFpdHhkL1ZjaGUydkNMMWhE?=
- =?utf-8?B?KytsWjluVTBKNFNoN1dqbUxBdjlGOVB2cXlna0VKV01VOHVMd2tPUndIWFZv?=
- =?utf-8?B?MnhIeXRuT1hhWGxBMUJNbm9PZ1dPTkxWSi9nS3VVb0xUWm5VQlhwNGJ5WDd4?=
- =?utf-8?B?Q0FIWUxGakpRVEZVUzdvWElQZVRqSjNxU1dnTnZWdThKb3hDcnUyem9kNWlW?=
- =?utf-8?B?Z1JvVnk3aVhtMWJsSWFra3VocjgzZzA0QzhsdG1wS21MNFl3TU9HRUEzS2F1?=
- =?utf-8?B?bFlUS29uNXhoUjBDY3pzbnY0djJUbXFSRXhLVGJ4MFNRcTd5ektqU09ib0JW?=
- =?utf-8?B?bDlGTmhhbUsrUFdkM3VUbzNlRTNDRW9DNjRlT3Q3L21Vc2dMNXlRNmdhU0cy?=
- =?utf-8?B?NDh6THMxVGJPR2xGKzM3S3N0ckNFTm5uUFFyMisvMlNGSmJPQmwrLzVBN2ps?=
- =?utf-8?B?OFllREhkYWRZNGxqcnE0MndIZEE4VzhPVWdXL1Bubi9ueUpRTU40TmpDYWo0?=
- =?utf-8?B?eVVMQWF4d2hDeUtRNXBjZERNWDY2aGJlcXU1dGk3bTZJeWNwTS9IRnhpQ1F6?=
- =?utf-8?B?cjFDczNPUnpOVVJxZE44NjY1RDlpM1V6QkJ1eWxNWlJrY2dpZ3RnYzBWSXVU?=
- =?utf-8?B?VE1Zei9lNEIvYW5rM0ZLYVcrS1Q2cC9La2xlem5kajVBYWh3NlByeXorSU0z?=
- =?utf-8?B?SVlvbmxJNzNvY2k3MklTWEVYR1RBT0lIcFZ3YmREMTJVQjUyMjVkT2ZPNTJW?=
- =?utf-8?B?RlYwMCtyb2dxb3JCZmZBR1FVQmc4MjdtU0pFVjVrOWo5a21mYk8zV1pDWFl0?=
- =?utf-8?B?cG1lQWhBeXJ1S1V1Y1JrNHlLQld1QXpmY2dKSUE5bFdkc3VvM0JHTjlja3Qv?=
- =?utf-8?B?OGdONkRQMXJaZzk4TnlURGlzU1pTZm9MUHJQNDczZFloMnliU3NzTG1URVFC?=
- =?utf-8?B?b25SOEhLRkVoWldLdlhtS09PMWRueDYrYnRKZnp6TDd6THlYbFlMN1U1U29P?=
- =?utf-8?B?Z3BKTTlMYTNxaVdaZzhhVnoveXJhbDMwVjlGZ21nZlh4WnhzRHNUZVREckY2?=
- =?utf-8?B?OGV4aEhlWWJ5R0RWT1ZPZjFDdmQrYWFLRnpSTjR2VWN6ZDdQU2xRc1grWFdU?=
- =?utf-8?B?VGlhTUwwcXhHdlFMSFhSb1JHOWlEN0lLQmJib0VObWlhM1NjNW9WR09nbmRQ?=
- =?utf-8?B?dTMzNlN1alU1MHZ3eHFscTZmNi9BVkcvYkNDaTRKMzdRTzNBYWZpejRhWVRq?=
- =?utf-8?B?Y3JtNzBGYkkzNU9TVXB3cWRvTWdPcXc0ZUtPZjA5aGlhbVlTZklWUjkwK1ZS?=
- =?utf-8?B?dnlXek0xdkdFL0VOR0FOR1N4bzgxZ3hlY2RaclBIc3dNUkxLQjlRcUNWN2hz?=
- =?utf-8?B?YXZQSGdZUFF1OHZLWWovc0FGZGxudUNlZzdIL0c5V1F0enZudEZXbm9LRXZm?=
- =?utf-8?B?WHRKSnhwNG9mOWtHL0pFWXkrZVNmemUvczErYlc1cCtiUC93RzAwdjdKbmVV?=
- =?utf-8?B?K3hQdHhhQ3RyajFRRzBrNFRzWVA1VXVIbUtCWFZNUFFWN2IxRzNPMXhkd0JJ?=
- =?utf-8?B?ajZRSWMyVk00TU5QTWxhQ1IxRy8wa2lqN3BUU2MreEI3b0d0TDVVYTJFSWxY?=
- =?utf-8?B?WnYrNkxyS2dtcHVPMjZzWlJkRDltS1B1YVFRT1hXQzBaTWpqSHBFS2tIZ01T?=
- =?utf-8?B?dVdZdWJKcXUzdFU4dHh4WTkwRHVYTVIrUmxzLzNYcUVBZ3RJc1YwcjloMG9F?=
- =?utf-8?B?Y1JESG9iT09SdGJueWRLWmx1aXY2Yk1QOXdGaFFGVlRMOFFlTysvZGhTRkNq?=
- =?utf-8?B?S2cydjczbUpxeDV1bWlkK0RWdUxMWkJIM1RaZUo4Mkl2VWJwYVBwR0dmM1Rr?=
- =?utf-8?B?VkpEWEVnOHg0VStYUFBHMXhuNCtYS3RGMHVtRmtkUkplS3hqdDJZVThZWWQr?=
- =?utf-8?B?OHZNbzcvRCtza2Ntb1VoMEQzU2VZZHJtWFd2cUcwdkZweDhvYXlVdWJMZDgw?=
- =?utf-8?B?dnZYR1dpbEliWDFXajRLaitzRzdSZDYvUkhuUEJHd2NsU2ZCcnBYWEZuYmJo?=
- =?utf-8?B?UVFnd0xOUC8rcVp6ME5RRmd0dWFaYVh4ZGhGT0JYbW8wZHRJaFQwaUlQM01J?=
- =?utf-8?B?V1hEN1lUZFZXMHRSWS9YdDd5aWNKYWIzdnZHaUtuL0p0cmdQQzQ4T2NKTUE5?=
- =?utf-8?B?MTFiMjdGUGJXenpkV2lHTHZOdUxDL0ljZjFJWlJDZVl1T3FWckxOWWVjb2NM?=
- =?utf-8?Q?IAD+YODrHC9t5KrEpL?=
+	uRvhUSjJOxjECShPC2MLVq4yoqhFGCuuBGUXg13ce1f1Oh1CcT6TprmdzENQhToZ3wqMSl0uNCQCEebXKORIr6eQdCIUDum6fvcXQVGtQVhe7HRTQo1lR0ezqK3q0JMvzaS5cX6I6mcTmqDH9aVtgNvlXecKkHKuN24s/7q0WXBU3pQj6aFslLkSJCFpwg0icgvm4n7gdHbVy8X8MctQG+xXT3oVrsGUXpCB5G5FjULDhSWd0z+TgW0tEFvdouheAv0yqN4F/KOnB7xndunuokHJWqTBIn/H6v9/YUoZTkrfy2rIqzhSmg6rLFwa7ekcBeOq7VWv1GB+fPW5Cqs3qhzcS+fHRsrBi33h57gvtlp5HHU0qAqhKV0IrDcQmtUu62OGDcNAL+XIrDgbZtIQJD7Z22HcgT9rYW2YX7d/p3xNrN1lnMgaInr5FCl2scTU
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4780fb2-42d2-42de-8f55-08df4457d627
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 03:06:55.8091
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 07:10:56.7102
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d77631d-9709-498d-14f9-08df4479ecfd
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AwGTxp/9ZavnnkeXnLEgPpMofrVsCyr5WvmrWnsRjqqnlZflSf42jOlbq2qqGLm6SgMoZ3kiGHdC3SshaZKYDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9729
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000144.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4327
 
-On 11/11/26 14:48, Xu Yilun wrote:
-> TDX module extensions need memory for their execution environment to
-> serve SEAMCALL leafs. The TDX architecture implements the extensions
-> in such a way that they use the memory outside of SEAM range, so the
-> kernel should add the memory upfront at initialization time.
-> 
-> Introduce a new memory adding process backed by a new SEAMCALL leaf
-> TDH.EXT.MEM.ADD. The kernel queries TDX module how much memory needed,
-> allocates it, adds it to the module, and never gets it back. Note that
-> the process requires Dynamic PAMT backing. A subsequent patch adds the
-> support. This doesn't break bisectability cause the extensions can't be
-> enabled yet without a feature that uses them.
-> 
-> The TDX module accepts the memory in the form of an HPA array. This
-> array is passed via a single 64-bit SEAMCALL leaf parameter, which
-> encodes two values: the PFN of the container page holding the array, and
-> the number of entries in the array. Create a helper to encode this
-> format and name it after the TDX module term: HPA_LIST_INFO.
-> 
-> TDX module extensions consume tens of megabytes memory that will never
-> be returned to the host. Use contiguous page allocation to isolate these
-> large blocks entirely. This is a simple way to avoid permanent memory
-> fragmentation: requiring the full size to be contiguous is more
-> expensive than needed but should be good during the boot time. Print the
-> allocation amount on TDX module extensions initialization for
-> visibility.
-> 
-> The TDX module provides a metadata field "required_pages" to indicate
-> the required memory size. This metadata is meaningful only after the
-> add-on feature configuration. Don't read and cache the metadata in
-> tdx_sysinfo. Instead read it right before allocating memory for the
-> extensions, when it is guaranteed to be valid.
-> 
-> The original changelog was written by hand. AI was used to help correct
-> grammatical errors and polish individual sentences for better
-> readability.
-> 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+
+On 11/17/2026 4:33 AM, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+>
+> machine_kexec() calls hw_breakpoint_disable(), which writes DR7. On
+> SEV-ES/SNP guests that do not have DebugSwap enabled, DR7 accesses are
+> intercepted and delivered to the guest as a #VC exception, which must be
+> serviced through the GHCB.
+>
+> By the time machine_kexec() runs, snp_kexec_finish() (called from
+> native_machine_shutdown()) has already converted the per-CPU GHCBs and
+> the boot GHCB back to private and set boot_ghcb to NULL, tearing down the
+> GHCB infrastructure. The DR7 write therefore raises a #VC that
+> dereferences a NULL GHCB pointer, causing a page fault and the kexec to
+> fail.
+>
+> The NULL boot_ghcb pointer is a result of commit 3645eb7e3915 ("x86/fred:
+> Fix early boot failures on SEV-ES/SNP guests"): that change makes
+> __sev_get_ghcb() return the now-NULL boot_ghcb in this window, turning
+> the previously-benign teardown-window #VC (a bogus VMGEXIT the host
+> rejected but survived) into a NULL dereference.
+>
+> Skip the DR7 write once the GHCBs have been torn down; the kexec'ed
+> kernel re-initializes DR7.
+>
+> Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 > ---
-> An alternative solution is to use a loop that gives memory on a memory
-> error code - TDX_EXT_MEMORY_POOL_REQUIRED, add one page per iteration
-> until TDH.EXT.INIT succeeds. Something like:
-> 
-> 	do {
-> 		ret = tdh_sys_init();
-> 		if (ret == TDX_EXT_MEMORY_POOL_REQUIRED)
-> 			tdh_ext_mem_add(); //single page
-> 	} while (ret == TDX_EXT_MEMORY_POOL_REQUIRED);
-> 
-> This approach is slightly simpler as we don't have to query the module
-> for the total memory, no memory pre-allocation or segmentation math.
-> But allocating a single 4K page per iteration may cause permanent memory
-> fragmentation.
+> v2:
+>   - Move the check into hw_breakpoint_disable() through a new
+>     snp_hw_breakpoint_disable() helper, so the SNP-specific logic lives in
+>     SEV code (Borislav Petkov).
+>   - Drop CC_ATTR_GUEST_DEBUG_VIRT and read DebugSwap from sev_status.
+>   - Skip only once the GHCBs have been torn down, so use_temporary_mm()
+>     keeps disabling breakpoints at runtime.
+>   - Trim the commit message (Borislav Petkov).
+>
+>   arch/x86/coco/sev/core.c        | 16 ++++++++++++++++
+>   arch/x86/include/asm/debugreg.h |  4 ++++
+>   arch/x86/include/asm/sev.h      |  2 ++
+>   3 files changed, 22 insertions(+)
+>
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index eb2e853e950a..64a5a037a9c8 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -723,6 +723,22 @@ void snp_kexec_finish(void)
+>   	}
+>   }
+>   
+> +/*
+> + * Without DebugSwap, a DR7 write raises a #VC, which can no longer be serviced
+> + * once snp_kexec_finish() has torn down the GHCBs.  The kexec'ed kernel
+> + * re-initializes DR7, so skip the write in that case.
+> + */
+> +bool snp_hw_breakpoint_disable(void)
+> +{
+> +	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+> +		return false;
+> +
+> +	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
+> +		return false;
+> +
+> +	return !sev_cfg.ghcbs_initialized;
+> +}
+> +
+>   #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
+>   #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
+>   #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
+> diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+> index 854d82b88ff4..af15e2c928db 100644
+> --- a/arch/x86/include/asm/debugreg.h
+> +++ b/arch/x86/include/asm/debugreg.h
+> @@ -8,6 +8,7 @@
+>   
+>   #include <asm/cpufeature.h>
+>   #include <asm/msr.h>
+> +#include <asm/sev.h>
+>   
+>   /*
+>    * Define bits that are always set to 1 in DR7, only bit 10 is
+> @@ -108,6 +109,9 @@ static __always_inline void native_set_debugreg(int regno, unsigned long value)
+>   
+>   static inline void hw_breakpoint_disable(void)
+>   {
+> +	if (snp_hw_breakpoint_disable())
+> +		return;
+> +
+>   	/* Reset the control register for HW Breakpoint */
+>   	set_debugreg(DR7_FIXED_1, 7);
+>   
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index c7ea9845351e..f38bb521987d 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -522,6 +522,7 @@ int prepare_pte_enc(struct pte_enc_desc *d);
+>   void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
+>   void snp_kexec_finish(void);
+>   void snp_kexec_begin(void);
+> +bool snp_hw_breakpoint_disable(void);
+>   
+>   int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id);
+>   struct snp_msg_desc *snp_msg_alloc(void);
+> @@ -632,6 +633,7 @@ static inline int prepare_pte_enc(struct pte_enc_desc *d) { return 0; }
+>   static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
+>   static inline void snp_kexec_finish(void) { }
+>   static inline void snp_kexec_begin(void) { }
+> +static inline bool snp_hw_breakpoint_disable(void) { return false; }
+>   static inline int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id) { return -1; }
+>   static inline struct snp_msg_desc *snp_msg_alloc(void) { return NULL; }
+>   static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
+>
+> base-commit: 9f74092fda91ef93c2b07585785c1dc83cd7971f
 
-Why not allocating new memory in 2MB chunks, reducing fragmentation? Thanks,
 
+Tested v2 on top of 7.4.0-rc3[aebb727]; kexec works fine with this patch.
 
--- 
-Alexey
+Reported-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+
 
