@@ -1,74 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794944281;
-	b=03tFAffejQUO/tGK/kTInkfM4bKSPG0TlFfVg00/0GY0OqWSODdb/nLarkb+QqigoiCq
-	 E3sC8EGTqFNJlUlOzLpkZDvATEF4MImjPqMxIXXP/UGvob0iW1+IBzK7Izlx3S4qVMEQW
-	 xdmAW238o/kAbCByiKXHpD38/Pt3OsRtQ9Sabxr0AJ7tSNi19nTik3MDNzU7zQ0kSBuE7
-	 O5serjEQuvGCc/iXkAh/lJj5x2GF9gHtVRTBcEgb2GSHazbKzeSxmlkqgu0p6aUnz5+3P
-	 m9ksPiyfl5aNNv1wX+19WwXJTl/nRXKAsyPbKo4/g7xGsu0UcNgeqm91zD5UYbDtSfA==
+	t=1794945554;
+	b=5iuy3an4oxCmFEo7bIfYmRi8XIACWhJRDMxY0UvdlYlTQvHb0igqEy2vjbiazgfCN/qX
+	 d36BwuQuHjhRYAJud4dkwnT3hpNmCaIQYHzb9XO+1qTYIIAqnBJMj0+QwI3gVHedbKaMi
+	 2EDE3UWxJHWbnlzZVJK90Z75q0nWQo0QyW72gHiHBN1mUEu78u0LJ845NtspZx9M69O2Z
+	 sUjDXEqxgsPWAvwPHiaaeOsZ6L7rt2sn/gAYKlDIxxMHmoVwNbHyBtmpcNtc9l4X2d6FV
+	 t6lCxhk/3lBLFrxe/Szibdd2iFE0cQHjNtNyuIS8b7UVRJYGrQU3gzs52teVZRxAK4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794944281;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
-	b=SsFS7dWCgQhe4k5dEIy0GjFrVKnnIQbQ/Vnw+ilRJOTTB9sq6rBueEBf2dfIZf1T54ab
-	 jfotryA8vEBH9j/T3Q7A4zuGncTZz0jK+y4yOts01qtQ8NZsNO9tmw37sqZ+DvcdPwhxZ
-	 yYGC1kflfp7GKgcd0gueaJd+7bRoWMjB8mpIMe25+8Xo5ku3YM4i0V2mpZEHesJugxuXO
-	 Y36ev6ieASAXURXwps+qDKV0gZgvPuQ7SYtHUw+Kcd3GpD6J8Qi0qqxIMdx9W4b5ZgX6H
-	 YITPEqQBfSxw2V+n+YuJJb97pC0Isrd0D56d9khiU2cwqu1SCTEnSnCH8OrKw7oJVDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794945554;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=9EH3JL8IQJ0PmiYru6tlWPco2YdsvtZ18mnaf0uac0Q=;
+	b=CptHfLSu6qmA8w9QoG//YO3GpT158zDxd34Xo2VCa8SFwjARW+qFLsxIZKwZC9vg7b3t
+	 pqRCoPGeBNCkb7Akyf0LYXqGrEZOVQjn+Gq12YDG61fzZLcg5qhEqHNqlPUcSv0TjW23a
+	 gw8uqsz6xG1H1pCsrSIMNy+Y2n0c8/hL/tgpU5owoQQZW9+1hB09tEce4G7X6ynUGM3K+
+	 11N1qJ4YdmcNFbmzKq72KdThayiutimTonclrkC5UkWcMHl0ABC7382+3FnveC9o/GdZ8
+	 NIsWud8s5KlYN9XEUayvpu/E78kUxXaRWEMrE4OZ3OCXIjeUxdj2OPen6hIpRwzeUqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dN3tSwil;
-	arc=none smtp.remote-ip=209.85.214.197
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=djzA0+BB;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF77A606A33F
-	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 19:38:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF77A606A33F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF638606A31C
+	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 19:59:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF638606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dN3tSwil
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ed02a00b24so965645ad.2
-        for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 11:38:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794944280; x=1795549080; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
-        b=dN3tSwil5jrWf5pL2f4jJ1qTrHbjHoPk1LQTfCN1YpsHni1NJ958NDtSji/wlZgQgC
-         DRRiAAtnElaND2rYXsdICcWvsbuayuaW3yESlNHJbf53xmQMzAt+NasAtE7+NGX8u1oL
-         oHgwGLa2sDuZDDzN45hJNhQ5LPddKKGarUtjFAWc4UosCTEEpLQe6yxPYTmYPcmC92eD
-         UMAjQOwt2bZ9hLTPc98rNyrhfifC3KkJbAoXWCUv5jbyVXmsyAgp9o1+ISS23mAgFr+L
-         ZL6iLPooyJmSPCSJcgXCemGEmyVaZWEtU2w9HYwQWWcEhJnjeEtVt5Dzs5FHRs/w7NoA
-         xFxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794944280; x=1795549080;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
-        b=nCPM9TWB/ascBs4uI5OmtaXB6Q7BcjFT9E1L1jriKA0tPufARkjHEQxVKwFPHokOGA
-         L0RvDy2raEDtyVo+4Zf0ThGF0Z78BI7vmC8fSWa3TiVRRNFECOB9GL3rySwQhGsNlrjj
-         MfLCdYnqiczB78+eBsu7eWz8FVHHu/8dxcb7aPNFqITiDlwAtP2bW0jlIRXl8FNaojGy
-         rYz8VnuTKrUpZOU5AJ6v5cC6QI8XLeD+71QqkM9K+WeNUmI3Ep/JlpFU/H8c/3vCF7rr
-         exfG8uEGQvAzuKnprm9OiW9z3R8pdmGKbZIyxXZN2pI3rGzRk7kraQCu8UB0qchoqXnP
-         4j3A==
-X-Forwarded-Encrypted: i=1; AL+hErF5YusKJnJOcJYffvKC0Ng+8nYvqSDdOeZlKk17EGCTwkDhyd3+i04p22yKHK2mEPxR++ElvaxKtOYQ@lists.linux.dev
-X-Gm-Message-State: APuU4Z8sUrhODejjG3Xi/Xz5kTW+UbVfm313Zbi7E+N892X4oC3ZEcQF
-	AzRDzrNO13rArThWV55AtFvKpOPnDA60GKBY7fJ8gseE6pVwkWytjrCSXFNIUnrWLABwK01Ra1c
-	R2fr8uA==
-X-Received: from ploh2.prod.google.com ([2002:a17:902:f702:b0:2e3:1b6e:33bb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64e:b0:2ed:12a1:c4a9
- with SMTP id d9443c01a7336-2eff752924cmr3212835ad.11.1794944279883; Tue, 17
- Nov 2026 11:37:59 -0800 (PST)
-Date: Tue, 17 Nov 2026 11:37:59 -0800
-In-Reply-To: <20261117190714.GAavyl4lS15Gwpc29U@fat_crate.local>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=djzA0+BB
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 06D4440E01F4;
+	Tue, 17 Nov 2026 19:59:12 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id JIwThmmlM6VK; Tue, 17 Nov 2026 19:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1794945549; bh=9EH3JL8IQJ0PmiYru6tlWPco2YdsvtZ18mnaf0uac0Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=djzA0+BBmBadvLFjgOeubS8kKiZhMNI++OkIcCh/ym7tXs500KNZfoDLaacpnQYrw
+	 xeF9n9mUFV9eHg5I/wrhvLg9P5kF9QbdJhNs4dkoE+tLKZIpzH31ZmTMT9cMdreOa9
+	 8YBM39T1FK32xe3vlZDsUS5v++ttuu0CAn9bgtgwqg5owUiECPE+jLf3bGEy7ibS5D
+	 XD7tNuJY1XHYwSA+KA/xn6d82jjeK/JIwwP73N0a3a15TjYi5kFmW2owov0m8/IhWA
+	 oTdqWOyVAWUiMkehbggnORFeoehuCK5OZpr8E7Wnsmosp4WqpUy4xtr4mK4Mv4a2+0
+	 NlJMKhA6YQXkusdjRaX5RKOiXXHJFsW1p47lc7rMF0DyJy6coDaFdFhMc0CnrtfMVt
+	 FlipLnhOoVwBtzU3EtuzPMujpwIZBESOWHMp8VUXdITvgCVXjSFSGX+ZQ7b8PP6Goo
+	 FdYCtOtkm0hNPCaClK/HdVt9ZStj4prMnFEGCaQXlxWywKRExo7FCgGnWXitcn+rFM
+	 SrnDa5YRLAuwH9aijHWGN/l/AAHhbvSUC7CedU0hpFCm52lppLyC5EHQDbjECk4IM3
+	 kVaeJURpaajK82K6p/+MrxuVE9abEqWYQIjcPZmXD/TlrU3/JsV3+1ABj1wO+y4pBN
+	 k/ER2DqfU2ESK58N63ER0XxM=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7449340E00DC;
+	Tue, 17 Nov 2026 19:59:03 +0000 (UTC)
+Date: Tue, 17 Nov 2026 11:59:00 -0800
+From: Borislav Petkov <bp@alien8.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH] x86/virt/tdx: Don't print error if CPU doesn't support
+ TDX
+Message-ID: <20261117195900.GFavyyBNla_w1hCRlp@fat_crate.local>
+References: <20261117190041.158949-1-nik.borisov@suse.com>
+ <20261117190714.GAavyl4lS15Gwpc29U@fat_crate.local>
+ <avytF4CYn5FUkA4F@seanjc-mac.roam.internal>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,51 +81,22 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-References: <20261117190041.158949-1-nik.borisov@suse.com> <20261117190714.GAavyl4lS15Gwpc29U@fat_crate.local>
-Message-ID: <avytF4CYn5FUkA4F@seanjc-mac.roam.internal>
-Subject: Re: [PATCH] x86/virt/tdx: Don't print error if CPU doesn't support TDX
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <avytF4CYn5FUkA4F@seanjc-mac.roam.internal>
 
-On Tue, Nov 17, 2026, Borislav Petkov wrote:
-> On Tue, Nov 17, 2026 at 09:00:41PM +0200, Nikolay Borisov wrote:
-> > There's still plenty of Intel CPUs which do not support TDX and when a
-> > recent kernel is booted on those the user always sees the following
-> > error:
-> > 
-> > 	virt/tdx TDX not supported by hostplatform.
-> > 
-> > The same is also printed on all AMD CPUs. Fix by using pr_info.
-> > 
-> > Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-> > ---
-> > 
-> > Contrary to Pet Shop Boy's song - it's not a sin to not support TDX, yet :)
-> > 
-> >  arch/x86/virt/vmx/tdx/tdx.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > index 96ced0494b68..b2962da24701 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > @@ -1276,7 +1276,7 @@ static __init int tdx_enable(void)
-> >  	int ret;
-> >  
-> >  	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
-> > -		pr_err("TDX not supported by the host platform\n");
-> > +		pr_info("TDX not supported by the host platform\n");
-> >  		return -ENODEV;
-> >  	}
-> >  
-> > --
+On Tue, Nov 17, 2026 at 11:37:59AM -0800, Sean Christopherson wrote:
+> FWIW, I prefer Jiri's version which just drops the printk entirely:
 > 
-> Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+> https://lore.kernel.org/all/27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org
 
-FWIW, I prefer Jiri's version which just drops the printk entirely:
+Even better.
 
-https://lore.kernel.org/all/27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
