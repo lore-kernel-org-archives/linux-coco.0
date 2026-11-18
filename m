@@ -1,99 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794986439;
-	b=DSnewXIa9Etmj+VFLE1EpndVBkoigGNwJlh2t9Y7TkrJfx2xp57n9vYCbMK4f5UMXMve
-	 W6evAH3tsu97A48Dnj3UTXNGR771REezV9egeYliBlK6YPf6JcNjuJOIhavDyBomhQ863
-	 Q4jpmZUh2TiI/U3y27PVedRnzLtomvazxCtHyKNod3FXu9v0np+Vj7gQDvoEO35p5pKrD
-	 JRqtbcMv5hO7ow0ct7ndxxJO4CckTMQ2Ex1O4oQHmkyknD6aFKJaYQWKa3apKxVqDNYUr
-	 TPXi5hon9fsGcq1o+9zwP1FG5jTFFW7THvg1BrgvQgSDJDCBdKCTitYKMIgHdu/PFVA==
+	t=1794987664;
+	b=SH5Emack8JP7D1D8S+5uBOZ1DpershIsku9Xxo7JmmokrGsYlSHVqCVmef1GXuMT/XFP
+	 22iW7282pE1t7R6Eo29KuN77/M6TNstEhhwK2cq9l29PB2Tdtj6jIhgYFUYvz+hqNT1AS
+	 XWKSGlVsd5NL7IHLfqk1l5O1RU5NKQkPm5uTgue6ZqVwdAl1IOYCAAmC/SJ+nGopCE5RC
+	 X7jYq4DE0mtnvtKg00xrYuehDMOeHeQi3/plKlJq9D32vgldVZKvlCbph6GKa41s1s4lu
+	 5bUSz0CWAqk+N37eqA+P5l2AWWmN4KgXeu48ZgYKYn4HoCr5QaZvdvD+eyPp9itQylw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794986439;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=aGwfspGlZydInl36JBBWlsrbZVsfQfMf2BFCiJS1BiA=;
-	b=OJgT+JX34+s3juwiuhnW2ggky4Egz+JTu82lKxir0SJsbDxdSTUJw6CR4XbVeaA8i2P+
-	 qNHGdlN4U2LwHKSd7Bnn3Sd+vK+oPQ+NJ58dpLSFp2p8ZMCQnWyv9iZqLt6vVp/r2r7Iv
-	 LvGUlijJS8A8pzP1v2JZYAprfMIsFGZOQ3gGoKsN6M5WqAkkjQ9Y/SXEeXbMsk0Z6O48c
-	 2McuTqSO/D5/83AmElSD5VvgUUxY8+3q5iLPqQpCUDlBSZRZw/JyCKvP5FKN11W/Tl9am
-	 Pq6pvxfqx00ecNPn85jJJ8DihC24ySBvolFmctqkSH8/epH3bXQkcw7CqGmywAET7Hg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794987664;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=Wt3MYwN2Oz3nGZVx57dbwOF2YI+O4Gttcy1klNT4PcU=;
+	b=0KdC30q7VSwqdtFYrZdHw0Q9TQ9Pjzhw7uiWSrvWK/VVmljD+0rKrbMe88luFGWY3a28
+	 FFcgJBfNo6nFXgmGFL1LC/lMJpdhx+ZSse9Jk14qhu8BWk+p+06QkSYKXQZPfCP/Dzbjt
+	 8AQTCzAGxiUaOb2hf+OEougvIm/qhsb4auDxyx9xeYFG/0QMnKFPzLtUmLacG1wOI3qxG
+	 PgBc3yGGvXc7gB6NMjhoYGUuHBPKA2bj9KwRxkMyfAkUfvMDQAZ9HgwUZ6tGjgk/TbZ2a
+	 l5SQcdz3mycmQEwA40RM59JkyrX+vMFrAGSAQ62Xfmi/y860Cj0aEJohT1GF+wh9cBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VIChq8sh;
-	arc=none smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L1SNIVtz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2214C606A31C;
-	Wed, 18 Nov 2026 07:20:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2214C606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186FE606A31C;
+	Wed, 18 Nov 2026 07:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VIChq8sh
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794986439; x=1826522439;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+2udD+I/B2oEnhd74DurfplmADbgc1YhIACKTb7a8dg=;
-  b=VIChq8sh06N539lObd+t9jymvcO5L70F0mCkviOybsFRJ4did/45uFsj
-   bCY9K1ihKD8H4VXBd1ShjokcXmMHZCaNd8PqaN2nQlLJubJ2WlJo9xshi
-   Kh/FjiyxqXcRPdXvdg6uHBTO6sCRk0vypd7fd8q4gfvdf08Ofl5U02a9b
-   z7l5vPgT3S1bstpCWwOitHpt0Bjh4cHRLB9dVgznE3+1ya8FKtyFYvAcO
-   yiYr4Jbtz2S+84U0W/OWMQbBYvhqdqN0CRipP5M2H31FFPGffHXC7RKbl
-   /1bgiZ8bOSPMJLxWQD8TOsIasofLlhLaZ7yK/TCG5rbIqdphAbqZZHovx
-   w==;
-X-CSE-ConnectionGUID: 4QHi7kJ0QLy0aBijU4VclA==
-X-CSE-MsgGUID: pWKSigZzTB6bHakiuc5KHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3786037"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3786037"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 23:20:38 -0800
-X-CSE-ConnectionGUID: P1j6hrGhTiiAhyx+IilPVg==
-X-CSE-MsgGUID: 6OJJH8AFTDWd5J0HmgVxNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="11872150"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa011.fm.intel.com with ESMTP; 17 Nov 2026 23:20:31 -0800
-Date: Wed, 18 Nov 2026 15:11:35 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 03/13] virt: coco: tsm: Complete PCI registration
- before publishing the device
-Message-ID: <av1Pp0vDUisoErEo@yilunxu-OptiPlex-7050>
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-4-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L1SNIVtz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38ED41F000C4;
+	Wed, 18 Nov 2026 07:41:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794987663;
+	bh=Wt3MYwN2Oz3nGZVx57dbwOF2YI+O4Gttcy1klNT4PcU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=L1SNIVtz+QkrPeMz0cl59+bRSltLyp0H9uAnqOSdH6zffqYGgHxDzB7qrdKW6BGNd
+	 h6b7N4aqfgw/ARZj0K1LykxbFEYFB8+g3G8bUmk6gdkrY2/BVPaQUopMeJpMqu/DF5
+	 RimSLzTZrIQ58N+SPgCXg76Wl+4ZWLvyav6v+RTKmX/YqsDm5vRvZ9Em3tOFQYtTyP
+	 K1gtbfp4BiPvrCdx44BjD0P2dSisdlvibjg1ofqYi6upJddHGpeqxbP8jA/HMDVRo+
+	 DiJ+iyzQyzgeYeIHuNkyBvdraZFP+HhAoFmIR5QRzOs+XAZcETDFOaL1aiFUS9oNUg
+	 d7UAKcrzANJwg==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, Alexey Kardashevskiy <aik@amd.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/2] PCI/TSM: Move core code into its own directory
+In-Reply-To: <20261116144237.GB2245175@nvidia.com>
+References: <20261116075420.76205-1-aneesh.kumar@kernel.org>
+ <20261116075420.76205-2-aneesh.kumar@kernel.org>
+ <20261116130055.GB1850935@nvidia.com> <yq5ajymcyl2g.fsf@kernel.org>
+ <20261116131959.GD1850935@nvidia.com> <yq5aecckyhdn.fsf@kernel.org>
+ <20261116144237.GB2245175@nvidia.com>
+Date: Wed, 18 Nov 2026 13:10:56 +0530
+Message-ID: <yq5a1p8iy4c7.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -103,84 +63,81 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116081935.85372-4-aneesh.kumar@kernel.org>
+Content-Type: text/plain
 
->  drivers/virt/coco/tsm-core.c | 35 +++++++++++++----------------------
->  1 file changed, 13 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
-> index 57db3f14cf46..181d6114086f 100644
-> --- a/drivers/virt/coco/tsm-core.c
-> +++ b/drivers/virt/coco/tsm-core.c
-> @@ -56,24 +56,6 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
->  	return no_free_ptr(tsm_dev);
->  }
->  
-> -static int __tsm_register(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
-> -{
-> -	int rc;
-> -
-> -	tsm_dev->pci_ops = pci_ops;
-> -	rc = pci_tsm_register(tsm_dev);
-> -	if (rc) {
-> -		tsm_dev->pci_ops = NULL;
-> -		dev_err(tsm_dev->dev.parent,
-> -			"PCI/TSM registration failure: %d\n", rc);
-> -		return rc;
-> -	}
-> -
-> -	/* Notify TSM userspace that PCI/TSM operations are now possible */
-> -	kobject_uevent(&tsm_dev->dev.kobj, KOBJ_CHANGE);
-> -	return 0;
-> -}
-> -
->  struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
->  {
->  	struct tsm_dev *tsm_dev __free(put_tsm_dev) = alloc_tsm_dev(parent);
-> @@ -91,15 +73,24 @@ struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
->  	if (rc)
->  		return ERR_PTR(rc);
->  
-> -	rc = device_add(dev);
-> -	if (rc)
-> +	/* Complete PCI registration before exposing the TSM to class lookup. */
-> +	tsm_dev->pci_ops = pci_ops;
-> +	rc = pci_tsm_register(tsm_dev);
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-Ah, sorry. I see you've open-coded it.
+> On Mon, Nov 16, 2026 at 08:04:44PM +0530, Aneesh Kumar K.V wrote:
+>> Jason Gunthorpe <jgg@nvidia.com> writes:
+>> 
+>> > On Mon, Nov 16, 2026 at 06:45:03PM +0530, Aneesh Kumar K.V wrote:
+>> >
+>> >> The complete CCA patch series adds the following files:
+>> >> 
+>> >> attestation.c  core.c  ctlv_attestation_pci_gen.c  ctlv_attestation_pci_gen.h  internal.h  Makefile  spdm.c
+>> >
+>> > Why would any of this go under drivers/pci ?
+>> >
+>> > The whole point here is to make an 'attestation subsystem', so that
+>> > all belongs under
+>> >
+>> >   drivers/attestation/
+>> >
+>> 
+>> So the attestation evidence would be fetched via drivers/coco/tsm/
+>
+> No.
+>
+> The tsm code causes an attestation driver to start, it doesn't do any
+> attestation activties itself.
+>
+>> and stored by drivers/pci/tsm.c:pci_tsm_evidence.
+>
+> Why would we do that? Evidence is fetched, returned to userspace and
+> discarded by the kernel.
+>
+>> I would expect drivers/attestation/ to provide helpers, like other
+>> core kernel components, allowing different subsystems to register as
+>> attestation backends, with PCI/TSM being one of them.
+>
+> I expect the thing in drivers/attestation/ to provide the full end to
+> end driver. It calls the RMI/RSI/RHI's as directly as it can. Without
+> spreading stuff around all over the place.
+>
+> Jason
 
-I think let's move all tsm_register() side change in this patch. That
-saves much intermediate change.
+I tried separating the CCA attestation driver from arm-cca-host in my
+local tree. The main difficulty is coordinating locking and object
+lifetimes with the existing PF0 and vDEVICE ownership rules.
 
-> +	if (rc) {
-> +		tsm_dev->pci_ops = NULL;
+PF0 owns the PDEV state and resources used for authentication and stream
+activation. vDEVICE operations also depend on that PDEV, so a live
+vDEVICE must keep PF0 and its resources alive. Restarting attestation
+must not destroy a PDEV while active VDEVICEs still depend on it.
 
-Besides this unnecessary nullification, others are good to me.
+Placing the attestation backend in drivers/attestation/cca/ makes these
+checks and locking requirements span two drivers. The attestation driver
+calls PDEV_CREATE and PDEV_COMMUNICATE using the PDEV and communication
+buffers owned by arm-cca-host. arm-cca-host uses the same PDEV to
+connect streams and create vDEVICEs. The two drivers must therefore
+coordinate access to these objects and their destruction.
 
-As mentioned, we've done several rounds of detailed reviews for this
-early publishing problem. I think it's time to split Patch 1,2,3 out
-for merging.
+My first attempt used pci_tsm_rwsem to serialize attestation operations.
+That would require TSM callbacks for the attestation driver to acquire
+and release the lock.
 
-> +		dev_err(parent, "PCI/TSM registration failure: %d\n", rc);
->  		return ERR_PTR(rc);
-> +	}
->  
-> -	rc = __tsm_register(tsm_dev, pci_ops);
-> +	rc = device_add(dev);
->  	if (rc) {
-> -		device_del(dev);
-> +		pci_tsm_unregister(tsm_dev);
->  		return ERR_PTR(rc);
->  	}
-> +
-> +	/* Notify TSM userspace that PCI/TSM operations are now possible. */
-> +	kobject_uevent(&dev->kobj, KOBJ_CHANGE);
-> +
->  	return no_free_ptr(tsm_dev);
->  }
->  EXPORT_SYMBOL_GPL(tsm_register);
-> -- 
-> 2.43.0
-> 
+I also tried introducing an attestation_connection object with its own
+mutex, reference count. Each vDEVICE then had to hold both its existing
+PCI/TSM reference and a reference to this new object. The stream setup
+still requires pci_tsm_rwsem, so this approach would also need callbacks
+to acquire that lock before accepting evidence.
+
+I am now considering implementing the CCA SPDM attestation ops directly
+in arm-cca-host, similar to the viommu ops. The SPDM attestation ops
+could then directly use PF0's PDEV, communication buffers, and existing
+vDEVICE references. The same driver could prevent conflicting
+PDEV/vDEVICE operations, and stop attestation commands before freeing
+the associated resources.
+
+-aneesh
+
