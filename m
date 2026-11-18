@@ -1,49 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794998065;
-	b=w4ua3frrjpcczlXP16BQigt65ghx1kCHmqITcfvbO2wNMHbvrPY/LDVPp86nSur6RXOe
-	 9kOx0M6Pk2FC0jDxKwbRI6+ROqJPMbs+K2/e7iLe4rBunpZOYNnFiNsHiInbkfZEccSHD
-	 zmBVqU8WuJXTCDG9TG94K01pzAAaw4vST1PM7exqYVtzHNf05SEh1oukktMKOblT2Ry5u
-	 nJnStrN4/dl6O2Ag7E0gNKB2n+bPDl6lbErqRlWU2jH+G2GGDmiUB269kH1vHn5kgU5o/
-	 UKX+3OtPsOa7JTLoAhda3AL9luTnvkDD6GPQIk60eKIv2855fG7XhqOo32pNV59ua2g==
+	t=1794999734;
+	b=ikCyMyikplXQt7jySfLyX6buSiJmA9Zq6Mnt6a1q8JYus6RHpqbKTMKZnPOAc0S4wsTU
+	 vVnAZczwDjY89rCkZTPw1QsWTq04Rn2qYzyJLxyuC56YpLDuL4P2ziBauedzkLE2mLRJ9
+	 aDZfAfty3IRa1oBOtq4SE8WpBBG6N943cNX2bp5MODElmdwpp/5lBxZFf3sWYg8RpSjag
+	 0/4Pcse0dmmnotSTRSgKs0YZ5SUL14i6KE2aFk5lsuo1BM5XlZGHJx1znZ0zbIRho0PSh
+	 ap3uWf03i6ZsfShlrwRh9MZ0QkYd9XCQqYMxu6+ccFE7os0gaMk7cf3+gnKuQf4Jbgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794998065;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=iEnnEuXg2bne+5suSb+pfcSIa1VRJlTnH+FEq31HwCc=;
-	b=z9knXxpjeTtjFZ9K9pLhyq0s86giFvBuGF7PgR5bx9Q9WsEkLNP04wCd7LYv85IVmfc7
-	 DpdvqWgJs0Gw2AomSS0EiJRqec70Lc36FQo+M2itSrw0GRWvJoQh6rDfaQblHb2zIkmBc
-	 Cqg70LJLtwOtOMZoBjKhPclDLq+4XT8wyohT0KQEyuur/aJz/Tp0COjb8USvAXeNKIPyI
-	 PVQ6+LeAOfWaMdr7ppdDWYctsk8OOV/DT71Mj4QNlru7yCVz8Wp8AiqEfcnPqXQJ6Zts5
-	 E/vF3ulRhAreAwh8VUnW2PADrbxnIzubsKkbV/an+lJb8Lp62YI0LBOcKyOPJB2H1jw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794999734;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=/ppIoJSSygapoFf8d3+W2D7zVwbW79N+eyf0qrsR1iM=;
+	b=GtAyAydlAQYcPLkey94QPyFRsi7fS2eDrz21veLCnZislMlwDKLt3h5nZodr96uyOrcV
+	 7MOIOd8O4SOuz9KWYHY5tfyv89LyZH72Q8VGksgNEXuiFGC4niF/HRUkQtcBwD1JPOgQp
+	 phTWI9/XE/qr7W6H5Qp7AzrPohfjJSqnt0EY3gtTUI3tIiNfZPIsExRh7jFthOok0RNzQ
+	 93TODIGnSbE2TzJWAqQ/r0S1//ShDe6edna7GevqDFtWAuFIPvAb7wzDk06pAuZI5pwW5
+	 KxOVbvIA4dVZa3JryNlb5+YEKzF4Sp9iu6zy/MhQiwbFkYB3g9nWHU4EV+6kJLW6VXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="njf/bY16";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D256A606A332;
-	Wed, 18 Nov 2026 10:34:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D256A606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ike5EReS;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAD6606A338;
+	Wed, 18 Nov 2026 11:02:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BAD6606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=njf/bY16
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 316311596;
-	Wed, 18 Nov 2026 02:34:21 -0800 (PST)
-Received: from [10.57.70.68] (unknown [10.57.70.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 255DD3F632;
-	Wed, 18 Nov 2026 02:34:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794998064; bh=882HlCJQp1tJ2yoxf93aeqGXZo2OFfU4ZGyzNDdoa9s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=njf/bY16PsTTY3pbwuNM0wNOkujnHH5iwftPdKTgBLyhU3zjZcPZWSIVqm0vrsef5
-	 2PWeZ3MpAG33IWM+IpnDCgnVCHsSPStO25enry1jwlTwH5gd2N7RI1QPSHakbhu+E2
-	 YT0U7VYMJMuAaeESA31deIn37yxmuAa4LcjWoXJM=
-Message-ID: <6bb490cd-ebbe-41d7-adf3-d6eaf0e53478@arm.com>
-Date: Wed, 18 Nov 2026 10:34:18 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ike5EReS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794999733; x=1826535733;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=8XWiTu/a1gGNV02ADUvGH4Yse9XH4Pb47goXb3WR6MI=;
+  b=ike5EReS8TjY69i2zToJ2+gtuRlc+OsB4/1T+G1e5uobiSF40cQr/KKq
+   63Ep+3xMTU58msk6Z4aPjbG9Ku2q+CjebBE2LFI8l5aSTX1DVOBOfwTj/
+   d4k/tCJlQ7s/hie8v9R8Qq3FG04ZNOwltG/h0t43w8tSYbkp1PSPl4Q+x
+   8/McJKQplHtNOMU840fuG5sREaYv5syIlWg131f6libR3kIiRBNItiO/d
+   Kj3NDempG0ok2VxmOOzKy8zQDICcBTC2APrBTPKDl15pYYEev7GBaGZ4l
+   Ivna9EboQSROSOhXvTpS5uYRl8Ux0Z1Rvny7z0+j1mUlVcgiW2DqPu+fj
+   Q==;
+X-CSE-ConnectionGUID: OuiZYSclSpq0A4uTbDBjTg==
+X-CSE-MsgGUID: X2ljhNxqTo27MRc87xBaOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3684585"
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
+   d="scan'208";a="3684585"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 03:02:13 -0800
+X-CSE-ConnectionGUID: yv3n1dy3RVeyjTiA3kzxkA==
+X-CSE-MsgGUID: fvst2zP6QrWSrIoYwPxrTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
+   d="scan'208";a="9909357"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 03:02:10 -0800
+Message-ID: <ed90de7e-6019-4d42-bc6e-5b586b460a31@linux.intel.com>
+Date: Wed, 18 Nov 2026 19:02:07 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -54,57 +73,88 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/11] KVM: arm64: guest_memfd: Check mmap support when
- preparing memslot
-Content-Language: en-GB
-To: Fuad Tabba <tabba@google.com>, Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-2-steven.price@arm.com>
- <CA+EHjTy5xBmavNWSYPjqU9qXtssV3ZHzsUr1s_4bVOt1GnDLVg@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CA+EHjTy5xBmavNWSYPjqU9qXtssV3ZHzsUr1s_4bVOt1GnDLVg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 1/9] x86/virt/tdx: Add SEAMCALL wrappers for IOMMU
+ setup/clear
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, yilun.xu@linux.intel.com,
+ xiaoyao.li@intel.com, Chao Gao <chao.gao@intel.com>,
+ linux-kernel@vger.kernel.org
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-2-baolu.lu@linux.intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20261112043054.2664857-2-baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Steven
+On 11/12/2026 12:30 PM, Lu Baolu wrote:
+[...]
 
-On 17/11/2026 14:05, Fuad Tabba wrote:
-> Hi Steven,
-> 
-> On Mon, 16 Nov 2026 16:43:47 +0000, Steven Price <steven.price@arm.com> wrote:
->> Check the guest_memfd backing file when deciding whether an arm64
->> memslot has mappable memory rather than checking whether the slot is
->> gmem only. A public helper function is added to be able to reuse the
->> static kvm_gmem_supports_mmap() function.
-> 
-> nit: could the message say why this is needed? It's a no-op until
-> patch 8 defines kvm_arch_has_private_mem(), which makes every
-> guest_memfd slot gmem-only.
+> +
+> +/* No cache flush is needed; hardware keeps caches coherent across KeyIDs. */
 
-I still don't understand why this is needed. For arm64 we have always
-prevented guest_memfd without MMAP, in kvm_arch_prepare_memory_region().
+Nit: 
+It's a bit confusing without the all the background.
+Once Rick's patch [1] removes tdx_clflush_page() and its comment, a reader may wonder
+why this wrapper explains the cache flush but the others don't.
+
+Is it better to drop the comment and explain it in the change log?
+
+[1] https://lore.kernel.org/all/20261015191710.3632302-2-rick.p.edgecombe@intel.com/
 
 
-Suzuki
-
-
-
-> 
-> Cheers,
-> /fuad
+> +u64 tdh_iommu_setup(u64 reg_base, struct tdx_iommu_mt_param *param,
+> +		    u64 *tdx_iommu_id)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = reg_base,
+> +		.rdx = __pa(param),
+> +	};
+> +	u64 ret;
+> +
+> +	/*
+> +	 * Retry only on TDX_INTERRUPTED_RESUMABLE:
+> +	 *
+> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
+> +	 *    calls.
+> +	 *  - On TDX_INTERRUPTED_RESUMABLE, all registers except RAX remain
+> +	 *    unchanged.
+> +	 *
+> +	 * The ABI spec also allows retrying on TDX_OPERAND_BUSY, but that
+> +	 * status doesn't guarantee forward progress, so retrying could spin
+> +	 * forever. The host serializes all TDH.IOMMU.SETUP and
+> +	 * TDH.IOMMU.CLEAR calls for an IOMMU, so the TDX module should never
+> +	 * report the operand as busy.
+> +	 */
+> +	do {
+> +		ret = seamcall_ret(TDH_IOMMU_SETUP, &args);
+> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+> +
+> +	*tdx_iommu_id = args.rcx;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_setup, "tdx-host");
+> +
+> +u64 tdh_iommu_clear(u64 tdx_iommu_id)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = tdx_iommu_id,
+> +	};
+> +	u64 ret;
+> +
+> +	/*
+> +	 * Don't retry on TDX_OPERAND_BUSY. See the comment in
+> +	 * tdh_iommu_setup().
+> +	 */
+> +	do {
+> +		ret = seamcall(TDH_IOMMU_CLEAR, &args);
+> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_clear, "tdx-host");
 
