@@ -1,50 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795015123;
-	b=k+9DBFcz4EtpDa3k+AOifDO/sigF7q1sX0n23LO92AIFf75MX0btBshNZLhlfZU4esB6
-	 u7mZE8HKQYkO+hPob8/i7lbJsNIN3dbT6PVUdNMWnMZAFdUvwGhE6ritkGf0RZrr/i/+v
-	 VBGCRL0/VZbmYXY//Ofgui2deBCvLvs9b4XaFQu6t5FfAh9wiR6qSdiTszFSVKn14egbA
-	 eVvzbwMcWDg/1u3OYfvm/1qc7AeJ4BFfDkx3bCM0hD4AuLIUUHgfxU9pZw0CZOoX9umHW
-	 nEnN0v0R6OGj3UBqOzrtEaLyLhMkP9F//nOiwF+X5V4ZjCLsCw6XmsNrKR4m+DFNOlQ==
+	t=1795018386;
+	b=2bdhl8Ke8OoG+a+SOsN0TAFoKc49vmqIExbeu0QVrNwk2GHqaNjUUOA84dwrwipou8sS
+	 DGUF9J5EdPXQUvhodOCJ5tx8X/Y2moN0azq2tvnK3/CPZ8gJKyYqJx3l+97oQ4WK99rYA
+	 dWU1w3q+vXjaOUAV+l36GlX5d0ZvDIGraWAUKce791PT7awFnYAYstKsHiXwDUNthrL+H
+	 FR8l0qBfO5yMftVmHdLCYo1Mxwi9LdNpgNVBbrpvDjmBU6uplTFay1Yio+O5ENydlMp09
+	 sdr67EkvDrd7fiFzAbfG3FF3haXdGaOpfr30veSpFx18T1JuBTQsj6wPaW9OvVqd1ww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795015123;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Content-Type:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To;
-	bh=y2Daclv3pL9H+Z77v1N/YFpOGh7HbXy37WIqhvkcADA=;
-	b=SfuT01LE4tx72wzOzFLcmT1P5h5UGR+hUWidmeB1Ngk+RlTv6lxV0w4KZ/TItlQfkuwg
-	 A+6KQOD/7qDNttuwIHItLwX1dBijRHYkmNj72PDpTZI8My/qSZLgEaC6Hvl20tuWtUc99
-	 ++KRK+wfTyWIw7FPsnfK9Hs2mAJb4pLEqCSVNP0S9PeO0lkqEOrfaqbQTVwx1V+Og9fsY
-	 mpP96k49iPBGE+XwnjGgNUP5UVnZ9y1nTTA6G0CQMpFtJ9lJ2xNKtsFd9eVGaB0+tWJ7I
-	 fLxnRKphHOmIyqWBY7LIpuJpQxydJHZjAp1biroE+tRooeeh/b+WqGiuu58OaHv8auQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795018386;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=yYNwdmBSIDxtuxPrHW8cdhm8SfdRppfZaAmTog96H2A=;
+	b=2VwmlbGVaeiWno73AzYiKcRYnYs7mqGPhxtIAtBFpypLWQyzy4U35YEDCtONHsHXqp99
+	 flB4fVn3+hWkUTx11m79W61T0mxX9W1eZN1cipbvoSoqmuZDU4EEkboD1U+MJ2dZYmZIx
+	 Bdh3gW3swLDnROdM9aUKD2K/bd/FRwJykrlhy521V1ozMp+E/8lUeyz9uVi3o8tCjxjlH
+	 mhdK0apwV1MjwjK7XYMKyG3NQ50kQT9Kx4cKDJ7A6ihRWLCkP/ChXQm+WdG1T1FIbp5cn
+	 xAHHZO1CCUp2N1j83DojjoiyvBEKhUYN7brDikJjZ/b33WR+3TBusJB4REF1AiPiY9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="a/CjEp/l";
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VfMYMAuM;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3CC60A2603;
-	Wed, 18 Nov 2026 15:18:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C3CC60A2603
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8162606A330;
+	Wed, 18 Nov 2026 16:13:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8162606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=a/CjEp/l
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VfMYMAuM
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A28B21655;
-	Wed, 18 Nov 2026 07:18:39 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FF44339;
+	Wed, 18 Nov 2026 08:13:02 -0800 (PST)
 Received: from [10.57.62.206] (unknown [10.57.62.206])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C9A9D3F632;
-	Wed, 18 Nov 2026 07:18:37 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E29C53F673;
+	Wed, 18 Nov 2026 08:12:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795015122; bh=w8XDtw7u6zTGcD/Dwtz8Nec/j+mFGkTq9Cwd9QWx4y0=;
+	t=1795018385; bh=7HisUsPk+KXisBKOhhwZZBhSMTa8p36OAkhoTk09/p8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a/CjEp/lWJU4QLjpelP/JTZv2ruOnbBbt+JLSbKpYAP4VCqrHHdtlgkcAWih3sdxj
-	 WYJKvmin5k2Qjivd13tyo7baEd5InyOwxPHvleh83xiTrhEYXBsYsilr0DlLJongQ1
-	 fQ7iiucy60FJx40w9DUaxvWafVfHMCNzI7k8LEzc=
-Content-Type: multipart/mixed; boundary="------------DUFNbHBbvPDY00EhsT6K87G7"
-Message-ID: <cc27e6a8-6bfa-4c82-92a7-33175baf6803@arm.com>
-Date: Wed, 18 Nov 2026 15:18:35 +0000
+	b=VfMYMAuMFySbcli51fpiRUiyHhsrWxVA0JvsMlnhNMKHwT3OC8N7svYDR6AXpwyRI
+	 DQ3ucKevGEEZxmSMHnhWCReSwkfPCO0oRhqJaRKuPRh1v7zUXh0fBwqw4KIilbCFx/
+	 PLAJ0VltMjZX2DM+j8kxWZtoujx0Rpj6phIcEFV0=
+Message-ID: <a36b5c53-5148-4b08-b399-ae64b1ad8707@arm.com>
+Date: Wed, 18 Nov 2026 16:12:57 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -55,10 +54,10 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/11] KVM: arm64: guest_memfd: Check mmap support when
- preparing memslot
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH v3 02/11] KVM: arm64: CCA: Introduce Realms
+To: Fuad Tabba <tabba@google.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
  Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
@@ -74,97 +73,100 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
  Lorenzo Pieralisi <lpieralisi@kernel.org>,
  Kohei Enju <enju.kohei@fujitsu.com>
 References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-2-steven.price@arm.com>
- <CA+EHjTy5xBmavNWSYPjqU9qXtssV3ZHzsUr1s_4bVOt1GnDLVg@mail.gmail.com>
- <6bb490cd-ebbe-41d7-adf3-d6eaf0e53478@arm.com>
- <b1ef7241-54b0-4a17-83b6-0008e722f2f6@arm.com>
- <8a095a42-662a-416d-a5d7-79e10161201c@arm.com>
+ <20261116164358.142785-3-steven.price@arm.com>
+ <CA+EHjTwfp8p7uwP2LXEqSmTwL6ZHuDCYbvMie_Wr_30xJwfO6A@mail.gmail.com>
 From: Steven Price <steven.price@arm.com>
 Content-Language: en-GB
-In-Reply-To: <8a095a42-662a-416d-a5d7-79e10161201c@arm.com>
-
-This is a multi-part message in MIME format.
---------------DUFNbHBbvPDY00EhsT6K87G7
+In-Reply-To: <CA+EHjTwfp8p7uwP2LXEqSmTwL6ZHuDCYbvMie_Wr_30xJwfO6A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 18/11/2026 12:04, Suzuki K Poulose wrote:
-> On 18/11/2026 11:14, Steven Price wrote:
->> On 18/11/2026 10:34, Suzuki K Poulose wrote:
->>> Hi Steven
->>>
->>> On 17/11/2026 14:05, Fuad Tabba wrote:
->>>> Hi Steven,
->>>>
->>>> On Mon, 16 Nov 2026 16:43:47 +0000, Steven Price
->>>> <steven.price@arm.com> wrote:
->>>>> Check the guest_memfd backing file when deciding whether an arm64
->>>>> memslot has mappable memory rather than checking whether the slot is
->>>>> gmem only. A public helper function is added to be able to reuse the
->>>>> static kvm_gmem_supports_mmap() function.
->>>>
->>>> nit: could the message say why this is needed? It's a no-op until
->>>> patch 8 defines kvm_arch_has_private_mem(), which makes every
->>>> guest_memfd slot gmem-only.
->>>
->>> I still don't understand why this is needed. For arm64 we have always
->>> prevented guest_memfd without MMAP, in kvm_arch_prepare_memory_region().
+On 17/11/2026 14:07, Fuad Tabba wrote:
+> On Mon, 16 Nov 2026 16:43:48 +0000, Steven Price <steven.price@arm.com> wrote:
+> [...]
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> [...]
+>> @@ -1571,31 +1576,39 @@ struct kvm *kvm_arch_alloc_vm(void);
 >>
->> Fuad is correct, this isn't really needed until patch 8. Patch 8 defines
->> kvm_arch_has_private_mem() - that means that gmem_in_place_conversion
->> becomes true (see include/linux/kvm_host.h). That in turn means that
+>>  #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+>>
+>> -#ifdef __KVM_NVHE_HYPERVISOR__
+>> +#define kvm_vm_is_protected(kvm)        ((kvm)->arch.vm_flavor >= __VM_PROTECTED)
+>>
+>> -#define kvm_vm_is_protected(kvm)                        \
+>> -        (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+>> +#ifdef __KVM_NVHE_HYPERVISOR__
+>>  /*
+>>   * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to convert the
+>>   * pointer to the hyp VA. With pKVM, the nVHE code runs with the hyp_vcpu,
+>> - * which is populated correctly and is gated on is_protected_kvm_enabled().
+>> + * which is populated correctly. Always vcpu_is_protected_pkvm(), which is
+>> + * gated on is_protected_kvm_enabled().
+>>   */
+>> -#define vcpu_is_protected(vcpu)                                                \
+>> +#define vcpu_is_protected(vcpu)                BUILD_BUG_ON(1)
+>> +#else
+>> +#define vcpu_is_protected(vcpu)                kvm_vm_is_protected((vcpu)->kvm)
+>> +#endif
+>> +
+>> +#define kvm_vm_is_protected_pkvm(kvm)                                        \
+>> +        (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+>> +
+>> +/*
+>> + * Rely on is_protected_kvm_enabled() check in kvm_vm_is_protected_pkvm() to
+>> + * make sure the vcpu->kvm is always valid VA in the context
+>> + */
+>> +#define vcpu_is_protected_pkvm(vcpu)                                        \
+>>          ({                                                                \
+>>                  struct kvm *__kvm = READ_ONCE((vcpu)->kvm);                \
+>>                                                                          \
+>> -                (__kvm && kvm_vm_is_protected(__kvm));                        \
+>> +                (__kvm && kvm_vm_is_protected_pkvm(__kvm));                \
+>>          })
+>>
+>> -#else
+>> -
+>> -#define kvm_vm_is_protected(kvm)        ((kvm)->arch.vm_flavor >= __VM_PROTECTED)
+>> -#define vcpu_is_protected(vcpu)                kvm_vm_is_protected((vcpu)->kvm)
 > 
->> every guest_memfd slot is KVM_MEMSLOT_GMEM_ONLY including slots backed
->> by a file without mmap support.
+> This brings back the _pkvm variants that Marc asked to drop in the
+> plumbing series [1]. In the nVHE hyp code, kvm_vm_is_protected() and
+> vcpu_is_protected() already mean pKVM-protected, so I think the hyp
+> side can stay as it is.
 > 
-> But we dont support slots without MMAP anyways even without this series.
->  So, does it really matter for arm64 ?
+> At EL1, the pKVM-only checks that a Realm vCPU also reaches are in
+> kvm_arm_vcpu_power_off() and kvm_psci_vcpu_on(). Could they check
+> vm_flavor == VM_PROTECTED_PKVM directly?
 
-So ChatGPT produced the attached test. It creates a non-mappable gmem
-and tries to add it to a normal (non-realm/non-pkvm) VM. With v7.4-rc1
-it is rejected. However without this patch it succeeds.
+Ah, yes that should work better. Thanks for the suggestion.
 
-The issue is that gmem_in_place_conversion changes the behaviour for
-normal VMs.
+>> +#define kvm_vm_is_realm(kvm)                ((kvm)->arch.vm_flavor == VM_REALM)
+>> +#define vcpu_is_rec(vcpu)                kvm_vm_is_realm((vcpu)->kvm)
+> 
+> vcpu_is_rec() isn't used anywhere in this series. Could it be dropped?
+
+Yep, I can move it after this series.
+
+> [...]
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> [...]
+>> @@ -906,7 +907,8 @@ static bool kvm_arm_vcpu_suspended(struct kvm_vcpu *vcpu)
+>>  /* Only the guest's CPU_ON may start a vCPU EL2 holds powered off. */
+>>  bool kvm_pkvm_vcpu_is_powered_off(struct kvm_vcpu *vcpu)
+>>  {
+>> -        return READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_UNINITIALIZED;
+>> +        return vcpu_is_protected_pkvm(vcpu) &&
+>> +                READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_UNINITIALIZED;
+> 
+> Only a pVM's vCPU can be in KVM_MP_STATE_UNINITIALIZED, so is this needed?
+
+I guess not. I'll drop this change.
 
 Thanks,
 Steve
 
+> Cheers,
+> /fuad
+> 
+> [1] https://lore.kernel.org/all/86pkxs2npx.wl-maz@kernel.org/
 
---------------DUFNbHBbvPDY00EhsT6K87G7
-Content-Type: text/x-csrc; charset=UTF-8; name="guest_memfd_nommap_repro.c"
-Content-Disposition: attachment; filename="guest_memfd_nommap_repro.c"
-Content-Transfer-Encoding: base64
-
-Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seQovKgogKiBSZXByb2R1
-Y2UgdGhlIG5vbi1SZWFsbSBndWVzdF9tZW1mZCBtZW1zbG90IHJlZ3Jlc3Npb24uCiAqIEJ1
-aWxkIGZyb20gdGhlIGtlcm5lbCByb290IHdpdGg6CiAqIGNjIC1XYWxsIC1XZXh0cmEgLU8y
-IC1JdG9vbHMvaW5jbHVkZSAtSXRvb2xzL2luY2x1ZGUvdWFwaSBcCiAqICAgIHRvb2xzL3Rl
-c3Rpbmcvc2VsZnRlc3RzL2t2bS9hcm02NC9ndWVzdF9tZW1mZF9ub21tYXBfcmVwcm8uYyAt
-byAvdG1wL2dtZW0tcmVwcm8KICovCiNpbmNsdWRlIDxlcnJuby5oPgojaW5jbHVkZSA8ZmNu
-dGwuaD4KI2luY2x1ZGUgPGxpbnV4L2t2bS5oPgojaW5jbHVkZSA8c3RkaW50Lmg+CiNpbmNs
-dWRlIDxzdGRpby5oPgojaW5jbHVkZSA8c3lzL2lvY3RsLmg+CiNpbmNsdWRlIDxzeXMvbW1h
-bi5oPgojaW5jbHVkZSA8dW5pc3RkLmg+CgppbnQgbWFpbih2b2lkKQp7Cglsb25nIHNpemUg
-PSBzeXNjb25mKF9TQ19QQUdFU0laRSk7CglzdHJ1Y3Qga3ZtX2NyZWF0ZV9ndWVzdF9tZW1m
-ZCBnbWVtID0geyAuc2l6ZSA9IHNpemUgfTsKCXN0cnVjdCBrdm1fdXNlcnNwYWNlX21lbW9y
-eV9yZWdpb24yIHJlZ2lvbiA9IHsKCQkuZmxhZ3MgPSBLVk1fTUVNX0dVRVNUX01FTUZELAoJ
-CS5tZW1vcnlfc2l6ZSA9IHNpemUsCgl9OwoJaW50IGt2bSwgdm0sIGZkLCByZXQsIGVycm9y
-OwoJdm9pZCAqaHZhOwoKCWlmIChzaXplIDw9IDApCgkJcmV0dXJuIDE7Cglrdm0gPSBvcGVu
-KCIvZGV2L2t2bSIsIE9fUkRXUiB8IE9fQ0xPRVhFQyk7CglpZiAoa3ZtIDwgMCkgewoJCXBl
-cnJvcigib3BlbiAvZGV2L2t2bSIpOwoJCXJldHVybiAxOwoJfQoJdm0gPSBpb2N0bChrdm0s
-IEtWTV9DUkVBVEVfVk0sIDApOwoJaWYgKHZtIDwgMCkgewoJCXBlcnJvcigiS1ZNX0NSRUFU
-RV9WTSIpOwoJCXJldHVybiAxOwoJfQoJZmQgPSBpb2N0bCh2bSwgS1ZNX0NSRUFURV9HVUVT
-VF9NRU1GRCwgJmdtZW0pOwoJaWYgKGZkIDwgMCkgewoJCXBlcnJvcigiS1ZNX0NSRUFURV9H
-VUVTVF9NRU1GRCIpOwoJCXJldHVybiAxOwoJfQoJaHZhID0gbW1hcChOVUxMLCBzaXplLCBQ
-Uk9UX1JFQUQgfCBQUk9UX1dSSVRFLAoJCSAgIE1BUF9QUklWQVRFIHwgTUFQX0FOT05ZTU9V
-UywgLTEsIDApOwoJaWYgKGh2YSA9PSBNQVBfRkFJTEVEKSB7CgkJcGVycm9yKCJtbWFwIik7
-CgkJcmV0dXJuIDE7Cgl9CglyZWdpb24udXNlcnNwYWNlX2FkZHIgPSAodWludHB0cl90KWh2
-YTsKCXJlZ2lvbi5ndWVzdF9tZW1mZCA9IGZkOwoJcmV0ID0gaW9jdGwodm0sIEtWTV9TRVRf
-VVNFUl9NRU1PUllfUkVHSU9OMiwgJnJlZ2lvbik7CgllcnJvciA9IGVycm5vOwoJaWYgKHJl
-dCA9PSAtMSAmJiBlcnJvciA9PSBFSU5WQUwpIHsKCQlwdXRzKCJQQVNTOiBub24tbWFwcGFi
-bGUgZ3Vlc3RfbWVtZmQgbWVtc2xvdCByZWplY3RlZCIpOwoJCXJldHVybiAwOwoJfQoJZnBy
-aW50ZihzdGRlcnIsICJGQUlMOiBLVk1fU0VUX1VTRVJfTUVNT1JZX1JFR0lPTjIgcmV0dXJu
-ZWQgJWQgKGVycm5vICVkKVxuIiwKCQlyZXQsIHJldCA8IDAgPyBlcnJvciA6IDApOwoJcmV0
-dXJuIDE7Cn0K
-
---------------DUFNbHBbvPDY00EhsT6K87G7--
