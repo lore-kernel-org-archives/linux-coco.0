@@ -1,100 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.17
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794957209;
-	b=VYnAwqhD1YsDtoBPvWl81whvohn1/Vl+G6T2i3lXgJ6gpriEQfQkbV3MLX7tkk1oggzC
-	 x1s1MdqahU9Ew36wm8ZmR0hybq4C88WFgVu9tiBBvezzz9T5HyzL5O0wae0bHwQTVV4LU
-	 y5/CnS/9NZeXig5VPv2MIgy9e45LHpGTSoQuHMeWx1bo29SHfsAPTzexz+Xb9/g2dk/+k
-	 xH0rXsvZ4g9R3vxwp94CWesx3lXJwALhPwCsvmpxswMfpKc70d0vwOVd8Z2vKTNVvpnDD
-	 csgUyfcg0+acY/3uaJEgYaBVkaz61jn2L2hJ/hKrQKF/iWl4Mta/sEJYnN47H+1zUug==
+	t=1794962159;
+	b=v2Q+mSd7yFdVWzaLpp8OWYs3JKcOqEfX8bVjLOHjisYs5KjGEzDTOw/0X8ogId4sKQkc
+	 I03bBjl+kDmPaO7qvISkj70YGBtAEGkSzz6HwYnEcM+4FQ5eRZC6wgrzHu7qEWIBiQUIx
+	 B8JXOUnIRqpb7QfJBP3bh0UaNV10SRjm0e7poW6p56lfN5MRe5ClPnjNQrC2wAjoaMgCP
+	 +XxRD9c2LdXHCYAfqO8PMWFxrpmnxzbNMIva/bbbspyQIm9ZY/vI74oTnGv2fE/3iuszF
+	 O5yodLP1XxNX/zS8c7Z2QKmJPTgi7M8cOEw9oJ5kuk3cbDsMdM2DvLEsWZEV6uyolNQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794957209;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=F7u8VyCLcuVVeJxUa6WMZkgWVLg+37GZd/uec2cfUY8=;
-	b=RrMEp5GTY/qMGHVCJBtEROJaj1Yh++QJ9E8zt7977mvQps7ZCYAizA5gCEvkL8s0zzmQ
-	 rkWKIQbEXbQuVGpzZtk0kuaP1MYomZ4AsJybIosMwIQS+RvJtWyjBXzb6hcT6ryKEMmj2
-	 0zgiLttgzY4Jp5jIg0CYZtOH0QbNP8CgIJpVXG9ZT7R9puTuyoIiCcFjACYJFgvX5pAx5
-	 /8mehM9347QYveeskBYnU0FDwMZHOhh1MTUdNx9S1pgUvNDQWEVE0qFUQaKW58uGeNeAI
-	 pHKatcRmms3B9Piblt1MM5zp1tITRk8Xxjx3nb4d/5cSnzhu8FeyVdDXTyXtWNZxF+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794962159;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=/6dWA1SUH/JSjr/x9MIHpThHrky++ks1K37V7Ab/Dag=;
+	b=qzBz8UA5kuzjuYHOw+ynuSQhBdjzHZ5jT9/pOMNoun41idRQs8eYmvFlL0jMCq/umoLV
+	 V4vY6bxgVNRHXnjM8/JlE2L1V2hvmDB4duYtq5kIP8UYWCowGGFfkTkYTKl7NmKkxSMrL
+	 LRk/n8fY7AN89zxSFIcLLwpk3wFbIYM4QmIASEjwUQqGdpNZyL5Yy0JIqnfpu8gEelt2/
+	 bsQgyP+SSpA3QDSC0hJ5DhUwTHHNhbL9VDqoD7NFCMAAvRPC2Ud31vCwsephtXtd+gERv
+	 UD88B8HqOCcUsLKjpyVohp8oRMFwytuLIN4CiHk62VR/FHxEBCt2GdVV4Cq3bcZhY7w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gBJoYg52;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=M4iDa2oO;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.17
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011017.outbound.protection.outlook.com [52.101.62.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54B0606A32A
-	for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 23:13:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D54B0606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DD9606A31C;
+	Wed, 18 Nov 2026 00:35:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45DD9606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gBJoYg52
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b887ca9f5cso459983a12.0
-        for <linux-coco@lists.linux.dev>; Tue, 17 Nov 2026 15:13:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794957207; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KQ94mzcd0NAsA5EBTe3EL7sUQ7pWWm2srVQqRoUW2T7Gx6Tf8GAQbGCKfsRQ7jYuid
-         HpUILscTFSfUG8jRzObBgZ9RHUkzwyW0hgnQfRMDwxgquOyRcZrXIMeqmfApan+NZ82A
-         W7HshgaZvPTFj5GSXUlnemttjF9XcWGg6zMlLh4czz69CH+OMT4cNS1SQMJ0GC83XuWU
-         6qFS0ilWLfuKbFlgE4CqEW2onZr6BDDBuRQ1vHJB14tkqMobdXLv5A4pItOZxpOKSy+w
-         1kNPTmW0Qbbf2rOr8XJwaVm/lC5iGnf/gwOWJl5tpKoNfxUJS6seXN73eitsI9yXLtO6
-         O/mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=F7u8VyCLcuVVeJxUa6WMZkgWVLg+37GZd/uec2cfUY8=;
-        fh=N56jbhqdcOx5sZCEXOhYb6Zyk1kZuAGHBVe4r7JxtgE=;
-        b=eYigKmX1PouyVrdZ6/JUwWeIf1q84snQ8ZeGT58+0SqFOOveh0a26OiU3mdyBaSj9x
-         lA1BeqvLwFrDlkSQVB0wV1T7w3t+5PkTEatZh4OXHlpwsjiwo8ZbqHHlCMXXBzDCy4B7
-         0dFKoTsRwS/nqFf2xIwDnIwgaTaISbhZLpE/YsRfjAHK4dkasQJJGUdqJE9C8ucj2Wfm
-         5mwqX9tuU71CDW+u21/mhZXpKye4TwUridcz6Qe6PgkS2NkXx2L2mGgmn9ZvmIoRUv0Q
-         go1URyR7SoEtCYZ/SjHERiXvWNjgZrpOc1lzC6NsBwjcGZ6sSrz/F+LWAbtpIli8c2+T
-         m2pA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794957207; x=1795562007; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=F7u8VyCLcuVVeJxUa6WMZkgWVLg+37GZd/uec2cfUY8=;
-        b=gBJoYg52GuJyAgJuAOWgyJxCsgLq5dTm/a/hR15zBf2GFGyrzhfLIDf3DfNz7F72W3
-         UArQXCvq/WNYivQn7pR2ZA23iZPvixnezEUSa/5j/jkvojWRY/qLrLv50yo2MCpFnWod
-         kGWicclVZtVmODZyP9NJlQt+it61s2KfyqCtH2xnozUAlSV8CO85hHzOp+NXfij/Z2kc
-         O7bhQ2nDug/+8vH5y46o0HMc+WcfP/OYoWv52fZ1WmphmkmsfyI1vlCNriBkWA/KUrDV
-         jTQbbYkOMdoVK3+wZMhiA4jxf5P5f0r37xr1s9tsGKDkZk0qDMXV0vj4/M3aK6YIyQ7m
-         J2kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794957207; x=1795562007;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F7u8VyCLcuVVeJxUa6WMZkgWVLg+37GZd/uec2cfUY8=;
-        b=JDMl+HSSneOXI/HlrU8DbF5i3eeOyzSXEBcXPogkrHaWAB2lpq1RINTB6cni9+WoOU
-         wBWWtmSCnsoGmO39PBQ1csx+vTkSsgJERd6gAdKX57FqAC/cjHi9SeHIy4Rd0T1Dtn7b
-         OnzpV3Lzh3/uRbUZ1RBWIzN1SkJjQNPEXF0Fru3EAdeK1BwHd5epZmA/CMJZLZmTqEy4
-         gwA8McigkT1BTAZpJwGprEIs2k5wPBj6gKp73GvuxA4/eLhhgVADk87WPJ8EMHDO6Q81
-         RFtpMjpmbPwppqp1oIUbRczwaWnLXHWR9ja/r6C3u0oQCeF070WGiP232kj1NRcYCdWF
-         NVkA==
-X-Forwarded-Encrypted: i=1; AL+hErFpWCYEe4avr4sI2frhutd7VTT05lIiDCZDaChZ+cwZc925cfcCRCZEtOKWuyMpPp7poRWvxcWqUoPi@lists.linux.dev
-X-Gm-Message-State: APuU4Z+aUVCIaNCOuCntZOkVWGuYiVJHl9RyDZxJqlnRyv/EpdiwG+/t
-	nEmelwV19/Ixhz3BTTD3pbN8DInosp/AsAxcVRDbC+jkQwTIFkQb9ckPpQvG2nwzK7cP7h+zbVE
-	onNpZZW0I+VgOwwjWrpXf5NYg5HCCfo4=
-X-Gm-Gg: AYBFou1PRK3OTCQ4Jnor56n8AsaGAFvwbvLrOvVvGh+vUZsI7c4LbLY9pzjck4L5Av9
-	ThXicMcIqwnsqZPnzuk6hF46+HL6wmtZQdgnIK0tkzhE1OPoUBn4obr+BPYgBgrGdpdfePkmLxG
-	NJSaHv0EHjlPKfP9Csc6DWQGMqaJ2dVo+lqHwXeon4HocDvIF62DAxq66psZV6PQzdrb51qfRsl
-	H25WZuOHr/hVobYWES8EGhNbsCq/shddisBmLuBZ0t214QsEJZL0Lx04lFK1LZxaSX0HKccOeYc
-	n4eqVunJWN20tfPFP4w3FsHeRvyaNdJFPuF9JN0Aao/f8aBisJUFjybAucR1+yB1JcxZ0uXH0PQ
-	ooZ98V3+MCmJu1R/ujvGmrEysHVWWcIZuTiy1sdp4mf8LC699Yrj2IcNhVCS2PhysMmI=
-X-Received: by 2002:a05:6402:849:b0:6b8:6f89:33de with SMTP id
- 4fb4d7f45d1cf-6b888155763mr513976a12.44.1794957206761; Tue, 17 Nov 2026
- 15:13:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=M4iDa2oO
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IFDJqwysAx97ZW21M0Vbj8+lkq4efEdV0Q4Z3hkBJ0mYOlgIuF/qyZ546R+NMNIyw/vS4Ch+nI3sZnUovAcHi68wFX0AWsxSGsgHzpXdwVihiU/gfYY63AutJjVRD4T5+cirYnp/Yqca6TWx5JgOJe8tGmvNi1S9CQIYX8BuJdR2A1qx0V7OFcpk8TztRQ0hwM2pZYPLg/AX8REed8jYkWlFKCMMD7tpAzexxpLobCkEoEoblTYqLEpRiovk4cbqb5qL7UK308IgsULCGr648oxEUtiF1KaPFq1TGnHhsoxWNdBm6zFR3bAD2lRJBzwRAXsKT6Lvhyc2ft1TO0jEdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/6dWA1SUH/JSjr/x9MIHpThHrky++ks1K37V7Ab/Dag=;
+ b=X0MRFYcYhvtr9Lt6rjhrjn00zgkvARc8nQgdDxRldVpCUY0PtSnSZGS0bC1BhLmnSCCiTE6tElQrrtJjUR/WQByiZWw+RFMwxcNd3R38lDW32Up7O015svw1kq21R4Jz5HophXSvfaUTQncNTIlvGJJT53gLRKulh5t84CMuJETrLvboX2KTwW/0Fz+36bDc9KW0qgZg78Wt6lY/GbbEkD9LKiKE6vdPNQtk9CnpCCd8NefZINTZnCOE3l7bh2y9a/0IwzDHGH+IrqUZgAXOrToUVfLO2LODjjE46Et5Pg4YQT8YwlAFu9kH7u2H7e/vYl7GPyin5YdFFw/w/1ot3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/6dWA1SUH/JSjr/x9MIHpThHrky++ks1K37V7Ab/Dag=;
+ b=M4iDa2oOOiXv1uWGoqJiil5KXYMmn+p5TrXOC7NKi6cCIsU/BB987rXeI26C4iZ6s1zrHiXdjraQgHwzmt2PrOYWHxZnwPqF7f8bB81p5BW4ZyIoJs4ubjhuimr1A4+Drt/QD/jtZZ6yAAtBd7YNLGtqA7dLLNGR3d0ST6Ypin/+i6cHsQ+ZokoLCaxDxJp7fLZ2iXUbJJ5zURuuKKG4aSAwaZ3FBLuy405N1STDMSpO9pNJpKu6GltZ5o3ofJJ6eXlAFsKo0uU+4ZBBNUQSrDq0dVvK37mDkvxVcE4qyvC6XYs6Wbe70KkcKduJe2agFI7KKX9ZzbWIjo4wDbCXdg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by IA1PR12MB6066.namprd12.prod.outlook.com
+ (2603:10b6:208:3ee::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
+ 2026 00:33:47 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0615.013; Wed, 18 Nov 2026
+ 00:33:47 +0000
+Date: Tue, 17 Nov 2026 20:33:46 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Dave Jiang <dave.jiang@intel.com>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Jiri Pirko <jiri@resnulli.us>, "Tian, Kevin" <kevin.tian@intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>
+Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
+ and establish streams after acceptance
+Message-ID: <20261118003346.GK2245175@nvidia.com>
+References: <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
+ <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com>
+ <20261106193018.GK770409@nvidia.com>
+ <53bc57bf-1ee1-407a-b48b-bc6b2deee12a@intel.com>
+ <20261108183337.GL770409@nvidia.com>
+ <2b89b830-f1e4-4304-93ee-40287a4b5b2d@intel.com>
+ <20261109185315.GS770409@nvidia.com>
+ <4765e562-8c58-4e0f-89f4-eec23b5ef102@gmail.com>
+ <20261110150747.GF738765@nvidia.com>
+ <CAKmqyKPQXnMiiD9z3Ww-YoOTOdByeCeNBLMXVYENDJ3+Qfab-g@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKmqyKPQXnMiiD9z3Ww-YoOTOdByeCeNBLMXVYENDJ3+Qfab-g@mail.gmail.com>
+X-ClientProxiedBy: BL1PR13CA0194.namprd13.prod.outlook.com
+ (2603:10b6:208:2be::19) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -104,215 +123,87 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <DS4PPFA84FA90FCDC94900C2FC6CEF4D428E7682@DS4PPFA84FA90FC.namprd11.prod.outlook.com>
- <20261104134119.GR274202@nvidia.com> <a3f95140-c49f-42fc-b92c-73c8cf98336d@intel.com>
- <e05a71df-3b20-45a3-bb46-fb1bdad164c8@intel.com> <20261106193018.GK770409@nvidia.com>
- <53bc57bf-1ee1-407a-b48b-bc6b2deee12a@intel.com> <20261108183337.GL770409@nvidia.com>
- <2b89b830-f1e4-4304-93ee-40287a4b5b2d@intel.com> <20261109185315.GS770409@nvidia.com>
- <4765e562-8c58-4e0f-89f4-eec23b5ef102@gmail.com> <20261110150747.GF738765@nvidia.com>
-In-Reply-To: <20261110150747.GF738765@nvidia.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 18 Nov 2026 09:12:59 +1000
-X-Gm-Features: AclHuK9BqaTHMXLq-tjbK2K5Ee-2S_dRmHV8TMHcBR4rNkNet-jbTgQNocUrT1o
-Message-ID: <CAKmqyKPQXnMiiD9z3Ww-YoOTOdByeCeNBLMXVYENDJ3+Qfab-g@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 10/11] virt: coco: arm-cca-host: Publish slot zero
- and establish streams after acceptance
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Dave Jiang <dave.jiang@intel.com>, "Reshetova, Elena" <elena.reshetova@intel.com>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Jiri Pirko <jiri@resnulli.us>, 
-	"Tian, Kevin" <kevin.tian@intel.com>, Alexey Kardashevskiy <aik@amd.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Steven Price <steven.price@arm.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	John Allen <john.allen@amd.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, "patches@lists.linux.dev" <patches@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|IA1PR12MB6066:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9cce2bf-a0f0-4d70-f69b-08df450b9c1d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|22082099003|18002099003|6133799003|11063799006|56012099006|4143699003|261026121527099003|10067099003|261028144727099003|261026140227099003|261022075727099003|261021121427099003|261022105027099003|261102123227099003;
+X-Microsoft-Antispam-Message-Info:
+	HGdEQE2gBRbHvvPtkG2grMpCv2olOUufiS+Wt62WWBzOqW6rX8UaTFKzefw2394v247HK/435t5EMEs7OZLY8sUvFW2qnDBTFODfGquRirOg8OGEvYOCz4AbrQOkQgHJrJFSe6Z2Of7H0BAX6eASZH5W9y33hSNgYYB7bmfnHCkm1AjMx8XrzJxGOgiQPemrNyDWbarekdDVlFKhWCUYeBk0AjIlbV7nyu5cRdz8jNCla24wLTEJ1rZr1tPg44akJhgxO0++f72dz/qtRjwHUAIwEA3PPg+zuzlJJWJiV9TeuC9QQhUfcsw5C1ff5r/PdgDTmVWwlBrUSmsPA72L5NjVIm/BqIWQui5whWoPbOJtHc3wKdjVKvyfYj1V6DQVVAwg5gkVGL5tXU2Oj5TROnK2/iIIFFDkUZxFLSfkKIE7oPxDMEnCET07DCZljNao5Cn53wMFvhoa5ud+e2MoIDZKMdqx5qB04i6WphSRwrHeTEtHCXAW2FuWe7XgCP9Yf5xNTZ4G+SgiC4O+hcU5E4cvDtydL40dRAGt0ACuCKc8NCefzrDd8FtS1GlQe2k5j7WfWdM3a10vzORe2VEEGxOUCH/lcZME2qbxrQBvtydJZrxjuXb91TMhEjyOImPIaymHsGRYb5yrtalqiR0ABWIcWSXiTl4sNGgFPvvUxqE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(22082099003)(18002099003)(6133799003)(11063799006)(56012099006)(4143699003)(261026121527099003)(10067099003)(261028144727099003)(261026140227099003)(261022075727099003)(261021121427099003)(261022105027099003)(261102123227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tZkVe4+eXZ8OaOVRX1xPjJhs8oCLxbWOzsPUTow/B1YWASal1NWbdx7TxE5O?=
+ =?us-ascii?Q?SlFXAXH76i3hTLHhC9bN95X6r9Bktsdze1JhKjCR3AIOr/4kvOQSDCURrXsd?=
+ =?us-ascii?Q?PNAMmesnYwyQaRJF1VWa2lvMNQnGXZKhugSdGvQc6GtRIM5OgFXbS66HnLPh?=
+ =?us-ascii?Q?3yofDip6uOHaTcLc6L0hXBTYIVIK4lvLhMIC46K4g6IFLudxz1FEMbdvraSh?=
+ =?us-ascii?Q?ilukQBKPDT+S1SqdrSVnWs6YtX5Qa95MhiYgBAMAWPHpNNw9Etk7mj8I7l+L?=
+ =?us-ascii?Q?uuA3bHSUIX1BJDrwORpGri5oDLrhLXQLSpwe9c53vB2+YEYH73IoX1WyMkDt?=
+ =?us-ascii?Q?Saz6GgfTqSCKl8AXY2Jd8x/aO/wsugs/m7rseBTzuP+ZKKuQ31tnrthrC3NN?=
+ =?us-ascii?Q?kRfOzB7RAv3Ht0kIvEJBue5Kwz5Y5sNPrjTXv8W4w2SpZIW9BXTyHHwt6su9?=
+ =?us-ascii?Q?6jB8OO/hggas5rm2UvEdX1hVuTckoZTLKYnFKum7IwBOBXjC3bJ2/Se3Pclt?=
+ =?us-ascii?Q?n6Od0tOzsfBOteK/bGgGiEzM+YrD2X3u9sPmNNUUranon4QJEE4e4ljEdY6W?=
+ =?us-ascii?Q?XUkJtALNxwDTdNXni+tDkcENfJTfJmIWMj6LiN2GNxpIsua3KY69zz9hEIGy?=
+ =?us-ascii?Q?GyhDprqRRrkEWOVJ0Iq7ZHzc3ZbCZYt6SlsYSDKbIr7T3er9+HPoj81tqaVe?=
+ =?us-ascii?Q?gtvwQ4awvCQdjVh7+vEbzAmqiD84giHoVKvUpkq7yZlhySB+ajPGHBu2XTG6?=
+ =?us-ascii?Q?ltqFlj23rdKsYgZWoyWHcvG49J3t4Q5u0XN76ec4dHT+aNoTfzPnkLjfD1+Q?=
+ =?us-ascii?Q?2v34iALfjqxJnUApk4Ex98GgJiMp/bopgAuScHII5EmGXumcWxParaJrQnXl?=
+ =?us-ascii?Q?3/PUtF3BiyiM3ZV0IAZXf0zHxyTkdt0bY9V9drPnfIjrYs0wyifQG/zrZLek?=
+ =?us-ascii?Q?ucD00qzMXGJB2Jp3H1qXwpK58E4Qke1oFDTe+gfflU/brulNT0fVYGIzgfMS?=
+ =?us-ascii?Q?elZGDiQvWtAUItQVBtTRlXJ5onDCUf+ce1VDUZ83uZL+J4Xfgninxq3KQ8dV?=
+ =?us-ascii?Q?PAe8CW0QuEH5KEIjEclXqLOesT4jbDAG4UwqoRXNimVZlC/7byM05jisPDke?=
+ =?us-ascii?Q?5Ie6TLZhg3N1otzJgdhTEvVFyDOEArd4fP8SEVywiLJCEPrv8wEJDOHI/VLi?=
+ =?us-ascii?Q?pNOgmFOxGdR6+Uftj1U3+RjtgG01Po9+fJ8aLfTRpV2HjXBqki4uWpgqg1yG?=
+ =?us-ascii?Q?ZGokoc8+4JuQApmfU6cULwY6hMo5TnimRqsoaLQRcvn4PwOoffj5cAh5ppnG?=
+ =?us-ascii?Q?0PVQDucopHZflMLUKxkDDxDGfbraub8e7Bb6lBSf/CwWpYSAN/wpjwoTeUuu?=
+ =?us-ascii?Q?eq2aLdme/vZo5Wd2DN43ZEnSSBmf7adUlA7u3b1rzq7sB6IY/a4nbv5pwdvR?=
+ =?us-ascii?Q?flmtA/pmx5YAo9qjFWXzhpCvQA3Hn1Vphv1nsOdMstP6ACpsTVviVTqSKS/4?=
+ =?us-ascii?Q?cwScnthGCTqM6Yv3L+aYb0ZzB+NPGNU+L9JkFNX1eq0adYtbN1wm5+YfeKvG?=
+ =?us-ascii?Q?xOjJcZ/jsmpRfF+h7POnBisS2d2rhDxu2gL4rN3rjx8Mjlvl8v+6TDezvT4k?=
+ =?us-ascii?Q?z554L/oNuo+RakCnsEskz00ZWncNHMiGZbtzPAgsuKe8r6WjmzT3+kfr9YLi?=
+ =?us-ascii?Q?YVYq2qbtFTO9+mICyean6DqsmLoC10OEfj/Z7TKDDwAjjt4v?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9cce2bf-a0f0-4d70-f69b-08df450b9c1d
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 00:33:47.7712
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G2V7TzW1eAY4LJfWgRcR+HAyw8lpQotuko3iRY9NqodmJ7ihOAyBnJdrQLqKrHEg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6066
 
-On Wed, Nov 11, 2026 at 1:07=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Tue, Nov 10, 2026 at 11:40:46AM +1000, Alistair wrote:
-> > On 10/11/26 04:53, Jason Gunthorpe wrote:
-> > > On Mon, Nov 09, 2026 at 10:37:14AM -0700, Dave Jiang wrote:
-> > >
-> > > > One thing on TDX is that TDH.SPDM.CONNECT also runs a
-> > > > GET_MEASUREMENTS of its own during the connect, and the kernel
-> > > > doesn't choose its nonce. The kernel wouldn't hand that one to
-> > > > userspace. Measurements only come out through the two flows, with a
-> > > > user nonce.
-> > >
-> > > Why? Seems like another wasted operation..
-> > >
-> > > > That works for TDX. tdx-host's relay is one function today. It take=
-s
-> > > > the module's request from a page shared with the module and calls
-> > > > pci_tsm_doe_transfer(), so att_spdm_doe_exchange() drops in there.
-> > >
-> > > Yeah, it looks like it works for everyone.
+On Wed, Nov 18, 2026 at 09:12:59AM +1000, Alistair Francis wrote:
+
+> > Heh, well I don't know Rust so I'm useless. I also have no Rust
+> > knowers to recruit to such a project right now.
 > >
-> > Jason just pointed out this thread, I've tried to pickup what the discu=
-ssion
-> > is currently up to, hopefully I've understood it all.
-> >
-> > It sounds like the current thinking is the TSM will issue all of the SP=
-DM
-> > requests and be in control of the session. The kernel will forward thos=
-e
-> > requests to the device and Rust SPDM in the kernel will be used to deco=
-de
-> > the responses.
->
-> 'capture' is the word I want to use here. We actually don't want to
-> decode them. The goal is to get the message transcript and share it to
-> user-space in a 100% consistent format derived from the spec.
->
-> If DOE had a more sane protocol this would be trivial, just unwrapping
-> the DOE transport and recovering the exact SPDM messages then storing
-> them away.
->
-> We don't actually want to decode them in the kernel. The padding issue
-> means we need to decode them enough as part of sizing them :(
+> > The best I can do is make a draft with AI reusing parts of your series
+> > that shows exactly what I'm thinking and we can talk about how to go
+> > from there.
+> 
+> I think I understand the big picture. The hard part is splitting it
+> all out of the current approach, in a way that doesn't just make
+> everything complex and messy or reduce the security of the CMA
+> approach.
 
-Yeah, for some of the more complex responses that more or less
-requires decoding the entire message to determine the length.
+A lot depends on what the architectures decide to do when they
+implement 1.3. If they do TSM directed capture like ARM then none of
+this is needed.
 
-Is the kernel interested in detecting errors in this case? What
-happens if a malformed response is received. Should the kernel raise
-an error, or just ignore it and let the TSM deal with it?
+Otherwise we probably need something..
 
->
-> > The TSM will be in charge of slot selection, bank selection and algorit=
-hm
-> > support.
->
-> kernel will do slot selection, but TSM will drive the slot numbers in
-> the commands. Yes on algorithms/etc.
->
-> > The current Rust SPM implementation has split out the message processin=
-g, so
-> > that should be somewhat easy to reuse. Basically (in Rust) you pass in =
-the
-> > bytes of an SPDM response, specify what the reply is (CHALLENGE_RSP) an=
-d you
-> > get a nice destructed struct back (or an error if it's invalid). It's a=
-ll
-> > called the Validator as it validates Untrusted data and returns an SPDM
-> > response.
->
-> This isn't quite the right thing, we want a module that undoes the
-> transport chunking, padding, and GET_CERTIFICATE chunking to store
-> pristine raw messages. We don't want to validate or decode them,
-> beyond what is necessary to undo the padding.
->
-> The goal is to pass pristine message bytes to userspace as the
-> transcript report.
->
-> Your series should have most of this, but I am guessing in not quite
-> the right arrangement.
+Unfortunately I don't think we will know for a while.
 
-Yeah, I do all of that, but not in a way that will be useful for you.
+Minimally we need to be able to split a concatenated VCA back to 6
+messages to create a transcript style uAPI. That at least eliminates
+all the chunking, framing, and error handling.
 
-I guess the question is, should that be re-worked to be more useful
-for you, or should you just use the 1000-2000 line custom C code your
-LLM talked about?
+I've been mulling that might be the best place to start, maybe we can
+replace that module with a rust version as part of your rust effort.
 
->
-> > > But it brings forward "rust spdm" or something in a new form as a
-> > > pre-condition to do the TSMs. Which is annoying for sure.
-> >
-> > The Rust SPDM code is hopefully really close! I'm planning on sending v=
-6
-> > today or tomorrow.
->
-> No TSM drivers will go ahead until all of this and the uAPI is fully
-> agreed..
->
-> Plus now there is this issue if we need to reorganize things to
-> support this capture flow.
->
-> > > The optional chunking features are a bit tricky, but I don't think a
-> > > 1.2 only implementation needs them. They seem necesary for future
-> > > post-quantum.
-> >
-> > Maybe for PQC, but generally this doesn't seem to come up much with DOE=
-. So
-> > for now it should be fine.
->
-> I gathered the PQC issue is the signatures can get really big and the
-> biggest DOE chunk may not be sufficient anymore depending on
-> implementation.
-
-Yeah, mostly. It's also different requests/responses, nothing too
-difficult, but it's not automatic.
-
->
-> > > This also formalizes the version locking: the TSM FW cannot use a SPD=
-M
-> > > version that the kernel does not understand. I think this was already
-> > > basically true, trying to do the 1.3 multi-slot flow is not going to
-> > > work out with out kernel support to move the additional data. Maybe
-> > > nobody noticed, but with this scheme it would be really formal.
-> >
-> > The kernel patches support 1.0 - 1.4, so that should be fine.
->
-> Not support as in "I can be an initiator and do a limited subset"
->
-> Support as in "I can be an observer and accept *everything* in the
-> spec the actual initiator might use"
-
-Urgh... That's a bigger step again. Probably not too hard to support
-just to calculate a length though, as you don't need the actual
-functionality.
-
->
-> For now all we need is a fairly complete 1.2 since that is the minimum
-> rev for PCIe (by spec) and the only thing any TSM FW has implemented.
->
-> > > But, I am strongly tempted to make a draft placeholder in C with AI a=
-s
-> > > a way to get alignment and try it out. Something we can throw out if =
-a
-> > > Rust version comes along.
-> >
-> > I would argue that you would be better spending that effort on making
-> > changes to the Rust code and re-use that. That at least would make sure=
- it
-> > can be adjusted to do what you want and would be more useful :)
->
-> Heh, well I don't know Rust so I'm useless. I also have no Rust
-> knowers to recruit to such a project right now.
->
-> The best I can do is make a draft with AI reusing parts of your series
-> that shows exactly what I'm thinking and we can talk about how to go
-> from there.
-
-I think I understand the big picture. The hard part is splitting it
-all out of the current approach, in a way that doesn't just make
-everything complex and messy or reduce the security of the CMA
-approach.
-
->
-> I fear it will not be very good rust though. I fear this will be a
-> huge delay :)
->
-> This direction would end up with two series, a core bit doing the
-> message capture and a secondary one doing the in-kernel
-> initiator. Maybe we don't need any new rust bindings just for
-> capture..
-
-There shouldn't be new Rust bindings, it should mostly just be a
-refactor and then supporting all of the optional flags.
-
->
-> But sure it is just AI $$ we can have a try.
-
-Ha, I'm sure you guys have lots of those :)
-
-Alistair
-
->
-> Jason
+Jason
