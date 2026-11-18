@@ -1,100 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795013741;
-	b=zt9nzSv43AFwjwPLnl/C6dpeqrJYZtQnEP6ivZjykuYQJiTNQesPyd6Xrv6ByAvIeO9P
-	 aEHbHOZUITSm68RpxTE94MBWUgPvh0WQDZeax0cH0ByJp+p1KCw1VbL/MLT8ISbZjTITS
-	 XcssrXChYMg9jprKA0px9izU3XrKFWn8HnlmMe+RjwJ3AIczOACqXHvx6L2EyApc7X1Ji
-	 vpMbdmtzW0ZoHppVz1TCEFPZ3mRnUzue8kq5Drg12RvAWFaktUpk4t7sMv1q45AYl2Ptp
-	 reGmymDM9f6pxsehFUAqAU8SMuLnIv3ajFY914LofP4Dr2v/7RGHNQWsEY7eLQCmaGQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795013741;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-	b=SEV3x4sY7ABotXuPSU1JCWSrUHVJv275f16/FviIwwFQZb7IShI7tVfwisr0pPcpxbcu
-	 4D9CwulmoMbl/0EdBrYOxiR4cJFCJ1GWMfFymJa4j+6H1ynIqogu/TFJWWbmBGFR1BocK
-	 YpbmBFYTlaNNyIv7r73k8CUMCtnUkoFhcgZKL4LcXsOyv2dKo3cJ2rHh59qu1jvAal70f
-	 SVtFfOzsenYsgglu6p2qhZXtOPRxLYsfLWCAX4v1B5VXCR1koeFlcs++t31ZVbOq5O0bV
-	 vWOzTG/HXDYxnmohgeOGISReVkqkAlCJrwbeUaDImAlTT8XH7DahpPDYRjPtutEbVsw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=flashbots.net;
-	spf=pass smtp.mailfrom=flashbots.net;
-	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b="L5/y9n7I";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.43
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27734606A335
-	for <linux-coco@lists.linux.dev>; Wed, 18 Nov 2026 14:55:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27734606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795015123;
+	b=k+9DBFcz4EtpDa3k+AOifDO/sigF7q1sX0n23LO92AIFf75MX0btBshNZLhlfZU4esB6
+	 u7mZE8HKQYkO+hPob8/i7lbJsNIN3dbT6PVUdNMWnMZAFdUvwGhE6ritkGf0RZrr/i/+v
+	 VBGCRL0/VZbmYXY//Ofgui2deBCvLvs9b4XaFQu6t5FfAh9wiR6qSdiTszFSVKn14egbA
+	 eVvzbwMcWDg/1u3OYfvm/1qc7AeJ4BFfDkx3bCM0hD4AuLIUUHgfxU9pZw0CZOoX9umHW
+	 nEnN0v0R6OGj3UBqOzrtEaLyLhMkP9F//nOiwF+X5V4ZjCLsCw6XmsNrKR4m+DFNOlQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795015123;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Content-Type:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To;
+	bh=y2Daclv3pL9H+Z77v1N/YFpOGh7HbXy37WIqhvkcADA=;
+	b=SfuT01LE4tx72wzOzFLcmT1P5h5UGR+hUWidmeB1Ngk+RlTv6lxV0w4KZ/TItlQfkuwg
+	 A+6KQOD/7qDNttuwIHItLwX1dBijRHYkmNj72PDpTZI8My/qSZLgEaC6Hvl20tuWtUc99
+	 ++KRK+wfTyWIw7FPsnfK9Hs2mAJb4pLEqCSVNP0S9PeO0lkqEOrfaqbQTVwx1V+Og9fsY
+	 mpP96k49iPBGE+XwnjGgNUP5UVnZ9y1nTTA6G0CQMpFtJ9lJ2xNKtsFd9eVGaB0+tWJ7I
+	 fLxnRKphHOmIyqWBY7LIpuJpQxydJHZjAp1biroE+tRooeeh/b+WqGiuu58OaHv8auQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="a/CjEp/l";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3CC60A2603;
+	Wed, 18 Nov 2026 15:18:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C3CC60A2603
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=L5/y9n7I
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-8470d7d430fso564232a34.3
-        for <linux-coco@lists.linux.dev>; Wed, 18 Nov 2026 06:55:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795013740; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iXtGMlMLPcjLumK0whFEDdu3DVSms+ChisM8HuSFkoGC0tVNJks9vbmnx16qqoQyt2
-         2Q36gH4Ya3mPGQLQG8AxZJBSUwq5H7V6ZieGfwxNksdsypAbSFOQ3+QsV8pTz0kmzJx1
-         fMc9WdMira2jrTsri8ah7ZxS/jm9GNNuJmAvCzDTqoRAEppLWPYR7rYfiHs62ml9C6S3
-         HclYsG11vwY+0jzc8m3IZVB9sGRlw2eYI/MzFnphY7lhuUb5yJPCkmT9mbRshQHoSI1R
-         dKgPfZqWIJIyjxkGSO4cV/p5BIfF9T321wFPvN9Sr3zXoIpJizAAWMBwHvz9qA3ziVhM
-         ZrkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-        fh=yFpd4tLzeDKNqe5xvCGfFfpBG9biZxmAc41/imsruDQ=;
-        b=j2LAdEJ7Q3VbQh0DHuC4YtHrgNbUIYgRkftrCPxlFfOhs/IhDF7AGtqbVMD5Lx5OWv
-         uempK/vstVggVPF19uk3KM7J+3qg9eAWp0ou6SxcTzgtn98d3Mz9SyMGuM6zhEx3uocn
-         7joCNZIADI+xgm7Ny1aiBzgcULTxlt0HDs7McX9C4hbdAfDRkiXLCKO5nnytyMZO1u2t
-         GBWu93DToKuZJ4C5ANbycQAWuYtjoSo2K9pK4Z10/psuPkbTffcapUQoaUloaE8db4VY
-         dHWKvBO37A3Wmp+z6EFLi16du22870AKf5xk1q0tU0BQFpvOMVOU8gFdR/zFjrdNyyns
-         xkbQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flashbots.net; s=google; t=1795013740; x=1795618540; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-        b=L5/y9n7ITAYsnVmQkg/zBJbX0gGzEVgTFqh2XGSjTbscXvEeLiKDhiy/JsFjlvj1Su
-         WM1RyWPobdBDAELY5P+2pInsr6dg7q2Cj1JQSt1CstIbu9o6S3nIQ9k4utGZbsaZNbzm
-         Jorz/dhj+mmOsEELSxNd56dYLTBAnwIEZqsUau1eXElRqXME2o8p7Ajdfm5A+EAKebqf
-         ghpEgVyblQ8nUB9+GQxAWNxAwJRCNbzXJbWqSZwmnsvSBizmQgDhFB/BzVcReePhRWKS
-         62FrhR1+kDvPgkLiGkNUKArlpoP4kNco7gCJWizHaIEuJ5Kg8LpJjaOj8J7I+rNdhp8A
-         s0uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795013740; x=1795618540;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-        b=pVuHtrcpZYi95/ARMDISaYztIyKcxviP4acb2v12e4nNx6hSJXZzWYPRsU9qhYbrPb
-         kXXEDxglp/NLFG2y4FDTyWa7nvlFHQqRh6jB1buPA3TM1TEFqttAQWA9bUezM3EPs3Wi
-         5GOhW0N/43YqPT/MJfKyvxCpwAEkwVwSDPKhBixmfHMGmAWfQFpS5/s5cXPSdqVyTVw4
-         wU3hbB2mfG6+o1kWtZR06x7nz8GDFye23T/XU0o8ysCcXEZz/iwgDIydvZJc4wbDDEcG
-         /cSwoLyaU5q+YEFUshzMqXUYa/X9A4qkVIByQAcnG0RjWS0osJl7smICK5acDgkAndvC
-         7n6A==
-X-Forwarded-Encrypted: i=1; AL+hErEc/C6O2HXpQYxaoo5CIb0+d43ojMtjgdsvVlv6gNmncqpb2b8A5JDofGE/V4byt1NTmi8t/NQtPPdV@lists.linux.dev
-X-Gm-Message-State: APuU4Z/gYDc2KmLoIyi4aqB26tnKD7ehCAbXNNPnmgx1wP1Tf2l/wVcT
-	6fAQ/UY7WO+jfm7JpyyBqP4io5HNonrIimjixQk+fRjEZc8NK/CqYrxl5ANlxoBd+4fHOKYu9AP
-	14okhLCn2bcfvk/ap06YL2GFHb03mAUb4MInk5bXYfg==
-X-Gm-Gg: AYBFou3zLOMIgMtlabzYYuXXHxPOYXtkuRR9nJM5dyoiHlV3xNldBxjNJt1yzXcY89b
-	AbnkF57LRyaEzk7/ZOv0ovrIHGkyLORg4vGGZTt6JQDbEcOfcwc4cdj1WO3Y40nO5T2MbXU6z56
-	n9AymQqru/GRdp81RCYpJQxd45Y4woRcq4c57HY4Wyo3TA68m51Q1hskbodRhwpXPGNxML43lSL
-	WCgvThQJn8pybtCsEFJ14UopHADcydVp11HZo6S7IbGbR/1BOOWW2BVC/VpsBGEab3kFy4TluQI
-	ieeSAa0pOUvb+PPNSAJgydlbHrJaZQNsbUZaRjwV2gX5KFUhfRJPcMK9lmAfQh3D/Wp559na+uF
-	Mw6xXCkMZPOHpdi5MApIOmo3uAYKdAoFzae4wxUbrCCcOZVEXnOUPMNN/WjhaCtM0V8e/9Wry30
-	77bIuwfsNjtXbzTQ15pUVt3ux9Y5RaaNz6uKqYIX5HR32QLdrwn8POGMCncksDxoITMhhjkYSk
-X-Received: by 2002:a05:6830:2b24:b0:844:4959:e856 with SMTP id
- 46e09a7af769-862f08f6d8fmr2997887a34.11.1795013739853; Wed, 18 Nov 2026
- 06:55:39 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=a/CjEp/l
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A28B21655;
+	Wed, 18 Nov 2026 07:18:39 -0800 (PST)
+Received: from [10.57.62.206] (unknown [10.57.62.206])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C9A9D3F632;
+	Wed, 18 Nov 2026 07:18:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795015122; bh=w8XDtw7u6zTGcD/Dwtz8Nec/j+mFGkTq9Cwd9QWx4y0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=a/CjEp/lWJU4QLjpelP/JTZv2ruOnbBbt+JLSbKpYAP4VCqrHHdtlgkcAWih3sdxj
+	 WYJKvmin5k2Qjivd13tyo7baEd5InyOwxPHvleh83xiTrhEYXBsYsilr0DlLJongQ1
+	 fQ7iiucy60FJx40w9DUaxvWafVfHMCNzI7k8LEzc=
+Content-Type: multipart/mixed; boundary="------------DUFNbHBbvPDY00EhsT6K87G7"
+Message-ID: <cc27e6a8-6bfa-4c82-92a7-33175baf6803@arm.com>
+Date: Wed, 18 Nov 2026 15:18:35 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -104,68 +54,117 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
- <3b582cdcfe37f1d01ee71611ab2611f845261089.camel@intel.com>
- <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com>
- <0f9ba1a6acb57a8c126739175b4e38dafac08c9d.camel@intel.com>
- <CAKV3HMMfx4APmardWdtL8yhirXMuuBQMZ8xrtowHNRnTKXNRiw@mail.gmail.com> <86f99f3010775eeff6269fd9bb8f4edac10a7d85.camel@intel.com>
-In-Reply-To: <86f99f3010775eeff6269fd9bb8f4edac10a7d85.camel@intel.com>
-From: Moe Mahhouk <moe@flashbots.net>
-Date: Wed, 18 Nov 2026 14:55:28 +0000
-X-Gm-Features: AclHuK-d2hbNILXughUCStMRcZnLFB956aXQFG2DezCp6dotXFDkjtwD-G3N_ds
-Message-ID: <CAKV3HMMjyHig6LTiCsXKLvgvsW+0GVitCc0ziBD9RNxH2TAuvA@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v3_0=2F2=5D_virt=3A_tdx=2Dguest=3A_Fi?=
-	=?UTF-8?Q?x_and_speed_up_the_wait_for_a_Quote?=
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "Miao, Jun" <jun.miao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "djbw@kernel.org" <djbw@kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/11] KVM: arm64: guest_memfd: Check mmap support when
+ preparing memslot
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-2-steven.price@arm.com>
+ <CA+EHjTy5xBmavNWSYPjqU9qXtssV3ZHzsUr1s_4bVOt1GnDLVg@mail.gmail.com>
+ <6bb490cd-ebbe-41d7-adf3-d6eaf0e53478@arm.com>
+ <b1ef7241-54b0-4a17-83b6-0008e722f2f6@arm.com>
+ <8a095a42-662a-416d-a5d7-79e10161201c@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <8a095a42-662a-416d-a5d7-79e10161201c@arm.com>
 
-On Wed, 2026-11-18 at 01:28 +0000, Edgecombe, Rick P wrote:
-> I'd think a simpler shortening of the time would be better than something more
-> advanced. But...
+This is a multi-part message in MIME format.
+--------------DUFNbHBbvPDY00EhsT6K87G7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-OK. In v4, patch 2 will replace the backoff with a fixed 10 ms sleep.
-Patch 1 stays as it is. It fixes the timeout check and is marked for
-stable, so it could also go in on its own.
+On 18/11/2026 12:04, Suzuki K Poulose wrote:
+> On 18/11/2026 11:14, Steven Price wrote:
+>> On 18/11/2026 10:34, Suzuki K Poulose wrote:
+>>> Hi Steven
+>>>
+>>> On 17/11/2026 14:05, Fuad Tabba wrote:
+>>>> Hi Steven,
+>>>>
+>>>> On Mon, 16 Nov 2026 16:43:47 +0000, Steven Price
+>>>> <steven.price@arm.com> wrote:
+>>>>> Check the guest_memfd backing file when deciding whether an arm64
+>>>>> memslot has mappable memory rather than checking whether the slot is
+>>>>> gmem only. A public helper function is added to be able to reuse the
+>>>>> static kvm_gmem_supports_mmap() function.
+>>>>
+>>>> nit: could the message say why this is needed? It's a no-op until
+>>>> patch 8 defines kvm_arch_has_private_mem(), which makes every
+>>>> guest_memfd slot gmem-only.
+>>>
+>>> I still don't understand why this is needed. For arm64 we have always
+>>> prevented guest_memfd without MMAP, in kvm_arch_prepare_memory_region().
+>>
+>> Fuad is correct, this isn't really needed until patch 8. Patch 8 defines
+>> kvm_arch_has_private_mem() - that means that gmem_in_place_conversion
+>> becomes true (see include/linux/kvm_host.h). That in turn means that
+> 
+>> every guest_memfd slot is KVM_MEMSLOT_GMEM_ONLY including slots backed
+>> by a file without mmap support.
+> 
+> But we dont support slots without MMAP anyways even without this series.
+>  So, does it really matter for arm64 ?
 
-> Shouldn't attested TLS just be used to set up some other key such that
-> subsequent connections can be as fast as normal TLS? 0.1s is still kind of slow.
+So ChatGPT produced the attached test. It creates a non-mappable gmem
+and tries to add it to a normal (non-realm/non-pkvm) VM. With v7.4-rc1
+it is rejected. However without this patch it succeeds.
 
-The 0.1 s was the total for ten clients connecting at once. Each Quote
-took about 8 ms with v3 of patch 2 (median of 120 back-to-back Quotes at
-HZ=250), and quote_lock runs them one after the other.
+The issue is that gmem_in_place_conversion changes the behaviour for
+normal VMs.
 
-Our HTTP proxy already does part of this. A client keeps its attested
-connection open and sends all its requests over it, so it needs one
-Quote per connection, not per request. What is left is the first
-connection of each client. Many clients can arrive at once, for example
-after the TD restarts. Today the last of N clients waits about N
-seconds.
+Thanks,
+Steve
 
-We don't trust a key from an earlier attestation for new connections.
-If a later connection relied only on such a key, a leaked key would be
-enough to pass as the TD without any Quote. The recent relay attacks on
-attested TLS used this kind of gap. In CVE-2026-108269 (CVSS 9.1) the
-Quote was bound to the TLS key and a client nonce but not to the
-session, so an attacker with the TLS private key could relay a genuine
-Quote onto its own connection. Binding each Quote to keying material
-exported from that session closes this. The exported value is unique to
-each handshake, so it also serves as the nonce.
 
-> In the end I think quote based attested TLS is not normally expected to be fast.
-> So is this trying to optimize the wrong thing?
+--------------DUFNbHBbvPDY00EhsT6K87G7
+Content-Type: text/x-csrc; charset=UTF-8; name="guest_memfd_nommap_repro.c"
+Content-Disposition: attachment; filename="guest_memfd_nommap_repro.c"
+Content-Transfer-Encoding: base64
 
-It does not need to be as fast as plain TLS. But the second is not the
-cost of attestation. With a local QGS the Quote is ready a few
-milliseconds after the request, but the driver does not check again for
-a full second. Any user of configfs-tsm on TDX pays that, whatever runs
-on top. The patch shortens that wait. It does not try to make the Quote
-itself faster.
+Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seQovKgogKiBSZXByb2R1
+Y2UgdGhlIG5vbi1SZWFsbSBndWVzdF9tZW1mZCBtZW1zbG90IHJlZ3Jlc3Npb24uCiAqIEJ1
+aWxkIGZyb20gdGhlIGtlcm5lbCByb290IHdpdGg6CiAqIGNjIC1XYWxsIC1XZXh0cmEgLU8y
+IC1JdG9vbHMvaW5jbHVkZSAtSXRvb2xzL2luY2x1ZGUvdWFwaSBcCiAqICAgIHRvb2xzL3Rl
+c3Rpbmcvc2VsZnRlc3RzL2t2bS9hcm02NC9ndWVzdF9tZW1mZF9ub21tYXBfcmVwcm8uYyAt
+byAvdG1wL2dtZW0tcmVwcm8KICovCiNpbmNsdWRlIDxlcnJuby5oPgojaW5jbHVkZSA8ZmNu
+dGwuaD4KI2luY2x1ZGUgPGxpbnV4L2t2bS5oPgojaW5jbHVkZSA8c3RkaW50Lmg+CiNpbmNs
+dWRlIDxzdGRpby5oPgojaW5jbHVkZSA8c3lzL2lvY3RsLmg+CiNpbmNsdWRlIDxzeXMvbW1h
+bi5oPgojaW5jbHVkZSA8dW5pc3RkLmg+CgppbnQgbWFpbih2b2lkKQp7Cglsb25nIHNpemUg
+PSBzeXNjb25mKF9TQ19QQUdFU0laRSk7CglzdHJ1Y3Qga3ZtX2NyZWF0ZV9ndWVzdF9tZW1m
+ZCBnbWVtID0geyAuc2l6ZSA9IHNpemUgfTsKCXN0cnVjdCBrdm1fdXNlcnNwYWNlX21lbW9y
+eV9yZWdpb24yIHJlZ2lvbiA9IHsKCQkuZmxhZ3MgPSBLVk1fTUVNX0dVRVNUX01FTUZELAoJ
+CS5tZW1vcnlfc2l6ZSA9IHNpemUsCgl9OwoJaW50IGt2bSwgdm0sIGZkLCByZXQsIGVycm9y
+OwoJdm9pZCAqaHZhOwoKCWlmIChzaXplIDw9IDApCgkJcmV0dXJuIDE7Cglrdm0gPSBvcGVu
+KCIvZGV2L2t2bSIsIE9fUkRXUiB8IE9fQ0xPRVhFQyk7CglpZiAoa3ZtIDwgMCkgewoJCXBl
+cnJvcigib3BlbiAvZGV2L2t2bSIpOwoJCXJldHVybiAxOwoJfQoJdm0gPSBpb2N0bChrdm0s
+IEtWTV9DUkVBVEVfVk0sIDApOwoJaWYgKHZtIDwgMCkgewoJCXBlcnJvcigiS1ZNX0NSRUFU
+RV9WTSIpOwoJCXJldHVybiAxOwoJfQoJZmQgPSBpb2N0bCh2bSwgS1ZNX0NSRUFURV9HVUVT
+VF9NRU1GRCwgJmdtZW0pOwoJaWYgKGZkIDwgMCkgewoJCXBlcnJvcigiS1ZNX0NSRUFURV9H
+VUVTVF9NRU1GRCIpOwoJCXJldHVybiAxOwoJfQoJaHZhID0gbW1hcChOVUxMLCBzaXplLCBQ
+Uk9UX1JFQUQgfCBQUk9UX1dSSVRFLAoJCSAgIE1BUF9QUklWQVRFIHwgTUFQX0FOT05ZTU9V
+UywgLTEsIDApOwoJaWYgKGh2YSA9PSBNQVBfRkFJTEVEKSB7CgkJcGVycm9yKCJtbWFwIik7
+CgkJcmV0dXJuIDE7Cgl9CglyZWdpb24udXNlcnNwYWNlX2FkZHIgPSAodWludHB0cl90KWh2
+YTsKCXJlZ2lvbi5ndWVzdF9tZW1mZCA9IGZkOwoJcmV0ID0gaW9jdGwodm0sIEtWTV9TRVRf
+VVNFUl9NRU1PUllfUkVHSU9OMiwgJnJlZ2lvbik7CgllcnJvciA9IGVycm5vOwoJaWYgKHJl
+dCA9PSAtMSAmJiBlcnJvciA9PSBFSU5WQUwpIHsKCQlwdXRzKCJQQVNTOiBub24tbWFwcGFi
+bGUgZ3Vlc3RfbWVtZmQgbWVtc2xvdCByZWplY3RlZCIpOwoJCXJldHVybiAwOwoJfQoJZnBy
+aW50ZihzdGRlcnIsICJGQUlMOiBLVk1fU0VUX1VTRVJfTUVNT1JZX1JFR0lPTjIgcmV0dXJu
+ZWQgJWQgKGVycm5vICVkKVxuIiwKCQlyZXQsIHJldCA8IDAgPyBlcnJvciA6IDApOwoJcmV0
+dXJuIDE7Cn0K
 
-If that works for you, I will send v4 with the fixed interval.
+--------------DUFNbHBbvPDY00EhsT6K87G7--
