@@ -1,68 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795072747;
-	b=O4JXq1ZpETIuQ7yjrcM9rgKmDwH16WXu9q3HM2fB44se1hSeRh4pK1qUY/zeB8oFi9Wj
-	 zh/K3OtcwXA/awRVwrh7cszbJ0WwFUoJjtMVQ4jgaqLZkUyvIG88CC9Em/oBHdmT1v51w
-	 8GpoQ+Uo3/XF7wFIwBBPI2bu/gSb6wJcG+ePgyS+qTtaEAWr9j5B1UzuMDCw0aqdhTnyy
-	 FGAHL/rCe8Ci0yLeRDNpK91mGgv3wPJlQzD7G5GYdFqw+uluMetSIDavtYgRve6iuEziM
-	 T3OwxWtL0oAKpqE3tOYWNGKDPcgDUEPbros1FjIHyrUL0z8s1kH/XX0OxtLCpSY3qAg==
+	t=1795074489;
+	b=YJ8zYEjjl29gg4vuE1lB0Y9lieqICDfRAdYm6YodFnITTBpcJgIUXxvv/FFIQKEiSLqV
+	 J3bbUYNICkDmvTSMYn8mInywrVPFjlxlQeuJCFFi2Oz4R3jsKYxRcPVbI3NWmDnqu9Ue3
+	 0NWfP90HERbyZITUtuR318+LXKQTPlZKV/hHnQT6TOVS90hVTEE/j5/G8VY3GouhBMda1
+	 4Hq+TjRyVFzZhIkrEUEoVeaZqDccsJULGaDx0WwXu8wPtH1mwyQbOfaPEqrpOncsW+65K
+	 jDfqFUl8SnAkquNZB5lAv5q0sSlgpNbRR7hHLinQAQM8/QuNHTrvHD1Fy+s9ohK1bwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795072747;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795074489;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=E7h8y9q5NeM+rdkgTl7ssLz1V6qUb/C0JHpQHZ+0bxs=;
-	b=DGZXMj4Ra8Xt0Xm10+0GRfVoHfnVl56iLwjQnkbR/Xmel4ITwtfwcs3IN5WddQHnSkpY
-	 u5pZXIE0ICYW/epHjdwIyuYw+OPqS6xucy7FnA4sVax6VmvYzD1eTaIpY+JZJ+XxCdoao
-	 3l3Z96QYFVx007hBpAhig4P/c0eXjg8keH7V5K4aOLaKvK1uKJY2j+UkZGosnHWwdgXCx
-	 6tgym2IBjgZJkLs09f1nfv2hipQlwXAKhCUF5CLMI+kPGmaWBHsbOo5/0Hr34PEJ8RKmr
-	 fDczVSo9JKhKuk2zObbJgk7qvGyvThxxEg2yxSpeyWrccFuIneBQ1UzMsWESb6HoY2w==
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=jNLo4L7xsjJ6BaPKCERE0sOyuC8NZ5ENucaGBkqUkXI=;
+	b=JrgnHF+/0jxCYlD9Xz7mBN6N4mrydZ3vBVHmiDUE7aLTj6g9sUrn5OfkiH4mIRZcOHtI
+	 k2w0fNUbO0XuYk2/myTU1re4Cs3UBSTD+FyEv7fnDczppzefXec3craLxaXVogAv0Hx04
+	 6twIDxox1Z2DzcD14+0EevfKVEbyld7I0nDPDjGPMJXMs29ShE067yihvOw48lOqPwOsz
+	 /JIplGnn6tbAZswdRpp2uX52YjExbwoHdP91pbM7rZEs2//8i/oVNL4SBxLozsH7/Tk+v
+	 wt2tMKh4M2MJBiKd/vl5Hv8sWHKSK/eRQYwyKJaTKwpiAXimuY8qfhNYwz5Acvf2Ocw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PZ0zE6AQ;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=chsLigjU;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2270A606A332;
-	Thu, 19 Nov 2026 07:19:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2270A606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3518D60A2609
+	for <linux-coco@lists.linux.dev>; Thu, 19 Nov 2026 07:48:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3518D60A2609
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PZ0zE6AQ
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=chsLigjU
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795072747; x=1826608747;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3DN1/OgZfO6kqe/noeYjCjobh7lUNxQjvfpeYc0fl00=;
-  b=PZ0zE6AQUr7rSBE2UfbYoC68H7paaWqJGSO4qi3nTvPeqaeU6XyM+kIC
-   p0J6V40KWpUqUxhiCdFSM2Eg5KSBJ4658BjdpmA3ZIKPrLbpPOqUF80+W
-   /yHCVzC04/Sl9hh8cERH83ie2B/z7hiDAZp/bvI450e/4wMpoOwrgyKp4
-   3rVCbFZltMLEpJQuntX61CRgbeI47TPV5IASkVhbGL8QkDwBOaG/cZjzs
-   B3JFvK3kdVfvlmXgCBKikOdJcg/yANTVjcgVsxLQVdsiuK2WSsiyzNYyW
-   umkF+IWWjvvdGY4DiySzUQmuP23hA+4JynRwC9jnujTTR7II84HgeFeMw
-   w==;
-X-CSE-ConnectionGUID: yWvX0ogcQQCjG13AHpQtHw==
-X-CSE-MsgGUID: n5k71yhvQ6O5Soj5VkRm7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3991644"
+  t=1795074488; x=1826610488;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5mzlYW7kCVt5GKMszZ38TxYa88CDIkHfueswCEeBz4k=;
+  b=chsLigjUCOFDl6u+ZEKgAgs7qM3sWf9wnZE6DXabII+VhhMpis6c5Q8G
+   hdBu8hItVI8BJvc4uqyQ+ni7HrN1Xdjae3jCbjaOnmQAxLL8Yinued2HB
+   u18iM0aF73pIoui0+2fci02FEiJ4wbvWw94HYFi2/UTud5Z2Xi2kw1HOX
+   UizzYqhpSPUQXjOYeBrraAO1fRufaukSMjU/ZU0tX4ppyuKQo60FFNPec
+   EnqWouiWL6fQ1yLe48gzCTQbxt1lzKV5i2RhlHeMahSh+pVYRo6unRCJ7
+   BxZ04/OUAkkKIxURAHG2HHjFq2Xr7VKJ7lRzJ5Z6SWhO+0I8Y9a3zqleH
+   g==;
+X-CSE-ConnectionGUID: +3qkZKVQRzOurakGgXwfqg==
+X-CSE-MsgGUID: ScXW3cd6QxC0CiIhznH6vQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3941738"
 X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3991644"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:19:06 -0800
-X-CSE-ConnectionGUID: iHQUrNNQQoW2AgElOEgTwA==
-X-CSE-MsgGUID: 4Ehj8R4lSQCZoiG7usmh1g==
+   d="scan'208";a="3941738"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:48:07 -0800
+X-CSE-ConnectionGUID: n676emqiR2ybYnwZzM5Img==
+X-CSE-MsgGUID: Js67GAVuRQqcRFLs4HeVfg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="10453034"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:18:56 -0800
-Message-ID: <a594edd6-6184-4381-9b48-004c18efa56f@linux.intel.com>
-Date: Thu, 19 Nov 2026 15:18:54 +0800
+   d="scan'208";a="10725806"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:48:07 -0800
+From: Chao Gao <chao.gao@intel.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: yilun.xu@intel.com,
+	arjan.van.de.ven@intel.com,
+	binbin.wu@linux.intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v3 0/2] TDX: P-SEAMLDR: Support large TDX modules and sigstructs 
+Date: Wed, 18 Nov 2026 23:49:20 -0800
+Message-ID: <20261119074925.3933804-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,52 +89,96 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
- Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
- Samuel Ortiz <sameo@rivosinc.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Steven Price <steven.price@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 01/13] virt: coco: tsm: Require PCI operations when
- registering a TSM
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-2-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261116081935.85372-2-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
-> Reject a NULL pci_ops argument in tsm_register(). Every registered TSM
-> then has PCI operations, so registration no longer needs separate paths
-> for TSMs without them.
-> 
-> Cc: Alexey Kardashevskiy<aik@amd.com>
-> Cc: Jason Gunthorpe<jgg@ziepe.ca>
-> Cc: Lukas Wunner<lukas@wunner.de>
-> Cc:linux-coco@lists.linux.dev
-> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
-> ---
->   drivers/virt/coco/tsm-core.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+This series lets TDX module updates handle large TDX modules and
+sigstructs. I dropped the RFC tag because there are no open design
+questions.
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Dave, feel free to ignore this series for now. TDX developers, please
+take a look. I would like to collect Reviewed-by tags on this version.
+
+== Changes ==
+Changes since RFC v2:
+
+There is no functional change. Apart from comments, the code differs
+from v2 only in how the maximum module page count is derived.
+
+- Compute the size of module_pages_pa_list[] from the size of 'struct
+  seamldr_params' and explain the math. [Rick/Yilun]
+- Call out that a 496-page module now requires chaining support. [Binbin]
+- Drop the exact entry counts (496/495) from the ABI description. [Yilun]
+- Note in a comment that sigstruct_pages_pa_list[] is never chained. [Yilun]
+- Comment the PAGE_ALIGNED() check in populate_pa_list(). [Rick]
+- Explain why the sigstruct list is already filled in a loop. [Rick]
+- Drop the AI usage note from changelogs. [Dave]
+- Rework changelogs to be easier to follow.
+
+v2: https://lore.kernel.org/all/20261106132159.1551365-1-chao.gao@intel.com/
+v1: https://lore.kernel.org/kvm/20261030085304.3886520-1-chao.gao@intel.com/
+
+===
+
+This series is a follow-up to the TDX module update series. As thanks
+for merging that series, we agreed to take on the TDX metadata cleanup [1].
+With the cleanup converging, we are starting on this work and expect it
+to be merged after the cleanup.
+
+Today a TDX module binary can be at most 496 pages and its sigstruct at
+most one page. Both limits come from the P-SEAMLDR ABI.
+
+TDX modules are outgrowing them. A post-quantum signature algorithm
+pushes the sigstruct past 4KB, and new module features push the binary
+past 496 pages. The P-SEAMLDR ABI was extended for both.
+
+The kernel rejects any image over these limits. TDX modules for Diamond
+Rapids exceed them, so without this series, TDX module updates fail on
+Diamond Rapids. This series is all that is needed to make them work.
+
+The image format that userspace uploads ('struct tdx_image') is generic
+enough and needs no change.
+
+== AI Usage ==
+
+AI was used under supervision to review code and refine commit messages.
+
+== Testing ==
+
+Tested on a Diamond Rapids system. Updates with a module larger than 2MB
+and an 8KB sigstruct work, which exercises both the chained page list
+and version 1 of 'struct seamldr_params'. TDs keep running across
+updates.
+
+== P-SEAMLDR ABI changes ==
+
+The public P-SEAMLDR specification will be updated to document these
+ABI extensions. Until then, here are the changes to
+'struct seamldr_params' that this series relies on:
+
+- VERSION (offset 0) may now be 1. Version 1 support is enumerated by
+bit 8 of SEAMLDR_FEATURES0.
+
+- SIGSTRUCT_PA_1..3 (offsets 16, 24 and 32) are new. In version 1, they
+hold the addresses of the second to fourth sigstruct pages, or 0 if
+the sigstruct does not reach that page. In version 0, they must be 0.
+
+- RESERVED shrinks from 104 to 80 bytes and now starts at offset 40.
+
+- MOD_PAGES_PA_LIST (offset 128) can be chained. For a module over 495
+pages, its last entry points to a 4KB page holding up to 511 more
+addresses. Each such page uses its last entry to point to the next
+page, until all module pages are listed. Chaining support is enumerated
+by bit 11 of SEAMLDR_FEATURES0.
+
+Chao Gao (2):
+  x86/virt/seamldr: Support large TDX module binaries
+  x86/virt/seamldr: Support multiple sigstruct pages
+
+ arch/x86/virt/vmx/tdx/seamldr.c | 48 +++++++++++++++++++++++++++------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
+
+
+base-commit: 5b8212d45d99b77c84e3ad305a295e9e65d5ef20
+-- 
+2.52.0
+
