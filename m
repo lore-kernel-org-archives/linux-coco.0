@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.2
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.17
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795093104;
-	b=oKgFkpyL3Br36tbHps7kC/gtBvnV91D8nwO4+TkxMbBQXACKLxlElPJ5D6rTYu8weRP3
-	 Lrkza7YycMVz3w0KR7tACTfTC05QA0MQkkrvTF0n9qoC7pNzSUS9SJclLhRUbDe/6hqVC
-	 dceKuTmb2UqTZomv0c4dHE5SNvQG8bY2GJCFJP2xFtZnLpLmsKRPtzi62IadbljXig7fU
-	 HIgfWUyEClihPHXqDE+VsbRILCORxemmKQQec4+e8oe9CIeijp3Ewm3bdW+HmkX4v/F3S
-	 /pBxb+6GsY6tP6i+OnXWlWBhyxlA1y2dOtdbmzJ1DmlWA2Ag1LNw2aE6B9stgAqNVCw==
+	t=1795093126;
+	b=T2D7nKBzPUVeUqRmA01R3s/4zrQ6GPnOnlHwLjMql12moAaZE7qbC6tP7XHm+4jAwLEx
+	 nIsNjTX6K0p++8cOuzatZc26PlKmTWi9MGwpLo0m8Qjlr5hl0ApBgg3cORcwmKdS5WDxP
+	 R4z6n0mc6jprk1R3VV/PZ0INtrc8DMiQNan0W9d6SkMS9+rwbFhKIq9p5mgUfCyHqMJGD
+	 fQNQfCeDecZlSqwNbPlz3lFmkcQ8xMFJAZ1S7hbEP9txtcwdsbwr5UdxE5yZV6VQUO7L0
+	 zM+z1mweeNCx3Po/iJ9kkKLQFM31ZKoU1jV7fnNKHwrgxOc4hvqUSguGLBVjwXdPmeA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795093104;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795093126;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
@@ -26,53 +26,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=82Z0vpXPAcwhKcR7Dq10+eCGylrPVpV4Ttia0A+rNz0=;
-	b=jwoNhomNd8dPC4JiB94PtlecxTZY5xvUrJKOzpMt8hrGMujz/ywK95MYYXiJGpieXh9j
-	 C8NvDBA2MT7cyYEODQWMGGBTBOknHrcc1X8wN7AIkbW25PTZDVv9d+aN6cprK80ZfZozR
-	 VMWtV2q0BdjAIiU1S8mlPyiw+YVI1IdtE52pGzR25Fh1Glgpi2gwh4ZaKuuvbiESB2lXJ
-	 WXXS3ZvdIB8/TrA+/v+DFpFg1PfqffTacSgUVMVXC0tY1nTq/wkIrg+CXI4eRpAzOpSAz
-	 PUue493er0lK3h1Qm+CYXUHj0o4rl2Xxs+5/Fofag3uJv0AjA1wv0IbkKtUpPpCCszw==
+	bh=8p5GZmC1Fo71kI6crUzGctx91xTlnrxCvdCZ4FtrWbk=;
+	b=1ch4RAxtfDg1LxRnAnGlxDlOZtLCQgRTKKyOM4fnb3UGlSF0W5lcnYmyXwOIiUXJfDtP
+	 dGCT1kd2Ry8GooEuOUttGsZZzJ4elXY8LMva7gLawMEJF1H3k+pk30uHo6uWzNv12xykx
+	 PIAwrdZxJ2d6DEnMzRt8rPZu4PPYr++SF+WTn+697ycwt/NWEpa3xS2dmHArqdbl6m7RK
+	 Mdz6TvH4YnT8vmY7d3Aj5VPOjDGhyaL6iuhrCqpDpZsX/+l/j6gfzleFoRjmYZK+XosKG
+	 nbuca6m636qZ/M4YBUzD9ELPJfUSO6m8MJTxRKO4XcFfHQA4UNQLd5tzpWLu7yi7SCg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=USi0Ilz8;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.2
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012002.outbound.protection.outlook.com [52.101.53.2])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=tW0eUWoG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.17
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011017.outbound.protection.outlook.com [52.101.52.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083D1606A324
-	for <linux-coco@lists.linux.dev>; Thu, 19 Nov 2026 12:58:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 083D1606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43AE606A331
+	for <linux-coco@lists.linux.dev>; Thu, 19 Nov 2026 12:58:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C43AE606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=USi0Ilz8
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=tW0eUWoG
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JnAIL8YiF7um7FKPUPjmzldEIKkB6YyxRD4B9HdCFzMdNelsr9yoEDG1B77B0PMbk0KSPTF3ixzmXC401GjmwOkIbxgsPjQIN1YPsrYw9bqwwbbE0Lv+8iDWTtnRP+hY2NgVz5C2sJM9Aqj+kBFiAWwqYAxTJAl6VdRlQO/hXbFs/jGo293vsidkt5Ap8DANy+1H5Swi2fq2rHQevxSW4TXBBPkSHfwbwQPb9ZWWWwWINo3zH3Vqhfa5P4wgZFRN+tA9TydXRkW3doXJPQiOhrcsMnRX5HE/YrgUnee8hpZYYk0L+sZd9g718F0CCzP1wqOuDM+lr99NX7nMOpdcYA==
+ b=cqj/HM0t0v3oqF2SE7ThhjCR3iBoI2NKQw9FOABpqdNeqyrbmd2qa6C1sbQhbeYARdY1ijjO9XgmjVLfexaJnGJBTLNrM+JOC4rT4ifKYLzJWrfZ9SlAAtRoUVECuyr1Ui13+VfCK05No3Q+rSS3KCsxbSkbEwTrdox9Lcuu/p30qSeFz5TtKrCidtt7HsSmJULA7X9k6FEYRhjFm9AP8zJYz0GzxIu9VK7f1PEEZZZYzLEPA5wo54QvVK4XPAnJ0zqegD6TqC6QgE66WYCqXqOR28iSGh/L/xJGBdNKTNmljZjkMZ0jhwK4Y79J95NrCypJEMqNdRiiffHfyA9Txw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=82Z0vpXPAcwhKcR7Dq10+eCGylrPVpV4Ttia0A+rNz0=;
- b=jXuCRLNUe2GyjbP1zuhrAExcGOEdryRYYdxcMPsjMXmpQaPzOOO7L2/IPTIH10bZ5KtCWxvhFIrX4jypKp4ppj55h4RHYlN3cVyEYaVjAzRK+wKgeRWgS3pLLB7cgkv6hx+/YX88IeltDkuyp0+xx+Kfi4i2eOxbE5XjYEjjN2VcRAh+88BUvKB8j5VzkGLRh9PzBzDw0BWJqncSgyjWSbPMGm2obsafGYkKO+NgB7OCteR+XCwGgC63rrQjrw8aU0YbcJvv+UPdC7cd+jdhVxuULdMIA474SXkpdcV78KaZnwA9Q1Lj+n0rg7kek/KizZSgoT4mochsmqUdyLiSdA==
+ bh=8p5GZmC1Fo71kI6crUzGctx91xTlnrxCvdCZ4FtrWbk=;
+ b=JYFj07GHrT2+dEFrzJGUw4azLQqe8VB8dN5mfmrTTh1sOgh+MXcsF4G8b7GqpMwYg5/G63YHX4aleH4rJ9aWdAevYqgW1PVWVKEOsze3WaX1c9fx4xUzDanivsjf5kLIg3xEkQp91A4kmeVzqIeUjWZiEg/6F8ap94Po+ZZhqQOfTANdyistzbr3dDgDLQ79xTgsa6FBzJ2W+seHqumfj+QsR1+x/M0WZdgG4fmsHw39iiNOsWYFAIhsas7SsPFRgqFuOtDhPodOkzoTWPD8+OaB7F1AbYY3FS7/Qu6sP4f0W1KyIgnZcotmk/HJieOwx5vrixbIDF6GkUvfSV0+2Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=82Z0vpXPAcwhKcR7Dq10+eCGylrPVpV4Ttia0A+rNz0=;
- b=USi0Ilz8gs+OF6pwW/wtdTagI0eOXl0a6HPg6HrfrL4BjZKaRGfvQ4p3NAinaMRqC93Xi6yJeACLtQY2WupbDnYlupVnTPnUD2IXxw3sa40gEZDcIpTfLlDur6exCD8i8r9MAEG2Mzns0LsELJEy/F0F17W8duc+I5LWHuDMtzY=
-Received: from BN9PR03CA0148.namprd03.prod.outlook.com (2603:10b6:408:fe::33)
- by DS5PR12MB093474.namprd12.prod.outlook.com (2603:10b6:8:47e::24) with
+ bh=8p5GZmC1Fo71kI6crUzGctx91xTlnrxCvdCZ4FtrWbk=;
+ b=tW0eUWoGBLdHWBnPJqOjRNc6FK91FztsZWKAbcRh/oTqCZzDHEFupvVwPrXpwjZOR4XxWrR2XxV02i7aBayjc0PqUOxUbXFoDisuxPn1fFGv9PGvSYlaU9c5FSCqQnwmgW3GHeJyAo7KyE4CZege8jRAbuFpbYarvMS6d9Don0k=
+Received: from BN9PR03CA0213.namprd03.prod.outlook.com (2603:10b6:408:f8::8)
+ by DM6PR12MB4338.namprd12.prod.outlook.com (2603:10b6:5:2a2::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
- 2026 12:58:20 +0000
-Received: from BN3PEPF00022BC0.namprd04.prod.outlook.com
- (2603:10b6:408:fe:cafe::af) by BN9PR03CA0148.outlook.office365.com
- (2603:10b6:408:fe::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.14 via Frontend Transport; Thu,
- 19 Nov 2026 12:58:20 +0000
+ 2026 12:58:41 +0000
+Received: from BN3PEPF00022BBC.namprd04.prod.outlook.com
+ (2603:10b6:408:f8:cafe::ab) by BN9PR03CA0213.outlook.office365.com
+ (2603:10b6:408:f8::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Thu,
+ 19 Nov 2026 12:58:40 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -80,13 +80,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF00022BC0.mail.protection.outlook.com (10.167.248.123) with Microsoft
+ BN3PEPF00022BBC.mail.protection.outlook.com (10.167.248.118) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.5 via Frontend Transport; Thu, 19 Nov 2026 12:58:20 +0000
+ 15.21.639.5 via Frontend Transport; Thu, 19 Nov 2026 12:58:40 +0000
 Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 19 Nov
- 2026 06:58:12 -0600
+ 2026 06:58:33 -0600
 From: Alexey Kardashevskiy <aik@amd.com>
 To: <x86@kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>, "Ashish
@@ -100,10 +100,10 @@ CC: <linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>, "Ashish
 	Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng
 	<ackerleytng@google.com>, Sean Christopherson <seanjc@google.com>, Fuad Tabba
 	<tabba@google.com>, Xu Yilun <yilun.xu@linux.intel.com>, Alexey Kardashevskiy
-	<aik@amd.com>, <aik@ozlabs.ru>, Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH kernel 1/4] MAINTAINERS: Update TSM file coverage and repository
-Date: Thu, 19 Nov 2026 23:57:30 +1100
-Message-ID: <20261119125733.1860288-2-aik@amd.com>
+	<aik@amd.com>, <aik@ozlabs.ru>
+Subject: [PATCH kernel 2/4] crypto/ccp/tsm: Fix potential size mismatch in releasing SPDM buffers
+Date: Thu, 19 Nov 2026 23:57:31 +1100
+Message-ID: <20261119125733.1860288-3-aik@amd.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261119125733.1860288-1-aik@amd.com>
 References: <20261119125733.1860288-1-aik@amd.com>
@@ -122,73 +122,99 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC0:EE_|DS5PR12MB093474:EE_
-X-MS-Office365-Filtering-Correlation-Id: 01aaf1f1-c838-4585-9e23-08df463cc96b
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BBC:EE_|DM6PR12MB4338:EE_
+X-MS-Office365-Filtering-Correlation-Id: b355a9df-4341-4822-2fef-08df463cd585
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|36860700016|1800799024|82310400026|10067099003|11063799006|56012099006|261022105027099003|261028144727099003|261026140227099003|261021121427099003|261026121527099003|261102123227099003|261009223027099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700016|23010399003|82310400026|10067099003|11063799006|261021123027099003|261021121427099003|261102123227099003|261009223027099003|56012099006|261022105027099003|261026140227099003|261026121527099003|261028144727099003|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	BH7pkABMuPgcjTA5FOvcjcU+slmTpOU/vPhAsDNAqjzzuAvTsV0KeDMLtS5HQqBvLgZDn4FNaAR9jq+FD4xVHt5l9wd7YYFXKosfjg7jFQLtzhlySSLnwkbMBfHRq2UbiAVNVqpHRw3Jg32cxQV+iJedlNlEB8V8+VvboKWgJXlkQ29ZcBflWy2YL/7ByHLhUWL9AD73f9bOa7IC8tQz/sLmBSLv9lt31XjK6KGA/hg17+/uftS7K0K9hz2ErlrX8+12NEu1y3HhXqTBMJUjSBLYMfS3I+CzUUUnxe31oIYlnOqIDQvfknF+zF0M8NM5v5Lwzs8BAzQ1Sh2ny6F0+7zWouSkpNBk7K3llQTw5g5/BKuaLUphFWTTiXKIpJYYKqEH0F70xYz9ZpXbCpSHcmZTm0IpRyKs9xUGbe7XUIPMU4iin1/QTaCJDzCDKUsOAzfFulKraUD6tHGewwu2u0iyfRYhYly6cFQwXRfeeIonpe+uX1A7fVCfLuwYq8frx0lPdhWSDngMHtgiyPBwKF/+4V49WI3X+5KI9AMgAr6z1xL8AlF9qNpRTMDGr/E1OyRVEnbmZJOvSheLcsolqdBM1R65jSpckQTPAwnwHC0s2W65ppa8GznE5El1joUbcCiAtH0nwJcwiQFKtPpmRCXvNFk3eVMutPuTJ0BRY1VPxW7lTt5NjRAXiO+G+NBjYeJzIH1ttwD1y2D4zx/eEA==
+	owtLuUC7C+1i3J2Y/BA2jyKzkK6zjnjsIrn6EG11CG0BqRX3gKLlZyAw11zWLG5Swfp7/FW1LxDaxXBmB32D4ZJcqbYu7DoRv1vrVGUwSBhrKwyUaXgH60m42Bu9yMw/cvnPj/4nvinDGmN8gIR5irKOXnNEtfRp1CCeoqjMqoXkNpyARphcFg3lnkrQDDvT6dxqh1DcozkwXa+uQJ5ZxapA18B9f1GUKYspZycFI/CZw3gSJqnNYHabVTNNDv073j4rUaQa9u+8Kunvgf0CgnT4kPLiyU0AQs83+S+yMrfihJA3U0ZulMI/4EeY9JjV/vwsBNq1LUD0lHk4ZChEB4AZ4Dt3xxsJlPyMxSziHy41onqoo2W3uzKnSOfEvZJuyZXl8dQyKQh/bxEoV1Nu+poE4e0ffS6lw1VGYQsk12iIdwR4o/If5ms/lF53CHI610RNkB53lzk0ZkbHrQAj/qB4Whfqgj244xmHJ12UdDwKE+/hZdtfkQWUE8fl119TO99GvxL7+0gMMpKuSEkI3W9wJMRoZHIOdIydU9oB00xb6BwlP/T1ZWAieib1/SoegUUyDKIu7HG9WUMUKztyrFVn5NLSwtklGnM4zWVIEFwWPt5tYkRCB3LUCV9L8MQN+QyTv7NMrSC1jhqkGJJ65EvjNDpf9J39djLjktbt1prLY0w6evxGjyu5CR6vDyog0u6lz32BSmgciDwFMUGUAA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(36860700016)(1800799024)(82310400026)(10067099003)(11063799006)(56012099006)(261022105027099003)(261028144727099003)(261026140227099003)(261021121427099003)(261026121527099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700016)(23010399003)(82310400026)(10067099003)(11063799006)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(56012099006)(261022105027099003)(261026140227099003)(261026121527099003)(261028144727099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	LiUCNsuZ8a5wF8FrYi11vByJVPHy43B8iJOZOz1UgKd0SR3SOHNeU9Sx+ZJzFeIa1xduqLUCZrLiATB28q6QxjmSuBlOao326cOeLkH5pksE8oqsTK58ODhJOcZPPrUrpdgVncLkhdkzRzgvXebHCeQLqPbk9Yk977LNx6m0l0CZ25L7I3EObp/5OAMK8U6kLbQ2kJ1USpcffKoFxygv1O6GD1i/KeUCHVnM5xfTP9lLPNBCrWF/mAgACWpZpSps8d2wb3DtKVFvpDMg3hwWPdaUI9uVI4unHPxrOW2/m9h0fiBPTVfnNR1UAVzGXZErz5/sGz+lgPuAxDuoVYb/QXUYp+bE4xVC6Srmu6ZYK/kzwfi0kTRxNMLp3v4/1xKk/spWIXmW5C3250mxTMwl0yNTN0Be2j89MvVMPP4iFnXUDoNgN7TcaGyLR5mao4Cc
+	pl9kLUC/+ICUhNrIo/EZQB3I46RFgz50cfhrY9gJUziZ0DJhsKwhcrWJ2LRNfOaLDUWdbhb9vhSXyehlzkgRzn+fdrUYksw043QP9PDGjJfzTb8lFE8a81aW1XRMLtoW7qVGWvZ0HdnXUULQCdTmjG9JbzMD7zhK8oEmU9H8hUKTHsAP2RlTjDoZ1asf3ERRBr0umOxxKnlB7xO9WnKvuo0+368aFyMpcK6unqCV1DdGS119V1klBx2HFsImfWLZKEna+I12nZizjWuG2LakcyNkjDGstCMEoplDXi6z3sHj1XU3YZZk+SPQG1t1mvK6U1bGP0fXOo0LLPMOJxVOo+68hs7o2N95Bqy1FHjke56zIeGKhwbPnypDVqx2+WdHzHfe117EgWFH731kE1FUQU2wF0sKMFCkQQf9YM4LjGwEcJRBrmZMIPbSxrNSXibf
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 12:58:20.0656
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 12:58:40.3732
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01aaf1f1-c838-4585-9e23-08df463cc96b
+X-MS-Exchange-CrossTenant-Network-Message-Id: b355a9df-4341-4822-2fef-08df463cd585
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BC0.namprd04.prod.outlook.com
+	BN3PEPF00022BBC.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PR12MB093474
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4338
 
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+At the moment the CCP driver allocates buffers of the maximum supported
+sizes which are reported by the PSP, and potentially expands some.
 
-Add drivers/virt/coco/tsm-core.c and git repository to the TSM entry.
+The spdm_ctrl_free() helper though releases all buffers with (incorrectly)
+calculated sizes.
 
-Add the AMD TIO backend of TSM. Other arches are going to be added
-next. Eventually these backends will move under drivers/attestation.
+Drop the calculation for request/response and use the maximum size
+for free.
 
-Cc: Alexey Kardashevskiy <aik@amd.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: Ashish Kalra <ashish.kalra@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-coco@lists.linux.dev
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-[aik: added drivers/crypto/ccp/sev-dev-*]
+Use the actual size (potentially expanded) of scratch and output buffers.
+
+While at this, replace the incorrect check for dev_ctx with the correct
+check of the output buffer.
+
+This did not bite so far as the maximum for request/response is 4K,
+alloc and free are page aligned and the expansion is not implemented yet
+in the PSP.
+
+Fixes: 4be423572da1 ("crypto/ccp: Implement SEV-TIO PCIe IDE (phase1)")
 Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 ---
- MAINTAINERS | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/ccp/sev-dev-tio.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 222b7fc2c3aab..e8059b3d7e6ef 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -28541,11 +28541,15 @@ M:	Jason Gunthorpe <jgg@nvidia.com>
- R:	Lukas Wunner <lukas@wunner.de>
- L:	linux-coco@lists.linux.dev
- S:	Maintained
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tsm/linux.git
- F:	Documentation/ABI/testing/configfs-tsm-report
- F:	Documentation/driver-api/coco/
- F:	Documentation/driver-api/pci/tsm.rst
-+F:	drivers/crypto/ccp/sev-dev-tio.*
-+F:	drivers/crypto/ccp/sev-dev-tsm.c
- F:	drivers/pci/tsm.c
- F:	drivers/virt/coco/guest/
-+F:	drivers/virt/coco/tsm-core.c
- F:	include/linux/*tsm*.h
- F:	samples/tsm-mr/
+diff --git a/drivers/crypto/ccp/sev-dev-tio.c b/drivers/crypto/ccp/sev-dev-tio.c
+index c84e23982b434..37ace91a7d4d8 100644
+--- a/drivers/crypto/ccp/sev-dev-tio.c
++++ b/drivers/crypto/ccp/sev-dev-tio.c
+@@ -639,25 +639,23 @@ static void spdm_ctrl_init(struct spdm_ctrl *ctrl, struct tsm_dsm_tio *dev_data)
+ static void spdm_ctrl_free(struct tsm_dsm_tio *dev_data)
+ {
+ 	struct sev_tio_status *tio_status = to_tio_status(dev_data);
+-	size_t len = tio_status->spdm_req_size_max -
+-		(sla_dobj_id_to_size(SPDM_DOBJ_ID_RESP) +
+-		 sizeof(struct sla_buffer_hdr));
+ 	struct tsm_spdm *spdm = &dev_data->spdm;
  
+ 	sla_buffer_unmap(dev_data->resp, dev_data->respbuf);
+ 	sla_buffer_unmap(dev_data->req, dev_data->reqbuf);
+ 	spdm->rsp = NULL;
+ 	spdm->req = NULL;
+-	sla_free(dev_data->req, len, true);
+-	sla_free(dev_data->resp, len, false);
+-	sla_free(dev_data->scratch, tio_status->spdm_scratch_size_max, true);
++	sla_free(dev_data->req, tio_status->spdm_req_size_max, true);
++	sla_free(dev_data->resp, tio_status->spdm_req_size_max, false);
++	sla_free(dev_data->scratch, dev_data->scratch_len, true);
+ 
+ 	dev_data->req.sla = 0;
+ 	dev_data->resp.sla = 0;
+ 	dev_data->scratch.sla = 0;
+ 	dev_data->respbuf = NULL;
+ 	dev_data->reqbuf = NULL;
+-	sla_free(dev_data->output, tio_status->spdm_out_size_max, true);
++	sla_free(dev_data->output, dev_data->output_len, true);
++	dev_data->output.sla = 0;
+ }
+ 
+ static int spdm_ctrl_alloc(struct tsm_dsm_tio *dev_data)
+@@ -674,7 +672,7 @@ static int spdm_ctrl_alloc(struct tsm_dsm_tio *dev_data)
+ 	dev_data->output = sla_alloc(dev_data->output_len, true);
+ 
+ 	if (IS_SLA_NULL(dev_data->req) || IS_SLA_NULL(dev_data->resp) ||
+-	    IS_SLA_NULL(dev_data->scratch) || IS_SLA_NULL(dev_data->dev_ctx)) {
++	    IS_SLA_NULL(dev_data->scratch) || IS_SLA_NULL(dev_data->output)) {
+ 		ret = -ENOMEM;
+ 		goto free_spdm_exit;
+ 	}
 -- 
 2.55.0
 
