@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795074540;
-	b=0HmvQfVSIzhhnWfSZsgzE47EplzNvZ9UxFeMiD2BUCIekybVfOCZ6My+4o7VaSIunQUg
-	 hCYp8bphdDZXS+c1XBh9REaNOfm+Eg8ES56QeN0TrtQMUx4LzdxbUJhYjNI5T80tK/7gg
-	 BVw3DuXhSrc8k4FbBa5gGZh2f1ZOmKcSIepLfEeLnCJDFdcP+83iHx7F/KEsfRrFi3CGQ
-	 1kIQLeJ7LV0TTyhbh7uywom2SjSbYI8GzehlmHOZsmyhsiubC5l5QhVXPvfbFlEREhe7m
-	 AlFoBF3yfs1AN82XrjkYeH529n3xbx+B7zbi2su1gS9orNc3T2IJooLQfrrOa252p/g==
+	t=1795076058;
+	b=YtCyFp9FiaLiicwwXnxDvBj2OnApMbqG+fiEcmB6NDvE/vN3KYH8Cp4jewE/clNGtLFf
+	 on06FXAW+cQmNhjCVXWCDR1N0h5a5MqzEfQ9lkXTzMMiUTst4oS+rvY2V4RRGoM/k7hKT
+	 uEd7DPkPsZvxlMVQH+Z28umc71x5YMpXfcwWACFHyAqqvfmdiF74U6ztoRotC7ZVWhtTh
+	 5AWnlaozMAk49VNgBDw16yMd44AKfFeuh8zoHG5FKmyeiiO/X1UfE9vkVAUfVC6HdS0k4
+	 AX0bAfOa0/MqOSPRzRshkouNzwYdq2/EJbD4Fl0SHRBiRjvGQuQ9+DyMTU2oElyUwng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795074540;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=2EGfK2lZXx7T9MpCgqV5Sq8wrQL5YL7OFsfI7ZoTz+Y=;
-	b=rf6JQ8xLShvHNgXk6uopgabnpri3TsJojb8AQw7Qa2oB29DtSQHPgwZxtf+rxkn+bYrP
-	 5Cv0huCkf+iqUY4zyfi+oPyOAN7M98E7rL8dCe/Tw7kyhgzFpBR9e0voRzX1r9Ven/TmT
-	 9yVF0ZmiRMKLegk9S3YkDGznhGNeff8JVMviwWcDi9lHIDH9wi6muPyQGr+Rx3ahmzpRd
-	 mzVUP5H6V7RY8GyY9Yw44p9ReZHIDWMQsPGQ660wNJ7BunMzp+/JknntVEN9ywHULbLjj
-	 25SnipA3a4nmBK6j9B4Qv8fakku6qhoUH1pyoykvfZCibdjOhkBkztaAZdPO89RZZGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795076058;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Va/Oxtu6vlA30n7TkoMr9m9dnyboRnI7B5KkvZShXuk=;
+	b=BKJZRoJZpm264HMJKPhcbUve4X/CgsSdfmSXtiQzFWjfhSGYb3I9cRl90MFpeHK+BSBp
+	 P9PLiB6e1Ned+E4oAjRq6tgWi5QK0bX27EXpqCDj7M9Ec++OoZeB+EwWJAMGdgWdrAZI3
+	 iS/y8ZKRsrsrw0hrd9FBEDP/hoXkhmUzJLbBM61KRl/q/b3uFyugrkNK+7dK6QI6YQ606
+	 nrLiduD+ZrbUlINZYAiLSH7Y231LJSJ44dfk8SeHPNxfOQTFLoHdKBw23Sa92aEJ4H9Jh
+	 IW4oJ2lCMfN/bfiLsXec1j+mG1EBbZ4EIrUF5cognWnfHVwHTvGDd2rIlIg0toWpAlw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JlbLmPyJ;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F473606A325;
-	Thu, 19 Nov 2026 07:48:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F473606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JHtfP26L;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1177A606A320;
+	Thu, 19 Nov 2026 08:14:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1177A606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JlbLmPyJ
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 486481575;
-	Wed, 18 Nov 2026 23:48:56 -0800 (PST)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AE43F3FA7A;
-	Wed, 18 Nov 2026 23:48:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795074539; bh=S1M79WGliP/lxWdN+K7Fd2XbTpS9t6SGFAKJuLVpW88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JlbLmPyJJnCwhWQbsry7xcElMDKIhNCUUl6erCKn7pRLZbkCdGQQ+ASHpd8HVfCma
-	 Vcv6JGFy2v761ROTPdp1/lUnSccJhUDU2BoPDgH4QFTGLcA4xQk5euxGcJlKmSoudW
-	 jqf5AlATFXena9creXGOsHunLkTfsZpKybqEtW34=
-Date: Thu, 19 Nov 2026 07:48:42 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Kohei Enju <enju.kohei@fujitsu.com>
-Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
- memory
-Message-ID: <hwmtiumovuqyu7js5eqd4xt3h2zsuhjwkcygnw62hp5rrar5ph@5fhmv46iio2r>
-References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-10-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JHtfP26L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795076058; x=1826612058;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kzJo+8BaOAZhUntz86DhI1HKcpzg32Rvn/ODVmcnDig=;
+  b=JHtfP26LfKGpzsHg0MB2vZ6ix6lSedBydZdHOc/+kGNo4PR95dK1KcHN
+   WbtGF0ga04gRvZIBYOXkBdlMLYlAhG60y7ckdX2yEb7P3lOQESXH1KY8Y
+   GBYYkMycrosbEfe2IDaGFCTyNWUYyga9mHkEdxVdKoYxpy9oJaiXVnMh1
+   ZdXfs6WSggm+kJNCjGGyHeD89I6/3CXFHROYt1fccGHpZFABsxJbgiwwD
+   0ysCv/mdWRKp6mDE78z2X2g5gH6Rtqm2wU/H2WgJzhEcZeEICYIKxfxnU
+   GJSXTXfh+QbtlYL9q2cgk3FUO1+tR5N4VEFYWaJaH0z/Dq6cxeP0QweN1
+   w==;
+X-CSE-ConnectionGUID: I03sHtFBQBOkiYOoBeYIWg==
+X-CSE-MsgGUID: dHo/ebiYTzGhu0MGZdrseg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3944393"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="3944393"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 00:14:00 -0800
+X-CSE-ConnectionGUID: 0tlw9+aHSg2IlofLNzybUA==
+X-CSE-MsgGUID: EoPnrkujQkWheEz1swf5JQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="10730909"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 00:13:49 -0800
+Message-ID: <fac3d200-e1e8-4a0f-bd41-8e1c0d727d1a@linux.intel.com>
+Date: Thu, 19 Nov 2026 16:13:46 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,244 +72,92 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116164358.142785-10-steven.price@arm.com>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
+ Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
+ Samuel Ortiz <sameo@rivosinc.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Steven Price <steven.price@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, patches@lists.linux.dev,
+ Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v9 04/13] iommufd/device: Associate KVM file pointer with
+ iommufd_device
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev
+References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
+ <20261116081935.85372-5-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261116081935.85372-5-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Steven,
+On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
+> From: Shameer Kolothum<shameerali.kolothum.thodi@huawei.com>
+> 
+> TSM vDevice support needs access to the KVM associated with a VFIO device
+> after the device has been bound to iommufd.
+> 
+> Extend iommufd_device_bind() to accept the device's KVM file and store it
+> in the iommufd_device. The KVM file reference is owned by VFIO and is
+> already held for the duration of the device open path.
+> 
+> Reviewed-by: Kevin Tian<kevin.tian@intel.com>
+> Reviewed-by: Jason Gunthorpe<jgg@nvidia.com>
+> Signed-off-by: Shameer Kolothum<shameerali.kolothum.thodi@huawei.com>
+> [nicolinc: fix build error in iommufd_test_mock_domain()]
+> Signed-off-by: Nicolin Chen<nicolinc@nvidia.com>
+> [aneesh.kumar: Switch to use kvm_file]
+> Cc: Jason Gunthorpe<jgg@ziepe.ca>
+> Cc: Kevin Tian<kevin.tian@intel.com>
+> Cc: Joerg Roedel<joro@8bytes.org>
+> Cc: Will Deacon<will@kernel.org>
+> Cc: Robin Murphy<robin.murphy@arm.com>
+> Cc: Alex Williamson<alex@shazbot.org>
+> Cc:iommu@lists.linux.dev
+> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
+> ---
+>   drivers/iommu/iommufd/device.c          | 7 ++++++-
+>   drivers/iommu/iommufd/iommufd_private.h | 2 ++
+>   drivers/iommu/iommufd/selftest.c        | 2 +-
+>   drivers/vfio/iommufd.c                  | 3 ++-
+>   include/linux/iommufd.h                 | 4 +++-
+>   5 files changed, 14 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
+> index 1b0bdf57ac8a..935f42616a65 100644
+> --- a/drivers/iommu/iommufd/device.c
+> +++ b/drivers/iommu/iommufd/device.c
+> @@ -295,6 +295,7 @@ static int iommufd_bind_noiommu(struct iommufd_device *idev)
+>    * iommufd_device_bind - Bind a physical device to an iommu fd
+>    * @ictx: iommufd file descriptor
+>    * @dev: Pointer to a physical device struct
+> + * @kvm_file: VM file if device belongs to a KVM VM
+>    * @id: Output ID number to return to userspace for this device
+>    *
+>    * A successful bind establishes an ownership over the device and returns
 
-On Mon, Nov 16, 2026 at 04:43:55PM +0000, Steven Price wrote:
-
-[...]
-
-> @@ -1791,12 +1799,18 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	void *memcache = NULL;
->  	gfn_t canonical_gfn;
->  	int ret;
-> +	bool is_private = false;
->  
-> -	if (!perm_fault) {
-> +	if (KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
-> +		return -EINVAL;
-
-I feel this is being too cautious, gmem_abort is always run after a
-kvm_slot_has_gmem() check.
-
-> +
-> +	if (!perm_fault || kvm_arch_has_private_mem(kvm)) {
->  		memcache = get_mmu_memcache(s2fd->vcpu);
->  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
->  		if (ret)
->  			return ret;
-> +	}
-> +	if (!perm_fault) {
->  		if (kvm_is_nested_s2_mmu(kvm, pgt->mmu)) {
->  			mapping = kmalloc_obj(struct kvm_guest_s2_mapping, GFP_KERNEL_ACCOUNT);
->  			if (!mapping)
-> @@ -1805,7 +1819,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	}
->  
->  	s2vi.vma_pagesize = PAGE_SIZE;
-> -	s2vi.gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi.vma_pagesize) >> PAGE_SHIFT;
-> +	s2vi.gfn = gpa_to_gfn(kvm_gpa_from_fault(kvm, s2fd->fault_ipa));
->  	canonical_gfn = get_canonical_gfn(s2fd, &s2vi);
->  
->  	write_fault = kvm_s2_fault_is_write(s2fd);
-> @@ -1817,13 +1831,35 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
->  	smp_rmb();
->  
-> +	if (kvm_arch_has_private_mem(kvm)) {
-> +		switch (kvm->arch.vm_flavor) {
-> +		case VM_REALM:
-> +			is_private = kvm_realm_is_private_address(&kvm->arch.realm,
-> +								  s2fd->fault_ipa);
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +
-> +		if (is_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
-> +			if (!result)
-> +				kvm_prepare_memory_fault_exit(s2fd->vcpu,
-> +							      gfn_to_gpa(canonical_gfn),
-> +							      PAGE_SIZE,
-> +							      write_fault, exec_fault,
-> +							      is_private);
-> +			kfree(mapping);
-> +			return -EFAULT;
-> +		}
-> +	}
-> +
->  	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, canonical_gfn, &s2vi.pfn, NULL);
->  	if (ret) {
->  		/* If result is non-NULL this is a synthetic fault. */
->  		if (!result)
->  			kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(canonical_gfn),
->  						      s2vi.vma_pagesize, write_fault, exec_fault,
-> -						      false);
-> +						      is_private);
->  		kfree(mapping);
->  		return ret;
->  	}
-> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  		goto out_unlock;
->  	}
->  
-> +	switch (kvm->arch.vm_flavor) {
-> +	case VM_REALM:
-> +		prot &= ~KVM_PGTABLE_PROT_X;
-> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
-> +				    PAGE_SIZE, prot, memcache);
-> +		goto out_unlock;
-> +	default:
-> +		break;
-> +	}
-> +
->  	if (perm_fault) {
->  		/*
->  		 * Drop the SW bits in favour of those stored in the
-> @@ -2047,7 +2093,8 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
->  	 * mapping size to ensure we find the right PFN and lay down the
->  	 * mapping in the right place.
->  	 */
-> -	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
-> +	s2vi->gfn = kvm_gfn_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa,
-> +						       s2vi->vma_pagesize));
->  
->  	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
->  
-> @@ -2227,7 +2274,7 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->  	 * possible.
->  	 */
->  	if (mapping_size == PAGE_SIZE && s2vi->max_map_size != PAGE_SIZE) {
-> -		if (perm_fault_granule > PAGE_SIZE) {
-> +		if (perm_fault_granule > PAGE_SIZE && !kvm_vm_is_realm(kvm)) {
->  			mapping_size = perm_fault_granule;
->  		} else {
->  			mapping_size = transparent_hugepage_adjust(s2fd, &pfn, &gfn);
-> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->  	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
->  		sanitise_mte_tags(kvm, pfn, mapping_size);
->  
-> -	/*
-> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
-> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
-> -	 * kvm_pgtable_stage2_map() should be called to change block size.
-> -	 */
-> -	if (mapping_size == perm_fault_granule) {
-> +	if (kvm_vm_is_realm(kvm)) {
-> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
-> +				    prot, memcache);
-> +	} else if (mapping_size == perm_fault_granule) {
-> +		/*
-> +		 * Under the premise of getting a FSC_PERM fault, we just need to relax
-> +		 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
-> +		 * kvm_pgtable_stage2_map() should be called to change block size.
-> +		 */
->  		/*
->  		 * Drop the SW bits in favour of those stored in the
->  		 * PTE, which will be preserved.
-> @@ -2306,15 +2356,16 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	/*
->  	 * Permission faults just need to update the existing leaf entry,
->  	 * and so normally don't require allocations from the memcache. The
-> -	 * only exception to this is when dirty logging is enabled at runtime
-> +	 * exceptions are when dirty logging is enabled at runtime
->  	 * and a fault needs to collapse a block entry into a table.
-> +	 * Realms can also require new RTT levels when replacing a mapping.
->  	 * Under pKVM a permission fault can also collapse pages into a block,
->  	 * which needs a fresh mapping object, and the hypervisor requires the
->  	 * min-pages memcache even when the install allocates nothing.
->  	 */
->  	memcache = get_mmu_memcache(s2fd->vcpu);
->  	if (!perm_fault || memslot_is_logging(s2fd->memslot) ||
-> -	    is_protected_kvm_enabled()) {
-> +	    is_protected_kvm_enabled() || kvm_vm_is_realm(s2fd->vcpu->kvm)) {
->  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
->  		if (ret)
->  			return ret;
-> @@ -2340,12 +2391,22 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
->  }
-
-I see that the changes to gmem_abort() and kvm_s2_fault_map() are more
-significant, and can possibly be turned into its realm version leaving
-the original unchanged. With this can we give realm_vm_s2_ops its own
-.vm_mem_abort? Something like:
-
-First, make user_mem_abort() take a function pointer, call it at the
-current kvm_s2_fault_map() place.
-
-Then realm_vm_s2_ops.vm_mem_abort = realm_mem_abort()
-
-And in realm_mem_abort() do:
-
-realm_mem_abort()
-  if gmem slot:    realm_gmem_abort()
-  if regular slot: user_mem_abort(kvm_realm_fault_map)
-
-realm_gmem_abort() and kvm_realm_fault_map() are just the realm version
-of gmem_abort() and kvm_s2_fault_map(). For example they won't need NV
-related code, and vm_flavor switch case.
-
-Proposing this because I think we would like the CCA changes more
-self-contained.
+As discussed during the v8 review, how does this series address the risk
+that the KVM file pointer could become invalid if REMOVE_WAIT times out?
+The changelog says the extra KVM file reference was dropped. Is the
+timeout expected never to occur, or should it be addressed by a broader
+fix if it does? How about explaining this in the commit message so
+future readers understand why the extra reference isn’t needed.
 
 Thanks,
-Wei-Lin Chang
-
->  
-> +static bool private_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa)
-> +{
-> +	return kvm_vm_is_realm(kvm) &&
-> +		kvm_realm_is_private_address(&kvm->arch.realm, fault_ipa);
-> +}
-> +
->  static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->  {
->  	VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
->  			!esr_abt_is_write_fault(s2fd->esr) &&
->  			!kvm_s2_fault_is_exec(s2fd));
->  
-> +	if (private_ipa_fault(s2fd->vcpu->kvm, s2fd->fault_ipa) &&
-> +	    !kvm_slot_has_gmem(s2fd->memslot))
-> +		return -EINVAL;
-> +
->  	if (kvm_slot_has_gmem(s2fd->memslot))
->  		return gmem_abort(s2fd, NULL);
->  	else
-> @@ -2458,10 +2519,10 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
->   */
->  int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm *kvm = vcpu->kvm;
->  	struct kvm_s2_trans nested_trans, *nested = NULL;
->  	unsigned long esr = kvm_vcpu_get_esr(vcpu);
->  	struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu;
-> -	struct kvm *kvm = vcpu->kvm;
->  	phys_addr_t fault_ipa; /* The address we faulted on */
->  	phys_addr_t ipa; /* Always the IPA in the L1 guest phys space */
->  	struct kvm_memory_slot *memslot;
-> @@ -2554,8 +2615,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  		nested = &nested_trans;
->  	}
->  
-> -	gfn = ipa >> PAGE_SHIFT;
-> +	gfn = kvm_gfn_from_fault(kvm, ipa);
->  	memslot = gfn_to_memslot(kvm, gfn);
-> +
->  	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->  	write_fault = esr_abt_is_write_fault(esr);
->  	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-> @@ -2598,7 +2660,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  		 * of the page size.
->  		 */
->  		ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
-> -		ret = io_mem_abort(vcpu, ipa);
-> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(kvm, ipa));
->  		goto out_unlock;
->  	}
->  
-
-[...]
+baolu
