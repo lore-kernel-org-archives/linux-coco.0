@@ -1,68 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795076439;
-	b=Bg2Zs2K4CPenSVwccV4uCy7gtuqp3y7aEdNsuZcGa+rVxfIr2pSS7lLF38vPk5ujP/jB
-	 rNXa1KrPn84rhjqZjXrbMai0TDrUO37tD15LY6KHzJB0MPh4BMdtYTwmw5yR8EaMZPUSi
-	 ze2ms2/mUaDRhaLkRh/CFA3q7cLAPIW5OegSQ9A2lrQVc4F+N9Oa35MpPPMB9rdsBs63r
-	 NqumSgBuDHuy3COipdELRU2xzmA+Fh6h+jP4EGFkNAbgaskbjZvwdEjFU63zlM18PTo3V
-	 cCt1jzqO7TP121X1FGVdXyEW44q7j3c1c6hlEiTtrdomLL9h28mH3khaoRF5mL/c3hA==
+	t=1795083044;
+	b=gwWm2vNHjoCbEBxmnYfGzCbEczJRvhCK/RKn0D3xa4olUN85PnSYQv18xK9/6wIkTstg
+	 IvY+EDQZNwxIsttupfqZh/YrYbJXA6qKf4Ukfm21/YlxMgW1QnB0ONuC2wfx08erie931
+	 xXvCT5nNriYHMaez3CMgXabTzT1jQ60S0mGFei2qp5ydbR+WL7x75dDt13uNbrYH5TVv6
+	 2htuCR8aNrloMwBjGuQSFrooV+ZuO7hMysOA9qUtxyCNUbv/C+FYVaZXA1Wv+m/0+RcI+
+	 p4dWtEa1GwDCVL+DM9zy08cBqb3OUfFKD+3g33sVKuSHQ91Xq0DJBP7RMJdyxYKvXSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795076439;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795083044;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=PMrsBwYkwF4lRQixoD6GmLUuDmMJwcXbQNklWixiPYY=;
-	b=qUMsGDtZvwJDJ5qsHzoSWljYHaoozmBmMyug1l4OTgKjqU1jJejew+5oEsUPiggKAT9u
-	 yTuKEdpvJNQtZaWsEOn4Zwdw4+0XrdVuh8NSABvKuyaKmgzV2b2l4dC3OV/UDAx5RbqXk
-	 FhLsvHcp8DO+Xc2akB/9dWfvuAt3HEH08Rz5ah1wLguxUHnBumT4ZeaNbmJJLtU7v+TzA
-	 ePCT29GrqzKHRn2powD8M400pOqJuxPolOv/KIIhYi5e84G70Ba3rbm9QE+y8lgJVRVf+
-	 RpkHYU9KJ67plbSUT5OkbIbpylT3pFlzmDKVPYYTjVl1w0miDX23uAw2gzRbVGARSCw==
+	bh=o0xJIki+mFoJUWoYjAhFxPBVjnzW6F1WhyTl0VK8FZs=;
+	b=vhzkwbFvTWyNTsaxcDLm1u74nt8HvoVILYogAMuvJQmTKGe0YGIglhFRLOfpnQzmiLsb
+	 yaWtE4cuCZK2PHAFtQYyYwsAvRVEDe/Xvz8SwKoNjhKj5z+m3LjI3CiI1ALRHtM+lCXng
+	 qSAXxT9yGVUolyJzYZIIuds0/bLLOyT3G1b9YlI+d+zoYDTxZsHCU87rqkMdysA1TJp5K
+	 89Pv3+4cT8bhOa+if+xiWrfKHXd0gi8vFkexXsA/pAYKe0anRoulAum8sKSFtbrSTBBY1
+	 TvIEkXaDyt4ZcfFYgMTXaa7mC3FGv8GbhK0eypLUAgqvLYRB98/eOngUMMhZQG4/WUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MhCpE6IV;
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917B5606A325;
-	Thu, 19 Nov 2026 08:20:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 917B5606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Q5XwbQpl;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F64606A324;
+	Thu, 19 Nov 2026 10:10:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7F64606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MhCpE6IV
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795076438; x=1826612438;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9KLe5HS8+v0UjG8/agQdaNXieDfCo4rAsBW39hUTfiw=;
-  b=MhCpE6IVUQi453qtqdRyrSXG/26Sft4QobWAG1Zj34Ob+FWfs6Mw3dXT
-   BO4DEotisnX0HyF0S+BxMBMARKTkjvTvel5bUWy4beOPL1kpIkC1OCh1g
-   xie9jcNdxKxV+NU/P1QMaRY1bsDR4K1bj7ABcDI74b7MnQQcEVbX32oxU
-   k4Jy+hHtBhl89P5VnOey/KQxbcZ4n1gEcl5tAwuYkxcJVSWDEvqpscyQ1
-   FPMEiqQDLnFAk8bSRAMmOciZglc7rym7PXYpecHnmsh/oIOH9SDfxrPdL
-   C6ta+TuoGL0hRxT9BRAvfnzJbl4BqYBAcBFrxbRZVwpPT+L+zlUhIH5YT
-   g==;
-X-CSE-ConnectionGUID: HmBREvsuTBqCNaBmF/5baA==
-X-CSE-MsgGUID: 0R2QSTdkTiisoWq2rrhWJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3835417"
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3835417"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 00:20:37 -0800
-X-CSE-ConnectionGUID: IzMi4v08SVeQv6CuN/UB0w==
-X-CSE-MsgGUID: OTFciINxRMykl5tNJdMoKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="10732774"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 00:20:29 -0800
-Message-ID: <46da9589-3243-4cc0-bb59-7ac40116165a@linux.intel.com>
-Date: Thu, 19 Nov 2026 16:20:27 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Q5XwbQpl
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 021D81575;
+	Thu, 19 Nov 2026 02:10:40 -0800 (PST)
+Received: from [10.0.129.3] (Suzukis-MBP.cambridge.arm.com [10.0.129.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 90FB23F632;
+	Thu, 19 Nov 2026 02:10:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795083042; bh=7YWcBLhIPYqKWe2ix2RQNC66Zd0lpOfLCGPkdsJOsBM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Q5XwbQpl4Z1MWetRAjz0CoLEMc7Y0wB+bliAGEGpeV6ErsaD+ydzUiBaPjwO5jKrs
+	 LlqFQ54UaiKTsXHzDr16BV58dhQs/9gv5/7o1EOMNLdON/YbPP7A8pIzJRRaCBTSEb
+	 pBoo0+42pwwdHFFOu29tYezIaJbmqXPp6sfM/iK0=
+Message-ID: <120ad525-efa5-4129-9d97-fa6fa5db747f@arm.com>
+Date: Thu, 19 Nov 2026 10:10:38 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,72 +54,112 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
- Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
- Samuel Ortiz <sameo@rivosinc.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Steven Price <steven.price@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-tegra@vger.kernel.org, patches@lists.linux.dev,
- Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v9 05/13] iommufd/viommu: Keep a reference to the KVM file
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-6-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261116081935.85372-6-aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v3 01/11] KVM: arm64: guest_memfd: Check mmap support when
+ preparing memslot
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, Fuad Tabba <tabba@google.com>,
+ Ackerley Tng <ackerleytng@google.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-2-steven.price@arm.com>
+ <CA+EHjTy5xBmavNWSYPjqU9qXtssV3ZHzsUr1s_4bVOt1GnDLVg@mail.gmail.com>
+ <6bb490cd-ebbe-41d7-adf3-d6eaf0e53478@arm.com>
+ <b1ef7241-54b0-4a17-83b6-0008e722f2f6@arm.com>
+ <8a095a42-662a-416d-a5d7-79e10161201c@arm.com>
+ <cc27e6a8-6bfa-4c82-92a7-33175baf6803@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <cc27e6a8-6bfa-4c82-92a7-33175baf6803@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
-> From: Nicolin Chen<nicolinc@nvidia.com>
-> 
-> The TSM vDevice operations need access to the KVM associated with the
-> device's vIOMMU. Save the device's KVM file in the iommufd_viommu when the
-> vIOMMU is allocated, and take a file reference so it remains valid for the
-> lifetime of the vIOMMU.
-> 
-> Release the reference when the vIOMMU is destroyed.
-> 
-> Reject vdevice allocation when the device's KVM association differs from
-> the vIOMMU's, including when only one has a KVM association. Allow
-> allocation when both associations are NULL.
-> 
-> Based on an original patch by
-> Shameer Kolothum<shameerali.kolothum.thodi@huawei.com>
-> 
-> Reviewed-by: Kevin Tian<kevin.tian@intel.com>
-> Reviewed-by: Jacob Pan<jacob.pan@linux.microsoft.com>
-> [nicolinc: hold kvm's users_count]
-> Signed-off-by: Nicolin Chen<nicolinc@nvidia.com>
-> [aneesh.kumar: Switch to use kvm_file]
-> Cc: Jason Gunthorpe<jgg@ziepe.ca>
-> Cc: Kevin Tian<kevin.tian@intel.com>
-> Cc: Joerg Roedel<joro@8bytes.org>
-> Cc: Will Deacon<will@kernel.org>
-> Cc: Robin Murphy<robin.murphy@arm.com>
-> Cc:iommu@lists.linux.dev
-> Reviewed-by: Jason Gunthorpe<jgg@nvidia.com>
-> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
-> ---
->   drivers/iommu/iommufd/viommu.c | 10 ++++++++++
->   include/linux/iommufd.h        |  1 +
->   2 files changed, 11 insertions(+)
+Cc: Ackerley, Sean
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+On 18/11/2026 15:18, Steven Price wrote:
+> On 18/11/2026 12:04, Suzuki K Poulose wrote:
+>> On 18/11/2026 11:14, Steven Price wrote:
+>>> On 18/11/2026 10:34, Suzuki K Poulose wrote:
+>>>> Hi Steven
+>>>>
+>>>> On 17/11/2026 14:05, Fuad Tabba wrote:
+>>>>> Hi Steven,
+>>>>>
+>>>>> On Mon, 16 Nov 2026 16:43:47 +0000, Steven Price
+>>>>> <steven.price@arm.com> wrote:
+>>>>>> Check the guest_memfd backing file when deciding whether an arm64
+>>>>>> memslot has mappable memory rather than checking whether the slot is
+>>>>>> gmem only. A public helper function is added to be able to reuse the
+>>>>>> static kvm_gmem_supports_mmap() function.
+>>>>>
+>>>>> nit: could the message say why this is needed? It's a no-op until
+>>>>> patch 8 defines kvm_arch_has_private_mem(), which makes every
+>>>>> guest_memfd slot gmem-only.
+>>>>
+>>>> I still don't understand why this is needed. For arm64 we have always
+>>>> prevented guest_memfd without MMAP, in kvm_arch_prepare_memory_region().
+>>>
+>>> Fuad is correct, this isn't really needed until patch 8. Patch 8 defines
+>>> kvm_arch_has_private_mem() - that means that gmem_in_place_conversion
+>>> becomes true (see include/linux/kvm_host.h). That in turn means that
+>>
+>>> every guest_memfd slot is KVM_MEMSLOT_GMEM_ONLY including slots backed
+>>> by a file without mmap support.
+>>
+>> But we dont support slots without MMAP anyways even without this series.
+>>   So, does it really matter for arm64 ?
+> 
+> So ChatGPT produced the attached test. It creates a non-mappable gmem
+> and tries to add it to a normal (non-realm/non-pkvm) VM. With v7.4-rc1
+> it is rejected. However without this patch it succeeds.
+> 
+> The issue is that gmem_in_place_conversion changes the behaviour for
+> normal VMs.
+
+I see, thanks Steven. For context:
+
+Arm64 currently (without inplace conversion support) only allows GMEM
+with MMAP flags only and relies on kvm_slot_gmem_only() to detect that
+the GMEM has MMAP flag. But, when we enable inplace conversion,
+we can't reliably reject the slots by kvm_slot_gmem_only(), because
+all GMEM slots are marked GMEM only with inplace conversion.
+
+Also, from the API Documentation,
+
+"When the KVM MMU performs a PFN lookup to service a guest fault, the 
+fault will
+always be consumed from guest_memfd, regardless of whether it is a 
+shared or a
+private fault (unless in-place conversion is disabled and the backing
+guest_memfd does not have the GUEST_MEMFD_FLAG_MMAP flag set)."
+
+So, in effect, with in-place conversion enabled a KVM_CREATE_GUEST_MEMFD
+without GUEST_MEMFD_FLAG_MMAP is an error and thats what this patch
+is trying to fix in arm64 KVM. The question is:
+
+1) Should this be fixed ? How does TDX/SNP support older VMMs with
+inplace conversion ? What was the conclusion on this breakage ?
+
+2) If it should be, then shouldn't it be done in kvm_gmem_create() ?
+
+Suzuki
+
+
+> 
+> Thanks,
+> Steve
+> 
+
