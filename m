@@ -1,11 +1,11 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795074489;
-	b=c6nNS7E5lRsMSCY9qBRLafEJruIHTzuxymA41dWtHixefQmWpW1eZzyzngYA6QF+XVmM
-	 pIQKTImZKEvWXLMeLOu9gBtGNpZ8VWle143+BC41CMLuDc3cYy+HjOqESD52yRDQyj7gG
-	 x0/yivxmke+CYnwPynRX4y7hlGWLhmLzZTmsWDviEiLGtEJPDcawbKZveqEW0QcSOKTXa
-	 ALafrWHYJ0lxZ9vSpj6hlbixSkfi+ERqVpO5MyAg0x6lLPFYzJqTLo6hvppceG9ucAPaI
-	 +NfiWmh55XYtOO4y/JrhH9DgjzmlIa0F1K4bkuk1OdajBgmUKoG4gi81FveD83/qyKw==
+	b=nCWwgPrPuDlCu+a7pACNWobEOOlo3OctzTVD0iWgPyUUEnNFQAtzryFpoAd/D451zoBE
+	 Mf80sO/WmN/1Atg1/8oNZ7FY1sDNWScCrBW4+ZroKQaqikkPQmLazNl6GAYOewFTogS+K
+	 giPx1VjZqKY76yWoKxb/1afnlaOSlrN0hNz1S0HzCXmA+sFE5DFCUz/bT2Xh655lcvKsH
+	 /mLz9O59jI8La6NWJFjaZXwJUvMIa8ZtJ6TcaO5seRHrqTZjN8fvGgv1JQwNw9CV4wXAM
+	 GVc6wmtbmDm4TgjsIzNTexEYO+i7TynDfsNuKqKv6DOZJ+GHUb84QJpJaT9Y3uibgPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795074489;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
@@ -13,54 +13,54 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=odTF74iaUOT3nx9OAimr/B99ueABAU/gIzV62QEOTEk=;
-	b=ByTj3rxmzENLKWFbmzwu4JkX8M0/b6LigzadeiodscecK9xPe3CRmYESUksAgzXMZli5
-	 KIl1dSXwdvNjtY9PsUNcocMWeY3HbZ0KBr4QkWZU9ZO0jFa0tBkZPDEdoYCnbKVn145Hi
-	 gxN+AbXLagqnI+Z6U+foQwkZx2CNPR3BAD9VGUFqlOgOlqQAyjbGogThpV355pcLnvFhn
-	 PkUhIcPmnEF3luLchqEWp1AKyOiepTzYmbe2c09xux+agHqpxQ/iDe/eOLaXPFVx7u//G
-	 YsA+7PpMUHbbNhrzZgsO1PGL8O6dkMHioDhBZkoL7eO8mxYPDFiKoN4S4EckU6rF2WA==
+	bh=p+W+nkV7IahZLhG90sl22pTY4rr0VDZilhazml71WH0=;
+	b=w4LRMOTtk7wM/SWmcpSGkgCIa2v0ZtxzRkTvSMwJoQoNC6UQXOthN7C2jLYbFDU1+3EV
+	 i6Mb1fYtovKw7KBZ96Dl9DSW8+1gqTIlYzNhQ7P1heLZDTmS77Ur20FRR01U+5XqMaDwm
+	 m2dyzzpw+oDqVA21X7tnei3/t1MIXxRm/o3qGsAEBv6FjFCAVzmYXajWZXomkq7y0/V5A
+	 vP5Citc12PTM1MGxu7mnPxaFKOjglr8TKrUoRzJoTsry+KuBN4fmgWIBlEWmz7lto3kLf
+	 X11ySex0UhU1u1Blvr6aLSPdAip6pgWr6E3XSS77OkunGGWbREe3QZXSZyN4twSVkNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bFoipNOa;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WPSjzp48;
 	arc=none smtp.remote-ip=192.198.163.18
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9D5606A320
-	for <linux-coco@lists.linux.dev>; Thu, 19 Nov 2026 07:48:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D9D5606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6400160A2606
+	for <linux-coco@lists.linux.dev>; Thu, 19 Nov 2026 07:48:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6400160A2606
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bFoipNOa
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WPSjzp48
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1795074489; x=1826610489;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ISGPe530T3f+212xZKUxY3rej3e4QBV7A9q4kvGKqdI=;
-  b=bFoipNOaUGs06q4BzFS6wrME+P22/7JgoM0QrvMU8KifrFBb1t6v+NzI
-   LQF/dNpDsxcMAkWh9J7LCZyXophmzw5Fyw9DFlh7lrH60mRk1UBGmV1zs
-   VTG+lwYJ4QbvRD8eF08TK/mnP288NFc9LB3JEkWDEjT4hJxRfrwfA23I8
-   M/0pcEpvCFsZN8QAKhzwZ+c5aLiU/1T7CZN047khfx7TzTcwpvEvG9xtl
-   sbbKK6j6PzJTJvOe8jZ9i499N0Iw5TqadDL4zpK+U6L8oZNVToePQqD3t
-   tH8O/qs+UWaRmmtVz02KfV0mHRSlZ4AUOT1IDvKXApEdy0OrQBdwyOOav
-   Q==;
-X-CSE-ConnectionGUID: 0f8O/sSQQuKqBdq4iqvy8A==
-X-CSE-MsgGUID: m1k3OSzFRVmOLXYqQ3RLiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3941749"
+  bh=Ba6sfheeRgP/aP6WxF0hAJLgfESdlWbGDkAvNE2nhB4=;
+  b=WPSjzp48S/KkK75FjTxrhIbULxojpCpvvq2vTjTs5F0kNoujuZ9lPNaV
+   IeSb22kPj6xNkILPDW1qzte6LhRAwE9akkcrUJ7KZ8UU+vDnUrBb1CixI
+   gXYZ5M7fyayYSu3focTkfzPzjoK2QaNR4y9xsldrvjglJ0SPQQzv+omUG
+   QsvIZwfBT9+lOwlHlsjbzRZLiZH+nDSLVuzSUa9HEz9gaRAKgbxuuoG2X
+   sxVu3KcvCiGfp1P3Vm+1Q4orQkP5G/ZfTgKUOHZoJYwb3eLoReDk+/Fs5
+   hap9JNVTCZ0orAPDSMD60kB4jPNjpYPhcDMaWEZR3+Ahp2bMVSbtiVyEj
+   A==;
+X-CSE-ConnectionGUID: KwrXYS2tS8+ozCAei0pyaw==
+X-CSE-MsgGUID: 45c21H+oSH2MILm5wubvhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3941756"
 X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3941749"
+   d="scan'208";a="3941756"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:48:07 -0800
-X-CSE-ConnectionGUID: NyxYmSI3TcWvw0TH7FR8SQ==
-X-CSE-MsgGUID: dfTagRagStK2DFk7ogqqrQ==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:48:08 -0800
+X-CSE-ConnectionGUID: 543kSmQdSDuoqi9M2Wbxgw==
+X-CSE-MsgGUID: YIF/MEsfRVKudmY8NOd+aQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="10725810"
+   d="scan'208";a="10725817"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:48:08 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:48:09 -0800
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -77,9 +77,9 @@ Cc: yilun.xu@intel.com,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Kiryl Shutsemau <kas@kernel.org>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v3 1/2] x86/virt/seamldr: Support large TDX module binaries
-Date: Wed, 18 Nov 2026 23:49:21 -0800
-Message-ID: <20261119074925.3933804-2-chao.gao@intel.com>
+Subject: [PATCH v3 2/2] x86/virt/seamldr: Support multiple sigstruct pages
+Date: Wed, 18 Nov 2026 23:49:22 -0800
+Message-ID: <20261119074925.3933804-3-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261119074925.3933804-1-chao.gao@intel.com>
 References: <20261119074925.3933804-1-chao.gao@intel.com>
@@ -94,136 +94,78 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDX module binaries are limited to just under 2MB. The binary is handed
-to P-SEAMLDR as a list of page physical addresses in
-'struct seamldr_params', and the list must fit in a single 4KB page
-along with a few other fields.
+TDX module sigstructs are limited to 4KB. Each update image carries a
+sigstruct, which is handed to P-SEAMLDR in 'struct seamldr_params'
+along with the module binary. The structure has room for the physical
+address of only one sigstruct page.
 
-TDX modules are gaining features and are about to outgrow that limit.
+TDX modules are moving to a post-quantum signature algorithm. Its
+signatures are far larger than the ones in use today, so the sigstruct
+no longer fits in 4KB.
 
-The P-SEAMLDR ABI was extended to let the list continue onto more 4KB
-pages. The last u64 of each page holds the physical address of the next
-page, chaining the pages together.
+The P-SEAMLDR ABI was extended to take up to four sigstruct pages
+(16KB). Setting 'version' to 1 tells P-SEAMLDR to use this layout.
 
-Grow module_pages_pa_list[] so that 'struct seamldr_params' spans 16
-pages, and chain the pages together in populate_pa_list().
+Grow sigstruct_pages_pa_list[] to four entries to match. In anticipation
+of this change, the list is already filled in a loop, so filling the
+new entries needs no new code.
 
-Each page uses its last entry for chaining, so the maximum module page
-count is the array size minus one entry per page. The user-supplied
-image is checked against this count.
+Use version 1 only when the sigstruct spans more than one page. Old
+P-SEAMLDRs reject version 1, so this keeps today's modules working on
+them.
 
-The 16-page size is somewhat arbitrary. It fits modules of up to about
-32MB, far above the roughly 2MB of current modules. It wastes 60KB for
-today's modules, which is fine because the memory is freed right after
-the update.
-
-Do not query P-SEAMLDR for chaining support. Userspace selects the
+Do not query P-SEAMLDR for version 1 support. Userspace selects the
 update image and is responsible for ensuring the module is compatible
 with P-SEAMLDR.
 
-A 496-page module (the old maximum) used to fit in a single page. Now
-the last entry of that page is used for chaining, so the final address
-moves to a second page and the module requires chaining support. Do not
-special-case this size to make it work with a P-SEAMLDR without
-chaining support. No released module has exactly 496 pages, so nothing
-breaks. Leave it to userspace to ensure any future 496-page module is
-paired with a P-SEAMLDR that supports chaining, as with larger modules.
-
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
-Alternative (tried in v1, dropped in v2):
-
-Sizing module_pages_pa_list[] per module needs the page count from the
-image header. The allocation would have to either move after the header
-is validated, as v1 did, or use an unvalidated count. Either way it is
-more code churn than a fixed 16 pages.
-
 v3:
- - Explain the math of the max module page count [Rick/Yilun]
- - Call out the 496-page behavior change [Binbin]
- - Drop the exact numbers (496/495) from the ABI description [Yilun]
+ - Explain why sigstruct filling code is a loop already [Rick]
  - Drop the boilerplate AI usage note [Dave]
- - Note that sigstruct_pages_pa_list[] is never chained [Yilun]
- - Comment the PAGE_ALIGNED() check in populate_pa_list() [Rick]
 
 v2:
- - Make 'struct seamldr_params' a fixed 16 pages instead of sizing it
-   to each module, capping modules at about 32MB. [Rick]
- - Drop the patch that moved the allocation after image validation. [Rick]
+ - drop macros for versions to keep the diff minimal
+ - explain why the sigstruct filling code needs no change
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 37 +++++++++++++++++++++++++++------
- 1 file changed, 31 insertions(+), 6 deletions(-)
+ arch/x86/virt/vmx/tdx/seamldr.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index b1137ca6150d..6b9657a28129 100644
+index 6b9657a28129..7c09c84df1aa 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -24,7 +24,20 @@
- #define P_SEAMLDR_INFO			0x8000000000000000
- #define P_SEAMLDR_INSTALL		0x8000000000000001
- 
--#define SEAMLDR_MAX_NR_MODULE_PAGES	496
-+/*
-+ * 'struct seamldr_params' spans this many pages. The number is somewhat
-+ * arbitrary and fits modules of up to about 32MB. Increase it if modules
-+ * outgrow that.
-+ */
-+#define SEAMLDR_PARAMS_NR_PAGES		16
-+
-+/*
-+ * module_pages_pa_list[] fills the rest of 'struct seamldr_params' after
-+ * its first 128 bytes. The last entry of each page is reserved to point
-+ * to the next page. The last entry of the final page is never used.
-+ */
-+#define SEAMLDR_NR_MODULE_PA_ENTRIES	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE - 128) / sizeof(u64))
-+#define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
- #define SEAMLDR_MAX_NR_SIG_PAGES	1
- 
- /*
-@@ -48,10 +61,10 @@ struct seamldr_params {
- 	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
- 	u8	reserved[104];
- 	u64	module_nr_pages;
--	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
-+	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
- } __packed;
- 
--static_assert(sizeof(struct seamldr_params) == 4096);
-+static_assert(sizeof(struct seamldr_params) == SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE);
- 
- /*
-  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
-@@ -130,16 +143,28 @@ struct tdx_image {
-  * Given a vmalloc() allocation, write all of the backing physical
-  * addresses to pa_list[]. Caller guarantees that the array is big
-  * enough.
-+ *
-+ * If pa_list[] spans multiple pages, chain them by pointing the last
-+ * entry of each page to the next page. Note that a pa_list[] that
-+ * does not cross a page boundary, such as sigstruct_pages_pa_list[],
-+ * is never chained.
+@@ -38,7 +38,7 @@
   */
- static void populate_pa_list(u64 *pa_list, const u8 *vmalloc_addr, u32 vmalloc_len_pages)
+ #define SEAMLDR_NR_MODULE_PA_ENTRIES	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE - 128) / sizeof(u64))
+ #define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
+-#define SEAMLDR_MAX_NR_SIG_PAGES	1
++#define SEAMLDR_MAX_NR_SIG_PAGES	4
+ 
+ /*
+  * The seamldr_params "scenario" field specifies the operation mode:
+@@ -59,7 +59,7 @@ struct seamldr_params {
+ 	u32	version;
+ 	u32	scenario;
+ 	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
+-	u8	reserved[104];
++	u8	reserved[80];
+ 	u64	module_nr_pages;
+ 	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
+ } __packed;
+@@ -173,6 +173,13 @@ static void populate_seamldr_params(struct seamldr_params *params,
+ 				    const u8 *mod, u32 mod_nr_pages)
  {
--	int i;
-+	int i, j;
- 
--	for (i = 0; i < vmalloc_len_pages; i++) {
-+	for (i = 0, j = 0; i < vmalloc_len_pages; i++) {
- 		unsigned long offset = i * PAGE_SIZE;
- 		unsigned long pfn = vmalloc_to_pfn(&vmalloc_addr[offset]);
- 
--		pa_list[i] = pfn << PAGE_SHIFT;
-+		/* Point the last entry of a page to the next page. */
-+		if (PAGE_ALIGNED(&pa_list[j + 1])) {
-+			pa_list[j] = __pa(&pa_list[j + 1]);
-+			j++;
-+		}
+ 	params->version		= 0;
++	/*
++	 * Use version 1 only for multi-page sigstructs, to stay
++	 * compatible with old P-SEAMLDRs that lack version 1 support.
++	 */
++	if (sig_nr_pages > 1)
++		params->version	= 1;
 +
-+		pa_list[j] = pfn << PAGE_SHIFT;
-+		j++;
- 	}
- }
+ 	params->scenario	= SEAMLDR_SCENARIO_UPDATE;
+ 	params->module_nr_pages	= mod_nr_pages;
  
 -- 
 2.52.0
