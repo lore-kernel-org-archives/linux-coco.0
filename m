@@ -1,82 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795448203;
-	b=Cs4zPaTV/tlkhTqJqtE8u6sPhC4GT33buQPuWPirfk1NLxtf27kMNfoWUUVWqlWs/tHQ
-	 cF80azrOu1Fem+uoFK6QYyoHJJImvkELALoquxYFg5zNfY95v9usdBSu/qTXWFYdTDJ1m
-	 ez1upFkfJUjY7CPqRjI6JR1MXAz0FYOPsGEPbftGorh16SAzJdvwg5UTw9SomyxbTOMW7
-	 j3yc2XyYFTCy6t6AS2WG3FbVLLJedt0YVOd373jizvhn0BaIv6dcSmLcVOy26QFcfHcrA
-	 aVAN4KdxuSeaS/icEnokAi7md/EH6XeuDYhHeZhrNbm9yYo9h16eaTvL8dbrdunmXUg==
+	t=1795448444;
+	b=U+CXoBR8AtVaQSVlVVk3k7TypIE+cUO8DUoHIPeCTkEBei5K9UoxWKK++y+4HH4W5pg4
+	 GK1NxsHFk1In2E4ysXBTQWDX2uqyoDEAgCJnAAIibrUovLfypaiMZCYWeOpB7jo5V+t1q
+	 g1x+SF69tYhm/ucLzNZnKxEqXNEmvlzlBrqZTilXZaLfj0fh/ZDfMkasko4si0QFizvwe
+	 b/TkXMXQkI9jii+DIGDX52Qt27Dm7dASkwQdWSpGrocdirRE80BKi3kt9ZVLYl3mW98Cd
+	 7XAuNbg2bgVmQcyFNaA2H5iJEsARUnUmchUtDbLCBf+p5sFZ7iB51dR9z82ZX4p3MhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795448203;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=iH9Osx1WH1Y/KQi30hi+nTRPfYUPETmiCdl6TuZB0IY=;
-	b=IBFca4tAOyDsZrUGDtuHJvZLzGv9HaoSuihQ95r8Wc57QDXoyAlJCUh1I22HBDMREdGe
-	 26O5XDBJ0x/RpW8vNGBerFy+QFnzubVjNYIyWO7l8P5g1LCoW1z/BKBKmLbpDBH+hEZkD
-	 Ns7+MoGc+DndOdmtZYxin0ZjLxsdQTkbRobwAZ+pj0dccZrMEkx2PEIK7zvqWmN7Nez9n
-	 iHnaDMZ+SorebNzu9V9Im3LpfxYd7jrzPv/gdgDSN/vNSVPXTo5Lhr7TLH0syCLoH7Exr
-	 xCPgd5+04raJ4t67yVU78D9xcyWmOaNxLhuXrXQN371V63EV+kjijRxPQ8D93tJmgjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795448444;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=YxzVyVE4ai8Ea+LyIq1A/L2q3uxrmhBKTxjVeIPKjac=;
+	b=ZkMlUCtwEIDU67G1mQ1LuShbzYLL4/XuQ7G2uAsFBhj99jbmAqs3cvX0hElBy5kT2zzk
+	 9JWRySM+YQt7huUSyy4Lnk8bDQWiKNb1Ulc59F5shpMx3com9sWq28v5t0xb4Jg3fnlmh
+	 95bkfhymNpLXW+lHekomwjl8G+8TRq1RV7YqpSK5TBtjpj7a+l2d1SHObJjUmqkO2ihzm
+	 FhkS+x02blQs2b6MMr+TCE1lXatqJSHSaOs6/CASlcdYbSGIrvfGdNemZKr/+BF1/eapp
+	 ijppzOEJX4MyawjAsLf53xSq9KeMIAY4S6QVXNYJK85mPB25IVM61m8le+D5sNMUvXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="LWoxj+/P";
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=CxFbkvU5;
+	arc=none smtp.remote-ip=209.85.160.179
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE6B606A336;
-	Mon, 23 Nov 2026 15:36:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EDE6B606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334DB60A2608
+	for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 15:40:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 334DB60A2608
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LWoxj+/P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795448203; x=1826984203;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WhGM7Q5iFOyHC9FRsJORCHpMZE6hReH187ed9xveTVU=;
-  b=LWoxj+/PZgqkqoAGQygDUL+kwEzoqo5FS/dZbTL8iDbjZB2FIqtHAezN
-   WoEyfxBT9K/5/uO8XUy6It163QFfBpyJwqeeLLGub0E+DemetkF78raqs
-   m4JiSZL3AYQfWQxgeu9RWPaP/11P5VKILpAIbfW1Cw3dSgCNMWOGQqkm1
-   KFWNGA1VggMPGJBuLBP9UaqxRQCUovqQMEDNCuckMKXAAaXVvrUFn19FM
-   lp99Bb4WrjRutTChREiJoGDL7+1Gh4VGI6usilH64NI5uzo/UovxKTTfi
-   vVSUiAea04dE1808+qlT4tBblfqLD9/3IbZZK6dSmO2/oxov98jt2q059
-   A==;
-X-CSE-ConnectionGUID: ml3vpZyHRwaeJXXmoB1rjw==
-X-CSE-MsgGUID: UC58SPgIQqqEx3dh9WaNqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4302209"
-X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="4302209"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 07:36:43 -0800
-X-CSE-ConnectionGUID: 7k4dpiovR3GnGfD99An42Q==
-X-CSE-MsgGUID: 95HMssZDQvyPyiyiMzxrIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="11684225"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa009.fm.intel.com with ESMTP; 23 Nov 2026 07:36:40 -0800
-Date: Mon, 23 Nov 2026 23:26:58 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Chao Gao <chao.gao@intel.com>, iommu@lists.linux.dev, x86@kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
-	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 7/9] coco/tdx-host: Add skeleton to support PCI link
- encryption
-Message-ID: <awRbQhb3HBfulvfC@yilunxu-OptiPlex-7050>
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-8-baolu.lu@linux.intel.com>
- <av1QxRYY9sXtC--P@intel.com>
- <d9f3eecf-5655-4779-9e8a-b3ff4cbdb667@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=CxFbkvU5
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5365d26ccbdso43397251cf.0
+        for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 07:40:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795448443; x=1796053243; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YxzVyVE4ai8Ea+LyIq1A/L2q3uxrmhBKTxjVeIPKjac=;
+        b=CxFbkvU5hWkZk5ASi+Fz8Jbz3PTa93SmxG74a4iPbdBeRW8kIRtMbhwz9iO+aNrouo
+         5DTzv5DOcTv6avCdXhwjWHlb6bKkClvC3eiK0vrZN5p5W9E2hx+72EghEk5rhg5RqHiA
+         /YC0DlKRfKoypRgFdYaghkU9Mag+P7695yFEcHMBO060WlL0N9Wvo1fHHjv5I9AemeM8
+         PZCdUwn5Wvr3Jxjw+WY0qVeYd/nvlXvR86JivgsKZNS3U1mMTlnrrosG9eHwGCYo1Mpp
+         w1RmsaAwIQA0Xghx2EX16sUQd9BZiw716PmEOSv4Z068TUqRW4umlgDtHG0iIBaE2GVB
+         3syQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795448443; x=1796053243;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YxzVyVE4ai8Ea+LyIq1A/L2q3uxrmhBKTxjVeIPKjac=;
+        b=flz1zkFgRtQ0A3thMiF1H5QMpY9EqbcV6lAqTUWADJZUox5sogBIfbLPh7PvGbKDDf
+         zZ9mtylf69Zi0lTfT8UJr88HqY4NL86PJbhEQQ6fP8ICHbBmdNAgRT9HBkOY5kNVDmFV
+         nD7CtopxxTfF1TgShkDhQnuKbF9X3s47DcQqodEumfeN6EATCt/8GGrKtoCI32IIC5wq
+         G4t7IQgB3byhFyvVsA9+tb0ECxs17kmzBKPFI/cafcb/CCi7J1nxsAx1w6yvOpGzhjqn
+         yX2+CE4zYHeZiH5cQ/tKLLIKKF9vVT1wjOQyx58jCXQWaOIrtsyUo2PMXPZQzzmlUC4m
+         Th2g==
+X-Forwarded-Encrypted: i=1; AL+hErGGoggbG1Ig2pr8U2gSkI3jRPMW+YU6wKA/W4ASSZ5vXQXkb/PbPZyQy/r0TqnUgFqsdKF3Tp1lP+wO@lists.linux.dev
+X-Gm-Message-State: APuU4Z/q5f3sbs/J2lUd7DqzOzZ/C3axpxdNG2TKzgKWbPTaUlXA3Z93
+	s6HsZZpIbRpBjpjlsZsrZEz63PJdombr+OTwGhUFOyyeiHFjM+kJqAFK0S5Q7Qkb+MU=
+X-Gm-Gg: AZFdTZcIYO2KG3LdcJpZAtKrevgejigm2OUc/3hnyQqu16mU8tCNKER98VnlGgu9XfI
+	2VXfveFJiOARCEuIvw3yciK3CHT+IT2PX9BsJ4H3j0zf8BC5CsMLGYHtgwTFXziOAPvI7tjj4yq
+	W7sam0zGH4SFYMeAYp/Y0lmXRnLmfVl1GEDApv8wAI6p1Mgk3avjZodiL5rEI9DpyZ2r17WxeJz
+	Q5Tn3K03pXWN8WN8RXI0mA02mWzMSxwPF6GANykJVDhHrxhUiXTJZAQxlbH/G8ahXtG6u0aETjr
+	Ta+BebF3ADpm/69MjJXo7cEV8Tp2k9mEfjabcsFDSvAvfRsOfw6QU+LLv5AN253e1TIs4R8H7xC
+	PhQfPLtGpppdJ/qU8zr3mStRxH4MVpzq9OZiXGPXl+z0oQekT2eJG680yda14uDvEFJjsFEwgGy
+	lLZsnbu566mNdL0VHgmfgMxKGweOYUQz7s03/MtTil0AJ3+aIvwxX+HuQwv2rxaD6ob7HMAywlv
+	WLUBttZHo9Io67iTarXjMOGGpa5KPOLcFojiql/I6nGZALrVxoaus/36UJcSeD0SX0QzchUEN7O
+	MAqZsrm1GEKwgwJFa4kgwJbiwyHPY90NzKZnlUk/GOzWqn5v8Qj8erCHQJ//4XAZ+rb6x4qiKIe
+	24UQ=
+X-Received: by 2002:ac8:570d:0:b0:55c:bc0:63cc with SMTP id d75a77b69052e-55d768a2916mr224280231cf.6.1795448443241;
+        Mon, 23 Nov 2026 07:40:43 -0800 (PST)
+Received: from ziepe.ca (stjhnbsu6iw-159-2-142-59.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.142.59])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92134796329sm107324056d6.2.2026.11.23.07.40.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 07:40:42 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVW9q-00000000t9u-0g9S;
+	Mon, 23 Nov 2026 11:40:42 -0400
+Date: Mon, 23 Nov 2026 11:40:42 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jiri Pirko <jiri@resnulli.us>,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	zohar@linux.ibm.com, aneesh.kumar@kernel.org, dave.jiang@intel.com,
+	nik.borisov@suse.com, sergii.dmytruk@3mdeb.com
+Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
+Message-ID: <20261123154042.GI179082@ziepe.ca>
+References: <20261113160838.2512652-1-jiri@resnulli.us>
+ <20261113160838.2512652-10-jiri@resnulli.us>
+ <awQCrnD5CtEhKRWz@e129823.arm.com>
+ <awQz1P6iXYrL8lv0@kernel.org>
+ <20261123151128.GD179082@ziepe.ca>
+ <awRYr7yB8IWj7S3G@kernel.org>
+ <awRan8ZELzpTwduV@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -88,25 +121,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d9f3eecf-5655-4779-9e8a-b3ff4cbdb667@linux.intel.com>
+In-Reply-To: <awRan8ZELzpTwduV@kernel.org>
 
-> > > +static inline bool tdx_supports_tdisp(const struct tdx_sys_info *sysinfo)
-> > > +{
-> > > +	if (!(sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT))
-> > > +		return false;
-> > > +
-> > > +	return false; /* To be enabled when kernel is ready */
-> > > +}
+On Mon, Nov 23, 2026 at 05:24:15PM +0200, Jarkko Sakkinen wrote:
+> > > > As per the function, perhaps tpm2_calc_event_log_size() should be
+> > > > relocated to lib and have non-TPM name like firmware_event_log_size()
+> > > > or something.
+> > > 
+> > > Probably under drivers/attestation since that is where all the TCG
+> > > formatted logs should end up. It should be 'tcg_event_log_size()' or
+> > > something. Maybe a tiny module for it like we would have done in lib/
 > > 
-> > Patch 2 open-codes the same TDX_FEATURES0_TDXCONNECT check. Can this
-> > helper be moved to patch 2 and used there?
+> > +1 for the name, as it is obviously more accurate prefix.
 > 
-> These checks serve different purposes: the metadata patch checks whether
-> the TDX module supports TDX Connect; tdx_supports_tdisp() decides
-> whether the kernel is ready to register the link tsm. The latter may
-> include additional checks, such as quirks, so I would like to keep the
+> Location, I don't know. I was thinking something like "lib/tcg.c" with
+> routines that are plain calculations based on TCG/TPM data.
 
-But I don't see the need to distinguish them. Any case the kernel is not
-ready to handle TDX Trusted I/O, but must read its metadata?
+I think we should not have new users outside attestation subsystem,
+but the legacy onces will still exist obviously..
 
-> helper for the tsm registration.
+IDK either, but this is my guess..
+
+> And perhaps for tpm_buf (both stack/heap allocatable), if Trenchboot
+> ever moves forward.
+
+DRTM users will route through attestation subsystem to do their
+extends so the tpm_buf user would be the TPM driver inside
+attestation. We definitely need this for ROT agility.
+
+We should be able to build the attestation TPM driver without any
+trenchboot stuff to motivate it.
+
+Jason
