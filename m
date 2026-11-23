@@ -1,71 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795448572;
-	b=aDnwU+uuCJftvgLt8Bd986nVvkcbAs7lahDUXzqUSjAF9gDVD+jZdjPhdr4/fwrUmJsp
-	 WTLsb/oa6f/kYNAbvvPeelruEd8Qx14uN2Np8f32rg8xKEkpu4a1qXICc2D+Ed7FmeaLi
-	 KaokcyK4XWXLhaVwKhwU68UJxSbagNGabRxbgSThOSGuRbSAsC3aUUAAkIRRr9aDMNMHC
-	 g9oiGnUoZ5/IV8x05yzasP93QeVcymyWWm/GI1gDBaQSyWin6r6FqdlEjKbmEO9sOOq1o
-	 wsB/e0tJPy59yDKAtoKgIqzesuhmdPphja5AqRQUMYH0x14r2uROR61y7baK5XrIMDQ==
+	t=1795449199;
+	b=Q1dsaN/101FSi2Ylu31oQb4tjlb3ZPpoEd2SUc4Z51WSnlvoOiIN+qTCj0HFoYo9+s0f
+	 l9lL0HpbpS96+2fhsu/R3XN2it87Iho8w6/0sVZCk+0fL4ZQXDxaYKNSGuuAFuVr0Gor0
+	 5JXsuQ1VncayP399fJkdd2Zk96KaLXHPGDRIapYQ8aPzng8w0eGA+NJ8kY45UP+cPxHtt
+	 TOfQ5VeJKeyrWqfNdC5M19x1cdXWcOVAMtUsuRTwjb9En/aJs+YBoiR6If3msUJbPNypN
+	 cgopS/7C7N4EPj6IYCu0wrD2PklEuh9X7wUBvMcj6NwAORvibWgg4lMv4l+7DIPTr9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795448572;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=riuuGEnVtTWNXQVF6HXxqh3SkzuRQHjQI696YuiIOXA=;
-	b=p+UpaRT03RrkF5fuoYzSFaRZsBvZaGTQT/NtYtUFAKDzZeiC7cHNjn6f2dBSCg/f3C5h
-	 kBbvHv4hu5x+ZbxIpJOp5TSfDFoyEWbKciHq6VEgt2KhCahGTvuqFAr45bFYQG4dTGC8J
-	 fHhMMKJukz2RzzuNJa4ISjKrogaVZKHRjnJBwNilxZz5axEo7lc3FyAr+9vvzkTw0A6GB
-	 BqBMU+TdPWMPUHV6apNL+3g955I/b7/ZqNa0+34W0AZ6uSmED4qPM0sLTsif3zavYxAFy
-	 1WO8A24AI75sBNmQNGKD6aaeazXUtJRM/aHowCsblTHcuZcmwgKyjYA61O7eWCZrnig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795449199;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=2p/B/tDeGRhIHo3PpPUcctpXsWm0ZDpkAFpHkG5DAqM=;
+	b=1O1aAi7Oq9TzF6MHXYzlqZgfZcCYSqjho0RrWkCoy19XUzkMBdLGv0AlLHuMitZi7BzR
+	 SFYKgKKIl+fj6VMiitlz257pxTFp5/P1GIoKODl4fMzR8LaZN9PjtAYZY9Zar/fNv5Ec+
+	 rF2sdelqEZddvw1wfTW6OSw1FaQ/Mfaj/O/BWHe3aaL0rJz0sarcFY3fPJ1gOnUqnQkhn
+	 37CWYYP500UXBGqwVXnKcYzlNHzd4dJG89VYUBE0sYhN9HmXLGCPx4EvlfglPLiR1CWya
+	 +AVWZ7u4s03EbXiTxMkuy2yyUUHF6TES018ByQLvMH+x4hjz2zLeHAvLQD5MfyRpO7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ce7NZaFf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hm9AFgWY;
+	arc=none smtp.remote-ip=198.175.65.14
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id C6250606A31A;
-	Mon, 23 Nov 2026 15:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDF2606A32D;
+	Mon, 23 Nov 2026 15:53:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6EDF2606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ce7NZaFf
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 391B51F000CA;
-	Mon, 23 Nov 2026 15:42:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795448571;
-	bh=riuuGEnVtTWNXQVF6HXxqh3SkzuRQHjQI696YuiIOXA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ce7NZaFfiDrHnlT5izuCzOYODIzuJKTteA9jXeyOFT5LUGlFOYnDR39EjoSwj1YC/
-	 SNWcefv7l/bbO0uX2Nk0ySysJZmE1XD9vs9xCGPNp9v0QeN9q2biKcj+In7T/hlBTN
-	 ufzO2vUUHyJ1qKVqH648Y0nCZjYYt9S2zP5gFajYEj67snKrpidJr8WXzwQUxrvDJV
-	 2dBtO8GxcLSJoLVLzfhnOuBsLqrD8o66R5ACgm6z2q9CE4K/krQ3Ut7RD2Caa0AVFY
-	 iK/j7B0wipcn91RKxoXQm1zvOQI0nW5lfcU2QAAhUV/pY2O88IUdo6lfyYxGxhCGyS
-	 ufu9h5uCHHKug==
-Date: Mon, 23 Nov 2026 17:42:48 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jiri Pirko <jiri@resnulli.us>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	zohar@linux.ibm.com, aneesh.kumar@kernel.org, dave.jiang@intel.com,
-	nik.borisov@suse.com, sergii.dmytruk@3mdeb.com
-Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
-Message-ID: <awRe-A_KeE_kXyPq@kernel.org>
-References: <20261113160838.2512652-1-jiri@resnulli.us>
- <20261113160838.2512652-10-jiri@resnulli.us>
- <awQCrnD5CtEhKRWz@e129823.arm.com>
- <awQz1P6iXYrL8lv0@kernel.org>
- <20261123151128.GD179082@ziepe.ca>
- <awRYr7yB8IWj7S3G@kernel.org>
- <awRan8ZELzpTwduV@kernel.org>
- <20261123154042.GI179082@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hm9AFgWY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795449199; x=1826985199;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/5CxvQlHei5C8QPMGIb9LL2Jgw4T6fH+WUJa2t/y+IE=;
+  b=hm9AFgWYJcKdTxFFfqprhoKdiA/RUQwf4Qe89ga7jqkZQTHA5gQsG6L/
+   qmRbM4fs8XYqKo3IDBglOXrz7jIZqwq2rhnLUiuwtqbN6F804CyvRz92j
+   0S6QLUF0c75FuJeGIRQOTbKYeD12IHuDkUweDgAgM/zEbQhI1SUmqYwcX
+   EhHHvwiz2mJoi9nj040LYbhQKzLOE0b7m5JeY9+RlC4CjYUMf/7KFRZTl
+   P7W2nwg4Lu9gC//3FBDA5rw9lk/4VlvZkJX9P5C3kSVH+7EbT403DQL98
+   3q5Q40OKz63MlBdIO6hwFa9wBlRNU2OaHVSItuBldVARR74rNumrLvS1C
+   w==;
+X-CSE-ConnectionGUID: FM1InyU+QROavGZxTwSXsQ==
+X-CSE-MsgGUID: ZrjVWw+7QzaySR0pjKIkdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4152509"
+X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
+   d="scan'208";a="4152509"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 07:53:18 -0800
+X-CSE-ConnectionGUID: D7CUMNcXRtan+HEKGskbOg==
+X-CSE-MsgGUID: 6oxWOKaWQ+KpV3pJZrseAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
+   d="scan'208";a="11488037"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa003.fm.intel.com with ESMTP; 23 Nov 2026 07:53:14 -0800
+Date: Mon, 23 Nov 2026 23:43:33 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>, iommu@lists.linux.dev,
+	x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 7/9] coco/tdx-host: Add skeleton to support PCI link
+ encryption
+Message-ID: <awRfJZgno2OBDNJm@yilunxu-OptiPlex-7050>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-8-baolu.lu@linux.intel.com>
+ <de1011bc-1cc0-4409-af76-4e90dcef6cf4@linux.intel.com>
+ <d77bab15-3e35-4185-b328-99712f607435@linux.intel.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,45 +88,103 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261123154042.GI179082@ziepe.ca>
+In-Reply-To: <d77bab15-3e35-4185-b328-99712f607435@linux.intel.com>
 
-On Mon, Nov 23, 2026 at 11:40:42AM -0400, Jason Gunthorpe wrote:
-> On Mon, Nov 23, 2026 at 05:24:15PM +0200, Jarkko Sakkinen wrote:
-> > > > > As per the function, perhaps tpm2_calc_event_log_size() should be
-> > > > > relocated to lib and have non-TPM name like firmware_event_log_size()
-> > > > > or something.
-> > > > 
-> > > > Probably under drivers/attestation since that is where all the TCG
-> > > > formatted logs should end up. It should be 'tcg_event_log_size()' or
-> > > > something. Maybe a tiny module for it like we would have done in lib/
+On Mon, Nov 23, 2026 at 12:18:32PM +0800, Baolu Lu wrote:
+> On 11/19/2026 10:52 AM, Binbin Wu wrote:
+> > On 11/12/2026 12:30 PM, Lu Baolu wrote:
+> > > Register a Link TSM instance to support host side TSM operations for
+> > > TDISP, when the TDX Connect support bit is set by TDX Module in
+> > > tdx_feature0.
 > > > 
-> > > +1 for the name, as it is obviously more accurate prefix.
+> > > This is the main purpose of an independent tdx-host module out of TDX
+> > > core. Recall that a TEE Security Manager (TSM) is a platform agent that
+> > > speaks the TEE Device Interface Security Protocol (TDISP) to PCIe
+> > > devices and manages private memory resources for the platform. An
+> > > independent tdx-host module allows for device-security enumeration and
+> > > initialization flows to be deferred from other TDX Module initialization
+> > > requirements. Crucially, when / if TDX Module init moves earlier in x86
+> > > initialization flow this driver is still guaranteed to run after IOMMU
+> > > and PCI init (i.e. subsys_initcall() vs device_initcall()).
+> > > 
+> > > The ability to unload the module, or unbind the driver is also useful
+> > > for debug and coarse grained transitioning between PCI TSM operation and
+> > > PCI CMA operation (native kernel PCI device authentication).
+> > > 
+> > > For now only check for TDX Connect support in the TDX Module and
+> > > register the Link TSM. The TSM support is basic boilerplate with
+> > > operation flows to be added later.
+> > > 
+> > > Based on work by Yilun and Dan.
+> > > 
+> > > Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
+> > [...]
 > > 
-> > Location, I don't know. I was thinking something like "lib/tcg.c" with
-> > routines that are plain calculations based on TCG/TPM data.
+> > >   static int tdx_host_probe(struct faux_device *fdev)
+> > >   {
+> > > -	return seamldr_init(&fdev->dev);
+> > > +	int ret;
+> > > +
+> > > +	ret = seamldr_init(&fdev->dev);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	return tdx_tdisp_init(&fdev->dev);
+> > If tdx_tdisp_init() fails, it will also disable TDX module update and the
+> > version sysfs attributes.  If this is intended, could you add some description
+> > in the change log about it?
 > 
-> I think we should not have new users outside attestation subsystem,
-> but the legacy onces will still exist obviously..
-> 
-> IDK either, but this is my guess..
+> You are right. That side effect is unnecessary. Module update and the
+> version attributes don't depend on TDISP. How about fixing this by
+> making the TDISP failure non-fatal so tdx-host still provides module
+> update?
 
-No strong opinions on this; just unpurging my thoughts.
+Now we see all features are necessary by default, if any feature fails
+to enable then the TDX module is broken.
 
-> 
-> > And perhaps for tpm_buf (both stack/heap allocatable), if Trenchboot
-> > ever moves forward.
-> 
-> DRTM users will route through attestation subsystem to do their
-> extends so the tpm_buf user would be the TPM driver inside
-> attestation. We definitely need this for ROT agility.
-> 
-> We should be able to build the attestation TPM driver without any
-> trenchboot stuff to motivate it.
-
-OK, this was my guess but did not know it by fact.
+We can have exceptions but that need well justification. Currently I
+don't see the need to surpress the error.
 
 > 
-> Jason
-
-
-Br, Jarkko
+> Something like:
+> 
+> -static int tdx_tdisp_init(struct device *dev)
+> +static void tdx_tdisp_init(struct device *dev)
+>  {
+>      const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
+>      struct tsm_dev *link;
+> 
+>      if (!sysinfo || !tdx_supports_tdisp(sysinfo))
+> -		return 0;
+> +		return;
+> 
+>      link = tsm_register(dev, &tdx_tsm_link_ops);
+> -	if (IS_ERR(link))
+> -		return dev_err_probe(dev, PTR_ERR(link),
+> -				     "failed to register TSM\n");
+> +	if (IS_ERR(link)) {
+> +		dev_warn(dev, "failed to register TSM: %pe\n", link);
+> +		return;
+> +	}
+> 
+> -	return devm_add_action_or_reset(dev, unregister_link_tsm, link);
+> +	if (devm_add_action_or_reset(dev, unregister_link_tsm, link))
+> +		dev_warn(dev, "failed to register TSM cleanup\n");
+>  }
+> @@
+>  static int tdx_host_probe(struct faux_device *fdev)
+>  {
+>      int ret;
+> 
+>      ret = seamldr_init(&fdev->dev);
+>      if (ret)
+>          return ret;
+> 
+> -	return tdx_tdisp_init(&fdev->dev);
+> +	tdx_tdisp_init(&fdev->dev);
+> +
+> +	return 0;
+>  }
+> 
+> Thanks,
+> baolu
