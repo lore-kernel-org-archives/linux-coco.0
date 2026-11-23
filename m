@@ -1,81 +1,101 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795430620;
-	b=ARDCpIOTZ3LDgjMYeQa4NRD0vAxfUMrCve6Af7S8aQ+F9nvSFJXyRLtIBjFFI1xxHazt
-	 egjw8G5/zzxTwDb3Bzda4zDLtKKHsClGaeCq33QWA0ZzAXKTz9zSZlF9nj1k5IAFOggcc
-	 JvrXJv+E1KCauWWK8YelibsHlezTwTMHcNHZkEhb1cCuT3FQXpr9nqq8lfyKy0otd5xgC
-	 MOOnFq1flaVzDbsv6GRnOc8GN5wGd/qL+tnFjr7SGlnhrNW5EZ1jj/UDTSXUYuXaoxNg8
-	 bqcy+TpOU3AHllkghs1VFbUyHy0KkIAlLslF+60Rmscc3ChR7cYsqgvpienir8Z5+yw==
+	t=1795431936;
+	b=HpD9vU7dAVnhSDHe1669hm+G0hl4Z5hdkranDlUec6eajlA2FQbLLwh0x/iNb4S+hlIq
+	 1I1npKg8DZCgNh8AZ4WrSDPYw5hzw9IvnkXwcAIabh16m4AQtoqsKcX0ECruYdE3FZgKf
+	 U32Pf+r27WqI2l5QPB3hzBv64H7mmp+UuKe6LWJV6b42IhvJB2nz74eoQwFptXGNzRo9z
+	 7N4EQTulfcBtCVByhz8HqaHUFH57HI8wO3zaX1C94RW/t7PsX6paaZ2IZgnK6Qs279xl4
+	 Cp3PR4+9d5Kfk8egb0HfeNwY2TQG5LWN5d1mMlhZuFsU/x6bE5TbP6Jc4URhrwMW7VQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795430620;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=u75N2UHCo0Q1IQlaoRk+wtzVKvHVQ52rjy0wDjruBvY=;
-	b=UAfEnDztBpmo+bmVWYYfe8lq/Te+RwNV9ld5Z73aOfSZoyWEIW+J8VkxOrA1kq6FMHr3
-	 j3h6d4BGCdFeciU8No57dZ3zPCSbsk4IpF+R8RQDPFWCGy7Ab4xKvnS2emeeU5FHaG/3V
-	 Q2h+UiTi3hf9/XMXrwth4nj/FKMOrx8p/6xJ/ZP2vVy6w2cPKNN0SOow2oHbDUd7KI8VY
-	 9veAvcn/0gzA2NoJ1Xvs1ghOxYr2psbFFT2wU8nsZrOF4IBQrHS1QKRHd88BcEeA08lA0
-	 BiZexFgj9jy8zKeMy+DPXdAN8EySUuJ/r6xiH+GafqDPFO5L6yVAPOi3TOUWuVcI6+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795431936;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=y+pXRncvtOc4nB9TtW4KG6FLyRulzoczl3trVZwKBJI=;
+	b=gKcdcbLrWHqGEd7xqEF/g38O5TEvhEC9iwDwBx/By1vTQlS22oj7k8NWCiuxRkmk1Ch9
+	 MPx0EQCBGbYQwMvr6cihp3rHeVG0s74yMDCgCXg8nAAcysVDLEANjbsW7lImeZuXS2avE
+	 oHWxdHNNvYi+3fzGNXVy3lHnUvxzRS6qtgGd+5L9jQptPCTBaHHH5uYu358WFFahxlJMz
+	 YdHgmaB+ZnAD/6+gBGc15QwRiDNVey52sU/Wfdkpz+seRrcW0cHSKRjrONkfcvHfRT7rQ
+	 n7dtR8hKjSnMPK0kZd3ZfE9/lj12CW3k4wDItMCyVgZwdCVOqum95xW2tHfJrEgcZBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=GMFzn4c6;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=KvhrT8NK;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD09E606A334;
-	Mon, 23 Nov 2026 10:43:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD09E606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0680606A31E;
+	Mon, 23 Nov 2026 11:05:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0680606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=GMFzn4c6
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=KvhrT8NK
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8AF711476;
-	Mon, 23 Nov 2026 02:43:36 -0800 (PST)
-Received: from e122027.arm.com (unknown [10.57.63.212])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CBC023F632;
-	Mon, 23 Nov 2026 02:43:34 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 218E3143D;
+	Mon, 23 Nov 2026 03:05:32 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A83273F882;
+	Mon, 23 Nov 2026 03:05:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795430619; bh=XPK8ICnszazWaOOfoo2WmCdjdXKFyVejf/EIua6bpzE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMFzn4c6f/tEnXI1562O6v0JYndteS9LFOgaoMftuMVWOj6JNgVH3OPtiNvEwHJ34
-	 iQ6rrjFbYCPDhl/2rSmibPVl+pIoEf684sZIxj80ChFR3ul7nWFZ7ZgVsdT9sr5zgR
-	 OUsd/lukwjTYuppHOw5URnMz9O4SQjsV7+cX9v4U=
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	t=1795431935; bh=kCUeWgNlDSox1V+xXIV0FoQklIwe01iQtQShkTSpFns=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KvhrT8NKkwfUQlN/JVYJ5xdBVy5POFXKjhsTfodMnif/DZoxUXBTRSE+v99DKNllE
+	 5d1fBxUVR51g74P9by/+O7T3jZUmuCzToT2ynvCd+snaLJQPIjfE7jA9gHVgHouzT3
+	 DFYSeENRGheUkSn0CCeE9f0MsFw+W0BZ+uXNA9WQ=
+Date: Mon, 23 Nov 2026 11:05:23 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
 	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Kohei Enju <enju.kohei@fujitsu.com>,
-	Steven Price <steven.price@arm.com>
-Subject: [PATCH v4 11/11] KVM: arm64: CCA: Add Realm stage-2 MMU operations
-Date: Mon, 23 Nov 2026 10:42:31 +0000
-Message-ID: <20261123104233.95710-12-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261123104233.95710-1-steven.price@arm.com>
-References: <20261123104233.95710-1-steven.price@arm.com>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	linaro-mm-sig@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
+Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
+ using CoCo shared memory allocator
+Message-ID: <awQd81MwZqi55gf8@arm.com>
+References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
+ <20261116091137.94252-5-aneesh.kumar@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -85,135 +105,110 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116091137.94252-5-aneesh.kumar@kernel.org>
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+Hi Aneesh,
 
-Register the Realm stage-2 MMU operations now that the RMM mapping
-and unmapping helpers are available. Route unmapping through the
-RMM, and use the Realm-specific fault handler for Realm memory faults.
+I'm replying on this patch rather than on the one introducing the API. I
+think it's more obvious here why I think we can make things simpler.
 
-The RMM handles TLB invalidation when stage-2 mappings change, so
-the host has no separate TLB flush to perform. Realm stage-2 does
-not support access flags, including for shared IPAs.
+On Mon, Nov 16, 2026 at 02:41:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>  static struct page *its_alloc_pages_node(int node, gfp_t gfp,
+>  					 unsigned int order)
+>  {
+> -	struct page *page;
+> -	int ret = 0;
+> +	struct cc_shared_pages mem;
+>  
+>  	if (node == NUMA_NO_NODE)
+>  		node = numa_mem_id();
+>  
+> -	page = alloc_pages_node(node, gfp | gfp_flags_quirk, order);
+> -
+> -	if (!page)
+> -		return NULL;
+> -
+> -	ret = set_memory_decrypted((unsigned long)page_address(page),
+> -				   1 << order);
+> -	/*
+> -	 * If set_memory_decrypted() fails then we don't know what state the
+> -	 * page is in, so we can't free it. Instead we leak it.
+> -	 * set_memory_decrypted() will already have WARNed.
+> -	 */
+> -	if (ret)
+> +	if (alloc_cc_shared_pages_node(node, gfp | gfp_flags_quirk,
+> +				       PAGE_SIZE << order, &mem))
+>  		return NULL;
+>  
+> -	return page;
+> +	return mem.page;
 
-Realm teardown destroys non-root RTTs through RMI, so the Realm
-stage-2 destruction callback frees only the root RTT pages.
+This part is mostly fine but I do wonder why not make this alloc
+function the same as buddy alloc_pages_node() - return a struct page
+pointer.
 
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
+>  static void its_free_pages(void *addr, unsigned int order)
+>  {
+> -	/*
+> -	 * If the memory cannot be encrypted again then we must leak the pages.
+> -	 * set_memory_encrypted() will already have WARNed.
+> -	 */
+> -	if (set_memory_encrypted((unsigned long)addr, 1 << order))
+> +	struct cc_shared_layout layout;
+> +	struct cc_shared_pages mem;
+> +
+> +	if (WARN_ON(cc_shared_calc_layout(PAGE_SIZE << order, &layout)))
+>  		return;
+> -	free_pages((unsigned long)addr, order);
+> +
+> +	mem.page = virt_to_page(addr);
+> +	mem.shared_size = layout.shared_size;
+> +	free_cc_shared_pages(&mem);
+>  }
 
----
-Changes since v3:
-- Register realm_mem_abort() as the Realm stage-2 fault handler.
+Here it gets weird and I don't see why we can't have just a buddy-like
+interface. The kernel-doc for alloc says that shared_size must be
+retained for the corresponding free but without reading the source code,
+you can't tell that cc_shared_calc_layout() gives you the same
+shared_size populated by alloc. We have a similar pattern in dma-buf but
+using the compound page order.
 
-Changes since v2:
-- Move common stage-2 destruction dispatch to a separate patch;
-  retain the Realm-specific destruction callback here.
----
- arch/arm64/kvm/mmu.c | 47 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
+What's wrong with a simpler API:
 
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 870dc7e2699b..274dfe8ea364 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -191,6 +191,12 @@ static int kvm_vm_flush_remote_tlbs(struct kvm *kvm)
- 	return 0;
- }
- 
-+static int realm_flush_remote_tlbs(struct kvm *kvm)
-+{
-+	/* Nothing to do here, RMM does the job */
-+	return 0;
-+}
-+
- /**
-  * kvm_arch_flush_remote_tlbs() - flush all VM TLB entries for v7/8
-  * @kvm:	pointer to kvm structure.
-@@ -218,6 +224,13 @@ static int kvm_vm_flush_remote_tlbs_range(struct kvm *kvm,
- 	return 0;
- }
- 
-+static int realm_flush_remote_tlbs_range(struct kvm *kvm,
-+					 gfn_t gfn, u64 nr_pages)
-+{
-+	/* Nothing to do here, RMM does the job */
-+	return 0;
-+}
-+
- int kvm_arch_flush_remote_tlbs_range(struct kvm *kvm,
- 				     gfn_t gfn, u64 nr_pages)
- {
-@@ -353,6 +366,15 @@ static void no_stage2_unmap_range(struct kvm_s2_mmu *mmu,
- {
- }
- 
-+static void realm_stage2_unmap_range(struct kvm_s2_mmu *mmu,
-+				     phys_addr_t start, u64 size, bool may_block,
-+				     enum kvm_gfn_range_filter filter)
-+{
-+	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
-+
-+	kvm_realm_unmap_range_filter(kvm, start, size, may_block, filter);
-+}
-+
- /*
-  * Unmapping vs dcache management:
-  *
-@@ -1054,6 +1076,17 @@ static void pkvm_stage2_destroy(struct kvm_pgtable *pgt)
- 	pkvm_pgtable_stage2_destroy_pgd(pgt);
- }
- 
-+static void realm_stage2_destroy(struct kvm_pgtable *pgt)
-+{
-+	/*
-+	 * Realm RTTs are inaccessible to the host and may contain stale data
-+	 * after the RMM has released them. The non-root RTTs are explicitly
-+	 * destroyed through RMI before the RD is destroyed; only the root PGD
-+	 * pages remain to be freed here.
-+	 */
-+	kvm_pgtable_stage2_destroy_pgd(pgt);
-+}
-+
- static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
- {
- 	struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
-@@ -2486,7 +2519,7 @@ static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
- 		return user_mem_abort(s2fd, NULL, kvm_s2_fault_map, false);
- }
- 
--static int __maybe_unused realm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
-+static int realm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
- {
- 	struct kvm *kvm = s2fd->vcpu->kvm;
- 
-@@ -3389,6 +3422,16 @@ static const struct kvm_vm_s2_ops kvm_default_vm_s2_ops = {
- 	.vm_mem_abort			= kvm_vm_mem_abort,
- };
- 
-+static const struct kvm_vm_s2_ops realm_vm_s2_ops = {
-+	.vm_stage2_destroy		= realm_stage2_destroy,
-+	.vm_flush_remote_tlbs		= realm_flush_remote_tlbs,
-+	.vm_flush_remote_tlbs_range	= realm_flush_remote_tlbs_range,
-+	.vm_age_gfn			= no_age_gfn,
-+	.vm_test_age_gfn		= no_age_gfn,
-+	.vm_stage2_unmap_range		= realm_stage2_unmap_range,
-+	.vm_mem_abort			= realm_mem_abort,
-+};
-+
- #define KVM_VM_S2_OPS(flavor, ops)		\
- 		[(flavor)] = &(ops)
- 
-@@ -3397,7 +3440,7 @@ static const struct kvm_vm_s2_ops *arm64_vm_s2_ops[] = {
- 	KVM_VM_S2_OPS(VM_NVHE, kvm_default_vm_s2_ops),
- 	KVM_VM_S2_OPS(VM_PKVM, pkvm_vm_s2_ops),
- 	KVM_VM_S2_OPS(VM_PROTECTED_PKVM, protected_pkvm_vm_s2_ops),
--	[VM_REALM] = NULL,
-+	KVM_VM_S2_OPS(VM_REALM, realm_vm_s2_ops),
- };
- 
- static int kvm_vm_init_vm_s2_ops(struct kvm *kvm)
+struct page *alloc_cc_shared_pages_node(int nid, gfp_t gfp, unsigned int order);
+struct page *alloc_cc_shared_pages(gfp_t gfp, unsigned int order);
+void free_cc_shared_pages(struct page *page, unsigned int order);
+
+Both alloc and free take the original request order and perform the
+round up internally without exposing the details to the caller. Alloc
+shares the whole resulting buddy block and free makes the same block
+private before releasing it. We can document that free takes the
+original requested order and releases the whole allocation. Partial
+frees aren't supported.
+
+We can get rid of layout and mem structures (or at least not as
+part of the API). Of course, this assumes that the shared granule size
+remains constant for a guest's lifetime but I don't think that's a
+problem.
+
+> @@ -278,7 +267,8 @@ static void *itt_alloc_pool(int node, int size)
+>  		if (!page)
+>  			break;
+>  
+> -		gen_pool_add(itt_pool, (unsigned long)page_address(page), PAGE_SIZE, node);
+> +		gen_pool_add(itt_pool, (unsigned long)page_address(page),
+> +			     cc_shared_granule_size(), node);
+
+Here we can introduce:
+
+unsigned int cc_shared_page_order(unsigned int order);
+
+and just use (PAGE_SIZE << cc_shared_page_order(0)) for gen_pool_add().
+
+Was there a caller you had in mind that needs the common allocator to
+share less than the whole buddy block?
+
 -- 
-2.43.0
-
+Catalin
