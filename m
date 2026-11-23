@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795433010;
-	b=Vzb6e5vemhb8E4UwPqXxRWw+J1wtukPugeiN3jREDLDkn6SKCGZhC/rGEanTqXpJ2rMz
-	 kpSC57g1HUIrW7wiweZnqmjYTcKcbEBmISpt3/Yh3FMQLKqTe/ZYF+orklPG8uFQwT66K
-	 wFqYCp4jxq9F0D15XkUm7g2I71rOG2SaH3abLL9H+N2EeZYeMd/CqhXwbcslpYk3ALvpf
-	 kzCqo+dvgyT4Pjv+pwkGyVSy+LFNsge41qj46FSXDjn8jITa54D63LWmgUhLHrhJUnSXT
-	 ZtU5HX/aaCUyqB2lDc5x0xVm6ydnpOQjcq8fvkcN2xrBXRokFGYRWHb6oL6zev3RFJw==
+	t=1795433709;
+	b=XaWva1EgXPJDFUZxUu5RlsF5WauqWM2e5h27I3PzWAE6GdanUjrl9VTafx1JiKvI19Mb
+	 udStMHokkrcVwuPt6YHaUCcveAU7G8gZm9taO9/9xvFgoTUOsfgfDuLeCohBFj4+1RI8c
+	 ojyRbGOZUJM6lTiS4GUAXXvx122GzlwGOwC4bgKmn1I6Gosm4JSVSF07JAieEch81vHd2
+	 PNj2lvBF5VvXvaJbhi/Xbot1vPWQWrknHQyU9cQa0Vf/kot5GzOrmJDj27C8lrFKyXDTV
+	 8nXcyt4Br1BU8Vu5Z+8ZPTFeo7wI44eAl2amBM09EMMRwGiC3JNBIP06RXew4hQ56cA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795433010;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795433709;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=s2UaCnJHegTtHQHuBogVkelUqR56F5YOWyaQ5O82hGA=;
-	b=SFWaTOYvd6c4Nsg5esDk9T3/FD6COdFERU8MmAG5unJl+U2K1VRC72EZz3VwvxJubYjQ
-	 2WvKTd/PmJk5EjRwAnzfanT8ml6U7ODK+gIF6JqWUiAcfrJ//xZ+3TVxO3FH1OA6luukg
-	 EsXtVFLKxY5A1wZjf7VPWLnMFHulsTOwtMN1K2kZdfsSbXFfLFt+XF1W0n+P5bDzXErsK
-	 DdhQiLR6/sebTJDHDQr1O3aSdRtlbMrjBVForECGWDl+gcTISs8KY2VRSghjf4XLuJ3/N
-	 kYByh8M8KY4MM4bZAKf3R2v/iMMz3ZY4Ux2IH0iXabUZbPoxE7M0E04laq+UoTTbokQ==
+	bh=bFQeSIonQoNAJlvVjuvJ7vB2WO8yi3wgzbUUjHoVyjo=;
+	b=P58AQgFDbjGBHKTt5kOddeQ7MelZBl59fnuO4hLELnkLutSFJd8H80yz34bDGL7whx2M
+	 TaozvWQ7PE1DWC4sy6dJ7887z++wtrl0pzCGga64eW2uQNaxwBiUWUaeWRlCMocCrbMos
+	 oBIrY5t+wT1u3ceo/UMwE9O9RviRgQOabWDMihXeIEhWjXWgUb9KknLFoA7YcqceuhqW9
+	 1vAU3KxHygch5Znzi401HZF5gBWTXx3KuYBMD4192WvmTkkOuTRxpIVvbDQTegSfz3gj0
+	 h/23Bjjr/QjsXuNhGJYKaHC/Xo/rI10F+CNDR/hkjOZp7SbKr0PhVvalIvDYcg8wnJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oNQDTBu8;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=uVOvnrOT;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41F0606A31A;
-	Mon, 23 Nov 2026 11:23:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C41F0606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13DA606A31E;
+	Mon, 23 Nov 2026 11:35:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B13DA606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oNQDTBu8
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=uVOvnrOT
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 558EA143D;
-	Mon, 23 Nov 2026 03:23:26 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE5BB143D;
+	Mon, 23 Nov 2026 03:35:04 -0800 (PST)
 Received: from [10.0.129.12] (Suzukis-MBP.cambridge.arm.com [10.0.129.12])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A7D23F882;
-	Mon, 23 Nov 2026 03:23:25 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 80E383F9AB;
+	Mon, 23 Nov 2026 03:35:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795433009; bh=JJf5wrf3Uk0e6a6L7HQajjtgkwWgA/CjERtDpKtOa6k=;
+	t=1795433707; bh=z2UjvLOic3835pBC+7T3rWMtMHbQw/5uf0dNP5+l1zY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oNQDTBu8q5UjbnxAg/pfOT0hdYwDNp+Wv5zYvWaP7dPAJzIM5OZ32kYeHfRAQUR0c
-	 qXrM50ge5vP6b+T50ndJyjhzeOpi75mEahzQwdHkX0VRP0w3whzPASpqG83z7BwC+Q
-	 MO+WY8VS9WiSuhVqhQoLYuNQ+ZIAY/Ip0p41m6H0=
-Message-ID: <0d031484-d394-47e3-be49-7c85004dbb83@arm.com>
-Date: Mon, 23 Nov 2026 11:23:23 +0000
+	b=uVOvnrOTwpVLMcG+Dlh+WlY7FSjZJK+7KsCxa4yQPWdBcAsUxKfmHFNlhpfRP2QKw
+	 04JoSaUxntF0XyMj2D/TDk44iVt+iM0RY5dNlmXWk9T66VIIvSB9igiX2YEyN7au3r
+	 BqwK97UJttJ9K3rBNG3rmC7kiFx4hn+AfGk1vJG8=
+Message-ID: <882a401c-c701-4770-bb7b-970d8869ae61@arm.com>
+Date: Mon, 23 Nov 2026 11:35:03 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -54,8 +54,8 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/11] KVM: arm64: Dispatch stage-2 destruction by VM
- flavor
+Subject: Re: [PATCH v4 05/11] KVM: arm64: CCA: Add basic infrastructure for
+ creating a realm
 Content-Language: en-GB
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
@@ -74,139 +74,256 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>,
  Kohei Enju <enju.kohei@fujitsu.com>
 References: <20261123104233.95710-1-steven.price@arm.com>
- <20261123104233.95710-5-steven.price@arm.com>
+ <20261123104233.95710-6-steven.price@arm.com>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20261123104233.95710-5-steven.price@arm.com>
+In-Reply-To: <20261123104233.95710-6-steven.price@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 23/11/2026 10:42, Steven Price wrote:
-> Select the stage-2 destruction functions through the VM's stage-2
-> operations. This keeps the native and pKVM paths explicit and lets a
-> Realm provide its own destruction callback when Realm stage-2
-> operations are registered.
+> Introduce the skeleton functions for creating and destroying a realm.
+> The requested IPA size is checked against both the KVM and RMM limits.
 > 
-> The Realm callback will only free the root RTT pages, because RMI
-> teardown destroys the non-root RTTs separately.
+> The actual work of constructing the realm will be added in future
+> patches.
 > 
-
-minor nit: The second paragraph may be omitted as we introduce the
-Realm stuff in a later patch.
-
-
 > Signed-off-by: Steven Price <steven.price@arm.com>
-
-
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-
 > 
 > ---
 > Changes since v3:
-> - Move before basic Realm infrastructure and declare the page-table
->    type for the new callback.
+> - Use the preceding destruction dispatch instead of a temporary
+>    Realm-specific check in kvm_stage2_destroy().
 > 
 > Changes since v2:
-> - New patch in v3; split stage-2 destruction dispatch out of the
->    Realm stage-2 MMU operations patch.
-> ---
->   arch/arm64/include/asm/kvm_host.h |  2 ++
->   arch/arm64/kvm/mmu.c              | 30 +++++++++++++++++++++++-------
->   2 files changed, 25 insertions(+), 7 deletions(-)
+> - Move ARM_RMM_RMI selection and rmi.o build registration here.
+>    Store the RD physical address from the outset and free SRO state
+>    on Realm teardown errors.
 > 
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 9d6258b213d1..3ddeddfacd06 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -234,6 +234,7 @@ struct kvm_vcpu_ops {
+> Changes since v1:
+> - Cap the Realm IPA size at the smaller KVM and RMM limit, and record
+>    the selected IPA size when initializing Realm state.
+> ---
+>   arch/arm64/include/asm/kvm_rmi.h | 23 ++++++++++++
+>   arch/arm64/kvm/Kconfig           |  1 +
+>   arch/arm64/kvm/Makefile          |  2 +-
+>   arch/arm64/kvm/arm.c             |  9 +++++
+>   arch/arm64/kvm/mmu.c             |  7 +++-
+>   arch/arm64/kvm/rmi.c             | 63 ++++++++++++++++++++++++++++++++
+>   6 files changed, 103 insertions(+), 2 deletions(-)
+>   create mode 100644 arch/arm64/kvm/rmi.c
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 67f16793b4d0..4ac1af622872 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -6,6 +6,9 @@
+>   #ifndef __ASM_KVM_RMI_H
+>   #define __ASM_KVM_RMI_H
 >   
->   struct kvm_gfn_range;
->   enum kvm_gfn_range_filter;
-> +struct kvm_pgtable;
->   struct kvm_s2_fault_desc;
+> +#include <linux/arm-smccc-rmi.h>
+> +#include <linux/kvm.h>
+> +
+>   /**
+>    * enum realm_state - State of a Realm
+>    *
+> @@ -50,10 +53,30 @@ enum realm_state {
+>   /**
+>    * struct realm - Additional per VM data for a Realm
+>    *
+> + * @rd_phys: Physical address of the RMM-managed Realm Descriptor (RD) granule
+> + * @sro: Preallocated SRO state context for Realm MMU operations
+>    * @state: The lifetime state machine for the realm
+> + * @ia_bits: Number of valid Input Address bits in the IPA
+> + * @start_level: Starting level of the Realm Translation Table
+>    */
+>   struct realm {
+> +	phys_addr_t rd_phys;
+> +	/*
+> +	 * Reused by RTT map/unmap SRO commands. Those commands are only
+> +	 * issued from Realm stage-2 map/unmap paths while kvm->mmu_lock is
+> +	 * held for write, including Realm fault handling where
+> +	 * kvm_fault_lock() takes the write side, so concurrent use is
+> +	 * serialized.
+> +	 */
+> +	struct rmi_sro_state *sro;
+>   	enum realm_state state;
+> +	unsigned int ia_bits;
+> +	int start_level;
+>   };
 >   
->   struct kvm_vm_s2_ops {
-> @@ -242,6 +243,7 @@ struct kvm_vm_s2_ops {
->   	int (*vm_flush_remote_tlbs)(struct kvm *kvm);
->   	int (*vm_flush_remote_tlbs_range)(struct kvm *kvm, gfn_t gfn,
->   					  u64 nr_pages);
-> +	void (*vm_stage2_destroy)(struct kvm_pgtable *pgt);
->   	void (*vm_stage2_unmap_range)(struct kvm_s2_mmu *mmu,
->   				      phys_addr_t start, u64 size,
->   				      bool may_block,
+> +u32 kvm_rmm_ipa_limit(void);
+> +
+> +int kvm_init_realm(struct kvm *kvm);
+> +void kvm_destroy_realm(struct kvm *kvm);
+> +
+>   #endif /* __ASM_KVM_RMI_H */
+> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+> index cecea0820e52..d067063a3686 100644
+> --- a/arch/arm64/kvm/Kconfig
+> +++ b/arch/arm64/kvm/Kconfig
+> @@ -34,6 +34,7 @@ menuconfig KVM
+>   	select GUEST_PERF_EVENTS if PERF_EVENTS
+>   	select KVM_GUEST_MEMFD
+>   	select KVM_GENERIC_PRE_FAULT_MEMORY
+> +	select ARM_RMM_RMI
+>   	help
+>   	  Support hosting virtualized guest machines.
+>   
+> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+> index 7aaeeb84e788..66a719ab5b6b 100644
+> --- a/arch/arm64/kvm/Makefile
+> +++ b/arch/arm64/kvm/Makefile
+> @@ -16,7 +16,7 @@ CFLAGS_handle_exit.o += -Wno-override-init
+>   kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>   	 inject_fault.o va_layout.o handle_exit.o config.o \
+>   	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
+> -	 vgic-sys-reg-v3.o fpsimd.o pkvm.o \
+> +	 vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o \
+>   	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+>   	 vgic/vgic.o vgic/vgic-init.o \
+>   	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index d79e5451923d..7c22d9474a38 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -300,6 +300,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>   
+>   	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
+>   
+> +	/* Initialise the realm bits after the generic bits are enabled */
+> +	if (kvm_vm_is_realm(kvm)) {
+> +		ret = kvm_init_realm(kvm);
+> +		if (ret)
+> +			goto err_uninit_mmu;
+> +	}
+> +
+>   	return 0;
+>   
+>   err_uninit_mmu:
+> @@ -364,6 +371,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>   
+>   	kvm_destroy_nested(kvm);
+>   	kvm_arm_teardown_hypercalls(kvm);
+> +	if (kvm_vm_is_realm(kvm))
+> +		kvm_destroy_realm(kvm);
+>   }
+>   
+>   static bool kvm_has_full_ptr_auth(void)
 > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 8a9a80c7cfab..fab915ddeaab 100644
+> index fab915ddeaab..84b02699f103 100644
 > --- a/arch/arm64/kvm/mmu.c
 > +++ b/arch/arm64/kvm/mmu.c
-> @@ -1018,26 +1018,39 @@ static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
->    * cond_resched() periodically to prevent hogging the CPU for a long time
->    * and schedule something else, if required.
->    */
-> -static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t addr,
-> -				   phys_addr_t end)
-> +static void stage2_destroy_range(struct kvm_pgtable *pgt,
-> +				 void (*destroy_range)(struct kvm_pgtable *pgt,
-> +						       u64 addr, u64 size))
+> @@ -981,10 +981,14 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
+>   
+>   static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
 >   {
-> +	u64 addr = 0;
-> +	u64 end = BIT(VTCR_EL2_IPA(pgt->mmu->vtcr));
->   	u64 next;
+> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   	u32 kvm_ipa_limit = get_kvm_ipa_limit();
+>   	u64 mmfr0, mmfr1;
+>   	u32 phys_shift;
 >   
->   	do {
->   		next = stage2_range_addr_end(addr, end);
-> -		KVM_PGT_FN(kvm_pgtable_stage2_destroy_range)(pgt, addr,
-> -							     next - addr);
-> +		destroy_range(pgt, addr, next - addr);
->   		if (next != end)
->   			cond_resched();
->   	} while (addr = next, addr != end);
->   }
+> +	if (kvm_vm_is_realm(kvm))
+> +		kvm_ipa_limit = min(kvm_ipa_limit, kvm_rmm_ipa_limit());
+> +
+>   	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
+>   	if (is_protected_kvm_enabled()) {
+>   		phys_shift = kvm_ipa_limit;
+> @@ -1097,6 +1101,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   		return -EINVAL;
+>   	}
 >   
-> +static void kvm_vm_stage2_destroy(struct kvm_pgtable *pgt)
+> +	mmu->arch = &kvm->arch;
+> +
+>   	err = kvm_init_ipa_range(mmu, type);
+>   	if (err)
+>   		return err;
+> @@ -1105,7 +1111,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   	if (!pgt)
+>   		return -ENOMEM;
+>   
+> -	mmu->arch = &kvm->arch;
+>   	err = KVM_PGT_FN(kvm_pgtable_stage2_init)(pgt, mmu, &kvm_s2_mm_ops);
+>   	if (err)
+>   		goto out_free_pgtable;
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> new file mode 100644
+> index 000000000000..fafca2439c46
+> --- /dev/null
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -0,0 +1,63 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2023-2026 ARM Ltd.
+> + */
+> +
+> +#include <linux/arm-rmi-cmds.h>
+> +#include <linux/kvm_host.h>
+> +
+> +#include <asm/kvm_emulate.h>
+> +#include <asm/kvm_mmu.h>
+> +#include <asm/kvm_pgtable.h>
+> +#include <asm/virt.h>
+> +
+> +u32 kvm_rmm_ipa_limit(void)
 > +{
-> +	stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
-> +	kvm_pgtable_stage2_destroy_pgd(pgt);
+> +	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
 > +}
 > +
-> +static void pkvm_stage2_destroy(struct kvm_pgtable *pgt)
+> +void kvm_destroy_realm(struct kvm *kvm)
 > +{
-> +	stage2_destroy_range(pgt, pkvm_pgtable_stage2_destroy_range);
-> +	pkvm_pgtable_stage2_destroy_pgd(pgt);
+> +	struct realm *realm = &kvm->arch.realm;
+> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> +
+> +	if (!kvm_realm_is_created(kvm))
+> +		goto out_free_sro;
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DYING);
+> +
+> +	if (realm->rd_phys) {
+
+Do we expect this to be otherwise ? Or do we get called twice
+on this function ?
+
+> +		phys_addr_t rd_phys = realm->rd_phys;
+> +
+> +		if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
+> +			goto out_free_sro;
+> +
+> +		if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
+> +			goto out_free_sro;
+> +		rmi_free_delegated_page(rd_phys);
+> +		realm->rd_phys = 0;
+> +	}
+> +
+> +	if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
+> +					 pgd_size)))
+> +		goto out_free_sro;
+
+In the integration branch, we undelegate the Stage2 root RTTs, if the
+Realm create fails. Is there a particular reason why we may have the
+delegated S2 RTTs with realm->rd_phys = 0 ?
+
+Suzuki
+
+
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+> +
+> +out_free_sro:
+> +	kfree(realm->sro);
+> +	realm->sro = NULL;
 > +}
 > +
->   static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
->   {
-> -	unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
-> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
->   
-> -	stage2_destroy_range(pgt, 0, BIT(ia_bits));
-> -	KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
-> +	kvm->arch.vm_s2_ops->vm_stage2_destroy(pgt);
->   }
->   
->   /**
-> @@ -3146,6 +3159,7 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
->   }
->   
->   static const struct kvm_vm_s2_ops protected_pkvm_vm_s2_ops = {
-> +	.vm_stage2_destroy		= pkvm_stage2_destroy,
->   	.vm_flush_remote_tlbs		= pkvm_flush_remote_tlbs,
->   	.vm_flush_remote_tlbs_range	= pkvm_flush_remote_tlbs_range,
->   	.vm_age_gfn			= no_age_gfn,
-> @@ -3155,6 +3169,7 @@ static const struct kvm_vm_s2_ops protected_pkvm_vm_s2_ops = {
->   };
->   
->   static const struct kvm_vm_s2_ops pkvm_vm_s2_ops = {
-> +	.vm_stage2_destroy		= pkvm_stage2_destroy,
->   	.vm_flush_remote_tlbs		= pkvm_flush_remote_tlbs,
->   	.vm_flush_remote_tlbs_range	= pkvm_flush_remote_tlbs_range,
->   	.vm_age_gfn			= pkvm_age_gfn,
-> @@ -3164,6 +3179,7 @@ static const struct kvm_vm_s2_ops pkvm_vm_s2_ops = {
->   };
->   
->   static const struct kvm_vm_s2_ops kvm_default_vm_s2_ops = {
-> +	.vm_stage2_destroy		= kvm_vm_stage2_destroy,
->   	.vm_flush_remote_tlbs		= kvm_vm_flush_remote_tlbs,
->   	.vm_flush_remote_tlbs_range	= kvm_vm_flush_remote_tlbs_range,
->   	.vm_age_gfn			= kvm_vm_age_gfn,
+> +int kvm_init_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +
+> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> +	realm->start_level = 4 - VTCR_EL2_LVLS(kvm->arch.mmu.vtcr);
+> +	realm->sro = kmalloc_obj(*realm->sro);
+> +	if (!realm->sro)
+> +		return -ENOMEM;
+> +
+> +	return 0;
+> +}
 
