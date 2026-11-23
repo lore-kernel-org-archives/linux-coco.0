@@ -1,145 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795446045;
-	b=E2ThwJ1gYSgbjDhSa1s8BZDzKXwvAWLgv3NDO654u15gRywzP81DgPdtEwJ3TazTUcpg
-	 St5sg1uhB0AknZNhq+/2wtSSQCxrwX40gS9SKEqm8x4qAxaDI761Tfw8h7qbRuqiQnjNd
-	 l41aVjCg7kDGI0EL7cmv9ayPFvN60zlaSFJEN4OEy1tJ+7fKvTXjOcE7Or5DrxyVt2ZIN
-	 JkMdOSLjJ1eUiWBj7fiUudKsW1WU0t33TxxZlPNAJXt/RmaZDGD7OnL9o17oSo+wwTSYQ
-	 KdIClR6An7bGLkXMMjkN+F3upQyHwC8ItCUrxHr0z/4BMm6HZF7PM5GVgfKrkGEEq6w==
+	t=1795446691;
+	b=ApUwy27Q28BNBgfmTuu5vnAPf1zXc+3m/j01H4V8nZdiZGUQcByIGsejvJinrtkzttTt
+	 vReoj3FvH93qIxx25Ejksoz0GIucqMZM/psm6Tr/VV9lGPAsVPlnqudcesv93iM3Q6HAI
+	 uv56wk1HNiYnYVtInyZLtHPYeXR0R4fqCIOXeTvElKfiDLPFAtjKZptcsx3uK7PQfogFa
+	 ufpv/AZWK0Je+1A2KBSDqjNWZLtDPJdadkdGyb1eAMGzAZqDIMl81MvKAAZQvY9vH0kKg
+	 Awb2wFNRFpl40SBxHXxM0Yz4NyNHOdYDov81ndNRgKbS8hOfuVYhIPxpsdG8INp62Bw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795446045;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795446691;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=8YXzoVkoKKTn5S6189qRHpEA8zSaXUAPSQ685ax1F0I=;
-	b=T0gifBWC/cM2ttY/lyCWhymnH3PeuaT4FbLwqKAEgbLHs8FZhbRSZVPvin8GPGLvfrmK
-	 R3datDYwjJV87jjBDj0FPgwFzyhTwqcCky0Aim4ucl/ujCzrrHLHRhVZxaWynYVIXP730
-	 WSXjDDU4R5KldkfJbrTz82SiHmKwryat0idYhuIpOOEEGH4OdsFd0S+iVN7eS0ufY973f
-	 pEFrlaehRVSDyWD8OInh2H+iyrThC/6krFBmeeg8Z6CrLIRe1JxTyc8uChfkX3ZSY8WkL
-	 Lkq5AcfjbKQH457UWyz9fDb9FUlIRda5dAX9D/DSy/u8UFDWCyLO4lzZi1Kbs4Ho+cQ==
+	bh=S6J608SnbhlVzTHO8nTfTbyQzCC0Wef9AXmftuQK8FM=;
+	b=QHogsoNMYcfyeqlj4AnTtRPOovwIIjHKfdLNL4ZB0VALOtBRGf/3hososzOkUVlogU/N
+	 kOIcnHZZwo8zC0IjIGYAMMCL5rYz39dZQBPwo4yTXb4RHgrOeFciMF//ksaBQq0QIwffo
+	 VNYXRkyC+nGrT/9vE78Cvr2IiK2ETRjJiYJbwTdnLTbhjjo6t0whrT1+IdHFoC0GEH0tk
+	 X9KsUzPGd5fNTlNFNpkH6n4mmsTWSt4jzY/FAwCQU4VKvnfLKAGn2nEgDZQkzmFLBIn3T
+	 BePFduYB17zV/MimQzKLxVUs8By4y3FtLipKHTLet5I1EKojE+Q0SRtkumrngRHYKrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=ziepe.ca;
 	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b="Js/hN7BF";
-	arc=none smtp.remote-ip=209.85.219.50
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=DnqfNEc1;
+	arc=none smtp.remote-ip=209.85.219.46
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A67F606A6A6
-	for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 15:00:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A67F606A6A6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C415E606A33F
+	for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 15:11:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C415E606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Js/hN7BF
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-9212dac247aso36737306d6.1
-        for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 07:00:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=DnqfNEc1
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-92123971d1bso28366786d6.1
+        for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 07:11:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795446044; x=1796050844; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1795446690; x=1796051490; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8YXzoVkoKKTn5S6189qRHpEA8zSaXUAPSQ685ax1F0I=;
-        b=Js/hN7BFiz+V59LU3g3qClRYtgCYYRyqOBkW49G+CeYW1aEcatOFKpUqNmDa6nwoLO
-         EEbZijW6BaZXx7xFQ+7bBLUFNphUSNLLEct5ENjAr5bCyRwBr03momZfim1ZfRs7R6og
-         IuK9n0r/YinKfN0nFoXlYdgmv3JMxrqeV/+rOki5A6zQ16unhdz3qvXlQtHAnyXaCKAw
-         m15ayg/ihxXKoYaonVGoEZTjRJMfkV25c4wJHR9yhGd4A7pVyaHJkb/UtBalcU5uuOxE
-         BqeYptVjjfg+ensmZldQmRMXh2aVA2slv7fdKgNyHhoTrDbMjjhC7R6NhJfv1zKy/aIf
-         S95A==
+        bh=S6J608SnbhlVzTHO8nTfTbyQzCC0Wef9AXmftuQK8FM=;
+        b=DnqfNEc1qOm+Ki93dtk5wkOMaNKoNCX9Rfc9pwY3z2LpU2kXQp17n5+/QXexCLT4vp
+         7rQwUrdp+8i30Zm56aZM32kQLx2073tOyziXdQa1kNAJ4BpBjOtT1ystfUd9I/stdOb/
+         JlM7eCtyut7NwAwtdWoj24FhZ7V4Bnph+TvaHe27nHcxKwvN6JP95plbB0+Yx705mgOw
+         JHQJnFmmIlq+BjArexl34EMijneJHmKO4kJJMWiaAE87WpLKua1UwrO/g2fg4fO80MTt
+         4IBzCX5iHZkuwq6UY4qdnKI9aUHLvTxJgH9NFdqdMgKRmiQtaEI9W2b6zwoC1Ves9G3p
+         ubyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795446044; x=1796050844;
+        d=1e100.net; s=20260707; t=1795446690; x=1796051490;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8YXzoVkoKKTn5S6189qRHpEA8zSaXUAPSQ685ax1F0I=;
-        b=W5n1VrqWRKJhkYPp/ydjCqkwmH1UBJKCCzC7Yng/nRVMjhWcuEM2a+whvbMj+AMbcA
-         Cb3SyG1JqF8WlQ9ZYAcF9G5tILps+frcPpUBLriooOAYWjk5lSP6Nz9PkmSbjDv3tbVb
-         1k0Q9D01e4igs4mkBjIi08riT6gPJin/itA74afK5vsVsOkVU3lfQTZNwyFjG9/6iug+
-         B4aXFFUV5qpsYWqORJlCUZJwsE+CzSDcMNAGc3Rqjh9BypJAxpIxukfzA60PsSX2iRxw
-         urpjg7VpognODLsPSkX+7lPPAvmopv39X6jZOaqJJVwcz3zaH2gETdvcq4iXko1fkZYi
-         icJg==
-X-Forwarded-Encrypted: i=1; AL+hErFiwEQY88zGE4qCqh0b82h6OD1xExRbsH6vLgEj+zvVvdx3QvE0hD9UQPkieH3eh6DGSY6tprhauteo@lists.linux.dev
-X-Gm-Message-State: APuU4Z8R78OtgeVLSt64jQHLI/TwVOl9X9yZKLcTsAuexJNzbB7Qu8hh
-	uGIGavf+KglsOuJceAu+kLA8aBH+7gdL1eTL4TWZ3X6aQQzUk4OlmE6Du9w/iDbbi4I=
-X-Gm-Gg: AZFdTZfnZFBkBKJw2+IJC6wgN6BUU0gqRvoQgPu4IPvZnRi2f05kHpjjpOwOvxFYWe/
-	RnzeQmZd7oGo+kap3ghKyWsGt9jegfAzauKg6dH69Yt63/fqoSxwzmRt9pvBzoRHwKFDqLRb5ku
-	c/k+gFNyiQKKv4nsZiLIUEe0PL2/2KnwoA3+/AkznqynbAa29RrVfu1da9jsXazZts2a9PIXM7h
-	om0P/x+8H882pSzwfXE+ON623Fyg4zejUrqcr131VNkkzz9I+vSVysH0ZuN82cfw+Kfw9z4L7Z2
-	4LPfZQ8wf13pHwoscW4gyagvMXOBCboc6/T3zsWOvehcHz+BuKK/yHVEYSlrlwfjoBhUIgN7W/q
-	CWItEAVKDPPcbmXcZYT6zAY5F2miwLqahJK6gQxFHO4GL271Kt3KrTD9/QDK8G+TaobP41q+DRP
-	qbY8uik+lirHW+UTnun+Y00S2MSTmd0Y3bhkZdviAiXe4bB1D//iPtk1u0c10LfzJh1SW31d7tR
-	D/5h46Bba6htB38PILwDCSdj4fKZxHVSWqSm2WaSTp6gHa/te5NpZQI/UJIJyJ0EbgiiC0I2qBb
-	tnl7HBrsXa5tPkfCprA49r72pIN51+qylApY+eAxDG0BE7Ritod7BRTpA5xQKXpJ7XVX1lUb7cz
-	EG1M=
-X-Received: by 2002:a05:6214:4891:b0:921:27c2:3f89 with SMTP id 6a1803df08f44-92134a3715dmr207386236d6.17.1795446043629;
-        Mon, 23 Nov 2026 07:00:43 -0800 (PST)
+        bh=S6J608SnbhlVzTHO8nTfTbyQzCC0Wef9AXmftuQK8FM=;
+        b=bpGujnqauwmhG4U6J3RQbOlYVZqAVPNJX7E47LD/liCpeUcjxqTx/oMHuiD0dxOvdA
+         A1Jqaya3cxmReToHdJbWkdGGn7zF0mtUmXti4Nl9Q9xEijVMXsyYFBo9bgvVvmDd81Bb
+         3QScQJHDVOUokP0/7NINx7x4VmgSAunqK1k1XQwE9hdcvCga3TnolkLFZORhmjbRW/WU
+         71nEjEWWwCzp57qeSAxaw2NZVmQWg6Xe0bLRXm8258HKIdC/S+++mD75S879MMovZAFs
+         SDg+2Kbb9oGqnbOrBKQ+5fg/yqpB1BzqGaNw9xf93Ia4AveJQ40WK6q3urrT63zcQhSO
+         BdkQ==
+X-Forwarded-Encrypted: i=1; AL+hErHcrBN8HBvIaTWadSraSPFr9LmPVYTuqnX9GJ9Do15XsNRxzqD5tjF2h86K47jcsvhWbGx6Jc+LHvkl@lists.linux.dev
+X-Gm-Message-State: APuU4Z8rnr9PiuljO4hGNdHwTB2GHEavzqeS75WQuchz89yA9Mt9W17P
+	0AfaYH/ytWx7itoAy4dymyrcuZTTVfMnShIp/Z9l24tnMR1z42uDzcUcB8QB/3NKGtE=
+X-Gm-Gg: AZFdTZeXew5Hj6/uShuwpl3LPQXRa9CgDnENlcwSjSYm5S2KUgeuCUq0ip9ohb39vvA
+	ilT1XVUHOs/bJkTdZwwG+HR1ciGnAcEhJkYd4kIa59OC71gCRq5ltNGGhhLX7rpJ0VjAuF2yrRi
+	y/+R41tC12AiKB/1s7Ozpng048TjyWSRLpF2bTcK/gP94M+yqqLFzKlh9/PmJFf/gQ83QoR/t+k
+	cz+vTTGem0O7Kg883jAdUQw5ptlCW9LVpikdQDXHpYzgHR2x4CXIc9rDTO3Wpn5KvgGpFJQrNq2
+	xDntTHCbGc+6M5nl3c/fiAsB0Z8F1GUrI0LXcQpiA3sttrWlthuLn369xgH/8Ipl8nUckFP19j5
+	Nzg2TORs3k+rVmZ+7FZH68NBAcl9uNxmYyGw6nlPoaIvYmbBtgiX8n7LbYT+gudCXouSYJhNcx3
+	5kKfpmjzeT42DtyN8Ktr0lLXl3o8fjyhHXEefmQgRfSzgdIv82BCHre0C6EWibAzsH7AskAiaY+
+	X1CR9qYuydRhABuRhhU+vxoB1rqZXqBMMpcyI7sFdzMNxRSHgRycp0ns3I9yl2n4aOMml7jq3IF
+	xVYLffdP+hIm3FzADaYt0DaoXXYGWH7JgfKeQ9HyDKmselYtaBYmNUzfRZgric5L5jIF+AC2DN0
+	uU2k=
+X-Received: by 2002:a05:6214:4108:b0:921:266f:50ff with SMTP id 6a1803df08f44-92134b3f207mr208575596d6.52.1795446689538;
+        Mon, 23 Nov 2026 07:11:29 -0800 (PST)
 Received: from ziepe.ca (stjhnbsu6iw-159-2-142-59.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.142.59])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92134a16754sm107600476d6.39.2026.11.23.07.00.42
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921349b50besm106533186d6.9.2026.11.23.07.11.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 07:00:42 -0800 (PST)
+        Mon, 23 Nov 2026 07:11:29 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1xVVX7-00000000rK9-14j4;
-	Mon, 23 Nov 2026 11:00:41 -0400
-Date: Mon, 23 Nov 2026 11:00:41 -0400
+	id 1xVVhY-00000000ro7-1hOk;
+	Mon, 23 Nov 2026 11:11:28 -0400
+Date: Mon, 23 Nov 2026 11:11:28 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <20261123150041.GB179082@ziepe.ca>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jiri Pirko <jiri@resnulli.us>,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	zohar@linux.ibm.com, aneesh.kumar@kernel.org, dave.jiang@intel.com,
+	nik.borisov@suse.com, sergii.dmytruk@3mdeb.com
+Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
+Message-ID: <20261123151128.GD179082@ziepe.ca>
+References: <20261113160838.2512652-1-jiri@resnulli.us>
+ <20261113160838.2512652-10-jiri@resnulli.us>
+ <awQCrnD5CtEhKRWz@e129823.arm.com>
+ <awQz1P6iXYrL8lv0@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -151,73 +118,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <awQd81MwZqi55gf8@arm.com>
+In-Reply-To: <awQz1P6iXYrL8lv0@kernel.org>
 
-On Mon, Nov 23, 2026 at 11:05:23AM +0000, Catalin Marinas wrote:
-> > -	/*
-> > -	 * If set_memory_decrypted() fails then we don't know what state the
-> > -	 * page is in, so we can't free it. Instead we leak it.
-> > -	 * set_memory_decrypted() will already have WARNed.
-> > -	 */
-> > -	if (ret)
-> > +	if (alloc_cc_shared_pages_node(node, gfp | gfp_flags_quirk,
-> > +				       PAGE_SIZE << order, &mem))
-> >  		return NULL;
-> >  
-> > -	return page;
-> > +	return mem.page;
+On Mon, Nov 23, 2026 at 02:38:44PM +0200, Jarkko Sakkinen wrote:
+> On Mon, Nov 23, 2026 at 09:09:02AM +0000, Yeoreum Yun wrote:
+> > Hi Jiri,
+> > 
+> > [...]
+> > 
+> > > +static void __iomem *tdx_attestation_log_map(size_t *length)
+> > > +{
+> > > +	struct acpi_table_header *header;
+> > > +	struct acpi_table_ccel *ccel;
+> > > +	void __iomem *log = NULL;
+> > > +
+> > > +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
+> > > +		return NULL;
+> > > +	ccel = container_of(header, struct acpi_table_ccel, header);
+> > > +	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
+> > > +	    ccel->log_area_minimum_length &&
+> > > +	    ccel->log_area_minimum_length <= UINT_MAX)
+> > > +		log = acpi_os_map_iomem(ccel->log_area_start_address,
+> > > +					ccel->log_area_minimum_length);
+> > > +	if (log)
+> > > +		*length = ccel->log_area_minimum_length;
+> > > +	acpi_put_table(header);
+> > > +	return log;
+> > > +}
+> > > +
+> > 
+> > I think we don't need to dump log area with the log_area_minimum_length
+> > since the area would include none-event otherwise, pre-exist tool (i.e.
+> > tpm2_eventlog) reports error for them like:
+> > 
+> >   ...
+> >   - EventNum: 21
+> >     PCRIndex: 2
+> >     EventType: EV_EFI_ACTION
+> >     DigestCount: 1
+> >     Digests:
+> >     - AlgorithmId: sha256
+> >       Digest: "b54f7542cbd872a81a9d9dea839b2b8d747c7ebd5ea6615c40f42f44a6dbeba0"
+> >     EventSize: 40
+> >     Event: |-
+> >       Exit Boot Services Returned with Success
+> >   ERROR: corrupted log, insufficient size for event header: 3
+> >   ERROR: failed to parse tpm2 eventlog
+> >   ERROR: Unable to run tpm2_eventlog
+> > 
+> > 
+> > So, what about export *real size* of eventlog like
+> > tpm2_calc_event_log_size()?
 > 
-> This part is mostly fine but I do wonder why not make this alloc
-> function the same as buddy alloc_pages_node() - return a struct page
-> pointer.
+> Nothing in the patch (neither commit message nor any comment in code)
+> says that TDX attestion registers share the same format as TPM2 even
+> log.
 
-I'd argue we shouldn't even be returning struct page here, do many
-places even use the struct page? What for?
+It comes from the UEFI spec's definition of CCEL:
 
-Exposing struct page to places that just want a kernel addr means they
-have to call page_address and we are back to the highmem weirdness.
+ 38.1 Virtual Platform CC Event Log
 
-> >  static void its_free_pages(void *addr, unsigned int order)
-> >  {
-> > -	/*
-> > -	 * If the memory cannot be encrypted again then we must leak the pages.
-> > -	 * set_memory_encrypted() will already have WARNed.
-> > -	 */
-> > -	if (set_memory_encrypted((unsigned long)addr, 1 << order))
-> > +	struct cc_shared_layout layout;
-> > +	struct cc_shared_pages mem;
-> > +
-> > +	if (WARN_ON(cc_shared_calc_layout(PAGE_SIZE << order, &layout)))
-> >  		return;
-> > -	free_pages((unsigned long)addr, order);
-> > +
-> > +	mem.page = virt_to_page(addr);
-> > +	mem.shared_size = layout.shared_size;
-> > +	free_cc_shared_pages(&mem);
-> >  }
-> 
-> Here it gets weird and I don't see why we can't have just a buddy-like
-> interface. The kernel-doc for alloc says that shared_size must be
-> retained for the corresponding free but without reading the source code,
-> you can't tell that cc_shared_calc_layout() gives you the same
-> shared_size populated by alloc. We have a similar pattern in dma-buf but
-> using the compound page order.
+ If a virtual firmware with confidential computing (CC) capability
+ supports measurement and an event is created, virtual firmware should
+ report the event log with the same data structure in TCG Platform
+ Firmware Profile (PFP) specification with
+ EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 format. The index created by the
+ virtual firmware in the event log should be the index for the
+ confidential computing (CC) measurement register. It is CC vendor
+ specific.
 
-This makes sense, we should not be passing size to a free function,
-make a compount page/high order folio instead if the API is going to
-be struct page based.
+It makes sense that the kernel would size it correctly.
 
-> We can get rid of layout and mem structures (or at least not as
-> part of the API). Of course, this assumes that the shared granule size
-> remains constant for a guest's lifetime but I don't think that's a
-> problem.
+> As per the function, perhaps tpm2_calc_event_log_size() should be
+> relocated to lib and have non-TPM name like firmware_event_log_size()
+> or something.
 
-It should be encoded in the struct page meta data, as the order.
-
-> Was there a caller you had in mind that needs the common allocator to
-> share less than the whole buddy block?
-
-If we want this it definitely needs to be a void * based API not
-struct page one though..
+Probably under drivers/attestation since that is where all the TCG
+formatted logs should end up. It should be 'tcg_event_log_size()' or
+something. Maybe a tiny module for it like we would have done in lib/
 
 Jason
