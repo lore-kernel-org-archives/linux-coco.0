@@ -1,68 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795424950;
-	b=cCPHzOR5r0TjbRC0RpOvvofj2oD4CJJhm8alNTbCJ6IzAqj49eCsIxjrQMuUufC3pE9M
-	 r3OD2p15ojx7wYP47ZhNZ69IrTWupchsn3WPmfb8Q+l8Xde6LRtr2glZOkoyWupqpUSdo
-	 /OK472a0A+VTtpCTl+QnJyua4/+lT/kvZul6Kzccx3X0J508+4Oz3hSJ1WSkOOHvJesH3
-	 JrcEKoqKyLbZ8ZPyo9Snn68u554pZL4dQec/VLnMBYqjZSfKT+rGPDStnMCE4L48VQmqi
-	 oU+IWV3SaqMBvypzXW6x05+X0jKIczeShTlon0m/PgCsUq8LqHDOzHhYhpYqrba6KLw==
+	t=1795425831;
+	b=BOyAX/O3R7TSL/P1Xajt2Edv24jrbdmHNWK98UgpQljVJ7NFAfORV2OvBJb9wA1NbzeJ
+	 SXlt+NfbvOgMTafBjUZPOtgfvEnIjTXGKHWiIarMVEWJkEZ7eJxqIy5gg3EBvEGOnjo0u
+	 9r/qbe6PYGLuluPa7DKrb9RPjeF7nqgtCfzYpD0s+VidDwdicnZAWvZuJOLm2yAUioqr+
+	 cMcm8oPyOSNLi8q3/CoqlgSDoJzCeNL7nDtjN7gP3pfhYaSCRX/G5w0PP3efd1oOGJe9B
+	 VIa5vKwfKf/rmbQhElBCV9b0FmMKkEN2Gck/kuPzwaxrN9Q5Rw+CeFT/Mfp4EJ1El8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795424950;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=O02VVtRWSBlBTffNTMdkr0d21ECe3B1DyZ7TQUqkyYc=;
-	b=1LGzYa+KRXZJhVsDsZ7hY5aBvmTtB+NVyzlwvZ7qXP5cj00P7+haOb4XeO2fO7yg3nYW
-	 +pGCsb0famoMui7mlFHwTu+M1ZfsZ4iWheAMaxemgAxW6kCiSko7XsK/UvdZPnPx9ri9c
-	 xdB5/G6IHdLI775eRcTwU92lukswPmPb1xPqEoLIAGBR9LY97pXEBTa/PdCmOfwqRJIUy
-	 J+QSHZ4B7yR857VSnJ9MWZB+j5msh8yoy1mA07hKpsdlTttV5PEqlCbUqFo9zbB0Zhk2A
-	 UHDNuC2OQaJrI7AzGXjajGqvkEWLfVtTJh1opgpgPI3OsjjBn50JRwBrMgyWS/e9ALw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795425831;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=85zXwvzutIicpZmGHnHi9NFIRKU+Tk2QUsg8izhwHEw=;
+	b=x08B6VDyDNQ2cNYHc3JW2+MOmzFt5QiCitgxUC7cIljKom0c2wPBlaQVMu3DAk/cTZdO
+	 +jFCdMV9WRH2EeB2ELA3L8hsVQr5PIz6ephIfOsTQI6s3MxSJFKuO4skKtI5hgsL2VqTS
+	 5VsC7Q/UrhAHhFmExnc7z7pXu5UikXsYMkEezRwxQlM9JfrQZDOgIwKlZR1drzz6WoLgz
+	 tk0Pb6CzKvFivvwM3ox6FOYNuT85ReSyzwmgouOfa1YyLQI4Jam1F5Wh0LN0PQSD+CsBy
+	 WXjv0+FbxBzKoA3S1N2jaeIiF40521DTJuKimpAVz1TlmqqtGv4uBzF1G11KAhEv3Gw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qS0UZJq0;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A780606A31A
-	for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 09:09:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A780606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BReiUPrV;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6D2606A686
+	for <linux-coco@lists.linux.dev>; Mon, 23 Nov 2026 09:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qS0UZJq0
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B53A1476;
-	Mon, 23 Nov 2026 01:09:06 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08FBC3F632;
-	Mon, 23 Nov 2026 01:09:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795424949; bh=jm/tu+I4qmiRATBKNiNwWj7t44LL0Pz4nclHyYCT45w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qS0UZJq0Kphetvr/RKKkXdDctKNYhKx2Lb7gDOhRTb+fw+Pt7bJLaCJFjIOCuaDet
-	 WzNxU0kfTkTwgpy1gCegKFTBnvk5ksbsvMaHz3veGEgevLHwY3BpX9MKubSvB90g1M
-	 OeAl6pNM3coIibp4WW/8Wwm3yziZe2NFBgy7L1Gg=
-Date: Mon, 23 Nov 2026 09:09:02 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
-	lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
-	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	jarkko@kernel.org, zohar@linux.ibm.com, yeoreum.yun@arm.com,
-	aneesh.kumar@kernel.org, dave.jiang@intel.com, nik.borisov@suse.com,
-	sergii.dmytruk@3mdeb.com
-Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
-Message-ID: <awQCrnD5CtEhKRWz@e129823.arm.com>
-References: <20261113160838.2512652-1-jiri@resnulli.us>
- <20261113160838.2512652-10-jiri@resnulli.us>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BReiUPrV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500721F01567;
+	Mon, 23 Nov 2026 09:23:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795425831;
+	bh=85zXwvzutIicpZmGHnHi9NFIRKU+Tk2QUsg8izhwHEw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=BReiUPrVSNA+++viz4H2uVDmPcnu/rIcHwsRjBGSMvKBNvt1lZNlpqxznk6uETwva
+	 5TKVQBiyPSyTytsB/igDtIHK0dLOFoZJeuL7B1ML/KjbVptTbX1jS1mOlfNb3w58Dj
+	 PaSTSl4yma/yD3xUiI9lPSNiyuAYPhOjTX9RkA4oNOEGYo3hj78Cir3skfyutzmxlW
+	 zuVIgbnC5dO3VwTa8KrxR2OsMHjMtm6GFI7eUvPMGIAmZqJ8bKKyNDa40brE3YQiR6
+	 t0jzLbP1MHbFlUDVXhwSMyOi+e99nI8+QpcoKocg/YoX63C4MzLmUF2GObOt0zjvkq
+	 voLxT889bQb/w==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	Lukas Wunner <lukas@wunner.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 1/2] MAINTAINERS: Update TSM file coverage and repository
+In-Reply-To: <20261120140412.GW2245175@nvidia.com>
+References: <20261116075420.76205-1-aneesh.kumar@kernel.org>
+ <d3ddb1a9-51d5-474c-8dd1-b52865b880ba@amd.com>
+ <yq5ay0anwv7z.fsf@kernel.org> <20261120140412.GW2245175@nvidia.com>
+Date: Mon, 23 Nov 2026 14:53:46 +0530
+Message-ID: <yq5aa4mzrjdp.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,66 +63,149 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113160838.2512652-10-jiri@resnulli.us>
+Content-Type: text/plain
 
-Hi Jiri,
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-[...]
+> On Fri, Nov 20, 2026 at 05:50:00PM +0530, Aneesh Kumar K.V wrote:
+>> Alexey Kardashevskiy <aik@amd.com> writes:
+>> 
+>> > On 16/11/26 18:54, Aneesh Kumar K.V (Arm) wrote:
+>> >> Add drivers/virt/coco/tsm-core.c and git repository to the TSM entry.
+>> >> 
+>> >> Cc: Alexey Kardashevskiy <aik@amd.com>
+>> >> Cc: Jason Gunthorpe <jgg@nvidia.com>
+>> >> Cc: Lukas Wunner <lukas@wunner.de>
+>> >> Cc: linux-coco@lists.linux.dev
+>> >> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> >> ---
+>> >>   MAINTAINERS | 2 ++
+>> >>   1 file changed, 2 insertions(+)
+>> >> 
+>> >> diff --git a/MAINTAINERS b/MAINTAINERS
+>> >> index ccbcdc0799b9..720fe907885b 100644
+>> >> --- a/MAINTAINERS
+>> >> +++ b/MAINTAINERS
+>> >> @@ -28545,11 +28545,13 @@ M:	Jason Gunthorpe <jgg@nvidia.com>
+>> >>   R:	Lukas Wunner <lukas@wunner.de>
+>> >>   L:	linux-coco@lists.linux.dev
+>> >>   S:	Maintained
+>> >> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tsm/linux.git
+>> >>   F:	Documentation/ABI/testing/configfs-tsm-report
+>> >>   F:	Documentation/driver-api/coco/
+>> >>   F:	Documentation/driver-api/pci/tsm.rst
+>> >>   F:	drivers/pci/tsm.c
+>> >>   F:	drivers/virt/coco/guest/
+>> >> +F:	drivers/virt/coco/tsm-core.c
+>> >>   F:	include/linux/*tsm*.h
+>> >>   F:	samples/tsm-mr/
+>> >
+>> >
+>> > I wonder if we can/should also do this now?
+>> >
+>> > +F:     drivers/crypto/ccp/sev-dev-tsm.c
+>> > +F:     drivers/crypto/ccp/sev-dev-tio.*
+>> >
+>> > Or move the files but where, drivers/attestation/tio?
+>> > drivers/attestation/amd? And the same question for ARM/Intel. And do
+>> > these drivers/attestation/* become modules? Thoughts? Thanks,
+>> 
+>> We may want to consider this in the context of the full series. I have a
+>> tree that includes attestation, guest_memfd, device trust, and iommufd
+>> integration, with the layout below:
+>> 
+>>  drivers/attestation/cca/guest/spdm.c
+>>  drivers/attestation/cca/host/spdm.c
+>>  drivers/attestation/cca/host/vdev.c
+>>  drivers/attestation/spdm/core.c
+>>  drivers/firmware/arm_rmm/da-guest-rhi.c
+>>  drivers/firmware/arm_rmm/da-guest.c
+>>  drivers/firmware/arm_rmm/da-host-stream.c
+>>  drivers/firmware/arm_rmm/da-host-vdev.c
+>>  drivers/firmware/arm_rmm/da-host.c
+>>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-realm.c
+>>  drivers/vfio/pci/vfio_pci_gmem.c
+>>  drivers/vfio/pci/vfio_pci_gmem.h
+>>  .../coco/{arm-cca-guest => arm-cca/guest}/main.c
+>>  drivers/virt/coco/arm-cca/guest/rsi-da.h
+>>  drivers/virt/coco/arm-cca/host/main.c
+>>  drivers/virt/coco/arm-cca/host/rmi-da.c
+>>  drivers/virt/coco/arm-cca/host/rmi-da.h
+>>  drivers/virt/coco/arm-cca/host/viommu.c
+>>  drivers/virt/coco/arm-cca/pci/guest-pci.c
+>>  drivers/virt/coco/arm-cca/pci/host-pci.c
+>
+> It seems okay, though I wonder what pci/host&guest-pci.c is?
+>
 
-> +static void __iomem *tdx_attestation_log_map(size_t *length)
-> +{
-> +	struct acpi_table_header *header;
-> +	struct acpi_table_ccel *ccel;
-> +	void __iomem *log = NULL;
-> +
-> +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
-> +		return NULL;
-> +	ccel = container_of(header, struct acpi_table_ccel, header);
-> +	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
-> +	    ccel->log_area_minimum_length &&
-> +	    ccel->log_area_minimum_length <= UINT_MAX)
-> +		log = acpi_os_map_iomem(ccel->log_area_start_address,
-> +					ccel->log_area_minimum_length);
-> +	if (log)
-> +		*length = ccel->log_area_minimum_length;
-> +	acpi_put_table(header);
-> +	return log;
-> +}
-> +
 
-I think we don't need to dump log area with the log_area_minimum_length
-since the area would include none-event otherwise, pre-exist tool (i.e.
-tpm2_eventlog) reports error for them like:
+The host side handles:
 
-  ...
-  - EventNum: 21
-    PCRIndex: 2
-    EventType: EV_EFI_ACTION
-    DigestCount: 1
-    Digests:
-    - AlgorithmId: sha256
-      Digest: "b54f7542cbd872a81a9d9dea839b2b8d747c7ebd5ea6615c40f42f44a6dbeba0"
-    EventSize: 40
-    Event: |-
-      Exit Boot Services Returned with Success
-  ERROR: corrupted log, insufficient size for event header: 3
-  ERROR: failed to parse tpm2 eventlog
-  ERROR: Unable to run tpm2_eventlog
+1. Allocating the Root Port PDEV.
+2. Allocating IDE resources for an external endpoint.
+3. Connecting the firmware stream and enabling IDE.
+4. Using a system stream for an RcIEP, without Root Port or PCI IDE resources.
+5. Marking PF0 ready for device assignment only after setup succeeds.
+
+The guest side handles:
+
+1. Preventing PCI driver attachment.
+2. Comparing the current RSI device information with the report and creating MMIO descriptors from it.
+3. Validating the mappings.
+4. Requesting RUN and marking the device as accepted.
 
 
-So, what about export *real size* of eventlog like
-tpm2_calc_event_log_size()?
+Most of these are driven during evidence-accept, so the module
+dependencies are (based on lsmod):
+
+Host:
+  arm-cca-host.ko
+    +--> attestation-cca-host.ko
+    |      +--> arm-cca-host-pci.ko
+    |      |      `--> arm-rmm-da-host.ko
+    |      +--> arm-rmm-da-host.ko
+    |      +--> attestation-spdm.ko
+    |      `--> attestation.ko
+    +--> arm-cca-host-pci.ko
+    +--> arm-rmm-da-host.ko
+    +--> attestation-spdm.ko
+    `--> attestation.ko
+
+Realm guest:
+  arm-cca-guest.ko
+    +--> attestation-cca-guest.ko
+    |      +--> arm-cca-guest-pci.ko
+    |      |      `--> arm-rmm-da-guest.ko
+    |      +--> arm-rmm-da-guest.ko
+    |      +--> attestation-spdm.ko
+    |      `--> attestation.ko
+    +--> arm-cca-guest-pci.ko
+    +--> arm-rmm-da-guest.ko
+    `--> tsm_report.ko
 
 
-Otherwise, look good to me.
+Common attestation dependencies:
 
-[...]
+  attestation-spdm.ko
+    +--> attestation.ko
+    |      `--> ctlv.ko
+    `--> ctlv.ko
 
 
-Thanks!
+>
+> I kind of wish we had a directory called tsm too..
+>
+> drivers/firmware/tsm/ 
+>
+> Maybe?
+>
+> Can you be consistent with the cca/arm_rmm/arm-cca naming?
+>
 
--- 
-Sincerely,
-Yeoreum Yun
+Will name it arm_cca ? 
+
+>
+> arm_rmm seems reasonable to me, the host tsm doesn't have to be used
+> with VMs.
+
+-aneesh
