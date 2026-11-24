@@ -1,49 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795536846;
-	b=u/F+RFhocjH4H5SHTXx965EsvKcA/OidY92NgbYZtSi+B5OND6+Cok/FkK8ykKmNTUMY
-	 a69T8uhL8XiGTSwxJ/rMdLnt9rTIgNqK7uuhlxyDN82uEKDCWsKUd9A4JiQJPeP6UnUnF
-	 x8CQBtF7EpztxH6Js6dd08Up8H9aK1CoXO7SDBshgRxjN/V5HgH2TiK9DEJxfmjdO5TBo
-	 O04KrCVpNxaZLwOgTbHS+x54K+QzqPvlU73e7elk+sML28bjOstbrOAVDgDVlRyLxPePC
-	 vLDLTfFyvGOdRWy8rGmfMFIJouzie/F8IYJP4w/6Rk0nnFTOrN7/RtCBW+5GABL5iYA==
+	t=1795537035;
+	b=OiIcNwQaIKDPyTqXzI6nnvckCJclBfILPQtC2Ti+IiQQsa2ia2zHMPYOtvlQfHNEzfIi
+	 1uSMkXbUtp3kK/0HLmySjYbXpGfCWdvJMkc1uwfh5kCd+qnzonwcOiKKutRJZN7/iUIi1
+	 40NljMGbQpN6L4Ourzw9rqtsSbX6Q8ZmMoYSBMqQ37PkNDVVhO/hlmyT2so314dU7T0mJ
+	 JWKw3DIjo9j84rFycsFeb8L7oYfFQiUWRyDgcyfFQoItkZROCNNltKhy6FsHMVnnbJJTz
+	 RKppiOmtBgbk3g7H7J+yP7KQg59QQOuOmDPd6Qz0o9+9VjrwMVJX41ePIrdWpMxeQMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795536846;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=dQikJs3tAZcEmwxlSrn7mkXPOYqnZk22VZjMpUZ2Exw=;
-	b=aXO/lOvlk43ZoW1b/114GNsf95N95mgFM9hoD1uLxW4nSsG9bNlsa0VsWCwJcFogcw9B
-	 Flj0QtXK9Y+m5PlUvj3BNYPPyIrRpfqemeLhBMknlkDikH3gHbCQ3Dn7AjpbrRTIbknNv
-	 HxOQIbQ2GU5yD7Er1lLwxZSD8c9t8ATex2Tox6YAO8YU8KLN7aOkEe7LUN0ZZQ+buLx0x
-	 Utvqa73rwio2v2ar3a9wBV3ApNdyqD9vglaUTTtYNLhkGi64R6/Zb4e5c8Av9EEZHuZkP
-	 DZ1UJSmmcx906T9xARz+vjyzR0XNq/NhcK5A1b8A/GUR4pgDUeXgW2s1TpyGdX2m8iA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795537035;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=kxblDUMyGzlr1U89kDKvE9h06l9IfZFAg9l5rlO4ajU=;
+	b=KT+N7vTA2YVOtDQbW9y+CTeIN/7ZQ22HFlGtizPhyRFFWZR8gptEm+4e5KpkOryFS6ap
+	 MewuWv0/96iN4dpbQS/0khYECSLDbvYF3d4xR/guvsFH+4+ijxXxq0l8mzOVcKDeucBKQ
+	 f7/oFld8f7as4Z6h0IXpXiZPPiybie3yZqWEIzBK+W4+zqprC6BKLqeFpRnksl0TceJlZ
+	 1CTTPY0UVFZb0sHb2TPjj1lxTDgwujMSPUfMpEvx1Fa2xLLJd1DfRYSbd/3UTuajUE2Se
+	 EKJBs+i37HFleqJDmjVmUq3MrtRfvWBafbpojwMcT/6zy1pSFzOINKBc4v9IUI4F4OQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=obZteLxB;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58C2606A31E;
-	Tue, 24 Nov 2026 16:14:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B58C2606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--zhichuang.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HrJINuN6;
+	arc=none smtp.remote-ip=74.125.82.71
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21765606A33E
+	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 16:17:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21765606A33E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--zhichuang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=obZteLxB
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AADA339;
-	Tue, 24 Nov 2026 08:14:02 -0800 (PST)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 79A653F86C;
-	Tue, 24 Nov 2026 08:14:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795536845; bh=ltgWtDNEaiaIx+gDXAFo8x6FP+hEhcgrtp2ANPfd7W0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=obZteLxB9CDGNMX1F+5/fMECUT48J03pJTQ7qvsZIlQoYMUBLzeQHGCNLGPThq5Me
-	 qoKfJZje+93+IKHfjP2krxgbGReT2/WY7uYt2eDCnf/hvAzXShc/hDSzrWBSDBw/d5
-	 tsx8/t3QnouXMqtzwbu9EimdsKRwIhIgYOdkldiQ=
-Message-ID: <d5dfd9a2-4ac6-415c-b719-699b264fa39d@arm.com>
-Date: Tue, 24 Nov 2026 16:13:52 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HrJINuN6
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1b25d977b91so5055872c88.1
+        for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 08:17:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795537034; x=1796141834; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kxblDUMyGzlr1U89kDKvE9h06l9IfZFAg9l5rlO4ajU=;
+        b=HrJINuN6C99Qqxt0/ssnmgPaHvJg09ewToe/JeAYuFiYXMUUFMiM0iNboeRMdnPEP9
+         wIObUGULOSzHO4bX0Bx1j9FOdUJcYdtyjgmZTHDa9tiCESdT8ysQmJ9mqvuuyHUNPJ/X
+         vz/EnHoDBCY+Kkf0omguU94qP9wMHMvsVFXeAmypQ64L7ciYXp9rzi85vY6NBqx5no53
+         X5e2wW8elc2v44rsFMriI3C9hA6DQcJzh1mU7z305ocSdRYW/H7QEUl+zvE/HeJrIhU9
+         hudu2Z1zc3G3xS1Demb6EL3Sf16qooYTsk3+uJUvK8RxpymaLS2TZVcGEWxqJ50o5tfd
+         PtPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795537034; x=1796141834;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kxblDUMyGzlr1U89kDKvE9h06l9IfZFAg9l5rlO4ajU=;
+        b=1QxY3i88/WLmZPkMAJlo9Bf15/zzUMzACCSSLNFbbKuyOxbbHPO45vItwoPISyE4Kn
+         ClVtwYyCdOuDjzhdxDGBVkJmRK9uJKkeUbEo6eVryHiqcyd72MNS23b7Cdm8801mF5Y4
+         x9v8/DMBF8iMkIOUoa908Bc0H90lpFQ9TRLTvUqraoNYE11TvyUnmAuur8Jqiuvd8m2B
+         6Lfu3GjBoqh2x42cjL7KtE3MdckaD5pOAmCxT2J9jq61MfZnS5eFnivWkz9J1elPdQMK
+         EhefaMgAXtWO0HFwskJrtMzIzU0DlsowjJlOqzlRmAW15PRFOPP4wensYD17MeRRGeST
+         9vMQ==
+X-Gm-Message-State: APuU4Z8aWBX+HzSN8lawqy2I7MgMUJ1+EH9qibnwJIW1/TgyMHlNefK6
+	Z4L6a3E3gf0gY3KrRFn/HA9dPsNh4ZCF4CQ8qJu/fLUd3MxclAquyiLVzdJGRqRu7e/ivYeHQaA
+	1po/ShQNFCYlgfrNMAA==
+X-Received: from dldyr25-n2.prod.google.com ([2002:a05:701b:4519:20b0:163:a42e:b837])
+ (user=zhichuang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:701b:2089:10b0:151:2e62:fe8a with SMTP id a92af1059eb24-1b5568feb61mr15349607c88.40.1795537033939;
+ Tue, 24 Nov 2026 08:17:13 -0800 (PST)
+Date: Tue, 24 Nov 2026 16:17:13 +0000
+In-Reply-To: <20261123083337.2731019-11-aneesh.kumar@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -52,116 +76,40 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] swiotlb: clear read bounce buffers on confidential guests
-To: Shukai Ni <shukai.ni@kuleuven.be>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
- "joro@8bytes.org" <joro@8bytes.org>, "will@kernel.org" <will@kernel.org>
-Cc: "jo.vanbulck@cs.kuleuven.be" <jo.vanbulck@cs.kuleuven.be>,
- "Reshetova, Elena" <elena.reshetova@intel.com>,
- "pasic@linux.ibm.com" <pasic@linux.ibm.com>, "kas@kernel.org"
- <kas@kernel.org>, "carlos.bilbao@kernel.org" <carlos.bilbao@kernel.org>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20261123205302.1034348-1-shukai.ni@kuleuven.be>
- <3a70a26adccc47b1bae3a22e4907174271703a10.camel@intel.com>
- <9bc0d7ed-0799-45dc-8d74-25ed66851a20@kuleuven.be>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <9bc0d7ed-0799-45dc-8d74-25ed66851a20@kuleuven.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org> <20261123083337.2731019-11-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
+Message-ID: <20261124161713.263759-1-zhichuang@google.com>
+Subject: Re: [PATCH v1 10/10] PCI/TSM: Configure accepted device DMA during
+ driver attachment
+From: Zhichuang Sun <zhichuang@google.com>
+To: aneesh.kumar@kernel.org
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, kvm@vger.kernel.org, 
+	driver-core@lists.linux.dev, djbw@kernel.org, jgg@ziepe.ca, leon@kernel.org, 
+	yilun.xu@linux.intel.com, aik@amd.com, thomas.lendacky@amd.com, 
+	ashish.kalra@amd.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	bhelgaas@google.com, jonathan.cameron@huawei.com, lukas@wunner.de
+Content-Type: text/plain; charset="UTF-8"
 
-On 23/11/2026 10:56 pm, Shukai Ni wrote:
-> 
-> 
-> On 2026/11/23 23:18, Edgecombe, Rick P wrote:
->> There is an existing usptream position around coco driver hardening, 
->> that the
->> drivers should be fixed. In some ways this another thing that could be 
->> fixed in
->> a driver? The driver could zero memory before sharing it for 
->> DMA_FROM_DEVICE.
->>
->> But the swiotlb was supposed to be sort of a generic solution to the 
->> problem of
->> not inadvertently sharing private memory. Instead of marking an entire 
->> page as
->> shared (which might have private contents elsewhere on the page), the 
->> bounce
->> buffer allows for only sharing the minimum specified.
->>
->> So you could maybe look at this issue as fitting into the general 
->> problem of not
->> inadvertently sharing the private data inside the buffer. But also 
->> that is
->> covering for driver gaps.
-> 
-> Thanks for looking at this, and we had very similar thoughts when 
-> writing the patch. Our impression was that in many cases the driver
-> doesn't own the buffer (page cache, dm-crypt, O_DIRECT), so fixing it
-> there seemed hard, which is why we tried swiotlb instead. But we may be
-> missing something.
-> 
->> It seems like the fixes commit was arguing that copying the contents 
->> to the
->> swiotlb buffer was more transparent. So this patch kind of goes back 
->> against
->> that argument. That seems to be another point that the drivers should 
->> be fixed.
->> If this is essentially more of a potentially behavior altering kernel 
->> hardening,
->> then I wonder about putting it behind some kind of hardening config like
->> CONFIG_INIT_ON_ALLOC_DEFAULT_ON.
-> 
-> As far as we can tell, keeping the old contents for DMA_FROM_DEVICE
-> was never really promised. Before ddbd89deb7d3, swiotlb
-> didn't do it. That commit was mainly about not returning stale bounce
-> data to the caller, which zeroing should still prevent.
+On Mon, Nov 23, 2026 at 02:03:37PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> +	/* driver_managed_dma is unsupported. */
+> +	if (to_pci_driver(pdev->dev.driver)->driver_managed_dma) {
+> +		ret = -EOPNOTSUPP;
 
-SWIOTLB is an implementation detail of the DMA API. If some future CoCo 
-environment happens to be able to share a buffer in-place with less 
-overhead than bouncing then it will be free to do so, and drivers which 
-do not sanitise DMA_FROM_DEVICE or DMA_BIDIRECTIONAL buffers will 
-continue to leak data...
+Hi Aneesh,
 
-Note in particular the case of DMA_BIDIRECTIONAL, which means the caller 
-expects the buffer to either be written and read, or read and written, 
-or read, or written, or any or all of the above. How is the DMA layer 
-going to know whether the initial buffer contents are meaningful and 
-must be preserved, or stale and potentially leaking something?
+A short clarification question on this check. Because it runs before
+the accept check, vfio-pci fails probe on any locked TDI once the
+platform TSM implements dma_enable.
 
-Also how is the DMA layer to know if a driver is intentionally making 
-DMA_TO_DEVICE mappings of random (or targeted) kernel memory for the 
-sole purpose of malicious sharing? If people want to use device drivers 
-in CoCo environments then the onus being on auditing and hardening the 
-individual drivers themselves doesn't seem too unreasonable.
+Is rejecting driver_managed_dma a scope limit for this series, or the
+intended long-term policy? If it's a scope limit, is the expected path
+for in-guest vfio to enable private DMA when iommufd attaches the
+device to a trusted (TSM-owned) vIOMMU domain, rather than at
+pci_dma_configure() time?
+
+We have a user-space accelerator driver that uses vfio-pci on an
+accepted TDI, so knowing the direction would help us plan.
 
 Thanks,
-Robin.
-
-> In case it helps, we have a PoC on SEV-SNP that leaks MariaDB data from 
-> a LUKS-encrypted disk through this path, and we're happy to share it.
-> 
->> Ohh, but I guess the problem is the buffer getting copied could have 
->> come from
->> userspace? So then you would have to fix userspace... But then this 
->> patch could
->> also potentially break userspace if there is any partial write 
->> assumptions. Oh
->> boy.
-> 
-> Yes, a short read into a pre-filled user buffer would now see zeros. We
-> did a pass over the drivers commonly used in CVMs and didn't find any
-> that rely on the old contents being kept, but we'd be glad to hear if
-> someone knows of a case.
-> 
-> Thanks,
-> Shukai
-> 
-
+Zhichuang
