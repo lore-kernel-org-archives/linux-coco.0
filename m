@@ -1,90 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=139.138.61.253
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795513665;
-	b=y40psJPmtJIQnZ1JCvmxLcW51/+GCa5+uColCBV8BPXPthRkK5yTjqO68d29XMkJlI04
-	 lj5UpPiizljp5Pt/nEnRUWeeUqiZB5CLyK+X+PdCOLBbKnAS9bb6YEYaVofLDcrDCTlcE
-	 +6BtE90KPKqIr9e3PSthkKoe12DTnhyopzp4L+ew1lgJxqxhJTz6dMGXy6t8yA7zYEjb3
-	 XtLMqbMukJoMKsPlPWj9iYiWtDZvW42vrULS5zJLRXH/9n6Hfyht1Ez/nyXrFrZO7wp3J
-	 Bwa5kBIah71hPsBP905HmrzHuDMo8J2bM2zPGNvCIABATb2cw6yKs4XytLN+PWsFdLA==
+	t=1795516788;
+	b=MxOyOiqPsqWYY0JNhkunZbAP06Y0Z08BnKhwcCDcb7I/N2Jd7VqD5MtLHa0ijMv0IduF
+	 gINzezKnlJILksjpCq6JUXGnHQS3sLdpf5F15EDw/bL/CYrhjR9EHjDcd+axdJ+Tc7Ho0
+	 gAC/EmzvrOjgMPqQq9Vx/ORHDIfVQjMAcdCUvrJB0rArayPAzWTmHAqlUWT1DaNo14ayS
+	 yxNgfvG6vhs06xyjtuUNndomy7Punr8Am/sSp6DhUYwoaEDvyWmculDzXzut57rPYk5jw
+	 a9sYLjawTDeV5yeH+5vFvy7klSIf3fjKwKurT0JfIFRBvYX8v7oC8z60owsLwBeqT2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795513665;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=mCdvX3DKxNd4ufd5SveU6bheHpcm5WlWjpwmAB6yI/I=;
-	b=tSH2JeMQGZcN2pLdBlvhxyz6HDLRNAVoEjuxviORm4TkItDrfO0MAdgxEHiGQw5TG6Rc
-	 AHqWAuyDaJSfrvs9iEBx5GWd6I/Z6x8Fmpp+dILPYEXpr1xHaPWtpIH23ZM8zhr93LUP/
-	 E2kJMwybT/GuGt+v77Od7hGxfxR6ooIZb1/BFiS8nezQQpz17rgn3/I7vbcOYyB5sXuxx
-	 vxI3XlG5xivVQ2AEceo5s9QkzlOHu/jv71E0/58g4D5RBDa9BV+/tG1LaF5d/KyuPzlOe
-	 aMsBMsL11kUcyD8VQLhW0tmUtdv4LQdC2Rs626MbT6UUykMl6N5knUD88L++mH0DWqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795516788;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=i67A04/jloiIm4Idm3ymNHqESyF+RQsVbnS4UKmnxA8=;
+	b=Mc2JjLGbTtXoeiNUe3lZjUOubaqMknCZua0nGS5Ps9N+ljen55QRoujqwI9alE51AD3+
+	 RCBGwqPoiLjy98dIf3fQsrKGBAahzxQDrh3gbriMHJaDqlicEJBbIYmn06BpcFnfKXoaQ
+	 xM0WBxABJ6tqAQIv3taoeYNVJHlCJ5PNC0yI0u1THJ/7VYeq4x7zpqVsBlcaEgL4ABvng
+	 wMHSH3tMORLyBkpyH+IWm37XxKBt2PJWxIPnxd5fdsrniBD7IMI+rb8KdNY3C24cNhvgP
+	 dAp8GLM8myIFcpEN8m9Z5IVwziYNV0mZCTJCJBEh6tuAQriDd41pKXQQkC17gHGFSIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=QIRBOzhl;
-	arc=none smtp.remote-ip=139.138.61.253
-Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=UZ9+oPrS;
+	arc=none smtp.remote-ip=209.85.221.44
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FFA606A87A;
-	Tue, 24 Nov 2026 09:47:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71FFA606A87A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBB0606A32E
+	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 10:39:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EBB0606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=QIRBOzhl
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1795513660; x=1827049660;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M5NqBozgTmQWYS9D9HJSCp5Du4EFXSk47fr9zjJkO3M=;
-  b=QIRBOzhlGFqjmQkw86iKR6QcbxzUuAO997/h3zS/1jiqQ+dKy5m7DMDq
-   MiX7gmx90c/SC7XqYkInVX9IzMP2gBxkSipmUKqbFzJ8U2+1ynD8VgHpN
-   It37lWqTffN4BIP1HeiHRRTL2FbrAxq2yxNu/XJI2nRYNkJ2CUXDyb9Vb
-   0fvfqCnHQbrzeeR7nnQVnMomxGeIUYjMvdJ/3eCsHhxmdDwRG4VwIqNAM
-   D1buiHbM5Ht8vHlmuoAANi5cVm+Ez51KGn/nZCL0JPB39zfhBiZgdjdtb
-   q7PzkIGhsp3FzitkNDxXRusS997Pnyzt7ll55NLmKqKqkXHtvad99WIa2
-   w==;
-X-CSE-ConnectionGUID: Kxt87SasQr2zj2SrCRZA/g==
-X-CSE-MsgGUID: O+CkK1/nSX2R7aqnKx7Plg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="250865861"
-X-IronPort-AV: E=Sophos;i="6.27,230,1786978800"; 
-   d="scan'208";a="250865861"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 18:47:33 +0900
-Received: from az2uksmgm2.o.css.fujitsu.com (unknown [10.151.22.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 5465AC05C53;
-	Tue, 24 Nov 2026 09:47:33 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 081191800277;
-	Tue, 24 Nov 2026 09:47:33 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.1.165])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id C668B1800528;
-	Tue, 24 Nov 2026 09:47:23 +0000 (UTC)
-Date: Tue, 24 Nov 2026 18:47:22 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v4 00/11] KVM: arm64: CCA: Prepare Realm memory management
-Message-ID: <awVZ0UrEKN9gLHIZ@FCCLS0092175.localdomain>
-References: <20261123104233.95710-1-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=UZ9+oPrS
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4aa5833c263so4155582f8f.2
+        for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 02:39:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1795516786; x=1796121586; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i67A04/jloiIm4Idm3ymNHqESyF+RQsVbnS4UKmnxA8=;
+        b=UZ9+oPrSJcfNGBzobcMALgc8VsOsR6f3NOyyz7R8aeM1O5LqEUECb1sDT/sW6Dngxj
+         xDrRNsswV9mun8b0Hq1X2uSD76iDs/m2kndJ9Jsd1PvRPzddD8wBPfe30Y7w658koU5V
+         V7IM7TksAkt+lo/gr5mxGSGpG4eqXW/tzJ0qjGCy8gM1ekm3eL3uGgsI8FWp6sV/Rh4f
+         H/rECsEvUe4+vVfIjDkyo6ywvIVgjMM1D1FrLf62Swwj3deJKMB5pkdH83K13K7nuMGT
+         5UofYpQHVnmmVUCm73YzNfdHZlDiP6J/SHhfQnd3i4bJrN5Xg4zfSgLKKKJNRlEIkh1R
+         JAYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795516786; x=1796121586;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=i67A04/jloiIm4Idm3ymNHqESyF+RQsVbnS4UKmnxA8=;
+        b=JBrNPjqhsQ9NFxOCRioxOl5I8i8lzn3SanMR3KObApkrgFBocLiKiDe8F92NcSvM6Y
+         fspgjJlxlS6DmnLOXSVbju5ddvwXXtZJn6L/H9838seUrFiYgkgGaIpPqe3w4pXJOUPu
+         6bdfqxmoZ0LSDsT8QGkEQHX2b1o2goAEY+U40YjDLccF/Nk15x4aNgyDIliB/ybBMT5S
+         FBqDXsPFt6K0UDG2uDd2BkmfG0tNSn0kyiEL/EG3vkOZEe28lgEI5fE2i4et0tLPoAg2
+         27EAhrXLuwkrmkW94G26ILwhAmhac+kuNZDmLOCGnt0r7ws8LlTUKD1A/xSyBUU5UJLH
+         oOHA==
+X-Forwarded-Encrypted: i=1; AL+hErEnm+QcOrknY+uSu7tTSmQ/45zjssO9o+WbJgMmnqGIUtDv3JpWOYPuJBKohHD0kXhFnS8VCQAWv+gh@lists.linux.dev
+X-Gm-Message-State: APuU4Z85SI5YyGrxj4M2BNTy06bgHivYC4b084xT/GGBA5yWZPS2BV9c
+	WmwQU8VPsU9Jp5qGYR7ufCnnMuPvSWJOXtJHKU2XEkgzZXntPPUBQIdwUsnKv5uKHKs=
+X-Gm-Gg: AZFdTZe7/o2PkM9HzC+vTow6b0UPGFkA2c8AnlxaW6wK5QTgo0HqEbBjqBx05K6bgiT
+	GtWv2bd5bI3/JeMx/GQ+9flZVLRy751uXtDE6ouSzXpuXH4Sf1CGs2A5MRDkU3Rqv0+VvlBD4ad
+	PDHyva5oxByGDvGNRrJcohtmWNoQBtFNny3dA4tgJyob4DR6u/D1MQXSAIR6mlmu8Lk6unrkp4b
+	oyzYy/GtJV4FajD8jX3q4w0s3eWq7ckT8lQEJKLzZsL42Oa6fM5I/HeHJT53jCuE508dprbwkPO
+	13Q7W//eDVGrMyX64NtR5Uuh/J2a01qGPEwVc1tQFvSEf8onZsavNSNmhBd7Ilur1Vom22JPVOh
+	U3l5KCT6J9vMnV+c3BK7FPqOZpML9MU9Fl8HkkCdG+5HxfehiI9nzN/vgsOzSbxdzy2C6IHxU95
+	56L0yeTkoaukvaIPSbe0MQPh7hIlle5++gc47ZDXZgs1vlZrdtUUu0YWbuK89kyaySc+H+FUqfp
+	U+PVAc1nxjOjD3c2oy5BRRIvKfaeT/Y0HbD0FlJSWdQ1p+ruRKJqMmRseKN6GbtRNCkXv++5a5r
+	7ltb4NH/0G1IrHadoyl9192Fu7gFO2/xc0x/RmTmRSxtNRS34l0vsp1AgSOG/61i4qdX
+X-Received: by 2002:a05:600c:64c8:b0:4bb:6848:d433 with SMTP id 5b1f17b1804b1-4bb8881d141mr281064655e9.26.1795516786433;
+        Tue, 24 Nov 2026 02:39:46 -0800 (PST)
+Received: from ?IPV6:2001:a61:132b:a401:6cb8:7c28:11e1:499? ([2001:a61:132b:a401:6cb8:7c28:11e1:499])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8538b2c5sm425218335e9.5.2026.11.24.02.39.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2026 02:39:46 -0800 (PST)
+Message-ID: <65749362-927a-492d-8bff-573c277fe456@suse.com>
+Date: Tue, 24 Nov 2026 11:39:40 +0100
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -94,38 +92,67 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261123104233.95710-1-steven.price@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/33] Bluetooth: btusb: Fix MediaTek ISO claim locking
+To: Leon Romanovsky <leon@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, David Woodhouse <dwmw2@infradead.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>, Johan Hovold <johan@kernel.org>,
+ Eric Dumazet <edumazet@kernel.org>, Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
+ Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+ Chris Lu <chris.lu@mediatek.com>, Mans Rullgard <mans@mansr.com>,
+ Alan Stern <stern@rowland.harvard.edu>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Cornelia Huck <cornelia.huck@de.ibm.com>, Andrew Morton <akpm@osdl.org>,
+ Jeff Garzik <jeff@garzik.org>, "Rafael J. Wysocki"
+ <rafael.j.wysocki@intel.com>, Bart Van Assche <bvanassche@acm.org>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ Dan Williams <djbw@kernel.org>
+Cc: linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-input@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-pci@vger.kernel.org, iommu@lists.linux.dev,
+ linux-coco@lists.linux.dev, Alexey Kardashevskiy <aik@amd.com>,
+ Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+ Greg Kroah-Hartman <gregkh@suse.de>, linux-sound@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>
+References: <20261124-device-trust-core-v4-0-037eb0d17b1f@nvidia.com>
+ <20261124-device-trust-core-v4-2-037eb0d17b1f@nvidia.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20261124-device-trust-core-v4-2-037eb0d17b1f@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 11/23 10:42, Steven Price wrote:
-> This series adds the memory management plumbing for CCA, building on the
-> basic RMM support [1]. Thanks to everyone who reviewed and tested the
-> earlier versions.
+
+
+On 24.11.26 10:43, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> The patches introduce internal Realm VM state, prepare Realm stage-2
-> setup and teardown, and provide RTT mapping and invalidation helpers.
-> Realm memslots are restricted to the lower half of the IPA space because
-> the protected and shared halves alias each other. The final patch
-> connects the helpers to KVM's stage-2 MMU operations.
-> 
-> This is the memory management portion of the larger Realm host series.
-> Realm descriptor creation, REC entry and exit, activation, and the new
-> uAPI follow in the integration stack. This series alone does not enable
-> Realm creation.
-> 
-> The integration branch [2] includes Realm creation, REC entry and exit,
-> and the remaining host support on top of this series. The MM branch [3]
-> contains just this series.
+> MediaTek ISO claims are performed from HCI setup work outside USB probe.
+> Locking only the interface does not protect the claim against teardown
+> of the parent device. Unconditionally waiting for the parent lock can
+> deadlock with disconnect while it drains the setup work.
+Hi,
 
-Hi Steve,
+your patch raises a question. Can usb_claim_interface() ever be
+used safely outside probe() without this kind of locking?
+If the answer to that is negative, should the locking be integrated into
+usbcore?
 
-I tested the v4 integration branch in the same way as described in the
-following thread, and I haven't seen any issues so far:
-  https://lore.kernel.org/all/avV-P2_fOkFWQVnM@FCCLS0092175.localdomain/
-
-For the series:
-Tested-by: Kohei Enju <enju.kohei@fujitsu.com>
-
-Thanks,
-Kohei
+	Regards
+		Oliver
