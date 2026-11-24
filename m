@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795513504;
-	b=0RMDvmJJlQnvBZnwFDiAmnAoELHWpbAYPpAqtV0FWiny7fWE6PYNrtv8WjNeQu3gREQw
-	 qOFCY7dHqiOiHg1ZWFvh7UCbXeqGKg5DE69QTpOvj/8vAn6yX9N2J6/NnDBC+XG3AWcAN
-	 hVK1pGtVFix3b3Mt8ZYphbVrcNg05vzI0zpIKP+/NQwm+S58g0KSnLZqdZmlcHkw8WHdo
-	 iHXQ7Glztnf9Xa/6CCUGmTk7MG4+n0XAlkhcTKpT97FQP3fHCG/8wDlj2CEmN0bFXxWn5
-	 SGB0cTzfwIEAxFNbrucPfcv8Dbu0g9CHMmrHcORQA6ml55u+CsX/LX0eiHT6O5o2xcQ==
+	t=1795513516;
+	b=Qdu2NRF7UW5CAg4hsXrRx64PraF9NA8OugNorDpHvWEBa1Z7MND9ES5QHLMXz0ahCTSN
+	 PBorQONew3ERr8vXKhJpWJ5SOLY2WBaYdSj6ihLZoc/hRvSKkYpewFWZN89H1EmQ+lrLQ
+	 Ex+uKlqwV98OjsdL2douqPVZ8MStDQM9WfgRGIbHQ+hQLFF2ncqNbtHWQMC8q+1XaRPXT
+	 U6ePkgGLbiYhCXMYafsvXSLTAOl4igKF+JeJZ9lVKg+ylnH94NkuEXAciWnHp3Yr9M0f7
+	 PFbj7wrOG1k212FyPeC2rPHK++pb7hd47BhtQzaCrlkP/pezoxRqR4yxBeoSG+3XgtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795513504;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795513516;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 Content-Transfer-Encoding;
-	bh=c2GmkRj6kP3mA9/dih2IWVlm65+EvEG4i+reuaRR1xg=;
-	b=VCS8qhccbWgKrsAyOM8/t49IDFLxlLNVc0Gp6SGTkHjyhAcZ7kho4Cd1psWUZP76bZ7/
-	 JdOWrxgmq2kbaXouzmGCBOZ3cIISA1f/oSp5cQN9fkv9wB7N12Afo15T6ZsE5pdZoNpvD
-	 vrfGE+2v4RFN9kZEVzulWZyozJbThS7c6JlaOkoNlRnCwWVVv7HFLAWOVWCY5tUgdbWCb
-	 tbuvnY3zZjJ+WkrQYnZRhsVwFHEns6TLELkuUUQMXu2nnbDcUWgJrHguH1yDMdbUYhzN7
-	 GOAnmX2FqcNidygzrsABGfS4LQQ8pw0qoTktVMp4f+FIYIv9WkXFKLKga1dUW4pmJKA==
+	bh=HhsYqTWaEbeiBD28eWBoEDfW+Typf3OqOXLWU9ZeNH0=;
+	b=axVx3wqSdPw8BtOgWAeUL2XERFaN2tEOVFjVKGhYiyHcfFQTAq5o4CZ6evdlhm8jY5FQ
+	 hMxcUhx8VJNfjr+zP+yWtng/xsdUdXHQq8djCKDNET+Hr1axVrGcqSdzfSL8fpgm+CjIk
+	 IsxwrknzjpdMdkIuJw1rqu5z0+V5cYWRyw5nJrnMck1WRhkS0eGeXSPZ3nopnYkOReNRr
+	 ixV2ASMkuRHLxxhNWq1CSyqZQ033boA1DI8HuI/IEgnyGp5YkVYBDpzxk0NvTuJCUuBU6
+	 1DxdWEVXBDcWSKmEICw/pNew6Q2U7hT/Lh+68eyTjVojaEGMKEfLeofqkm0oQYTTm7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AQTHe+7b;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtWOUXhZ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51CE60A260C;
-	Tue, 24 Nov 2026 09:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EB060A3808;
+	Tue, 24 Nov 2026 09:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AQTHe+7b
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E571F000C4;
-	Tue, 24 Nov 2026 09:45:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtWOUXhZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AF31F0089E;
+	Tue, 24 Nov 2026 09:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795513503;
-	bh=c2GmkRj6kP3mA9/dih2IWVlm65+EvEG4i+reuaRR1xg=;
+	s=k20260515; t=1795513515;
+	bh=HhsYqTWaEbeiBD28eWBoEDfW+Typf3OqOXLWU9ZeNH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AQTHe+7bxfErZlBsxE3vWuGPvd3h9E10qCG3iepRTZVBAg5Mq4+lV2EsjkowYljHG
-	 GCfM70UUcVZGeVMMKwiUXevU3uSDBCZqPKifVIqB6e/eXtevDA5s8srfmtNSqAstxF
-	 NbcpxKeWutJVHrvyAVOIxdYbm8270nHSKT4gW0aw0kX3Qp/OwYu9H33uB+DTcHqMD7
-	 X4QpE7olsao6E1APui8iIuYGDq796R5FBW+pEqFosRQq30PFoqXQDsgMGxHyI20Ts5
-	 t6EPagcza1X+1+5i2oT+Fe8j9viBoUoyaY5j/hZwRJVTXWFOwYjAAH3ARetDuEdFsn
-	 h9oaYe7psS5Rw==
+	b=RtWOUXhZlH7YuIcxtLWLmuu1kVpxbxuPYh3EY7KEuw9f9bPzjHvg+pv2/+f4AhuQN
+	 UCUIjUo8SKpuwmLiGjzOc5e2GrmBaIG9jq/+TOJhhNO+XbNPZjIfJkUKLJg/EluCrQ
+	 JOXwogrIU73Z4TQ1qgqfJJldEcs82f7tNBoUt57VXA5oCW7UiifRRYtJwyhIXmjd2R
+	 iwR4jl0bzmDEuL2rnyMRkuupy7e+TzQUU/qVB2Q9vqsc/vukIykJoRPNbcF0Opl4gl
+	 JuxgBY4PUlnF7Hh04IEyDv5D/bSqFLhA/B/wYkRzia0h4cFW7+lFTy85cGbM4xf0Ll
+	 PqBJtjBmyJ7RQ==
 From: Leon Romanovsky <leon@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -100,9 +100,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@suse.de>,
 	linux-sound@vger.kernel.org,
 	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: [PATCH v4 12/33] USB: Unwind interface claims after registration or binding failure
-Date: Tue, 24 Nov 2026 11:43:43 +0200
-Message-ID: <20261124-device-trust-core-v4-12-037eb0d17b1f@nvidia.com>
+Subject: [PATCH v4 10/33] USB: Pin modules for unregistered interface claims
+Date: Tue, 24 Nov 2026 11:43:41 +0200
+Message-ID: <20261124-device-trust-core-v4-10-037eb0d17b1f@nvidia.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261124-device-trust-core-v4-0-037eb0d17b1f@nvidia.com>
 References: <20261124-device-trust-core-v4-0-037eb0d17b1f@nvidia.com>
@@ -121,114 +121,156 @@ Content-Transfer-Encoding: 8bit
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-A successful USB-audio control probe can claim unregistered playback and
-capture interfaces. If playback registration fails, releasing its claim
-alone leaves the card active, its disconnect callback returns immediately.
+A successful CDC-ACM control probe can claim its data interface before
+registration. If data registration fails, cleanup can race with module
+unload when no tty is open:
 
-usb_set_configuration()
-  device_add(control)
-    usb_audio_probe()
-      snd_usb_create_streams()
-        snd_usb_create_stream(playback)
-          usb_driver_claim_interface(playback)
-        snd_usb_create_stream(capture)
-          usb_driver_claim_interface(capture)
-  device_add(playback) [fails]
+Thread A (cleanup)                            Thread B (unload)
 
-Configuration removal skips unregistered claims. Binding failure can
-clear dev->driver without disconnecting the claimant, and disabled
-autoprobe leaves the claim unbound.
+usb_driver_release_refused_claim(data)
+ usb_unbind_interface(data)
+  acm_disconnect(data)
+   usb_driver_release_interface(control)
+    device_release_driver(control)
+     device_release_driver_internal()
+      __device_release_driver()
+       klist_remove() [last bound interface]
+                                              delete_module()
+                                               acm_exit()
+                                                usb_deregister()
+                                                 driver_unregister()
+                                                  bus_remove_driver()
+                                                   driver_detach()
+                                                    [empty list]
+                                               free_module()
+   [resumes in freed acm_disconnect()]
+   tty_port_put()
 
-Release every claim that driver core left unbound, remove the
-configuration if sibling claims remain, and disconnect unpublished
-claims before freeing interfaces or dropping the module reference. A
-bound claim is on the driver's device list, so unload waits for its
-disconnect.
+The empty list lets unload skip the USB device lock and free the module
+before the callback returns. Hold a module reference through registration
+or cleanup, preparing for the cleanup added next.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 86d30741e480f ("[PATCH] USB: Usbcore: Don't try to delete unregistered interfaces")
-Fixes: c6a46696f97ff ("driver core: don't fail attaching the device if it cannot be bound")
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/usb/core/message.c | 41 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+ drivers/usb/core/driver.c  | 17 +++++++++++++++++
+ drivers/usb/core/message.c |  6 ++++++
+ drivers/usb/core/usb.h     |  1 +
+ include/linux/usb.h        |  2 ++
+ 4 files changed, 26 insertions(+)
 
-diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
-index cfb4cbdbe76fa..e7a23e406f8a2 100644
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -1489,6 +1489,9 @@ void usb_disable_device(struct usb_device *dev, int skip_ep0)
- 			device_del(&interface->dev);
- 		}
- 
-+		for (i = 0; i < dev->actconfig->desc.bNumInterfaces; i++)
-+			usb_release_unregistered_interface(dev->actconfig->interface[i]);
-+
- 		/* Now that the interfaces are unbound, nobody should
- 		 * try to access them.
- 		 */
-@@ -2020,6 +2023,25 @@ int usb_set_wireless_status(struct usb_interface *iface,
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index a50403820285a..a03ea60edc501 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -529,6 +529,13 @@ static void usb_shutdown_interface(struct device *dev)
+ 		driver->shutdown(intf);
  }
- EXPORT_SYMBOL_GPL(usb_set_wireless_status);
  
-+static bool usb_has_claimant(struct usb_device *dev,
-+			     const struct device_driver *claimant)
++void usb_put_claim_owner(struct usb_interface *intf)
 +{
-+	struct usb_host_config *config = dev->actconfig;
-+	int i;
++	struct module *owner = xchg(&intf->claim_owner, NULL);
 +
-+	for (i = 0; i < config->desc.bNumInterfaces; i++) {
-+		struct device *intf = &config->interface[i]->dev;
-+		bool claimed;
-+
-+		device_lock(intf);
-+		claimed = intf->driver == claimant;
-+		device_unlock(intf);
-+		if (claimed)
-+			return true;
-+	}
-+	return false;
++	module_put(owner);
 +}
 +
- /*
-  * usb_set_configuration - Makes a particular device setting be current
-  * @dev: the device whose configuration is being updated
-@@ -2270,6 +2292,7 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+ /**
+  * usb_driver_claim_interface - bind a driver to an interface
+  * @driver: the driver to be bound
+@@ -567,6 +574,14 @@ int usb_driver_claim_interface(struct usb_driver *driver,
+ 		goto unlock;
+ 	}
+ 
++	if (!device_is_registered(dev)) {
++		if (!try_module_get(driver->driver.owner)) {
++			retval = -ENODEV;
++			goto unlock;
++		}
++		iface->claim_owner = driver->driver.owner;
++	}
++
+ 	dev->driver = &driver->driver;
+ 	usb_set_intfdata(iface, data);
+ 	iface->needs_binding = 0;
+@@ -619,6 +634,7 @@ static void usb_unbind_claim(struct usb_interface *iface)
+ 	usb_unbind_interface(dev);
+ 	dev_set_drvdata(dev, NULL);
+ 	dev->driver = NULL;
++	usb_put_claim_owner(iface);
+ }
+ 
+ /**
+@@ -653,6 +669,7 @@ void usb_driver_release_interface(struct usb_driver *driver,
+ 	if (device_is_bound(dev)) {
+ 		device_unlock(dev);
+ 		device_release_driver(dev);
++		usb_put_claim_owner(iface);
+ 		return;
+ 	}
+ 
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index a645858b25d96..cfb4cbdbe76fa 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -1845,6 +1845,7 @@ static void usb_release_interface(struct device *dev)
+ 	struct usb_interface_cache *intfc =
+ 			altsetting_to_usb_interface_cache(intf->altsetting);
+ 
++	usb_put_claim_owner(intf);
+ 	kref_put(&intfc->ref, usb_release_interface_cache);
+ 	usb_put_dev(interface_to_usbdev(intf));
+ 	of_node_put(dev->of_node);
+@@ -2269,6 +2270,7 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
  	 */
  	for (i = 0; i < nintf; ++i) {
  		struct usb_interface *intf = cp->interface[i];
-+		struct device_driver *claimant;
- 		struct module *claim_owner;
++		struct module *claim_owner;
  
  		if (intf->dev.of_node &&
-@@ -2285,10 +2308,26 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+ 		    !of_device_is_available(intf->dev.of_node)) {
+@@ -2282,7 +2284,11 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+ 			dev_name(&intf->dev), configuration,
  			intf->cur_altsetting->desc.bInterfaceNumber);
  		device_enable_async_suspend(&intf->dev);
- 		device_lock(&intf->dev);
-+		claimant = intf->dev.driver;
- 		claim_owner = xchg(&intf->claim_owner, NULL);
- 		device_unlock(&intf->dev);
++		device_lock(&intf->dev);
++		claim_owner = xchg(&intf->claim_owner, NULL);
++		device_unlock(&intf->dev);
  		ret = device_add(&intf->dev);
--		module_put(claim_owner);
-+		if (claimant &&
-+		    usb_driver_release_refused_claim(intf, claimant)) {
-+			bool unconfigure = usb_has_claimant(dev, claimant);
-+
-+			get_device(&intf->dev);
-+			if (unconfigure)
-+				usb_set_configuration(dev, -1);
-+			module_put(claim_owner);
-+			put_device(&intf->dev);
-+			if (unconfigure) {
-+				usb_autosuspend_device(dev);
-+				return ret ? ret : -ENODEV;
-+			}
-+		} else {
-+			module_put(claim_owner);
-+		}
++		module_put(claim_owner);
  		if (ret != 0) {
  			device_lock(&intf->dev);
  			intf->unregistering = 1;
+diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
+index a9b37aeb515be..dfa48f43046d4 100644
+--- a/drivers/usb/core/usb.h
++++ b/drivers/usb/core/usb.h
+@@ -49,6 +49,7 @@ extern int usb_set_isoch_delay(struct usb_device *dev);
+ extern int usb_get_bos_descriptor(struct usb_device *dev);
+ extern void usb_release_bos_descriptor(struct usb_device *dev);
+ extern int usb_set_configuration(struct usb_device *dev, int configuration);
++void usb_put_claim_owner(struct usb_interface *intf);
+ extern int usb_choose_configuration(struct usb_device *udev);
+ extern int usb_generic_driver_probe(struct usb_device *udev);
+ extern void usb_generic_driver_disconnect(struct usb_device *udev);
+diff --git a/include/linux/usb.h b/include/linux/usb.h
+index 825f03b290670..a5e706f67f33a 100644
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -213,6 +213,7 @@ enum usb_wireless_status {
+  * @dev: driver model's view of this device
+  * @usb_dev: if an interface is bound to the USB major, this will point
+  *	to the sysfs representation for that device.
++ * @claim_owner: Module reference for an unpublished claim.
+  * @reset_ws: Used for scheduling resets from atomic context.
+  * @resetting_device: USB core reset the device, so use alt setting 0 as
+  *	current; needs bandwidth alloc after reset.
+@@ -271,6 +272,7 @@ struct usb_interface {
+ 
+ 	struct device dev;		/* interface specific device info */
+ 	struct device *usb_dev;
++	struct module *claim_owner;
+ 	struct work_struct reset_ws;	/* for resets in atomic context */
+ };
+ 
 
 -- 
 2.56.1
