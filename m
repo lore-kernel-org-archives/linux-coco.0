@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795500136;
-	b=LWzR6LjjvtZWe/m6Pc0zn+AZ7VMr9WRBpVPnmpFHC3FXyMjZjEl/c7a42iR8gkgDkj+A
-	 c32xqQKiB8aprid0mDqQxyvfBbWweSdQecbaPL6B4gkEFouyAlsiE2zjvHST98Ix/aMzV
-	 2+W09gHZPg+20e4VTZ1srgnwkbRteEgRzo17hBkT5V92w4Z1jveHpBrwkJAWZyWdjiOwq
-	 O26Ixou5whgGjyFUEOnGFHUa1/oEh5BDDSA9TpwYtPeqy4qpZvtB3eY/Ga1TIJJO203Ex
-	 bSgcJj+jZYPlAs77Wd1TJdMDk60JsyQtY6MHOzBHUX09YYNWj516FvasG5w6dO4+S8A==
+	t=1795500778;
+	b=X/BCqv85aaTdK2aY5dEFQwBW5hsRFzN7iqXUB2aAjifMb48rSB5SPTVGp8Tk/K4g9/SK
+	 B77J9ohcJag3zpNtYTIahvqju301OVDOyRXYxlU3r3vZxIF1PN/Q8j8BDg2M+jmtp9jBR
+	 IeaS8KRH+qW3NtCuPc1BW+PVTsWKYQD8YZ6DQhM8ZAYHlFCl8JPEWGmSYMIIzPLnzT2Kl
+	 5KP9HF9WAcbzKD3k8I+ms+stxOlQyd3UEVVcvWkdNOh7+hOFjAMGHTRXV+1WCs8ju8AzJ
+	 i5AvaxFGeiI3W5XWbYYk+x2iwnuv2JaKp6GzKq5g32H9XN4SIHi/IRkLttQaOOabI4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795500136;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795500778;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=9pDRO5ltpq5QTRdjjDIpq0NgTGiXCCJLblQwoeNurk4=;
-	b=wxAbNhcR6s39+KGcbIlLPUNMChBlISYhm6mPO9xmOwVvtFDPCt162qMQiHGGGm1xqTmc
-	 c3wDJWrptxhSuRzB2R6G/Vy0xs6wk8h1pDLJ8S6VE33P+XS3pknbQcH8vcCnrD4UYyZ8R
-	 mpI41TmGy5hannhv/mYkv54BNC462gMavF+Jwrcwp/6lxXNYHk+wnIR/zslZ+HRG2dGZl
-	 eMZ/fEPuDck5tmDzfHdLpffBzc4pFv86zhtE0Xk+S82Eaq8P3toXZoZkrTnCtq/fogLZo
-	 Potp0gDIYOT1bo8USCsqnqFhG0/yIZHIiyWOf5DhAUyGtB+ocWK1Lm1Q31lA6jdXO3Q==
+	bh=QzdUh4XotWO4fMpwdWgdpxjmPXBWaEs7LRNsn6Vs8uc=;
+	b=KIh8/qI2UCdc23YxJg4fNq6h6tD7QIVhuPs6ubyGAaEBprLmuiRPTRDPDvs865UzdBSu
+	 qXqC0hWHDkCmQ72ZVAdH36kGNnLdXoYjrYmqe+YshRcTCgLfUylxFdrILPF+rRK3GtXGd
+	 apB2RiELNp41SPNVZrO+8ekOlJcZUAv4Cqv/xg2bxrYxvEN5QOdhtA9rDRL0xswAKFT3e
+	 Bcz2AmBu3AiJTSgMNonpto4wmg2uijxjbsUHs9JFlqsdjiTTVeSAWWJEHZM1oxLVQOhKL
+	 t9TLq3tz6pJsrXN6/WhdyGQgiy3+uY//RoP/xZqSKz33D+rpmR7qhVpTmCo+FtOhKWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Az+Ke9y5;
-	arc=none smtp.remote-ip=198.175.65.13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PpMwdelt;
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A86606A321
-	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 06:02:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40A86606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EFB606A33B;
+	Tue, 24 Nov 2026 06:12:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2EFB606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Az+Ke9y5
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PpMwdelt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795500134; x=1827036134;
-  h=message-id:date:mime-version:subject:to:cc:references:
+  t=1795500777; x=1827036777;
+  h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Ij2lL/q/u1LAPbmRv+/yIYCMrX5T6HDEQ4wEKA0is64=;
-  b=Az+Ke9y5NzKOlMUEPDXAVNcH4JuVu2gmGMTXLRSb597z2BnKDY+GJ6NN
-   Z4HjUGjt/qOeSin+IazGt6oqnoeamORElzQRW4gb/DC08pYv+fX56W+Yx
-   G/diOHQKSNTgr+aV40PgBWj8Fu50yWzaxB9YsKMnmkLLL8eS032cKpSRN
-   CRYfSyseHikSP7A/TDkOve/4u1TzVC1G1qf5W3qLDH+r1v1zpGv3tiiY/
-   U1RTrcgPcXjSSRFn+9D3mV7uTvVlM2CLP4BhQVgWrDDYO37oRWdDPemuj
-   D/vJXNKCzbn/zkENOtXYvHa5WuJUm/5u5/4h3AlQxct3rEfT05n+E6N6w
-   A==;
-X-CSE-ConnectionGUID: yg99eHbpSCeMxWcqnw4+Uw==
-X-CSE-MsgGUID: IZ8tI+7vRMG92GLqjc3IVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4218877"
+  bh=rdPPUatwCGdhqseI0PStwl7g1cIqszizyHH+SlMOlkE=;
+  b=PpMwdelt66ywM82RwzODCocmVkLXnuPTbbvRtu1QTRSSgPn5OOIK3nbU
+   6SPOqQgiShpba+B8RG620HTg3uzMbUT1C/EYPRK1PHgKH0DS80ooLf8By
+   4vcnBwGdJRdFIwG3OHSi18oGRBi0lhM5w2fS3UeAf6ZhbQadm+5lHdTnj
+   K8JBFtdPJynhO8TU/oyVFczt2k7Uc7jnAZ6nJL9JG1aXmGo2Caqdw3BZ6
+   Xn/a2MsxdFDQ+T+LxoGZetAWUjvDiRW+BO4r4xYG1CLs0ebji5Mtxt06E
+   3Dn6LRLN4yvO0/gogaGnV8w1s+kZsikMkOq6QxtDOG9zxhqcGykRGJQvx
+   w==;
+X-CSE-ConnectionGUID: 6g2TE4ISQVCVC24ZYpxIKw==
+X-CSE-MsgGUID: PjdoIS7MSCS3ht+P3cHF2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4336473"
 X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
-   d="scan'208";a="4218877"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 22:01:41 -0800
-X-CSE-ConnectionGUID: aa5SVtYERxOcdASovpuqqA==
-X-CSE-MsgGUID: QrlUm4V+Qk2UHeu9FvxoLg==
+   d="scan'208";a="4336473"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 22:07:07 -0800
+X-CSE-ConnectionGUID: mh6gCppTTdmWalw5M2OvVw==
+X-CSE-MsgGUID: URJvYw2ZSbCyOJUPgQ8oPQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
-   d="scan'208";a="11774824"
-Received: from unknown (HELO [10.238.0.68]) ([10.238.0.68])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 22:01:35 -0800
-Message-ID: <de1262f3-4097-4aa0-bcee-0dad05ec5538@intel.com>
-Date: Tue, 24 Nov 2026 14:01:32 +0800
+   d="scan'208";a="11688573"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 22:07:03 -0800
+Message-ID: <9e7e8ed4-8f42-418e-831f-293614ef517d@linux.intel.com>
+Date: Tue, 24 Nov 2026 14:07:00 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,86 +73,65 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/15] PCI/TSM: coco/tdx-guest: Implement TDX-Connect
- PCIe TDISP (phase2)
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, hpa@zytor.com, dave.hansen@intel.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
- aik@amd.com, aneesh.kumar@kernel.org, seanjc@google.com,
- pbonzini@redhat.com, yilun.xu@linux.intel.com, chao.gao@intel.com,
- vishal.l.verma@intel.com, kevin.tian@intel.com, chao.p.peng@intel.com
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
+Cc: baolu.lu@linux.intel.com, "Gao, Chao" <chao.gao@intel.com>,
+ "jgg@ziepe.ca" <jgg@ziepe.ca>, "x86@kernel.org" <x86@kernel.org>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v3 3/9] x86/virt/tdx: Export Dynamic PAMT helpers to
+ tdx-host
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-4-baolu.lu@linux.intel.com>
+ <awQUsufmV3NipqGX@yilunxu-OptiPlex-7050>
+ <305d702ec6b5ef383115d3da9767df1ea6860da8.camel@intel.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <305d702ec6b5ef383115d3da9767df1ea6860da8.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/24/2026 12:10 PM, Zhenzhong Duan wrote:
-> Hi,
+On 11/24/2026 12:28 AM, Edgecombe, Rick P wrote:
+> On Mon, 2026-11-23 at 18:25 +0800, Xu Yilun wrote:
+>> On Thu, Nov 12, 2026 at 12:30:48PM +0800, Lu Baolu wrote:
+>>> With Dynamic PAMT, any page handed to the TDX module needs PAMT backing
+>>> first, via tdx_pamt_get(), and must drop it with tdx_pamt_put() once the
+>>> TDX module gives the page back. Besides KVM, the tdx-host driver now
+>>> hands pages to the TDX module: the IOMMU_MT pages for TDH.IOMMU.SETUP.
+>>>
+>>> Export the two helpers to tdx-host as well. A symbol can only be
+>>> exported once, so replace EXPORT_SYMBOL_FOR_KVM() with an explicit list.
+>>> Only kvm-intel calls these helpers in KVM.
+>>
+>> We are seeking for some simplified intial implementation without DPAMT
+>> for TDX huge page feature. So we could also drop DPAMT support for TDX
+>> Trusted I/O currently.
+>>
+>> As an temporary solution, we can disable TDX Trusted I/O if DPAMT is on.
+>>
+>> for example:
+>>
+>> static inline bool tdx_supports_trusted_io(const struct tdx_sys_info *sysinfo)
+>> {
+>> 	if (tdx_supports_dynamic_pamt(sysinfo))
+>> 		return false;
+>>
+>> 	...
+>> }
 > 
-> This is a complete TDX Connect phase 2 guest-side implementation. It's
-> based on Dan's last TSM Phase2 [1](rebased to v7.3-rc4), plus Nicolin's
-> PATCH3-4 in [2] to address Jason's comments at [3].
+> Yes, let's try to make DPAMT support optional for the initial upstream TDX
+> connect target. We can add support for it in follow on patches and keep the
+> initial code sets smaller. In order to facilitate this, we need to add a kernel
+> param to control enabling DPAMT. I will send a patch soon.
 
-Hi all,
+Sounds good. I'll temperately drop the DPAMT support in the next
+version.
 
-After going through the whole series, I found some opens/issues about the TDX
-Connect arch and want to get your feedback.
-
-1. The requirement of R8-R15 are reserved to 0 on TDG.DMAR.ACCEPT.
-
-   This is the first leaf in TDCALL/SEAMCALL that explicitly requires some
-   unused  registers to be 0. Without justification of why it must to be such,
-   we are going to propose to remove this requirement and it helps drop the
-   PATCH 13.
-
-2. Add 'TDI' to the names of TDG.DMAR.ACCEPT and TDG.DMAR.RELEASE and maybe
-   rename 'DMRA' to 'DMA'
-
-   TDG.MMIO.ACCEPT has already been renamed to TDG.TDI.MMIO.ACCEPT in the latest
-   public TDX Connect API spec, to call out its scope is TDI. It's better to
-   add 'TDI' to TDG.DMRA.* as well to make them consistent since TDG.DMAR.* also
-   operate on TDI scope.
-
-   Besides, DMAR means "DMA Remapping", which is an IOMMU capability. Without a
-   virtual IOMMU for guest, the guest should just care about the DMA capability.
-   So it looks DMA is more accurate than DMAR.
-
-3. TDG.TDI.MMIO.ACCEPT requires TDI to be in the ASSIGNED/ACCEPTED/RUN state.
-   After TDI is bound by host via TDH.TDI.BIND, the state is BOUND. It requires
-   guest to call TDG.TDI.RD read the TDI_GET_BIND_SESSION_ID, which changes TDI
-   from BOUND state to ASSIGNED.
-
-   This is a hard dependency for TDG.TDI.MMIO.ACCEPT not to fail and it's not
-   mentioned in patch 12 where the call to read TDI_GET_BIND_SESSION_ID is
-   added.
-
-   The SESSION_ID is used to ensure the host doesn't bind a new TDI after
-   guest attests the TDI without guest's awareness because the SESSION_ID is
-   verified in the following TDG.TDI.START. And making the read of
-   TDI_GET_BIND_SESSION_ID to change the state machine of TDI from BOUND to
-   ASSIGNED, make it mandatory for the implementation.
-
-   But it doesn't make sense to assign additional semantic to a metadata reading
-   behavior in a specific phase. Instead, we want to propose introducing a new
-   dedicated TDG call, e.g., TDG.TDI.LOCK, which needs to be called by the guest
-   to lock the TDI after it's bound by the host, and it returns
-   TDI_GET_BIND_SESSION_ID on success.
-
-4. TDX_PAGE_ALREADY_ACCEPTED is listed as the possible return code for
-   TDG.TDI.MMIO.ACCEPT while the description of TDG.TDI.MMIO.ACCEPT reads:
-
-     If the page is already MMIO_MAPPED, skip the page.
-
-   They conflict with each other and lead to confusion. I checked the internal
-   implementation of the TDX module and found that TDX_PAGE_ALREADY_ACCEPTED is
-   returned when the guest is accepting at 4K level but TDX module finds the gpa
-   is already mapped at a higher level (e.g., 2M).
-
-   Considering current TDX Connect architecture only supports mapping MMIO at 4K
-   level. We are going to propose to remove this error code for
-   TDG.TDI.MMIO.ACCEPT for now. And leave it as a future topic to determine if
-   we need such error code.
+Thanks,
+baolu
