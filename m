@@ -1,144 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795527984;
-	b=PIcmCXcN1AJyVjb/iMhnhED2bqtWcEegO9XCrwH+gV59lQb1vG8f4czhOl9b66uxhxXa
-	 J6z/D6qtL+hM55q87/eQnBdad/yzdZRqJyXXiYpgmA6LSOp2ZZpLaAyGE43MGcckLWoA/
-	 FB+I4DsU32VoqZiAHYclun9rlwpIgWykJq9H25GmQCs8K/3pCioz/gPtiW2sVPV/p6vf0
-	 8k5Ien6n3feAbnjjsavJs0BZ+Adrcjrt8R8rUBhcLkFuVyz4Nh4KOnuP2sedoXeh7lCxh
-	 is+I3tPwbY2zaVjZiYOg3tzN3ftSF/GhTm4xea9VfOUftJgRHmFrZdHLdRur/aCaxNA==
+	t=1795533445;
+	b=YFvgg17NzLI/QSpOf0rbHt3iT834vr8IGZGgGEKfWuJo7NvP85nTnE/Yejyb41pGW5CI
+	 fzGj42cxXgNeJzJbJQkPXZjGA2TzLX/Ucwts9Syl8GQzjBiTADSB17A08HxCN1B8xmbml
+	 jLtKOZE2UKGkPPCSSt55UROzbVZuSwL1V6PpkqlyAVzEDA1Q8O4Atc97Dk4JTFSbvwspD
+	 mN5I3fID0rJ4gmILiB/C2JT7UAQiLwXBCA5zMYH9hNqO78oZxSujK8Ya9vaWPny1+7sxP
+	 PGz+Eo2eGOgRTRr10cjFCsxwiG62kJmgW0Y619uRo1YTtVR43iT2RaLiRcnaXy4MLBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795527984;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Zc7zKgD/SDYnIbkY4MVpBd0Jo9DiJTva6Dv7og4GVfM=;
-	b=1IQ6uyZsxoCfmX06Mfvifm9zyjrjnUtv/Ezx/qAR/Fq3GjUm8eK8/Lv1jRoaHl2r/jd+
-	 jggRzJJgb62yYjRypkB2lqDVEbegaM4xxv13zqFLDbPGVO8jPvbG/44k7y1Z1QwOhRZTC
-	 Avjd8/FV1NIFoBfuDBY4R3wXkOqkeJ88TCWZoYzGNcMOSJeNgJdZG5Pxf023UT4pWE46s
-	 gzhH+gQLMODAmZJUqglRXSxUULqI+VaKXY5XDL/bqjhrkFvRTiksApwmQrCZLU500qEta
-	 tHci6cEqK0SE92GpBmeQ9kN1np5kiQV6IXP4MY2h4pyw2yq52inMDUXiQffVggQjPuQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795533445;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 Content-Language:From:In-Reply-To:Content-Transfer-Encoding:
+	 X-CMS-MailID:X-Msg-Generator:Content-Type:X-RootMTR:X-EPHeader:
+	 X-CMS-RootMailID:References;
+	bh=IaacVAvKGyMmPecRhuxGdgf3LN883I8nJRoVmWEAC8U=;
+	b=a0/XpVcWAkvTPrpH0/JmoUfVG8vSH3gPOeWdyzeMg0gzCZX9leCKQ9KMeSjQvZHb5pIu
+	 OxY2oVnzt7kev/SjqG9b52lGEeYFsIZ2zhIAoD2pb80UsSDXfFHol12Py3SHCScHO3zl5
+	 EDSsBMrnUQgDBmqTxwxl9OLclaw5W6pDSZ0me44E8tTxgqy5hUtmOh+eSqoTfjfiODQY1
+	 xxXD3w7iJNaZcic3Y2nt4tHpVrrVi0aZqtuXOqBGRF5SO1goSxQGFiLFIv8ibn52Gw47e
+	 Xrv7mXYRDHEM84XOHAML/ByN5lKQO8pK4idvh/rCfVFFf9O7GXPv+cq81pIhoxre5+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=EqnpeJwx;
-	arc=none smtp.remote-ip=209.85.160.174
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=samsung.com;
+	spf=pass smtp.mailfrom=samsung.com;
+	dkim=pass header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=GmT5rvFJ;
+	arc=none smtp.remote-ip=210.118.77.12
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E159B606A334
-	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 13:46:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E159B606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010FC606A329
+	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 15:17:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 010FC606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=EqnpeJwx
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-53664b4860bso52277641cf.1
-        for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 05:46:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795527983; x=1796132783; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Zc7zKgD/SDYnIbkY4MVpBd0Jo9DiJTva6Dv7og4GVfM=;
-        b=EqnpeJwx4IAAp9mfsj00WoR29F/1+r5796MPouaebQUygK4aVUnRa6eVS7qXcaT4ks
-         Cy1SozoWyb/dvImEqPhS5piGTnA+NT7OFO3eWko2Zh3shjWND6NUhDZZUGTo4his9VU8
-         qU/Hj+sBdzclTaKlXDb/qa1g/+8nQCAFYVADWucUf30k7kyCTDmxc9cAiv3P9rg615By
-         dIEnYe6/1/C2VpeNnzi0ixjLPEc3Tyfb17hPezkZxync20ieZ/j49+DFoLdPHOqp2D7J
-         ORJcbgEnXNTXIZifTIp3/jwUYHap6o0pF353gcrfEyNfbXCqGnTLL65RNrBC4/EEmmoW
-         pXeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795527983; x=1796132783;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Zc7zKgD/SDYnIbkY4MVpBd0Jo9DiJTva6Dv7og4GVfM=;
-        b=P2Yvvb4r9VMkwtASjglSqYqjJywvaLcj0bglRI7wl6VmN8/gHdmcZ0x4S/in/hyrl/
-         hmmBvtLwOgoxOc0mAkimyf2Sz3nfKqH00Uynn1S20Noix6cUSC19rA5sHTvOr8dw1Rdq
-         kJcuNNTOugbgsLI5b8LFtRaAhhj+KgR1Xge9eH/EY4gY1rFtzC0wnj49uhy4qZFrq9Za
-         9zizP5AJLYHmONcrB2w0naQiyOiapB+KhZ/tbvPN8HBQrTJl9I4Tqi9rRqC5Ieu/G5ox
-         zPPpwpAQ01NzDTijHOY1y9IRY62OrS7/jrTfISiLRF5dNzY0ovDijuD6n5AxZ0nS22fp
-         htqw==
-X-Forwarded-Encrypted: i=1; AL+hErGOLe4zKZbyWGDQ0+eX5bF58CmNAfkqmreMnYZxs9dWpYl349vEbAX8sbiOCm/ySmmmSC9JN1BCn6kR@lists.linux.dev
-X-Gm-Message-State: APuU4Z+unsN6byHj6iC7+qAu769IdwUH4MGQzaSg3m347dCQCULivOpa
-	NA7/4BzhjgXkNTAksHJb1yN+qNFMU+qiVf5sVlDXuLjyZ0+H0aPEeuzHJnN1JaV8kkg=
-X-Gm-Gg: AZFdTZdou8PPmDTqWrLseHSOtabs8CmdWRc2zc/7H/94ylmYYa/1rvs5iUj6LIEoZfS
-	DUdxjR8NWlSyWrOrP/yyhDc8FCbp3KJSRNtXC4fldGkw6KizijI7qRAsRVMNTakrSlFxBTEDu3d
-	i7UNgnF8z69um5o8Jxb2uCEVug9z9SHKV1fME+EzKgpqppLF75KPCerxFfjrDog5RaEw996mjaj
-	tpGG/OIHuGbzNwIyp8Gx/CCvVOBFONZWQ0DOSyw4Rrqy80UXUtCiN/vLQF1WhHAbKXbNAwltukO
-	kJlqV0rR1Hi/S9LVgsePqPC/KPynwh3Vou5u9vjWwWLYkHfbAjjeptDCSQaxVCmwSk6bKPR3Jb+
-	xoQVqbHZQco1FvKIcE0cBJc+T1cigU8j1+BYTNcTpsPlmx2Q1RlApSJIO12JelcbB8O9/aXuXRB
-	wwBqWn/Hs6EYwcPApCC7dlmUaQTnTln+Ec4nW4c7km8xyWCegPmgsWJLSma9MP3oaHX+cDpOO6c
-	BR3b238lD7QMjgKwXYWK4vp9tYNd9T/wUeAd4KUGaCHG4+PAIjMYNas8piUwxgZeeWZ7E16CUGO
-	39/iBA==
-X-Received: by 2002:a05:622a:120c:b0:535:a5f9:752e with SMTP id d75a77b69052e-55d76aed568mr264410241cf.77.1795527982900;
-        Tue, 24 Nov 2026 05:46:22 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d78451407sm128368371cf.2.2026.11.24.05.46.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 05:46:22 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xVqqj-00000000QIG-3EJB;
-	Tue, 24 Nov 2026 09:46:21 -0400
-Date: Tue, 24 Nov 2026 09:46:21 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian K?nig <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <20261124134621.GI9566@ziepe.ca>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
- <yq5aa4mybbmv.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=GmT5rvFJ
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261124151722euoutp028d0f71328ee28084e40aa7f40b35eb69~rBCcJ_fJz3183831838euoutp02Z
+	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 15:17:22 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261124151722euoutp028d0f71328ee28084e40aa7f40b35eb69~rBCcJ_fJz3183831838euoutp02Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1795533442;
+	bh=IaacVAvKGyMmPecRhuxGdgf3LN883I8nJRoVmWEAC8U=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=GmT5rvFJ//Q0xjTnt1azHynt9KgxevYNbRk42IQr4pPkhx7CjTpVxdqpnyZZ+tfbl
+	 5lhLj+XQbwWkw6U/JcdvkoNY68kd0mOBRuPUDyQfIQlq0Ynjr1IhpH/2WMFmA6n57V
+	 bji+G50yBzT5nKPlz3Rj5K/sfdNGaWpsBmwDAzic=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20261124151721eucas1p2767fd7a4a3036d2e7d11de472046c7e7~rBCb6IL8Y0751607516eucas1p2G;
+	Tue, 24 Nov 2026 15:17:21 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20261124151720eusmtip10daeaa7910796136f5c7ea55a3ba4bd9~rBCagtcn-0894308943eusmtip1z;
+	Tue, 24 Nov 2026 15:17:20 +0000 (GMT)
+Message-ID: <42415609-c784-45d4-a79d-ef3cc5e6c3ef@samsung.com>
+Date: Tue, 24 Nov 2026 16:17:20 +0100
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -148,32 +64,107 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aa4mybbmv.fsf@kernel.org>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] swiotlb: clear read bounce buffers on confidential
+ guests
+To: Shukai Ni <shukai.ni@kuleuven.be>, Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
+Cc: Halil Pasic <pasic@linux.ibm.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+	<rick.p.edgecombe@intel.com>, Elena Reshetova <elena.reshetova@intel.com>,
+	Carlos Bilbao <carlos.bilbao@kernel.org>, linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>, Jason Gunthorpe <jgg@ziepe.ca>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20261123205302.1034348-1-shukai.ni@kuleuven.be>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20261124151721eucas1p2767fd7a4a3036d2e7d11de472046c7e7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20261123205317eucas1p2f96032281e0f5e9f17acc7ec343acced
+X-EPHeader: CA
+X-CMS-RootMailID: 20261123205317eucas1p2f96032281e0f5e9f17acc7ec343acced
+References: <CGME20261123205317eucas1p2f96032281e0f5e9f17acc7ec343acced@eucas1p2.samsung.com>
+	<20261123205302.1034348-1-shukai.ni@kuleuven.be>
 
-On Tue, Nov 24, 2026 at 07:00:00PM +0530, Aneesh Kumar K.V wrote:
+Hi!
 
-> Taking Jason's feedback into account, we could have the allocator
-> request compound pages and recover the actual allocation order with
-> compound_order(). That would avoid passing an order to free:
-> 
-> void *alloc_cc_shared_node(int nid, gfp_t gfp, unsigned int order);
-> void *alloc_cc_shared(gfp_t gfp, unsigned int order);
-> void free_cc_shared(void *addr);
+CCed Jason and Aneesh.
 
-It probably shouldn't be order here, that is hard to use. Just size_t
-len
+On 23.11.2026 21:53, Shukai Ni wrote:
+> On confidential guests (AMD SEV, Intel TDX) all device DMA is bounced
+> through swiotlb, whose pool is shared with and readable by the untrusted
+> host. swiotlb_tbl_map_single() copies the destination buffer's current
+> contents into the bounce buffer at map time even for DMA_FROM_DEVICE. For
+> a reused read buffer that still holds private data, the host can read
+> that data from the bounce buffer before the device overwrites it.
+>
+> For DMA_FROM_DEVICE into a host-shared pool, zero the bounce buffer
+> instead. Zeroing rather than skipping the copy keeps a short read from
+> returning a previous transfer's data.
+>
+> Fixes: ddbd89deb7d3 ("swiotlb: fix info leak with DMA_FROM_DEVICE")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+> Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+> Signed-off-by: Shukai Ni <shukai.ni@kuleuven.be>
 
-And round up internally
 
-If we ever want to do some kind of slab sharing scheme then the API is
-already set up for it.
+I'm not sure if DMA-mapping or SWIOTLB is the right place for such fixups.
 
-> As you noted, dma-buf would need virt_to_page() to obtain the pages for
-> its scatterlist.
+Drivers should be aware that doing DMA from unsecure device to the given
+secure page might reveal its content to the host or other parties and
+prepare for that (like zeroing that page).
 
-I think that is fine, other places working with kalloc/vmap already do
-that.
+> ---
+>
+> Notes:
+>     We are open to discussing a different approach: e.g. clearing the
+>     residual when read back, scrubbing slots on free, or extending zeroing
+>     for bidirectional DMA.
+>
+>  drivers/iommu/dma-iommu.c | 3 ++-
+>  kernel/dma/swiotlb.c      | 7 ++++++-
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 78742aeba..42e0bfced 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -1187,7 +1187,8 @@ static phys_addr_t iommu_dma_map_swiotlb(struct device *dev, phys_addr_t phys,
+>  	 * Untrusted devices should not see padding areas with random leftover
+>  	 * kernel data, so zero the pre- and post-padding.
+>  	 * swiotlb_tbl_map_single() has initialized the bounce buffer proper to
+> -	 * the contents of the original memory buffer.
+> +	 * the contents of the original memory buffer, or to zero for a read on
+> +	 * a confidential guest.
+>  	 */
+>  	if (phys != (phys_addr_t)DMA_MAPPING_ERROR && dev_is_untrusted(dev)) {
+>  		size_t start, virt = (size_t)phys_to_virt(phys);
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index 786954bc5..351bc7c54 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -1630,8 +1630,13 @@ phys_addr_t swiotlb_tbl_map_single(struct device *dev, phys_addr_t orig_addr,
+>  	 * the original data, even if it's garbage, is necessary to match
+>  	 * hardware behavior.  Use of swiotlb is supposed to be transparent,
+>  	 * i.e. swiotlb must not corrupt memory by clobbering unwritten bytes.
+> +	 * Exception: on a confidential guest the bounce buffer is host-shared,
+> +	 * so for a read zero it before sharing.
+>  	 */
+> -	swiotlb_bounce(dev, tlb_addr, mapping_size, DMA_TO_DEVICE, pool);
+> +	if (dir == DMA_FROM_DEVICE && mem->cc_shared)
+> +		memset(pool->vaddr + tlb_addr - pool->start, 0, mapping_size);
+> +	else
+> +		swiotlb_bounce(dev, tlb_addr, mapping_size, DMA_TO_DEVICE, pool);
+>  	return tlb_addr;
+>  }
+>  
 
-Jason
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
