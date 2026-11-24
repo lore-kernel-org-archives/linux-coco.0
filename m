@@ -1,69 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795533487;
-	b=cyTBSK8BHbaMkbl8lJaEmM8mw4SX8ZLadb+JgMUNCF47t2WP+EzICStUk+kWiTY/Eoms
-	 EeP0TJopP2LWmHz9i6cqT8+yplMDQQGt8V+NC9oyA7WaSfxs7n/wPw7cf9PSHlg65xzKp
-	 Z4h3v8TRFmXN+Z3T38JUX32J/g0cn16/M1zl1rSlUeEffZ+8N/MIqvM9VunW5GcAkc2Iw
-	 UyS01Kx7tAaqRIo89NXsFtdK5GFG/A4EXfwCDPfpouKZV4oIcmk8EZmEtQoBC8qhv3/xL
-	 UTodKyDpnGplX5hVrduIXhdtX5QT0vaZ/Sx7uNh5oEeRNZ/ADQ3u9G8JROtiaK/gNVw==
+	t=1795534578;
+	b=UdATkxG0WHvlUYHhvYD+2mrBa427EfxEwpKCUcG4tCe2+hKuui+QdI8b5lZSz1p+6sei
+	 Raf4HWIB+PTgUA1dB4Bp2tvqDU/qIbs5uzApr0wHC+XOIdZeAG8YoBQ5c6DC8424+GqAr
+	 zZCFEKRCl04qGf9zEiS179fF8+u0rN4K7aXfngCIIu9IO32WdLgrDfGJxALDuexn7y13t
+	 6ADIABAVM+qe+sQZES4KutzqF7Tnp4jdDyAMFjlXRMbxYTHWJRBglA+oJVYt65031J5iI
+	 aoZfdpzHd5J9rxM/zVtTLhAFxaeG7LKx80ObWJ+ze32MAQJmEsAvCG1oEpRg5dwYzCw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795533487;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ra1Twgfh9jA9NUiT3kKjO7S8JG98ltNrPlCqI5RdaAo=;
-	b=2gP1XIKdt+jn8W0Cws0l1c0Oef3HaH8yXxn9Zvigk/OE2HCRjDP4EcsbpViu0lnJ/2RB
-	 FfpXKOwWTQ+P5ud7AGVyFw1YIKOul4u8vTjl7g7bamithLeJMp/H4HLPxpoC5Vp8KOKfy
-	 b8nyZbECWqKs15ty3rWxvPjVR/YRawS1B7v3S5d29EHIsUcot9+qA9jSlSeVgdZf/2H1o
-	 SJTyoEdmnb6piC/LbQappdgyo4LU7Pk5QQJzDOqFbAtmULr2QH3zKGFARG6N2dP0UNvS8
-	 LY5w/d5dbQITk7l34LENikbisgZhhgnwULbpVvqRXfkQeEEyltyBEl30uxNBwfrWtGg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795534578;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=pztq+Cm1+ZAP57GA6CuWEqPVZxEOeq25+Hlck3k+Nv8=;
+	b=Rap9MrpdZY1SEb2THMleB29n3veyTKEhPDRqogRItfsSHsfcrj4bpA4Sgy9l/ZEELHzx
+	 pI0I4UVwhEKa0SCjVHsgMS9DTkSrcWs0+qVJtExUVlhyc3Uv7g5KifVcwY7brilw4dO5g
+	 Njew/WN9FA3fYeBInRkf3uYbQZr0WzQaU0Bbqn4yv7qKOvpgnTERCEqT3IKoAqvJu9vIj
+	 DcAMK3znbn3Hz94DV9HcYe8cmSFgX3N3wF/MOJIl6/D4Ab80+xvlTpHkrqtPYWk8uOb+Y
+	 kFw7aghB2Oef6xWIGX2uMW4We6V3ewmfvEyjgAStX94jLFsZVg6X6kRdiQOv0CpTDCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ur3Rd0JD;
-	arc=none smtp.remote-ip=198.175.65.14
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=icW55hv6;
+	arc=none smtp.remote-ip=209.85.219.41
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB1F606A31E
-	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 15:18:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DB1F606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B5B606A329
+	for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 15:36:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1B5B606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ur3Rd0JD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795533487; x=1827069487;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ra1Twgfh9jA9NUiT3kKjO7S8JG98ltNrPlCqI5RdaAo=;
-  b=Ur3Rd0JD5BDXtl69Dd81Q67iT7NB57EzPB0L37JgfCA/aATbpEkeGLWr
-   bxO6aqmRJHsgmH5q3i1BY7jbWGi1scIBuqiqAZ3ymYz9x4MikbWRDOoll
-   Z216xsT8mNdYzaOgJIpb/3qQI3mR4fq+yrgNxnBLz0NqwDRhIHu2kZ72S
-   EaqEljCQjvqwizWjzBkwBwvTJY7tT+tTdZ6smec+OGMZGdt5doUxNUm3R
-   QX+V9WiR94Ar0uaROsMqplwpGysziFmX5EyrYt1KMGWpI14/xDRTzcoNu
-   xAOmcDMQJ08CJvlBHVLMNkTpvcbDD8Lu2hQDFagpnsCyXasz02WVB2KcN
-   w==;
-X-CSE-ConnectionGUID: O7kEPUcTTgyqzHyEGUQ8FQ==
-X-CSE-MsgGUID: uEdypahGROmmjmecuVt50w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4270895"
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4270895"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:12:06 -0800
-X-CSE-ConnectionGUID: C3nz4S4CS4mm9LsESrORTQ==
-X-CSE-MsgGUID: PKh01/73Ta6dABOPmwBl1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="13381574"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.20]) ([10.125.110.20])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:12:05 -0800
-Message-ID: <c2cf0aaa-7ded-4223-9ef3-302513b13977@intel.com>
-Date: Tue, 24 Nov 2026 07:12:04 -0800
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=icW55hv6
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-921276742e3so43278966d6.2
+        for <linux-coco@lists.linux.dev>; Tue, 24 Nov 2026 07:36:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795534577; x=1796139377; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pztq+Cm1+ZAP57GA6CuWEqPVZxEOeq25+Hlck3k+Nv8=;
+        b=icW55hv6Oyz0/hRGNdZ/6vl9MyrOn2rTLqQyx4h9OHl89URqjdSysTsF6tpaMZJzKi
+         TTG91uoZlxJQzko+c+4H+KYjLqZDuQ9TcsQp2Ouq3Nylg7g9LQRmO6WcJsfaW1R04v2h
+         B0CMbB7pv0w8N1cld6m04Uxgvfvi47MwC4Zzn4IgSH9ah+TMmK8NhBvGPZiVrzR6sxMI
+         O2tzim6+gv8yHLgQ4hSEaNtwgawLG1pgVy7w/8tcWVRsoYAdxdkVALd0MVj5uBavLlUW
+         UOcOR3NF+dpXGIzrKs/8erDFZzyJQv11SEglRtl5GgNY2ynnG60gHm7gl02ricExBQ2d
+         d1oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795534577; x=1796139377;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pztq+Cm1+ZAP57GA6CuWEqPVZxEOeq25+Hlck3k+Nv8=;
+        b=DsPQb1MIx0cRaYUGHfWRJnu7QGJEd6a3pyUetkwyPIbz+Ji+8bfbH/s4vzUA1tK+3m
+         GGFErIPPuF5ZJhKnfa4TnBwamh4fjGJdKqk16SMyvueFbmzTACTqkRF59Qif4ll4w4/W
+         Zn6CLJyR7iGK8VnE61W+/5k/7QWrrtVczv5wAj5E1U38OcR6Lrl/ONBHKMByPkD4x6fM
+         dqVqrWwA6iOW/Z2sKI9UOzIo0rL8bpwP7ggKwwBhIIbmP12V9OiR67vmb/zjBiVMMBZ8
+         POijYbhwklJJC84RtItLdzBjuLoKLik1/xUyvx/bwBOa9PwPmfI3nBKEkYk7Nv5A91bX
+         qtQg==
+X-Forwarded-Encrypted: i=1; AL+hErGHQrQz3cYVFwGy2y1slmPN1AJz0G2NGMvcAazxv1wTwlQmFsO8pDjm7bW4C8wf35MJyA+AIpr/UMtz@lists.linux.dev
+X-Gm-Message-State: APuU4Z/DV9oWRIQokQHwrrPm8MOT6lkQvc3ucU/2iwZCOozklHvEqDhl
+	eQvKn0aEuw+aSOLZOLUvKeweSO7CrX5xLPupyuGiLWagSylaRZTR8mn6HO+5Rp4eOao=
+X-Gm-Gg: AZFdTZeYESJ6ZHiKsVkvxB+ZRdaVweABSB0qD7LAXgq9EM8o0ohTDilU2XiwscLDwvP
+	C4278X5vqHUorFqCSbAJdjWtImuWIpIV25Kn/uf2CJ09jI4FTZAzXPRgRzzkJ45A/GC55dGJUqs
+	0wkNrmj/AWd8S/LhLl4GaFM2sTYU0VXEgDE+FQOZQC2o7O7Kt5dGZX/p7/ur0iO9opMDesItXiZ
+	40CRJV+PhOMFMlaT+X64qacG/Ulg4E06Zpz2XpKdK4bbZ9MW1hPl/lLWHDDz89ZJumeXOJvjJbH
+	0xfAuWfIw2vyiGa21QrQaBl/wAE6wGcgn0ASpycMsM8XEeHPBBskZAgKzzne5UVCxRlrvii5+DG
+	cm8h9LoP9+vjiw8eqzbzw+xNjdG5D3Oa6woC5ON/mMTMY3MHETbPQdomk/lUSMGa2oCosJHQK3A
+	+TQ1zelSbfpG/STxnsCz2nfWgwAPfJ066Aq91tcGchEwxDfyjdmBa3LZRHIG48Cq5XkuOEtKy8j
+	rrs7H+FGI0oQpYHJJJrOSC8cZh5qYWs8hEgjwyCAza3+3REyCGPh/+84taAsVSQL8IMmCAEm7sl
+	wgA99Q==
+X-Received: by 2002:a05:620a:6892:b0:947:7691:7316 with SMTP id af79cd13be357-949bab3d3bemr2564224485a.81.1795534576594;
+        Tue, 24 Nov 2026 07:36:16 -0800 (PST)
+Received: from ziepe.ca ([142.177.118.84])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb4219c4sm1073980385a.41.2026.11.24.07.36.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 07:36:16 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVsZ5-00000000WyP-1TgI;
+	Tue, 24 Nov 2026 11:36:15 -0400
+Date: Tue, 24 Nov 2026 11:36:15 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Shukai Ni <shukai.ni@kuleuven.be>, Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Carlos Bilbao <carlos.bilbao@kernel.org>,
+	linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Subject: Re: [PATCH] swiotlb: clear read bounce buffers on confidential guests
+Message-ID: <20261124153615.GA114530@ziepe.ca>
+References: <CGME20261123205317eucas1p2f96032281e0f5e9f17acc7ec343acced@eucas1p2.samsung.com>
+ <20261123205302.1034348-1-shukai.ni@kuleuven.be>
+ <42415609-c784-45d4-a79d-ef3cc5e6c3ef@samsung.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,74 +112,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] arm64: dts: ti: Add tdx vendor prefix to display
- overlays
-To: Francesco Dolcini <francesco@dolcini.it>, Nishanth Menon <nm@ti.com>,
- Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org
-References: <20261124124207.199382-1-francesco@dolcini.it>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20261124124207.199382-1-francesco@dolcini.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42415609-c784-45d4-a79d-ef3cc5e6c3ef@samsung.com>
 
-On 11/24/26 04:42, Francesco Dolcini wrote:
-> Add a "tdx" vendor prefix to the Toradex display accessory overlays of
-> the Verdin AM62 and Aquila AM69, and a "-v1"/"-v2" suffix to the
-> Capacitive Touch Display 10.1" LVDS ones.
+On Tue, Nov 24, 2026 at 04:17:20PM +0100, Marek Szyprowski wrote:
+> Hi!
+> 
+> CCed Jason and Aneesh.
+> 
+> On 23.11.2026 21:53, Shukai Ni wrote:
+> > On confidential guests (AMD SEV, Intel TDX) all device DMA is bounced
+> > through swiotlb, whose pool is shared with and readable by the untrusted
+> > host. swiotlb_tbl_map_single() copies the destination buffer's current
+> > contents into the bounce buffer at map time even for DMA_FROM_DEVICE. For
+> > a reused read buffer that still holds private data, the host can read
+> > that data from the bounce buffer before the device overwrites it.
+> >
+> > For DMA_FROM_DEVICE into a host-shared pool, zero the bounce buffer
+> > instead. Zeroing rather than skipping the copy keeps a short read from
+> > returning a previous transfer's data.
+> >
+> > Fixes: ddbd89deb7d3 ("swiotlb: fix info leak with DMA_FROM_DEVICE")
+> > Cc: stable@vger.kernel.org
+> > Co-developed-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+> > Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+> > Signed-off-by: Shukai Ni <shukai.ni@kuleuven.be>
+> 
+> 
+> I'm not sure if DMA-mapping or SWIOTLB is the right place for such fixups.
+> 
+> Drivers should be aware that doing DMA from unsecure device to the given
+> secure page might reveal its content to the host or other parties and
+> prepare for that (like zeroing that page).
 
-I know we can't avoid all name collisions in the tree, but I do think
-calling this thing "tdx" is going to confuse folks, like it confused
-get_maintainer.pl. ;)
+I think given the semantics we have to support partial write we don't
+have a choice but to continue them as it is the DMA API.
+
+The driver would have to opt out of partial write support somehow to
+trigger this, and in that case it is more of an optimization and
+shouldn't be linked to CC.
+
+I'm curious if there is a real issue here with a definitive issue on a
+driver or it is just speculation?
+
+Jason
