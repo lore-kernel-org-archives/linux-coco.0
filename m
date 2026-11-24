@@ -1,83 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795498012;
-	b=pPthI92b3qzluXXGIdoSfYxJRm5UqJs7zTr+lY6b6xZUuFgT8XxyBBxeY45Kfk1/po2W
-	 9IvOJfNiOcCS+76/scjgFmd7LZhr/er3M5isQySgeyXdzv/240m16PosF7jLvaIRMx0sI
-	 +/AdPsL8VqQygYdKXexXYaUJvImWaY7lwi3xegZ8p3vI97/HZty9M75BHeFZUoUlvJaxa
-	 9pwH7JYA0Xca7ncZ8Uz+TNZayoobBMbFzOmmN3X6uHq8aFuxiZYMTKcs3JoQvECUyyAqZ
-	 cna91O3wEvdoP6bG/Q4m88EtJTWWow1OGiyGSrWWdHOYhne3EOQYVepemPO/F3uhi5A==
+	t=1795499199;
+	b=bz4OH7w/wBVlkYi3Q/OKSZXDZYpu19eXGsoewbKpMzOeYF2I/4jznJkmAuWSs/Fzoz+y
+	 XAb9kXFBaEw5gP5hMUSfsdpMWM58sC3I6Ab8uki8hW2e8V2QwQHxsx/8j3IDoa8O+IIfA
+	 7UdfIlzEgu+Lvvoq94V4PvfaGsAXD1JpQ+Q7uW7D2J8C14en5cROlb88GMwGNnjA/zAt0
+	 UZp0qS3JXmMqhFbUf1CUr2AeqnNSxVEhkvmCXWZrGEuC+BFJ0wzX8cGyGO/N+weqxSDUh
+	 hl0ww82kTtM6fkALYH+ZRYk6mRjtgV5ZxxvtZ66azbqp4k5RYPykmdbC8RXLrogNbdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795498012;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=6hEHnZ4sfgUflRbEhxUh0CD0ylQZFIJ15GBUvc4I5mw=;
-	b=RWu6+8mDD4Imsj342o6Rf1I0UeOPluHc2YYbvZknoYoQBiZT3Sli9WP2Y0yb9oCB4nBy
-	 /oy0K1Btz4ajSa7q2aEc1izhQW14bKhxiohi9Gqh2t9pD3vAL75UQvlkVXsrXsSA94Yqx
-	 6y22he+J0DbJ974scaC/gGS25UOKW2VwAgPWM4uatmxIsP2jFRVO7kMyRk8ZJx6ZGcrT5
-	 dWqtJx2IC7iepb+Tdj0ebE8lVxMqvwU/9emajjLPQh3wI/rYzNy3w5E/ImJqlV+THrbtK
-	 MOhDkD1vqEtZaLDTh1fG0dN4LJXaN144oKhaXm7oc71pteB6GJOZ+QADHGakQ1kNa+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795499199;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=jsMI+Ds46cM6xnlO1TFFO5B5dFdMLZbHbUi3x2wrsRU=;
+	b=U+IJYzakxv3MDdAPdQewuiVM7JV0XGH5MCJTGrEiGeSjdaI2FJW+Icdi+lGK533AFEZA
+	 kRb48n6KJJb2zM2tjnw/q2kEtvZEzBxb+o9nLyjiCvDGu7pG0ApPTb1INS9B8Yrv70X/3
+	 ktgE5I73l2WvPDk4lyPK1giGR4LRI7KTn0bK6spr3ufrjRw7pAVrHZm4+PhDPGZq+9COJ
+	 yEt4zpv2sfqc3KedbYzxDlSVkfGeLb2I2rF5YIOp6ihM/J+A+0zMs02pKLyZWYgkdxY2V
+	 iBEREVbdC0SOhYwBVVaoI3ZBELIJyFAV5cx/n+KdOnz4UkegmxvIPlSuuNHW7bDMYYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="bMuZ/82I";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a174nxv9;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC80606A31E;
-	Tue, 24 Nov 2026 05:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1500606A31E;
+	Tue, 24 Nov 2026 05:46:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1500606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bMuZ/82I
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0C21F000C4;
-	Tue, 24 Nov 2026 05:26:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795498011;
-	bh=6hEHnZ4sfgUflRbEhxUh0CD0ylQZFIJ15GBUvc4I5mw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bMuZ/82I+vs+8NKsF31D7nQhBoDtC/vh+MdJDEQFc6RfLu9u4tc1iXSnh9tQUIt1R
-	 7B4aBvaDLvXRLuiTN1J7kRllSEWDL5FAyMso3WrOUo3yd+gxajeQWfNT+SPnw1JR85
-	 nBowKBVgT76oli9zpQaDZRhbQAs8+j2FbwhIxOTktb7YTs9tvpPqUQff1wyBXBTqZX
-	 UWpTbmZiOBunZB6QKAj5MxB+n26rmgEzueQlO0KVhXTYiGVNLPvsfiB8Qz9ab3ckww
-	 3NiPz4iKGto4wg14EG/cvFr3KsGIznEulrKB1dyBb+9p9Y/pw05d9hw5P8rcLwFQCN
-	 Ocw7AG9iUNzXQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev
-Cc: Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	iommu@lists.linux.dev,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 00/13] iommufd: TSM-backed virtual IOMMUs for
- confidential guests
-In-Reply-To: <3573001a-24b8-49f3-97c8-7a414c88deb4@amd.com>
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <3573001a-24b8-49f3-97c8-7a414c88deb4@amd.com>
-Date: Tue, 24 Nov 2026 10:56:40 +0530
-Message-ID: <yq5ah5h6by0f.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a174nxv9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795499198; x=1827035198;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Rsqn8C+lyW0grTpsQkc/ILwRR9+emcI8MVVSWwxpppQ=;
+  b=a174nxv9nJnMlsHp2InXEipcPHAM+iUMgWqdu2ejufO7MhiVwGXgVftY
+   TXIFkIRvpDFQ52Gucv5cBBRl0nhafJ5XHIjN1WSXpb8XqmbIUi7jVk69x
+   vaT8aBK7F4kXaSO2dXmh+25zac3Pz61fcHfeTaLW1mcz98Etn4r3+z1EI
+   m8oDVTLT+159s713J/6C6Jr6jQWMLQoHLJ7sMlNYXMOipnX13yOF920ra
+   Zw3dD2YQTQ8sx7CRTxO7mPYQEGPlsmBwEDsk1pUW+8tErYnTE1dsnunf/
+   7HKlLflyqaVZoAWaNoNKe1YCau/Cj3Cj8ROtmZe5liVsaQVguw0r2rQlQ
+   w==;
+X-CSE-ConnectionGUID: aWbu9jeFT9+VGWHkMZbdzw==
+X-CSE-MsgGUID: BDceRcNrQleTZextdBfoRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4207688"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="4207688"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 21:46:38 -0800
+X-CSE-ConnectionGUID: 1I3+CKVHSkultcLGWbpzKg==
+X-CSE-MsgGUID: G8Z/XUfUTgy0S1A4expfiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="13272001"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 21:46:34 -0800
+Message-ID: <ac7208aa-04a0-4fd6-bb32-b9478678fd19@linux.intel.com>
+Date: Tue, 24 Nov 2026 13:46:31 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -87,60 +72,126 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+ Chao Gao <chao.gao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] x86/virt/tdx: Add SEAMCALL wrappers for IOMMU
+ setup/clear
+To: Xu Yilun <yilun.xu@linux.intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-2-baolu.lu@linux.intel.com>
+ <awQNpgjgIlwhXrqT@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <awQNpgjgIlwhXrqT@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Alexey Kardashevskiy <aik@amd.com> writes:
+On 11/23/2026 5:55 PM, Xu Yilun wrote:
+>> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+>> index 4cce77b6a31f..a1f35188a272 100644
+>> --- a/arch/x86/virt/vmx/tdx/tdx.c
+>> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+>> @@ -2567,3 +2567,56 @@ void tdx_sys_disable(void)
+>>   	if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
+>>   		pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
+>>   }
+>> +
+>> +/* No cache flush is needed; hardware keeps caches coherent across KeyIDs. */
+>> +u64 tdh_iommu_setup(u64 reg_base, struct tdx_iommu_mt_param *param,
+> 
+> param is too general, name it iommu_mt, is it better?
 
-> On 16/11/26 19:19, Aneesh Kumar K.V (Arm) wrote:
->> This series adds IOMMUFD and PCI/TSM infrastructure for assigning PCI
->> devices to confidential guests. A TEE Security Manager (TSM) can provide a
->> virtual IOMMU (vIOMMU), and an IOMMUFD vDEVICE object represents a physical
->> device within that virtual IOMMU.
->> 
->> The series adds a common framework for operations on vDEVICE objects and
->> updates lifetime management to keep the VM and device-security resources
->> available while those objects are in use.
->> 
->> The Arm CCA backend is provided in a separate series, together with
->> operations for TEE Device Interface Security Protocol (TDISP) state changes
->> and access to cached device-attestation objects.
->> 
->> The full series, including the Arm CCA backend, is available at:
->
-> nah, it is not :(
->
->> 
->>    https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/7.4/tdisp-host-rc3
+Agreed. In a function whose arguments are all parameters, @param doesn't
+say anything. I will rename param to iommu_mt.
 
+> 
+>> +		    u64 *tdx_iommu_id)
+>> +{
+>> +	struct tdx_module_args args = {
+>> +		.rcx = reg_base,
+>> +		.rdx = __pa(param),
+>> +	};
+>> +	u64 ret;
+>> +
+>> +	/*
+>> +	 * Retry only on TDX_INTERRUPTED_RESUMABLE:
+>> +	 *
+>> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
+>> +	 *    calls.
+>> +	 *  - On TDX_INTERRUPTED_RESUMABLE, all registers except RAX remain
+>> +	 *    unchanged.
+>> +	 *
+>> +	 * The ABI spec also allows retrying on TDX_OPERAND_BUSY, but that
+>> +	 * status doesn't guarantee forward progress, so retrying could spin
+>> +	 * forever. The host serializes all TDH.IOMMU.SETUP and
+>> +	 * TDH.IOMMU.CLEAR calls for an IOMMU, so the TDX module should never
+>> +	 * report the operand as busy.
+> 
+> Many SEAMCALLs return TDX_OPERAND_BUSY, and this is the generally expected
+> handling. I don't think we don't need the comment if nothing special.
 
-Can you use https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/7.4/cca-da-integration-v1
+I'd like to keep a shorter note. It's the usual handling for TDX folks,
+but people outside TDX may read this path too.
 
+> 
+>> +	 */
+>> +	do {
+>> +		ret = seamcall_ret(TDH_IOMMU_SETUP, &args);
+>> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+>> +
+>> +	*tdx_iommu_id = args.rcx;
+> 
+> I remember there was an internal debate about whether to only assign the
+> output upon success.
+> 
+> There are several examples in tdx.c that assign the output regardless.
+> But all of them holds error information, which makes total sense to
+> assign on error.
 
->> 
->> Notes:
->> * Codex was used to assist with commit message formatting and code
->>    rearrangement.
->> 
+Oh, I overlooked this.
 
- [ ... 148 lines skipped ... ] 
+> 
+> This rcx output however doesn't hold info on error. So I think early
+> exit is the right choice. Also see tdh_phymem_pamt_remove()
 
->>   include/linux/tsm.h                           |  41 +-
->>   include/uapi/linux/iommufd.h                  |  36 +-
->>   25 files changed, 880 insertions(+), 462 deletions(-)
->> 
->> 
->> base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
->
-> This is v7.4-rc3.
->
->> prerequisite-patch-id: 121492d71cc22b2adbfdedd668868c5a449ad764
->> prerequisite-patch-id: ed31fd728f0adba3d60dcd6f3bae8da1a2193bcc
->
-> What are these two? Cannot find them any tree... I really want try this all but also trying to eliminate guessing...
->
+Agreed. rcx carries nothing useful on failure. Will return early and
+only set tdx_iommu_id on success.
 
-Those prerequisite patches are from this series:
+>> +
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_setup, "tdx-host");
+>> +
+>> +u64 tdh_iommu_clear(u64 tdx_iommu_id)
+>> +{
+>> +	struct tdx_module_args args = {
+>> +		.rcx = tdx_iommu_id,
+>> +	};
+>> +	u64 ret;
+>> +
+>> +	/*
+>> +	 * Don't retry on TDX_OPERAND_BUSY. See the comment in
+>> +	 * tdh_iommu_setup().
+>> +	 */
+> 
+> ditto
+> 
+>> +	do {
+>> +		ret = seamcall(TDH_IOMMU_CLEAR, &args);
+>> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+>> +
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_clear, "tdx-host");
+>> -- 
+>> 2.43.0
+>>
 
-https://lore.kernel.org/all/20261116075420.76205-1-aneesh.kumar@kernel.org
-
--aneesh
+Thanks,
+baolu
