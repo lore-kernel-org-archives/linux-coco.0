@@ -1,69 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795502647;
-	b=EWtKjhZ/hfsoxDacHfgqYvLf1erGJKLw7yBgqArClyWBKo3M6ViVOV0xrv9N/rSVVREo
-	 O2TkvD5uUWC6TzjFaFonGmYsvgVlIvfctZLu6sx7VyCDUeY7xfpE376GTZqazqkb14Jt1
-	 mLrkAasNIfEHfap/q2uSiyD1IjI9XMgW/eMzXdoB4dx952NH1SPiPhFboFqfDBoIZ8YSY
-	 9LPMQjXJtjw6zAbEWWKga24l6osWEN/HGCWuqF7gXxCkBYjGq18MDrY5lOXqPYS5ApO90
-	 12al3Gs+kiSbPfOJAKIUAyNwo2uAYu1b4Y8Zt37ik3m67Sa50AeG2aHZB2ATgyLeTpQ==
+	t=1795506443;
+	b=ccBpVP6GJyZexpA7jVoG3TC7ft3EsRfEuwffD1+cZnoSpH5d8t8jgbtRxMTE+3bW+0/5
+	 MQKVPnTL0i9xr7Z6PnpItIpP95GFXJmQCyPuuWuGc8MizIRWQm9Sc4C2nrRtnEq7JoVb6
+	 q2AsmRiTCqwKYkmpG3BF2mnsNL9pnoLaA5DoGEVMDL26tfRcnDMjs2XfTZ6dGmXMhL7N0
+	 miE3OE9Um9If0rU05ic+s0DoeniP2yXlXPJunFldAkghlD+1mnIDm+WBdFYmVIxGn8Urd
+	 +Jsmwvq23aGUE+/bJ/IyhX4+sV5KeLvHRDDGXzh7qWoS4m+VrNq4TmCFc0AJDQ6YSCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795502647;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=f4D9nzAQs8JOljc1HKpN79I++6boE/LG2zcA3JJ7t6I=;
-	b=ZT+8FFTjaX5FMUiRt1I1e0pxSlmC+cqctv+fcJ2yiAdH2TFN1Eci0Us3EpAUanHNuNnZ
-	 y67rB2/Z2yp+9I13Hnd7KjL9DL6iOmbh5LIAYfBfu6z4HGfcvn607/oY8d4mj+xzhmbwE
-	 WmkC+J/A3Npw9Hp8XgI6io1QR5/5Ii0wcTA/1j8Dhv1waBIUDObVPWvWkMoaakaalqFa+
-	 LS9bAkZCo9xp1rkgSVS07aKNsE4mpVnbqI899MBfTVRGsLYYtVATWaz4zorSim4IRi/eW
-	 ieUI3vkTvhS6QFvkHKQBmlJzNWeu/0qMy5TjchrqH5IK8zViv9KId2eEUsLbncj73Nw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795506443;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=cZCl0OxNsgxdA/QB5hhJ6JhPi9t4AL/d2MvvIkbtiIg=;
+	b=G15hF3YD8o/gHQ3nLK8JoxDK6m6shIIfHzDnP6ux0gMP+ckfbNFzbg4itvc40Wo6ccp1
+	 A4zeLUk8WOENydr4Sj6ysC1vNZ0KXj7rVx2JfC3wY5NwY3b6gXRKGSeeq4uBKElWoOvlh
+	 k6muhnJ1rA8a36pEcw/pyksO3/nM6Uf78AshkQ7nGgZaBGgFySzEPunT3AnwkSP9fjpnK
+	 lNFz0UVY0WnMC9TnWj2ysecBoBdZdCw93IOOCg3o1k8cj/aawgpe0riT1H6Eovcw1Pvpi
+	 9SoEHa6f1LZUeawJnvh+RUSY9ndZhbSQG8dIvKcubN50T17Y02TdDEXSs5CdnRo24TQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=swlRVAES;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mRYcY5jN;
+	arc=none smtp.remote-ip=192.198.163.12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451AC606A31E;
-	Tue, 24 Nov 2026 06:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A7C606A326;
+	Tue, 24 Nov 2026 07:47:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29A7C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=swlRVAES
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A83B1F000C4;
-	Tue, 24 Nov 2026 06:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1795502646;
-	bh=f4D9nzAQs8JOljc1HKpN79I++6boE/LG2zcA3JJ7t6I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=swlRVAES1lf+TbopEIgCYz7MevC0eym2gj5HfNJVcbLZUN2SQJeWBdTK/9a0ypMmZ
-	 7FPapsbW3v+AvfTDgwJEqJrFVcylpTVlObq6e6/sfbLUSMQP77c/oNELPMj0tgXh1N
-	 zPMwti6babKk5h8Bew0osty7GQj1zb60G+T4+5H8=
-Date: Tue, 24 Nov 2026 07:44:03 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
-	Dan Williams <djbw@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
-Message-ID: <2026112429-expansion-wilder-a0c2@gregkh>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <2026112325-emit-squeezing-5d96@gregkh>
- <20261123090623.GK14811@unreal>
- <yq5a7bi3riha.fsf@kernel.org>
- <20261123115803.GN14811@unreal>
- <yq5awlq3pto0.fsf@kernel.org>
- <20261123135638.GO14811@unreal>
- <20261123152533.GE179082@ziepe.ca>
- <yq5aik1n4iz3.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mRYcY5jN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795506443; x=1827042443;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eDEio4NP4XHZFYRC9FiY7B/+b8uO1ZLby2dslNMzlwc=;
+  b=mRYcY5jNpzCsd4FLIGyJVfj13XFBFJ4XJeODX59bwcLBpmKEnODijY7a
+   bATCSTxhR1qmC84CSCfauYxs+PN8OZFmSJxDbPZKDTVgmPvMjvbisw3lz
+   3O6+jGqUqxPTGYbJgeMEhRusRkUSBbps4R6PEJc126OmR4s7LjnuGl73y
+   27ilyIjQ0z4YBnxMSs7T/QjQlpzkI0onfaJxNHCHymA5VpZUL+aZswU0v
+   Nv8s9uggaOVadUKSt8dSPW2BlEbLOHui5Hcaisu1gtS/lCAemVgCFkPA1
+   B+sYEufTVOt6YqdKsVLHgtP/LPo/od4APLrhqaOJiaf1+Zrl/xgeBwMsV
+   Q==;
+X-CSE-ConnectionGUID: 80zuOGW9S1WDBz70KNLFmw==
+X-CSE-MsgGUID: 5sZojpOnQl6zdCv1g/qVsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4209493"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="4209493"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 23:47:22 -0800
+X-CSE-ConnectionGUID: Y7ovl1FcTrODbD1EE6Ad8w==
+X-CSE-MsgGUID: uPqfXCORR+6F4Zx05hLBug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="11674543"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 23:47:18 -0800
+Message-ID: <9ab1e5b7-fa03-473a-a251-91153fe5c7b3@linux.intel.com>
+Date: Tue, 24 Nov 2026 15:47:16 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,110 +72,111 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aik1n4iz3.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+ Chao Gao <chao.gao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/9] iommu/vt-d: Add interface for tdx-host when
+ enabling trusted DMA
+To: Xu Yilun <yilun.xu@linux.intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-5-baolu.lu@linux.intel.com>
+ <awRW3ESp3sBoxtJ9@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <awRW3ESp3sBoxtJ9@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 23, 2026 at 09:51:04PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
-> 
-> > On Mon, Nov 23, 2026 at 03:56:38PM +0200, Leon Romanovsky wrote:
-> >> > >> >> But it should not, as you are making driver core changes that will
-> >> > >> >> mirror the same thing that that patchset is attempting to do.  Please
-> >> > >> >> work together on this.
-> >> > >> >
-> >> > >> > +10000000,
-> >> > >> >
-> >> > >> > Greg,
-> >> > >> >
-> >> > >> > This series came as a surprise to me given the fact that device trust
-> >> > >> > series is exactly for that - allow confidential computing.
-> >
-> > Device trust's primary role in enabling confidential computing is to
-> > give space for the userspace to do all the TSM and attestation stuff
-> > to get the device into T=1 private DMA mode.
-> >
-> > It is the userspace that does all this and the userspace bridges from
-> > "I got the device into T=1 mode" to "Now it meets my userspace policy
-> > to be trust level Full" and then finally "Now I can bind and start a
-> > driver"
-> >
-> > The two concepts work together, but they are not linked inside the
-> > kernel.
-> >
-> >> > >> > Adversarial is equal to the "cc_accepted".
-> >
-> > I expect most policies would make "cc_accepted" as a full trust level,
-> > but we do want to allow adversarial as an option too.
-> >
-> >> > >> I think the confusion stems from this thread:
-> >> > >> 
-> >> > >> https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org
-> >> > >> 
-> >> > >> Based on that discussion, I understood TRUST and eligibility for private
-> >> > >> DMA to be complementary attributes. Device acceptance determines whether
-> >> > >> a device may access private memory, while trust determines whether the
-> >> > >> core must enforce additional restrictions. 
-> >
-> > Yes.
-> >
-> >> > > Device trust does little beyond preventing driver binding and recording the
-> >> > > trust decision in "struct device". The missing piece, which I would expect
-> >> > > you to address, is ensuring that the IOMMU and private DMA are configured
-> >> > > only after the trust level has been decided or as part of that decision,
-> >> > > rather than beforehand, as they are today.
-> >
-> > They are orthogonal and unrelated.
-> >
-> > All the TDISP and T=1 DMA flow is about how the DMA API works and has
-> > no direct impact on trust level. You can choose any trust level for a
-> > device using T=1 DMA.
-> >
-> > Getting the device into T=1 should influence how the userspace decides
-> > to set the trust level, but it doesn't interact inside the kernel.
-> >
-> > Aneesh has it right that these are orthogonal and unrelated
-> > activities. There may be some confusion as Dan attempted to couple
-> > them, but after discussion we have moved away from that since it
-> > doesn't meet all the use cases.
-> >
-> >> > What I am still trying to understand is how you view the DMA allocation
-> >> > and mapping paths determining whether a device can access private
-> >> > memory. Paths such as force_dma_unencrypted() and SWIOTLB receive a
-> >> > struct device pointer and need to decide whether to use private memory
-> >> > or shared buffers.
-> >
-> > It is Nicolin's work here that needs to go before the TSM drivers:
-> >
-> > https://lore.kernel.org/all/cover.1794343501.git.nicolinc@nvidia.com/
-> >
-> 
-> 
-> This adds
-> 
-> index 429e39f647cf9..01d7877d0b571 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -604,6 +604,8 @@ struct device_physical_location {
->   *		ancestor device.
->   * @DEV_FLAG_OFFLINE_DISABLED: If set, the device is permanently online.
->   * @DEV_FLAG_OFFLINE: Set after successful invocation of bus type's .offline().
-> + * @DEV_FLAG_DMA_CC_PRIVATE: The device is able to access private (encrypted)
-> + *		memory, no shared memory bouncing is required from the DMA API.
->   * @DEV_FLAG_COUNT: Number of defined struct_device_flags.
->   */
->  enum struct_device_flags {
-> @@ -617,6 +619,7 @@ enum struct_device_flags {
->  	DEV_FLAG_OF_NODE_REUSED = 7,
->  	DEV_FLAG_OFFLINE_DISABLED = 8,
->  	DEV_FLAG_OFFLINE = 9,
-> +	DEV_FLAG_DMA_CC_PRIVATE = 10,
+On 11/23/2026 11:08 PM, Xu Yilun wrote:
+>> Add a per-device interface so that an IOMMU is put into Secure TDX Mode
+>> only when a device behind it needs trusted DMA. tdx-host tracks how many
+>> devices use each IOMMU and calls into the VT-d driver only for the first
+>> and the last of them:
+>>
+>> - dmar_tdxc_get_params() looks up the DMAR unit translating the device
+> I think tdxc is not a good name since "TDX Connect" is not preferred as
+> a technical term. These APIs would be used by x86/tdx, so can we at
+> least avoid using tdxc for these APIs?
 
-Again, NO!  No "cc" nonsense for device states please.  That's an insane
-policy decision that will be driven by userspace crazyness, NOT
-in-kernel stuff.  The kernel will give userspace the tools to enforce
-this type of policy if someone so desires.
+I'm open to this. I used the dmar_tdxc_* prefix because the VT-d spec
+calls this feature "TDX Connect Support". Since these are interfaces for
+the tdx-host module, I'm fine with renaming them to dmar_tdx_*.
 
-thanks,
+> 
+> [...]
+> 
+>> +static void dmar_tdxc_fill_params(struct dmar_drhd_unit *drhd,
+>> +				  struct dmar_tdxc_params *params)
+>> +{
+>> +	params->reg_base_addr = drhd->reg_base_addr;
+>> +	params->node = drhd->iommu->node;
+>> +	/*
+>> +	 * params->drhd stays valid because trusted DMA-capable units are
+>> +	 * never hot-removed.
+>> +	 */
+>> +	params->drhd = drhd;
+> Why we store drhd in the params, any information to expose to TDX via
+> drhd?
+> 
+> [...]
+> 
+>> +/*
+>> + * dmar_tdxc_get_params() - Get the IOMMU information for a device
+>> + * @dev: PCI device that will use trusted DMA
+>> + * @params: Filled in on success
+>> + *
+>> + * Look up the IOMMU that translates @dev and return what tdx-host needs
+>> + * to issue TDH.IOMMU.SETUP and TDH.IOMMU.CLEAR on it. This only reads
+>> + * information and doesn't change any state. Devices behind the same
+>> + * IOMMU get the same @params->reg_base_addr.
+>> + *
+>> + * Return 0 on success and error code on failure.
+>> + */
+>> +int dmar_tdxc_get_params(struct pci_dev *pdev, struct dmar_tdxc_params *params)
+>> +{
+>> +	struct dmar_drhd_unit *drhd = dmar_tdxc_find_drhd(pdev);
+>> +
+>> +	if (IS_ERR(drhd))
+>> +		return PTR_ERR(drhd);
+>> +
+>> +	dmar_tdxc_fill_params(drhd, params);
+>> +
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL_FOR_MODULES(dmar_tdxc_get_params, "tdx-host");
+>> +
+>> +/*
+>> + * dmar_tdxc_acquire() - Acquire an IOMMU for TDH.IOMMU.SETUP
+>> + * @dev: PCI device that will use trusted DMA
+>> + * @params: Returned by dmar_tdxc_get_params() for @dev
+>> + *
+>> + * Call this right before issuing TDH.IOMMU.SETUP for the first user of
+>> + * the IOMMU. On success, the caller must issue TDH.IOMMU.SETUP and call
+>> + * dmar_tdxc_release() if it fails. The caller owns the per-IOMMU refcount
+>> + * and must serialize all calls for the same IOMMU.
+>> + *
+>> + * Return: 0 on success and error code on failure.
+>> + */
+>> +int dmar_tdxc_acquire(struct pci_dev *pdev,
+>> +		      const struct dmar_tdxc_params *params)
+>> +{
+>> +	struct dmar_drhd_unit *drhd = params->drhd;
+>> +	struct intel_iommu *iommu = drhd->iommu;
+>> +	int ret;
+>> +
+>> +	if (WARN_ON(dmar_tdxc_find_drhd(pdev) != drhd))
+> We can get drhd via pci_dev, then why we require callers to input
+> this info and judge? Like an intelligence test?
 
-greg k-h
+The drhd was there so the VT-d driver could check that @pdev and @params
+match. But you're right that the check only exists because the API takes
+both. I'll drop drhd from the params and make acquire()/release() take
+only the pci_dev, so there's nothing to mismatch.
+
+Thanks,
+baolu
