@@ -1,113 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795617527;
-	b=KAh4UxqG2ffLtq4eVNsYFt6r74LaiPsVUYOhYSoAzq1ZXSVaAMfTi/woT5npKXCktk8K
-	 qunBlG+G++/5xZdU/5IIAlOnlsofTCOc9TxDq5j4ePHWrFZlMbP5sB0yu0BZN7SDCTCvX
-	 kPM/izE80rv+jNK5zMvb0nAWA9d9DfUHch9gwMaE20j0xnNfcBVC9V4CeW8cOX99/WG2v
-	 nsNRZzHuBxmYhDVadHZ+8pkjJmMLSGJGz7jAo+/7vyhUZ5Inju4CxgnkXYkn2RZ4/al0u
-	 tUuGPZUFgNfa3B03t+/WTgR8wPJ4FabH8AUOH5kTNXzB+FYTk1+nio58duooivNbc8Q==
+	t=1795618717;
+	b=h+nUdR1KbpBrUqFdtsSIdyH/OS2CWuSyNSyCHS628weOLtLXEzBg3piMHrDNSJkaf7Md
+	 gVykTj5uM582M5L+q8/PhomcA9ssTvZR6Ym+tZQEfrdXq739NgMSmUGTA8SPny8Zo+X3K
+	 qvn29jcYrdRJzmfU2Aaf+nnFL6kmdoVr6/4zNbGQrUGF8+gP65nDCNmAgkw2eG2rE/OXr
+	 KRh5Y5RFv2UWfJ4/IGxnpvpLUrA5TL7GUmP4KpxVhQLTtNtJ7Z/Ut58HRObQOnGdTWfbW
+	 srNj2bRJiMYm73qe549jk54HEXJ9tncPja3/Vccu4U+5q9pomrgR2OAhgw3qN2Tg5ZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795617527;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=dCtVGEXy/TUgxCZ9qLhPI3rUEmqk4eMQKQPU17VUyZ0=;
-	b=Yr0IZpnW30wXSAUO86K0ASA1gQH0Wbc2fZVR/vf9Yz+HpnjoJW8eY1Cas8C5hQ+GCgVy
-	 IjceDvczfoLz9IFkwgrC9UPJZfHyGJbwgqJEIGLH2ggagMQ/wjlYkP+CL/ljcnPeoFWFq
-	 Zby8rW2DFJL/KR9MZAvU59cyyUjgTxzVDx0Zdn00liSawMUi+fyVFBv8n/0UzLobH34zA
-	 PPgd6bSbVzEjPOhnzXiDLEjKp3RwrDTvvLri9rKoL/fC4dpnWfDrSNvjJYDe88hbYO2XO
-	 qv6CwiGfAX9eofqIBh9vWzD/QupjJVS/Mm9abFHdsP9zGA8Lm+I4gdP5MW5NNDFuwQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795618717;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=X3zNXgFcgKkRvrebQOQS0iqgUmCxBf+Rl6iIn0IF0a4=;
+	b=UNorMIIaElp417Yyn7OuNR/bfrFNopZ0QknMDJu8he+NgfYS7a7HVgtza0PonltL93wP
+	 NQzuHf4Pw/9+DggFtiKzSU+BfyaPlXwAk44oyN8oLZNAHUIygWeHXjQmuMlyeT5D7zjk/
+	 0yLVhFT+uMFeLpv4ImbIOy4oWMmh2jBpNCocEQjLhaMhpakZdGB28TP79OqTxxDaw32Om
+	 CJ4Dt80goYzHXNvkHKhtmc31DJMxT7zrd6bJ8q3M9aVmbGv9oun06YqKdQs+vWcwc4dDZ
+	 aeNQCLBdb1EKjiO1IVZvZlGBWO4N0hq6Rke8WWE+kJ6bgk4LeuL30GmBh8ejDmMdfwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b="Ef/me8xz";
-	arc=none smtp.remote-ip=209.85.221.171
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78410606A323
-	for <linux-coco@lists.linux.dev>; Wed, 25 Nov 2026 14:38:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78410606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZoJs1Pdu;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353E1606A326;
+	Wed, 25 Nov 2026 14:58:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 353E1606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Ef/me8xz
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5eab93a9862so1522793e0c.0
-        for <linux-coco@lists.linux.dev>; Wed, 25 Nov 2026 06:38:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795617526; x=1796222326; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dCtVGEXy/TUgxCZ9qLhPI3rUEmqk4eMQKQPU17VUyZ0=;
-        b=Ef/me8xz4f56k95vG/I1VgHqJFLRI9TmsTgvV7BXRI9xAowekSDWXzmrpjFSSceQ38
-         ZMRgrUj0Q0ujWsdyl5K3T28rrrD0nMcI0NhrpQ7gWkSHRkzFDVQk+EQXLLmTYuuRmDdf
-         qkc5i+X9HdDPUSBA/fZ4FU63+ZC4XPHEYxyIo2WlmD3ZU5j7/VX17XabD/usqzt5m1Rz
-         YAYBAXF78zxJO67qF9nUiScLzEnpww9E1a/xJcxoVMpqRqwSoYvKhb4rrTlg04o9BlBv
-         mQ8QFyNjw3AD/qB7Ci+JGG2t8hJThjX5CeAf+OjZ8J9KdV9iYGsa3fa8jvZjXQ07fmyn
-         Nz2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795617526; x=1796222326;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dCtVGEXy/TUgxCZ9qLhPI3rUEmqk4eMQKQPU17VUyZ0=;
-        b=AYL/K0VURuMUhRH3p9JdGqE1A2blF4PdQzfwztGfuaoSsO+TPntGJGcfMRymk5Ylt4
-         HO0v1eMQjrgAq0w7iryWqOH8a+iE8QPTRk1kxHNPOkh7hZnFldb3hDTbLBHL+1TKs6ry
-         rCikOfzIhb38Me6ukW7jUi7RFM2/+uDooU63AAumpI6Eoax0J+2Gkpb8XRxcKffl09b/
-         olV1Ecb2ytHd7PQYnNUBRLDcbFTd5u570iU3mSYroIbvcjWSbb7MMCfxEAzvEt/eg9np
-         WwVTXc25ZfRgEJ+D21XPgEOF22I8T6/OhbdhEvZJPhDR8EPXcAFOXMjtSszqixE4Kl81
-         yBPQ==
-X-Gm-Message-State: APuU4Z8a01PLQnq3oSF+sCKTimehVx0WD/ueL6pKPjao6VJkLfStUF8f
-	uyIS2eoegGPyQcmsKkDpjvGEsG0r3reYn50iURJggfKwYotCgAkGrCtD9hh3LEEOPlQ=
-X-Gm-Gg: AZFdTZcjCSJw9/x6Xk8a+nGMQ3+MXtEMOAlfHkd6fxdZZwviLZwsNqMfFMDnT64Ee7s
-	mFhqnPUfEHmj9KAXlzapBlPe71bcK7jtnkOMG9MpIq5LT/Q3ZO/jFq5Ecrfl3tqpSOOU7l5Be9Z
-	xlksa6Ho+0KWAYDLrxNibHr5xFt6Db7xhR56YGQktCn3ufAtCpIPnxqdBpDiLhuWzA4vBjHQRs4
-	P1XBFrzwgBNvGzNIVhW4mhidBJbnklHiFoF4ai8qlntLYGCRDFwrHxidGd5X7GbW1zvTbaUYwDb
-	sZmnc1oXJFZQKGoeKZrgbCIIX7fXQXreLIGjRsUB5HSJ6pLOWYEh2/aH1Htt8p7Vp8gsWkdMUut
-	TDEP4h8oQinK+pnrheAdOZihD42v8yTRxCLUWGd53MO0zYA3mk0XntpUKPaxqS0c28ZPx57O1lJ
-	h7Rp7NfnMa7WO9cg6eBRIx1mpCXcbouHZ4jMlXyZM6BvtSlhI8knOj8paItUQN9+qoPhKrUAcE0
-	Yr0fzPM2u6vvpFYST1TvRwWWEltZB/FWfHUs2nJ21hg4b5DzL9lAUnMITDQhajUBSN+BxPhtUbj
-	Q1J3Pw==
-X-Received: by 2002:a05:6122:1816:b0:5ec:4112:6839 with SMTP id 71dfb90a1353d-5ee8af18034mr9201283e0c.15.1795617526133;
-        Wed, 25 Nov 2026 06:38:46 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921349d383asm163086316d6.22.2026.11.25.06.38.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 06:38:45 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xWE8z-00000001lnK-03Mz;
-	Wed, 25 Nov 2026 10:38:45 -0400
-Date: Wed, 25 Nov 2026 10:38:45 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 05/10] PCI/TSM: Add association locking helpers for
- evidence acceptance
-Message-ID: <20261125143845.GG246011@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-6-aneesh.kumar@kernel.org>
- <20261123153507.GH179082@ziepe.ca>
- <yq5ald6h9r1g.fsf@kernel.org>
- <yq5aa4mx9nsj.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZoJs1Pdu
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E0592F;
+	Wed, 25 Nov 2026 06:58:33 -0800 (PST)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2ECBB3F632;
+	Wed, 25 Nov 2026 06:58:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795618716; bh=D/n+P8rGctWCPmcRxey9aK7QCr6PlKd7Fo3q+ESxtX8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZoJs1PduoU0ULUyP6YVRCRXGnlHrzR4tGX0ZOcuxgF6JCfnSb+OxspbajzsG32Dkt
+	 1Z730FRcVZHXhbCFzLBFONsxqLNfCmyWjC9hIcdqTHJqPbmaKso6xMf1aEIsjGw9Wq
+	 eAw3xOv2uegtqNUIFjfCGzV9mXZb+s9Cr4kaU0jc=
+Message-ID: <e4108d4f-e84c-444c-aa7a-18e823816eae@arm.com>
+Date: Wed, 25 Nov 2026 14:58:31 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -117,24 +53,229 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aa4mx9nsj.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 09/11] KVM: arm64: CCA: Prevent memslot modifications
+ after Realm creation
+To: Ackerley Tng <ackerleytng@google.com>, Steven Price
+ <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261123104233.95710-1-steven.price@arm.com>
+ <20261123104233.95710-10-steven.price@arm.com>
+ <CAEvNRgFQ5BXqU3KfPFT8bfZTW=RyvBw25z3GZtr3JA=Wv3Yqfw@mail.gmail.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgFQ5BXqU3KfPFT8bfZTW=RyvBw25z3GZtr3JA=Wv3Yqfw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 25, 2026 at 04:32:36PM +0530, Aneesh Kumar K.V wrote:
-> Even then, wouldn't we still need pci_tsm_trylock_association() at
-> spdm-start? Once spdm-start completes, we can ensure that the
-> association remains stable until spdm-end, but that still does not
-> eliminate the need for this API, does it?
+Hi Ackerley
 
-If you have a valid attestation device for the TSM then the TSM is
-guarenteed to be alive.
+On 25/11/2026 00:09, Ackerley Tng wrote:
+> Steven Price <steven.price@arm.com> writes:
+> 
+>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>
+>> Once the Realm is created, prevent changes to guest_memfd backed
+>> memslots, which can provide private memory. Validate these changes
+>> before KVM invalidates the old memslot, so a rejected deletion leaves
+>> its stage-2 mappings intact. Realm stage-2 faults will also validate
+>> the private memory backing in a later commit.
+>>
+>> Require Realm memslots to lie in the lower half of the IPA space, as the
+>> upper, shared half aliases the lower, protected half.
+>>
+>> Define kvm_arch_has_private_mem() so generic KVM recognizes Realm VMs
+>> as supporting private memory. Defining the macro also makes
+>> gmem_in_place_conversion true for every arm64 VM, so guest_memfd
+>> memslots are marked gmem-only even for non-Realm VMs. A well-formed
+>> KVM_SET_MEMORY_ATTRIBUTES2 request on a non-Realm guest_memfd now
+>> reaches the VM check and returns -EINVAL instead of -ENOTTY.
+>>
+>> Additionally, similar to pKVM, do not support dirty logging or
+>> read-only memslots.
+>>
+> 
+> Imo this could be split into a few patches
+> 
+> 1. Add the constraints wrt realm memslots and being in the lower half of
+>     the IPA space
+> 2. Defining arm's support for private mem
+> 3. Imposing rules on memslot changes
+> 4. Maybe some others, maybe I'm misunderstanding the patch
 
-That is the invariant we need to create to have a sensible subsystem.
+Agree
 
-The session cookie, combined with a revoked/disassociated attestation
-FD guarentees that userspace cannot be confused by a TSM host
-plug/unplug. It will simply see the attestation FD it has open stop
-working entirely.
 
-Jason
+> 
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>
+>> ---
+>> Changes since v3:
+>> - Explain the arm64-wide in-place conversion effect and keep the
+>>    general IPA limit comment.
+>>
+>> Changes since v1:
+>> - Preserve private mappings if KVM invalidates a Realm guest_memfd
+>>    slot before the prepare hook rejects its deletion.
+>> ---
+>>   arch/arm64/include/asm/kvm_host.h |  2 ++
+>>   arch/arm64/kvm/mmu.c              | 37 ++++++++++++++++++++++++-------
+>>   2 files changed, 31 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>> index 3ddeddfacd06..55673d08e3eb 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -1607,6 +1607,8 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>
+>>   #define kvm_vm_is_realm(kvm)		((kvm)->arch.vm_flavor == VM_REALM)
+>>
+>> +#define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
+>> +
+>>   #define kvm_has_mte(kvm)					\
+>>   	(system_supports_mte() &&				\
+>>   	 test_bit(KVM_ARCH_FLAG_MTE_ENABLED, &(kvm)->arch.flags))
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 800333a345cd..9af5fe6d87f0 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -2861,17 +2861,32 @@ int kvm_arch_validate_memory_region(struct kvm *kvm,
+>>   {
+>>   	lockdep_assert_held(&kvm->slots_lock);
+>>
+>> -	if (kvm_vm_is_protected(kvm)) {
+>> +	if (kvm_vm_is_protected(kvm) && new &&
+>> +	    (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
+>> +		return -EPERM;
+> 
+> gmem is already generically mutually exclusive with
+> KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY, so before this change,
+> pKVM is saying no to KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY for
+> all memslots, gmem or not, so this check makes sense.
+> 
+>> +
+>> +	switch (kvm->arch.vm_flavor) {
+>> +	case VM_PROTECTED_PKVM:
+>>   		/* Cannot modify memslots once a pVM has run. */
+>>   		if (pkvm_hyp_vm_is_created(kvm) &&
+>> -		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
+>> +		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
+>>   			return -EPERM;
+>> -		}
+>> +		break;
+> 
+> Not sure why pKVM doesn't allow deleting a memslot after the vm is
+> created, but this is no change from before this patch, the removal of {}
+> here is mixed in with the other changes in this patch.
+
+IIRC, pKVM relies on pinning the stage2 until the teardown ?
+ed
+from the Stage2 unless we d
+
+> 
+>> +	case VM_REALM:
+>> +		/*
+>> +		 * Once the Realm is created, we cannot modify any slots that
+>> +		 * could be providing private memory. i.e., guest_memfd backed
+>> +		 * slots.
+>> +		 * TODO: Handle trusted device private memory slots
+>> +		 */
+>> +		if (!kvm_realm_is_created(kvm))
+>> +			break;
+>>
+>> -		if (new &&
+>> -		    new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)) {
+>> +		if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
+>>   			return -EPERM;
+>> -		}
+>> +		break;
+> 
+> Imo this should be written the same way as the pKVM branch for clarity,
+> like
+> 
+> if (kvm_realm_is_created() &&
+>      (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new)))
+>          return -EPERM;
+> 
+> but that aside,
+> 
+> 1. Why block creating memslots after realm is created?
+> 
+> Does ARM CCA have no way to add pages after a VM starts? This isn't
+> blocked for TDX and SNP so I think this constraint seems unnecessary.
+
+This and (2) was triggered by the following thread, raised by Catalin.
+
+https://lore.kernel.org/all/aqrGPK0lFBFXL2qY@arm.com
+
+But having said that, since then, we now have :
+
+1) All private faults must be serviced by realm_gmem_abort(), which 
+mandates Guest memfd slot. (See Patch 11, realm_mem_abort())
+
+2) realm_gmem_abort() matches the "private" attribute for a "protected"
+fault, failing which causes a memory fault exit.
+
+So I think we can remove these memslot restrictions.
+
+> 
+> 2. Why block deleting memslots after realm is created?
+> 
+> This also seems like an artificial constraint, and it constrains the way
+> the userspace VMM operates when stopping a VM, like the memslots can't
+> be removed ever, the VM just has to be closed? (something like that)
+
+As mentioned above, I think we are good to remove the restrictions.
+
+Suzuki
+
+
+> 
+>> +	default:
+>> +		break;
+>>   	}
+>>
+>>   	return 0;
+>> @@ -2883,6 +2898,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>>   				   enum kvm_mr_change change)
+>>   {
+>>   	hva_t hva, reg_end;
+>> +	gfn_t ipa_limit;
+>>   	int ret = 0;
+>>
+>>   	if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
+>> @@ -2891,9 +2907,14 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>>
+>>   	/*
+>>   	 * Prevent userspace from creating a memory region outside of the IPA
+>> -	 * space addressable by the KVM guest IPA space.
+>> +	 * space addressable by the KVM guest IPA space. Realm shared IPAs alias
+>> +	 * the corresponding private IPAs, so Realm memslots must reside entirely
+>> +	 * in the lower half of that space.
+>>   	 */
+>> -	if ((new->base_gfn + new->npages) > (kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT))
+>> +	ipa_limit = kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT;
+>> +	if (kvm_vm_is_realm(kvm))
+>> +		ipa_limit >>= 1;
+>> +	if (new->base_gfn + new->npages > ipa_limit)
+>>   		return -EFAULT;
+>>
+>>   	/*
+>> --
+>> 2.43.0
+
