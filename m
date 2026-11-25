@@ -1,49 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795625252;
-	b=s3A25wV2WWWnMJpmKGUUpw9GELalfCeeLyONMeD2W43t94pmsQw3eKh7L+8lrKGhvuW8
-	 uzU1nrH+JqNX5HD9LJshNQ6T38IMnMIUzzfu/rLMADyF8Sm92cWO/jWWYPOTAQ+eSwEv3
-	 7PKPZobNkbtpbn5qqCWKurdPVS84BD/R0LM4DkxWt5gOYQ6GhoOVt3dGPywj9VfjNPhmG
-	 42m2h/Ltvq9o3jHNVgRJ5FcPUmZjJ37XpMbYQtqsU575SccPT17TvMPNLmDuT9hb2GXA0
-	 AXZf/OdDgs5YAIJbFpi2nqKehSYZqrA2dw2GVBe9TABs1GajctTO0b1cYQUuIvhXSyA==
+	t=1795628026;
+	b=suGSCPGp4AcnueWq5EsF7wwZIqba3G9KXgpCFlW7ofXYnu8RqJD5RZ7H++U4a8oo51UF
+	 N2F4LmTNIB7mLr57+dGcigvAKKQFVcrcK0KUqiHi5E+EtD8Um7XsipIS3I6hhF6IvOXt7
+	 R+f4x3n+EYL4vDDsa6U0AmwqNjR8vl/yE0lt4kI7UEpZV+MGpoDjQF55yMjYeq+FR0IOf
+	 8M3UgoCqDmidnnVPLFaPw+6PzThP6vRa/7x80L3rF+UdUIQmCBMTWg2JELDIwR3g0yR6O
+	 3sMauT9DJrU0QJWMMIndX1WEczk39/GUQXw1+7wu4F06k4Utuci33T1BEAnDT1etQmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795625252;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=u74A0Q4um7qV8/WDW/DpSpOB1wN/qS5tUTp8OCX2aSQ=;
-	b=cbxqjxRnAUkChBxlfPV4npEntnIen6Myl7tXQnJKNwd5IB3ts6EgCvGsqllZB3hG5qew
-	 Vrg4qOuLA1LryN38bNUQMttQTobQL6djBLYw+t8R1Eivey3Aj5kI80vhIuSG1UgsVHSpK
-	 II7gSD8Py0dW/oOIbDbdlNIv3tPK7WSogI00/KrUNGmgWeABmVEFipbR0YqCquYcoMVb5
-	 o139x9RuWeZkmaypJhRKnGqm/Tz7TmTAHgfiPxzxkRPT9SYOj/0C91iyebrf+iXINvbaR
-	 BzdSFKmymG0yaLMUW0GuPKN3H5JTZWN3Mn/QJvrKlBfhVk6j0afRuvbrv8xYJZoa/0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795628026;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=n/6bLDuC2MWLlkiw9AxsEw6O8WtH5WMIcohSXIYDu0M=;
+	b=iBc9ei6jtXu04zuXDEqjfcR5gPltZou72k6JljkHT39Hi+8K4fTmbYmwbJWCZlBsSDdg
+	 p6jE4XAK+Ck+v26dd41n4xWuY2H5fc6C8gkQe6I94nBF7jDCJGaxJVjK2PWBezau0Lgto
+	 JtRdcz0+GTIEGdDAkbkaUvw8g5HLAWMxPASeK8aQOCjmfmKtCzZo5cMIFzrBAfpmpTQ3+
+	 E2XIhlgBaxTe09a+LrMw9xGNyl3HTeRxpC1stDvVGOiGBHDCrgWJq1E+9uobssv2HjuIu
+	 LEu6TDRkNGQE2FIWprk1vV27H5UzkXs09uomnol/s9QYNW5k6ov97ZKtaj6UD0VSCgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=PPcHEM+F;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933B5606A323;
-	Wed, 25 Nov 2026 16:47:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 933B5606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="a/qxYY7J";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77518606A32C;
+	Wed, 25 Nov 2026 17:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=PPcHEM+F
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 928232F;
-	Wed, 25 Nov 2026 08:47:27 -0800 (PST)
-Received: from [10.57.32.107] (unknown [10.57.32.107])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 62CE23F632;
-	Wed, 25 Nov 2026 08:47:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795625250; bh=2eqARM5zetumptsIOUsll4fMIks93bDujuzqoyMavgw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PPcHEM+FJASRgoa04KgHq2/l2CDs0QOxGySNx7u9SCuF1kp6pNFlZ7lgZOs3j47MH
-	 HCfcsVevE2w3sAPyXltY1uD8GnIBSWH7PIWuEZ6+ocCHneO4YCVHSjB2/+VqU0XaCO
-	 lgLzNt+x7UEcGbcd3uHJEx012FNtAa4MPhF1n5Mc=
-Message-ID: <483ee877-3953-46b1-b4a2-e3b084ee3b64@arm.com>
-Date: Wed, 25 Nov 2026 16:47:22 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a/qxYY7J
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDE81F000D0;
+	Wed, 25 Nov 2026 17:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795628025;
+	bh=n/6bLDuC2MWLlkiw9AxsEw6O8WtH5WMIcohSXIYDu0M=;
+	h=From:To:Cc:Subject:Date;
+	b=a/qxYY7Jx4KrcgPN7wnFjijIWU7q3OzxEz/YnyGrjKK+wKdSKLXB0JiYZCmn1FEbx
+	 KuFrM1k5cvs7x3jXRL5AoInar9bPon5j//iN1LK0CHxMplHitTrTVFUgLBGMK/ZXXu
+	 2r+rA/FZqP6CuoT1QEQI1aTeJ3iwP1dLEEgh8xnyWngBWVufuVa43dIFIx8Sr27WF8
+	 ULNP2gobeKLxNGEBml9IVoljcPiLkkXe2zBo+X4ngU4qMW2QnZCuZJdqVfAahkfuD/
+	 fdsO17cywQi1ZT+UKbdjDVGBUrF/N+L3Gvf8J4VwHcT0KqvTzek2rw/GgQnjdVWPeV
+	 Czphq7SKI763g==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 1463B198006A;
+	Wed, 25 Nov 2026 12:33:40 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 25 Nov 2026 12:33:42 -0500
+X-ME-Sender: <xms:9BsHa8rRwZ-B6dJQd39mb36_IfObKj3ULBUz0osEA8SPOXbM5snwEA>
+    <xme:9BsHa0BmVBwiapEMhuUKQ7fl9cA7S8lwQll8ZeGsqSmQ6a01r4dg_ALumhlGRoFWH
+    HTqZGW-BqY4arqLQMhitQAu3ZbFIXc_80kcEezB3sXoMRmC81PlFoo0>
+X-ME-Received: <xmr:9BsHa6fIg0J2dn0Sfc3E8WBKM7hPXB_i7PX_qRaXMWPCeXRrLqzinpf9oVs>
+X-ME-Proxy-Cause: dmFkZTEjneGXuSsh9t8RLA5fj7OcIMpddJIPpUqkcCDk1koCABNj0DB7+xf1dKOxMj9juV
+    tF/xhAcgiETRmldAJL4fSnEhurJbuWquoguflFdf5cgOeCJcEe9MP0oUfMBzJ0/hMO7Ail
+    h22HXZLf6H0rTSIZ9mjjY3jC09UdkvYKAJS20FoyaRQda/TTQNzNLog6Np+64GF8l9mToz
+    q0cauJaKUUBMxe+bwgi1iKWVZ5OkzDj2yLkDwcN6+LwolQ/4feGVmf6XcJ1jZppe/5nEV4
+    lJV66d31/jxmkXNOvdRk1UdK2Rzx/cQhOxp+eVwBZfETf9hpDaFDrDiGYe8iHaydo0eaVm
+    J+QAX2klsry1H6D4sR5zJV1+nrOT4PUKbqM4OevwQYzQzb7m4PvTN+k63p9NVReNy7kgkL
+    QdpCSmburxqhy/hzlKchbRPw7FHgm6h4p9+GX6Vm8Df7P6sKBPOmABxD827xs4jREwniYo
+    eT25z3JA8qNMNakVrKso781cLFrnlBRXUCCAqw8gfDhgJE7laynH0C5jmMPacW98WjiLpy
+    B8VO6dq/RAj38Whgsiz2yIe0xXSJzHs9N00zF9mdOLURLsgOVAIUlYrmXe5UScBDhMKRwn
+    cOi1nnvBHPcVkqDkHS0dHHnu9e9zHg1WZNeZp3iCVFa/8dRzhh5Oc2qMSEJw
+X-ME-Proxy: <xmx:9BsHa8IvTYgfK2V5VArj27Edso_U465UskkroKOd_XMs_XdOG6aFbQ>
+    <xmx:9BsHayurQ7qvPx5WRFasGvucq6ucyUOxWsNwt_FtHXxK2Y4QVtgi3A>
+    <xmx:9BsHa-bgH0VPYcK40-exctqVMUixUrrg_xb2TcZNMiUVwpfFZHp3tQ>
+    <xmx:9BsHay24mIwRuAQ6r_oPPnN5Ye6e8gDSzrAFl6tWzB6XLoxyK9YiQw>
+    <xmx:9BsHa0URsQasB42Xh2rpLAL_lRXL-cIGxOk9Pna-5bqINz-sv8Bh5i8e>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Nov 2026 12:33:40 -0500 (EST)
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	linux-efi@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/efi: Handle EFI_UNACCEPTED_MEMORY in do_add_efi_memmap()
+Date: Wed, 25 Nov 2026 17:33:36 +0000
+Message-ID: <20261125173338.1250080-1-kas@kernel.org>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -53,178 +99,53 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/11] KVM: arm64: CCA: Add Realm RTT mapping and
- invalidation helpers
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261123104233.95710-1-steven.price@arm.com>
- <20261123104233.95710-8-steven.price@arm.com>
- <bc90af1d-068e-4e79-8d5f-f8205beb0a69@arm.com>
- <70c50c45-c8b9-4096-84b2-ba4b6ecb63ed@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <70c50c45-c8b9-4096-84b2-ba4b6ecb63ed@arm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 25/11/2026 09:51, Suzuki K Poulose wrote:
-> 
-> 
-> On 24/11/2026 00:20, Suzuki K Poulose wrote:
->> On 23/11/2026 10:42, Steven Price wrote:
->>> Add the RMI RTT creation and unmap helpers needed by CCA Realm stage-2
->>> memory operations. REC exit handling and guest requested RIPAS changes
->>> follow in the vCPU series.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>
->>> ---
->>> Changes since v3:
->>> - Use the VTCR-derived Realm start level for RTT operations.
->>>
->>> Changes since v2:
->>> - Use a local MMU cache during notifier invalidation, handle
->>>    failed RTT splits, and validate RMI levels and cache state.
->>>
->>> Changes since v1:
->>> - Rework RTT creation and folding around missing or existing RTTs.
->>>    Use a shared RMI block-size helper and handle alignment, partial
->>>    progress and errors in range operations.
->>> ---
->>>   arch/arm64/include/asm/kvm_rmi.h |   8 +
->>>   arch/arm64/kvm/rmi.c             | 421 +++++++++++++++++++++++++++++++
->>>   drivers/firmware/arm_rmm/rmi.c   |  10 -
->>>   include/linux/arm-rmi-cmds.h     |   8 +
->>>   4 files changed, 437 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
->>> asm/kvm_rmi.h
->>
->> ...
->>
->>> +
->>> +static void realm_unmap_shared_range(struct kvm *kvm,
->>> +                     unsigned long start,
->>> +                     unsigned long end,
->>> +                     bool may_block,
->>> +                     struct kvm_mmu_memory_cache *mc)
->>> +{
->>> +    struct realm *realm = &kvm->arch.realm;
->>> +    unsigned long rd = realm->rd_phys;
->>> +    unsigned long next_addr, addr;
->>> +    unsigned long shared_bit = BIT(realm->ia_bits - 1);
->>> +
->>> +    if (start >= end)
->>> +        return;
->>> +
->>> +    /*
->>> +     * Callers may pass either an IPA range or its shared alias. Add
->>> the
->>> +     * shared bit only for the former. Use addition so an exclusive
->>> end at
->>> +     * shared_bit advances to the end of the IPA space.
->>> +     */
->>> +    if (start < shared_bit) {
->>> +        start += shared_bit;
->>> +        end += shared_bit;
->>> +    }
->>> +
->>> +    for (addr = start; addr < end; addr = next_addr) {
->>> +        long ret;
->>> +
->>> +        ret = rmi_rtt_unprot_unmap(rd, addr, end, RMI_ADDR_TYPE_NONE,
->>
->> ...
->>
->>> +        }
->>> +
->>> +        if (may_block)
->>> +            cond_resched_rwlock_write(&kvm->mmu_lock);
->>> +    }
->>> +
->>> +    realm_fold_rtt_level(realm, realm->start_level + 1,
->>> +                 start, end);
->>
->> See below.
->>
->>> +}
->>> +
->>> +static void realm_unmap_private_range(struct kvm *kvm,
->>> +                      unsigned long start,
->>> +                      unsigned long end,
->>> +                      bool may_block,
->>> +                      struct kvm_mmu_memory_cache *mc)
->>> +{
->>> +    struct realm *realm = &kvm->arch.realm;
->>> +    unsigned long rd = realm->rd_phys;
->>> +    unsigned long next_addr, addr;
->>> +    long ret;
->>> +
->>> +    for (addr = start; addr < end; addr = next_addr) {
->>> +        unsigned long out_range;
->>> +        unsigned long flags = RMI_ADDR_TYPE_SINGLE;
->>> +        /* TODO: Optimise using RMI_ADDR_TYPE_LIST */
->>> +
->>> +        ret = rmi_rtt_data_unmap(rd, addr, end, flags, 0,
->>
->> ...
->>
->>> +        }
->>> +
->>> +        if (may_block)
->>> +            cond_resched_rwlock_write(&kvm->mmu_lock);
->>> +    }
->>> +
->>> +    realm_fold_rtt_level(realm, realm->start_level + 1,
->>> +                 start, end);
->>
->>
->> If "may_block", we don't take that into account while folding the RTTs ?
->> On a bigger range, we might spend too much time, starving the other
->> threads.
->>
->> Also, there is no point in folding the RTTs if the Realm is dying. So, I
->> would rather skip this if the Realm is not ACTIVE.
-> 
-> Having a think about it, I don't think the folding of RTTs in the unmap
-> case is a good idea. We could leave them as they are, because:
-> 
-> 1) As mentioned above, we are holding the write_lock() and doing this
-> within the lock is bad for contention
-> 2) We do not check if there was any mapping at all that was actually
-> invalidated. i.e., the tables were already folded and for a big range
-> we go over it unnecessarily.
-> 3) For fixing up permission faults on shared range, we end up unmapping
-> the range and then trying to map it. Folding here means, we could end
-> up in the dance of reclaiming the RTT and then creating it back for
-> each L3. (This is a rare case though).
-> 
-> Overall, I don't see the benefit of folding outweighing the impact of
-> it. So, could we please drop this ?
+The EFI stub reports unaccepted memory to the kernel as E820 RAM.
+do_add_efi_memmap() has no case for EFI_UNACCEPTED_MEMORY and adds the
+same range again as E820_TYPE_RESERVED. e820__update_table() resolves
+the overlap in favour of the reserved type, so the kernel never uses
+the range.
 
-Agreed. I don't think we have a good view (yet) on when folding makes
-sense. I think it ended up in here mostly so that we could exercise
-those paths in the RMM. But that's a terrible reason to keep it ;)
+do_add_efi_memmap() runs when soft reservation is enabled and the
+firmware marks any conventional memory EFI_MEMORY_SP; that takes no
+command-line option. It also runs with the add_efi_memmap boot
+parameter. A TDX or SEV-SNP guest booted either way loses the memory the
+firmware left unaccepted, and it does not show up in MemTotal.
 
-Eventually I think we'll need to figure out how to cause folding in
-those (probably fairly rare) situations where it will help. But for now
-I'll just drop this.
+Add unaccepted memory as RAM, as the stub does. Without
+CONFIG_UNACCEPTED_MEMORY the kernel cannot accept it, so keep it
+reserved there.
 
-Thanks,
-Steve
+Fixes: 745e3ed85f71 ("efi/libstub: Implement support for unaccepted memory")
+Reported-by: Mike Rapoport <rppt@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+Build-tested only, with and without CONFIG_UNACCEPTED_MEMORY.
+
+ arch/x86/platform/efi/efi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 5eb96c17883e..f03d5e984f2f 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -150,6 +150,12 @@ static void __init do_add_efi_memmap(void)
+ 		case EFI_PERSISTENT_MEMORY:
+ 			e820_type = E820_TYPE_PMEM;
+ 			break;
++		case EFI_UNACCEPTED_MEMORY:
++			if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
++				e820_type = E820_TYPE_RAM;
++			else
++				e820_type = E820_TYPE_RESERVED;
++			break;
+ 		default:
+ 			/*
+ 			 * EFI_RESERVED_TYPE EFI_RUNTIME_SERVICES_CODE
+
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+-- 
+2.54.0
 
