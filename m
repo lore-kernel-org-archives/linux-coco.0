@@ -1,79 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1795615928;
-	b=a1zPdutYlbdKHKnfwG0myzAWle+BoLorAgHIR84istzZ9dh6K1C0GGH5Ronid/RzG2J3
-	 ZRQofzxA2YpSnp7kmjCTPgCce7FLEvW9clOAGBfGV0p/RIuApLbmplzX+5btmqV3I/tMC
-	 Wodek0KLRAw3wnvUzeUxUXPMQ7el6qsV7OUd+m7CUMb+ige5q4wata49mc3iikniUYVKR
-	 WjbCwWDhQgkTaJqwMrMv1PF0uKZFeBv3dK753kNHKgRShi5ON80x5jcH698ve4jvzO7mf
-	 dVkvHUMOXuUuJWjb20/sFgcIX9DR1z0Hy102o63YI87rpoaKh8MjfVUtQXuQ6mgKGzw==
+	b=h3dtt5w2X1+nLEqAAlTfALbaJ8Hs+3R3UVvyAh7INLcGfKDY0LdX6DDHovlsmTuSfKUi
+	 3FDUuMxWuR0vSOETbD3uTABbPVOYjgsLBuUHgo6dz3xVup9OJeG+J9kcshIzPw4Ah9s0G
+	 mADd86iXLJDhl6VuaMIeMg4cZG+hLwi+dJTEK2/p2f4MFDI1FBDoBZKYwc+ZBCryzDrTb
+	 SP9cJK2On6DUrewNkODVMDPTacgM8dDRs6Ms/iGU6QDyzpC8KioP+JsLGOqgbe4hWtqwz
+	 gkVprjfWDbxzcUtltMjwToyyoI9HKGm8JMdSMBspYl7GMiqxYfcMVpR31yzQ7lo+8bA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795615928;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=p9n/LLKZni3XY9y6YxGHGDOqPopQL3U+PYe7dZtYI4Y=;
-	b=jD2BaQnpie9uyx+grSEeyqBp40bBzFupuiZdQsRUG9MfOfwUZrkvgQ9RReVHgIFBIyCM
-	 Tbn6t+I1E4dtzIkpPGwxcE0gluecw1lQ6eEHXBnh+x6/aJ/VwKSt3hfjbY/iL0ZqKYohj
-	 1w+EUvZ+jwP3Rl/s7ovG18HzmIS+w55z0t18rHjTIeD8pu1fSluW3Rrrew2Jz6ugh1d1/
-	 C19Twdvce+jmmTG9uxeIz0hO0HAYp4JLip9pEHqAE5TPLO4PFkpG54Mk4B/tOLJfYyURw
-	 CLSUpBKPbjyLRtMCGgWaQt4WW8okD9Nz6pKjejr7PrMJkq/NpDAmQuRVcMRt/LmaWRg==
+	bh=iGzxZDraoWUDG8juQ5rDSMcrAFNeRPcy+J3hkWIqvY4=;
+	b=llpuXa2IugEcV2FbhngwRinUvzQeWb+e1ufNF8Z9y6I8td7Q4q6bX09k1koXSu27Qw0e
+	 zX7Yda6GIalHGXNUNlm6wwDSh35zgk4mj9q1OEEwJwa6ZnqHbZfEO1B8fOqrDAEosKHMF
+	 H6eudRhKXEUmEgccetWRgjAOJV0WMzVGeozw7h2dfK4heXrn0IyzlKX+RlcrGgQuz13QJ
+	 zOANP2KgSud0dgDXuUsxKWKYsIgQf0rreLgEmhrbKapDmRinyn2HNgJP55RvsaUWSsVKN
+	 TaYkCSKUUC/uTnTuULDo5QkBLaNYRLCR6lxvtERA4+iU4+dg6VAUcSqWsJvGZAGe+zA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bjA5XQCb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kIZPtCcv;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2FE606A32E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2D3606A69D;
 	Wed, 25 Nov 2026 14:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bjA5XQCb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kIZPtCcv
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795615928;
-	b=cQ3vqzplscss0lvwrqH6WRBe2VbNcLREBttC9n4EpQRuATrVaGJNftU27ERooU7vX+fJ
-	 t4TphLuakj/jATmNALbxiXnTjNHian4tQzjhhaCKxdzVB9AHvSfAjp0gbs6aX4IGA54qf
-	 ZvIQFw7imX0TRBE4Z752MfdKykoOK9P4lJR5SJu8Rg+2UvdDUVg4uYm2VOp4auJv0daJM
-	 Gxs6ebBNZE0BRcvg1s/LjfexbvqxVP/ZFPbq8NCNr3C+T+A31AdgckfR7pNlQmTyhTDoV
-	 ZKZg1EcWwdZY7pywv0wknZ8v2OVoSRUIikrOour/qVL5eiWM5cWiBn7IFA19Af2tDiw==
+	b=O5PD5f/U9y2Uf0oPCkIXR+Lxs2/CQqFdlR/u4kDoDUTDdXUn+xULTiPTIfTENzOd8jcF
+	 ad2EsIDJzgFiE7WjYE4rjbnp/mgB3m30LPJiG5QzzQ9l+1nYHjRMyKWKTIiUIS6Qmwqpz
+	 oAt5xzrszYt58DQ/1sems99ivt3ub6oxsYQmdhWfmF0uy+j16ezfj22P0y+yoBRpxmwq9
+	 QsxhdSZLA0x9iSIkPs39EfHbB/FO6bCELtFXQayFf69szVeuPt7Y+C2XFFKYOCj9phcv9
+	 +Uwz703PbMZCHmgEAPFM6Ji8gxDolxd+1Kdal6+Tt5Wlpysb6Ztc4PbOm2jwEmV+WXQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795615928;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=p9n/LLKZni3XY9y6YxGHGDOqPopQL3U+PYe7dZtYI4Y=;
-	b=w75293OkdlLI4U3RzD9K8xIH1MUuJunFKLrFWSaoFJI0fmKudHh0+ZIxhWYxsCxrQDDX
-	 SPsFVcc3LKRYhqGOmhxvapzAg6ohgr+YWxyDC4OwOsX2e3WUKuGYXI62tcoHRcYPTfKHe
-	 rVkuvF4AMqz1Y2+5wwgyqd4qvu8wzqCsZ+0VCJoQyrlkWLLTudanGxOz+oqMTwhMfAzPm
-	 ACKmCmIbCr7K1nL320Ixnr3CwuKlaPsiYLb27OPrRx42mbaN/8SQb5xj6hMFhRcABvZt+
-	 oPGZT0KsXM/kp/gF9kxaIHBNmGJ+/Ko455mGjbTvt6GSM4XDNg0TyLfkyEHkaaZ4TIw==
+	bh=iGzxZDraoWUDG8juQ5rDSMcrAFNeRPcy+J3hkWIqvY4=;
+	b=h/HxTRhT2TLxj0BexIZWCalOEfL6xuzDkmG6XI8zFcOX3vIc5zoH8Fhx1x/te6rPwzj3
+	 j0bkKQ72HtUHFJBYGLkDvNgDBXcKmYe6r24GK9c1h/f2Y24D2CB0VRD2yIbaAWC/CZJa8
+	 jmayF/3ftolhGXZ1XDT8ugvC6k1SvdT3DXFQeWF8vPU3ysB7DIl5/zhExzsNZmrI4wEZ4
+	 GNr6esSYQdRdyJDrnHLQHGI6pQifSf74Ne9xGz2pPUwMgB0jD2a8JoFsFr26IciFDegdn
+	 XAJ1HCSN1dSokrQJx3vbcpyvPccalMJuA5UJ0pq1URRVds6e81wP2fWclN1Ysm11gNw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A8AAA1F000D8;
+	by smtp.kernel.org (Postfix) with ESMTPS id C7E3F1F000ED;
 	Wed, 25 Nov 2026 14:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795615928;
-	bh=p9n/LLKZni3XY9y6YxGHGDOqPopQL3U+PYe7dZtYI4Y=;
+	bh=iGzxZDraoWUDG8juQ5rDSMcrAFNeRPcy+J3hkWIqvY4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=bjA5XQCbUb8GzYygiWFjodmCpm6W7LjR4wbzGG4ud/ZYlcXRG2ml1t40vFr1EXVXV
-	 GkeG45Z/LqWXTN4s0ssM8oJi+ESVUdrb/6Cue9kTYuqf8i6aGKOV4Jh1RrcRaBOOpA
-	 l9RCxPycub3mhwl3zANhTk0JEH4nMDpYvdxdvZPQQkuOlGjB9opWqGQNRkwxsMUOms
-	 EhaOJQwGYjCzkOKum1dLBn9aNO6NmpUpt62UgiZZs8ob7jXVE/zR2x82lLadhE71Td
-	 5ATVk39S9Z73N1SnY+jWL82a7HJy2uw04uggqUy3E84W1H+zhGhgsRz1k5vZwQ0LYq
-	 09x3U0pnS86Lg==
+	b=kIZPtCcvJ5h8rzrWxNNAitHiAa2chnIC/oVHytO7g3rHz2WvEI/NQfUUL6636NK0C
+	 hFXMfUxkHbQZY00VvtAnEHvuZVAr0wkGJqxhpT4qHPVc+0zHR/gmgp1OwBV7b7VDg5
+	 mMP3JvAZV5ApcyI47xaRtIaGxdF8mf0Jdd7GM6srWX1W76fZ+bkE7Uq3A2jTHl3X/r
+	 omvKjzOdMhz4CSeTl9QFX2zWMVAc1N5co7XLDb4AFUHct4Os2TiRNKarmrdgn9vZZS
+	 wv564VWWeow4CFhz3iCYI4wtLyaHKbczz6ao8AK5Bu0q9fxrziYE1pn3RAy9eyWY21
+	 +mzHjrfl7texQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 370094CEFE;
+	by lkml.kernel.org (Postfix) with ESMTP id 554414CEFA;
 	Wed, 25 Nov 2026 14:11:55 +0000 (UTC)
 From: Moe Mahhouk via B4 Relay <devnull+moe.flashbots.net@kernel.org>
-Date: Wed, 25 Nov 2026 14:11:50 +0000
-Subject: [PATCH v4 1/2] virt: tdx-guest: Fix timeout detection in
- wait_for_quote_completion()
+Date: Wed, 25 Nov 2026 14:11:51 +0000
+Subject: [PATCH v4 2/2] virt: tdx-guest: Poll Quote status every 10 ms
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -84,7 +83,7 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261125-tdx-guest-quote-poll-v4-1-d89f26854b88@flashbots.net>
+Message-Id: <20261125-tdx-guest-quote-poll-v4-2-d89f26854b88@flashbots.net>
 References: <20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net>
 In-Reply-To: <20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net>
 To: Kiryl Shutsemau <kas@kernel.org>, 
@@ -96,14 +95,13 @@ To: Kiryl Shutsemau <kas@kernel.org>,
  Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Jun Miao <jun.miao@intel.com>, x86@kernel.org, 
  linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Moe Mahhouk <moe@flashbots.net>
+ linux-kernel@vger.kernel.org, Moe Mahhouk <moe@flashbots.net>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795615914; l=2045;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795615914; l=2710;
  i=moe@flashbots.net; s=20261021; h=from:subject:message-id;
- bh=agGhuadNQQ9dfbu4Mm1Co5M81IUoruWqLo97nzaI1Tw=;
- b=n+1R/mqxg1HgiT3te4CZiWLoBsOFyS5bttKbZ/CnFYKgsbCQkqDpcFfFOmCQi4oTVBxBqiBTb
- UsorFDES3BBDQhMz7bEfuJgG4EA8Tp46EbauU18brB2hmCceBlJ+QLf
+ bh=ZJ2AKpTdfk8nnjvMdjII9JPQIlMg0qVyJ6/cNAQLTWE=;
+ b=wI2fSczMhX/mxKYtl2J1z8aeVnGsBDgKSZSGKGgAeWbkOWb9jePYRrpaFb3+vuATW/qQdCI/E
+ 94ZvL/SDmvrDOuBjUzTO+Dvc5VZdEya49VfgPXeLfK1a8AAFjyftNnW
 X-Developer-Key: i=moe@flashbots.net; a=ed25519;
  pk=hJTKfjLno/YESrpxMIKDJk34GM+/8Tol+24XK2b4xf0=
 X-Endpoint-Received: by B4 Relay for moe@flashbots.net/20261021 with
@@ -114,47 +112,67 @@ Content-Transfer-Encoding: 7bit
 
 From: Moe Mahhouk <moe@flashbots.net>
 
-wait_for_quote_completion() counts the seconds it has waited in i and
-reports a timeout when i == timeout. That gets both outcomes of the
-last second wrong:
+wait_for_quote_completion() checks the status of a GetQuote request
+once and then sleeps for a full second before each further check. The
+VMM has rarely completed the request at the first check, so every Quote
+request takes at least one second, however quickly the host answers.
 
-- If the request is still in flight after the last sleep, the loop
-  condition increments i once more before it fails, so the loop ends
-  with i == timeout + 1 and the function returns 0. The caller then
-  returns -EIO instead of -ETIMEDOUT, without the "GetQuote request
-  timedout" message. Before commit 0f409eaea53e ("virt: tdx-guest:
-  Return error for GetQuote failures") a timed-out request even
-  returned success with an empty Quote.
+With a local Quote Generation Service the VMM completes the request in
+a few milliseconds. On an Emerald Rapids host (KVM, QEMU 11.1, Intel
+QGS), back-to-back Quote requests through configfs-tsm took 1021-1024 ms
+each; with this change they take 14-21 ms (median 16 ms) at HZ=250.
+Since quote_lock serializes requests, the one-second floor also caps a
+TD at about one Quote per second, which hurts users that bind a fresh
+Quote to every connection, such as attested TLS.
 
-- If the VMM completes the request during the last sleep, the loop ends
-  on the status check with i == timeout, and the function returns
-  -ETIMEDOUT for a completed request, discarding the Quote.
+Recheck the status every 10 ms instead. msleep_interruptible() rounds
+up to whole jiffies and adds one, so at HZ=250 a step takes 16 ms. The
+sleep stays interruptible, and the timeout becomes a deadline in
+jiffies.
 
-Decide on the Quote buffer instead: the request timed out if it is
-still in flight when the wait ends.
-
-Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
-Cc: stable@vger.kernel.org
-Reported-by: Kiryl Shutsemau <kas@kernel.org>
-Closes: https://lore.kernel.org/all/atoHWgQF-0vlTRK4@thinkstation/
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Moe Mahhouk <moe@flashbots.net>
 ---
- drivers/virt/coco/tdx-guest/tdx-guest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 11d741da3b35..a5a53174f9d9 100644
+index a5a53174f9d9..25fa2a875c44 100644
 --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
 +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -282,7 +282,7 @@ static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+@@ -16,6 +16,7 @@
+ #include <linux/set_memory.h>
+ #include <linux/io.h>
+ #include <linux/delay.h>
++#include <linux/jiffies.h>
+ #include <linux/sockptr.h>
+ #include <linux/tsm.h>
+ #include <linux/tsm-mr.h>
+@@ -271,18 +272,21 @@ static struct tdx_quote_buf *alloc_quote_buf(void)
+  */
+ static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+ {
+-	int i = 0;
++	unsigned long deadline = jiffies + secs_to_jiffies(timeout);
+ 
+ 	/*
+-	 * Quote requests usually take a few seconds to complete, so waking up
+-	 * once per second to recheck the status is fine for this use case.
++	 * A local Quote Generation Service usually completes the request
++	 * within a few milliseconds, so recheck the status every 10 ms.
++	 * msleep_interruptible() rounds up to whole jiffies.
+ 	 */
+-	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+-		if (msleep_interruptible(MSEC_PER_SEC))
++	while (READ_ONCE(buf->status) == GET_QUOTE_IN_FLIGHT) {
++		if (time_after(jiffies, deadline))
++			return -ETIMEDOUT;
++		if (msleep_interruptible(10))
  			return -EINTR;
  	}
  
--	return (i == timeout) ? -ETIMEDOUT : 0;
-+	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
+-	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
++	return 0;
  }
  
  static int tdx_report_new_locked(struct tsm_report *report)
