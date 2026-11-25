@@ -1,71 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795604566;
-	b=urwZ15gPVhjyHsQeRTGXhI5HPU7kQb2ZXRdcdDEEii1ECW+kzXqHcQTnx001CJSlpfVH
-	 VhEeDlA3HwqAVyec6J4+pJPTBNKHaCXAowjcqGJGT0EG/yR12o5pempNDaJQCEP0d1a5l
-	 A9VK/Wen9VO5eTjzkIGK0YdVmmkEXl0q47wJncEYz734UjztL06kvSYSatsQWAcuYQOC/
-	 5vBnUqLVJU018SPF/IR4GFy0fvQCP+zLR0NQBqLlIB51pbXDfyJCjLCCPSw3Oy5uonms9
-	 Pr7/CqUe3/+iUsBozSIMSWOR9rfiq1ZMKyUYca/MZ3uUg4ZfJF1b+jEs/GVWgLN4edg==
+	t=1795606374;
+	b=xR6fjA+nv+1Dn6C8guSaCye/G2T9qPY7LemCLwKY0aOPp8QqWs9MrV6wcgS8S/HhJYj1
+	 vT4w6bSuSBeuSNjDGRCXyrODuC30ZGIIQqvoyeXJUog2e43sHDh8btDRTfV+/rw3jWakC
+	 fn4X/1GxT+RxgxV1ndtxwG/r4GyV5otFUsduH5X/9i7oiinUhqWITNmibjKmzprnGScQR
+	 QHeKWUQyc6QI5H03XRo88AkzStXTg5jjrffFA+3uh6RGch1iclu3fFW1+vCM8hP+wybK5
+	 WuulXr3RrlobzuJZsjA0XG1kliimyWgWNO8DorxLlMpJ6y1OCV/pFC/75q/r7UEb2VQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795604566;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=T0/grb7hqX6huTfFN3IVlCEBMQYZ2/Yv8VYwqOJkMG4=;
-	b=zKpjan1fhRsxGV5wAX2SRMSViNaG8wMZYETZvfeWVxKvbRE2EJ8lf4MvXcPcl2ghPfZn
-	 RJeZdMLyg2IT5XAET9Mt15OqgwAF3jpo3ct5FoRPXTL18D00t0p/4h6oqF16yIgey6Iy7
-	 DAJjOE+27ME/YipAwT8Qs8lpp4Z3dFwpw4I6KD+WyeiUs5WzeLg0+XF4D1uzi8UqWmZuO
-	 cQ5/Svdp+ZfgzDHIgZmb8RHTu7TWxo6ZN9f4ATzO0fzws0TWnO2AbjqlF8xIhd8cZlL7t
-	 ubSPlfsbvzgqHZMlUIhoPsbukvWGaUrYUTTGf9Cd9sLbqD43LfNFblh+KFPzrrLxj6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795606374;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=ksJzZnRlzZFG+0L0HtrVowwMj9Uu8+WpRfdThQfAKGI=;
+	b=M7d4xwX1jah40R3DqdZVqfCzDTkHIBFYqI2rIbCSoq9Kv0pcfg6d4PkMrgxqQQE4RBYA
+	 2fKQteF+i9308zBJmUpyuDxkMiRqbQbteIwo6I0N2textxCIgZvLM1I5jmFtaj4QX4+We
+	 L/doqJc7yZQjgAlVgbJZ0Qguhv/WKOpCh38u5OnDpHt2AJOskNaYaC1ILgGItC3HdbUWa
+	 oSs0QhzvcnTzCmrrVDVdTGTlHbuqQ5Fa+4FyvC1k4caPZ8jyGy/Ra2fIE75higeiyChfk
+	 PxOhzho6ISZ/iDptO/OYzb6GWHOxReqUWIrhbyXBOkM8FoX53x5MgoIWO4joKB2oYkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UTBYCJ1s;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D05606A335;
-	Wed, 25 Nov 2026 11:02:46 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=szuKiBZe;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FFB606A338;
+	Wed, 25 Nov 2026 11:32:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38FFB606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UTBYCJ1s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778F41F000CF;
-	Wed, 25 Nov 2026 11:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795604566;
-	bh=T0/grb7hqX6huTfFN3IVlCEBMQYZ2/Yv8VYwqOJkMG4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=UTBYCJ1sshanx/nXPRWinb09Cvfi/3WgfFqN65EjcHZTK2xdsfGY26aFLCk50xvX7
-	 eTPk2mRmQswSeB+s+b3oBHkzTVhHzemKDT6yzrrRNwzbupsEzVLfQOCwkH2/Sq9xPG
-	 Lw3DGy9Dhz51jWPZICbAghZSmlf9Y99VVwAOQH4H5a2uNwot+xo6WMmR+LdESnveJV
-	 Gh1SEtRKftzxvt8NOHWoTuYy7407vMYEJrl9gzDQGtyFk0Kxeua8VVRRZKCsSYD1+0
-	 1mwQbH2+U1GD0FONBIYzpuKwxXmsiDnEog9HwCIoHksB2GP+tC5mOnUQmdckwqwCrc
-	 E2y9BvmzR6Q8w==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 05/10] PCI/TSM: Add association locking helpers for
- evidence acceptance
-In-Reply-To: <yq5ald6h9r1g.fsf@kernel.org>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-6-aneesh.kumar@kernel.org>
- <20261123153507.GH179082@ziepe.ca> <yq5ald6h9r1g.fsf@kernel.org>
-Date: Wed, 25 Nov 2026 16:32:36 +0530
-Message-ID: <yq5aa4mx9nsj.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=szuKiBZe
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A33E814BF;
+	Wed, 25 Nov 2026 03:32:49 -0800 (PST)
+Received: from [10.57.32.107] (unknown [10.57.32.107])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C86FA3F86F;
+	Wed, 25 Nov 2026 03:32:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795606372; bh=qbHqyTNnWLNOTc00I4CKxD9wPZ5SwAvyohqcO63rleg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=szuKiBZefxrXLITi7F/BtWnWCMmSSJ8eLaNdaeL9KzYCLZa6WKUoAgn86sC0E/54J
+	 CNj2pUjlBDOuClnSbnoIso25v9NAL0kFkb32fa8/Z6MK1KiVqw1oG6eXP3NTCVgH1j
+	 msYmDvDId5dj2TAsEjj4yh/XakAspLYTUQTgX1rk=
+Message-ID: <7bd5427d-9078-4b79-bce6-3bbf801ec766@arm.com>
+Date: Wed, 25 Nov 2026 11:32:46 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -75,78 +53,166 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/11] KVM: arm64: Dispatch stage-2 destruction by VM
+ flavor
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261123104233.95710-1-steven.price@arm.com>
+ <20261123104233.95710-5-steven.price@arm.com>
+ <0d031484-d394-47e3-be49-7c85004dbb83@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <0d031484-d394-47e3-be49-7c85004dbb83@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+On 23/11/2026 11:23, Suzuki K Poulose wrote:
+> On 23/11/2026 10:42, Steven Price wrote:
+>> Select the stage-2 destruction functions through the VM's stage-2
+>> operations. This keeps the native and pKVM paths explicit and lets a
+>> Realm provide its own destruction callback when Realm stage-2
+>> operations are registered.
+>>
+>> The Realm callback will only free the root RTT pages, because RMI
+>> teardown destroys the non-root RTTs separately.
+>>
+> 
+> minor nit: The second paragraph may be omitted as we introduce the
+> Realm stuff in a later patch.
 
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
->
->> On Mon, Nov 23, 2026 at 02:03:32PM +0530, Aneesh Kumar K.V (Arm) wrote:
->>> Later attestation patches let userspace finish device setup through
->>> evidence-accept after host sysfs connect or guest sysfs lock returns.
->>> Those commands use a saved struct pci_tsm and must prevent disconnect or
->>> guest unlock from changing pci_dev::tsm or freeing the saved structure
->>> while setup is in progress.
->>> 
->>> Add pci_tsm_trylock_association() to acquire pci_tsm_rwsem for write and
->>> check that pci_dev::tsm still points to the saved structure. For a TSM
->>> implementing devsec_ops, first take device::mutex to prevent driver
->>> attachment during MMIO validation and device acceptance. This matches
->>> the device-mutex-before-rwsem order used by PCI DMA preparation.
->>
->> This doesn't seem the API I'd expect here.
->>
->> When we trigger SPDM session start AKA lock through the CTLV it needs
->> to capture some kind of 'session cookie' for this locked that ties
->> back to whatever the TSM is using to prevent a hostile host from
->> locking/unlocking while we are working.
->>
->>
->> That cookie should be held in the attestation driver and when we get
->> to acceptance it should be presented to confirm that nothing has been
->> tampered with.
->>
->
-> We already do something like this on lock, we track the cookie as part
-> of CCA and use that during accept. Sure if every architecture supports
-> this at firmware level we can abstract that to attestation layer. Yes
-> and this protect from hostile host.
->
->>
->> It is a further reason why we can't have lock under sysfs control.
->>
->> It should be attestation that provides a general purpose lock that
->> serializes all attestation operations including lock/unlock so we
->> don't need a TSM lock like this.
->>
->> The driver should rely on that lock and use its internal mechanism to
->> process the cookie.
->>
->
-> But this patch is about keeping pdev->tsm stable in the guest. We need a
-> mechanism to associate a TSM with a pci_dev. Currently, the host uses
-> sysfs 'connect', while the guest uses sysfs 'lock'. It is not clear that
-> we were proposing to remove that mechanism.
->
-> We also have a single sysfs teardown operation: 'disconnect' on the host
-> and 'unlock' on the guest. This tears down IDE, unlocks the guest
-> device, and disassociates the TSM from pdev->tsm.
->
-> How do we ensure that pdev->tsm remains stable across the different
-> operations?
->
-> As described in the commit message, this patch takes the lock to prevent
-> a sysfs unlock from running concurrently with evidence-accept.
->
-> Are you suggesting that the TSM association remain under sysfs control,
-> while IDE teardown and TDISP unlock become CTLV operations, and that
-> sysfs disconnect or unlock be prevented until the above CTLV operations
-> have completed?
->
+Ack
 
-Even then, wouldn't we still need pci_tsm_trylock_association() at
-spdm-start? Once spdm-start completes, we can ensure that the
-association remains stable until spdm-end, but that still does not
-eliminate the need for this API, does it?
+> 
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+> 
+> 
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
--aneesh
+Thanks!
+Steve
+
+> 
+>>
+>> ---
+>> Changes since v3:
+>> - Move before basic Realm infrastructure and declare the page-table
+>>    type for the new callback.
+>>
+>> Changes since v2:
+>> - New patch in v3; split stage-2 destruction dispatch out of the
+>>    Realm stage-2 MMU operations patch.
+>> ---
+>>   arch/arm64/include/asm/kvm_host.h |  2 ++
+>>   arch/arm64/kvm/mmu.c              | 30 +++++++++++++++++++++++-------
+>>   2 files changed, 25 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
+>> asm/kvm_host.h
+>> index 9d6258b213d1..3ddeddfacd06 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -234,6 +234,7 @@ struct kvm_vcpu_ops {
+>>     struct kvm_gfn_range;
+>>   enum kvm_gfn_range_filter;
+>> +struct kvm_pgtable;
+>>   struct kvm_s2_fault_desc;
+>>     struct kvm_vm_s2_ops {
+>> @@ -242,6 +243,7 @@ struct kvm_vm_s2_ops {
+>>       int (*vm_flush_remote_tlbs)(struct kvm *kvm);
+>>       int (*vm_flush_remote_tlbs_range)(struct kvm *kvm, gfn_t gfn,
+>>                         u64 nr_pages);
+>> +    void (*vm_stage2_destroy)(struct kvm_pgtable *pgt);
+>>       void (*vm_stage2_unmap_range)(struct kvm_s2_mmu *mmu,
+>>                         phys_addr_t start, u64 size,
+>>                         bool may_block,
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 8a9a80c7cfab..fab915ddeaab 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1018,26 +1018,39 @@ static int kvm_init_ipa_range(struct
+>> kvm_s2_mmu *mmu, unsigned long type)
+>>    * cond_resched() periodically to prevent hogging the CPU for a long
+>> time
+>>    * and schedule something else, if required.
+>>    */
+>> -static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t
+>> addr,
+>> -                   phys_addr_t end)
+>> +static void stage2_destroy_range(struct kvm_pgtable *pgt,
+>> +                 void (*destroy_range)(struct kvm_pgtable *pgt,
+>> +                               u64 addr, u64 size))
+>>   {
+>> +    u64 addr = 0;
+>> +    u64 end = BIT(VTCR_EL2_IPA(pgt->mmu->vtcr));
+>>       u64 next;
+>>         do {
+>>           next = stage2_range_addr_end(addr, end);
+>> -        KVM_PGT_FN(kvm_pgtable_stage2_destroy_range)(pgt, addr,
+>> -                                 next - addr);
+>> +        destroy_range(pgt, addr, next - addr);
+>>           if (next != end)
+>>               cond_resched();
+>>       } while (addr = next, addr != end);
+>>   }
+>>   +static void kvm_vm_stage2_destroy(struct kvm_pgtable *pgt)
+>> +{
+>> +    stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
+>> +    kvm_pgtable_stage2_destroy_pgd(pgt);
+>> +}
+>> +
+>> +static void pkvm_stage2_destroy(struct kvm_pgtable *pgt)
+>> +{
+>> +    stage2_destroy_range(pgt, pkvm_pgtable_stage2_destroy_range);
+>> +    pkvm_pgtable_stage2_destroy_pgd(pgt);
+>> +}
+>> +
+>>   static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>>   {
+>> -    unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
+>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+>>   -    stage2_destroy_range(pgt, 0, BIT(ia_bits));
+>> -    KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
+>> +    kvm->arch.vm_s2_ops->vm_stage2_destroy(pgt);
+>>   }
+>>     /**
+>> @@ -3146,6 +3159,7 @@ long kvm_arch_vcpu_pre_fault_memory(struct
+>> kvm_vcpu *vcpu,
+>>   }
+>>     static const struct kvm_vm_s2_ops protected_pkvm_vm_s2_ops = {
+>> +    .vm_stage2_destroy        = pkvm_stage2_destroy,
+>>       .vm_flush_remote_tlbs        = pkvm_flush_remote_tlbs,
+>>       .vm_flush_remote_tlbs_range    = pkvm_flush_remote_tlbs_range,
+>>       .vm_age_gfn            = no_age_gfn,
+>> @@ -3155,6 +3169,7 @@ static const struct kvm_vm_s2_ops
+>> protected_pkvm_vm_s2_ops = {
+>>   };
+>>     static const struct kvm_vm_s2_ops pkvm_vm_s2_ops = {
+>> +    .vm_stage2_destroy        = pkvm_stage2_destroy,
+>>       .vm_flush_remote_tlbs        = pkvm_flush_remote_tlbs,
+>>       .vm_flush_remote_tlbs_range    = pkvm_flush_remote_tlbs_range,
+>>       .vm_age_gfn            = pkvm_age_gfn,
+>> @@ -3164,6 +3179,7 @@ static const struct kvm_vm_s2_ops pkvm_vm_s2_ops
+>> = {
+>>   };
+>>     static const struct kvm_vm_s2_ops kvm_default_vm_s2_ops = {
+>> +    .vm_stage2_destroy        = kvm_vm_stage2_destroy,
+>>       .vm_flush_remote_tlbs        = kvm_vm_flush_remote_tlbs,
+>>       .vm_flush_remote_tlbs_range    = kvm_vm_flush_remote_tlbs_range,
+>>       .vm_age_gfn            = kvm_vm_age_gfn,
+> 
+
