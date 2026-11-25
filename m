@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795618717;
-	b=h+nUdR1KbpBrUqFdtsSIdyH/OS2CWuSyNSyCHS628weOLtLXEzBg3piMHrDNSJkaf7Md
-	 gVykTj5uM582M5L+q8/PhomcA9ssTvZR6Ym+tZQEfrdXq739NgMSmUGTA8SPny8Zo+X3K
-	 qvn29jcYrdRJzmfU2Aaf+nnFL6kmdoVr6/4zNbGQrUGF8+gP65nDCNmAgkw2eG2rE/OXr
-	 KRh5Y5RFv2UWfJ4/IGxnpvpLUrA5TL7GUmP4KpxVhQLTtNtJ7Z/Ut58HRObQOnGdTWfbW
-	 srNj2bRJiMYm73qe549jk54HEXJ9tncPja3/Vccu4U+5q9pomrgR2OAhgw3qN2Tg5ZQ==
+	t=1795621016;
+	b=TT4xGOMX9xanXs+PCKBKQbri0LGEs0uR+P5WcJ7hpHhmKH0YkbVbQKjtC39p4y3hGAog
+	 Cn3RONnIrUC2rG1VAduPJKC6cJkCO9s+e7UoMuanD68L/qF41b0d8hs3BQz+XHdyxXSHH
+	 XcH0nzmE6S3s3VzCVZbkYAtrYWkqVj14U3sAIhUhGebp3oDWIMIXGxkIOu5ekobjIhkBg
+	 g4afRe8Eoa9xf3P1JYDZ4lFjEvsjzgPBhk3uh5qlClywVNVtlptEQ7kUDEvqnJ6WZ9Wq+
+	 xtyMlup/kaHItD8QuiJ14XGWjcZDCqyDb+wojSzUNRF9924wDTbLFCr1vKn1X4jV3sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795618717;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795621016;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=X3zNXgFcgKkRvrebQOQS0iqgUmCxBf+Rl6iIn0IF0a4=;
-	b=UNorMIIaElp417Yyn7OuNR/bfrFNopZ0QknMDJu8he+NgfYS7a7HVgtza0PonltL93wP
-	 NQzuHf4Pw/9+DggFtiKzSU+BfyaPlXwAk44oyN8oLZNAHUIygWeHXjQmuMlyeT5D7zjk/
-	 0yLVhFT+uMFeLpv4ImbIOy4oWMmh2jBpNCocEQjLhaMhpakZdGB28TP79OqTxxDaw32Om
-	 CJ4Dt80goYzHXNvkHKhtmc31DJMxT7zrd6bJ8q3M9aVmbGv9oun06YqKdQs+vWcwc4dDZ
-	 aeNQCLBdb1EKjiO1IVZvZlGBWO4N0hq6Rke8WWE+kJ6bgk4LeuL30GmBh8ejDmMdfwA==
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=ZRC+7o5OXZP0n5pPkUIRnd3exQ8mnqedYyVmCtqdoQE=;
+	b=KBJd6WGw4H7zMwrEYZZKX1Xk0w/OfGA/M0KRNAkdBc6AlC1IThAgwCPsr/mVpkk+DnXl
+	 a8nXdMefvdps082twTBCOOIg6Ueyxc4UWixov4swsbXMdKH5fiME8Bh1LdbqiIhl56j/U
+	 9U1bCXWJAapw3Xmfm3GO7tXjdueYhegchptOYU1HSO+D3iLdJV5SrI+Vcn9pkFaAHf2BM
+	 g/ptNbUSN3P9wkoVcoDo6DUXB9ZHGywDHGPSJX9qESKY3bIHRHW2HJ8JeSTZGPZsSZ0uo
+	 4y30QbVDfmwX4safVJ+2KlrX9adncadQngMkmwYvyvJlavYZQkAvfRTsZhfyeQTYSGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZoJs1Pdu;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZQ6OYOW0;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353E1606A326;
-	Wed, 25 Nov 2026 14:58:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 353E1606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CF2606A68C;
+	Wed, 25 Nov 2026 15:36:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3CF2606A68C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZoJs1Pdu
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZQ6OYOW0
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E0592F;
-	Wed, 25 Nov 2026 06:58:33 -0800 (PST)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2ECBB3F632;
-	Wed, 25 Nov 2026 06:58:33 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A1B12F;
+	Wed, 25 Nov 2026 07:36:51 -0800 (PST)
+Received: from [10.57.32.107] (unknown [10.57.32.107])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BA0EA3F86F;
+	Wed, 25 Nov 2026 07:36:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795618716; bh=D/n+P8rGctWCPmcRxey9aK7QCr6PlKd7Fo3q+ESxtX8=;
+	t=1795621014; bh=+yXrpIleScN46K5UPuhpjxPZKEeAT7+eHdWtjU6HPRU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZoJs1PduoU0ULUyP6YVRCRXGnlHrzR4tGX0ZOcuxgF6JCfnSb+OxspbajzsG32Dkt
-	 1Z730FRcVZHXhbCFzLBFONsxqLNfCmyWjC9hIcdqTHJqPbmaKso6xMf1aEIsjGw9Wq
-	 eAw3xOv2uegtqNUIFjfCGzV9mXZb+s9Cr4kaU0jc=
-Message-ID: <e4108d4f-e84c-444c-aa7a-18e823816eae@arm.com>
-Date: Wed, 25 Nov 2026 14:58:31 +0000
+	b=ZQ6OYOW0OfJGsBuch9plGgtP52KDMTQSVrajYsRH4VYXfv3BymyIHdk0A3H3a2dEy
+	 EgMmWoVams3aMLPT+zSjLnqp693+IUtQwh7l00Hu8SByqIX1viiavIel/MY930xr12
+	 n0fcBEtBGSHrsdwMdX/m3qltHWi1pnynbXpj5KdU=
+Message-ID: <caeb1cdc-e6db-452f-9123-465a42b62c2e@arm.com>
+Date: Wed, 25 Nov 2026 15:36:39 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -54,11 +54,9 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/11] KVM: arm64: CCA: Prevent memslot modifications
- after Realm creation
-To: Ackerley Tng <ackerleytng@google.com>, Steven Price
- <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH v4 06/11] KVM: arm64: CCA: Destroy RTTs
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
  Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
@@ -74,208 +72,367 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>,
  Kohei Enju <enju.kohei@fujitsu.com>
 References: <20261123104233.95710-1-steven.price@arm.com>
- <20261123104233.95710-10-steven.price@arm.com>
- <CAEvNRgFQ5BXqU3KfPFT8bfZTW=RyvBw25z3GZtr3JA=Wv3Yqfw@mail.gmail.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAEvNRgFQ5BXqU3KfPFT8bfZTW=RyvBw25z3GZtr3JA=Wv3Yqfw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20261123104233.95710-7-steven.price@arm.com>
+ <b224f2af-5881-4ea9-9e6f-38b8fef8ad9e@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <b224f2af-5881-4ea9-9e6f-38b8fef8ad9e@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Ackerley
-
-On 25/11/2026 00:09, Ackerley Tng wrote:
-> Steven Price <steven.price@arm.com> writes:
-> 
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+On 23/11/2026 11:57, Suzuki K Poulose wrote:
+> On 23/11/2026 10:42, Steven Price wrote:
+>> The RMM owns the stage 2 page tables for a realm, and KVM must request
+>> that the RMM creates/destroys entries as necessary. The physical pages
+>> to store the page tables are delegated to the realm as required, and can
+>> be undelegated when no longer used.
 >>
->> Once the Realm is created, prevent changes to guest_memfd backed
->> memslots, which can provide private memory. Validate these changes
->> before KVM invalidates the old memslot, so a rejected deletion leaves
->> its stage-2 mappings intact. Realm stage-2 faults will also validate
->> the private memory backing in a later commit.
->>
->> Require Realm memslots to lie in the lower half of the IPA space, as the
->> upper, shared half aliases the lower, protected half.
->>
->> Define kvm_arch_has_private_mem() so generic KVM recognizes Realm VMs
->> as supporting private memory. Defining the macro also makes
->> gmem_in_place_conversion true for every arm64 VM, so guest_memfd
->> memslots are marked gmem-only even for non-Realm VMs. A well-formed
->> KVM_SET_MEMORY_ATTRIBUTES2 request on a non-Realm guest_memfd now
->> reaches the VM check and returns -EINVAL instead of -ENOTTY.
->>
->> Additionally, similar to pKVM, do not support dirty logging or
->> read-only memslots.
+>> Creating new RTTs is the easy part, destroying them is a little more
+>> tricky. The result of realm_rtt_destroy() can be used to effectively
+>> walk the tree and destroy the entries (undelegating pages that were
+>> given to the realm).
 >>
 > 
-> Imo this could be split into a few patches
 > 
-> 1. Add the constraints wrt realm memslots and being in the lower half of
->     the IPA space
-> 2. Defining arm's support for private mem
-> 3. Imposing rules on memslot changes
-> 4. Maybe some others, maybe I'm misunderstanding the patch
-
-Agree
-
-
+>> Tear down a created Realm whether it is still new or has been activated.
+>> Unmap the Realm IPA space once during stage-2 teardown. Defer
+>> destruction of non-root RTTs until final Realm destruction, after
+>> REALM_TERMINATE and before destroying the RD; root RTTs remain until the
+>> RD has gone away.
 > 
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> While I understand what this is trying to convey, it may be unclear
+> to someone who is not familiar with the "Realm Liveness".
+> How about something like :
+> 
+> Realm can be destroyed ONLY if all stage2 Root RTTs are not live
+> (along with no RECs or other resources assigned to it).
+> i.e., there are no live mappings or tables mapped from the Root
+> tables. So, we unmap the entire stage2 and move the Realm to
+> ZOMBIE state then destroy all the non-root level RTTs. The Root
+> level RTTs can only be reclaimed after the RD is destroyed.
+> 
+> The comment in the code is actually pretty clear.
+
+Thanks, I'll reword. And also update it to include your later reply that
+unprotected doesn't mean live.
+
+>>
+>> Use the same minimum of two stage-2 levels as VTCR when deriving
+>> the Realm's starting RTT level. Without this, narrow IPAs on
+>> 64K-page hosts can give the RMM a different starting level from
+>> KVM's own page tables.
+> 
+> I believe this paragraph can go as we now have start_level cached.
+
+Yep, Sashiko noticed that too ;)
+
+>>
 >> Signed-off-by: Steven Price <steven.price@arm.com>
 >>
 >> ---
 >> Changes since v3:
->> - Explain the arm64-wide in-place conversion effect and keep the
->>    general IPA limit comment.
+>> - Match VTCR's minimum of two stage-2 levels for Realm RTTs.
+>> - Use explicit config_lock cleanup in Realm destruction.
+>>
+>> Changes since v2:
+>> - Use the actual stage-2 start level and correct the RTT skip
+>>    granularity. Free SRO state on final teardown errors.
 >>
 >> Changes since v1:
->> - Preserve private mappings if KVM invalidates a Realm guest_memfd
->>    slot before the prepare hook rejects its deletion.
+>> - Tear down created Realms in both NEW and ACTIVE states. Fix the
+>>    RTT start level, page accounting on failed undelegation, and
+>>    handling of RTT granules returned by RMI.
 >> ---
->>   arch/arm64/include/asm/kvm_host.h |  2 ++
->>   arch/arm64/kvm/mmu.c              | 37 ++++++++++++++++++++++++-------
->>   2 files changed, 31 insertions(+), 8 deletions(-)
+>>   arch/arm64/include/asm/kvm_rmi.h |   3 +
+>>   arch/arm64/kvm/mmu.c             |  17 ++-
+>>   arch/arm64/kvm/rmi.c             | 178 +++++++++++++++++++++++++++++++
+>>   3 files changed, 197 insertions(+), 1 deletion(-)
 >>
->> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
->> index 3ddeddfacd06..55673d08e3eb 100644
->> --- a/arch/arm64/include/asm/kvm_host.h
->> +++ b/arch/arm64/include/asm/kvm_host.h
->> @@ -1607,6 +1607,8 @@ struct kvm *kvm_arch_alloc_vm(void);
->>
->>   #define kvm_vm_is_realm(kvm)		((kvm)->arch.vm_flavor == VM_REALM)
->>
->> +#define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
->> +
->>   #define kvm_has_mte(kvm)					\
->>   	(system_supports_mte() &&				\
->>   	 test_bit(KVM_ARCH_FLAG_MTE_ENABLED, &(kvm)->arch.flags))
+>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
+>> asm/kvm_rmi.h
+>> index 4ac1af622872..01ecaabd839b 100644
+>> --- a/arch/arm64/include/asm/kvm_rmi.h
+>> +++ b/arch/arm64/include/asm/kvm_rmi.h
+>> @@ -58,6 +58,7 @@ enum realm_state {
+>>    * @state: The lifetime state machine for the realm
+>>    * @ia_bits: Number of valid Input Address bits in the IPA
+>>    * @start_level: Starting level of the Realm Translation Table
+>> + * @stage2_unmapped: The Realm stage-2 mappings have been removed
+>>    */
+>>   struct realm {
+>>       phys_addr_t rd_phys;
+>> @@ -72,11 +73,13 @@ struct realm {
+>>       enum realm_state state;
+>>       unsigned int ia_bits;
+>>       int start_level;
+>> +    bool stage2_unmapped;
+>>   };
+>>     u32 kvm_rmm_ipa_limit(void);
+>>     int kvm_init_realm(struct kvm *kvm);
+>>   void kvm_destroy_realm(struct kvm *kvm);
+>> +void kvm_realm_unmap_stage2_all(struct kvm *kvm);
+>>     #endif /* __ASM_KVM_RMI_H */
 >> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index 800333a345cd..9af5fe6d87f0 100644
+>> index 84b02699f103..4a975715375c 100644
 >> --- a/arch/arm64/kvm/mmu.c
 >> +++ b/arch/arm64/kvm/mmu.c
->> @@ -2861,17 +2861,32 @@ int kvm_arch_validate_memory_region(struct kvm *kvm,
->>   {
->>   	lockdep_assert_held(&kvm->slots_lock);
->>
->> -	if (kvm_vm_is_protected(kvm)) {
->> +	if (kvm_vm_is_protected(kvm) && new &&
->> +	    (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
->> +		return -EPERM;
+>> @@ -1149,9 +1149,24 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
+>> kvm_s2_mmu *mmu, unsigned long t
+>>       return err;
+>>   }
+>>   +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
+>> +{
+>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>> +
+>> +    guard(mutex)(&kvm->arch.config_lock);
+>> +    if (kvm_realm_state(kvm) == REALM_STATE_NEW ||
+>> +        kvm_realm_state(kvm) == REALM_STATE_ACTIVE) {
+>> +        kvm_set_realm_state(kvm, REALM_STATE_DYING);
+>> +        kvm_realm_unmap_stage2_all(kvm);
+>> +    }
+>> +}
+>> +
+>>   void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>>   {
+>> -    kvm_free_stage2_pgd(&kvm->arch.mmu);
+>> +    if (kvm_realm_is_created(kvm))
+>> +        kvm_realm_uninit_stage2(&kvm->arch.mmu);
+>> +    else
+>> +        kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>       kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>>   }
+>>   diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index fafca2439c46..435174ac3d87 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -16,22 +16,196 @@ u32 kvm_rmm_ipa_limit(void)
+>>       return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+>>   }
+>>   +static void free_rtt(phys_addr_t phys)
+>> +{
+>> +    kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>> +    if (rmi_free_delegated_page(phys))
+>> +        kvm_account_pgtable_pages(phys_to_virt(phys), 1);
+>> +}
+>> +
+>> +/*
+>> + * realm_rtt_destroy - Destroy an RTT at @level for @addr.
+>> + *
+>> + * Returns - Result of the RMI_RTT_DESTROY call, and:
+>> + * @rtt_granule:    RTT granule, if the RTT was destroyed.
+>> + * @next_addr:        IPA corresponding to the next possible valid
+>> entry we
+>> + *            can target
+>> + */
+>> +static long realm_rtt_destroy(struct realm *realm, unsigned long addr,
+>> +                  int level, phys_addr_t *rtt_granule,
+>> +                  unsigned long *next_addr)
+>> +{
+>> +    unsigned long out_rtt;
+>> +    long ret;
+>> +
+>> +    ret = rmi_rtt_destroy(realm->rd_phys, addr, level,
+>> +                  &out_rtt, next_addr);
+>> +
+>> +    if (ret == RMI_SUCCESS)
+>> +        *rtt_granule = out_rtt;
+>> +
+>> +    return ret;
+>> +}
+>> +
+>> +static int realm_destroy_rtt_level(struct realm *realm, int level,
+>> +                   unsigned long start, unsigned long end)
+>> +{
+>> +    ssize_t map_size;
+>> +    unsigned long addr, next_addr;
+>> +
+>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+>> +        return -EINVAL;
+>> +
+>> +    map_size = kvm_granule_size(level - 1);
+>> +    if (WARN_ON(!IS_ALIGNED(start, map_size)))
+>> +        return -EINVAL;
+>> +
+>> +    for (addr = start; addr < end; addr = next_addr) {
+>> +        phys_addr_t rtt_granule;
+>> +        long ret;
+>> +        unsigned long align_addr = ALIGN(addr, map_size);
+>> +
+>> +        next_addr = ALIGN(addr + 1, map_size);
+>> +
+>> +        if (next_addr > end || align_addr != addr) {
+>> +            /*
+>> +             * The target range is smaller than what this level
+>> +             * covers, recurse deeper.
+>> +             */
+>> +            ret = realm_destroy_rtt_level(realm,
+>> +                              level + 1,
+>> +                              addr,
+>> +                              min(next_addr, end));
+>> +            if (ret)
+>> +                return ret;
+>> +            continue;
+>> +        }
+>> +
+>> +        ret = realm_rtt_destroy(realm, addr, level,
+>> +                    &rtt_granule, &next_addr);
+>> +        if (ret < 0)
+>> +            return ret;
+>> +
+>> +        switch (RMI_RESULT_STATUS(ret)) {
+>> +        case RMI_SUCCESS:
+>> +            free_rtt(rtt_granule);
+>> +            break;
+>> +        case RMI_ERROR_RTT:
+>> +            if (next_addr > addr) {
+>> +                /* Missing RTT, skip */
+>> +                break;
+>> +            }
+>> +            /*
+>> +             * We destroy the RTT range for the full IPA
+>> +             * space, after everything is unmapped. Also we
+>> +             * descend down only if we cannot destroy a
+>> +             * top level RTT. Thus RMM must be able to walk
+>> +             * to the requested level. e.g., a block mapping
+>> +             * exists at L1 or L2.
+>> +             */
+>> +            if (WARN_ON(RMI_RESULT_DATA_LEVEL(ret) != level))
+>> +                return -EBUSY;
+>> +            if (WARN_ON(level == KVM_PGTABLE_LAST_LEVEL))
+>> +                return -EBUSY;
+>> +
+>> +            /*
+>> +             * The table has active entries in it, recurse deeper
+>> +             * and destroy the RTTs.
+>> +             */
+>> +            next_addr = ALIGN(addr + 1, map_size);
+>> +            ret = realm_destroy_rtt_level(realm,
+>> +                              level + 1,
+>> +                              addr,
+>> +                              next_addr);
+>> +            if (ret)
+>> +                return ret;
+>> +            /*
+>> +             * Now that the child RTTs are destroyed,
+>> +             * retry at this level.
+>> +             */
+>> +            next_addr = addr;
+>> +            break;
+>> +        default:
+>> +            WARN_ON(1);
+>> +            return -ENXIO;
+>> +        }
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int realm_destroy_rtt_range(struct realm *realm,
+>> +                   unsigned long start, unsigned long end)
+>> +{
+>> +    /*
+>> +     * Root level RTTs can only be destroyed after the RD is
+>> destroyed. So
+>> +     * destroy everything below the root level
+>> +     */
+>> +    return realm_destroy_rtt_level(realm, realm->start_level + 1,
+>> +                       start, end);
+>> +}
+>> +
 > 
-> gmem is already generically mutually exclusive with
-> KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY, so before this change,
-> pKVM is saying no to KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY for
-> all memslots, gmem or not, so this check makes sense.
+> minor nit: May be we could fold the above into realm_destroy_rtts()
+
+Fair point - I'll update.
+
+>> +static int realm_destroy_rtts(struct kvm *kvm)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +    unsigned int ia_bits = realm->ia_bits;
+>> +
+>> +    lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +    return realm_destroy_rtt_range(realm, 0, (1UL << ia_bits));
+>> +}
+>> +
+>> +void kvm_realm_unmap_stage2_all(struct kvm *kvm)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +
+>> +    lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +    if (realm->stage2_unmapped)
+>> +        return;
+>> +
+>> +    write_lock(&kvm->mmu_lock);
+>> +    kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
+>> +                   BIT(realm->ia_bits - 1), true);
+
+As you menion in your follow up - this can be restricted to just
+protected mappings.
+
+>> +    write_unlock(&kvm->mmu_lock);
+>> +
+>> +    realm->stage2_unmapped = true;
+>> +}
+>> +
+>>   void kvm_destroy_realm(struct kvm *kvm)
+>>   {
+>>       struct realm *realm = &kvm->arch.realm;
+>>       size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+>>   +    /*
+>> +     * Serialize final Realm destruction with Realm creation and
+>> stage-2 unmapping,
+>> +     * which also access Realm state under config_lock.
+>> +     */
+>> +    mutex_lock(&kvm->arch.config_lock);
+> 
+> minor nit: guard(mutex)() ?
+
+Ack.
+
+Thanks,
+Steve
+
 > 
 >> +
->> +	switch (kvm->arch.vm_flavor) {
->> +	case VM_PROTECTED_PKVM:
->>   		/* Cannot modify memslots once a pVM has run. */
->>   		if (pkvm_hyp_vm_is_created(kvm) &&
->> -		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
->> +		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
->>   			return -EPERM;
->> -		}
->> +		break;
+>>       if (!kvm_realm_is_created(kvm))
+>>           goto out_free_sro;
+>>         kvm_set_realm_state(kvm, REALM_STATE_DYING);
+>>   +    /*
+>> +     * REALM_DESTROY requires the realm to be non-live: all RECs must
+>> have
+>> +     * been destroyed and the root RTTs must be empty. Unmap the IPA
+>> space
+>> +     * and destroy any non-root RTTs before tearing down the RD. The
+>> root
+>> +     * RTT pages are still owned by the RMM at this point, so keep
+>> the KVM
+>> +     * pgtable alive until after REALM_DESTROY and undelegation.
+>> +     */
+>> +    kvm_realm_unmap_stage2_all(kvm);
+>> +
+>>       if (realm->rd_phys) {
+>>           phys_addr_t rd_phys = realm->rd_phys;
+>>             if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
+>>               goto out_free_sro;
+>>   +        if (WARN_ON(realm_destroy_rtts(kvm)))
+>> +            goto out_free_sro;
+>> +
+>>           if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
+>>               goto out_free_sro;
+>>           rmi_free_delegated_page(rd_phys);
+>> @@ -44,9 +218,13 @@ void kvm_destroy_realm(struct kvm *kvm)
+>>         kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+>>   +    /* Now that the realm is destroyed, free the entry-level RTTs. */
+>> +    kvm_free_stage2_pgd(&kvm->arch.mmu);
+>> +
+>>   out_free_sro:
+>>       kfree(realm->sro);
+>>       realm->sro = NULL;
+>> +    mutex_unlock(&kvm->arch.config_lock);
+>>   }
 > 
-> Not sure why pKVM doesn't allow deleting a memslot after the vm is
-> created, but this is no change from before this patch, the removal of {}
-> here is mixed in with the other changes in this patch.
-
-IIRC, pKVM relies on pinning the stage2 until the teardown ?
-ed
-from the Stage2 unless we d
-
 > 
->> +	case VM_REALM:
->> +		/*
->> +		 * Once the Realm is created, we cannot modify any slots that
->> +		 * could be providing private memory. i.e., guest_memfd backed
->> +		 * slots.
->> +		 * TODO: Handle trusted device private memory slots
->> +		 */
->> +		if (!kvm_realm_is_created(kvm))
->> +			break;
->>
->> -		if (new &&
->> -		    new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)) {
->> +		if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
->>   			return -EPERM;
->> -		}
->> +		break;
+> Suzuki
 > 
-> Imo this should be written the same way as the pKVM branch for clarity,
-> like
-> 
-> if (kvm_realm_is_created() &&
->      (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new)))
->          return -EPERM;
-> 
-> but that aside,
-> 
-> 1. Why block creating memslots after realm is created?
-> 
-> Does ARM CCA have no way to add pages after a VM starts? This isn't
-> blocked for TDX and SNP so I think this constraint seems unnecessary.
-
-This and (2) was triggered by the following thread, raised by Catalin.
-
-https://lore.kernel.org/all/aqrGPK0lFBFXL2qY@arm.com
-
-But having said that, since then, we now have :
-
-1) All private faults must be serviced by realm_gmem_abort(), which 
-mandates Guest memfd slot. (See Patch 11, realm_mem_abort())
-
-2) realm_gmem_abort() matches the "private" attribute for a "protected"
-fault, failing which causes a memory fault exit.
-
-So I think we can remove these memslot restrictions.
-
-> 
-> 2. Why block deleting memslots after realm is created?
-> 
-> This also seems like an artificial constraint, and it constrains the way
-> the userspace VMM operates when stopping a VM, like the memslots can't
-> be removed ever, the VM just has to be closed? (something like that)
-
-As mentioned above, I think we are good to remove the restrictions.
-
-Suzuki
-
-
-> 
->> +	default:
->> +		break;
->>   	}
->>
->>   	return 0;
->> @@ -2883,6 +2898,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->>   				   enum kvm_mr_change change)
->>   {
->>   	hva_t hva, reg_end;
->> +	gfn_t ipa_limit;
->>   	int ret = 0;
->>
->>   	if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
->> @@ -2891,9 +2907,14 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->>
->>   	/*
->>   	 * Prevent userspace from creating a memory region outside of the IPA
->> -	 * space addressable by the KVM guest IPA space.
->> +	 * space addressable by the KVM guest IPA space. Realm shared IPAs alias
->> +	 * the corresponding private IPAs, so Realm memslots must reside entirely
->> +	 * in the lower half of that space.
->>   	 */
->> -	if ((new->base_gfn + new->npages) > (kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT))
->> +	ipa_limit = kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT;
->> +	if (kvm_vm_is_realm(kvm))
->> +		ipa_limit >>= 1;
->> +	if (new->base_gfn + new->npages > ipa_limit)
->>   		return -EFAULT;
->>
->>   	/*
->> --
->> 2.43.0
 
