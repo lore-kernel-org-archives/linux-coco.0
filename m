@@ -1,97 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795616400;
-	b=WNvtLVV0afZDZrAlTv8IL+xv60TLSB9RKr7jOZuIMA+LBar1bnXzKZgg1l7lTOaqjEoV
-	 n52nBsF1O1jd8OmnrNesOjj8MCAD0jiJtZiWzyWwBAp0zA/F5WufpH8L6KExdzN3nPBDk
-	 0hUridTee9I8t8lG5LBAh2a3h2Z6ZIqTkIzOmQGJg756gbcVlImo/L5s35LE9MyFtsWhI
-	 aIunkXbfsu9/1IFn0QRGl/IVERI+CHF8VMZiYyGWdQ6CSAdI5rPb7zVufw5M/cCH33aUa
-	 BP5lSThFZchy2gYt/XzDRgqFQd3sCLyriLOrCgjfkekOnn2rCR/JBIwYVsXeWlB6q5g==
+	t=1795617024;
+	b=I3WIBsQjLiwSXqC1AFlljT1uJ1lR1sAWxSr1++75lEaWxp/mOrwkJuxYSpBMy5gFlBwi
+	 X5MNZfs78wgebglVubUFth6ix3tFU5SHm24WMT1/V/yZpgweX4O0Dvj3RT2qjR0UuGnVR
+	 7QZlirmkvv9y/8lcYEu0pgLjob/UBC+kfNCpDSTvYFBV0KutfzMocnOs3hlv7pYzcIh4J
+	 WEMgeJftrfenZ7TGTRYZmMQHOMRY7CdMSMvxzIOvbKCo0oKzdrTNDda2J+Gs+zgORs+/F
+	 D6w+lzpsbphsDY/zXwqOkKzRuszaCgn6a0cRpfnQ5+XQnE/o8JHpJTZvrNBGGIfTyNw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795616400;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795617024;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=/sE+cARi5XYpGFmCaYKKwUnoyCBvBLnkQPGNB1SpCIw=;
-	b=FUtZGXrc8xyANDLfFABTYOxdyChOeGC5sD/0eSTxUXj8F54yBKaljqNivG/GxAhlJDif
-	 Fk+8NBFDuR01/bjezyoINtGCUBlDSQev0Ot0DZiNRXCozBQ7t1GjGrgE6MHC9WETzNI8D
-	 5yhUisqZuG4fi9dWTbYrsTOyb/llu3clL2BQ/ODxkkFcyuMkXn0Ghf7AlIpMpYe8rkx5o
-	 yqwX9Zs2jtapuAtREIH6CBq0YqbUg6lFFdTADMNQ/eG5rnvw85A0NlLMBF99nL7UPE4Ri
-	 +2ow8bfLnBxR3TXNZl6a2Q6wCR1+sD4n0HvuyNqPBE5zTJtxoSWwzduqIaskX09Og4w==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=QBcv8zNRd7z7TClVEOp0n/ANSt8sNFaJ/rvaTVt2TZM=;
+	b=D0x9orsBjlCvdA2LpAeA7diYHl01Tb8MO7KNN8orRacc1caQX4pf3xYXE3hxauk6wX5U
+	 TDPFqcQOYPoF906bz1nYnd7YlTokIfXboO8ro/KahK4EUV16q27zWhYixXko4mR7Txnqg
+	 3CbxSh5zC3B4KAHwBhcwuqUU8X74rXf2/bJ3WEM4HEws/FytMb3eiZua/NSpFENRIGwEx
+	 g9VQVY2mDyOzNSvVwiUyn8VXR01DF0+Ep9dlC9UguSztQcYP6P8jCM8reY9Ll24b8l4Il
+	 lDSVWHWdKVFnH8u7fTAriKPxPFPCPBx15h7cJV5Fzbq1+YXb6tKbAIS5otdkVSC+7XA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=ziepe.ca;
 	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=FbLVGroZ;
-	arc=none smtp.remote-ip=209.85.222.50
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=QcD1mi7h;
+	arc=none smtp.remote-ip=209.85.222.178
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A879B606A321
-	for <linux-coco@lists.linux.dev>; Wed, 25 Nov 2026 14:19:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A879B606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81265606A326
+	for <linux-coco@lists.linux.dev>; Wed, 25 Nov 2026 14:30:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81265606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=FbLVGroZ
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-99e1408dc59so2525618241.0
-        for <linux-coco@lists.linux.dev>; Wed, 25 Nov 2026 06:19:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=QcD1mi7h
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-943e8d35f74so579640285a.0
+        for <linux-coco@lists.linux.dev>; Wed, 25 Nov 2026 06:30:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795616399; x=1796221199; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1795617023; x=1796221823; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/sE+cARi5XYpGFmCaYKKwUnoyCBvBLnkQPGNB1SpCIw=;
-        b=FbLVGroZe/25+QYBXbt348nP/KMTo/0wN/vlMMzGlQe6KL0KHn2XV1S3kTi9qR843Y
-         tKhDG6uWIfQDmLePpWq7uop6ZP3gsN//8fMRAjchZ/q9bA1eQhyto0IeHY7QA+KCyR8X
-         4SnbGvTh2DPPuAbEOpORquswXXRhJsNU9BqzKcdKQXsxRGFP77e741urVMDlaYHtDOkq
-         Q9BC7kxys2KmOnahfGU/KWNx87k8EplF3RZfMXiFs5d5PpD9iod/aJQsb/9lAfbKlDhJ
-         iEiJr8wM3qzKK+X8fJEFwHT1UNZCbtWy8jvPhL8PrR+thOvEst1U4XIHx5jL+UNXnUVH
-         NasA==
+        bh=QBcv8zNRd7z7TClVEOp0n/ANSt8sNFaJ/rvaTVt2TZM=;
+        b=QcD1mi7hS1nJEh5RnDz+i3qMNkj9OaNI14nXyERrcG+7TbGJURtXgqggOYncDcxVs2
+         6PSwdHLzy631DnOAcxIA0yzNr7HLR5PMTRUlww1Po8vAyx8lCCvOy6sWoM8JgfgRY1pr
+         rZ6EvygJp8yzG/enUW/oqzQCckxyy+0keTc4BrbXsManhsDLMv6/q1+VpGsfuQT6avFL
+         TnvYu2iZyP/nffcOk/fIGx1YRn1P+322LF7rpYEXuovbi/uasl2nLGSY6oMu3lv2Oepo
+         Kuzq2tYnd6XAXDk85QDq/OojSgC+FtuiDaBfaaygtUzWsadxD35/AvWiVSr+2EVOQkBD
+         X0tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795616399; x=1796221199;
+        d=1e100.net; s=20260707; t=1795617023; x=1796221823;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/sE+cARi5XYpGFmCaYKKwUnoyCBvBLnkQPGNB1SpCIw=;
-        b=R55a8Pm7+gW3O0OVkTIWHDAoPz2tzEbe7/w6fFafIUf2wZZuoFrC2n495FQbUqq9LJ
-         6nPQIKVtlXfKgA94aSABDkJe9J4d8bFoDFYz4kph3JDg067+N/GJU1aCjs7ESJs2rUJ7
-         GNdg7/JzlGvj3Gtv1xgFUCjwdTCqaDC315DB9kdgIteeQYSkDJO68lzassylJ9kLRsHd
-         bhURrjkpP4JigY9EFMXzF5SVxuCnmCljFJh1Bm3cBZU4waXdHFVjRI3t6cKA4NW3PvCh
-         qxM9Dpxe1aXzF/QdU/Jfe5D+yfmt5zvq4N7vbcNxHe6JjvCd7qjzdKzFyQ48IkLCRBgM
-         U/Cg==
-X-Forwarded-Encrypted: i=1; AL+hErEB+eNgNeNArThVLgvZyUokK0EV/ss0wAzISFHMrRynUxUXngzvudoBVdBdjfl8lmGGAuAjuc1yHVT4@lists.linux.dev
-X-Gm-Message-State: APuU4Z97GJ2//OO/s7ooa/sDr6rJr9KaUww+Bauof7ovaIwp65OyHPn/
-	EdRkZj49Rj+tKdgyUi6OJLAs8GetxdJMFk5PzFVOfNG/tBPiq1iwtMYxoApkMnBvfauxV1rbL+u
-	Yc0Gs
-X-Gm-Gg: AZFdTZfHHoMLlobfGAbslQOJz/ZCoJuwkxzNCWL2AutS3Xbvg1d0ApS95huavDmAMc+
-	9SIKegcnnALApXK9nNTswKDjzBQNLqhCWo+ZdOqOkl7iRd2eNF58OZKxlpOwvVIzwMM/ZUdAxa3
-	FAwuuLhaXNhfFu/W609exl4gWMPquAoYmDXWyB51UeRzEAps78OhwOKIQgJ530KNIXyX2wsuHwP
-	2z3D2WtoKbD9yPVUfbJ1MqWXrgMRwLe+Q9JQ6IFUj/MvisVXDJPFAtcgZvefGTOlFx8g1omVDR1
-	VTfiT8p9oUmaPYjPXCJSvRkXjTVvXL6x0EZ+PH0tJcMQN/7Osq7o2WiQ0UAef/a48E79+tMeiVY
-	ygWszaLABjoFyAJnaD95ffFNHaqeYGWdAjinMZh9t5WtSDyJjLa2rSiQuV3uoEgcgAAowZRRjTB
-	i9MaGwicAUizuIqmFmYHpzegVoUg76yZ4pZvHlnqTN3rvyZyZr9N1+DMCKKGm+LuXnuxVoaGIWK
-	VsDuYEzUOrB8YURk7hrLZ89FimeYAcxFFzGIlg3ACOnt3kSuk39+XVCmfZlvAsn9D4dUxZK9n7i
-	hE5VRw==
-X-Received: by 2002:a05:622a:258b:b0:55d:3789:8c8e with SMTP id d75a77b69052e-55d769e11bamr337179531cf.15.1795616388597;
-        Wed, 25 Nov 2026 06:19:48 -0800 (PST)
+        bh=QBcv8zNRd7z7TClVEOp0n/ANSt8sNFaJ/rvaTVt2TZM=;
+        b=ZxSQS5GFcMfJtQ5Q5265+yUOcaS80EY3tvad5olapV31+G2Y7v6e4HWkXAZ6BUoh/P
+         ruO8hJegHxHJCefVCc0Uha31mUKV5E+ImfBTrCtSe+YB13TJdAVaARkQ9uYZvaBex9SS
+         c8Aj7zmeu6U9ti+Pjhka7u/Ifx2MBLfuzP8KV60f0O+QBDvfMcvQWa1vTNP22DCTUeOU
+         LIuw6CC87Jp7solsCNSa/HMoibp43OdbxRAY0ZwMLkhYgrjFxjZ8i74V9zVQL7dJFpKU
+         rSrfHGMr6LFFqpjEhoU0MVqGJoPxiz8QfXhZy6YJ3Zh6rdJ4LC9Psg9NIY4MW+YDgbhh
+         75ZA==
+X-Gm-Message-State: APuU4Z9X/nFpyQWNLKuE6LM6c35ezO0wL8fMbfqZeX3t8V3U4DZlZpuQ
+	h0SwjmnCDBKRAKzGVjYR2SuF57jl2ZrZxzAuLWZuc4/b2yEYdiwPbYGEzVq/e7Z0QKg=
+X-Gm-Gg: AZFdTZetkGclZQ5FPKvJ518Y9QMCTrfgIPeYXBoPzd4qwcYJeGxRgI/k7xw0gZ5AeyT
+	XPsPblVhmh5q4vdCX+pAe8jEZu0uk+GUoOUakA+kXPfocRYnobZiyWeEEshXvy8pTpPDVjKiD9P
+	EstEo+RTpujeE4KZiph7NYgu02H91TVxevQY0WHyilXt1gUpTVGLCVYvanIL9LAv85SvGgedwcO
+	ldgoPT88PpAj48ENRp/z/PLP/1qPj5eZ76JrTrcmgN9JwJ3pENIgzW34nJmZKT2HlT7g8lCb5tq
+	iOmw/kVB23bAy5rMtkcn4bdg5JoMMsy/pkcGw2ZqLVcmu7++QnlxROLt7chrIHdnI1M4wrIxjn1
+	juCQHm9C58rttMaLkxIGzcR5uVBwfyF4QwTgIfYnZHhmoheBwkGWzNOWMmUIaFRTU+tB5qbH4eS
+	eWt5Lrl4mBA1A4J4PKSQRvZi4vEoDHoAw/RHT46sehF0wB205I35f3NUisIpLoBA+RLHFH1Y63r
+	05BxXnyPI52fJQPyf8bO7DJ1W2i2983ha4tGAnbg8RwzI+zcypoxWU3h+DCWy2Jjgy0Qk05Gmp6
+	6/ga6Q==
+X-Received: by 2002:a05:620a:f04:b0:949:a71b:ec68 with SMTP id af79cd13be357-949ba823b7bmr3195384285a.3.1795617023007;
+        Wed, 25 Nov 2026 06:30:23 -0800 (PST)
 Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7889f8absm153708121cf.27.2026.11.25.06.19.48
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb397b4bsm1330247085a.21.2026.11.25.06.30.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 06:19:48 -0800 (PST)
+        Wed, 25 Nov 2026 06:30:22 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1xWDqd-00000001jay-2IOg;
-	Wed, 25 Nov 2026 10:19:47 -0400
-Date: Wed, 25 Nov 2026 10:19:47 -0400
+	id 1xWE0r-00000001kw0-3nZo;
+	Wed, 25 Nov 2026 10:30:21 -0400
+Date: Wed, 25 Nov 2026 10:30:21 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Dan Williams <djbw@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
 	Steven Price <steven.price@arm.com>,
@@ -101,13 +100,13 @@ Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
 	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 04/10] PCI/TSM: Defer TSM vDEVICE allocation until
- device setup completes
-Message-ID: <20261125141947.GD246011@ziepe.ca>
+Subject: Re: [PATCH v1 08/10] PCI/TSM: Add sysfs lock and unlock for
+ guest-assigned devices
+Message-ID: <20261125143021.GE246011@ziepe.ca>
 References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-5-aneesh.kumar@kernel.org>
- <5e04323f-dfdc-4956-acee-bcc09926726d@amd.com>
- <yq5aqzg99uio.fsf@kernel.org>
+ <20261123083337.2731019-9-aneesh.kumar@kernel.org>
+ <20261123152738.GF179082@ziepe.ca>
+ <yq5ao6bd9tb5.fsf@kernel.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -119,16 +118,132 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5aqzg99uio.fsf@kernel.org>
+In-Reply-To: <yq5ao6bd9tb5.fsf@kernel.org>
 
-On Wed, Nov 25, 2026 at 02:07:19PM +0530, Aneesh Kumar K.V wrote:
+On Wed, Nov 25, 2026 at 02:33:26PM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> 
+> > On Mon, Nov 23, 2026 at 02:03:35PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> A confidential guest needs to lock a PCI device before collecting and
+> >> verifying evidence about it. Userspace also needs a way to unlock the
+> >> device after use or when verification fails.
+> >> 
+> >> Add tsm/lock and tsm/unlock sysfs attributes for TSM drivers
+> >> implementing devsec_ops. Writing a TSM device name to tsm/lock calls its
+> >> lock callback. Unlock calls the matching driver's unlock callback
+> >
+> > I thought we agreed not to do this in sysfs as we worked through the
+> > SPDM stuff?
+> >
+> > LOCKED should be the 'start SPDM' action in the guest
+> > RUN should be the 'accept SPDM' action in the guest
+> >
+> > And though we didn't talk about it there is likely some 'destroy SPDM'
+> > action that is UNLOCK and UNRUN.
+> >
+> 
+> I may have misunderstood. I implemented that flow only on the host, but did
+> not add a "start SPDM" action for the guest.
 
-> That is what this patch does. If IDE setup is not complete but the
-> device already has tsm0 attached and connected, pci_tsm_context_get()
-> returns an error from cca_vdevice_init(), preventing the device from
-> being assigned to the VM.
+I was hoping for symmetric. In SPDM terms the 'lock' is what
+stabalizes the measurements so we can do the same sequence and then
+guarentee they haven't shifted by the time we get to accept using the
+same cookie scheme as host will use.
 
-If the device has not been fully accepted on the SPDM side then you
-should not be able to create an iommufd vdevice for it, nothing else.
+For this reason lock needs to output a cookie, and that doesn't fit
+into sysfs.
+
+Ideally the user space sees no flow difference between guest and host.
+
+> Currently we have it as
+> 
+>     # Host SPDM authentication and stream acceptance are complete.
+>     # VMM has created the guest's VDEV.
+> 
+>     guest lock                 -> associate guest attestation endpoint
+
+This action should be TSM connect, same as host.
+
+These should be the 'start SPMD':
+
+>                                -> RHI: request TDI CONFIG_LOCKED
+>                                -> host/RMM: VDEV_LOCK + VDEV_COMMUNICATE
+>                                -> RSI_VDEV_GET_INFO:
+>                                  trusted state, lock sequence and digests
+>
+>     spdm-get                   -> available objects, certificate slots,
+>                                  formats and current state
+> 
+>                                  current firmware:
+>                                    * expose only the existing selected identity
+>                                    * report independent signing-slot selection
+>                                      unavailable
+> 
+>                                  updated firmware:
+>                                    * expose all discovered candidate chains
+>                                    * expose slot/key metadata when supported
+>                                    * bind the catalog to this assigned VDEV
+> 
+>     spdm-get(certificate,
+>              slot=0)           -> retrieve captured slot 0 chain, if available
+>     spdm-get(certificate,
+>              slot=1)           -> retrieve captured slot 1 chain, if available
+>                                -> check the applicable trusted RMM bindings
+> 
+>     # Guest inspects the available chains and selects a signing identity.
+>     # For 1.3 multi-key, its key usage must permit measurement signing.
+> 
+>     evidence-get(
+>         slot=1,
+>         nonce=N,
+>         selected-key-identity) -> select the firmware's supported measurement flow
+..
+>     evidence-accept            -> validate this guest attempt's generation/receipt
+>                                -> validate/map approved interface resources
+>                                -> RHI: request TDI RUN
+> 
+>     trust_policy=full          -> authorize driver binding
+>                                -> configure PCI DMA and the default IOMMU domain
+>                                -> RSI_VDEV_DMA_ENABLE with accepted sequences
+>                                -> driver probe
+
+Then this is some error flow or whatever:
+
+>     driver unbind              -> driver removal
+>                                -> RSI_VDEV_DMA_DISABLE
+>                                -> release default-domain ownership
+
+>     guest unlock               -> revoke guest access and mappings
+>                                -> return TDI to CONFIG_UNLOCKED
+> 
+> 
+> Both host and guest flows are documented
+> 
+> https://git.gitlab.arm.com/linux-arm/linux-cca/-/blob/cca/topics/7.4/cca-da-integration-v2/Documentation/userspace-api/attestation-spdm.rst?ref_type=heads
+
+I don't think the scheme will be 'spdm-get' using a bunch of 'cached'
+object IDs. It should be much more specific.
+
+The transcript should be its own top level API, with its own sequence
+numbered list of discrete blobs.
+
+Different kinds of fresh evidence should be collected and returned in
+one call, not "cached" in the kernel.
+
+Certificates should be in their own API.
+
+> The reason I did not add spdm-start for the guest is that lock does not
+> take an input parameter. Only GET_MEASUREMENTS requires the key details to
+> use for signing.
+
+It has to generate the session cookie based on the current sequence
+numbers.
+
+> However, we can keep the guest flow consistent with the host flow: use
+> the tsm/lock sysfs attribute only to associate the TSM, drive the entire
+> TDISP flow via ctlv, and have spdm-start lock the device.
+
+Yes, but as above creating the attestation device should be identical
+to the host as well. No locked sysfs required.
 
 Jason
