@@ -1,112 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795655989;
-	b=QBUm1PHM2aOGxXS0cVVtohFpej7Jccq9UU3PGB4BQyfv0s4KcqY65+Y81SZS6ZoDE/ON
-	 RRlx0ayTQ5QqVip4ouWjRcqv6bYp6k5eqG4ZUftJe0g5hXzyb53SssAGtmLLt4cY1pAPI
-	 VoNlXz646gqX2p5Ooz5+mtqldEGgFTcaAC+Xs72y7/4/dgUC73ggpT9QiIlNjd95pEAGQ
-	 jrLZjddTkk2AC2SZi0DPec/hu8iDPSN6A6YLPV97n2qw/TR0Q6cHK2YPHKALE1aV8Yi4Z
-	 igotJjvzkAS8NLgog1w2uAZ6Ls1mQSe+8EPe5jqzgRkwwOzOANWAvKrLltRM6pktzPg==
+	t=1795657743;
+	b=IWFoX794Mibb2GPlNqoHqLWsKMj7DeuICmSP5B3tK0pcWQ81s31H2lw7VTkH0vQLlHpu
+	 n/ZRVJjXf7rbH1qPsCrcdlas9LPKM2QZfQpskGtNgOUGMzRE59/6kFwKvTvCcSG9HjLnF
+	 s4vAX9DEb0SYXfFzlRBLfMaeF4ZaFeiBTHI9HPJzsd7RqjyvJPjPSMZGSqMHwkBBNaoHb
+	 /NY9np63AN0wc8FcnLGtaMj3tnqJXjAuE+2OA1pkCc+k/E8RKORPSNlgBVRa9Q2MRo/bl
+	 gHw4EFBkh+zsb58IGhvX3n3aa7FW9g8GUerOhNlNpV3XAGlWp0lyn4KMKFeWurL5fdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795655989;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=ryUXjzMtazy3gSaZGHa2Eq3V/fW4l8VdcGVzhCJFDqE=;
-	b=TRULCLsNzpZ7P/ACPYnwHCu5/pziYwa4Zj3qbIxC+aPquPdyC0jhgAfl3vl0O9IDsm9q
-	 rvvkUYluP+QmyEdzR4w0Fc1qZwBhT24MS3QiR7sMTV6VAOvlPz0VEem3ewZUghtKuFZJo
-	 Cb5yT2bQpkX1cboH5fViG+4gQT6da4jDiwEJyAJMl8OP77HFRS7ASE3RyvsjO1rh7A+du
-	 TXhyaGBGKytlyflVNP4lIiO2LqRNKprn4BgTOC9MUjSKGmCwele6BDtaEd1jHWot77yHd
-	 Av0O7WiCjKmGfM9AYctAGDwM7ZjriWOYmg6QR4lKt5HI2lDDmHQylzpfbArGrXu2qZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795657743;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=XfkmyAbG74wypFhGwrzBiE7jWMzZjVwrMaaxCug4Zq4=;
+	b=EiU578gNOunjraYsnK9Z/ZUkXeYTO3JwU6ep0mE7Hyu142vXTSN1yNzhT0LigO3hmVB8
+	 IyR2nyFqrwod1YGCrxLQu4EqVD9sGvyS+MyRvW5gFauY1ZMoW6VNjUuDHRmS8rBOg1Fip
+	 CTfttFxWg9puSswfNyzkFHj1ZtXaqIzQSmn2c+n6e9cJ5bKtW7hCz6Okj39cx96gWZipT
+	 DJuschlqkM22oJXYWlOD+g0CUtCK7Q1CeG0J881B88T3NxEmymSLcH8GE6GgLRQouNj09
+	 vravQ8lxgs8tVQdL1LAiNQ8+8B0RCBizVzKYe6XhLb50ElbBQbuLfgJqQfP/yKXiBxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="h/YHGl88";
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gxCQLCvD;
+	arc=none smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A724606A31E;
-	Thu, 26 Nov 2026 01:19:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A724606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D1C606A326
+	for <linux-coco@lists.linux.dev>; Thu, 26 Nov 2026 01:49:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74D1C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h/YHGl88
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APJYmaG2231504;
-	Thu, 26 Nov 2026 01:19:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ryUXjz
-	Mtazy3gSaZGHa2Eq3V/fW4l8VdcGVzhCJFDqE=; b=h/YHGl88fdNjiCdKZon8er
-	lltC7iNg+AA9G/iZU4u3jCmuQkRhqvSr24HOAZymtOaIRy0zUSm95U5l7jLspmMT
-	kd4XkHSiXrnNfFjxemEpPJ3B0JxrIzrCf9LK/OI0ma8U0Kuph+gnnV/1ZepkZi1L
-	MTyo8juDIehL29Qojbf9dUE/ZxB8GDtNxS2iF8ah+PzbLStmGYhyBXFuiaqb6qRe
-	4JrcUqbwZTA7rbwUtYGDheVKCrZdu4PmHOeWoa2lu04Ilx1v7NCZYjSqGX6YwM4q
-	fVuGDY0bNMA39FpvYKl+W62eeJ0FsiQ+KE3Pg17Nr9xpLBF+1ooPf3xOTGUsemdA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g1ep0h-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 26 Nov 2026 01:19:13 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQ117kS2309448;
-	Thu, 26 Nov 2026 01:19:12 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4hgp3m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Nov 2026 01:19:12 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AQ1JARZ49545536
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Nov 2026 01:19:10 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B607020043;
-	Thu, 26 Nov 2026 01:19:10 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1FC7820040;
-	Thu, 26 Nov 2026 01:19:10 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.111.45.88])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 26 Nov 2026 01:19:10 +0000 (GMT)
-Date: Thu, 26 Nov 2026 02:19:08 +0100
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Shukai Ni <shukai.ni@kuleuven.be>,
-        "Edgecombe, Rick P"
- <rick.p.edgecombe@intel.com>,
-        "m.szyprowski@samsung.com"
- <m.szyprowski@samsung.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "will@kernel.org" <will@kernel.org>,
-        "jo.vanbulck@cs.kuleuven.be"
- <jo.vanbulck@cs.kuleuven.be>,
-        "Reshetova, Elena"
- <elena.reshetova@intel.com>,
-        "kas@kernel.org" <kas@kernel.org>,
-        "carlos.bilbao@kernel.org" <carlos.bilbao@kernel.org>,
-        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Halil Pasic
- <pasic@linux.ibm.com>
-Subject: Re: [PATCH] swiotlb: clear read bounce buffers on confidential
- guests
-Message-ID: <20261126021908.59b2105f.pasic@linux.ibm.com>
-In-Reply-To: <d5dfd9a2-4ac6-415c-b719-699b264fa39d@arm.com>
-References: <20261123205302.1034348-1-shukai.ni@kuleuven.be>
-	<3a70a26adccc47b1bae3a22e4907174271703a10.camel@intel.com>
-	<9bc0d7ed-0799-45dc-8d74-25ed66851a20@kuleuven.be>
-	<d5dfd9a2-4ac6-415c-b719-699b264fa39d@arm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gxCQLCvD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795657742; x=1827193742;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GmyJq18JfTnpsiuaIdG3/VmYnhggXO6MFEljsQgOgaw=;
+  b=gxCQLCvDNDU7AkdQbqon0ONr0ZJtiF+SXA6kCcUyo7aPb+aw1z43oh87
+   09zVP+bTjFJjwINOe0RS5yEDhkeegH+J4gEcDYzOKdGywKsxSD984wcqL
+   X7rHUQ+830+mIXZfCdtBCkX6ok1/27GKRjziyT4AxkLVWdWxxYRGsLJSL
+   ryvA0eF6rL4LniY72VgNOu7yRz/SVQiDA5ptSIjsXcosme8Y3wKn4HS+b
+   MnFKtW6Bz8ZrWnLOzDv7/8Vyk7q4t/4prNcGqeXXrOApZA2hGBAnn8zH3
+   +hsTIuBRh9tQcu6isb5P2pF+h4Frq0xcLjKGOMhweV6+wyrhB7RsnNMh7
+   w==;
+X-CSE-ConnectionGUID: T3yf9In3RrmcCmILH2R6Kw==
+X-CSE-MsgGUID: cQhgOdV+SCu4oxoV4OrqwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11977"; a="4443690"
+X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
+   d="scan'208";a="4443690"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 17:49:01 -0800
+X-CSE-ConnectionGUID: j1hFuDEhQ8Wnq9FwM6yZ4Q==
+X-CSE-MsgGUID: 8+k3hbzoTMiX/Z4PuYTkfA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
+   d="scan'208";a="12455992"
+Received: from unknown (HELO [10.238.0.68]) ([10.238.0.68])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 17:48:58 -0800
+Message-ID: <436c641a-9d35-4695-b41f-547c46479a5d@intel.com>
+Date: Thu, 26 Nov 2026 09:48:55 +0800
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -116,108 +72,43 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9Mkjofwp1NYMaNx3EXnPvCxxnD1XHfSD
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDAwMyBTYWx0ZWRfX39cwUofRUkXl
- xOeO5KVFjVaTJ8IL1+iann34pCzPRPiouNlVld8JakG3OB7F6krFYKioHKXKJmvnsZergf3o1US
- W2G3GXd5ePgroY0/jLWR7cHDHeoG7hE=
-X-Proofpoint-GUID: 9Mkjofwp1NYMaNx3EXnPvCxxnD1XHfSD
-X-Authority-Analysis: v=2.4 cv=c8M+0h9l c=1 sm=1 tr=0 ts=6b078911 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=7CQSdrXTAAAA:8
- a=sBmwBxJFO0rdLi8qyDgA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDAwMyBTYWx0ZWRfXwriPCmfZW0+B
- N02ShTb3puZ1T4i49KD+8L22l1GsKBDyVGH6GWQDb3MB2LdAW1RTGCVFogJk7W57QuPbweEUVin
- 1NwUMsmYmT+MqWjwyi363UzFMVt3JUDQ+Xcm7Y8JR3gYNhsyo/lF1LWQU7dDtvbNiUA8k+3QjIS
- oaQXodDp3Yzw97npDZxr2s3MfXqTB9+c07E0ZE5VQ7HDTwkN9aZFW1qEGg+kpFwHcj7e16DF99P
- pQk5uczqkuw06CDiycL+KmdRxFBDW8ZJpRJzjSmWa9RFRb5o0R1uXOInchs5babExEgplkL8rjm
- FpmHo+42+O4V5S5c8ayaIuxcvY4j85bRCuoWky/W/jrmGqjpcZwZ0VfdO99Exc7VqN48u4rvoRu
- YapdSKfXY1/7ErIw9zx9OAPLxR4CBIen0fhqunNBRoLWVPv+S1FMtIZleIyqUWbnfEGHAuCTJv7
- tWdDlAxlKjf+oDu7bLA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-25_05,2026-11-25_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 malwarescore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611260003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] virt: tdx-guest: Fix and speed up the wait for a
+ Quote
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "Aktas, Erdem" <erdemaktas@google.com>, "djbw@kernel.org" <djbw@kernel.org>,
+ "moe@flashbots.net" <moe@flashbots.net>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Miao, Jun" <jun.miao@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net>
+ <cd7bd4428398413e16ff214fc46f5d65076757d8.camel@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <cd7bd4428398413e16ff214fc46f5d65076757d8.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Nov 2026 16:13:52 +0000
-Robin Murphy <robin.murphy@arm.com> wrote:
-
-> > Thanks for looking at this, and we had very similar thoughts when 
-> > writing the patch. Our impression was that in many cases the driver
-> > doesn't own the buffer (page cache, dm-crypt, O_DIRECT), so fixing it
-> > there seemed hard, which is why we tried swiotlb instead. But we may be
-> > missing something.
-> >   
-> >> It seems like the fixes commit was arguing that copying the contents 
-> >> to the
-> >> swiotlb buffer was more transparent. So this patch kind of goes back 
-> >> against
-> >> that argument. That seems to be another point that the drivers should 
-> >> be fixed.
-> >> If this is essentially more of a potentially behavior altering kernel 
-> >> hardening,
-> >> then I wonder about putting it behind some kind of hardening config like
-> >> CONFIG_INIT_ON_ALLOC_DEFAULT_ON.  
-> > 
-> > As far as we can tell, keeping the old contents for DMA_FROM_DEVICE
-> > was never really promised. Before ddbd89deb7d3, swiotlb
-> > didn't do it. That commit was mainly about not returning stale bounce
-> > data to the caller, which zeroing should still prevent.  
+On 11/26/2026 5:42 AM, Edgecombe, Rick P wrote:
+> On Wed, 2026-11-25 at 14:11 +0000, Moe Mahhouk via B4 Relay wrote:
+>> Getting a TDX Quote takes at least one second, because
+>> wait_for_quote_completion() sleeps a full second before each status
+>> check, while a local Quote Generation Service answers in a few
+>> milliseconds. Patch 2 rechecks the status every 10 ms instead.
 > 
-> SWIOTLB is an implementation detail of the DMA API. If some future CoCo 
-> environment happens to be able to share a buffer in-place with less 
-> overhead than bouncing then it will be free to do so, and drivers which 
-> do not sanitise DMA_FROM_DEVICE or DMA_BIDIRECTIONAL buffers will 
-> continue to leak data...
-> 
-> Note in particular the case of DMA_BIDIRECTIONAL, which means the caller 
-> expects the buffer to either be written and read, or read and written, 
-> or read, or written, or any or all of the above. How is the DMA layer 
-> going to know whether the initial buffer contents are meaningful and 
-> must be preserved, or stale and potentially leaking something?
-> 
-> Also how is the DMA layer to know if a driver is intentionally making 
-> DMA_TO_DEVICE mappings of random (or targeted) kernel memory for the 
-> sole purpose of malicious sharing? If people want to use device drivers 
-> in CoCo environments then the onus being on auditing and hardening the 
-> individual drivers themselves doesn't seem too unreasonable.
+> I think something went wrong in the send. All I got was the coverletter and it
+> looks like lore did too.
 
-I'm 100% with Robin on this one! Reusing a buffer is not a problem
-in itself. Exposing private data is. And the only clean way I see is
-prevent that from happening is to not DMA map buffers containing private
-stuff. Not even as DMA_FROM_DEVICE. The blamed patch is about
-propagating the sanitation done on the original buffer to the swiotlb
-buffer to which the access is granted to the untrusted host.
+FYI. I did receive patch1 and patch2.
 
-I wonder what type of reuse are we talking about here? If the
-buffer contains data from an old co-co IO might be acceptable,
-as the assumption there is that co-co IO has to be cryptographically
-protected anyway (from the non-trusted host).
+And the this lore link shows all the mails, at least on my browser.
 
-Another thought: My understanding is that an actual IOMMU may or may not
-support "write only".  I think, the swiotlb is not the right place to
-address this. But if we allow for IOMMUs may not supporting "write only"
-DMA API in general may be. The thing is, if the conceptual IOMMU actually
-guarantees that write only is indeed write only and then there is no
-harm per se in not sanitizing as, we can be sure that there is not leak
-with respect to the conceptual device at least. If however the
-conceptual IOMMU is not capable of doing so, then one could argue
-that this constitutes a leak even without co-co. And for non-trusted
-devices and co-co (i.e. with swtiotlb) the conceptual IOMMU would
-never be able to guarantee "write only": because even if the IOMMU of the
-platform does, the host can still access the shared buffer, so
-we have a leak (an we would consider the host a par of the conceptual
-device as it is effectively capable of doing conceptual DMA). I admit
-something like this still feels a little hacky, but I hope worth
-discussing nevertheless.
-
-Regards,
-Halil
-
+https://lore.kernel.org/all/20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net/
