@@ -1,68 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795680912;
-	b=tsS3MOdph7CVlI16Vr/TWNdE2qTbJ+In6D/7eJdfUO5VZ3F9ukizaRmt69z8aRcsq37C
-	 yjobZpD9J1qyXmm9ly3G49mI1SERZLBY1hu830hT2QbgimeSv9pG5vyatk5fBa7wUgokv
-	 mJv6tbMcjlGZaVbkf+2QILCpnOw0rJH/aeTsg6tgSYVNJ3XFJv+sHR7V08Dgi3QOcf7Bd
-	 7dGCO+qSXnW09LxwGQaZkif0Rx1voqBKtTSlJWe34uLpMhXVaU/5OiXQsdmXH5jCL9aeE
-	 O1NM/l7BlWY7GN5ZorhMGsy9AMqd3copwE8e51BAlHnA9TyUzCvrSULDa5kli4bmykg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795680912;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=BswtccZ9oLTvd3i09TipMATpHp0Vu8UkQ5BGIGzbvC0=;
-	b=qc6YOrSGPEc4WN+PTe9rUVFabo3QUJDpO7reqi5/Hi5h9eND4Xex/dGRNaTsrnFXZaMj
-	 yAqtMdZK8lOLFnhTdDw/niMkFGcv+HXSLsuoygJ51KhdW46D+R74IQ2Wsm1jEAxvrrmts
-	 UKtJ5fUymMWW+zozqJnlVmE+xIJAjmtZcVgrdzdXgK+4+SRRxYHFB8ItQe0Z021acLfrW
-	 JG22D50JWraUSL3s578NKTeT4MOTxzjhMjNp5PZ734F610kScJYoaQYTK4WBy0pCR8xv0
-	 cp9WFfxwvmcRC/HOuPqrUvOgK5L5M5IqH2ztw+Uk0v+z7AsyMo77X+r4QHq8ip1PPHw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DQGAswUV;
-	arc=none smtp.remote-ip=192.198.163.19
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.8
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795685291;
+	b=Istq52iNvHOZxiUUw126e1qhM0rAybM7NJMlg+SKDtCHDGET6jFKXjBjPK3Mbbb6X5Sn
+	 d5T4Y0yGQ9Bs4RBXrjBdiAbRxCXMZ7DFWpHQjHDhbFvEztrnqMAO2NxmthHIhs98npXgJ
+	 mLSVVbLzZ6KeDfn0/GOBHn4GhGzSgr0ef5Qgjs3HTIiUhpZwx+fxo/6p9MZCAaNa+bV8V
+	 TAWIGnpJpgifskTDufFF7XY9jn77bCLC0/3+SekKHaG1Qp412ExHUA3wafSIqJB8oMukL
+	 j1hCYcHBhUEJQE+TTXVfm7INh4cnrLJAluokZVPalZc/8B9GCRVU3SF3TrcMpTJkOuQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795685291;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
+	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=v1cMb3TS+ag4WuSmw2ebvlf9Gn+4AXj9dSVhjTXBiOg=;
+	b=bkfOOI606hhkkkJApJ850ScKKHLvM0CWO11cxRVUGKNUXFVhxQIL67ht6rKU9TEKLXPR
+	 qx0VpAPYrkL9BRhxJU65zApCkyMrW8lMKWUpQBAPPms8XTJ/3ov/I4gUogKVliyQVPAgM
+	 AeAaMEMhh3pgLYbnNOca1Hb81mhew+vLPVfCnglviehRUejkrKNAO5TTh5L1jf15+XX74
+	 RIOkFPr2orIfQS88iFjCDh9M++EfqWhd2lo4JdA+QYwG/88pzHAfFE9cpvEdsgydhP4Ct
+	 QQj9+GGVULlJGM2Qbm/5Tp5GA8+W/ze9bJuHEPYOCBIyVu7E6u7dszmfwtb6zPbv4Lw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=oxlwK7S4;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.8
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010008.outbound.protection.outlook.com [52.101.201.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E1B606A326
-	for <linux-coco@lists.linux.dev>; Thu, 26 Nov 2026 08:15:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98E1B606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90C2606A330
+	for <linux-coco@lists.linux.dev>; Thu, 26 Nov 2026 09:28:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C90C2606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DQGAswUV
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795680912; x=1827216912;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sqiuoGxJl9/CrJL1jDUP/bBMZakYFywfB1gHkPnBSXo=;
-  b=DQGAswUVDsoyQ5/zGksEPdAPW1eNr8iFW4oFzMdt3CCF+9tLI5AUQeH/
-   JBAmanOuldH54B6yBkJ4zATOF1LtQg38hF9VYmCkrqietVOs5YhhykkOn
-   a95AQzECxcCJfzX/vmjTslM0wviyPSHhN3MynmSE8b6DQVSEekguGBNs7
-   AwG4IptNfoJt8yBGBBbUUeuWbVLvr+rvbPDEpDMzAl281ViDE7G4UGTMc
-   F6sEBn1A1lg0LBEocrdf69VMjZfDJVXoEX2vED4DBsCgzMq2nPaK3RElS
-   xR1jfuVMv/v5q4V6AYn4I7/GmnYcWZ4gRkqUZtTkbZZtPvaDVe4SQitho
-   A==;
-X-CSE-ConnectionGUID: xkfEw57dQySxgTt9nQRN7w==
-X-CSE-MsgGUID: Rr5giBSdQFyAXWICSW1Kzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11977"; a="4595094"
-X-IronPort-AV: E=Sophos;i="6.27,234,1787036400"; 
-   d="scan'208";a="4595094"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2026 00:15:11 -0800
-X-CSE-ConnectionGUID: 4S4EEdRoS4mgomc/1DiNOg==
-X-CSE-MsgGUID: QlQBy2IiTNSvcnkV2jBs8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,234,1787036400"; 
-   d="scan'208";a="13880971"
-Received: from unknown (HELO [10.238.0.68]) ([10.238.0.68])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2026 00:15:05 -0800
-Message-ID: <f8102f9d-118a-4255-a332-11aabd47b7fe@intel.com>
-Date: Thu, 26 Nov 2026 16:15:03 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=oxlwK7S4
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K8rrqCChTX05d5Z/PpJXmNIi3NNqax4Dsh4qxTQCIXiPhQjZ2kWb5PrxlEEh6KmqPyXlFmLd37VnVgESUjDJ0WYhua0xx3dyFRaOWPH7DyLqmwPyUdw8xPlySn+TcUImuRA7EGf3VAKCIJvpBoSt5A+J0CZFj6TgcicFkemlDg0eValR47644EmZR/k5P2+BunqlgLZK5/rts47i7OHNx3b3lWXw3WxzK/EZhnkVkyKzwCZYD84xFeNzqQM4BfZOqJDnzEc/SQARfYr1sqleZMtikO+csNvNPhfkddv0BYqVyYMe7SS5VT0poM80+WKR9zd+uHDC/fOGcLusmL10AQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v1cMb3TS+ag4WuSmw2ebvlf9Gn+4AXj9dSVhjTXBiOg=;
+ b=I61OIfvw0Ow+dT6+VwqKIS2JvgB2AryoakQpUWFlDXlV8FT+Y99XzG+6hJsHC4hUr6e/XfsGmUFGNRCPJ3zH9Ioo/UWC8ghtUjMQItpNRdb7OA4Nusos7CbIlQzysW+bwwMPrMhcQYF72QOos3eyWdBr1rMbBOdTXVzWFu7Wpq/t5of4Lin5EwrPHzuHF/IdiBtCPBikecMklESejZyMGLUHhTJCRt7ogd1fc0zicrc1+FDnI3wnYKx568W6mb2g76KDfvXaJ2j0t+/S37fMAIAmSYqO/2i1WyGb1+08ZkTXtOhvrNvlglJddWTz3m5LhaE57aHlqshAVU9+62HJLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v1cMb3TS+ag4WuSmw2ebvlf9Gn+4AXj9dSVhjTXBiOg=;
+ b=oxlwK7S4KtihXKtYEnTPHhDHRWF9mnP//qQAiXMN+YDbm5M0IenkkaN9uIVBEPfMHBovVNviyNbaByRC2wzfBSa/xXrGtk6WN2DBWAZYMyrofb3Styu+LzUoRpx+apd++gg5j2ZEX3P9SrGt5YXi0PLtnxkn6/Uq0HDJ/MbRw04=
+Received: from PH7P220CA0128.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:327::15)
+ by DS5PPFB297DAF97.namprd12.prod.outlook.com (2603:10b6:f:fc00::65d) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Thu, 26 Nov
+ 2026 09:28:04 +0000
+Received: from PH1PEPF00062F2E.namprd03.prod.outlook.com
+ (2603:10b6:510:327:cafe::7f) by PH7P220CA0128.outlook.office365.com
+ (2603:10b6:510:327::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.7 via Frontend Transport; Thu, 26
+ Nov 2026 09:28:04 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ PH1PEPF00062F2E.mail.protection.outlook.com (10.167.243.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.688.5 via Frontend Transport; Thu, 26 Nov 2026 09:28:03 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 26 Nov
+ 2026 03:28:01 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 26 Nov
+ 2026 03:28:01 -0600
+Received: from [192.168.0.101] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Thu, 26 Nov 2026 03:27:57 -0600
+Message-ID: <e1b1d00b-b53a-4c6b-a746-72ed2058134a@amd.com>
+Date: Thu, 26 Nov 2026 14:57:51 +0530
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -73,79 +106,99 @@ List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/15] PCI/TSM: coco/tdx-guest: Implement TDX-Connect
- PCIe TDISP (phase2)
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
- "Hansen, Dave" <dave.hansen@intel.com>, "kas@kernel.org" <kas@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "aik@amd.com" <aik@amd.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "seanjc@google.com" <seanjc@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "Gao, Chao" <chao.gao@intel.com>, "Verma, Vishal L"
- <vishal.l.verma@intel.com>, "Tian, Kevin" <kevin.tian@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20260924041032.1096569-1-zhenzhong.duan@intel.com>
- <de1262f3-4097-4aa0-bcee-0dad05ec5538@intel.com>
- <IA3PR11MB9136465096B2B1D5152C1E1C92422@IA3PR11MB9136.namprd11.prod.outlook.com>
+Subject: Re: [PATCH v2] x86/sev: Skip DR7 write during kexec when it would
+ trigger an unserviceable #VC
+To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
+CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
+	<Srikanth.Aithal@amd.com>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+References: <20261116230335.1161521-1-Ashish.Kalra@amd.com>
+ <20261123234341.GCawTPrczGd6iM_Uby@fat_crate.local>
+ <47cb97d1-5919-4ee7-ad67-6039551304d6@amd.com>
+ <20261125041925.GCawZhzVbU3ngXnt5c@fat_crate.local>
+ <5acdbdc5-0c9e-4db8-a21c-fa011ba0bd57@amd.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <IA3PR11MB9136465096B2B1D5152C1E1C92422@IA3PR11MB9136.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <5acdbdc5-0c9e-4db8-a21c-fa011ba0bd57@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH1PEPF00062F2E:EE_|DS5PPFB297DAF97:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c85ec3d-c1b4-4ec6-5000-08df4b9f9293
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|376014|23010399003|82310400026|261102123227099003|10067099003|11063799006|4143699003|56012099006|261021121427099003|261026121527099003|261022105027099003|261022075727099003|261028144727099003|261021135927099003|261026140227099003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	P+eVfJOOnQ0MCvMPNePTbK/gWbfn91tViECFjxYVfteAui+6wcVPMaYibH9B+Ux284OgkwiC4E0teRpFzsSBE7lKjCBxu5W3y66TJfwSBcwHUBajw/Doilm8Rhm6PcdjYCnDZOwTvjiebtka8w6MicUu+7O4CafUjI2N+E+DpU6xBiNBhM3xKF9Ekmh/dTc6XdX9KNHeJwm08O4hagqpWCc0KUE2pxVlSrsJIuNhEUbLNuWZEaBKrd0OAq+YtX+K31HNeapGsBprvNSw3m1hNhNm+f0+jZwGFnn1n0M6tNjdrrg/Wtf0FX8Aj5GKof0EJtbqjMSfRoB1bfEUyL+/xg2D8dp6BbL9r8y7rSWrtQp0NHpt47cgk5sxX1rTVIx8944GqY7Ebuh15NdUSkE03WytXCI6YKyZs+iQfNrt5CRJiS2uwC4cUiK3Jwy58dW/XWFH8HY5/YSjOHZ/Z8HfOGbqV19f0W0cbDuBMs9pOF1JBsw8Lr5Ygu+gFvl0nRLmLu32UUBqsFHEvnHGDSzdkg0Exv1YWpy7jxofnQVo2hzBweoqEP78BSBe8e3Lu1p/2I5g1zH0A7CB+LIIAcn7JqPPTZK5nThUGYGu6IeAc+rVDIG11clccHiihESIt1jPxnXNfm9wJ5ImFuRjck06NF6fw1csL+GrFxfl2uicx2d5pOD0/0WvcEWmrsfy1SLsFWYvCs0DF7HkuvoCWVZgsg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(23010399003)(82310400026)(261102123227099003)(10067099003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261026121527099003)(261022105027099003)(261022075727099003)(261028144727099003)(261021135927099003)(261026140227099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	b1CNbIxy9UWnmzgMIwp5zrM0+nVG1kraxO/ASEWYBBlmRZQUQbfZAce/H/tXJvimR2f8sK7Bjxn7Z0rhMfPa4agpyayKz3ICAcASD5IyXzBCQfoS6N4ukcHaoVGBF0d1EiHACIfhbyo4PjEzQzWr/UZwFcDcYVO1vqfodjsdMpctBY4kB8xDziB9qn7bOosKpefUfnaCCtKcg7KklgWhBvW4jugkQ3TnL3BBtyUlncn3fG04pb8XQdYSmfzLA6LDMeZh/WocJDR52SiZZANOX1pwbrIVdu3mfwzv0K54LpugyS/5oG+imeZKf6du21qMWASj3al7e8u6XjK0wp6kuOak0hlUSyvb/Ea6bp1mv82B3sIOWCdSqj0zeEDu5aj/yn5tkU/iAm6yzF1JFXFVJNrDkAfceAUZfsT8w3K5Cx0BQQKBkauoGx3AccoPJeJN
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 09:28:03.9777
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c85ec3d-c1b4-4ec6-5000-08df4b9f9293
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	PH1PEPF00062F2E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFB297DAF97
 
-On 11/26/2026 11:11 AM, Duan, Zhenzhong wrote:
->> 3. TDG.TDI.MMIO.ACCEPT requires TDI to be in the ASSIGNED/ACCEPTED/RUN
->> state.
->>   After TDI is bound by host via TDH.TDI.BIND, the state is BOUND. It
->> requires
->>   guest to call TDG.TDI.RD read the TDI_GET_BIND_SESSION_ID, which changes
->> TDI
->>   from BOUND state to ASSIGNED.
+
+
+On 11/26/2026 1:59 AM, Kalra, Ashish wrote:
+> Hello Boris,
+> 
+> On 11/24/2026 10:19 PM, Borislav Petkov wrote:
+>> On Mon, Nov 23, 2026 at 06:22:09PM -0600, Kalra, Ashish wrote:
+>>> On the "bogus VMGEXIT": before Nikunj's change, __sev_get_ghcb() returned
+>>> the per-CPU GHCB, which snp_kexec_finish() had already converted back to
+>>> private. The host mapped that GPA, read ciphertext (exit code 0) and
+>>> returned GHCB_ERR_MISSING_INPUT, but couldn't write the result into the
+>>> private page, so the guest saw its own stale contents, treated the call as
+>>> successful and moved on. The DR7 write was simply dropped. It worked by
+>>> accident.
 >>
->>   This is a hard dependency for TDG.TDI.MMIO.ACCEPT not to fail and it's
->> not
->>   mentioned in patch 12 where the call to read TDI_GET_BIND_SESSION_ID is
->>   added.
+>> Oh lovely.
 >>
->>   The SESSION_ID is used to ensure the host doesn't bind a new TDI after
->>   guest attests the TDI without guest's awareness because the SESSION_ID
->> is
->>   verified in the following TDG.TDI.START. And making the read of
->>   TDI_GET_BIND_SESSION_ID to change the state machine of TDI from BOUND to
->>   ASSIGNED, make it mandatory for the implementation.
+>>> As for using do_vc_no_ghcb(): the GHCB MSR protocol requests are meant for
+>>> specific guest-initiated operations (protocol negotiation, GHCB
+>>> registration, page state changes, termination, etc.). The only one that
+>>> corresponds to an intercepted instruction is CPUID, which is why
+>>> do_vc_no_ghcb() handles only the CPUID exit code and terminates the guest
+>>> for anything else. There's no MSR-protocol equivalent of a DR7 write, so the
+>>> no-GHCB #VC handler can't handle it.
 >>
->>   But it doesn't make sense to assign additional semantic to a metadata
->> reading
->>   behavior in a specific phase. Instead, we want to propose introducing a
->> new
->>   dedicated TDG call, e.g., TDG.TDI.LOCK, which needs to be called by the
->> guest
->>   to lock the TDI after it's bound by the host, and it returns
->>   TDI_GET_BIND_SESSION_ID on success.
-> What TDG.TDI.LOCK locks? 
-> Or is it essentially a renaming of TDG.TDI.RD(TDI_GET_BIND_SESSION_ID)
-> to make the state transition(BOUND -> ASSIGNED) explicit?
+>> Well, can you fashion something with VMEXIT_DR7_WRITE and a dummy GHCB MSR request
+>> to the HV which is innocuous, just so that it can satisfy the flow?
+>>
+> 
+> We could issue a harmless MSR-protocol request and then skip the instruction, 
+> but the request wouldn't carry anything about the DR7 write. The hypervisor 
+> would end up in exactly the same state as if we just skipped it, so it would 
+> be an extra exit that doesn't actually communicate anything.
+>
+> So how about doing it in the #VC handler: once the GHCBs have been torn down, 
+> route the #VC to a GHCB-less path that decodes and skips DR7 accesses, completing 
+> them locally, and the kexec then proceeds normally. 
 
-It's not a rename of TDG.TDI.RD(TDI_GET_BIND_SESSION_ID), but a replacement of
-the semantic of transitioning the TDI from BOUND to ASSIGNED.
+Agreed on handling it in the #VC handler rather than in do_vc_no_ghcb(). 
+If the DR7 skip lived there, it would have to decode the write and advance RIP 
+itself, and the startup code doesn't link the x86 instruction decoder. The
+runtime handler already has vc_decode_insn() and vc_finish_insn().
 
-TDG.TDI.RD(TDI_GET_BIND_SESSION_ID) is still supported, and can be called
-anytime. When TDI has valid BIND_SESSION_ID, it returns the session ID.
-Otherewise return error.
+> This is safe: without DebugSwap, 
+> KVM intercepts DR7 accesses and only tracks the value, it can't load it into the 
+> encrypted VMSA, and the kexec'ed kernel writes DR7 again in cpu_init() anyway. Any 
+> other #VC in that window, which can't be completed without the hypervisor, would 
+> terminate the guest with a specific reason code instead of dereferencing a NULL 
+> GHCB, so it gets caught explicitly rather than silently skipped.
 
-> Clarifying this will help determine whether "LOCK" or something like
-> "ACCEPT_BIND" / "ASSIGN" better reflects the underlying operation.
-
-Yeah. It looks "LOCK" doesn't sound good. Because guest cannot lock anything,
-and the host can still unbind the current TDI and bind a new one.
-
-TDG.TDI.ACCEPT_BIND or just TDG.TDI.ACCEPT?
+Regards
+Nikunj
