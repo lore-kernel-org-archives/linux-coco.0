@@ -1,73 +1,88 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795692597;
-	b=zr2n2v1z9m6mkjcz0wkRHJ68N5SyJl47HjTKSIITCbe/vwqRs8M4C7kfN6ii7kfv0esJ
-	 7nNY43jQI27ME0LQqgKOlfggk7PBr0FLoHdN3bFfkMQCt1DHo5xD9r5TXGox2up1iFq+/
-	 tDCjmCx+HBnjfM3ipH+a9bkklcH2G3Hz9EQdYJYndScq54wSfU44lAyeHE122eSDnvHnA
-	 b3XxIvjfEUT0AvWGqj/PR9kril4xTQi1nv/h5/kFwBxb1gzMjGwKwuxfI4fK3FbxlxlnY
-	 ZaPLbEK/9NOKh2uTZ8gvFD8lAUjdACWkjPXuWdIN1gbh9p1+WutR4wbT35bdgwxr7Iw==
+	t=1795694790;
+	b=cMhYRVRQ+jbWrxHizQKX2hwUEk26QpJKsGfDa4HXHgZGrSVHv3et0Z9hzQiAgVNdAh7/
+	 WFT7nStnjNuoK6tjZqfNP9vWaOi5Rwd5T5LDZLiHPJJp1WSpdSCFtvokG52jEPh/E8HQN
+	 m10n5nzjK8FOVphXZmjOXDsrpmWnDs6tGb01TPBf3sC2vvH/jRg5oTSAGrhuE/TD/J6Dj
+	 bYdcubWNKubm1V3B/cxv3i5bmShjEf3XDUdqwhEH/o00KhdRHflnhNQIzaSAREu11YIUi
+	 hJQUm5QecyZtuynFbZsGfy80tnyCHBs2nIZFmZMDNjuX+H/rmFyw2NBp242PrFO4gYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795692597;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type:Content-Transfer-Encoding;
-	bh=XhbpXDScqac1UhRIrZyeVYHcl98st9w4XVtGw+jNWnI=;
-	b=P5Sm1MtPuncuxg9a8yNykwvrBaZLt27JlYOxh9qyTPaFGn++LQEmkIzE4+1rcQRaXixE
-	 OiijGwE533EC8g/GZsEqCWPfRSu4Tt++q5obBrKxmQJN4XCM0w8ryYXcm0ohaZoakw5tX
-	 ptBKf/iKNBb5EKVRlAHE9W2/OFx53lxKCsy5NeMu5OWcK7fJ5vQ69jv1NA9bbyWftEuJ7
-	 PN9iAsDtlbksVlSNUVPRlxZUDkDiJx9T5fTx2xTPBg7ZKzeloSY6GvNVs/cef+rRxWI1O
-	 LiHxhnG+GQJdR9eVboqkq8IJvIhBlk0Kn06uRQkwEuDLDYcmsU5G5AuzQjLWSgiBUXQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795694790;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=EDJEdQ1TjvzunefynkN28sXQqGJbavrI+88Tql9ZN6s=;
+	b=LZv2GDkc0OMwOQiLt6g87rurHeOvolcFwVJ8r6LhJLhsUnn4BmZQ+j++3OKNR/X3rFV8
+	 cJTRJGnaqfaMprqKSPm192rvl+wen30faVXHpfkEh5AQA8o2zwBvBRYqtF0+mwgOKzJTx
+	 +EPG9xEekvMsLbb9t0R5nsAZcN4uxqOHbhSoZM7O6r7xUC+DI+loZDDO+5sfoH9xqdGEs
+	 5SehrJboOC2PWaXYeyQvdSN8PDKLdU+kqnEfpZB681J6zZRUsUqr2veliXA6u07HUfhto
+	 Xmh/6FInISnnDSChKrIAwRDQr2Vu5sSs2X+u/XxQHKFxn6rnGuIUsYCTdslbSOMpAuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VEmjJRX9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gpp6RsL2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDCB606A32E;
-	Thu, 26 Nov 2026 11:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5D1606A31C
+	for <linux-coco@lists.linux.dev>; Thu, 26 Nov 2026 12:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VEmjJRX9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16541F000ED;
-	Thu, 26 Nov 2026 11:29:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gpp6RsL2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFCD1F000D0;
+	Thu, 26 Nov 2026 12:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795692597;
-	bh=XhbpXDScqac1UhRIrZyeVYHcl98st9w4XVtGw+jNWnI=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=VEmjJRX9Qy6mjHpVUdDhtSHI0XorPt+27beB9pwkFgmHQ06TxOFaTgECAD0354+uT
-	 thnOpte60eU82qW2zVEvAQ1kXOGzi7T46Bovls1bJERasGUIFmqrM9iQfZIeiLCmdL
-	 oe9W4/9Pmf8grdqnpHC7M58S7TQOBE3lS6y68V0h5UrU7tM1eXz8jdbowO48Z1CUNG
-	 1dkaBSEEK/8ECtq+xl6L6IEXXmUwj/Vkz3JYvAFM2t6Vm7WMoII9ANm14cMMSWuMA/
-	 tyvQP1rqzlTcTM85yPN4gEKdgxdQOw2dF5zXuNKN023U+JkoOKYL6T8p+662xtmoaO
-	 LpcEfUX4Mihmw==
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id C61B51980047;
-	Thu, 26 Nov 2026 06:29:53 -0500 (EST)
-Received: from ams-imap-11 ([10.64.2.31])
-  by ams-compute-02.internal (MEProxy); Thu, 26 Nov 2026 06:29:53 -0500
-X-ME-Sender: <xms:LhgIa0AousP7ER93-v2O8AnqUTW-qnae7ljZWnumadC8kBZLEjtu8w>
-    <xme:LhgIaxV3-wyHVeJuL5hetuhkzkM6obB8zdY9izOZOQmCo1gKsr31v2P3Q0suggqYY
-    hCCMW7mHp9aAAdbu4CIfF-bx4bVubCB_QjZLYKOn3UiThEY9qSmvD3aOA>
-X-ME-Proxy-Cause: dmFkZTGEvntK3qpQAIuytMySgY5S3YFtOdMVQ5q6UkR4hsNzS17dYCT4A4VJ8mlotDkeWU
-    hWnKFssqpk5GJ0VN4nozi3zfUlc12igXAEGezZ8fZxy3j7EqmHd4ZtmeEBT7kGQ6a8dpRB
-    OqWQ44yxQLMIacqWRMXinqpRuNl+hdRn+KPjngyMxcphE5G4hR91+Il67Z/2F1pBKa8zqA
-    JnAxmdT+ioZ5ywX9OJ+RVXb2EWzvOy4GrwYMSSGwFu8+luKzUH03y08s6jq4sfQ2sJ89x2
-    ZziuiJEA/bK3Vqe83dm0ANtspTYKBe2ezvv/qZA1OIb5sxM1FjeXmbiLwrmy0ccYb4VcWN
-    zXcf5GyJtYpwDFELG75VNScmgFlEpuWbDnbQIJY+2uGiI+zZH/0o2qOMYmskeSqdNWvhG0
-    PwClG0/6LlwAH7KDHH/JVJ7sRxwhqmo43QUyqeUKMnSUHtSBaqt3PurLbS9Xt3TXkjqVQH
-    ADft7ezwNPwJm+1M79hvjAC/affJNu0OhkMp2MtiZ4e381o27S2Negf/xGHkJ40DO93I4s
-    FgTT5iebhDp3Ms4GVBgHMEhuz3DdjcshRrJpHVDt5DuUDbDZEv1iMW+SOakudNfUKN/hWy
-    aSlL7TgWSrZLeUNWkh1lEVjNxOQpwjaiOLHiyrAOmgILkwGajcO0/3ZaPV2g
-X-ME-Proxy: <xmx:MRgIa1Z_rg5EcSV9DKtda6y_bX2jEcuTPsm-QLQdiZEIGv0jgZjq4g>
-    <xmx:MRgIa3FUoSAnRrqRWfVUA7LInHCSYa6jm52wC520sggTM3Q1hr236g>
-    <xmx:MRgIa-ksermYbNQnkPHwxIAE-isdMnMzpNZFo4HjVej66PZ6D6lEFQ>
-    <xmx:MRgIa-kQU8_UdoJy8zIKrToJN6zOhgU7j7V9S16-7TiNQ_UfUOgLeQ>
-    <xmx:MRgIa7Wo-taHsLgBJjN4YNHgZyisJugpp62n-35rNOj-bu-eMNkkpFaF>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 9131DF800A2; Thu, 26 Nov 2026 06:29:50 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1795694789;
+	bh=EDJEdQ1TjvzunefynkN28sXQqGJbavrI+88Tql9ZN6s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Gpp6RsL2X4F80fs3wqAw4S3ABgTbzjJVxPoS2lKJFmUMt5hZkrSDh9GT9ZE2tH0Wi
+	 c6NLMHO1Nv6ntV0IP8k2Wn5LsxFnUIOIdEFWqmtc3gO59KgZDvKNebR8cUY5dKGvw8
+	 mqWIEKj+CDX/9qdu4G/LTtggxYhBhVCz14TEe2m5+g8B6ikeJRo7StlBnaQaiyYw5E
+	 V3Fd3md2D1HRZEXYYRtJLku/9FW50BESdtj56/dRryCgRQPpig335y8vPsIdpO4t3S
+	 obxwqogTiDiuNNxQuZEVGcr8SkzZVL035F+Q32fQOz1jLoTR7SbTGkZtFIju0HXZRZ
+	 WmEWDr4BVr8+g==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 29F261980074;
+	Thu, 26 Nov 2026 07:06:24 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 26 Nov 2026 07:06:26 -0500
+X-ME-Sender: <xms:vyAIa-3m5v1yRqO0vWj2J7VTPhKB5uemSZ4UUbAu43HMhdt3TUueCg>
+    <xme:vyAIa36mZZsZkWSk-oh8K-NZknNIazY2ee5I-q8j-ydH-zASTYxGw3FkFCJ4EYwL6
+    sLQCbHgjafoRfrQ6l409z97PTkyon4_KlEySxAqRw6nMZCowECImJY5>
+X-ME-Received: <xmr:vyAIa_2tkhug_3k7eRKBaKtBcgVEXr9UjyWTJtajmat4AmPjU_LSZW0aiYY>
+X-ME-Proxy-Cause: dmFkZTEG867qwPubLmy7FicciVJmTUol3Qz1f7B791QDJNbzIPzz4f9uomLjIqOPfvH7yO
+    NxswOWJs4mi6y+Sp1R6QB1dEk6JMugZGnH7Bk4gHz9v+wM/uHUtphmdKRHj2GLnxfQNldv
+    yADJr+1oORV73XEU0XfbBxYVi2EGODCQWC8QKV9J+LCHJimcLfSkJVMxo6xJPRLGwUECfh
+    1K4q+WTecykqIdZ09/7sDBJwltqu6nEbu+dBNc3vuT0xlv9d3jjahc5qRXUolaQSTMOMJB
+    p+bRouw6vkuelppkWr6Tn7KnHwPtYDBIIcpk3G+QiV+y0Q3eNRfb8apDO5QVoR2HDzemRp
+    bJxtURZak5+r9R5JFqzDvIx/0Kk9PwEMqCOv+PZXbXzM9AtubbFpNosLUF0PHIFlq39hy8
+    JhESN84RHMhFqs1xxmm/ubbX/eGmKp/fQcEw65PZbJN5kgw2felAiO/Et8I5JqQOt5S4ZN
+    xtoxsIaM1FIuPeLYep2sQ4v6dAMiEmbuHBhN34wNpYEs9pgUUJBtGOFiNT+zkc2xA87myT
+    /lwkrXcEBvn+hrzf4oYt9sI7HRdHz8Un4AELAQJaBaSfa12qo+YHJSSX5lCq/bPM/HN7Je
+    0uNJW21s1xGdrA1XZ1Ep/zCgxlRe02m5KcduzGA/9c4z7LlN3diKQeAUI4Aw
+X-ME-Proxy: <xmx:vyAIayouA2kdHOPuMjktIbnK199eprThX_wqlPcdAEWBzEytF5TSkg>
+    <xmx:vyAIa1XnPKyk3pM6CFL4mOdKN3iJAGie9_hjOCvNMti4OSELm-gPwQ>
+    <xmx:vyAIa3dFD2mZB-2rrDI-NSWhDBkcwHEusbPgmJGICdFORiaOefk9Ng>
+    <xmx:vyAIa2C6XbpgO9CF8EFGX-dc8JTDy9Fcki1cro5kQIQNqnihlODZGA>
+    <xmx:vyAIa23jQzM9hhVggKN5dZEABvfJO1_a9j0DUNBFIq-0bFtlIa_PYFoX>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Nov 2026 07:06:22 -0500 (EST)
+Date: Thu, 26 Nov 2026 12:06:21 +0000
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
+	Mike Rapoport <rppt@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>, linux-efi@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] x86/efi: Handle EFI_UNACCEPTED_MEMORY in
+ do_add_efi_memmap()
+Message-ID: <awggd5bP1Yg7qgRQ@shutemov.name>
+References: <20261125173338.1250080-1-kas@kernel.org>
+ <2c075daa-978b-4efc-bb36-736909ec5ff6@app.fastmail.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -77,56 +92,47 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 26 Nov 2026 12:29:30 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, "Mike Rapoport" <rppt@kernel.org>,
- "Tom Lendacky" <thomas.lendacky@amd.com>,
- "Rick Edgecombe" <rick.p.edgecombe@intel.com>,
- "Pankaj Gupta" <pankaj.gupta@amd.com>, linux-efi@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, stable@vger.kernel.org
-Message-Id: <2c075daa-978b-4efc-bb36-736909ec5ff6@app.fastmail.com>
-In-Reply-To: <20261125173338.1250080-1-kas@kernel.org>
-References: <20261125173338.1250080-1-kas@kernel.org>
-Subject: Re: [PATCH] x86/efi: Handle EFI_UNACCEPTED_MEMORY in do_add_efi_memmap()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c075daa-978b-4efc-bb36-736909ec5ff6@app.fastmail.com>
 
+On Thu, Nov 26, 2026 at 12:29:30PM +0100, Ard Biesheuvel wrote:
+> 
+> 
+> On Wed, 25 Nov 2026, at 18:33, Kiryl Shutsemau (Meta) wrote:
+> > The EFI stub reports unaccepted memory to the kernel as E820 RAM.
+> > do_add_efi_memmap() has no case for EFI_UNACCEPTED_MEMORY and adds the
+> > same range again as E820_TYPE_RESERVED. e820__update_table() resolves
+> > the overlap in favour of the reserved type, so the kernel never uses
+> > the range.
+> >
+> > do_add_efi_memmap() runs when soft reservation is enabled and the
+> > firmware marks any conventional memory EFI_MEMORY_SP; that takes no
+> > command-line option. It also runs with the add_efi_memmap boot
+> > parameter. A TDX or SEV-SNP guest booted either way loses the memory the
+> > firmware left unaccepted, and it does not show up in MemTotal.
+> >
+> > Add unaccepted memory as RAM, as the stub does. Without
+> > CONFIG_UNACCEPTED_MEMORY the kernel cannot accept it, so keep it
+> > reserved there.
+> >
+> > Fixes: 745e3ed85f71 ("efi/libstub: Implement support for unaccepted memory")
+> > Reported-by: Mike Rapoport <rppt@kernel.org>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > ---
+> > Build-tested only, with and without CONFIG_UNACCEPTED_MEMORY.
+> >
+> >  arch/x86/platform/efi/efi.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> 
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> 
+> I can take this via efi/urgent if desired.
 
+It is not urgent on my part. It can wait the next merge window, unless
+someone else needs it now.
 
-On Wed, 25 Nov 2026, at 18:33, Kiryl Shutsemau (Meta) wrote:
-> The EFI stub reports unaccepted memory to the kernel as E820 RAM.
-> do_add_efi_memmap() has no case for EFI_UNACCEPTED_MEMORY and adds the
-> same range again as E820_TYPE_RESERVED. e820__update_table() resolves
-> the overlap in favour of the reserved type, so the kernel never uses
-> the range.
->
-> do_add_efi_memmap() runs when soft reservation is enabled and the
-> firmware marks any conventional memory EFI_MEMORY_SP; that takes no
-> command-line option. It also runs with the add_efi_memmap boot
-> parameter. A TDX or SEV-SNP guest booted either way loses the memory the
-> firmware left unaccepted, and it does not show up in MemTotal.
->
-> Add unaccepted memory as RAM, as the stub does. Without
-> CONFIG_UNACCEPTED_MEMORY the kernel cannot accept it, so keep it
-> reserved there.
->
-> Fixes: 745e3ed85f71 ("efi/libstub: Implement support for unaccepted memory")
-> Reported-by: Mike Rapoport <rppt@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
-> Build-tested only, with and without CONFIG_UNACCEPTED_MEMORY.
->
->  arch/x86/platform/efi/efi.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-
-I can take this via efi/urgent if desired.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
