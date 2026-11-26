@@ -1,147 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795710700;
-	b=Y/DF2+rpZQtMTSNMDICAXfY+4woBADcZg0nno8eO+TkDkbTcJVhcpfwDyx3N29sCTUkp
-	 oLVwSFQ/11lq0xb/z4Bpw8N4mdW3ZmlABLyEGiNrcwvuEJHNkdDeTjvXAFSnuSu5no6ZU
-	 U5f2EjHDtKxukR4XGAq5TnDqs0qkjPfd5L5CNZ4x0vIju5M4FsZaghYCv0qxHqG7Hv3bi
-	 tXksLis/VpaSyM8L7ZcB66NXQscPnN2eWELApA3xFpPrFfetA34CYqTw3gwO/JY3jvaYo
-	 UZoOU6X6RdeXZXz1BeJkVw8eXk3UMqyU4IzbUkaLfzSXNl3OXaAOgAc2M/E5+ov4rHw==
+	t=1795711676;
+	b=3aLD03M7NemOa/FWWDZ5SKydD9ggYDMA890Ca1bXVh3cd4cmBORp3qkQycrHw/PQ2MeP
+	 tNn+byhMXTgWw5FVVTV0bMAfs6TMWjEqOlKDHH+LzKsYilB9NPCdFHir9m/e9Cnc0YD7y
+	 mGXYrvhWgwCPDt70KaBSG9x+2i8pptbTD3OvIl2OyFyl1ftEO0OrTR+dTeg/RNhroG33H
+	 9fLP8ePFni/4hRvh96GdMti8NdMd8230Y/GXhCoREX7y9g+ntNvC4XGy9+bBpjHEetgYD
+	 yd7INg7uWCziPslcfWZHXa6njC0ooBjUcCqofKjn312gfC/ffhd4SKZLacLn4jNqNCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795710700;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=mKMGXbvF/sfX9s9vl5jaq/5p/tKCIj66clg+e7onQEc=;
-	b=JUKBxnqFUnhEnMfD5zzhHRPikucBkj83WbEuxO450hJbJA/TU+jfCmVvdEhKp8+OFCIK
-	 Yafh9Nstp5H9KF8RszdeInnSfGkzj53rVrVLcuXmU9YHgiEeLDMbJBw4Wqqc9kG4t0kf4
-	 dN9dei5udYXC2R1xWUxhEYCDjXXIlQKiAalRiyIWuXBWHcNBywMutV63dTftt24v4TqfP
-	 Pmzge6WHCbStYKfrLAapvZvwcIO5da3BDnMjGIwOcUM2begqxeq4RnP8tMNPUsLjGKywe
-	 fcyG57jLGkhF/NbTf+/QtmbCvh1/ov4IdHedWX5QbKqTDap8P6gCXBqFOm9WlCdmIZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795711676;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Reb0A+vj4WxFhlRPeF5XMU0Gq5g9HJZmhJB2qXFsVXs=;
+	b=CfPZ1+X/w6CXzc8LVsFNjEemqA5EpD/gbXCj+oKM7814VViQyO0EukwrCRrR9FOAzKyT
+	 eG+tayH+S0HGPAqQAn8qXxaGGVYxiAPQVZSQ7s1+9E5vJjxp/agFRANlPrRrvLNWSDYnJ
+	 k9uSoz10UI+lRvUqbjpNm4bx6tlCCqUTL4shTDN9bCIQ1KC9sTnXRGGs/Cv6vsb9hLEnY
+	 244AXUSBnL+QnbhuWKN/VNHEsRf1cMvQNq/NYLWDmabT69QKm02EZj/8qtfgVLlz+KPfW
+	 ZduPDkeKR3wiFX7WT6Wz4J/0A5yIVpw8m0yX7WfIXTkJkNk39aM1MqNN8d/+PtG621A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=USPS9Ylb;
-	arc=none smtp.remote-ip=74.125.224.42
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9E8606A326
-	for <linux-coco@lists.linux.dev>; Thu, 26 Nov 2026 16:31:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A9E8606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LPUTBtrn;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E65606A32C;
+	Thu, 26 Nov 2026 16:47:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89E65606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=USPS9Ylb
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-67db1f6f50eso7418207d50.0
-        for <linux-coco@lists.linux.dev>; Thu, 26 Nov 2026 08:31:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795710699; x=1796315499; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mKMGXbvF/sfX9s9vl5jaq/5p/tKCIj66clg+e7onQEc=;
-        b=USPS9YlbJy5Ee1rwwfQWEP3Ve8SszpGtAS0zjskI9LSW4enHGz0fXGUdGEm+LK2972
-         q5LEmzTswauSlTatatKd33PcPM9u4+158FxDRvHWjqXyxYoASoS6c6YPM4TnF9urJ9MT
-         IgmM4Gx6HK1qbaace+7wbEhWbBvqwSlSxnTJ/VhiO+YuRflew2gVqOgI0AOLx5oHFA3P
-         V9PfQ5ful+N5KDidIg9e490r6aQNC1G82sTszz84kN1NtqcivRgxNpkmynhWJh5GO0a3
-         EiyKr0vW8w7uPEpUkoyVl8SOBLtSmxlEIxgA7DktcODzrb+DhrdQZ/UOwSfE2AoNrqVd
-         veMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795710699; x=1796315499;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mKMGXbvF/sfX9s9vl5jaq/5p/tKCIj66clg+e7onQEc=;
-        b=sQho+PsHWHsYfMBrFIQMtyVpTVQOzIj42wu9fMC5gKKY4OjE0LNx66XlOFIscjKOA3
-         e9eoYZw9NP+brE0JzsZimn4oip64bn4kw7MIrgEKDElyQENcGUu0iiczkhKsNnw2H8z1
-         xzeIOzvbAiOmR+sOTsH3QVcPsQbJdWv5ksHbwFfK18FIwFFH6zHAC/w+9vV75aDVkTs/
-         2WyypOwTAheMtDBSj3gDvK8TYmjBrtfB8vy8fMi3TckmSFgMIKehrUWYRqvI8dOppNnr
-         Ppd7BqjOngSGoXq9dpzbLs/msTfJEhxG66EOJdw72UPcHm9jZtUnG7JWf71L3euoZeN+
-         Yr/Q==
-X-Forwarded-Encrypted: i=1; AL+hErFw3nISbKcVSi00+WgoFwSmXlhlrBbYXVZ/Hfv+TR+NxfwIQ5R//47RW7REgr30gDVAQoqG6wX5VpOV@lists.linux.dev
-X-Gm-Message-State: APuU4Z+cO5OFha92n0BB0U1KQx5PjI8vHDZrN/UQmcsvXSpHHQwgERvk
-	/6BZ2MnNnq1Iqmvyxz/8VdurkXuBXBZ5rakJi6qwVX57eNZdasXP+M9Kz+bKfRpxE10=
-X-Gm-Gg: AZFdTZe1IJ32XuKHba/fVdrXLF9YsfO5NRBniV3qztxKvBenVgnkIIs9bLaoOotzFqC
-	zcjcgtxOnc3+TiDI+v0MDjKqAW+LnBVl/wKcDodDK9eIzyqkz5z96d4hXQ6WYQ84t5RX7Mpl72N
-	LILgoVHWfgiHZGWhrH1RzZHuwJATX/1Hv7qoLFFgynL7e0DF2dWYQjP/EV4bzaDrKptZpyvtSt+
-	rorXO6A7tfwX8PnqwynX7FMVuVs73/ZnqybReDHtBbsmXe/SXi89vF2/5n7tY1VdDj/AzTltzMr
-	QbWSIwm6dYfO+39yL5SgsxwrWpMozI5xbiY8LJCe/g+sj73H77x+mOHLsGgrcFTRmfP+sERreJO
-	6illlzW14pOI9FOxpfWFYLAn3ZdsQCDheoK5pRq8mbdgrWbWfwD0RMEsV4wRFXI0kJPqok6otyv
-	TsuYlCLKs2NAWHHpHYO627MfEk3xPfbKiXmXuXfdonbuUyY9XjzZFsbx1Jf3KRRa8EqfQqLPWUn
-	LEvt7iooDK9wyNV8fcQygQ6RjtTWCQPlcpeanj5IpkVXak2YUlHzGyKu5l0x7NvpsmS1xzpr9hO
-	tu7lrQ==
-X-Received: by 2002:a05:690e:13cb:b0:66f:c1be:a64f with SMTP id 956f58d0204a3-67df4444c30mr10219064d50.65.1795710699306;
-        Thu, 26 Nov 2026 08:31:39 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92134a15b99sm192865986d6.38.2026.11.26.08.31.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 08:31:38 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xWcNl-00000004WQW-3ltS;
-	Thu, 26 Nov 2026 12:31:37 -0400
-Date: Thu, 26 Nov 2026 12:31:37 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian K?nig <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <20261126163137.GQ246011@ziepe.ca>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
- <yq5aa4mybbmv.fsf@kernel.org>
- <20261124134621.GI9566@ziepe.ca>
- <awhVoDXluqpncgcd@arm.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LPUTBtrn
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 10F161BA8;
+	Thu, 26 Nov 2026 08:47:52 -0800 (PST)
+Received: from [10.0.129.128] (e122027.cambridge.arm.com [10.0.129.128])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 94E293F86F;
+	Thu, 26 Nov 2026 08:47:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795711674; bh=wD4nn625t5o2j8O8VCNI52IkSmZmyk+WOropi/y+JW8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LPUTBtrnXanBCrATApbdjyPmJJS0xq86yxfvxWyiGzKa6XUMGIcOrSHyF9nZDjSsL
+	 v0Dt2TBLZ9XTGwTuBVXQ+cCmNd3PJj8enKmDKt35de75keVcWu173jhvW5BormtSZ5
+	 cThoprWY3F0kLdK5qLp++ArCYttwh43Yv3912ARM=
+Message-ID: <78665c8c-2c10-410e-9bd2-b62c91c0de2a@arm.com>
+Date: Thu, 26 Nov 2026 16:47:46 +0000
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -151,34 +53,256 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awhVoDXluqpncgcd@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 09/11] KVM: arm64: CCA: Prevent memslot modifications
+ after Realm creation
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261123104233.95710-1-steven.price@arm.com>
+ <20261123104233.95710-10-steven.price@arm.com>
+ <CAEvNRgFQ5BXqU3KfPFT8bfZTW=RyvBw25z3GZtr3JA=Wv3Yqfw@mail.gmail.com>
+ <e4108d4f-e84c-444c-aa7a-18e823816eae@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <e4108d4f-e84c-444c-aa7a-18e823816eae@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 26, 2026 at 03:52:00PM +0000, Catalin Marinas wrote:
-> On Tue, Nov 24, 2026 at 09:46:21AM -0400, Jason Gunthorpe wrote:
-> > On Tue, Nov 24, 2026 at 07:00:00PM +0530, Aneesh Kumar K.V wrote:
-> > 
-> > > Taking Jason's feedback into account, we could have the allocator
-> > > request compound pages and recover the actual allocation order with
-> > > compound_order(). That would avoid passing an order to free:
-> > > 
-> > > void *alloc_cc_shared_node(int nid, gfp_t gfp, unsigned int order);
-> > > void *alloc_cc_shared(gfp_t gfp, unsigned int order);
-> > > void free_cc_shared(void *addr);
-> > 
-> > It probably shouldn't be order here, that is hard to use. Just size_t
-> > len
-> > 
-> > And round up internally
+On 25/11/2026 14:58, Suzuki K Poulose wrote:
+> Hi Ackerley
 > 
-> Minor point in favour of keeping the '_pages' naming and order is that
-> it makes it more obvious what alignment is returned for code that needs
-> it like the ITS. Otherwise we can just document it, I don't have a
-> strong opinion either way (only that it's simpler than what was proposed
-> earlier).
+> On 25/11/2026 00:09, Ackerley Tng wrote:
+>> Steven Price <steven.price@arm.com> writes:
+>>
+>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>
+>>> Once the Realm is created, prevent changes to guest_memfd backed
+>>> memslots, which can provide private memory. Validate these changes
+>>> before KVM invalidates the old memslot, so a rejected deletion leaves
+>>> its stage-2 mappings intact. Realm stage-2 faults will also validate
+>>> the private memory backing in a later commit.
+>>>
+>>> Require Realm memslots to lie in the lower half of the IPA space, as the
+>>> upper, shared half aliases the lower, protected half.
+>>>
+>>> Define kvm_arch_has_private_mem() so generic KVM recognizes Realm VMs
+>>> as supporting private memory. Defining the macro also makes
+>>> gmem_in_place_conversion true for every arm64 VM, so guest_memfd
+>>> memslots are marked gmem-only even for non-Realm VMs. A well-formed
+>>> KVM_SET_MEMORY_ATTRIBUTES2 request on a non-Realm guest_memfd now
+>>> reaches the VM check and returns -EINVAL instead of -ENOTTY.
+>>>
+>>> Additionally, similar to pKVM, do not support dirty logging or
+>>> read-only memslots.
+>>>
+>>
+>> Imo this could be split into a few patches
+>>
+>> 1. Add the constraints wrt realm memslots and being in the lower half of
+>>     the IPA space
+>> 2. Defining arm's support for private mem
+>> 3. Imposing rules on memslot changes
+>> 4. Maybe some others, maybe I'm misunderstanding the patch
+> 
+> Agree
 
-All our allocators return things aligned to their size, does ITS need
-higher alignment than that?
+Yes, although as discussed below, I think we probably don't need to have
+as much restriction on memslots as this currently adds.
 
-Jason
+>>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>
+>>> ---
+>>> Changes since v3:
+>>> - Explain the arm64-wide in-place conversion effect and keep the
+>>>    general IPA limit comment.
+>>>
+>>> Changes since v1:
+>>> - Preserve private mappings if KVM invalidates a Realm guest_memfd
+>>>    slot before the prepare hook rejects its deletion.
+>>> ---
+>>>   arch/arm64/include/asm/kvm_host.h |  2 ++
+>>>   arch/arm64/kvm/mmu.c              | 37 ++++++++++++++++++++++++-------
+>>>   2 files changed, 31 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
+>>> asm/kvm_host.h
+>>> index 3ddeddfacd06..55673d08e3eb 100644
+>>> --- a/arch/arm64/include/asm/kvm_host.h
+>>> +++ b/arch/arm64/include/asm/kvm_host.h
+>>> @@ -1607,6 +1607,8 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>>
+>>>   #define kvm_vm_is_realm(kvm)        ((kvm)->arch.vm_flavor ==
+>>> VM_REALM)
+>>>
+>>> +#define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
+>>> +
+>>>   #define kvm_has_mte(kvm)                    \
+>>>       (system_supports_mte() &&                \
+>>>        test_bit(KVM_ARCH_FLAG_MTE_ENABLED, &(kvm)->arch.flags))
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index 800333a345cd..9af5fe6d87f0 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -2861,17 +2861,32 @@ int kvm_arch_validate_memory_region(struct
+>>> kvm *kvm,
+>>>   {
+>>>       lockdep_assert_held(&kvm->slots_lock);
+>>>
+>>> -    if (kvm_vm_is_protected(kvm)) {
+>>> +    if (kvm_vm_is_protected(kvm) && new &&
+>>> +        (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
+>>> +        return -EPERM;
+>>
+>> gmem is already generically mutually exclusive with
+>> KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY, so before this change,
+>> pKVM is saying no to KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY for
+>> all memslots, gmem or not, so this check makes sense.
+>>
+>>> +
+>>> +    switch (kvm->arch.vm_flavor) {
+>>> +    case VM_PROTECTED_PKVM:
+>>>           /* Cannot modify memslots once a pVM has run. */
+>>>           if (pkvm_hyp_vm_is_created(kvm) &&
+>>> -            (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
+>>> +            (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
+>>>               return -EPERM;
+>>> -        }
+>>> +        break;
+>>
+>> Not sure why pKVM doesn't allow deleting a memslot after the vm is
+>> created, but this is no change from before this patch, the removal of {}
+>> here is mixed in with the other changes in this patch.
+> 
+> IIRC, pKVM relies on pinning the stage2 until the teardown ?
+> ed
+> from the Stage2 unless we d
+> 
+>>
+>>> +    case VM_REALM:
+>>> +        /*
+>>> +         * Once the Realm is created, we cannot modify any slots that
+>>> +         * could be providing private memory. i.e., guest_memfd backed
+>>> +         * slots.
+>>> +         * TODO: Handle trusted device private memory slots
+>>> +         */
+>>> +        if (!kvm_realm_is_created(kvm))
+>>> +            break;
+>>>
+>>> -        if (new &&
+>>> -            new->flags & (KVM_MEM_LOG_DIRTY_PAGES |
+>>> KVM_MEM_READONLY)) {
+>>> +        if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
+>>>               return -EPERM;
+>>> -        }
+>>> +        break;
+>>
+>> Imo this should be written the same way as the pKVM branch for clarity,
+>> like
+>>
+>> if (kvm_realm_is_created() &&
+>>      (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new)))
+>>          return -EPERM;
+>>
+>> but that aside,
+>>
+>> 1. Why block creating memslots after realm is created?
+>>
+>> Does ARM CCA have no way to add pages after a VM starts? This isn't
+>> blocked for TDX and SNP so I think this constraint seems unnecessary.
+> 
+> This and (2) was triggered by the following thread, raised by Catalin.
+> 
+> https://lore.kernel.org/all/aqrGPK0lFBFXL2qY@arm.com
+> 
+> But having said that, since then, we now have :
+> 
+> 1) All private faults must be serviced by realm_gmem_abort(), which
+> mandates Guest memfd slot. (See Patch 11, realm_mem_abort())
+> 
+> 2) realm_gmem_abort() matches the "private" attribute for a "protected"
+> fault, failing which causes a memory fault exit.
+> 
+> So I think we can remove these memslot restrictions.
+
+Agreed. We originally had memslots backed by user space memory. That
+meant adding or removing a memslot had to deal with all the messiness of
+dealing this that. As an initial step it was easier to just prevent
+memslot changes. guest_memfd simplifies things so I don't think this
+restriction is actually necessary - and I think it will actually
+simplify the code to not restrict it.
+
+>>
+>> 2. Why block deleting memslots after realm is created?
+>>
+>> This also seems like an artificial constraint, and it constrains the way
+>> the userspace VMM operates when stopping a VM, like the memslots can't
+>> be removed ever, the VM just has to be closed? (something like that)
+> 
+> As mentioned above, I think we are good to remove the restrictions.
+
+Agreed.
+
+Thanks,
+Steve
+
+> Suzuki
+> 
+> 
+>>
+>>> +    default:
+>>> +        break;
+>>>       }
+>>>
+>>>       return 0;
+>>> @@ -2883,6 +2898,7 @@ int kvm_arch_prepare_memory_region(struct kvm
+>>> *kvm,
+>>>                      enum kvm_mr_change change)
+>>>   {
+>>>       hva_t hva, reg_end;
+>>> +    gfn_t ipa_limit;
+>>>       int ret = 0;
+>>>
+>>>       if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
+>>> @@ -2891,9 +2907,14 @@ int kvm_arch_prepare_memory_region(struct kvm
+>>> *kvm,
+>>>
+>>>       /*
+>>>        * Prevent userspace from creating a memory region outside of
+>>> the IPA
+>>> -     * space addressable by the KVM guest IPA space.
+>>> +     * space addressable by the KVM guest IPA space. Realm shared
+>>> IPAs alias
+>>> +     * the corresponding private IPAs, so Realm memslots must reside
+>>> entirely
+>>> +     * in the lower half of that space.
+>>>        */
+>>> -    if ((new->base_gfn + new->npages) > (kvm_phys_size(&kvm-
+>>> >arch.mmu) >> PAGE_SHIFT))
+>>> +    ipa_limit = kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT;
+>>> +    if (kvm_vm_is_realm(kvm))
+>>> +        ipa_limit >>= 1;
+>>> +    if (new->base_gfn + new->npages > ipa_limit)
+>>>           return -EFAULT;
+>>>
+>>>       /*
+>>> -- 
+>>> 2.43.0
+> 
+
