@@ -1,68 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795649626;
-	b=G3mjduJ/f4G5ju4eWpvtUHp1+PACchDmKfgKtqFSUMwJ4B+4I0aptjnxE/gvjGlMlcR+
-	 F0ZS6sxMVUI3IWTIcwOJYw4kYEBfVBv92oiHDR8LxhQ6mHySgTuEd+yNaRppYkOqaOdBG
-	 V1EU8Z3AqQuiiWj+tSL1RkgSnv4Y3dd/YNJNAZ1HhK9Cxr+kqlEnUfiDAGzRDidoJnNL6
-	 Ohu2dqhtIkwCDhNagUmNP/GGa+aFZV2b6inEW73kwsG0zso4UFcauKL3ljnH4cqKtmd9g
-	 5nZtf8u1QrkrYnxQrbrab3uK8dohhdPa1GUXJB6/2Y8d935/o3oEN9TzFDpCxa8idEQ==
+	t=1795655989;
+	b=QBUm1PHM2aOGxXS0cVVtohFpej7Jccq9UU3PGB4BQyfv0s4KcqY65+Y81SZS6ZoDE/ON
+	 RRlx0ayTQ5QqVip4ouWjRcqv6bYp6k5eqG4ZUftJe0g5hXzyb53SssAGtmLLt4cY1pAPI
+	 VoNlXz646gqX2p5Ooz5+mtqldEGgFTcaAC+Xs72y7/4/dgUC73ggpT9QiIlNjd95pEAGQ
+	 jrLZjddTkk2AC2SZi0DPec/hu8iDPSN6A6YLPV97n2qw/TR0Q6cHK2YPHKALE1aV8Yi4Z
+	 igotJjvzkAS8NLgog1w2uAZ6Ls1mQSe+8EPe5jqzgRkwwOzOANWAvKrLltRM6pktzPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795649626;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:From:Subject:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=b2ogpMRdOGvQOxnTYrtAYFBvprrsM3s8fDuelvc9zDg=;
-	b=nVgFwn3vPn5pxnWBsx2w2CS8b0T3K4JsEB9nKxQ0JkdP1M9Qv/F+ZsHeWJJByVpgx1Nx
-	 k4kdhtKfx641yuc2Z/knQrbr5Fo4/Uo0iOIBq7n+m+/lO3IpBnEWfT8RsmjZe6UYFwQtC
-	 fD89G/AOV9EI7UWqWjkJLcjv6C7cNG6omEzzgHQy72dmZW65jx9SvRlpjrLh2wQpEXqhR
-	 IWAzZ5HpfOiZf9m3VYQPgi2YL8jiqL2wLAcOluQ4B5zMWNlEzERi4xVz4UpU05o9ItML4
-	 Hbvg1eXUzyXRjWTOihuLAqFMBZ8avAbsQcfCHnuKGs3TQ0F/7FLbqldmqBfaRdg5njQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795655989;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=ryUXjzMtazy3gSaZGHa2Eq3V/fW4l8VdcGVzhCJFDqE=;
+	b=TRULCLsNzpZ7P/ACPYnwHCu5/pziYwa4Zj3qbIxC+aPquPdyC0jhgAfl3vl0O9IDsm9q
+	 rvvkUYluP+QmyEdzR4w0Fc1qZwBhT24MS3QiR7sMTV6VAOvlPz0VEem3ewZUghtKuFZJo
+	 Cb5yT2bQpkX1cboH5fViG+4gQT6da4jDiwEJyAJMl8OP77HFRS7ASE3RyvsjO1rh7A+du
+	 TXhyaGBGKytlyflVNP4lIiO2LqRNKprn4BgTOC9MUjSKGmCwele6BDtaEd1jHWot77yHd
+	 Av0O7WiCjKmGfM9AYctAGDwM7ZjriWOYmg6QR4lKt5HI2lDDmHQylzpfbArGrXu2qZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QCuwMB17;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="h/YHGl88";
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FC2606A321;
-	Wed, 25 Nov 2026 23:33:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68FC2606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A724606A31E;
+	Thu, 26 Nov 2026 01:19:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A724606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QCuwMB17
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795649625; x=1827185625;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=pCVtF8v55FmaexWS2gyF6Vx3HQfifyvY5lhhfzgms4c=;
-  b=QCuwMB17XM/COhqSiU3QLiaqeetPk+1rdpVNO1JNMstBMmymYMN8wkBo
-   yDStQ3InSPPlcLi1yTD536Ndgis4UAvYEMShd5XN9mbWVOBx5m6Xbvp+k
-   VLd4Ym+a9rlQuF8U8LcazgGt9NaXzrihWMaFLE8uLiylZuWjXcftOUKoh
-   bsCid8rNzdrDTNL56L7NCDwALmy1NC90iHlsjw9/Slo7fBYY7kWf1cF54
-   OglOYNRNkjYK5jfynFLhaXkanYbOOIq6gA2d83HIJu18MPqEI0AgFvtwK
-   67ukGINMSN2AO6u8vFGrWrMMqjdx16aUNhNaj4msxStHWaH+LYLgbAHvc
-   g==;
-X-CSE-ConnectionGUID: kzo4O6iQT0a1pnvLaAvSrA==
-X-CSE-MsgGUID: dINYwpi6TcGvlAfLC1/hQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11977"; a="4555518"
-X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
-   d="scan'208";a="4555518"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 15:33:45 -0800
-X-CSE-ConnectionGUID: sAWRZUW0RhOM423J0jnZyw==
-X-CSE-MsgGUID: Qc2Duxs7RI+1Nhvs8BdKqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
-   d="scan'208";a="13784609"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 15:33:41 -0800
-Message-ID: <d9eb3700-ab16-4471-9814-00c62d4602c8@linux.intel.com>
-Date: Thu, 26 Nov 2026 07:33:39 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h/YHGl88
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APJYmaG2231504;
+	Thu, 26 Nov 2026 01:19:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ryUXjz
+	Mtazy3gSaZGHa2Eq3V/fW4l8VdcGVzhCJFDqE=; b=h/YHGl88fdNjiCdKZon8er
+	lltC7iNg+AA9G/iZU4u3jCmuQkRhqvSr24HOAZymtOaIRy0zUSm95U5l7jLspmMT
+	kd4XkHSiXrnNfFjxemEpPJ3B0JxrIzrCf9LK/OI0ma8U0Kuph+gnnV/1ZepkZi1L
+	MTyo8juDIehL29Qojbf9dUE/ZxB8GDtNxS2iF8ah+PzbLStmGYhyBXFuiaqb6qRe
+	4JrcUqbwZTA7rbwUtYGDheVKCrZdu4PmHOeWoa2lu04Ilx1v7NCZYjSqGX6YwM4q
+	fVuGDY0bNMA39FpvYKl+W62eeJ0FsiQ+KE3Pg17Nr9xpLBF+1ooPf3xOTGUsemdA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g1ep0h-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 26 Nov 2026 01:19:13 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQ117kS2309448;
+	Thu, 26 Nov 2026 01:19:12 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4hgp3m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Nov 2026 01:19:12 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AQ1JARZ49545536
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Nov 2026 01:19:10 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B607020043;
+	Thu, 26 Nov 2026 01:19:10 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1FC7820040;
+	Thu, 26 Nov 2026 01:19:10 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.111.45.88])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu, 26 Nov 2026 01:19:10 +0000 (GMT)
+Date: Thu, 26 Nov 2026 02:19:08 +0100
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Shukai Ni <shukai.ni@kuleuven.be>,
+        "Edgecombe, Rick P"
+ <rick.p.edgecombe@intel.com>,
+        "m.szyprowski@samsung.com"
+ <m.szyprowski@samsung.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "will@kernel.org" <will@kernel.org>,
+        "jo.vanbulck@cs.kuleuven.be"
+ <jo.vanbulck@cs.kuleuven.be>,
+        "Reshetova, Elena"
+ <elena.reshetova@intel.com>,
+        "kas@kernel.org" <kas@kernel.org>,
+        "carlos.bilbao@kernel.org" <carlos.bilbao@kernel.org>,
+        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Halil Pasic
+ <pasic@linux.ibm.com>
+Subject: Re: [PATCH] swiotlb: clear read bounce buffers on confidential
+ guests
+Message-ID: <20261126021908.59b2105f.pasic@linux.ibm.com>
+In-Reply-To: <d5dfd9a2-4ac6-415c-b719-699b264fa39d@arm.com>
+References: <20261123205302.1034348-1-shukai.ni@kuleuven.be>
+	<3a70a26adccc47b1bae3a22e4907174271703a10.camel@intel.com>
+	<9bc0d7ed-0799-45dc-8d74-25ed66851a20@kuleuven.be>
+	<d5dfd9a2-4ac6-415c-b719-699b264fa39d@arm.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -72,231 +116,108 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Baolu Lu <baolu.lu@linux.intel.com>
-Subject: Re: [PATCH v3 4/9] iommu/vt-d: Add interface for tdx-host when
- enabling trusted DMA
-To: "Tian, Kevin" <kevin.tian@intel.com>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Cc: baolu.lu@linux.intel.com, Jason Gunthorpe <jgg@ziepe.ca>,
- Kiryl Shutsemau <kas@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-5-baolu.lu@linux.intel.com>
- <CO1PR11MB4835EB7D858CC6C8A20F0E148C432@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Language: en-US
-In-Reply-To: <CO1PR11MB4835EB7D858CC6C8A20F0E148C432@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9Mkjofwp1NYMaNx3EXnPvCxxnD1XHfSD
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDAwMyBTYWx0ZWRfX39cwUofRUkXl
+ xOeO5KVFjVaTJ8IL1+iann34pCzPRPiouNlVld8JakG3OB7F6krFYKioHKXKJmvnsZergf3o1US
+ W2G3GXd5ePgroY0/jLWR7cHDHeoG7hE=
+X-Proofpoint-GUID: 9Mkjofwp1NYMaNx3EXnPvCxxnD1XHfSD
+X-Authority-Analysis: v=2.4 cv=c8M+0h9l c=1 sm=1 tr=0 ts=6b078911 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=7CQSdrXTAAAA:8
+ a=sBmwBxJFO0rdLi8qyDgA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDAwMyBTYWx0ZWRfXwriPCmfZW0+B
+ N02ShTb3puZ1T4i49KD+8L22l1GsKBDyVGH6GWQDb3MB2LdAW1RTGCVFogJk7W57QuPbweEUVin
+ 1NwUMsmYmT+MqWjwyi363UzFMVt3JUDQ+Xcm7Y8JR3gYNhsyo/lF1LWQU7dDtvbNiUA8k+3QjIS
+ oaQXodDp3Yzw97npDZxr2s3MfXqTB9+c07E0ZE5VQ7HDTwkN9aZFW1qEGg+kpFwHcj7e16DF99P
+ pQk5uczqkuw06CDiycL+KmdRxFBDW8ZJpRJzjSmWa9RFRb5o0R1uXOInchs5babExEgplkL8rjm
+ FpmHo+42+O4V5S5c8ayaIuxcvY4j85bRCuoWky/W/jrmGqjpcZwZ0VfdO99Exc7VqN48u4rvoRu
+ YapdSKfXY1/7ErIw9zx9OAPLxR4CBIen0fhqunNBRoLWVPv+S1FMtIZleIyqUWbnfEGHAuCTJv7
+ tWdDlAxlKjf+oDu7bLA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-25_05,2026-11-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 malwarescore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611260003
 
-On 11/25/2026 11:29 AM, Tian, Kevin wrote:
->> From: Lu Baolu <baolu.lu@linux.intel.com>
->> Sent: Thursday, November 12, 2026 12:31 PM
->>
->> An Intel IOMMU that supports trusted DMA (ECAP.TDXCS) provides a second
->> set of DMA translation resources, managed by the TDX module and used
->> only for devices assigned to TDs. Before they can be used, the tdx-host
->> driver issues TDH.IOMMU.SETUP to put the IOMMU into Secure TDX Mode,
->> and
->> issues TDH.IOMMU.CLEAR to take it out again.
->>
->> The VT-d driver owns the hardware state these SEAMCALLs depend on, so
->> it checks that state and keeps its own use of the IOMMU out of the TDX
->> module's way. This is cooperation, not enforcement: the TDX module
->> protects trusted DMA regardless, and a misbehaving host can only cause
->> failures.
->>
->> Add a per-device interface so that an IOMMU is put into Secure TDX Mode
->> only when a device behind it needs trusted DMA. tdx-host tracks how many
->> devices use each IOMMU and calls into the VT-d driver only for the first
->> and the last of them:
->>
->> - dmar_tdxc_get_params() looks up the DMAR unit translating the device
->>    and returns its register base address, which is how the TDX module
->>    identifies an IOMMU, and its NUMA node, so that tdx-host can allocate
->>    the TDX module's metadata pages local to that IOMMU.
->>
->> - dmar_tdxc_acquire() is called right before TDH.IOMMU.SETUP. It checks
->>    the preconditions TDH.IOMMU.SETUP requires (DMA translation, queued
->>    invalidation and scalable mode enabled) and confines the host to the
->>    lower half of the domain ID space, since the TDX module owns the half
->>    with the MSB set.
->>
->> - dmar_tdxc_release() undoes acquire(). tdx-host calls it if
->>    TDH.IOMMU.SETUP fails, or after TDH.IOMMU.CLEAR succeeds for the last
->>    user. If TDH.IOMMU.CLEAR fails, tdx-host doesn't call it, so the upper
->>    half of the domain ID space stays reserved for the TDX module.
->>
->> DMAR units advertising ECAP.TDXCS are excluded from DMAR hotplug. No
->> platform currently supports both trusted DMA and DMAR hotplug, so that
->> flow can't be validated on hardware. Hot-removing such a unit is also
->> unsafe, because tdx-host may hold a reference to it and the TDX module
->> may own its trusted DMA resources. This also keeps the unit handle
->> returned by dmar_tdxc_get_params() valid for the lifetime of the system.
+On Tue, 24 Nov 2026 16:13:52 +0000
+Robin Murphy <robin.murphy@arm.com> wrote:
+
+> > Thanks for looking at this, and we had very similar thoughts when 
+> > writing the patch. Our impression was that in many cases the driver
+> > doesn't own the buffer (page cache, dm-crypt, O_DIRECT), so fixing it
+> > there seemed hard, which is why we tried swiotlb instead. But we may be
+> > missing something.
+> >   
+> >> It seems like the fixes commit was arguing that copying the contents 
+> >> to the
+> >> swiotlb buffer was more transparent. So this patch kind of goes back 
+> >> against
+> >> that argument. That seems to be another point that the drivers should 
+> >> be fixed.
+> >> If this is essentially more of a potentially behavior altering kernel 
+> >> hardening,
+> >> then I wonder about putting it behind some kind of hardening config like
+> >> CONFIG_INIT_ON_ALLOC_DEFAULT_ON.  
+> > 
+> > As far as we can tell, keeping the old contents for DMA_FROM_DEVICE
+> > was never really promised. Before ddbd89deb7d3, swiotlb
+> > didn't do it. That commit was mainly about not returning stale bounce
+> > data to the caller, which zeroing should still prevent.  
 > 
-> Here we used multiple terms (Intel IOMMU, VT-d, DMAR) to talk about
-> a same thing. Intel IOMMU and VT-d are interchangeable, commonly used
-> in many places. But DMAR is more a term in ACPI structure. Better avoid
-> it in description, especially in exported interface names.
-
-Intel IOMMU and VT-d refer to the hardware that the intel-iommu driver
-drives. DMAR is the ACPI DMA remapping table, and the term is sometimes
-used for the remapping hardware units it describes.
-
-The interface here is not an intel-iommu driver interface, since those
-should all go through the iommu core. It's exported from the ACPI/DMAR
-layer instead, so dmar_tdx_* seems the more fitting name.
-
+> SWIOTLB is an implementation detail of the DMA API. If some future CoCo 
+> environment happens to be able to share a buffer in-place with less 
+> overhead than bouncing then it will be free to do so, and drivers which 
+> do not sanitise DMA_FROM_DEVICE or DMA_BIDIRECTIONAL buffers will 
+> continue to leak data...
 > 
->> @@ -689,6 +690,8 @@ struct intel_iommu {
->>   	u64		ecmdcap[DMA_MAX_NUM_ECMDCAP];
->>   	u32		gcmd; /* Holds TE, EAFL. Don't need SRTP, SFL, WBF
->> */
->>   	raw_spinlock_t	register_lock; /* protect register handling */
->> +	/* Acquired for the TDX module. Protected by register_lock. */
->> +	bool		tdxc_acquired;
+> Note in particular the case of DMA_BIDIRECTIONAL, which means the caller 
+> expects the buffer to either be written and read, or read and written, 
+> or read, or written, or any or all of the above. How is the DMA layer 
+> going to know whether the initial buffer contents are meaningful and 
+> must be preserved, or stale and potentially leaking something?
 > 
-> "for the TDX module" or "for the TDX mode"?
+> Also how is the DMA layer to know if a driver is intentionally making 
+> DMA_TO_DEVICE mappings of random (or targeted) kernel memory for the 
+> sole purpose of malicious sharing? If people want to use device drivers 
+> in CoCo environments then the onus being on auditing and hardening the 
+> individual drivers themselves doesn't seem too unreasonable.
 
-The TDX mode. Will fix it.
+I'm 100% with Robin on this one! Reusing a buffer is not a problem
+in itself. Exposing private data is. And the only clean way I see is
+prevent that from happening is to not DMA map buffers containing private
+stuff. Not even as DMA_FROM_DEVICE. The blamed patch is about
+propagating the sanitation done on the original buffer to the swiotlb
+buffer to which the access is granted to the untrusted host.
 
-> 
-> s/tdxc_acquired/tdx_acquired/
+I wonder what type of reuse are we talking about here? If the
+buffer contains data from an old co-co IO might be acceptable,
+as the assumption there is that co-co IO has to be cryptographically
+protected anyway (from the non-trusted host).
 
-Sure.
+Another thought: My understanding is that an actual IOMMU may or may not
+support "write only".  I think, the swiotlb is not the right place to
+address this. But if we allow for IOMMUs may not supporting "write only"
+DMA API in general may be. The thing is, if the conceptual IOMMU actually
+guarantees that write only is indeed write only and then there is no
+harm per se in not sanitizing as, we can be sure that there is not leak
+with respect to the conceptual device at least. If however the
+conceptual IOMMU is not capable of doing so, then one could argue
+that this constitutes a leak even without co-co. And for non-trusted
+devices and co-co (i.e. with swtiotlb) the conceptual IOMMU would
+never be able to guarantee "write only": because even if the IOMMU of the
+platform does, the host can still access the shared buffer, so
+we have a leak (an we would consider the host a par of the conceptual
+device as it is effectively capable of doing conceptual DMA). I admit
+something like this still feels a little hacky, but I hope worth
+discussing nevertheless.
 
-> 
->> @@ -47,9 +47,32 @@ struct dmar_drhd_unit {
->>   	u8	ignored:1; 		/* ignore drhd		*/
->>   	u8	include_all:1;
->>   	u8	gfx_dedicated:1;	/* graphic dedicated	*/
->> +	struct mutex tdxc_lock;		/* serializes acquire/release */
-> 
-> s/tdxc_lock/tdx_lock/
+Regards,
+Halil
 
-Sure.
-
-> 
->>   	struct intel_iommu *iommu;
->>   };
->>
->> +/*
->> + * struct dmar_tdxc_params - IOMMU information for driving
->> TDH.IOMMU.*
->> + * @reg_base_addr: Register base address of the IOMMU. The TDX module
->> + *		   identifies an IOMMU by it.
->> + * @node: NUMA node of the IOMMU, for allocating the TDX module's
->> + *	  metadata pages local to it.
->> + * @drhd: VT-d internal handle; the caller must not dereference it. It
->> + *	  stays valid for the lifetime of the system because TDX
->> + *	  Connect-capable units are never hot-removed.
-> 
-> what will happen if the caller deferences it?
-
-This will be dropped as discussed.
-
-> 
->> @@ -2518,3 +2548,158 @@ bool dmar_platform_optin(void)
->>   	return ret;
->>   }
->>   EXPORT_SYMBOL_GPL(dmar_platform_optin);
-> 
-> code starting here better fits in iommu.c?
-
-See above.
-
-> 
->> +
->> +static void dmar_tdxc_fill_params(struct dmar_drhd_unit *drhd,
->> +				  struct dmar_tdxc_params *params)
->> +{
->> +	params->reg_base_addr = drhd->reg_base_addr;
->> +	params->node = drhd->iommu->node;
->> +	/*
->> +	 * params->drhd stays valid because trusted DMA-capable units are
->> +	 * never hot-removed.
-> 
-> hmm now the 4th term for IOMMU...
-
-This comment is gone as discussed.
-
-> 
->> +/*
->> + * dmar_tdxc_acquire() - Acquire an IOMMU for TDH.IOMMU.SETUP
->> + * @dev: PCI device that will use trusted DMA
->> + * @params: Returned by dmar_tdxc_get_params() for @dev
->> + *
->> + * Call this right before issuing TDH.IOMMU.SETUP for the first user of
->> + * the IOMMU. On success, the caller must issue TDH.IOMMU.SETUP and
->> call
-> 
-> why defining the caller behavior here? what would happen if the caller
-> just calls acquire()/release() w/o doing any SEAMCALL in between?
-
-Nothing breaks. release() just undoes what acquire() did. You're right
-that the interface shouldn't define the caller's behavior.
-
-> 
->> + * dmar_tdxc_release() if it fails. The caller owns the per-IOMMU refcount
->> + * and must serialize all calls for the same IOMMU.
-> 
-> this function already serializes internally. What is the rationale asking for
-> extra serialization in the caller?
-
-None, it isn't needed. I'll describe what acquire() and release() do to
-the IOMMU, and drop the requirements on the caller.
-
-> 
->> + *
->> + * Return: 0 on success and error code on failure.
->> + */
->> +int dmar_tdxc_acquire(struct pci_dev *pdev,
->> +		      const struct dmar_tdxc_params *params)
->> +{
->> +	struct dmar_drhd_unit *drhd = params->drhd;
->> +	struct intel_iommu *iommu = drhd->iommu;
->> +	int ret;
->> +
->> +	if (WARN_ON(dmar_tdxc_find_drhd(pdev) != drhd))
->> +		return -EINVAL;
->> +
->> +	guard(mutex)(&drhd->tdxc_lock);
->> +	/* Still set if TDH.IOMMU.CLEAR failed and tdx-host was reloaded. */
->> +	if (iommu->tdxc_acquired)
->> +		return -EBUSY;
-> 
-> what does "tdx-host was reloaded" actually mean?
-
-It's stale. After a failed TDH.IOMMU.CLEAR, the flag stays set and the
-next acquire() fails, whether or not tdx-host is reloaded. I'll reword
-it to:
-
-	/* Still set if a previous TDH.IOMMU.CLEAR failed. */
-
-> 
->> +
->> +	/*
->> +	 * TDH.IOMMU.SETUP requires DMA translation, queued invalidation
->> and
->> +	 * scalable mode to be enabled. Catch these here so the error is
-> 
-> Remove the 1st sentence as it is explained by the code.
-
-Will do.
-
->> +	 * -EINVAL rather than an opaque TDX_IOMMU_INVALID_STATE.
->> +	 */
->> +	if (!(iommu->gcmd & DMA_GCMD_TE) || !iommu->qi
->> || !sm_supported(iommu))
->> +		return -EINVAL;
->> +
-
-Thanks,
-baolu
