@@ -1,105 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.37.111.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795708332;
-	b=KkaT4HPPdVbTYsdzKso9FsrjoOLuyW0HkEepunpqGPkzEMprGM/ol5KuRV8iFvAExX/a
-	 4DuoDJnk8PInG3ksG+YNhv0YjIDO3BIgqJnUSiotFppTbbTKa6dC0N05VEe+fjONLTPVG
-	 vdlzjxeIFGLQoyGISgb/ZfH9dDIcINIjCtElj5rGApcsIP9ML1UJdeyPDwxyyeunOCBWw
-	 QyiAN1nxONxlq0l/d/OIEOBPmC1Vq9nKijMWykaTXpbxC2uud+yvoKLlrD8KweFiYgl4m
-	 f4AMz5bs9yenFarNfKwQHYeJbawuHs5o12epamp0KhfUeT+ubTaEg9QELmp0uPBBViA==
+	t=1795709943;
+	b=D9Ig1T09piUXsDdkS3T0lufr5eDZ8AWybWQFreMStTocmawYw947eHfEJyhZCSKiXohO
+	 bm4GmG0EhCT2vtIEjzAW1KAxY2V+VR4RH5c60FelT9tIPCa571AEqJe07VRZcCJsY0hxn
+	 JbHyqSSABsOAhKUKKl77lqOpj/j3YW/ap0J/NzbO1Rkz7qk6hXb0yOamy0+/Z1OVlynPz
+	 uKE+ZRg570TQRN99H27zvJh8lX9ilhlwfD/SGN6Lt8duHLDtmSR0yJMLPLlTHRol0HhRQ
+	 6HaHaqWKwehFjtGJzZUPsbMgPEkVyWshhpfybIPbE0BLpf/CdiGXL5K5pbCWdD1vAOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795708332;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=PsJrhw/qD5kUJUapuNeSh8uHKjzWdiRgnqrKaM1xuOk=;
-	b=L0gDB4FwRpalC3fd9HpH1lcXOt5LVcsICWx6QN8n9/hp/8FD3/aDe4opeqkRDEhasOXq
-	 w7asuFDyDHgqqmsT9+Tz8MHWhI9SbRY/Oj3v/XIcLi5WghI8CVU7sH6YtgIVEu8+k1IyT
-	 yEI1kg2/miWaDY7Fpw7o61fI5YVt4JWwCGBeiN3deH+OQPwdqBkkjhD4tNVbhuiGr4Lp6
-	 RB+Mm1QI5RihGo9LnaALI+YzJuxHuNiGwpj3WpjKy+culqJQz0nbpOdXSpjjo3kGEqryS
-	 ZLL/K/ZChFbjbY0Nl+HTONXfGwC52eR47bwfkWYnF1iEn2cRx5ubNva4Uv9A5oCBh8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795709943;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Autocrypt:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=POVlFWk6u5eEavXM6cBTqxSZ/l/WCbrqO1lpca7Avm8=;
+	b=K8I9WyZZrLLoxXHRAlzXDUvn+paG4aWuQn50oXu52b9U37niykp6Xhfldey6ePg6YbBE
+	 cOpgyJ4blHVaFR1shjd8dmGW/sjCMz1drSCZfEhzF9xShryN0mfpY2pjWZ7bMAeqE5KPs
+	 KpwYBSzdXGa1W8po/M9JJ5EJZ0+Jz+4g6el/hYyunjuu4i2inkZS35vv7l7dvTk29kCHU
+	 66VtvKWSFsdcJFVxTO+qVjK2XHzhuPPilJ+l2i1BglxPuG6lKDTg7HvAHxdpn/fUqvxxv
+	 UH+3sk9GIJ3peEwSD4LGyKFlm4covZn7YYB5Fnwd3TGW7YRpQNd/mEHneJDAnB8m8ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=So+WdnWi;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8303A606A31C;
-	Thu, 26 Nov 2026 15:52:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8303A606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=HansenPartnership.com;
+	spf=pass smtp.mailfrom=HansenPartnership.com;
+	dkim=pass header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b="fsr5dK/I";
+	arc=none smtp.remote-ip=198.37.111.173
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8044606A32D;
+	Thu, 26 Nov 2026 16:19:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8044606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=So+WdnWi
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E995E1BA8;
-	Thu, 26 Nov 2026 07:52:07 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D9373F632;
-	Thu, 26 Nov 2026 07:52:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795708330; bh=t/iAXo76mNWOYi6NXRXLm9HYRbfENwEmeSuVZl+vjQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=So+WdnWiITxUEA+zPA0qZrHfIgEWB8UDt3yn4IEO5THcFQuUupbSyZ38WSbYLlzZO
-	 Rdd4TpDOmHWWTHsRW+t1aSXOFu6+xeusbEXx8t6R4TR3fxZ+3I/eAfWH7BVYVPd6hg
-	 fcIkARwHaaJVtuaYyOlwbtgwfzyTh/vzHdKQd+qA=
-Date: Thu, 26 Nov 2026 15:52:00 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Christian K?nig <christian.koenig@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables
- using CoCo shared memory allocator
-Message-ID: <awhVoDXluqpncgcd@arm.com>
-References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
- <20261116091137.94252-5-aneesh.kumar@kernel.org>
- <awQd81MwZqi55gf8@arm.com>
- <yq5aa4mybbmv.fsf@kernel.org>
- <20261124134621.GI9566@ziepe.ca>
+	dkim=pass (1024-bit key, unprotected) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=fsr5dK/I
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1795709936;
+	bh=74YwIf+PYD90z7UKNj5VqIwas8dRX6fb9j8BuowJT2c=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=fsr5dK/IJc0NTxupHd6qmJfcJgxmN8BH4PxUSjRG38UhlRel10oKCVNQ4eqTGEKd1
+	 w867J6zoNhRS98JXXpAn0dKh/Vb4TpcRqVU98r1Eiy+qeGc/cKyZ/CboxtuLr6xf/C
+	 F/DQI0yh8LnWMKsximatUYrYrqoA/kHPo6fdaO+c=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::8309])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 67F4A1C0291;
+	Thu, 26 Nov 2026 11:18:56 -0500 (EST)
+Message-ID: <ef51cb7df408839ce80921d9133020c46da3c27a.camel@HansenPartnership.com>
+Subject: Re: Discussion on policies around minimum rust version for
+ coconut-svsm
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>, Mahmoud Nagy Adam
+	 <madam@amd.com>
+Cc: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Date: Thu, 26 Nov 2026 11:18:55 -0500
+In-Reply-To: <awglpsRXwJRS7aa5@8bytes.org>
+References: 
+	<d79ddac2ab65877504ace5a1fa2eab9cab3d5db3.camel@HansenPartnership.com>
+	 <65vkyfqwo92zb.fsf@amd.com> <awglpsRXwJRS7aa5@8bytes.org>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNE
+ lecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn
+ 1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHU
+ RfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8
+ X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvd
+ HRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGw
+ MGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAml2ZBI
+ FCS3GUMIACgkQgUrkfCFIVNZKjQf/deRzlXZClKxTC/Ee2yEPqqS7mm/INUA49KdQQ5oIhSxkUBy0
+ 9J4qjMIo5F8ZFkFTqikBqeL35LKu7O7rn8WETfX8Bxvos3HUsl3jHo34DES4MUFIpoQPgtiLRGwLb
+ K0cVCAArR2u2qj4ABmTRrs1I1kvdjEw6gatOuXtEe/j5O2fvfzTq9GBr0Q3n2IAsFXi4hLlx6VPE8
+ tyWUZ8BWJKtih3JAeUiXFvASL3McV0rV9RnU0VbjEQEhSE7PMYhWpnDC9AyBb0lXJllQRvC3NSkUB
+ 8KVQgNNxRPss0WE/nBoZ4dFA42jTyzTz8lNylxZoAWV7WJb3QxVg4oCodRVrxxrQhSmFtZXMgQm90
+ dG9tbGV5IDxqZWpiQGtlcm5lbC5vcmc+iQFVBBMBCAA/AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeA
+ QIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mYBQkbNYS9AAoJEIFK5HwhSFTWBpwIAL5Bk3
+ 5FB34U6iHmDzzgdCbxLTs43T/YQyJpcGIvopBvnI/fDY8oSG6Df64/O6B+1R+A8TDp6ZG5ysUWnCC
+ 6GuIaEHemBYkitMPglR6+sGCMQY7O0mlsPvdssvKK1KI9Bno4VU6ogaF2qVzefSqg1Djmf/DcsxWP
+ rI/jdJ8FB5AYR2rjIdDFc+zRdAJuavo1/anyY2wgpFh/3R8IOYAEfWV9nGgYkf9+tA4EIn1sxE0I3
+ L5oW2N3mbyRrkzuBwO8ztMCwqEPk7moWzhokcZqMXiAIahaZdkashJC+s2X2RZSGCy+g+pvY5NN4B
+ BVG5XwLgVBqbHMTcxE0fbmPqz+q6O0LEphbWVzIEJvdHRvbWxleSA8amVqYkBoYW5zZW5wYXJ0bmV
+ yc2hpcC5jb20+iQFXBBMBCABBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmODZ5ACGwMFCRs1hL0F
+ CwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQgUrkfCFIVNZu0Af/TzvL2/NdgAcw9uN3x60H8
+ jc4QUq14VpxcFEFEMpcj1morkX/G93V+56HBBaXZj+yK8PhxIA/SIz+sU7C/0YvKuvzakP8ZX/7WJ
+ e32SOUtjfr/VTaqjIBzNj6OxLvZpmNbBw7s6DwhhNpHOWqJ/1ml+PtDRDV71IB58yVqQjp1xlNKVl
+ ZppcJ5908EJzsFnRIVjiQiDSKoppqB2BCibBbrWcln7CiWMyOC/cco6SIn6twH+f7+aivJ3xGcOE2
+ a9gBKF5rNi9TBoX9oyPmshv/TDmnohsVrH7AYXlGYfZTk15SWEiROh1QX8/uD9wl/gcIv5EDUpT/F
+ L2jzOsA5663bw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Post: <mailto:linux-coco@lists.linux.dev>
@@ -109,31 +97,63 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:linux-coco+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261124134621.GI9566@ziepe.ca>
 
-On Tue, Nov 24, 2026 at 09:46:21AM -0400, Jason Gunthorpe wrote:
-> On Tue, Nov 24, 2026 at 07:00:00PM +0530, Aneesh Kumar K.V wrote:
-> 
-> > Taking Jason's feedback into account, we could have the allocator
-> > request compound pages and recover the actual allocation order with
-> > compound_order(). That would avoid passing an order to free:
-> > 
-> > void *alloc_cc_shared_node(int nid, gfp_t gfp, unsigned int order);
-> > void *alloc_cc_shared(gfp_t gfp, unsigned int order);
-> > void free_cc_shared(void *addr);
-> 
-> It probably shouldn't be order here, that is hard to use. Just size_t
-> len
-> 
-> And round up internally
+On Thu, 2026-11-26 at 13:31 +0100, J=C3=B6rg R=C3=B6del wrote:
+> Hi Mahmoud,
+>=20
+> On Wed, Nov 25, 2026 at 07:32:08PM +0100, Mahmoud Nagy Adam wrote:
+> > For information, Rust for Linux already has a policy for this:
+> > their minimum Rust version follows Debian Stable's and is raised
+> > some months after each Debian stable release, so the kernel can
+> > always be built with the Rust that Debian ships
+> > (https://rust-for-linux.com/rust-version-policy).
+> >=20
+> > We could generally follow this policy, unless a forcing function (a
+> > needed language feature or a dependency fix) requires a newer
+> > version.
+>=20
+> The Rust4Linux project is in a different situation. They do not use
+> cargo and vendor all external dependencies to maintain them within
+> the Linux source tree.
+> This gives them much more freedom to set the minimum Rust version
+> because constraint #2 (from James' email) does not apply to them.
 
-Minor point in favour of keeping the '_pages' naming and order is that
-it makes it more obvious what alignment is returned for code that needs
-it like the ITS. Otherwise we can just document it, I don't have a
-strong opinion either way (only that it's simpler than what was proposed
-earlier).
+I agree with this, but it it too late to question why coconut couldn't
+remove or at least reduce external dependencies? =C2=A0I know it's a lot
+easier for the rust4linux project because the kernel has a huge library
+set of stuff it had to home grow which rust4linux can just use.
+However, if I look at the coconut dependency list today, it's not that
+huge.  I'm definitely biased; I tend to see the package ecosystem of
+rust going the same way as all the others and leading to nasty security
+problems like log4j via uncontrolled indirect dependencies.  To give a
+concrete example: the goal of making coconut fips compliant by forcing
+all crypto through a fips library is impossible to achieve today due to
+crypto in indirect dependencies.
 
--- 
-Catalin
+> Also Debian stable uses Rust 1.85, COCONUT is already on 1.88 with
+> the aim to go to 1.91.
+
+Well that's only because of this:
+
+https://github.com/coconut-svsm/svsm/pull/1277
+
+And the rationale is dependency on this project
+
+https://gitlab.com/kraxel/virt-firmware-rs
+
+requires it to pull in a bug fix, but if I look through the commit logs
+of the latter I can't figure out why (presumably Gerd or Luigi can
+explain); however, since the authors are also coconut committers it
+might be possible to negotiate a way to get the bug fix without
+requiring a rust version increase.
+
+If the crypto dependencies all get dumped for fips, there's really only
+the closely allied projects and some odd helpers which remain.  It
+might be possible to internalize the helpers and keep the allies if
+they agree to the same rust version policy (and crypto policy for fips)
+... sort of a half way house between the way a normal rust project
+behaves and the no external dependency requirement of rust4linux.
+
+Regards,
+
+James
